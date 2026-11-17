@@ -640,6 +640,98 @@ def _placement_evidence(notes: list[dict[str, Any]], topic_filter: str | None) -
     }
 
 
+def extract_note_sections(
+    vault_root: Path,
+    rel_file: str,
+    sections: list[str] | None = None,
+) -> str:
+    """Extract only requested sections (e.g. 'abstract', '1', '3', '7', or heading text) from a note."""
+    if ".." in Path(rel_file).parts:
+        raise ValueError(f"Path traversal ('..') is not allowed: {rel_file}")
+    target = Path(rel_file)
+    if not target.is_absolute():
+        target = vault_root / target
+    if not target.is_file():
+        raise FileNotFoundError(f"Note not found: {rel_file}")
+    if not is_within_vault(vault_root, target):
+        raise ValueError(f"Path escapes vault root: {rel_file}")
+
+    text = target.read_text(encoding="utf-8", errors="replace")
+    lines = text.splitlines()
+    _, body_start = _split_frontmatter(text)
+
+    # Locate > [!abstract] block before first ## heading
+    abstract_lines: list[str] = []
+    h2_blocks: list[tuple[str, int, int]] = []  # (heading_text, start_idx, end_idx_excl)
+    in_fence = False
+    fence_char = ""
+    current_h2: tuple[str, int] | None = None
+
+    for idx in range(body_start, len(lines)):
+        line = lines[idx]
+        fm = re.match(r"^\s*(```|~~~)", line)
+        if fm:
+            marker = fm.group(1)[0]
+            if not in_fence:
+                in_fence = True
+                fence_char = marker
+            elif marker == fence_char:
+                in_fence = False
+                fence_char = ""
+            continue
+        if in_fence:
+            continue
+
+        hm = re.match(r"^##\s+(.+?)\s*$", line)
+        if hm:
+            if current_h2 is not None:
+                h2_blocks.append((current_h2[0], current_h2[1], idx))
+            current_h2 = (hm.group(1), idx)
+
+    if current_h2 is not None:
+        h2_blocks.append((current_h2[0], current_h2[1], len(lines)))
+
+    first_h2_idx = h2_blocks[0][1] if h2_blocks else len(lines)
+    in_abstract = False
+    for idx in range(body_start, first_h2_idx):
+        line = lines[idx]
+        if re.match(r"^\s*>\s*\[!abstract\]", line, flags=re.IGNORECASE):
+            in_abstract = True
+            abstract_lines.append(line)
+        elif in_abstract:
+            if line.lstrip().startswith(">"):
+                abstract_lines.append(line)
+            else:
+                in_abstract = False
+
+    wanted = [s.strip().lower() for s in (sections or []) if s.strip()]
+    out_chunks: list[str] = []
+
+    if not wanted or "abstract" in wanted:
+        if abstract_lines:
+            out_chunks.append("\n".join(abstract_lines))
+
+    for heading, start, end in h2_blocks:
+        if not wanted:
+            out_chunks.append("\n".join(lines[start:end]).rstrip())
+            continue
+        h_low = heading.lower()
+        matched = False
+        for w in wanted:
+            if w == "abstract":
+                continue
+            if w.isdigit() and re.match(rf"^{re.escape(w)}\b", h_low):
+                matched = True
+                break
+            if w in h_low:
+                matched = True
+                break
+        if matched:
+            out_chunks.append("\n".join(lines[start:end]).rstrip())
+
+    return "\n\n".join(chunk for chunk in out_chunks if chunk).strip() + "\n"
+
+
 def index_vault(vault_path: Path, topic_filter: str | None = None, *, use_cache: bool = True) -> list[dict[str, Any]]:
     """Legacy API returning compact note metadata records."""
     full = build_or_load_index(vault_path, use_cache=use_cache)
@@ -660,6 +752,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--topic", default=None, help="Case-insensitive topic filter.")
     parser.add_argument("--discover", action="store_true", help="Output compact topic-scoped discovery bundle.")
     parser.add_argument("--full-registry", action="store_true", help="Output full tag and template registries.")
+    parser.add_argument("--fields", default=None, help="Comma-separated fields to include in compact note records.")
+    parser.add_argument("--extract", default=None, help="Vault-relative note path to extract specific sections from.")
+    parser.add_argument("--sections", default=None, help="Comma-separated sections for --extract (e.g. abstract,1,3,7).")
     parser.add_argument("--no-cache", action="store_true", help="Bypass local index cache.")
     args = parser.parse_args(argv)
 
@@ -668,6 +763,16 @@ def main(argv: list[str] | None = None) -> int:
     except (ValueError, FileNotFoundError, NotADirectoryError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 2
+
+    if args.extract:
+        sec_list = [s.strip() for s in args.sections.split(",")] if args.sections else None
+        try:
+            extracted = extract_note_sections(vault_root, args.extract, sec_list)
+        except Exception as exc:
+            print(f"ERROR: {exc}", file=sys.stderr)
+            return 2
+        print(extracted, end="")
+        return 0
 
     full = build_or_load_index(vault_root, use_cache=not args.no_cache)
     for w in full["warnings"]:
@@ -715,6 +820,9 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     records = [_legacy_record(r) for r in _filter_notes_by_topic(full["notes"], args.topic)]
+    if args.fields:
+        wanted_fields = [f.strip() for f in args.fields.split(",") if f.strip()]
+        records = [{k: rec[k] for k in wanted_fields if k in rec} for rec in records]
     print(format_compact_json(records))
     return 0
 
