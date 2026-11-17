@@ -1,63 +1,83 @@
-# Scriptorium Research Protocol (Phase 1 SOP)
+# `scriptorium` — Wave-Based Deep Research Protocol (`references/research_protocol.md`)
 
-Executes in Phase 1 of `/scribe-notes` and `/scribe-expand` **before** writing any final `.md` note. Outputs an internal vault inventory, an acyclic subtopic DAG, and a complete per-subtopic research dossier.
-
----
-
-## Step 1 — Vault Discovery & Zero-Duplication
-
-1. Run `python3 <skill_dir>/scripts/vault_index.py "<vault_path>"` (or `--topic "<topic>"` for `/scribe-expand`) to inspect existing filenames, `id`, `title`, `aliases`, `topic`, `master_topic`, `depends_on`, `next_topic`, and `##` headings.
-2. Inspect full note bodies **only** when headings/metadata leave concept coverage ambiguous.
-3. Classify concepts into **Covered** (reuse/reference; never duplicate under synonyms), **Partial** (extend only in `/scribe-expand`), **Uncovered** (new DAG nodes), and **Out of Scope**.
-
-**Gate:** Explicit scope map exists before Step 2.
+<!-- EXECUTION CONTRACT:
+- Governs Phase 1 (Research & Dossier Synthesis) before any `.md` note is written to the Obsidian vault.
+- Designed for maximum signal-to-token efficiency: inspect existing vault metadata via `vault_index.py` first, execute research in four deterministic waves, and lock a verified per-subtopic dossier before drafting.
+-->
 
 ---
 
-## Step 2 — First-Principles DAG Decomposition
+## §0. Command Entry & Wave Routing
 
-Decompose uncovered concepts into atomic learning units ordered logically where applicable:
-1. Terminology & definitions → 2. Assumptions & prerequisites → 3. Core mechanisms → 4. Governing equations → 5. Step-by-step derivations → 6. Algorithms & code → 7. Advanced variants → 8. Limitations & failure modes → 9. Applications & connections.
-
-Assign sequential planning IDs (`topic-01`, `topic-02`, ...) with `{subtopic_id, title, objective, depends_on, next_topic}`.
-- Verify zero cycles, zero missing prerequisites, and zero duplicate subtopics.
-- Keep uncreated future topics as plain text until their `.md` target exists or is created in the same batch.
-
-**Gate:** Acyclic DAG with defined prerequisites and learning objectives before Step 3.
+| Command | Vault Discovery | Research Waves Executed | Output Target |
+| :--- | :--- | :--- | :--- |
+| **`/scribe-notes <topic>`** | `vault_index.py` (check duplicates) | **Wave 0 $\to$ Wave 1 $\to$ Wave 2 $\to$ Wave 3 $\to$ Wave 4** | Full multi-subtopic `.md` tree (`topic-01` ... `topic-nn`) |
+| **`/scribe-expand <topic>`** | `vault_index.py --topic "<topic>"` | **Wave 0** (gap audit) $\to$ **Waves 1–4** (missing/advanced nodes only) | Missing core subtopics OR advanced expansion subtopics |
+| **`/scribe-distill <topic>`** | `vault_index.py --topic "<topic>"` | **Wave 0** + existing vault notes only *(skip Waves 2–3 unless vault has `[UNVERIFIED]` gaps)* | Single `<topic-name>-CHEAT-SHEET.md` |
 
 ---
 
-## Step 3 — Primary-Source Research & Citation Integrity
+## §1. Retrieval & Source Discipline (Non-Negotiable)
 
-Source hierarchy:
-- **Tier 1:** Peer-reviewed foundational papers, original publications, canonical textbooks, published proofs/specifications.
-- **Tier 2:** Official API/language documentation, formal standards/RFCs, institutional publications.
-- **Tier 3:** University lecture notes, reputable course materials, recognized specialist texts.
-- *(Generic blogs, SEO articles, and AI summaries are discovery-only; verify all substantive claims against Tier 1–3.)*
-
-Record internally for every cited source: `{source_title, author, publication, publication_date, source_type, url, claims_supported}`.
-
-**Zero-Fabrication Rule:** Never invent or approximate URLs, DOIs, authors, dates, theorem/page numbers, benchmarks, or claims. Mark unverifiable details `[UNVERIFIED]`; omit unsupported claims unless essential, in which case disclose uncertainty explicitly. Distinguish facts, deductions, interpretations, and assumptions.
-
-For every governing equation, verify original form, applicability conditions, symbol definitions/domains, dimensional consistency, sign conventions, boundary conditions, and algebraic equivalence.
-
-**Gate:** Every claim and equation is source-traceable or labeled as assumption/derivation/`[UNVERIFIED]`.
+- **Chase to origin:** Never cite a secondary blog, Medium post, or wrapper tutorial when the original paper, RFC, specification, textbook, or source repository is reachable.
+- **Knowledge (Primary Sources — Required for Definitions, Proofs & Equations):**
+  - Peer-reviewed foundational papers, canonical textbooks, RFCs/standards, official language/framework documentation, source repositories, and official release notes.
+- **Wisdom (Practitioner Sources — Required for Traps, Limits & Trade-offs):**
+  - Engineering post-mortems, creator/maintainer talks, canonical benchmark analyses, and vetted issue threads exposing real-world sharp edges, numerical instability, or failure modes.
+- **Strict Exclusions:**
+  - Never rely on or cite SEO listicles, AI-generated summaries, undated/unversioned tutorials, or unverified claims.
+- **Explicit Gap & Conflict Logging:**
+  - Conflicting definitions across papers, paywalled details, missing benchmarks, or unverified historical attributions must be tagged `[UNVERIFIED]` inline and logged explicitly in the dossier's **Gaps & Unverified Claims** block—never paper over them or fabricate citations.
 
 ---
 
-## Step 4 — Pre-Writing 7-Part Research Dossier
+## §2. The Four-Wave Research Pipeline
 
-Complete A–G internally for each subtopic (or justify non-applicability explicitly):
-- **A. Conceptual Foundation:** Definition, intuition, purpose, prerequisites, assumptions, interpretation, and relation to prior topics.
-- **B. Governing Equations:** Canonical form, symbol definitions/domains/shapes/units, sign conventions, assumptions, special cases, boundary conditions.
-- **C. One Named Running Example:** One concrete, explicitly named example with exact values reused consistently across Sections 3, 4, and 5; explain any modification mathematically.
-- **D. Complete Derivation:** Starting assumptions, governing equations, every nontrivial algebraic/logical step, substitutions, theorems/identities, division/domain conditions, and final verification.
-- **E. Edge Cases & Failure Modes:** Boundary/degenerate inputs, undefined regimes, violated assumptions, implementation traps.
-- **F. Is vs. Is Not Comparison:** At least one lookalike concept compared on similarities, exact differences, assumptions, math form, and confusion hazards.
-- **G. Analytical Q&A Scenarios:** 5–6 distinct transfer scenarios (unfamiliar inputs, changed assumptions, reverse reasoning, boundary stress tests, error diagnosis, cross-concept comparison) with full solutions—do not reuse the running example as the central question in every scenario.
+### Wave 0 — Vault Reconnaissance & Scope Locking (Zero-Token Index)
+1. **Run Indexer First:** Execute `python3 <skill_dir>/scripts/vault_index.py "<vault_path>"` (filtered by `--topic` when applicable) instead of reading full vault notes.
+2. **Map Existing Topology:** Record existing `id`, `title`, `aliases`, `depends_on`, `next_topic`, and `status` across the domain.
+3. **Branch by Command Intent:**
+   - **`/scribe-notes`:** Exclude already-verified subtopics from recreation; link to them as prerequisites.
+   - **`/scribe-expand`:**
+     - *Branch A (Core Gaps Exist):* Target every missing foundational or core subtopic needed for complete coverage.
+     - *Branch B (Core Complete):* Propose 3–5 high-leverage expansion subtopics (e.g., convergence proofs, edge-case pathology, hardware/complexity optimizations, or modern generalizations).
+   - **`/scribe-distill`:** Extract equations, symbols, and traps directly from existing vault notes; do not run external web retrieval unless a core formula is missing.
 
 ---
 
-## Step 5 — Pre-Draft Consistency Review
+### Wave 1 — Architectural Scoping & First-Principles DAG Decomposition
+1. **Atomic Subtopic Tree:** Decompose `<topic>` into a Directed Acyclic Graph (DAG) of atomic subtopics (`topic-01`, `topic-02`, ..., `topic-nn`) ordered strictly from:
+   $$\text{Foundational Axioms/Objects} \longrightarrow \text{Core Mechanism} \longrightarrow \text{Formal Proofs/Algorithms} \longrightarrow \text{Variants, Limits \& Failure Regimes}$$
+2. **Graph Edge Pre-Assignment:** Assign exact target filenames, clean `aliases`, `depends_on`, and `next_topic` edges for every node *before* writing begins so cross-links resolve 100% on the first pass.
+3. **Global Notation Lock:** Establish one canonical symbol table for the entire `<topic>` series (e.g., $\mathbf{x} \in \mathbb{R}^d$, $\mathbf{w} \in \mathbb{R}^d$, $b = -\theta$, $\hat{y} \in \{0, 1\}$) so notation never drifts between `topic-01` and `topic-06`.
 
-Confirm before drafting: zero vault duplication, source-verified definitions/equations, consistent symbol definitions, complete running example, valid zero-skip derivation, accurate edge cases & Is vs. Is Not table, 5–6 distinct solved Q&As, acyclic DAG dependencies, and exact fit to `references/note_templates.md`.
+---
+
+### Wave 2 — Primary Knowledge Retrieval ("Chase to Origin")
+For each subtopic in the DAG, retrieve from **Primary Sources** only:
+1. **Formal Problem & Governing Invariant:** Exact problem statement, inputs/outputs, mathematical formulation, and whether the core statement is a *definition*, *theorem*, *modeling assumption*, or *empirical heuristic*.
+2. **Verified Historical Lineage:** Original formulation, independent rediscoveries, formalization vs. popularization, and exact publication year/author/venue (marking uncertain attribution `[UNVERIFIED]`).
+3. **Zero-Skip Mathematical Derivation:** Every algebraic, logical, or probabilistic transition from starting axioms to the governing equation, tracking domain restrictions, equivalence ($\iff$) vs. implication ($\implies$), and dimensional/shape compatibility.
+4. **Algorithmic & Complexity Contract:** Exact time and auxiliary space complexity (with input-size variables explicitly defined) plus deterministic reference logic for Section 5's Python/NumPy verification script.
+
+---
+
+### Wave 3 — Practitioner Wisdom, Edge Cases & Adversarial Stress-Testing
+Query **Practitioner & Benchmark Sources** to stress-test every subtopic beyond textbook idealizations:
+1. **Contrastive Lookalike ("Is vs. Is Not"):** Identify the single closest concept learners confuse with this subtopic and isolate exact differences in mechanism, parameter nature, invariant, and failure mode.
+2. **Four Boundary Regimes:** Determine exact behavior under:
+   - *Zero / Null Regime* ($\to 0$ or empty input)
+   - *Unit / Normalized Regime* ($\to \pm 1$)
+   - *Degenerate / Tie Regime* (equality on boundary, rank deficiency, zero denominator)
+   - *Asymptotic Regime* ($\to \pm\infty$ or large scale)
+3. **Real-World Sharp Edges & Traps:** Collect practitioner failure modes (e.g., numerical overflow/underflow, non-convergence under violated assumptions, hidden hyperparameter sensitivities) to populate Section 7's `> [!caution]` callout and Section 6's adversarial questions.
+
+---
+
+### Wave 4 — Cross-Verification & Pre-Writing Subtopic Dossier
+Before invoking `note_templates.md` to write a subtopic `.md` file, assemble and validate a compact internal dossier containing:
+- [ ] **Identity & Graph Edges:** `id`, exact filename, `aliases`, `depends_on`, `next_topic`, and verified primary source URLs/citations.
+- [ ] **Locked Equations & Symbol Table:** Every equation checked for balanced syntax, valid LaTeX, and 1-to-1 symbol coverage.
+- [ ] **One Named Running Example:** A single concrete numerical/structural example with verified inputs, intermediate values, and outputs to reuse consistently across **Sections 3, 4, and 5**.
+- [ ] **5–6 Distinct Transfer Q&As:** Five to six standalone analytical scenarios (mechanism, quantitative trace, parameter synthesis, boundary stress-test, cross-architecture trade-off) that test *new* transfer inputs rather than repeating the running example.
+- [ ] **Gaps & Unverified Claims Log:** Explicit list of any conflicting claims, paywalled details, or missing empirical bounds discovered during Waves 2–3.

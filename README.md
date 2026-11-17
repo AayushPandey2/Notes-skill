@@ -7,6 +7,7 @@ A modular, token-efficient Obsidian knowledge-engineering agent skill. Scriptori
 - `/scribe-notes <topic>` — Research a topic from primary sources, build an acyclic subtopic DAG, and generate verified interconnected Markdown lessons.
 - `/scribe-expand <topic name>` — Inspect existing vault coverage via the metadata index and incrementally add missing or advanced subtopics.
 - `/scribe-doubt <topic name> <your doubt>` — Answer a question strictly read-only using existing vault notes with `[[Note Title]]` citations.
+- `/scribe-distill <topic>` — Distill a topic's existing vault notes into a 1-page `<topic-slug>-CHEAT-SHEET.md` rapid-revision sheet.
 
 ## Repository Structure
 
@@ -18,6 +19,7 @@ scriptorium/
 ├── references/
 │   ├── research_protocol.md          # Phase 1 deterministic research SOP
 │   ├── note_templates.md             # Authoritative 7-section note template
+│   ├── cheatsheet_template.md        # 5-section 1-page cheat sheet template
 │   └── verification_checklist.md     # Semantic quality rubric
 └── scripts/
     ├── vault_index.py                # Compact JSON metadata & H2 heading indexer

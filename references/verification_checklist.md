@@ -1,10 +1,12 @@
 # Scriptorium Semantic Verification Checklist
 
-Mechanical formatting checks (YAML syntax, mandatory keys, duplicate IDs, raw LaTeX in YAML, inline math spacing, delimiter balance, table pipe safety, placeholder tokens, wikilink/anchor resolution, Section 6 Q&A count, `> [!example]-` callouts, banned `<details>`/scaffolding labels, quoted headings, and Mermaid `$` checks) are enforced automatically by:
+Mechanical formatting checks (YAML syntax, delimiter balance, table pipe safety, placeholder/unresolved template tokens, wikilink/heading/block resolution, near-duplicate tag warnings, and schema-aware checks for `custom`, `builtin_deep`, `builtin_cheatsheet`, `builtin_comparison`, or `generic` notes) are enforced automatically by:
 
 ```bash
-python3 "<skill_dir>/scripts/verify_vault_notes.py" "<vault_path>" --fix
+python3 "<skill_dir>/scripts/verify_vault_notes.py" "<vault_path>" --files <target_files> --fix
 ```
+
+Or with an operational provenance manifest (`--manifest <manifest.json> --fix`) to validate against the selected template hash and pre-generation tag snapshot while leaving unrelated vault notes untouched.
 
 Exit code `0` from `verify_vault_notes.py` is **necessary but not sufficient**. Use the semantic rubric below to audit what Python cannot verify.
 
@@ -33,3 +35,9 @@ Exit code `0` from `verify_vault_notes.py` is **necessary but not sufficient**. 
 - **PASS:** Conceptual explanations are complete without filler; Contrastive "Is vs. Is Not" table compares comparable tasks/assumptions; Mermaid diagram accurately depicts the mechanism; all 5–6 Section 6 questions test conceptual transfer with complete step-by-step callout answers; note does not duplicate an existing vault note.
 - **FAIL:** Superficial summaries, mismatched diagram logic, repetitive Q&As, or concept duplication.
 - **Repair:** Deepen incomplete explanations, align diagram nodes/edges with Section 3 prose, or merge/cross-reference duplicate concepts.
+
+
+## 5. Comparison Notes (`note_type: comparison` & `comparison/*.md`) & `review_log`
+
+- **Comparison Notes:** Verified automatically for YAML integrity, `compared_notes` wikilinks, balanced MathJax, escaped table pipes (`\|`), `> [!abstract] Core Trade-Off Verdict`, and sections `## 1.`–`## 4.` (exempted from deep-note Section 5 code and Section 6 Q&A checks).
+- **Quiz `review_log`:** Deep notes may carry an optional YAML `review_log:` list (`"YYYY-MM-DD | Score: X/N | Weak: ..."`) updated in place by `/scribe-quiz`.
