@@ -3,7 +3,7 @@ name: scriptorium
 description: >-
   Token-efficient Obsidian knowledge-engineering router. Supports /scribe-notes,
   /scribe-expand, /scribe-doubt, /scribe-distill, /scribe-ingest,
-  /scribe-compare, /scribe-quiz, /scribe-dsa, and /scribe-practice.
+  /scribe-compare, and /scribe-quiz.
 ---
 
 # Scriptorium — Progressive-Loading Router
@@ -12,13 +12,15 @@ Identify the active command first, read **only** its section in `references/comm
 
 ## Progressive Loading Policy
 
-| Command | Load | Helpers |
-|---|---|---|
-| `/scribe-doubt` | Only Command A and targeted notes; no research/templates | index fields/extract |
-| `/scribe-quiz` | Only Command G and 1-2 notes | index, review-log patch |
-| `/scribe-distill` | Command D, shared rules, selected Cheat-Sheet | targeted extraction, scoped validation |
-| `/scribe-compare` | Command F, selected Comparison | index, scoped validation |
-| Generation (notes/expand/ingest/dsa/practice) | Matching playbook, gate, routing; selected template/modules; research only as needed | index, scaffold, graph, patch, scoped validation |
+| Command | `pre_gen_gate.md` | `research_protocol.md` | `note_templates.md` | `cheatsheet_template.md` | `comparison_template.md` | `verification_checklist.md` | Python Helpers |
+|---|---|---|---|---|---|---|---|
+| `/scribe-doubt` | **No** | **No** | **No** | **No** | **No** | **No** | `vault_index.py --fields ... --extract` |
+| `/scribe-quiz` | **No** | **No** | **No** | **No** | **No** | **No** | `vault_index.py --fields`, `patch_links.py` |
+| `/scribe-distill` | **No** | **Wave 0 only** | **No** | **Yes** | **No** | **No** | `vault_index.py --extract`, `verify_vault_notes.py` |
+| `/scribe-compare` | **No** | **No** | **No** | **No** | **Yes** | **No** | `vault_index.py --fields`, `verify_vault_notes.py` |
+| `/scribe-ingest` | **Yes** | **No** *(dedup only)* | **Yes** | **No** | **No** | Semantic only | `vault_index.py --discover`, `scaffold_note.py`, `verify_vault_notes.py` |
+| `/scribe-expand` | If new notes | If new content | If new notes | **No** | **No** | Semantic only | `vault_index.py`, `patch_links.py`, `vault_graph.py`, `verify_vault_notes.py` |
+| `/scribe-notes` | **Yes** | Phase 1 | Phase 2 | **No** | **No** | Phase 3 semantic | `vault_index.py --discover`, `scaffold_note.py`, `vault_graph.py`, `verify_vault_notes.py` |
 
 **Vault Security:** Resolve `[PATH_TO_OBSIDIAN_VAULT]` from explicit argument, `SCRIPTORIUM_VAULT_PATH`, or `~/.scriptorium-config.json`; reject `..` traversal and escaping symlinks.
 
@@ -30,30 +32,18 @@ Read **only** the matching `## Command ...` section in `references/command_playb
 - **`/scribe-doubt <topic> <doubt>`** $\to$ `Command A` (read-only; targeted `--fields` + `--extract`)
 - **`/scribe-expand <topic>`** $\to$ `Command B` (exhaustive 5-layer gap audit; `patch_links.py` / `vault_graph.py`)
 - **`/scribe-notes <topic>`** $\to$ `Command C` (Wave 1 full 5-layer DAG $\to$ non-stopping `1..NN` write-and-flush $\to$ batch verify)
-- **`/scribe-distill <topic>`** $\to$ `Command D` (targeted extraction from legacy or readable headings $\to$ `<topic-slug>-CHEAT-SHEET.md`)
+- **`/scribe-distill <topic>`** $\to$ `Command D` (extract `abstract,1,3,7` $\to$ `<topic-slug>-CHEAT-SHEET.md`)
 - **`/scribe-ingest <topic> <pdf|url|notes>`** $\to$ `Command E` (non-destructive source ingestion)
 - **`/scribe-compare <A> vs <B>`** $\to$ `Command F` (`comparison/<slug-a>-vs-<slug-b>.md` + echo in chat)
 - **`/scribe-quiz <topic>`** $\to$ `Command G` (1 question per turn + `patch_links.py --append-review-log`)
 
-## Per-note routing before research
+## Section 5 Domain-to-Language Routing (1–3 Implementations)
 
-For generation commands, run the two-pass [routing contract](references/routing.md)
-after cheap vault discovery and before expensive research. Read only the chosen
-entry in [routes.json](references/routes.json), its template, and needed shared
-modules via [note_templates.md](references/note_templates.md). Explicit commands
-lock their documented modes; explicit/custom vault template selection is preserved.
-The optional `scripts/route_request.py` helper handles cheap command/source/purpose
-resolution; the agent supplies independent purpose, math and language signals for
-each bounded outline item. It is a planning tool, not a research or note generator.
-
-- `/scribe-dsa <cpp|python> <problem>` -> `Command H`, DSA.
-- `/scribe-practice <topic-or-note>` -> `Command I`, saved Practice set.
-- Bare article/video URLs -> Summary; identifiable paper URLs -> Paper-Breakdown.
-- Revision, lookup, choice, one idea and deep understanding use their distinct routes.
-
-Keep the existing five-layer coverage audit and complete the locked syllabus queue.
-Size that queue to the requested scope: a single mechanism can stay one note;
-broad topics receive full coverage without padding or unrelated tangents. Each
-entry can use a different route and math level. Mathematics is conditional; technical
-depth, evidence, invariants and purposeful domain stacks are retained. `routing.md`
-is the canonical language matrix; explicit user language takes precedence.
+| Topic Domain | Selected Implementations (Foundational $\to$ Production) |
+|---|---|
+| **ML / Deep Learning** | 1. `Python + NumPy` (from-scratch) · 2. `Python + scikit-learn` · 3. `Python + PyTorch` *(when applicable)* |
+| **DSA** | 1. `C++20` · 2. `Python 3` · 3. *(Optional)* `Rust` or `Java` |
+| **Systems / OS / Concurrency** | 1. `C17` or `Rust` · 2. `Python 3` (harness/simulation) |
+| **Databases / Data Eng** | 1. `SQL` (PostgreSQL / DuckDB) · 2. `Python (pandas / polars)` |
+| **Web / Distributed / APIs** | 1. `TypeScript / Node.js` or `Go` · 2. `Python 3` |
+| **Pure Math / Non-Code** | 1. `Python + SymPy / NumPy` *(or proof/counterexample check if inapplicable)* |

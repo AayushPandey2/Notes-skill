@@ -22,10 +22,7 @@ Governs Phase 1 synthesis before writing any `.md` note.
    - `/scribe-distill`: extract equations, symbols, and traps via `--extract` without web search unless a core formula is missing.
 
 ### Wave 1 — Exhaustive Five-Layer DAG Scoping & Notation Lock
-Evaluate all five layers within the requested scope; do not invent a proof, variant,
-history or independent note when it does not apply. Complete broad coverage while
-keeping cohesive mechanisms together. The selected route governs each note's form.
-1. **Five-Layer Curriculum Completeness Mandate:** Before writing any note, decompose `<topic>` into a **complete, end-to-end acyclic DAG** (`topic-01` ... `topic-NN`, sized to requested scope: typically 8-15 for a standard topic or 12-20+ for a broad pillar domain; a narrow cohesive mechanism may need one note) covering all 5 mastery strata:
+1. **Five-Layer Curriculum Completeness Mandate:** Before writing any note, decompose `<topic>` into a **complete, end-to-end acyclic DAG** (`topic-01` ... `topic-NN`, typically **8–15** atomic subtopics for a standard topic or **12–20+** for a broad pillar domain—never capped at 3–4) covering all 5 mastery strata:
    - **Layer 1 — Foundations & Axioms:** Historical bottleneck, core mathematical/logical primitives, representations, baseline models.
    - **Layer 2 — Core Mechanisms & Algorithms:** Forward/inference mechanics, decision boundaries, learning/update rules, exact algorithms.
    - **Layer 3 — Formal Theory & Proofs:** Convergence theorems, existence/uniqueness proofs, complexity bounds, optimality conditions.
@@ -37,24 +34,24 @@ keeping cohesive mechanisms together. The selected route governs each note's for
    - **Write `00-MOC-<topic-slug>.md` FIRST (`references/syllabus_template.md` / `scaffold_note.py --syllabus`):** Set `scope_locked: true`, populate `allowed_subtopics` (the exact allowlist) and `excluded_adjacent_topics` (at least 3–5 tempting tangents/prerequisites that must NOT become files), and draw the detailed 5-layer Mermaid learning-flow graph.
    - **Tangential Concept Rule:** Never create a note outside `allowed_subtopics`. If a tangent arises during Phase 2, link it if it exists in the vault or give a 2-sentence inline recap as plain text.
    - **`/scribe-expand` Parity:** Apply this same Five-Layer Coverage Audit against `vault_index.py` output; update `allowed_subtopics` in `00-MOC-<topic-slug>.md` *first* for all missing nodes across Layers 1–5, then generate every missing subtopic in that single run.
-3. **Route and notation lock:** Resolve each note via routing.md before expensive retrieval. Lock notation only for mathematical modules; use consistent terms and interfaces for level 0. Keep one cohesive mechanism together and select API-Table for parameter-dense lookup.
+3. **Global Notation Lock:** Lock one canonical symbol table across the entire series so notation never drifts.
 
 ### Wave 2 — Primary Knowledge Retrieval
 For each subtopic, retrieve from primary sources only:
 1. Formal problem, I/O, and invariant type (*definition*, *theorem*, *assumption*, or *heuristic*).
 2. Verified historical lineage (discovery vs. formalization vs. popularization, author/year/venue).
-3. Math gate: level 0 uses logic/evidence; level 1 adds symbols/formula/worked use; level 2 adds a justified derivation with domain guards, equivalence versus implication and shape/unit checks.
-4. Complexity contract (time/auxiliary space with input-size variable defined) and the selected domain/language reference logic where implementation matters.
+3. Zero-skip derivation (every step, domain guard, $\iff$ vs. $\implies$, shape/unit compatibility).
+4. Complexity contract (time/auxiliary space with input-size variable defined) and deterministic Python reference logic.
 
 ### Wave 3 — Practitioner Wisdom & Stress-Testing
 1. **Contrastive lookalike:** Closest confused concept + exact differences in mechanism, parameters, invariant, and failure mode.
-2. **Applicable boundary regimes only:** Zero/null ($\to 0$/empty), unit/normalized ($\to \pm 1$), degenerate/tie (boundary equality, rank deficiency, zero denominator), asymptotic ($\to \pm\infty$).
-3. **Sharp edges:** Overflow/underflow, violated assumptions, hyperparameter sensitivities for Limitations and transfer Q&A.
+2. **Four boundary regimes:** Zero/null ($\to 0$/empty), unit/normalized ($\to \pm 1$), degenerate/tie (boundary equality, rank deficiency, zero denominator), asymptotic ($\to \pm\infty$).
+3. **Sharp edges:** Overflow/underflow, violated assumptions, hyperparameter sensitivities for S7 traps and S6 Q&As.
 
 ### Wave 4 — Pre-Writing Subtopic Dossier
 Lock per subtopic before drafting:
 - [ ] Identity, filenames, `aliases`, `depends_on`, `next_topic`, verified primary URLs.
-- [ ] For math levels 1/2: balanced LaTeX and full symbol coverage; omit ornamental math at level 0.
-- [ ] **One** named running example reused consistently across mechanism, Details and verification.
-- [ ] Deep routes: 5-7 standalone transfer Q&As (mechanism, trace, synthesis, boundary, trade-off) using *new* inputs.
+- [ ] Balanced LaTeX equations + 1-to-1 symbol coverage.
+- [ ] **One** named running example reused consistently across Sections 3–5.
+- [ ] 5–6 standalone transfer Q&As (mechanism, trace, synthesis, boundary, trade-off) using *new* inputs.
 - [ ] Explicit `[UNVERIFIED]` / gap log.
