@@ -32,8 +32,9 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+from note_layout import ROUTES
 
-INDEX_VERSION = 2
+INDEX_VERSION = 3
 
 EXCLUDED_DIRS = {".git", ".trash", ".obsidian", "attachments", "scratchpad", "node_modules", "__pycache__"}
 COMMON_TEMPLATE_DIRS = {"templates", "_templates", "meta/templates", "00 - templates", "00-templates"}
@@ -476,7 +477,9 @@ def build_or_load_index(
             "base_domain": _as_str_or_none(meta.get("base_domain")),
             "master_topic": _as_str_or_none(meta.get("master_topic")),
             "topic": _as_str_or_none(meta.get("topic")),
-            "note_type": _as_str_or_none(meta.get("note_type")),
+            "note_type": _as_str_or_none(meta.get("note_type")) or (
+                meta["template"] if meta.get("template") in ROUTES and meta.get("type") == meta["template"] else None
+            ),
             "depends_on": _as_str_list(meta.get("depends_on")),
             "next_topic": _as_str_or_none(meta.get("next_topic")),
             "status": _as_str_or_none(meta.get("status")),

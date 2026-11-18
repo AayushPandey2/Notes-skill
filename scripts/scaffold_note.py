@@ -20,15 +20,17 @@ import sys
 sys.dont_write_bytecode = True
 
 import argparse
-import os
 import re
+from datetime import date
 from pathlib import Path
+import yaml
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
 from vault_index import is_within_vault, resolve_vault_root
+from note_layout import ROUTES, body_skeleton
 
 
 def _slugify(text: str) -> str:
@@ -369,11 +371,56 @@ def render_syllabus_skeleton(
     return "\n".join(lines)
 
 
+def render_routed_note(args: argparse.Namespace, note_id: str) -> str:
+    topic = args.topic
+    route = args.template
+    tags = [t.strip().lstrip("#") for t in args.tags if t.strip()]
+    if not tags:
+        route_tag = "cheatsheet" if route == "cheat-sheet" else route
+        tags = [_slugify(args.base_domain), _slugify(args.master_topic), _slugify(topic), route_tag]
+    metadata = {
+        "id": note_id,
+        "title": args.title,
+        "aliases": list(dict.fromkeys([args.title, *filter(None, map(str.strip, args.aliases))])),
+        "type": route,
+        "area": args.area or args.base_domain,
+        "base_domain": args.base_domain,
+        "master_topic": args.master_topic,
+        "topic": topic,
+        "template": route,
+        "math_level": args.math_level,
+        "tags": list(dict.fromkeys(tags)),
+        "created": args.created,
+        "mastery": 0,
+        "revisited_date": [],
+    }
+    if route in {"cheat-sheet", "comparison"}:
+        metadata["note_type"] = "cheatsheet" if route == "cheat-sheet" else route
+    if route == "dsa" or args.language:
+        metadata["language"] = args.language or "none"
+    if args.compared_notes:
+        metadata["compared_notes"] = [_format_wikilink(n) for n in args.compared_notes]
+    if args.depends_on:
+        metadata["depends_on"] = [_format_wikilink(n) for n in args.depends_on]
+    if args.next_topic:
+        metadata["next_topic"] = _format_wikilink(args.next_topic)
+    frontmatter = yaml.safe_dump(metadata, allow_unicode=True, sort_keys=False)
+    body = body_skeleton(route, args.math_level, args.number, args.title, narrow=args.narrow_practice)
+    return f"---\n{frontmatter}---\n\n{body}"
+
+
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Scaffold a 7-section Scriptorium deep note or syllabus MOC.")
+    parser = argparse.ArgumentParser(description="Scaffold a routed note, legacy deep note, or syllabus MOC.")
     parser.add_argument("vault_path", nargs="?", help="Path to Obsidian vault.")
     parser.add_argument("--output", help="Vault-relative output path (prints to stdout if omitted).")
     parser.add_argument("--syllabus", action="store_true", help="Scaffold a 00-MOC-<topic>.md syllabus boundary note.")
+    parser.add_argument("--template", choices=ROUTES, help="Built-in route; omit for the legacy deep-note layout.")
+    parser.add_argument("--math-level", type=int, choices=(0, 1, 2), default=0)
+    parser.add_argument("--language", help="Verification language, required for routed DSA notes.")
+    parser.add_argument("--area", help="Area (defaults to base domain).")
+    parser.add_argument("--created", type=date.fromisoformat, default=date.today())
+    parser.add_argument("--compared-notes", nargs="*", default=[])
+    parser.add_argument("--narrow-practice", action="store_true", help="Use the shorter practice tier ranges.")
     parser.add_argument("--allowed-subtopics", nargs="*", default=[], help="Allowlisted subtopic filenames for --syllabus.")
     parser.add_argument("--excluded-topics", nargs="*", default=[], help="Out-of-scope adjacent topics for --syllabus.")
     parser.add_argument("--id", dest="note_id", help="Note YAML id (defaults to <topic-slug>-<number>).")
@@ -390,6 +437,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--dry-run", action="store_true", help="Print rendered skeleton without writing.")
     args = parser.parse_args(argv)
 
+    if args.template and (args.syllabus or args.overwrite):
+        parser.error("--template cannot be used with --syllabus or --overwrite")
+    if args.template == "dsa" and args.language in (None, "none"):
+        parser.error("--language is required for --template dsa")
+
     if args.syllabus:
         note_id = args.note_id or f"moc-{_slugify(args.topic)}"
         content = render_syllabus_skeleton(
@@ -401,6 +453,11 @@ def main(argv: list[str] | None = None) -> int:
             excluded_topics=args.excluded_topics,
             tags=args.tags,
         )
+    elif args.template:
+        if not args.title or "\n" in args.title or "\r" in args.title:
+            parser.error("--title must be nonempty and single-line for routed notes")
+        note_id = args.note_id or f"{_slugify(args.topic)}-{args.number}"
+        content = render_routed_note(args, note_id)
     else:
         if not args.title:
             print("ERROR: --title is required unless --syllabus is set.", file=sys.stderr)
@@ -420,6 +477,8 @@ def main(argv: list[str] | None = None) -> int:
         )
 
     if args.dry_run or not args.output:
+        if hasattr(sys.stdout, "reconfigure"):
+            sys.stdout.reconfigure(encoding="utf-8")
         print(content, end="")
         return 0
 
@@ -430,12 +489,11 @@ def main(argv: list[str] | None = None) -> int:
         out_path = Path(args.output)
         if not out_path.is_absolute():
             out_path = vault_root / out_path
-        out_path.parent.mkdir(parents=True, exist_ok=True)
         if not is_within_vault(vault_root, out_path):
             raise ValueError(f"Output path escapes vault root: {args.output}")
-        if out_path.exists() and not args.overwrite:
-            raise FileExistsError(f"Refusing to overwrite existing note without --overwrite: {args.output}")
-        out_path.write_text(content, encoding="utf-8")
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        with out_path.open("w" if args.overwrite else "x", encoding="utf-8") as output:
+            output.write(content)
         print(f"Scaffolded {out_path.relative_to(vault_root).as_posix()}")
     except Exception as exc:
         print(f"ERROR: {exc}", file=sys.stderr)

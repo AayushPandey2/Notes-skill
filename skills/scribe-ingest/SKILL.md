@@ -5,4 +5,4 @@ description: "Ingest a PDF, URL, or raw notes into a new non-destructive Obsidia
 
 # `/scribe-ingest`
 
-Resolve the Scriptorium base directory (`../scriptorium/`, `~/.gemini/config/skills/scriptorium/`, `~/.claude/skills/scriptorium/`, or `~/.codex/skills/scriptorium/`), read **only** `## Command E` in `references/command_playbooks.md`, and execute it for `$ARGUMENTS`.
+Resolve the Scriptorium base directory (`../scriptorium/`, `~/.gemini/config/skills/scriptorium/`, `~/.claude/skills/scriptorium/`, or `~/.codex/skills/scriptorium/`). Read its `router.md` and dispatch `/scribe-ingest $ARGUMENTS`. Use the matching command playbook and the per-note loading rules.

@@ -25,6 +25,7 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+from note_layout import ROUTES
 
 MANDATORY_TOPIC_KEYS = ("id", "title", "aliases", "base_domain", "master_topic", "topic", "tags")
 
@@ -471,6 +472,8 @@ def _resolve_note_schema(
             return ttype
 
     if y_obj:
+        if y_obj.get("template") in ROUTES:
+            return "routed"
         nt = str(y_obj.get("note_type", "")).strip().lower()
         if nt == "cheatsheet":
             return "builtin_cheatsheet"
@@ -533,7 +536,8 @@ def validate_file(
 
     # Enforce locked syllabus allowlist if a 00-MOC syllabus governs this folder
     syllabi = index.get("syllabi") or {}
-    if syllabi and schema not in {"builtin_syllabus", "builtin_cheatsheet", "builtin_comparison"}:
+    specialized = y_obj and y_obj.get("template") in ("practice", "cheat-sheet", "comparison")
+    if syllabi and not specialized and schema not in {"builtin_syllabus", "builtin_cheatsheet", "builtin_comparison"}:
         if not md_file.name.upper().startswith("00-MOC-"):
             cur_dir = md_file.parent
             matched_contract = None
@@ -562,6 +566,14 @@ def validate_file(
                             ),
                         }
                     )
+    if schema == "routed":
+        from validate_note import validate_text
+
+        findings.extend(
+            {"file": rel_file, "line": line, "level": "ERROR", "code": "ROUTED_NOTE_INVALID", "message": message}
+            for line, message in validate_text(text, vault=vault_root, target=md_file, index=index)
+        )
+        return findings
     is_builtin = schema.startswith("builtin_")
 
     if y_obj is not None:
@@ -1126,6 +1138,8 @@ def main(argv: list[str] | None = None) -> int:
             yl, _ = _split_frontmatter_lines(lines)
             y_obj = yaml.safe_load("\n".join(yl)) if yl else None
             schema = _resolve_note_schema(rel, y_obj if isinstance(y_obj, dict) else None, manifest)
+            if schema == "routed":
+                continue  # Routed notes are linted in draft and published without automatic repair.
             repairs.extend(
                 apply_mechanical_fixes(
                     md_file,

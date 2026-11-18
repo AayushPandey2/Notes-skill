@@ -1,6 +1,6 @@
 # Scriptorium Research Protocol (Waves 0–4)
 
-Governs Phase 1 synthesis before writing any `.md` note.
+Follow `router.md` before Waves 2–4. Select evidence and rigor per note and reuse the same source dossier across siblings.
 
 ## §0. Wave Routing
 - **`/scribe-notes`:** Wave 0 $\to$ 1 $\to$ 2 $\to$ 3 $\to$ 4 (full subtopic tree).
@@ -31,7 +31,7 @@ Governs Phase 1 synthesis before writing any `.md` note.
 2. **Pre-Execution Coverage Audit & Syllabus Lock (Before Leaving Wave 1):**
    - Lock the complete numbered manifest (`01` through `NN`) with exact filenames, `depends_on`, and `next_topic` edges.
    - Self-check: *"If a learner masters ONLY these `NN` subtopics, would any foundational theorem, standard algorithm, major variant, or classic failure mode still be missing?"* If **yes**, add those missing nodes **immediately in Wave 1**—never defer them to future `/scribe-expand` runs.
-   - **Write `00-MOC-<topic-slug>.md` FIRST (`references/syllabus_template.md` / `scaffold_note.py --syllabus`):** Set `scope_locked: true`, populate `allowed_subtopics` (the exact allowlist) and `excluded_adjacent_topics` (at least 3–5 tempting tangents/prerequisites that must NOT become files), and draw the detailed 5-layer Mermaid learning-flow graph.
+   - **Persist the per-note plan, then write `00-MOC-<topic-slug>.md`** with the curriculum allowlist, exclusions, and graph. The routed plan governs the auxiliary practice set.
    - **Tangential Concept Rule:** Never create a note outside `allowed_subtopics`. If a tangent arises during Phase 2, link it if it exists in the vault or give a 2-sentence inline recap as plain text.
    - **`/scribe-expand` Parity:** Apply this same Five-Layer Coverage Audit against `vault_index.py` output; update `allowed_subtopics` in `00-MOC-<topic-slug>.md` *first* for all missing nodes across Layers 1–5, then generate every missing subtopic in that single run.
 3. **Global Notation Lock:** Lock one canonical symbol table across the entire series so notation never drifts.
@@ -40,8 +40,8 @@ Governs Phase 1 synthesis before writing any `.md` note.
 For each subtopic, retrieve from primary sources only:
 1. Formal problem, I/O, and invariant type (*definition*, *theorem*, *assumption*, or *heuristic*).
 2. Verified historical lineage (discovery vs. formalization vs. popularization, author/year/venue).
-3. Zero-skip derivation (every step, domain guard, $\iff$ vs. $\implies$, shape/unit compatibility).
-4. Complexity contract (time/auxiliary space with input-size variable defined) and deterministic Python reference logic.
+3. Apply the planned math level, with zero-skip derivations at level 2.
+4. Use the planned verification stack. For executable routes specify input sizes, time and space bounds, and the shared test contract.
 
 ### Wave 3 — Practitioner Wisdom & Stress-Testing
 1. **Contrastive lookalike:** Closest confused concept + exact differences in mechanism, parameters, invariant, and failure mode.
@@ -53,5 +53,5 @@ Lock per subtopic before drafting:
 - [ ] Identity, filenames, `aliases`, `depends_on`, `next_topic`, verified primary URLs.
 - [ ] Balanced LaTeX equations + 1-to-1 symbol coverage.
 - [ ] **One** named running example reused consistently across Sections 3–5.
-- [ ] 5–6 standalone transfer Q&As (mechanism, trace, synthesis, boundary, trade-off) using *new* inputs.
+- [ ] Transfer questions when required by the selected note specification.
 - [ ] Explicit `[UNVERIFIED]` / gap log.
