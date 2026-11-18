@@ -27,6 +27,18 @@ cd scriptorium
 ```
 If installing as an agent skill, place or symlink the `scriptorium/` folder inside your agent's skills directory (for example, `~/.gemini/config/skills/scriptorium` or your workspace skill path).
 
+To expose each `/scribe-*` command (`/scribe-notes`, `/scribe-expand`, `/scribe-doubt`, `/scribe-distill`, `/scribe-ingest`, `/scribe-compare`, `/scribe-quiz`, `/scribe-dsa`, `/scribe-practice`) as its own `/` autocomplete entry in Antigravity globally, add `~/.gemini/config/skills.json`:
+
+```json
+{
+  "entries": [
+    {
+      "path": "~/.gemini/config/skills/scriptorium/skills"
+    }
+  ]
+}
+```
+
 ### 3. Configure Your Obsidian Vault Path
 Scriptorium resolves `[PATH_TO_OBSIDIAN_VAULT]` in this order:
 1. Explicit CLI argument passed to a script (`"<vault_path>"`)
