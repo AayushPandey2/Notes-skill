@@ -1,6 +1,6 @@
 ---
 name: scribe-practice
-description: "Generate a saved active-recall Practice set from actual topic notes. Usage: /scribe-practice <arguments>"
+description: "Generate a saved active-recall Practice set from actual topic notes. Usage: /scribe-practice arguments"
 ---
 
 # `/scribe-practice`

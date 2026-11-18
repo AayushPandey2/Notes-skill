@@ -1,6 +1,6 @@
 ---
 name: scribe-notes
-description: "Research a topic from primary sources and generate interconnected content-aware Obsidian notes. Usage: /scribe-notes <topic>"
+description: "Research a topic from primary sources and generate interconnected content-aware Obsidian notes. Usage: /scribe-notes topic"
 ---
 
 # `/scribe-notes`

@@ -1,6 +1,6 @@
 ---
 name: scribe-quiz
-description: "Run an interactive, one-question-at-a-time active-recall quiz from existing Obsidian notes and log weak spots. Usage: /scribe-quiz <topic>"
+description: "Run an interactive, one-question-at-a-time active-recall quiz from existing Obsidian notes and log weak spots. Usage: /scribe-quiz topic"
 ---
 
 # `/scribe-quiz`

@@ -1,6 +1,6 @@
 ---
 name: scribe-expand
-description: "Audit existing Obsidian vault coverage via index and incrementally expand missing or advanced subtopics. Usage: /scribe-expand <topic>"
+description: "Audit existing Obsidian vault coverage via index and incrementally expand missing or advanced subtopics. Usage: /scribe-expand topic"
 ---
 
 # `/scribe-expand`

@@ -1,6 +1,6 @@
 ---
 name: scribe-dsa
-description: "Study a programming problem in C++ or Python. Usage: /scribe-dsa <arguments>"
+description: "Study a programming problem in C++ or Python. Usage: /scribe-dsa arguments"
 ---
 
 # `/scribe-dsa`

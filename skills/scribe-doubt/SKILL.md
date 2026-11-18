@@ -1,6 +1,6 @@
 ---
 name: scribe-doubt
-description: "Answer a question strictly read-only from existing Obsidian vault notes with [[Note Title]] citations. Usage: /scribe-doubt <topic> <doubt>"
+description: "Answer a question strictly read-only from existing Obsidian vault notes with [[Note Title]] citations. Usage: /scribe-doubt topic doubt"
 ---
 
 # `/scribe-doubt`

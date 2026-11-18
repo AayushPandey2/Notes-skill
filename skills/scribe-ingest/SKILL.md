@@ -1,6 +1,6 @@
 ---
 name: scribe-ingest
-description: "Ingest a PDF, URL, or raw notes into a new non-destructive Obsidian note inside <topic>. Usage: /scribe-ingest <topic> <pdf|url|notes>"
+description: "Ingest a PDF, URL, or raw notes into a new non-destructive Obsidian note inside topic. Usage: /scribe-ingest topic pdf|url|notes"
 ---
 
 # `/scribe-ingest`

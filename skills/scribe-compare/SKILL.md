@@ -1,6 +1,6 @@
 ---
 name: scribe-compare
-description: "Synthesize a trade-off matrix between two existing Obsidian notes into comparison/<a-vs-b>.md and echo it in chat. Usage: /scribe-compare <A> vs <B>"
+description: "Synthesize a trade-off matrix between two existing Obsidian notes into comparison/a-vs-b.md and echo it in chat. Usage: /scribe-compare A vs B"
 ---
 
 # `/scribe-compare`

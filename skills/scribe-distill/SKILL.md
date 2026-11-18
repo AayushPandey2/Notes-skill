@@ -1,6 +1,6 @@
 ---
 name: scribe-distill
-description: "Compress a topic's existing Obsidian notes into a 1-page <topic-slug>-CHEAT-SHEET.md. Usage: /scribe-distill <topic>"
+description: "Compress a topic's existing Obsidian notes into a 1-page topic-slug-CHEAT-SHEET.md. Usage: /scribe-distill topic"
 ---
 
 # `/scribe-distill`
