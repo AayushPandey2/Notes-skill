@@ -6,6 +6,16 @@
 - Use `[[Exact Filename|Title]]` for existing notes or siblings in the active plan. Disambiguate basenames with a vault-relative path. Use plain text for future concepts (`(pending note)` in atomic relationships). Transclude existing atomic notes with `![[Canonical Title]]`.
 - Escape every literal table pipe, even inside code or wiki aliases, as `\|`. Use native Obsidian `$...$` and `$$...$$` and keep code out of math. Use `flowchart TD` or `sequenceDiagram`, double-quote flowchart node labels, and use Unicode instead of LaTeX. Follow a diagram with 2–3 sentences tracing the mechanism.
 - For verification, define one shared contract with the running example and expected result, a boundary case, and an invalid-input guard. Use 1–3 materially distinct implementations with explicit assertions, runtime/version/dependencies and execution status. Log actual observations separately from expectations. Prefer a manual check if executable code adds no evidence.
+- **Centralized Output Directories:** Save all practice sets across all topics into the centralized `Practice Sets/` directory, all atomic notes into the centralized `Atomic Notes/` directory, and all cheatsheets into the centralized `Cheatsheets/` directory (named with clear topic/subtopic identifiers such as `<topic-slug>-CHEAT-SHEET.md` or `<topic-slug>-<subtopic-slug>-CHEAT-SHEET.md`), all located at the same sibling directory level as the `<subtopic>/` folders.
+
+## Humanization & Cohesion Pass (Mandatory Before Finalizing Any Note)
+
+Before validating or publishing any generated note, run a dedicated **Humanization & Cohesion Pass** enforcing these four authoring rules:
+
+- **Conversational yet rigorous tone:** Write like an experienced student or engineer explaining concepts clearly to their future self—direct, intuitive, and insightful rather than encyclopedic or robotic.
+- **Logical narrative transitions:** Connect sections and concepts naturally—explain *why* one concept, constraint, or derivation step leads to the next, rather than dropping isolated blocks of bullet points.
+- **Eliminate AI clichés:** Ban robotic filler phrases (`"In conclusion,"`, `"It is important to note,"`, `"Delving into,"`, `"Crucial aspect,"`, `"Let's explore"`, `"At its core,"`, `"Serves as a testament"`).
+- **Synthesize, don't paste:** Rephrase retrieved web/source material into digestible mental models, intuitive analogies, and concrete examples rather than dumping raw definitions or copy-pasted prose.
 
 | Domain | Default verification choices |
 |---|---|

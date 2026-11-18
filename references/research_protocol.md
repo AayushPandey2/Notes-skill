@@ -3,9 +3,11 @@
 Follow `router.md` before Waves 2–4. Select evidence and rigor per note and reuse the same source dossier across siblings.
 
 ## §0. Wave Routing
-- **`/scribe-notes`:** Wave 0 $\to$ 1 $\to$ 2 $\to$ 3 $\to$ 4 (full subtopic tree).
-- **`/scribe-expand`:** Wave 0 (gap audit) $\to$ Waves 1–4 for missing/expansion nodes only.
+- **`/scribe-notes`:** Wave 0 $\to$ 1 $\to$ 2 $\to$ 3 $\to$ 4 (full subtopic tree + mandatory Humanization & Cohesion Pass).
+- **`/scribe-expand`:** Wave 0 (gap audit) $\to$ Waves 1–4 for missing/expansion nodes only (+ mandatory Humanization & Cohesion Pass).
 - **`/scribe-distill`:** Wave 0 + `--extract` from vault notes only (skip Waves 2–3 unless `[UNVERIFIED]` gaps exist).
+- **`/scribe-atomic-notes <topic name>`:** Bypass Waves 1–4 completely; execute a single, direct web search/fetch for `<topic name>`, populate `templates/atomic.md` with the mandatory Humanization & Cohesion Pass, and save to the centralized sibling `Atomic Notes/` folder.
+- **`/scribe-classnotes <topic name>`:** Bypass Waves 1–4 deep research completely; decompose `<topic name>` into a multi-subtopic DAG like `/scribe-notes`, gather core information via fast, direct web searches/fetches only, default strictly to `templates/classnotes.md` (banning `deepstudy-coding` and `deepstudy-general`), minimize math (`math_level: 0` unless inherently math/physics/quantitative engineering), and apply the mandatory Humanization & Cohesion Pass.
 
 ## §1. Source Discipline (Non-Negotiable)
 - **Chase to origin:** Cite primary sources (foundational papers, textbooks, RFCs, official docs, source repos) for definitions, proofs, and equations—never secondary blogs/listicles/AI summaries.

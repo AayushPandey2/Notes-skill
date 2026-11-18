@@ -32,6 +32,10 @@ def cli(script, *args, code=0):
     ("Solve Two Sum in C++", "dsa", "cpp"),
     ("/scribe-practice CNN", "practice", None),
     ("Create a practice set for my CNN notes", "practice", None),
+    ("/scribe-atomic-notes Residual Connection", "atomic", None),
+    ("scribe-atomic-notes Residual Connection", "atomic", None),
+    ("/scribe-classnotes Operating Systems", None, None),
+    ("Use classnotes template for Operating Systems", "classnotes", None),
     ("https://www.youtube.com/watch?v=example", "summary", None),
     ("Summarize this paper https://arxiv.org/abs/1706.03762", "summary", None),
     ("https://arxiv.org/abs/1706.03762", "paper-breakdown", None),
@@ -55,6 +59,8 @@ def test_request_precedence(request_text, template, language):
 def test_command_usage_and_read_only():
     cli("plan_notes", "inspect", "/scribe-dsa invalid", code=2)
     cli("plan_notes", "inspect", "/scribe-practice", code=2)
+    cli("plan_notes", "inspect", "/scribe-atomic-notes", code=2)
+    cli("plan_notes", "inspect", "/scribe-classnotes", code=2)
     for command in ("doubt", "quiz"):
         assert planner.inspect_request(f"/scribe-{command} CNN")["mode"] == "existing-notes"
 
@@ -167,7 +173,7 @@ def test_cnn_publication_and_interrupted_retry(tmp_path):
         ("deepstudy-coding", 2, "01 - Convolution Operation & Kernels.md"),
         ("deepstudy-general", 0, "02 - History of LeNet to ResNet.md"),
         ("api-table", 1, "03 - PyTorch nn.Conv2d Parameters.md"),
-        ("practice", 2, "Practice Set/CNN - Practice Test.md"),
+        ("practice", 2, "Practice Sets/CNN - Practice Test.md"),
     ]
     assert plan["plan"][0]["verification_stack"] == ["Python + NumPy", "Python + PyTorch"]
     assert not (vault / "CNN").exists()
@@ -191,7 +197,7 @@ def test_cnn_publication_and_interrupted_retry(tmp_path):
         draft.write_text(content, encoding="utf-8")
         assert "Errors: 0" in cli("validate_note", draft)
         assert "published" in cli("plan_notes", "publish", vault, plan_id, item["id"], draft)
-        path = vault / "CNN" / item["output_path"]
+        path = (vault / item["output_path"]) if item["template"] in {"practice", "atomic"} else (vault / "CNN" / item["output_path"])
         saved[path] = path.read_bytes()
     assert set(yaml.safe_load(cli("plan_notes", "status", vault, plan_id))["status"].values()) == {"complete"}
     assert "already complete" in cli("plan_notes", "publish", vault, plan_id, "01", tmp_path / "01.md")
@@ -200,19 +206,55 @@ def test_cnn_publication_and_interrupted_retry(tmp_path):
     graph = json.loads(cli("vault_graph", vault, "--topic", "CNN", "--format", "json", "--check-cycles"))
     assert graph["summary"]["broken_link_count"] == 0
     for item in plan["plan"]:
-        assert graph["nodes"][f"CNN/{item['output_path']}"]["note_type"] == item["template"]
+        rel = item["output_path"] if item["template"] in {"practice", "atomic", "cheat-sheet"} else f"CNN/{item['output_path']}"
+        assert graph["nodes"][rel]["note_type"] == item["template"]
 
 
 def test_destinations_and_collision_preflight(tmp_path):
     (tmp_path / "CNN").mkdir()
     practice = planner.build_plan(tmp_path, "/scribe-practice CNN", "CNN", [_outline("CNN")])
-    assert [item["output_path"] for item in practice["plan"]] == ["Practice Set/CNN - Practice.md"]
+    assert [item["output_path"] for item in practice["plan"]] == ["Practice Sets/CNN - Practice.md"]
+    assert planner._targets(tmp_path, practice)["01"] == tmp_path / "Practice Sets" / "CNN - Practice.md"
     with pytest.raises(ValueError, match="existing topic"):
         planner.build_plan(tmp_path, "/scribe-practice CNN", "missing", [_outline("CNN")])
+    atomic = planner.build_plan(tmp_path, "/scribe-atomic-notes Residual Connection", "CNN", [_outline("Residual Connection")])
+    assert [item["output_path"] for item in atomic["plan"]] == ["Atomic Notes/Residual Connection.md"]
+    assert planner._targets(tmp_path, atomic)["01"] == tmp_path / "Atomic Notes" / "Residual Connection.md"
     compare = planner.build_plan(tmp_path, "/scribe-compare Adam vs SGD", ".", [_outline("Adam vs SGD")])
     assert compare["plan"][0]["output_path"] == "comparison/adam-vs-sgd.md"
     distill = planner.build_plan(tmp_path, "/scribe-distill CNN", "CNN", [_outline("CNN")])
-    assert distill["plan"][0]["output_path"] == "cnn-CHEAT-SHEET.md"
+    assert [item["output_path"] for item in distill["plan"]] == ["Cheatsheets/cnn-CHEAT-SHEET.md"]
+    assert planner._targets(tmp_path, distill)["01"] == tmp_path / "Cheatsheets" / "cnn-CHEAT-SHEET.md"
+    cnn_sub = planner.build_plan(tmp_path, "Create a cheat sheet on Pooling", "CNN", [_outline("Pooling", "revise")])
+    rnn_sub = planner.build_plan(tmp_path, "Create a cheat sheet on Pooling", "RNN", [_outline("Pooling", "revise")])
+    assert [item["output_path"] for item in cnn_sub["plan"]] == ["Cheatsheets/cnn-pooling-CHEAT-SHEET.md"]
+    assert [item["output_path"] for item in rnn_sub["plan"]] == ["Cheatsheets/rnn-pooling-CHEAT-SHEET.md"]
+    nested = planner.build_plan(tmp_path, "/scribe-distill CNN", "ML/CNN", [_outline("CNN")])
+    assert planner._targets(tmp_path, nested)["01"] == tmp_path / "ML" / "Cheatsheets" / "cnn-CHEAT-SHEET.md"
+    cn_plan = planner.build_plan(
+        tmp_path,
+        "/scribe-classnotes Operating Systems",
+        "Operating Systems",
+        [
+            {"title": "Process Scheduling", "purpose": "explain", "impl_weight": "low", "density": "cohesive",
+             "routing_reason": "Explain process scheduling in classnotes format."},
+            {"title": "CPU Queues Code", "purpose": "implement", "impl_weight": "high", "density": "cohesive",
+             "routing_reason": "Trace CPU queue scheduling in classnotes format."},
+            {"title": "Scheduling Cheat Sheet", "purpose": "revise", "impl_weight": "low", "density": "cohesive",
+             "routing_reason": "Allow auxiliary cheat-sheet."},
+        ],
+    )
+    assert [(n["template"], n["math_level"], n["source_profile"], n["output_path"]) for n in cn_plan["plan"]] == [
+        ("classnotes", 0, "fast-web-fetch", "01 - Process Scheduling.md"),
+        ("classnotes", 0, "fast-web-fetch", "02 - CPU Queues Code.md"),
+        ("cheat-sheet", 0, "vault-notes", "Cheatsheets/operating-systems-scheduling-CHEAT-SHEET.md"),
+        ("practice", 0, "planned-notes", "Practice Sets/Operating Systems - Practice Test.md"),
+    ]
+    for forbidden in ("deepstudy-coding", "deepstudy-general"):
+        with pytest.raises(ValueError, match="prohibits"):
+            planner.build_plan(tmp_path, "/scribe-classnotes OS", "OS", [_outline("Paging", template=forbidden)])
+        with pytest.raises(ValueError, match="prohibits"):
+            planner.build_plan(tmp_path, "/scribe-classnotes OS", "OS", [_outline("Paging")], template=forbidden)
     with pytest.raises(ValueError, match="Duplicate"):
         planner.build_plan(tmp_path, "CNN", "CNN", [
             _outline("One", output_path="same.md"), _outline("Two", output_path="SAME.md"),
@@ -232,7 +274,7 @@ def test_prepare_atomic_links_and_missing_evidence(tmp_path):
     entries = [_outline("Adjacency", "definition", density="micro"),
                _outline("Degree", "definition", density="micro")]
     plan_id, plan = planner.start_plan(vault, "Create atomic notes for graph concepts", ".", entries)
-    assert [item["output_path"] for item in plan["plan"]] == ["Adjacency.md", "Degree.md"]
+    assert [item["output_path"] for item in plan["plan"]] == ["Atomic Notes/Adjacency.md", "Atomic Notes/Degree.md"]
     for item in plan["plan"]:
         draft = tmp_path / "draft.md"
         text = finish_fixture(scaffold(tmp_path, item))

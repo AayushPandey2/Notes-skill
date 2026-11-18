@@ -1,6 +1,6 @@
 # Scriptorium
 
-A modular Obsidian study-note skill. Scriptorium routes individual subtopics to ten note formats, researches primary sources, expands existing coverage, and creates practice sets and quizzes.
+A modular Obsidian study-note skill. Scriptorium routes individual subtopics to eleven note formats, researches primary sources, expands existing coverage, and creates practice sets and quizzes.
 
 ---
 
@@ -27,7 +27,7 @@ cd scriptorium
 ```
 If installing as an agent skill, place or symlink the `scriptorium/` folder inside your agent's skills directory (for example, `~/.gemini/config/skills/scriptorium` or your workspace skill path).
 
-To expose each `/scribe-*` command (`/scribe-notes`, `/scribe-expand`, `/scribe-doubt`, `/scribe-distill`, `/scribe-ingest`, `/scribe-compare`, `/scribe-quiz`, `/scribe-dsa`, `/scribe-practice`) as its own `/` autocomplete entry in Antigravity globally, add `~/.gemini/config/skills.json`:
+To expose each `/scribe-*` command (`/scribe-notes`, `/scribe-classnotes`, `/scribe-atomic-notes`, `/scribe-expand`, `/scribe-doubt`, `/scribe-distill`, `/scribe-ingest`, `/scribe-compare`, `/scribe-quiz`, `/scribe-dsa`, `/scribe-practice`) as its own `/` autocomplete entry in Antigravity globally, add `~/.gemini/config/skills.json`:
 
 ```json
 {
@@ -82,7 +82,7 @@ Builds a complete, interconnected subtopic tree (`01-...`, `02-...`, ...) from s
 - **How it works:**
   1. Loads [pre_gen_gate.md](references/pre_gen_gate.md) and [research_protocol.md](references/research_protocol.md), and runs `vault_index.py --discover` to avoid duplicating existing notes.
   2. Plans each subtopic and its dependencies before source retrieval, then writes the syllabus MOC.
-  3. Reuses evidence across siblings, scaffolds each selected template, and validates each draft before publication. A new topic gets a practice test in `Practice Set/`.
+  3. Reuses evidence across siblings, scaffolds each selected template, executes the mandatory **Humanization & Cohesion Pass**, and validates each draft before publication. A new topic gets a practice test in the centralized `Practice Sets/` folder.
   4. Verifies DAG acyclicity (`vault_graph.py --check-cycles`), runs scoped mechanical fixes (`verify_vault_notes.py --fix`), and audits semantics against [verification_checklist.md](references/verification_checklist.md).
 - **Example:** `/scribe-notes Gradient Descent`
 
@@ -99,17 +99,17 @@ Audits existing notes in `<topic name>` and fills missing foundational gaps or a
 Answers a conceptual or mathematical question **strictly** from your existing notes using `[[Note Title]]` citations.
 - **When to use:** You want an answer grounded in your own notes without triggering web research or modifying any files.
 - **How it works:**
-  1. Never loads `research_protocol.md`, `note_templates.md`, or `verification_checklist.md`.
+  1. Never loads `research_protocol.md`, `templates/*.md`, or `verification_checklist.md`.
   2. Locates 1–3 matching notes via `vault_index.py --fields file,title,aliases,headings` and extracts only relevant sections via `--extract ... --sections ...`.
   3. Distinguishes note facts from interpretation and explicitly flags anything missing from the vault.
 - **Example:** `/scribe-doubt Gradient Descent why does a step size > 2/L diverge?`
 
 ### 4. `/scribe-distill <topic>` — 1-Page Rapid-Revision Cheat Sheet
-Compresses an entire topic's existing notes into `<topic-slug>/<topic-slug>-CHEAT-SHEET.md`.
+Compresses an entire topic's existing notes into the centralized `Cheatsheets/` folder (`Cheatsheets/<topic-slug>-CHEAT-SHEET.md`, or `Cheatsheets/<topic-slug>-<subtopic-slug>-CHEAT-SHEET.md` for subtopic-scoped cheatsheets) located at the same directory level as `<subtopic>/` folders.
 - **When to use:** Exam/interview revision or quick reference after building a topic.
 - **How it works:**
   1. Extracts the abstract, synthesis, mechanism, and final traps from existing notes.
-  2. Builds a [cheat sheet](templates/cheat-sheet.md) with a 350-word body cap and links back to its source notes.
+  2. Builds a [cheat sheet](templates/cheat-sheet.md) with a 350-word body cap, links back to its source notes, and saves it in `Cheatsheets/` with clear topic/subtopic naming to avoid collisions.
 - **Example:** `/scribe-distill Linear Algebra`
 
 ### 5. `/scribe-ingest <topic> <pdf|url|notes>` — Non-Destructive Source Ingestion
@@ -141,9 +141,50 @@ Runs a multi-turn, one-question-at-a-time quiz in chat grounded in 1–2 existin
 
 Locks the selected language for a DSA study note with brute-force and optimized solutions, a dry run, and edge tests. Examples include `/scribe-dsa cpp Two Sum` and `scribe-dsa python https://leetcode.com/problems/two-sum/`. A prompt such as “Solve Two Sum in C++” also works.
 
-### 9. `/scribe-practice <topic-or-note>`
+### 9. `/scribe-practice <topic-or-note>` — Centralized Active-Recall Practice Set
 
-Creates a practice set under an existing topic's `Practice Set/` folder. For example, use `/scribe-practice CNN` or “Create a practice set for my CNN notes.” An automatic topic-wide set is saved as `Practice Set/<Topic> - Practice Test.md`.
+Creates a three-tier practice set inside the centralized `Practice Sets/` folder located at the same directory level (sibling level) as the `<subtopic>/` folders. For example, use `/scribe-practice CNN` or “Create a practice set for my CNN notes” (saved as `Practice Sets/CNN - Practice.md`). An automatic topic-wide set is saved as `Practice Sets/<Topic> - Practice Test.md`.
+
+### 10. `/scribe-atomic-notes <topic name>` — Fast Lightweight Atomic Note
+
+Generates a compact, transcludable `<150`-word atomic note without triggering a slow, multi-stage deep research pipeline.
+- **When to use:** Quickly capturing an indivisible concept, governing formula/invariant, micro-example, and vault connections.
+- **How it works:**
+  1. Bypasses multi-wave (`Waves 1–4`) deep research workflows.
+  2. Performs a single, direct web search/fetch for `<topic name>` to gather core facts quickly.
+  3. Populates [templates/atomic.md](templates/atomic.md) while applying the mandatory **Humanization & Cohesion Pass** (conversational yet rigorous student/engineer-to-future-self tone, logical narrative transitions, zero AI clichés, and synthesized mental models rather than copy-pasted definitions).
+  4. Saves the generated file inside the centralized shared `Atomic Notes/` folder (`Atomic Notes/<topic_name>.md`) at the same directory level (sibling level) as the `<subtopic>/` folders.
+- **Example:** `/scribe-atomic-notes Residual Connection`
+
+### 11. `/scribe-classnotes <topic name>` — Fast Multi-Subtopic Class Notes
+
+Replicates `/scribe-notes`'s multi-subtopic decomposition, `00-MOC-<topic-slug>.md`, and multi-file output structure while **bypassing deep research** and defaulting strictly to [templates/classnotes.md](templates/classnotes.md).
+- **When to use:** Fast, lecture-style multi-subtopic study notes without multi-stage primary-source deep research or heavy math.
+- **How it works:**
+  1. Explicitly disables and bypasses `references/research_protocol.md` (`Waves 1–4`), using fast, direct web searches/fetches only.
+  2. Decomposes `<topic name>` into logical subtopics inside `<topic-folder>/` (`00-MOC-<topic-slug>.md` + numbered notes), routing auxiliary practice sets, cheatsheets, and atomic notes to their shared sibling folders (`Practice Sets/`, `Cheatsheets/`, `Atomic Notes/`).
+  3. Defaults all core notes strictly to [templates/classnotes.md](templates/classnotes.md); permits auxiliary templates (`practice`, `cheat-sheet`, `comparison`, `atomic`, `api-table`), while **strictly banning `deepstudy-coding` and `deepstudy-general`** (`deepnotes-coding` / `deepnotes-general`).
+  4. Minimizes mathematical notation (`math_level: 0` by default—plain language, intuitive analogies, structured text), allowing LaTeX/equations only when strictly essential to a Mathematics, Physics, or quantitative engineering topic.
+  5. Applies the mandatory **Humanization & Cohesion Pass** for conversational, intuitive flow.
+- **Example:** `/scribe-classnotes Operating Systems Scheduling`
+
+### Output Directory Hierarchy
+
+All practice sets, atomic notes, and cheatsheets are centralized at the sibling level alongside the `<subtopic>/` folders:
+
+```text
+<Topic / Root Workspace>/
+├── <subtopic_1>/
+│   └── (subtopic notes...)
+├── <subtopic_2>/
+│   └── (subtopic notes...)
+├── Practice Sets/
+│   └── (all practice sets for all topics/subtopics saved here, clearly named by topic/subtopic)
+├── Atomic Notes/
+│   └── (all atomic notes saved here, e.g., <topic_name>.md)
+└── Cheatsheets/
+    └── (all cheatsheets for all topics/subtopics saved here, clearly named by topic/subtopic)
+```
 
 ### Prompt and source routing
 
@@ -203,7 +244,7 @@ scriptorium/
 ├── SKILL.md                              # Dispatcher
 ├── router.md                             # Per-note planning and workflow
 ├── shared/                               # Authoring rules, math gates and footer
-├── templates/                            # Ten individually loaded route specs
+├── templates/                            # Eleven individually loaded route specs
 ├── skills/                               # Optional command wrappers
 ├── README.md                             # Project overview, setup guide & CLI docs
 ├── LICENSE                               # MIT License
@@ -212,9 +253,6 @@ scriptorium/
 │   ├── command_playbooks.md              # Per-command workflows (loaded by section)
 │   ├── pre_gen_gate.md                   # 7-step pre-generation resolution gate
 │   ├── research_protocol.md              # Phase 1 deterministic research SOP (Waves 0–4)
-│   ├── note_templates.md                 # Legacy deep-note contract
-│   ├── cheatsheet_template.md            # Legacy cheat-sheet contract
-│   ├── comparison_template.md            # Legacy comparison contract
 │   ├── syllabus_template.md              # Curriculum scope and learning graph
 │   └── verification_checklist.md         # Semantic-only quality rubric
 ├── scripts/

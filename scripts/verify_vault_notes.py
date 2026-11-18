@@ -536,7 +536,7 @@ def validate_file(
 
     # Enforce locked syllabus allowlist if a 00-MOC syllabus governs this folder
     syllabi = index.get("syllabi") or {}
-    specialized = y_obj and y_obj.get("template") in ("practice", "cheat-sheet", "comparison")
+    specialized = y_obj and y_obj.get("template") in ("practice", "atomic", "cheat-sheet", "comparison")
     if syllabi and not specialized and schema not in {"builtin_syllabus", "builtin_cheatsheet", "builtin_comparison"}:
         if not md_file.name.upper().startswith("00-MOC-"):
             cur_dir = md_file.parent

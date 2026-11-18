@@ -6,7 +6,7 @@ import re
 ROOT = Path(__file__).resolve().parent.parent
 ROUTES = (
     "deepstudy-coding", "deepstudy-general", "api-table", "cheat-sheet", "atomic",
-    "comparison", "summary", "practice", "dsa", "paper-breakdown",
+    "comparison", "summary", "practice", "dsa", "paper-breakdown", "classnotes",
 )
 PRACTICE_RANGES = ((1, 4), (5, 10), (11, 15))
 NARROW_RANGES = ((1, 3), (4, 7), (8, 11))
@@ -15,7 +15,7 @@ SOLUTION = "> [!tip]- Reveal approach and solution"
 MATH_SECTION = {
     "deepstudy-coding": 3, "deepstudy-general": 3, "api-table": 1,
     "cheat-sheet": 1, "atomic": 1, "comparison": 3, "summary": 2,
-    "practice": 1, "dsa": 3, "paper-breakdown": 2,
+    "practice": 1, "dsa": 3, "paper-breakdown": 2, "classnotes": 3,
 }
 SYMBOL_TABLE = (
     "| Symbol / Operator | Meaning | Shape / Dimensions | Domain / Units | Directional Sensitivity |",
@@ -46,6 +46,7 @@ CALLOUTS = {
     },
     "summary": {1: ("> [!info] Source Metadata & Accessibility Audit",)},
     "paper-breakdown": {1: ("> [!info] Primary Paper Metadata",)},
+    "classnotes": {1: ("> [!info] Class Details",)},
 }
 
 
@@ -79,7 +80,7 @@ def title_heading(route: str, number: str, title: str) -> str:
     if route == "practice":
         subject = re.sub(r" - Practice(?: Test)?$", "", title)
         return f"# {subject} — Active Recall & Synthesis Practice Set"
-    prefix = {"summary": "Summary: ", "dsa": "DSA: ", "paper-breakdown": "Paper Breakdown: "}
+    prefix = {"summary": "Summary: ", "dsa": "DSA: ", "paper-breakdown": "Paper Breakdown: ", "classnotes": "Class Notes: "}
     if route == "comparison":
         return f"# {number}. {title} — Decision & Trade-Off Analysis"
     if route == "atomic":

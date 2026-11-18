@@ -620,8 +620,11 @@ def _placement_evidence(notes: list[dict[str, Any]], topic_filter: str | None) -
     matched = _filter_notes_by_topic(notes, topic_filter)
     folder_counts: dict[str, int] = {}
     numbered_prefixes: list[str] = []
+    centralized = {"practice sets", "atomic notes", "cheatsheets", "comparison"}
     for rec in matched:
         parent = Path(rec["file"]).parent.as_posix()
+        if Path(parent).name.lower() in centralized or rec.get("note_type") in {"practice", "atomic", "cheatsheet", "cheat-sheet", "comparison"}:
+            continue
         folder_counts[parent] = folder_counts.get(parent, 0) + 1
         m_num = re.match(r"^(\d{1,3})[-_.]", Path(rec["file"]).stem)
         if m_num:

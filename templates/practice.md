@@ -1,8 +1,8 @@
 # Three-Tier Active Recall, Tracing & Synthesis Practice Test
 
 - **Routing & Destination Rules**:
-    - Support manual `/scribe-practice <topic-or-note>` (saved under `<Topic Folder>/Practice Set/<Subtopic> - Practice.md`, reusing an existing resolved topic folder).
-    - Support automatic topic-wide generation when a run creates a new topic folder (saved under `<Topic Folder>/Practice Set/<Topic> - Practice Test.md`).
+    - Support manual `/scribe-practice <topic-or-note>` (saved in the centralized `Practice Sets/` folder located at the same sibling directory level as the `<subtopic>/` folders, e.g., `Practice Sets/<Subtopic> - Practice.md`, reusing an existing resolved topic folder).
+    - Support automatic topic-wide generation when a run creates a new topic folder (saved in the centralized `Practice Sets/` folder located at the same sibling directory level as the `<subtopic>/` folders, e.g., `Practice Sets/<Topic> - Practice Test.md`).
     - Reuse retrieved evidence, equations, and running-example invariants from sibling notes. A `practice` route must **never** trigger another `practice` route.
 - **Header Block**: YAML frontmatter (`type: practice`) + `# <Topic or Subtopic> — Active Recall & Synthesis Practice Set`.
 
@@ -46,4 +46,4 @@ _(Question Count Rule: Target `12–15` questions total, distributed as `Q1–Q4
 
 Follow [shared authoring rules](../shared/authoring_rules.md) and the [footer contract](../shared/footer_widgets.md). Apply the math gate only at the planned level. Scaffold comments are editing slots and must be removed before publication.
 
-> [!important] AGENT AUTHORING DIRECTIVE — `practice` Strictly enforce the two independently collapsed callouts (`[!hint]-` and `[!tip]-`) and preserve blank `>` lines before lists and between paragraphs inside every callout so Obsidian renders them without broken boxes. Ban trivial true/false or rote copy-paste questions: design every question in Tiers 2 and 3 to test real quantitative calculation, tensor/pointer code tracing, silent bug diagnosis, or boundary-case breakdown derived directly from the sibling study notes.
+> [!important] AGENT AUTHORING DIRECTIVE — `practice` Strictly enforce the two independently collapsed callouts (`[!hint]-` and `[!tip]-`) and preserve blank `>` lines before lists and between paragraphs inside every callout so Obsidian renders them without broken boxes. Ban trivial true/false or rote copy-paste questions: design every question in Tiers 2 and 3 to test real quantitative calculation, tensor/pointer code tracing, silent bug diagnosis, or boundary-case breakdown derived directly from the sibling study notes. Apply the mandatory **Humanization & Cohesion Pass** so solution explanations read with a direct, intuitive engineer-to-future-self voice and zero robotic AI clichés.

@@ -20,12 +20,14 @@ from scaffold_note import _slugify
 from vault_index import is_within_vault, resolve_vault_root
 
 COMMANDS = {f"scribe-{name}" for name in (
-    "dsa", "practice", "notes", "expand", "doubt", "distill", "ingest", "compare", "quiz"
+    "dsa", "practice", "notes", "expand", "doubt", "distill", "ingest", "compare", "quiz", "atomic-notes", "classnotes"
 )}
 LOCKS = {
     "scribe-dsa": "dsa", "scribe-practice": "practice",
     "scribe-distill": "cheat-sheet", "scribe-compare": "comparison",
+    "scribe-atomic-notes": "atomic",
 }
+FORBIDDEN_CLASSNOTES_TEMPLATES = {"deepstudy-coding", "deepstudy-general"}
 LANGUAGES = {
     "cpp": "cpp", "c++": "cpp", "c++20": "cpp", "python": "python", "py": "python",
     "python3": "python", "rust": "rust", "java": "java", "c": "c", "go": "go",
@@ -46,7 +48,7 @@ PROFILES = {
     "deepstudy-coding": "docs-and-papers", "deepstudy-general": "papers-and-textbooks",
     "api-table": "official-docs", "summary": "source-only", "dsa": "problem-and-docs",
     "paper-breakdown": "primary-paper", "practice": "vault-notes", "atomic": "papers-and-textbooks",
-    "cheat-sheet": "vault-notes", "comparison": "docs-and-papers",
+    "cheat-sheet": "vault-notes", "comparison": "docs-and-papers", "classnotes": "fast-web-fetch",
 }
 URL = re.compile(r"https?://[^\s<>\"]+", re.I)
 PAPER_PATHS = {
@@ -78,7 +80,8 @@ def inspect_request(request: str) -> dict:
             raise ValueError("Usage: /scribe-dsa cpp Two Sum or /scribe-dsa python <problem or URL>")
         payload = parts[1]
     elif command and not payload:
-        raise ValueError(f"Usage: /{command} <{'topic-or-note' if command == 'scribe-practice' else 'topic'}>")
+        arg_hint = "topic-or-note" if command == "scribe-practice" else "topic name" if command == "scribe-atomic-notes" else "topic"
+        raise ValueError(f"Usage: /{command} <{arg_hint}>")
 
     sources = [match.group().rstrip(".,;") for match in URL.finditer(payload)]
     route_names = "|".join(ROUTES)
@@ -94,6 +97,7 @@ def inspect_request(request: str) -> dict:
         (r"\b(?:make|create|write|give me|generate)\b.*\batomic note\b", "atomic"),
         (r"\b(?:make|create|write|give me|generate)\b.*\bpractice (?:set|test)\b", "practice"),
         (r"\b(?:make|create|write|give me|generate)\b.*\bpaper breakdown\b", "paper-breakdown"),
+        (r"\b(?:make|create|write|give me|generate)\b.*\bclass\s?notes\b", "classnotes"),
         (r"^\s*(?:please\s+)?solve\b.*\bin\s+(?:c\+\+(?:20)?|cpp|python(?:3)?|rust|java|go)(?=\W|$)", "dsa"),
     ) if re.search(pattern, payload, re.I)), None)
     override = (explicit[1] or explicit[2]).lower() if explicit else intent
@@ -208,6 +212,10 @@ def build_plan(
     if intent["mode"] != "author":
         raise ValueError(f"{intent['command']} uses existing notes and does not create a plan.")
     lock = intent["template"] if intent["lock"] == "command" else template or intent["template"]
+    if intent["command"] == "scribe-classnotes" and (
+        template in FORBIDDEN_CLASSNOTES_TEMPLATES or lock in FORBIDDEN_CLASSNOTES_TEMPLATES
+    ):
+        raise ValueError("/scribe-classnotes prohibits deepstudy-coding and deepstudy-general templates.")
     language = intent["language"] or language
     topic_folder = _relative(topic_folder, folder=True)
     directory = _under_vault(vault, topic_folder)
@@ -229,8 +237,17 @@ def build_plan(
         item_id = _text(item, "id", f"{number:02d}")
         if not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9_-]*", item_id) or item_id == "practice":
             raise ValueError(f"Invalid or reserved item ID: {item_id}")
-        route = lock or item.get("template") or select_route(item.get("purpose"), item.get("impl_weight"), item.get("density"))
-        level = item.get("math_level")
+        if intent["command"] == "scribe-classnotes":
+            explicit_item_tpl = item.get("template")
+            if explicit_item_tpl in FORBIDDEN_CLASSNOTES_TEMPLATES:
+                raise ValueError("/scribe-classnotes prohibits deepstudy-coding and deepstudy-general templates.")
+            route = lock or explicit_item_tpl or select_route(item.get("purpose"), item.get("impl_weight"), item.get("density"))
+            if route in FORBIDDEN_CLASSNOTES_TEMPLATES:
+                route = "classnotes"
+            level = item.get("math_level", 0)
+        else:
+            route = lock or item.get("template") or select_route(item.get("purpose"), item.get("impl_weight"), item.get("density"))
+            level = item.get("math_level")
         if route not in ROUTES or type(level) is not int or level not in (0, 1, 2):
             raise ValueError(f"Invalid template or math_level for {title}")
         lang, stack = _stack(item, route, language)
@@ -238,17 +255,31 @@ def build_plan(
             raise ValueError("DSA requires a supported verification language.")
         filename = f"{item_id}-{_slugify(title)}.md" if legacy_names else f"{item_id} - {_name(title)}.md"
         if route == "atomic":
-            filename = f"{_name(title)}.md"
+            raw_atomic = _text(item, "output_path", f"Atomic Notes/{_name(title)}.md")
+            filename = raw_atomic if raw_atomic.startswith("Atomic Notes/") else f"Atomic Notes/{raw_atomic}"
         if route == "practice":
             subject = re.sub(r" - Practice(?: Test)?$", "", title)
-            filename = f"Practice Set/{_name(subject)} - Practice.md"
+            label = subject if topic_folder == "." or topic.casefold() in subject.casefold() else f"{topic} - {subject}"
+            filename = f"Practice Sets/{_name(label)} - Practice.md"
         id_topic = title if topic_folder == "." and not topic_name else topic
         default_id = f"{_slugify(id_topic)}-{item_id}"
         if route == "practice":
             default_id = f"practice-{_slugify(topic)}-{_slugify(subject)}"
-        if intent["command"] == "scribe-distill":
-            filename = f"{_slugify(topic)}-CHEAT-SHEET.md"
-            default_id = f"cheatsheet-{_slugify(topic)}"
+        if route == "cheat-sheet":
+            subject = re.sub(r"[\s_-]*cheat[\s-]?sheet$", "", title, flags=re.I).strip() or title
+            t_slug = _slugify(id_topic)
+            s_slug = _slugify(subject)
+            if t_slug == s_slug or t_slug in s_slug:
+                cs_name = f"{s_slug}-CHEAT-SHEET.md"
+                default_id = f"cheatsheet-{s_slug}"
+            else:
+                cs_name = f"{t_slug}-{s_slug}-CHEAT-SHEET.md"
+                default_id = f"cheatsheet-{t_slug}-{s_slug}"
+            if intent["command"] == "scribe-distill" or "output_path" not in item:
+                filename = f"Cheatsheets/{cs_name}"
+            else:
+                raw_cs = _text(item, "output_path")
+                filename = raw_cs if raw_cs.startswith("Cheatsheets/") else f"Cheatsheets/{raw_cs}"
         if intent["command"] == "scribe-compare":
             pair_parts = re.split(r"\s+(?:vs\.?|versus)\s+", intent["payload"], maxsplit=1, flags=re.I)
             if len(pair_parts) != 2 or topic_folder != ".":
@@ -262,7 +293,7 @@ def build_plan(
             "template": route, "math_level": level, "language": lang, "verification_stack": stack,
             "source_profile": _text(item, "source_profile", default_profile),
             "routing_reason": _text(item, "routing_reason"),
-            "output_path": _relative(filename if route == "practice" else _text(item, "output_path", filename)),
+            "output_path": _relative(filename if route in {"practice", "atomic", "cheat-sheet"} else _text(item, "output_path", filename)),
         }
         if "depends_on" in item:
             deps = item["depends_on"]
@@ -276,7 +307,13 @@ def build_plan(
         if "next_topic" in item and item["next_topic"] not in [other["id"] for other in plan[index + 1:]]:
             raise ValueError(f"{item['id']}: next_topic must reference a later plan item.")
 
-    automatic = not directory.exists() and all(item["template"] != "practice" for item in plan)
+    automatic = (
+        not directory.exists()
+        and topic_folder not in {".", "Atomic Notes", "Practice Sets", "Cheatsheets"}
+        and intent["command"] not in {"scribe-atomic-notes", "scribe-distill"}
+        and not all(item["template"] in {"practice", "atomic", "cheat-sheet"} for item in plan)
+        and all(item["template"] != "practice" for item in plan)
+    )
     if automatic:
         with_stack = [item for item in plan if item["verification_stack"]]
         stacks = list(dict.fromkeys(stack for item in with_stack for stack in item["verification_stack"]))
@@ -286,16 +323,25 @@ def build_plan(
             "math_level": max(item["math_level"] for item in plan),
             "language": with_stack[0]["language"] if with_stack else "none", "verification_stack": stacks[:3],
             "source_profile": "planned-notes", "routing_reason": "Topic-wide recall and synthesis across the planned notes.",
-            "output_path": _relative(f"Practice Set/{_name(topic)} - Practice Test.md"),
+            "output_path": _relative(f"Practice Sets/{_name(topic)} - Practice Test.md"),
             "depends_on": [item["id"] for item in plan],
         })
     for key in ("id", "note_id", "output_path"):
         if len({item[key].casefold() for item in plan}) != len(plan):
             raise ValueError(f"Duplicate planned {key} values.")
-    paths = [PurePosixPath(item["output_path"].casefold()) for item in plan]
+    paths = [PurePosixPath(_item_vault_rel(topic_folder, item).casefold()) for item in plan]
     if any(parent in paths for path in paths for parent in path.parents):
         raise ValueError("A planned note path is also a parent folder of another note.")
     return {"topic_folder": topic_folder, "plan": plan}
+
+
+def _item_vault_rel(folder: str, item: dict) -> str:
+    folder = _relative(folder, folder=True)
+    out = _relative(item["output_path"])
+    if item.get("template") in {"practice", "atomic", "cheat-sheet"} or out.startswith(("Practice Sets/", "Atomic Notes/", "Cheatsheets/")):
+        parent = PurePosixPath(folder).parent.as_posix() if folder != "." else "."
+        return out if parent == "." else f"{parent}/{out}"
+    return out if folder == "." else f"{folder}/{out}"
 
 
 def _hash(data: bytes) -> str:
@@ -333,7 +379,7 @@ def _read_plan(vault: Path, plan_id: str) -> dict:
 def _targets(vault: Path, saved: dict) -> dict[str, Path]:
     folder = _relative(saved["topic_folder"], folder=True)
     paths = {
-        item["id"]: _under_vault(vault, f"{folder}/{_relative(item['output_path'])}")
+        item["id"]: _under_vault(vault, _item_vault_rel(folder, item))
         for item in saved["plan"]
     }
     resolved = [target.resolve().as_posix().casefold() for target in paths.values()]

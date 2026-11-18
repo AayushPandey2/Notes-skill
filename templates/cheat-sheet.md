@@ -1,6 +1,9 @@
 # High-Density Pre-Exam & Interview Rapid-Recall Sheet
 
 **Strict Quantitative Caps**: Total Markdown body **≤350 words**; every ordinary bullet **≤20 words**. Measure directly before saving. Target 1 printed page / 1–2 screenfuls.
+- **Routing & Destination Rules**:
+    - Save all cheatsheets (whether generated via `/scribe-distill <topic>` or routed to `cheat-sheet`) inside the centralized shared `Cheatsheets/` folder located at the **same directory level** (sibling level) as the `<subtopic>/` folders—never inside individual `<subtopic>/` folders.
+    - Enforce clear topic/subtopic identifiers in the filename so cheatsheets from different topics/subtopics never collide (`Cheatsheets/<topic-slug>-CHEAT-SHEET.md` for topic-wide distill, or `Cheatsheets/<topic-slug>-<subtopic-slug>-CHEAT-SHEET.md` when scoped to a subtopic).
 - **Header Block**: YAML frontmatter + `# <nn>. <Subtopic Title> — Cheat Sheet`.
 
 ## 1. What are the core equations and invariants at a glance? (Formulas & Complexity)
