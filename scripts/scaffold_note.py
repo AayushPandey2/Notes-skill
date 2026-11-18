@@ -228,10 +228,19 @@ def render_deep_note_skeleton(
             "   *Why this step holds:*",
             "",
             "<!-- SECTION: S5-CODE -->",
-            "## 5. Executable Verification (Python & NumPy Implementation)",
+            "## 5. Executable Verification (<Primary / Ecosystem Language List>)",
             "",
-            "```python",
-            "# Self-contained verification matching the running example and boundary cases",
+            "- **Selected Verification Stack:** `<Implementation 1>` · `<Implementation 2 (if applicable)>` · `<Implementation 3 (if applicable)>`",
+            "- **Shared Test Contract (Sections 3–4 Parity):**",
+            "  - *Running Example Input:* `<exact values>` $\\to$ *Expected Output:* `<exact expected result>`",
+            "  - *Boundary / Degenerate Case:* `<exact edge values>` $\\to$ *Expected Output:* `<exact expected result>`",
+            "  - *Invalid Input Guard:* `<malformed/out-of-domain input>` $\\to$ *Expected Behavior:* `<explicit exception / error return>`",
+            "",
+            "### Implementation 1 — <Language & Paradigm>",
+            "*Runtime & Dependencies:* `<runtime / compiler / packages>` · *Execution Status:* `not executed`",
+            "",
+            "```<lang-1>",
+            "// Self-contained verification matching Sections 3–4 notation and shared test contract",
             "```",
             "",
             "<!-- SECTION: S6-QA-MASTERY -->",
@@ -262,13 +271,114 @@ def render_deep_note_skeleton(
     return "\n".join(lines)
 
 
+def render_syllabus_skeleton(
+    *,
+    note_id: str,
+    topic: str,
+    base_domain: str,
+    master_topic: str,
+    allowed_subtopics: list[str] | None = None,
+    excluded_topics: list[str] | None = None,
+    tags: list[str] | None = None,
+) -> str:
+    """Render a deterministic 00-MOC-<topic-slug>.md Syllabus & Learning Graph contract."""
+    allowed = [s.strip() for s in (allowed_subtopics or []) if s.strip()] or ["01-intro.md"]
+    excluded = [s.strip() for s in (excluded_topics or []) if s.strip()] or [
+        "<Adjacent Topic> (separate topic — link only)"
+    ]
+    tag_list = list(
+        dict.fromkeys(
+            [t.strip().lstrip("#") for t in (tags or []) if t.strip()]
+            or [_slugify(base_domain), _slugify(master_topic), _slugify(topic), "moc"]
+        )
+    )
+    if "moc" not in tag_list:
+        tag_list.append("moc")
+
+    lines: list[str] = [
+        "---",
+        f"id: {_yaml_quote(note_id)}",
+        f"title: {_yaml_quote(f'{topic} — Syllabus & Learning Graph')}",
+        "aliases:",
+        f"  - {_yaml_quote(f'{topic} Syllabus')}",
+        f"  - {_yaml_quote(f'{topic} MOC')}",
+        f"base_domain: {_yaml_quote(base_domain)}",
+        f"master_topic: {_yaml_quote(master_topic)}",
+        f"topic: {_yaml_quote(topic)}",
+        "note_type: syllabus",
+        "scope_locked: true",
+        "allowed_subtopics:",
+    ]
+    for sub in allowed:
+        lines.append(f"  - {_yaml_quote(sub)}")
+    lines.append("excluded_adjacent_topics:")
+    for exc in excluded:
+        lines.append(f"  - {_yaml_quote(exc)}")
+    lines.append("tags:")
+    for t in tag_list:
+        lines.append(f"  - {_yaml_quote(t)}")
+    lines.extend(
+        [
+            "---",
+            "",
+            f"# {topic} — Syllabus & Learning Graph",
+            "",
+            "## 1. Scope Boundary Contract",
+            f"- **Core Learning Objective:** <!-- Define the exact start-to-end boundary of {topic}. -->",
+            "- **In-Scope Subtopics (Strict Allowlist):**",
+        ]
+    )
+    for idx, sub in enumerate(allowed, start=1):
+        lines.append(f"  {idx}. `{sub}` — <!-- 1-line scope -->")
+    lines.append("- **Explicitly Out-of-Scope (Do-Not-Create Fence):**")
+    for exc in excluded:
+        lines.append(f"  - **{exc}**")
+
+    lines.extend(
+        [
+            "",
+            "## 2. Detailed Learning-Flow Graph",
+            "",
+            "```mermaid",
+            "flowchart TD",
+        ]
+    )
+    for idx, sub in enumerate(allowed, start=1):
+        stem = Path(sub).stem
+        lines.append(f'    N{idx}["{stem}"]')
+    for idx in range(1, len(allowed)):
+        lines.append(f"    N{idx} -->|depends| N{idx + 1}")
+    lines.extend(
+        [
+            "```",
+            "",
+            "- **Topological Mastery Order:** " + " $\\to$ ".join(f"`{Path(s).stem}`" for s in allowed),
+            "",
+            "## 3. Subtopic Manifest & Status Matrix",
+            "",
+            "| Order | Note | Layer | Prerequisites (`depends_on`) | Next | Status |",
+            "|---|---|---|---|---|---|",
+        ]
+    )
+    for idx, sub in enumerate(allowed, start=1):
+        stem = Path(sub).stem
+        prev_cell = f"[[{Path(allowed[idx - 2]).stem}]]" if idx > 1 else "—"
+        next_cell = f"[[{Path(allowed[idx]).stem}]]" if idx < len(allowed) else "—"
+        lines.append(f"| {idx:02d} | [[{stem}]] | L1 | {prev_cell} | {next_cell} | planned |")
+    lines.append("")
+    return "\n".join(lines)
+
+
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Scaffold a 7-section Scriptorium deep note.")
+    parser = argparse.ArgumentParser(description="Scaffold a 7-section Scriptorium deep note or syllabus MOC.")
     parser.add_argument("vault_path", nargs="?", help="Path to Obsidian vault.")
     parser.add_argument("--output", help="Vault-relative output path (prints to stdout if omitted).")
+    parser.add_argument("--syllabus", action="store_true", help="Scaffold a 00-MOC-<topic>.md syllabus boundary note.")
+    parser.add_argument("--allowed-subtopics", nargs="*", default=[], help="Allowlisted subtopic filenames for --syllabus.")
+    parser.add_argument("--excluded-topics", nargs="*", default=[], help="Out-of-scope adjacent topics for --syllabus.")
     parser.add_argument("--id", dest="note_id", help="Note YAML id (defaults to <topic-slug>-<number>).")
     parser.add_argument("--number", default="01", help="Subtopic number prefix (default: 01).")
-    parser.add_argument("--title", required=True, help="Subtopic title.")
+    parser.add_argument("--title", help="Subtopic title (optional when --syllabus is set).")
     parser.add_argument("--base-domain", default="General", help="Base domain.")
     parser.add_argument("--master-topic", default="General", help="Master topic.")
     parser.add_argument("--topic", required=True, help="Parent topic.")
@@ -280,19 +390,34 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--dry-run", action="store_true", help="Print rendered skeleton without writing.")
     args = parser.parse_args(argv)
 
-    note_id = args.note_id or f"{_slugify(args.topic)}-{args.number}"
-    content = render_deep_note_skeleton(
-        note_id=note_id,
-        number=args.number,
-        title=args.title,
-        base_domain=args.base_domain,
-        master_topic=args.master_topic,
-        topic=args.topic,
-        aliases=args.aliases,
-        tags=args.tags,
-        depends_on=args.depends_on,
-        next_topic=args.next_topic,
-    )
+    if args.syllabus:
+        note_id = args.note_id or f"moc-{_slugify(args.topic)}"
+        content = render_syllabus_skeleton(
+            note_id=note_id,
+            topic=args.topic,
+            base_domain=args.base_domain,
+            master_topic=args.master_topic,
+            allowed_subtopics=args.allowed_subtopics,
+            excluded_topics=args.excluded_topics,
+            tags=args.tags,
+        )
+    else:
+        if not args.title:
+            print("ERROR: --title is required unless --syllabus is set.", file=sys.stderr)
+            return 2
+        note_id = args.note_id or f"{_slugify(args.topic)}-{args.number}"
+        content = render_deep_note_skeleton(
+            note_id=note_id,
+            number=args.number,
+            title=args.title,
+            base_domain=args.base_domain,
+            master_topic=args.master_topic,
+            topic=args.topic,
+            aliases=args.aliases,
+            tags=args.tags,
+            depends_on=args.depends_on,
+            next_topic=args.next_topic,
+        )
 
     if args.dry_run or not args.output:
         print(content, end="")

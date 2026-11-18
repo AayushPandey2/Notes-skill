@@ -35,7 +35,7 @@ import yaml
 
 INDEX_VERSION = 2
 
-EXCLUDED_DIRS = {".git", ".trash", ".obsidian", "scratchpad", "node_modules", "__pycache__"}
+EXCLUDED_DIRS = {".git", ".trash", ".obsidian", "attachments", "scratchpad", "node_modules", "__pycache__"}
 COMMON_TEMPLATE_DIRS = {"templates", "_templates", "meta/templates", "00 - templates", "00-templates"}
 
 TEMPLATER_RE = re.compile(r"<%[\s\S]*?%>")
@@ -753,6 +753,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--discover", action="store_true", help="Output compact topic-scoped discovery bundle.")
     parser.add_argument("--full-registry", action="store_true", help="Output full tag and template registries.")
     parser.add_argument("--fields", default=None, help="Comma-separated fields to include in compact note records.")
+    parser.add_argument("--compact", action="store_true", help="Emit single-line compact JSON output.")
     parser.add_argument("--extract", default=None, help="Vault-relative note path to extract specific sections from.")
     parser.add_argument("--sections", default=None, help="Comma-separated sections for --extract (e.g. abstract,1,3,7).")
     parser.add_argument("--no-cache", action="store_true", help="Bypass local index cache.")
@@ -800,30 +801,31 @@ def main(argv: list[str] | None = None) -> int:
         relevant = _filter_notes_by_topic(full["notes"], args.topic)
         relevant_tags = sorted({t for r in relevant for t in r["tags_unique"]})
         tag_cands = [t for t in full["tag_registry"] if t["tag"] in relevant_tags] if relevant_tags else full["tag_registry"][:25]
-        print(
-            json.dumps(
-                {
-                    "index_version": full["index_version"],
-                    "completeness": full["completeness"],
-                    "cache_hit": full["cache_hit"],
-                    "templates": full["templates"],
-                    "relevant_notes": [_legacy_record(r) for r in relevant],
-                    "placement_conventions": _placement_evidence(full["notes"], args.topic),
-                    "tag_candidates": tag_cands,
-                    "tag_collisions": full["tag_collisions"],
-                    "warnings": full["warnings"],
-                },
-                indent=2,
-                ensure_ascii=False,
-            )
-        )
+        bundle = {
+            "index_version": full["index_version"],
+            "completeness": full["completeness"],
+            "cache_hit": full["cache_hit"],
+            "templates": full["templates"],
+            "relevant_notes": [_legacy_record(r) for r in relevant],
+            "placement_conventions": _placement_evidence(full["notes"], args.topic),
+            "tag_candidates": tag_cands,
+            "tag_collisions": full["tag_collisions"],
+            "warnings": full["warnings"],
+        }
+        if args.compact:
+            print(json.dumps(bundle, separators=(",", ":"), ensure_ascii=False))
+        else:
+            print(json.dumps(bundle, indent=2, ensure_ascii=False))
         return 0
 
     records = [_legacy_record(r) for r in _filter_notes_by_topic(full["notes"], args.topic)]
     if args.fields:
         wanted_fields = [f.strip() for f in args.fields.split(",") if f.strip()]
         records = [{k: rec[k] for k in wanted_fields if k in rec} for rec in records]
-    print(format_compact_json(records))
+    if args.compact:
+        print(json.dumps(records, separators=(",", ":"), ensure_ascii=False))
+    else:
+        print(format_compact_json(records))
     return 0
 
 

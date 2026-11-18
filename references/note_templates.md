@@ -38,8 +38,16 @@ python3 "<skill_dir>/scripts/scaffold_note.py" "<vault_path>" --output "<rel_pat
 ## `## 4. Step-by-Step Mathematical Proof & Derivation (Zero Skips)`
 - State target result, domain, and strategy; number every nontrivial step with `$$...$$` and `*Why this step holds:*` (assumptions, domain/division guards, equivalence vs. implication). Close with sanity check, consequence, and what remains unproven.
 
-## `## 5. Executable Verification (Python & NumPy Implementation)`
-- Self-contained code matching Sections 3–4 notation, testing the running example, changed input, boundary equality, and invalid-input guards. State runtime/packages, expected vs. observed output (`not executed` unless actually run), precision, complexity, and what tests do not prove.
+## `## 5. Executable Verification (<Primary / Ecosystem Language List>)`
+- **Domain-to-Language Routing (1–3 implementations, never pad with trivial variations):**
+  - **ML / Deep Learning:** 1. `Python + NumPy` (from-scratch S4 math) · 2. `Python + scikit-learn` (classical API) · 3. `Python + PyTorch` (tensor/autodiff, when applicable)
+  - **DSA:** 1. `C++20` (zero-overhead systems/competitive) · 2. `Python 3` (clean reference) · 3. *(Optional)* `Rust` or `Java`
+  - **Systems / OS / Concurrency:** 1. `C17` or `Rust` (low-level memory/syscall) · 2. `Python 3` (high-level harness/simulation)
+  - **Databases / Data Engineering:** 1. `SQL` (PostgreSQL / DuckDB) · 2. `Python (pandas / polars)`
+  - **Web / Distributed Systems / APIs:** 1. `TypeScript / Node.js` or `Go` · 2. `Python 3`
+  - **Pure Math / Formal Logic / Non-Code:** 1. `Python + SymPy / NumPy` *(or reproducible proof/counterexample check if code is inapplicable)*
+- **Shared Test Contract (Sections 3–4 Parity):** Include `- **Selected Verification Stack:**` and `- **Shared Test Contract:**` (running-example input $\to$ output, boundary/degenerate case, invalid-input guard). Every `### Implementation <k> — <Language & Paradigm>` must share identical variable names, test inputs, and expected assertions so outputs cross-verify.
+- State runtime/compiler/package versions, execution status (`not executed` unless actually run), expected vs. observed output, precision/numerical stability, time/space complexity (defining input-size variables), and what tests do not prove.
 
 ## `## 6. Deep Conceptual & Analytical Q&A Mastery Set`
 - Write 5–6 (up to 7) transfer questions progressing from intuition $\to$ quantitative trace $\to$ parameter synthesis $\to$ boundary stress-test $\to$ cross-architecture trade-off.

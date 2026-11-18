@@ -137,6 +137,7 @@ def build_vault_index(vault_root: Path) -> dict[str, Any]:
     anchors_by_file: dict[Path, set[str]] = {}
     blocks_by_file: dict[Path, set[str]] = {}
     existing_tags: dict[str, str] = {}  # norm_key -> representative exact tag
+    syllabi: dict[str, dict[str, Any]] = {}  # topic_dir_rel -> {moc_rel, allowed}
 
     for md_file in _iter_markdown_files(vault_root, vault_root):
         stems[md_file.stem.lower()] = md_file
@@ -176,6 +177,14 @@ def build_vault_index(vault_root: Path) -> dict[str, Any]:
                             ts = str(t).strip().lstrip("#")
                             if ts:
                                 existing_tags.setdefault(_normalize_tag_key(ts), ts)
+                    if str(y_obj.get("note_type", "")).strip().lower() == "syllabus" and y_obj.get("scope_locked"):
+                        raw_allowed = y_obj.get("allowed_subtopics") or []
+                        if isinstance(raw_allowed, list):
+                            dir_rel = md_file.parent.relative_to(vault_root).as_posix()
+                            syllabi[dir_rel] = {
+                                "moc_rel": md_file.relative_to(vault_root).as_posix(),
+                                "allowed": {str(x).strip().lower() for x in raw_allowed if str(x).strip()},
+                            }
             except yaml.YAMLError:
                 pass
 
@@ -188,6 +197,7 @@ def build_vault_index(vault_root: Path) -> dict[str, Any]:
         "anchors_by_file": anchors_by_file,
         "blocks_by_file": blocks_by_file,
         "existing_tags": existing_tags,
+        "syllabi": syllabi,
     }
 
 
@@ -370,6 +380,16 @@ def apply_mechanical_fixes(
             lines[idx] = fixed_line
             repairs.append((rel_file, line_no, "INLINE_MATH_NORMALIZED"))
 
+        if lines[idx].lstrip().startswith("|") and "[[" in lines[idx]:
+            new_table_line = re.sub(
+                r"\[\[([^\]\r\n\\|]+)\|([^\]\r\n]+)\]\]",
+                r"[[\1\\|\2]]",
+                lines[idx],
+            )
+            if new_table_line != lines[idx]:
+                lines[idx] = new_table_line
+                repairs.append((rel_file, line_no, "TABLE_WIKILINK_PIPE_ESCAPED"))
+
     if enforce_builtin_style:
         i = body_idx
         in_fence = False
@@ -456,6 +476,8 @@ def _resolve_note_schema(
             return "builtin_cheatsheet"
         if nt == "comparison":
             return "builtin_comparison"
+        if nt == "syllabus":
+            return "builtin_syllabus"
 
     parts = Path(rel_file).parts
     if parts and parts[0].lower() == "comparison":
@@ -508,6 +530,38 @@ def validate_file(
             )
 
     schema = _resolve_note_schema(rel_file, y_obj, manifest)
+
+    # Enforce locked syllabus allowlist if a 00-MOC syllabus governs this folder
+    syllabi = index.get("syllabi") or {}
+    if syllabi and schema not in {"builtin_syllabus", "builtin_cheatsheet", "builtin_comparison"}:
+        if not md_file.name.upper().startswith("00-MOC-"):
+            cur_dir = md_file.parent
+            matched_contract = None
+            for cand_dir in (cur_dir, cur_dir.parent):
+                if _is_within_vault(vault_root, cand_dir):
+                    cand_rel = cand_dir.relative_to(vault_root).as_posix()
+                    if cand_rel in syllabi:
+                        matched_contract = syllabi[cand_rel]
+                        break
+            if matched_contract is not None:
+                allowed = matched_contract["allowed"]
+                fname_low = md_file.name.lower()
+                rel_low = rel_file.lower()
+                if fname_low not in allowed and rel_low not in allowed and not any(
+                    rel_low.endswith("/" + a) for a in allowed
+                ):
+                    findings.append(
+                        {
+                            "file": rel_file,
+                            "line": 1,
+                            "level": "ERROR",
+                            "code": "OUT_OF_SCOPE_NOTE_CREATED",
+                            "message": (
+                                f"Note '{md_file.name}' is outside the locked syllabus allowlist "
+                                f"in '{matched_contract['moc_rel']}'."
+                            ),
+                        }
+                    )
     is_builtin = schema.startswith("builtin_")
 
     if y_obj is not None:
@@ -613,6 +667,9 @@ def validate_file(
     display_start_line = 0
     fence_char = ""
     fence_len = 0
+    in_section_5 = False
+    s5_line = 0
+    s5_impl_count = 0
     in_section_6 = False
     has_key_equations = False
     q_blocks: list[tuple[int, str, bool]] = []
@@ -750,6 +807,15 @@ def validate_file(
             has_key_equations = True
 
         if schema == "builtin_deep":
+            if re.match(r"^##\s+5\.\s+", stripped):
+                in_section_5 = True
+                s5_line = line_no
+            elif in_section_5 and re.match(r"^##\s+\d+\.\s+", stripped):
+                in_section_5 = False
+
+            if in_section_5 and re.match(r"^###\s+Implementation\b", stripped, flags=re.IGNORECASE):
+                s5_impl_count += 1
+
             if re.match(r"^##\s+6\.\s+", stripped):
                 in_section_6 = True
             elif in_section_6 and re.match(r"^##\s+\d+\.\s+", stripped):
@@ -958,6 +1024,16 @@ def validate_file(
                     "level": "ERROR",
                     "code": "MISSING_KEY_EQUATIONS_CALLOUT",
                     "message": "Missing required '> [!abstract] Key Equations' callout.",
+                }
+            )
+        if s5_impl_count > 3:
+            findings.append(
+                {
+                    "file": rel_file,
+                    "line": s5_line or body_idx + 1,
+                    "level": "WARNING",
+                    "code": "TOO_MANY_SECTION_5_IMPLEMENTATIONS",
+                    "message": f"Section 5 should include at most 3 distinct implementations; found {s5_impl_count}.",
                 }
             )
         if len(q_blocks) < 5:

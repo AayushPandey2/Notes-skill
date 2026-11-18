@@ -10,9 +10,9 @@ Mechanical formatting checks are enforced automatically by `verify_vault_notes.p
 - **PASS:** Symbols in `Key Equations`, S3, S4, and S5 share identical domain, shape/type, units, and sign conventions; S4 skips no nontrivial steps and includes domain/division guards.
 - **FAIL / Repair:** Shifting symbol meaning or invalid algebraic jumps $\to$ harmonize symbols and expand missing steps.
 
-## 3. Running-Example & Code Fidelity
-- **PASS:** One named running example uses identical values across S3–S5; S5 Python code matches S3–S4 math, handles boundary cases, and passes isolated execution without relaxed assertions.
-- **FAIL / Repair:** Contradictory example values or code diverging from math $\to$ align example and fix S5 code.
+## 3. Running-Example & Multi-Implementation Code Fidelity
+- **PASS:** One named running example uses identical values across S3–S5; all 1–3 Section 5 implementations match the topic's native domain stack, share identical test inputs/boundary cases/invalid-input guards, cross-verify identical expected outputs, and pass isolated execution without relaxed assertions.
+- **FAIL / Repair:** Contradictory example values, trivial padding, or implementations diverging from S3–S4 math $\to$ align shared test contract and fix diverging code.
 
 ## 4. Pedagogical Depth, Diagrams & Non-Duplication
 - **PASS:** Explanations are complete without filler; "Is vs. Is Not" table compares comparable methods; Mermaid diagram matches S3 prose; S6 has 5–6 transfer Q&As with step-by-step callout answers; no duplicate vault notes.

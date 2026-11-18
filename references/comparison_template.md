@@ -24,7 +24,7 @@ tags:
 > - **Fundamental Structural Split:** <1–2 sentences contrasting their governing mechanisms or invariants.>
 
 ## 1. Conceptual & Mathematical Divergence
-<2–3 concise paragraphs explaining how both methods approach the same underlying problem, whether one is a special case or generalization of the other, and how their core equations differ.>
+<!-- 2–3 concise paragraphs: shared problem, special-case vs. generalization relation, and core equation differences. -->
 
 ### Governing Equations Side-by-Side
 - **[[<Exact A Filename>|<Concept A>]]:**

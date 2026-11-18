@@ -14,31 +14,35 @@ Read **only** the section matching the active command.
 
 ---
 
-## Command B: `/scribe-expand <topic name>` (Index-First Incremental)
+## Command B: `/scribe-expand <topic name>` (Exhaustive Five-Layer Incremental)
 
 1. **Index Coverage:** Run `python3 <skill_dir>/scripts/vault_index.py "<vault_path>" --topic "<topic name>" --fields file,title,aliases,depends_on,next_topic,headings` without reading full note bodies.
-2. **Gap Analysis:** Compare indexed subtopics, titles, aliases, dependencies, and `##` headings against required coverage. Prioritize missing foundational concepts before advanced additions; never duplicate existing concepts.
-3. **Conditional Generation:**
+2. **Five-Layer Gap Audit:** Run the Wave 1 Five-Layer Coverage Audit (Foundations, Core Mechanisms, Formal Theory/Proofs, Variants/Extensions, Pathology/Edge Cases) against existing notes. Identify **all** remaining gaps across Layers 1–5 at once (never just 2–3 items) without duplicating existing concepts.
+3. **Conditional Generation (Non-Stopping Queue):**
    - If only metadata/links need updating, apply targeted edits via `python3 <skill_dir>/scripts/patch_links.py` (`--dry-run` to preview) without loading research/template docs or rewriting whole files.
-   - If new notes are needed, load `references/pre_gen_gate.md`, `references/research_protocol.md`, and `references/note_templates.md`; scaffold skeletons via `scripts/scaffold_note.py`, research & draft only missing subtopics, and update a compact in-memory link registry `{id, filename, title, aliases}`.
-4. **Minimal Relationship Updates & Validation:** Patch `depends_on`, `next_topic`, and MOC links in place via `scripts/patch_links.py` without rewriting entire existing notes or imposing a new template retroactively. Skip generation if coverage already exists. Run `python3 <skill_dir>/scripts/vault_graph.py "<vault_path>" --topic "<topic name>" --check-cycles` and `python3 <skill_dir>/scripts/verify_vault_notes.py "<vault_path>" --files <modified_files> --fix`; if semantic errors remain, load `references/verification_checklist.md` and inspect only flagged sections.
+   - If new notes are needed, load `references/pre_gen_gate.md`, `references/research_protocol.md`, `references/syllabus_template.md`, and `references/note_templates.md`. Update `allowed_subtopics` in `00-MOC-<topic-slug>.md` *first* (or create it via `scaffold_note.py --syllabus`), print the complete `[1/NN]`–`[NN/NN]` missing-subtopic manifest up front, then iterate `k = 1..NN` sequentially—scaffolding via `scripts/scaffold_note.py`, writing each `.md` immediately to disk, and keeping only `{id, filename, title, aliases}` in memory. Never create files outside `allowed_subtopics`, stop early, abbreviate later notes, or pause mid-batch.
+4. **Minimal Relationship Updates & Batch Validation:** Patch `depends_on`, `next_topic`, and MOC links in place via `scripts/patch_links.py` without rewriting entire existing notes or imposing a new template retroactively. Run `python3 <skill_dir>/scripts/vault_graph.py "<vault_path>" --topic "<topic name>" --check-cycles` and `python3 <skill_dir>/scripts/verify_vault_notes.py "<vault_path>" --files <modified_files> --fix` until `0 errors`; if semantic errors remain, load `references/verification_checklist.md` and inspect only flagged sections.
 
 ---
 
-## Command C: `/scribe-notes <topic>` (Sequential Research & Generation)
+## Command C: `/scribe-notes <topic>` (Exhaustive Sequential Research & Generation)
 
-### Phase 1 — Research, Planning & Indexing
+### Phase 1 — Exhaustive Research Planning & Indexing
 1. Load `references/pre_gen_gate.md` and `references/research_protocol.md`.
 2. Run `python3 <skill_dir>/scripts/vault_index.py "<vault_path>" --discover --topic "<topic>"` to inventory existing notes and avoid duplication.
-3. Execute **Waves 0–4** of `references/research_protocol.md`: build an acyclic subtopic DAG (`topic-01`, `topic-02`, ...), lock global notation, verify Tier 1–3 primary & practitioner sources, and complete the Wave 4 pre-writing dossier per subtopic.
+3. Execute **Waves 0–1** of `references/research_protocol.md`: decompose `<topic>` into a **complete Five-Layer acyclic DAG** (`topic-01` ... `topic-NN`, typically 8–15+ nodes), pass the Pre-Execution Coverage Audit Gate, lock global notation, and **write `00-MOC-<topic-slug>.md` first** (`references/syllabus_template.md` / `scaffold_note.py --syllabus`) with `scope_locked: true`, `allowed_subtopics`, `excluded_adjacent_topics`, and the detailed Mermaid learning-flow graph. Print the `[1/NN]`–`[NN/NN]` manifest up front.
 
-### Phase 2 — Sequential Note Generation
+### Phase 2 — Non-Stopping Sequential Write-and-Flush Loop (`k = 1..NN`)
 1. Load `references/note_templates.md`.
-2. Scaffold each note sequentially in dependency order via `python3 <skill_dir>/scripts/scaffold_note.py` (when using the Scriptorium default template) and fill in the 7 sections, updating a compact in-memory link registry `{id, filename, title, aliases}` after each file. Keep uncreated future topics as plain text until written.
+2. Process one subtopic `k` from `1` to `NN` in dependency order:
+   - Run Waves 2–4 research & dossier synthesis for subtopic `k`.
+   - Scaffold via `python3 <skill_dir>/scripts/scaffold_note.py` (when using the Scriptorium default template) and write `<nn>-<subtopic-slug>.md` **immediately to disk** inside `<vault_path>/<topic-folder>/` using pre-existing `tag_registry` tags.
+   - Keep **only** `{id, filename, title, aliases}` in the active cross-link registry (never retain full bodies of already-written notes in context). Keep uncreated future topics as plain text until written.
+3. **Anti-Truncation & Anti-Early-Exit Rule:** Never stop after 3–4 notes, never summarize or abbreviate `topic-07` ... `topic-NN` (every node gets full 7-section depth, zero-skip proofs, domain-adaptive S5 verification, and 5–6 detailed S6 Q&As), and never pause mid-batch to ask for confirmation—execute `1..NN` to completion in one continuous run.
 
-### Phase 3 — Automated & Semantic Verification
-1. Run `python3 <skill_dir>/scripts/vault_graph.py "<vault_path>" --topic "<topic>" --check-cycles` and `python3 <skill_dir>/scripts/verify_vault_notes.py "<vault_path>" --manifest <manifest.json> --fix` (or `--files <generated_files> --fix`) to apply scoped mechanical repairs and detect blocking errors without modifying unrelated notes.
-2. Load `references/verification_checklist.md` and perform semantic checks on flagged or newly created sections only. Apply targeted fixes without rewriting valid notes, and report final status (`0 errors` required; report `BLOCKED` if vault unavailable).
+### Phase 3 — Batch Automated & Semantic Verification
+1. Once all `NN` files are on disk, run `python3 <skill_dir>/scripts/vault_graph.py "<vault_path>" --topic "<topic>" --check-cycles` and `python3 <skill_dir>/scripts/verify_vault_notes.py "<vault_path>" --manifest <manifest.json> --fix` (or `--files <generated_files> --fix`) until `0 errors` are returned without modifying unrelated notes.
+2. Load `references/verification_checklist.md` and perform semantic checks on flagged or newly created sections only. Output a final completion manifest listing all `NN` created `.md` files and their verification status (report `BLOCKED` if vault unavailable).
 
 ---
 

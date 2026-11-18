@@ -107,3 +107,51 @@ def test_vault_index_fields_and_extract_sections(tmp_path: Path, capsys) -> None
     assert "## 4. Proof" not in extracted
     assert "Long derivation omitted during distill." not in extracted
     assert "## not a heading inside code" not in extracted
+
+
+def test_verify_vault_notes_accepts_multilang_s5_and_warns_above_3(tmp_path: Path) -> None:
+    import verify_vault_notes as vn
+
+    vault = tmp_path / "vault"
+    (vault / "dsa" / "topics").mkdir(parents=True)
+    note = vault / "dsa" / "topics" / "01-seg.md"
+    q_block = "".join(
+        f"#### Question {i}\nBody\n\n> [!example]- Answer\n> - Detail\n\n" for i in range(1, 6)
+    )
+    note.write_text(
+        "---\n"
+        'id: "dsa-01"\n'
+        'title: "Segment Tree"\n'
+        'aliases: ["Segment Tree"]\n'
+        'base_domain: "CS"\n'
+        'master_topic: "DSA"\n'
+        'topic: "Trees"\n'
+        "tags: [cs, dsa]\n"
+        "---\n\n"
+        "# 01. Segment Tree\n\n"
+        "> [!abstract] Key Equations\n"
+        "> $$T = O(\\log n)$$\n\n"
+        "## 5. Executable Verification (C++20 & Python 3)\n\n"
+        "### Implementation 1 — C++20\n```cpp\nint main() { return 0; }\n```\n\n"
+        "### Implementation 2 — Python 3\n```python\nassert True\n```\n\n"
+        "## 6. Deep Conceptual & Analytical Q&A Mastery Set\n\n"
+        + q_block,
+        encoding="utf-8",
+    )
+
+    findings = vn.validate_file(note, vault, vn.build_vault_index(vault))
+    assert not [f for f in findings if f["level"] == "ERROR"]
+    assert not [f for f in findings if f["code"] == "TOO_MANY_SECTION_5_IMPLEMENTATIONS"]
+
+    # Adding 2 more implementations (total 4) triggers TOO_MANY_SECTION_5_IMPLEMENTATIONS warning
+    note.write_text(
+        note.read_text(encoding="utf-8").replace(
+            "## 6. Deep Conceptual",
+            "### Implementation 3 — Rust\n```rust\nfn main() {}\n```\n\n"
+            "### Implementation 4 — Java\n```java\nclass Main {}\n```\n\n"
+            "## 6. Deep Conceptual",
+        ),
+        encoding="utf-8",
+    )
+    findings_4 = vn.validate_file(note, vault, vn.build_vault_index(vault))
+    assert any(f["code"] == "TOO_MANY_SECTION_5_IMPLEMENTATIONS" for f in findings_4)

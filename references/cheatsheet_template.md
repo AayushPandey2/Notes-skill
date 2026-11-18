@@ -36,12 +36,12 @@ tags:
 
 <!-- SECTION: CS1-DEFINITION -->
 ## 1. Definition
-<Write strictly 25–30 words: state what the topic is, its conceptual and computational core, inputs/outputs, and primary purpose without filler.>
+<!-- 25–30 words strictly: state what the topic is, conceptual/computational core, inputs/outputs, and primary purpose without filler. -->
 
 
 <!-- SECTION: CS2-THEORY -->
 ## 2. Theory
-<Write strictly 50–60 words: give a dense, first-principles explanation of its governing mechanism, core invariant, how it works, and the exact boundary condition or limitation where it fails.>
+<!-- 50–60 words strictly: first-principles governing mechanism, core invariant, how it works, and exact boundary condition/limitation where it fails. -->
 
 
 <!-- SECTION: CS3-FORMULAS -->
