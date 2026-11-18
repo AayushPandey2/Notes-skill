@@ -1,35 +1,43 @@
 # Scriptorium Semantic Verification Checklist
 
-Mechanical formatting checks (YAML syntax, mandatory keys, duplicate IDs, raw LaTeX in YAML, inline math spacing, delimiter balance, table pipe safety, placeholder tokens, wikilink/anchor resolution, Section 6 Q&A count, `> [!example]-` callouts, banned `<details>`/scaffolding labels, quoted headings, and Mermaid `$` checks) are enforced automatically by:
-
-```bash
-python3 "<skill_dir>/scripts/verify_vault_notes.py" "<vault_path>" --fix
-```
-
-Exit code `0` from `verify_vault_notes.py` is **necessary but not sufficient**. Use the semantic rubric below to audit what Python cannot verify.
-
----
+Mechanical formatting checks are enforced automatically by `verify_vault_notes.py --fix` and `vault_graph.py --check-cycles`. Exit code `0` is **necessary but not sufficient**—audit only what Python cannot verify:
 
 ## 1. Research & Source Integrity
-
-- **PASS:** Every historical attribution, theorem, bound, and empirical claim matches a Tier 1–3 primary source; uncertain claims are omitted or marked `[UNVERIFIED]`; external URLs are real and non-placeholder.
-- **FAIL:** Unverified claims presented as settled fact, misattributed priority, or fabricated/unverified citations.
-- **Repair:** Verify against primary source or narrow/label claim as `[UNVERIFIED]`.
+- **PASS:** Claims, attributions, theorems, and bounds match Tier 1–3 primary sources; uncertain claims are `[UNVERIFIED]`; URLs are real.
+- **FAIL / Repair:** Unverified claims stated as fact or fabricated citations $\to$ verify or label `[UNVERIFIED]`.
 
 ## 2. Mathematical & Derivation Validity
+- **PASS:** Symbols in `Key Equations`, S3, S4, and S5 share identical domain, shape/type, units, and sign conventions; S4 skips no nontrivial steps and includes domain/division guards.
+- **FAIL / Repair:** Shifting symbol meaning or invalid algebraic jumps $\to$ harmonize symbols and expand missing steps.
 
-- **PASS:** Every symbol in `> [!abstract] Key Equations`, Section 3, Section 4, and Section 5 is defined consistently with domain, tensor shape/type, units, and sign convention; every Section 4 step is valid with zero skipped nontrivial transitions and explicit domain/division guards.
-- **FAIL:** Shifting symbol meaning across sections, invalid algebraic/logical jumps, or missing validity conditions.
-- **Repair:** Harmonize symbols across all sections and expand/correct invalid derivation steps.
-
-## 3. Running-Example & Code Fidelity
-
-- **PASS:** One named running example uses identical parameters/values across Sections 3, 4, and 5; Section 5 Python code faithfully implements the derived equation, handles boundary cases, and passes isolated execution without altering expected results to hide bugs.
-- **FAIL:** Contradictory example values across sections, or Python code that diverges from Section 3–4 math.
-- **Repair:** Align example values and fix Section 5 code/assertions to match the verified derivation.
+## 3. Running-Example & Multi-Implementation Code Fidelity
+- **PASS:** One named running example uses identical values across S3–S5; all 1–3 Section 5 implementations match the topic's native domain stack, share identical test inputs/boundary cases/invalid-input guards, cross-verify identical expected outputs, and pass isolated execution without relaxed assertions.
+- **FAIL / Repair:** Contradictory example values, trivial padding, or implementations diverging from S3–S4 math $\to$ align shared test contract and fix diverging code.
 
 ## 4. Pedagogical Depth, Diagrams & Non-Duplication
+- **PASS:** Explanations are complete without filler; "Is vs. Is Not" table compares comparable methods; Mermaid diagram matches S3 prose; S6 has 5–6 transfer Q&As with step-by-step callout answers; no duplicate vault notes.
+- **FAIL / Repair:** Superficial summaries, mismatched diagram, or duplicate concept $\to$ deepen, align diagram, or link existing note.
 
-- **PASS:** Conceptual explanations are complete without filler; Contrastive "Is vs. Is Not" table compares comparable tasks/assumptions; Mermaid diagram accurately depicts the mechanism; all 5–6 Section 6 questions test conceptual transfer with complete step-by-step callout answers; note does not duplicate an existing vault note.
-- **FAIL:** Superficial summaries, mismatched diagram logic, repetitive Q&As, or concept duplication.
-- **Repair:** Deepen incomplete explanations, align diagram nodes/edges with Section 3 prose, or merge/cross-reference duplicate concepts.
+## 5. Comparison & Quiz Metadata
+- **Comparison (`comparison/*.md`):** Verify `compared_notes` wikilinks, balanced MathJax, escaped table pipes (`\|`), `Core Trade-Off Verdict`, and `## 1.`–`## 4.`.
+- **Quiz `review_log`:** Patched via `scripts/patch_links.py --append-review-log` (`"YYYY-MM-DD | Score: X/N | Weak: ..."`).
+
+## Selected-route integration gates
+
+For registered routes, validate the exact ordered headings, populated sections,
+identity YAML, code fences and absence of authoring placeholders. Deep routes use
+11 headings and preserve Confusion; inspect the old-to-new mapping in
+note_templates.md so readable headings retain all reasoning. Legacy schema checks
+apply only to existing/explicit legacy contracts. Scope allowlists, exact tags,
+custom template hashes, safe paths and scoped --fix still apply.
+
+Measure Atomic/Cheat-Sheet with the shared deterministic counter; retain code and
+table content. Check every Practice question has independent collapsed hint/solution
+callouts and substantive variety. Summary has exactly three grounded thesis bullets.
+Paper-Breakdown at level 0 uses Technical Details and no invented experiments.
+At math levels 1/2 review symbol-before-formula order, worked use and justified
+steps; at level 0 review causal logic, state changes or evidence instead. Keep
+1?3 meaningful implementations under aligned semantics; runtime checks are evidence,
+not proof. Existing-note selection, source accuracy, mathematical correctness,
+question quality, Mermaid rendering and Obsidian plugin behavior require human/agent
+semantic review; passing static checks does not certify those properties.
