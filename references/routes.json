@@ -1,0 +1,150 @@
+{
+  "deepstudy-coding": {
+    "file": "references/templates/deepstudy-coding.md",
+    "headings": [
+      "What am I trying to understand?",
+      "Overview",
+      "How it works",
+      "Intuition / Mental Model",
+      "Details",
+      "Experiment / Worked Example",
+      "What I learned",
+      "Open Confusion",
+      "Limitations / Edge Cases",
+      "Atomize",
+      "Connection"
+    ],
+    "verification": true,
+    "source_profile": "official-docs-and-primary-paper",
+    "aliases": [
+      "DeepStudy-Coding"
+    ]
+  },
+  "deepstudy-general": {
+    "file": "references/templates/deepstudy-general.md",
+    "headings": [
+      "What am I trying to understand?",
+      "Overview",
+      "How it works",
+      "Intuition / Mental Model",
+      "Details",
+      "Experiment / Worked Example",
+      "What I learned",
+      "Open Confusion",
+      "Limitations / Edge Cases",
+      "Atomize",
+      "Connection"
+    ],
+    "verification": false,
+    "source_profile": "authoritative-theory-and-original-material",
+    "aliases": [
+      "DeepStudy-General",
+      "deep-study"
+    ]
+  },
+  "api-table": {
+    "file": "references/templates/api-table.md",
+    "headings": [
+      "What is this for?",
+      "How to think about it",
+      "Common operations",
+      "Recipes",
+      "Gotchas / Performance",
+      "Related notes / Sources"
+    ],
+    "verification": true,
+    "source_profile": "official-versioned-api-docs"
+  },
+  "cheat-sheet": {
+    "file": "references/templates/cheat-sheet.md",
+    "headings": [
+      "Essentials",
+      "When to use what",
+      "Quick examples",
+      "Watch out",
+      "Related notes / Sources"
+    ],
+    "verification": false,
+    "source_profile": "linked-primary-reference"
+  },
+  "atomic": {
+    "file": "references/templates/atomic.md",
+    "headings": [
+      "Idea",
+      "Example",
+      "Connections"
+    ],
+    "verification": false,
+    "source_profile": "direct-primary-claim"
+  },
+  "comparison": {
+    "file": "references/templates/comparison.md",
+    "headings": [
+      "Which should I choose?",
+      "What are we comparing?",
+      "Side by side",
+      "Worked comparison",
+      "Trade-offs / Edge Cases",
+      "Related notes / Sources"
+    ],
+    "verification": true,
+    "source_profile": "comparable-primary-contracts"
+  },
+  "summary": {
+    "file": "references/templates/summary.md",
+    "headings": [
+      "Source",
+      "Main idea",
+      "Breakdown",
+      "What to take away",
+      "What to question",
+      "Follow-up notes"
+    ],
+    "verification": false,
+    "source_profile": "accessed-source-content"
+  },
+  "practice": {
+    "file": "references/templates/practice.md",
+    "headings": [
+      "What this tests",
+      "Recall / Sanity Checks",
+      "Apply / Trace / Debug",
+      "Edge Cases / Connections",
+      "Review next"
+    ],
+    "verification": false,
+    "source_profile": "saved-study-material"
+  },
+  "dsa": {
+    "file": "references/templates/dsa.md",
+    "headings": [
+      "Problem / Constraints",
+      "Pattern / Key Idea",
+      "Start with brute force",
+      "How to improve it",
+      "Better solution, step by step",
+      "Code / Verification",
+      "Edge Cases / Mistakes",
+      "Similar problems",
+      "Related notes / Sources"
+    ],
+    "verification": true,
+    "source_profile": "verified-problem-and-language-docs"
+  },
+  "paper-breakdown": {
+    "file": "references/templates/paper-breakdown.md",
+    "headings": [
+      "Paper / Context",
+      "What problem was it trying to solve?",
+      "Main idea",
+      "How it works",
+      "Math / Technical Details",
+      "Experiments / Results",
+      "Limitations / Open Questions",
+      "What changed after this?",
+      "Related notes / Sources"
+    ],
+    "verification": false,
+    "source_profile": "original-paper-and-supplements"
+  }
+}

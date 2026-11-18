@@ -1,6 +1,6 @@
 # Scriptorium
 
-A modular, token-efficient **Obsidian knowledge-engineering agent skill**. Scriptorium researches topics from primary sources, scaffolds and generates interconnected seven-section Markdown lessons, expands existing coverage incrementally, distills 1-page cheat sheets, ingests external sources, compares concepts side-by-side, runs interactive active-recall quizzes, and answers learner questions strictly read-only from existing vault notes.
+A modular, token-efficient **Obsidian knowledge-engineering agent skill**. Scriptorium researches topics from primary sources, scaffolds and generates interconnected route-selected Markdown lessons, expands existing coverage incrementally, distills 1-page cheat sheets, ingests external sources, compares concepts side-by-side, runs interactive active-recall quizzes, and answers learner questions strictly read-only from existing vault notes.
 
 ---
 
@@ -70,7 +70,7 @@ Builds a complete, interconnected subtopic tree (`01-...`, `02-...`, ...) from s
 - **How it works:**
   1. Loads [pre_gen_gate.md](references/pre_gen_gate.md) and [research_protocol.md](references/research_protocol.md), and runs `vault_index.py --discover` to avoid duplicating existing notes.
   2. Executes **Waves 0–4** research (primary papers/textbooks/RFCs + practitioner traps) and builds an acyclic `depends_on` DAG.
-  3. Scaffolds each note via `scripts/scaffold_note.py` and writes all 7 sections (`Executive Synthesis`, `Historical Context`, `Deep Theory`, `Step-by-Step Proof`, `Executable Python Verification`, `Q&A Mastery`, `Traps & Sources`) per [note_templates.md](references/note_templates.md).
+  3. Scaffolds each note via `scripts/scaffold_note.py` and writes the selected template sections, with conditional math and purposeful domain implementations per [note_templates.md](references/note_templates.md).
   4. Verifies DAG acyclicity (`vault_graph.py --check-cycles`), runs scoped mechanical fixes (`verify_vault_notes.py --fix`), and audits semantics against [verification_checklist.md](references/verification_checklist.md).
 - **Example:** `/scribe-notes Gradient Descent`
 
@@ -96,7 +96,7 @@ Answers a conceptual or mathematical question **strictly** from your existing no
 Compresses an entire topic's existing notes into `<topic-slug>/<topic-slug>-CHEAT-SHEET.md`.
 - **When to use:** Exam/interview revision or quick reference after building a topic.
 - **How it works:**
-  1. Extracts only `> [!abstract] Key Equations` and Sections `1`, `3`, and `7` from each note using `vault_index.py --extract <file> --sections abstract,1,3,7`.
+  1. Extracts the relevant legacy sections or readable Overview, How it works, Details, Limitations and Connection from each note using `vault_index.py --extract <file> --sections abstract,1,3,7`.
   2. Synthesizes a strict 5-section sheet (`Definition`: 25–30 words, `Theory`: 50–60 words, `Formulas`, `Glossary`, `Traps`) following [cheatsheet_template.md](references/cheatsheet_template.md) with `[[Exact Filename|Title]]` backlinks.
 - **Example:** `/scribe-distill Linear Algebra`
 
@@ -112,7 +112,7 @@ Extracts claims, definitions, derivations, and equations from a PDF, URL, or raw
 Synthesizes a structured comparison between two existing vault notes without web re-research.
 - **When to use:** Contrasting two algorithms, architectures, or theorems side-by-side.
 - **How it works:**
-  1. Locates `<A>` and `<B>` via `vault_index.py --fields file,title,aliases,topic,tags_unique` and reads only those two files plus [comparison_template.md](references/comparison_template.md).
+  1. Locates `<A>` and `<B>` via `vault_index.py --fields file,title,aliases,topic,tags_unique` and reads only those two files plus [comparison.md](references/templates/comparison.md) (or the explicitly selected legacy/custom template).
   2. Saves `<vault_path>/comparison/<slug-a>-vs-<slug-b>.md` (`note_type: comparison`), validates it, and echoes the complete Markdown note directly in chat.
 - **Example:** `/scribe-compare Adam vs SGD`
 
@@ -132,7 +132,7 @@ Runs a multi-turn, one-question-at-a-time quiz in chat grounded in 1–2 existin
 | Script | Purpose | Key Flags |
 |---|---|---|
 | [vault_index.py](scripts/vault_index.py) | Cached, read-only metadata, tag, template & section extractor | `--topic`, `--discover`, `--full-registry`, `--fields`, `--extract <file> --sections ...`, `--no-cache` |
-| [scaffold_note.py](scripts/scaffold_note.py) | Deterministic 7-section deep-note skeleton generator | `--output`, `--number`, `--title`, `--topic`, `--depends-on`, `--next-topic`, `--tags`, `--dry-run`, `--overwrite` |
+| [scaffold_note.py](scripts/scaffold_note.py) | Deterministic route-selected deep-note skeleton generator | `--output`, `--number`, `--title`, `--topic`, `--depends-on`, `--next-topic`, `--tags`, `--dry-run`, `--overwrite` |
 | [patch_links.py](scripts/patch_links.py) | Non-destructive YAML frontmatter & wikilink patcher | `--file`, `--add-depends-on`, `--remove-depends-on`, `--set-next-topic`, `--append-review-log`, `--rename-link OLD NEW`, `--dry-run` |
 | [vault_graph.py](scripts/vault_graph.py) | Read-only dependency DAG, cycle, broken-link & Mermaid analyzer | `--topic`, `--format json\|mermaid\|text`, `--include-body-links`, `--check-cycles`, `--strict` |
 | [verify_vault_notes.py](scripts/verify_vault_notes.py) | Scoped schema-aware validator and mechanical auto-repair tool | `--files`, `--manifest`, `--fix`, `--allow-cross-vault-writes` |
@@ -145,7 +145,7 @@ python3 scripts/vault_index.py "<vault_path>" --discover --topic "Machine Learni
 # 2. Extract only > [!abstract] and Sections 1, 3, 7 from a note
 python3 scripts/vault_index.py "<vault_path>" --extract "ml/01-gd.md" --sections abstract,1,3,7
 
-# 3. Scaffold a new 7-section note skeleton
+# 3. Scaffold a new route-selected note skeleton
 python3 scripts/scaffold_note.py "<vault_path>" \
   --output "ml/02-sgd.md" --number "02" --title "Stochastic Gradient Descent" \
   --base-domain "Computer Science" --master-topic "Machine Learning" --topic "Optimization" \
@@ -180,13 +180,13 @@ scriptorium/
 │   ├── command_playbooks.md              # Per-command workflows (loaded by section)
 │   ├── pre_gen_gate.md                   # 7-step pre-generation resolution gate
 │   ├── research_protocol.md              # Phase 1 deterministic research SOP (Waves 0–4)
-│   ├── note_templates.md                 # Authoritative 7-section note authoring rules
+│   ├── note_templates.md                 # Authoritative route-selected note authoring rules
 │   ├── cheatsheet_template.md            # 5-section 1-page cheat sheet template
 │   ├── comparison_template.md            # Architectural & trade-off comparison template
 │   └── verification_checklist.md         # Semantic-only quality rubric
 ├── scripts/
 │   ├── vault_index.py                    # Cached metadata indexer (--discover, --fields, --extract)
-│   ├── scaffold_note.py                  # Deterministic 7-section note skeleton generator
+│   ├── scaffold_note.py                  # Deterministic route-selected note skeleton generator
 │   ├── patch_links.py                    # Non-destructive frontmatter & wikilink patcher (--dry-run)
 │   ├── vault_graph.py                    # Read-only DAG cycle, broken-link, orphan & Mermaid analyzer
 │   └── verify_vault_notes.py             # Scoped validator with --fix mechanical repairs
@@ -199,3 +199,44 @@ scriptorium/
 ## License
 
 Released under the [MIT License](LICENSE).
+
+
+## Integrated routing defaults
+
+All existing commands and optimized Python helpers remain supported. New notes use
+one of ten contracts registered in `references/routes.json`: deepstudy-coding,
+deepstudy-general, api-table, cheat-sheet, atomic, comparison, summary, practice,
+dsa, paper-breakdown. The two deep routes use eleven readable headings. Explicit
+custom vault templates and existing legacy notes retain their schemas. The old
+seven-section scaffolder is available with `--template legacy-deep`.
+
+Examples supported by the prompt dispatcher (host-native slash registration varies):
+
+```text
+/scribe-notes How convolution filters work
+/scribe-distill CNN
+/scribe-compare SQL views vs materialized views
+/scribe-dsa cpp Given a nonempty integer array, return its maximum value.
+/scribe-dsa python Given a nonempty integer array, return its maximum value.
+/scribe-practice CNN
+```
+
+Cheap route planning, followed by the existing scaffold/author/validate workflow:
+
+```bash
+python scripts/route_request.py "/scribe-dsa cpp Find the maximum in a nonempty array"
+python scripts/route_request.py "Convolution" --purpose implementation --domain ml --math-level 2
+python scripts/scaffold_note.py --topic CNN --title Convolution --template deepstudy-coding --math-level 2 --dry-run
+```
+
+Routing fixes the note's purpose; math level (0/1/2) and language are separate.
+`route_request.py` helps with command/source/purpose decisions; the agent resolves
+vault/custom-template precedence and broad topic outlines before calling it per note.
+Scaffolds are unfinished drafts; populate them from inspected evidence before
+validation. Saved practice tracks the new-folder obligation in the operational
+manifest; `/scribe-quiz` remains an interactive one-question-per-turn workflow.
+No service, database, runtime research engine or automatic plugin execution is added.
+
+Development checks: `python -m pip install -r requirements.txt pytest`, then
+`python -m pytest -q`. Static checks do not establish Obsidian rendering, factual
+accuracy or measured speedups; inspect those separately when the host supports them.

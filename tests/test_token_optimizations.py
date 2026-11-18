@@ -29,6 +29,8 @@ def test_scaffold_note_creates_valid_7_section_skeleton(tmp_path: Path) -> None:
             "ml/02-gradient-descent.md",
             "--id",
             "ml-02",
+            "--template",
+            "legacy-deep",
             "--number",
             "02",
             "--title",

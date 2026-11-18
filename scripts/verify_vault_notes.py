@@ -25,6 +25,7 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+from note_contracts import routes, validate_route
 
 MANDATORY_TOPIC_KEYS = ("id", "title", "aliases", "base_domain", "master_topic", "topic", "tags")
 
@@ -467,11 +468,18 @@ def _resolve_note_schema(
     """Resolve schema: 'custom' | 'builtin_deep' | 'builtin_cheatsheet' | 'builtin_comparison' | 'generic'."""
     if manifest and rel_file in (manifest.get("outputs") or []):
         ttype = str(manifest.get("template_type", "")).strip().lower()
+        entry = (manifest.get("notes") or {}).get(rel_file, {})
+        if entry.get("template_type") == "custom":
+            return "custom"
+        if ttype != "custom" and entry.get("template") in routes():
+            return "builtin_route:" + entry["template"]
         if ttype in {"custom", "builtin_deep", "builtin_cheatsheet", "builtin_comparison", "generic"}:
             return ttype
 
     if y_obj:
         nt = str(y_obj.get("note_type", "")).strip().lower()
+        if nt in routes() and ("math_level" in y_obj or nt != "comparison"):
+            return "builtin_route:" + nt
         if nt == "cheatsheet":
             return "builtin_cheatsheet"
         if nt == "comparison":
@@ -620,7 +628,7 @@ def validate_file(
                         }
                     )
 
-        if schema == "builtin_deep":
+        if schema == "builtin_deep" or schema.startswith("builtin_route:"):
             for req in MANDATORY_TOPIC_KEYS:
                 if req not in y_obj:
                     findings.append(
@@ -681,7 +689,8 @@ def validate_file(
         line_no = idx + 1
         stripped = raw_line.strip()
 
-        m_fence = re.match(r"^\s*(`{3,}|~{3,})(.*)$", raw_line)
+        fence_line = re.sub(r"^(?:\s*> ?)+", "", raw_line)
+        m_fence = re.match(r"^\s*(`{3,}|~{3,})(.*)$", fence_line)
         if m_fence and not in_display:
             marker = m_fence.group(1)
             lang = m_fence.group(2).strip().lower()
@@ -691,7 +700,7 @@ def validate_file(
                 fence_char = marker[0]
                 fence_len = len(marker)
                 continue
-            if marker[0] == fence_char and len(marker) >= fence_len and stripped[len(marker) :].strip() == "":
+            if marker[0] == fence_char and len(marker) >= fence_len and fence_line.strip()[len(marker) :].strip() == "":
                 in_fence = False
                 in_mermaid = False
                 continue
@@ -1058,6 +1067,15 @@ def validate_file(
                     }
                 )
 
+    if schema.startswith("builtin_route:"):
+        entry = ((manifest or {}).get("notes") or {}).get(rel_file, {})
+        level = entry.get("math_level", (y_obj or {}).get("math_level", 0))
+        for code, message in validate_route(text, schema.split(":", 1)[1], level, expanded_sheet=entry.get("expanded_sheet", False)):
+            findings.append({"file": rel_file, "line": body_idx + 1, "level": "ERROR", "code": code, "message": message})
+        if y_obj is None:
+            findings.append({"file": rel_file, "line": 1, "level": "ERROR", "code": "MISSING_FRONTMATTER", "message": "Built-in route needs identity metadata"})
+    if in_fence:
+        findings.append({"file": rel_file, "line": len(lines), "level": "ERROR", "code": "UNCLOSED_CODE_FENCE", "message": "Close the code fence"})
     return findings
 
 
@@ -1085,17 +1103,19 @@ def main(argv: list[str] | None = None) -> int:
             print(f"ERROR: Manifest not found: {m_path}", file=sys.stderr)
             return 2
         manifest = json.loads(m_path.read_text(encoding="utf-8"))
-        tpl_path = manifest.get("template_path")
-        tpl_hash = manifest.get("template_hash")
-        if tpl_path and tpl_hash:
-            cand_tpl = vault_root / tpl_path
-            if not cand_tpl.is_file() or not _is_within_vault(vault_root, cand_tpl):
-                print(f"ERROR  {tpl_path}:1  STALE_TEMPLATE_PLAN", file=sys.stdout)
-                return 1
-            cur_hash = hashlib.sha256(cand_tpl.read_text(encoding="utf-8").encode("utf-8")).hexdigest()[:16]
-            if cur_hash != tpl_hash:
-                print(f"ERROR  {tpl_path}:1  STALE_TEMPLATE_PLAN", file=sys.stdout)
-                return 1
+        # Check every selected custom template before any scoped --fix mutation.
+        plans = [manifest, *(manifest.get("notes") or {}).values()]
+        for plan in plans:
+            tpl_path, tpl_hash = plan.get("template_path"), plan.get("template_hash")
+            if tpl_path and tpl_hash:
+                cand_tpl = vault_root / tpl_path
+                if not cand_tpl.is_file() or not _is_within_vault(vault_root, cand_tpl):
+                    print(f"ERROR  {tpl_path}:1  STALE_TEMPLATE_PLAN", file=sys.stdout)
+                    return 1
+                cur_hash = hashlib.sha256(cand_tpl.read_text(encoding="utf-8").encode("utf-8")).hexdigest()[:16]
+                if cur_hash != tpl_hash:
+                    print(f"ERROR  {tpl_path}:1  STALE_TEMPLATE_PLAN", file=sys.stdout)
+                    return 1
 
     # Determine scoped files
     scoped_files: list[Path] = []
@@ -1124,7 +1144,10 @@ def main(argv: list[str] | None = None) -> int:
             rel = md_file.relative_to(vault_root).as_posix()
             lines = md_file.read_text(encoding="utf-8").splitlines()
             yl, _ = _split_frontmatter_lines(lines)
-            y_obj = yaml.safe_load("\n".join(yl)) if yl else None
+            try:
+                y_obj = yaml.safe_load("\n".join(yl)) if yl else None
+            except yaml.YAMLError:
+                continue  # Report syntax error below; never repair invalid YAML.
             schema = _resolve_note_schema(rel, y_obj if isinstance(y_obj, dict) else None, manifest)
             repairs.extend(
                 apply_mechanical_fixes(

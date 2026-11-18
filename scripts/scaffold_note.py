@@ -1,16 +1,8 @@
 #!/usr/bin/env python3
-"""Deterministic 7-section deep-note skeleton generator for Scriptorium.
+"""Deterministic selected-template draft generator for Scriptorium.
 
-Generates a compliant YAML frontmatter + > [!abstract] Key Equations +
-7-section deep-note Markdown skeleton so the LLM does not spend output
-tokens emitting boilerplate structure.
-
-Usage:
-  python3 scripts/scaffold_note.py "<vault_path>" \\
-      --output "ml/02-gradient-descent.md" \\
-      --id "ml-02" --number "02" --title "Gradient Descent" \\
-      --base-domain "Computer Science" --master-topic "Machine Learning" --topic "Optimization" \\
-      --tags ml optimization --depends-on "[[01-calculus|Calculus]]"
+Preserves identity/path arguments and syllabus scaffolding. Use --template
+legacy-deep for the original seven-section layout; populate drafts before validation.
 """
 
 from __future__ import annotations
@@ -20,8 +12,10 @@ import sys
 sys.dont_write_bytecode = True
 
 import argparse
+import json
 import os
 import re
+import tempfile
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -29,6 +23,7 @@ if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
 from vault_index import is_within_vault, resolve_vault_root
+from note_contracts import route_name, route_headings, safe_path
 
 
 def _slugify(text: str) -> str:
@@ -37,17 +32,7 @@ def _slugify(text: str) -> str:
 
 
 def _yaml_quote(value: str) -> str:
-    s = str(value)
-    needs_quotes = (
-        s == ""
-        or s.startswith(("[", "{", "*", "&", "!", "|", ">", "'", '"', "%", "@", "`", "- ", "? "))
-        or ": " in s
-        or "#" in s
-    )
-    if not needs_quotes:
-        return s
-    escaped = s.replace("\\", "\\\\").replace('"', '\\"')
-    return f'"{escaped}"'
+    return json.dumps(str(value), ensure_ascii=False)
 
 
 def _format_wikilink(value: str) -> str:
@@ -271,6 +256,22 @@ def render_deep_note_skeleton(
     return "\n".join(lines)
 
 
+def render_note_skeleton(*, template: str = "deepstudy-general", math_level: int = 0, **identity) -> str:
+    """Render a selected built-in draft; keep the legacy renderer explicitly available."""
+    template = route_name(template)
+    if math_level not in (0, 1, 2):
+        raise ValueError("math_level must be 0, 1, or 2")
+    legacy = render_deep_note_skeleton(**identity)
+    header = legacy.split("\n---\n", 1)[0]
+    lines = [header, f"note_type: {template}", f"math_level: {math_level}", "---", "",
+             f"# {identity['number']}. {identity['title']}", "", "<!-- SCRIPTORIUM_DRAFT: populate before completion -->", ""]
+    for heading in route_headings(template, math_level):
+        lines.extend([f"## {heading}", ""])
+        if heading == "Open Confusion":
+            lines.extend(["**Confusion** :: None identified yet", ""])
+    return "\n".join(lines)
+
+
 def render_syllabus_skeleton(
     *,
     note_id: str,
@@ -370,10 +371,12 @@ def render_syllabus_skeleton(
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Scaffold a 7-section Scriptorium deep note or syllabus MOC.")
+    parser = argparse.ArgumentParser(description="Scaffold a selected Scriptorium note draft or syllabus MOC.")
     parser.add_argument("vault_path", nargs="?", help="Path to Obsidian vault.")
     parser.add_argument("--output", help="Vault-relative output path (prints to stdout if omitted).")
     parser.add_argument("--syllabus", action="store_true", help="Scaffold a 00-MOC-<topic>.md syllabus boundary note.")
+    parser.add_argument("--template", default="deepstudy-general", help="Built-in route ID, or legacy-deep for the explicit seven-section contract.")
+    parser.add_argument("--math-level", type=int, choices=[0, 1, 2], default=0)
     parser.add_argument("--allowed-subtopics", nargs="*", default=[], help="Allowlisted subtopic filenames for --syllabus.")
     parser.add_argument("--excluded-topics", nargs="*", default=[], help="Out-of-scope adjacent topics for --syllabus.")
     parser.add_argument("--id", dest="note_id", help="Note YAML id (defaults to <topic-slug>-<number>).")
@@ -406,7 +409,14 @@ def main(argv: list[str] | None = None) -> int:
             print("ERROR: --title is required unless --syllabus is set.", file=sys.stderr)
             return 2
         note_id = args.note_id or f"{_slugify(args.topic)}-{args.number}"
-        content = render_deep_note_skeleton(
+        try:
+            selected = {} if args.template == "legacy-deep" else {"template": route_name(args.template), "math_level": args.math_level}
+        except ValueError as exc:
+            print(f"ERROR: {exc}", file=sys.stderr)
+            return 2
+        renderer = render_deep_note_skeleton if args.template == "legacy-deep" else render_note_skeleton
+        content = renderer(
+            **selected,
             note_id=note_id,
             number=args.number,
             title=args.title,
@@ -425,17 +435,23 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         vault_root = resolve_vault_root(args.vault_path)
-        if ".." in Path(args.output).parts:
-            raise ValueError(f"Path traversal ('..') is not allowed: {args.output}")
-        out_path = Path(args.output)
-        if not out_path.is_absolute():
-            out_path = vault_root / out_path
-        out_path.parent.mkdir(parents=True, exist_ok=True)
-        if not is_within_vault(vault_root, out_path):
-            raise ValueError(f"Output path escapes vault root: {args.output}")
+        # Retain contained absolute output paths supported by the original CLI.
+        requested = Path(args.output)
+        relative = requested.relative_to(vault_root).as_posix() if requested.is_absolute() else args.output
+        out_path = safe_path(vault_root, relative)
         if out_path.exists() and not args.overwrite:
             raise FileExistsError(f"Refusing to overwrite existing note without --overwrite: {args.output}")
-        out_path.write_text(content, encoding="utf-8")
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=out_path.parent, delete=False) as draft:
+            draft.write(content)
+            draft_path = Path(draft.name)
+        try:
+            if args.overwrite:
+                os.replace(draft_path, out_path)
+            else:
+                os.link(draft_path, out_path)  # atomic create, refuses concurrent collisions
+        finally:
+            draft_path.unlink(missing_ok=True)
         print(f"Scaffolded {out_path.relative_to(vault_root).as_posix()}")
     except Exception as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
