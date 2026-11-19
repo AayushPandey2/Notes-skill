@@ -277,4 +277,4 @@ scriptorium/
 
 Released under the [MIT License](LICENSE).
 
-Repository maintenance: run [audit_repository.py](scripts/audit_repository.py) for local links, anchors, documented CLI flags and Python syntax; see [the staged audit](references/repository_audit.md) for inventory and results.
+Repository maintenance: run [audit_repository.py](scripts/audit_repository.py) for local links, anchors, documented CLI flags and Python syntax.

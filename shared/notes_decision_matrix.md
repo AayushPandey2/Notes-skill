@@ -365,20 +365,3 @@ When executed, record the actual command/environment details needed for reproduc
 | Formatting or navigation is uncertain | Check Markdown table columns/escaped pipes, fences, callout quoting, math delimiters, and actual link targets; inspect rendering when available. | Claiming rendered QA when only source syntax was inspected. |
 
 **Example of change:** A conceptual note ends after a precise distinction and a useful transfer question, with no math/code headings. A coding note keeps runnable verification without a forced proof or invented “open confusion.”
-
-## Source comparison and migration notes
-
-The complete repository originals remain recoverable in Git history (for example commit `611ac75`); no source history was deleted. This repository's `templates/deepstudy-master.md` and `shared/notes_decision_matrix.md` are the maintained canonical system.
-
-| Inspected material / finding | Retain or change | Decision home |
-|---|---|---|
-| Originals: explicit purpose, scope, prerequisites, and practical recognition | Preserve where they help the stated reader; remove fixed sentence targets and universal zero-baseline treatment. | DM-01–DM-04 |
-| Originals: named examples, assumptions, shapes/units, step justification | Preserve precise treatment; allow distinct survey examples and compress routine steps. | DM-09–DM-11 |
-| Originals: required history, analogy, fixed pipeline and comparison schema | Make evidence, purpose, and natural structure decide inclusion. | DM-05, DM-12, DM-13, DM-19 |
-| Originals/shared math gate: repeated equation preview, symbol/behavior tables, generic extreme-value checklist | Give each relation one home and check only meaningful conditions. | DM-06–DM-10 |
-| Originals: default dual runnable implementations and production-grade language for teaching code | Choose purpose, tool, layer, and number separately; label toy code honestly. | DM-14–DM-18 |
-| Originals: source integrity, observed execution, useful recall | Preserve; remove question/bug quotas and mandatory reflective/widget output. | DM-05, DM-18–DM-20 |
-| Earlier master: independent axes, optional modules, ML ladder, anti-filler audit | Retain and sharpen; separate the matrices, add reader/outcome/research axes, family scope, stable IDs, and a gate for every module/submodule. | This guide and the master |
-| Earlier master: math that defines a mechanism automatically “explain and derive”; generic check sequence | Separate inclusion from depth and require only applicable checks. Repair nested-fence/placeholder-heavy copy scaffold by using authoring modules. | DM-06–DM-10 and master |
-
-The linked official technical pages in DM-08, DM-15, and DM-16 were inspected on 2026-11-19 for the stated capability distinctions, not to certify every future code example or library version. Recheck mutable behavior when producing an actual note.
