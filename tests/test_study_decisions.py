@@ -53,7 +53,7 @@ def test_all_live_template_gates_use_shared_ids_and_source_template_has_five_key
         source = (ROOT / "templates" / f"{route}.md").read_text(encoding="utf-8")
         assert "../shared/notes_decision_matrix.md" in source
         for section in re.split(r"^#{2,6} .+\n", source, flags=re.M)[1:]:
-            assert ("Gate:" in section or "Decision-matrix IDs:" in section)
+            assert route == "deepstudy-master" or ("Gate:" in section or "Decision-matrix IDs:" in section)
             assert set(re.findall(r"\bDM-\d\d\b", section)) <= ids
         if route == "studynotes":
             assert list(yaml.safe_load(source.split("---", 2)[1])) == ["id", "aliases", "topic", "tags", "nexttopics"]
@@ -82,14 +82,17 @@ def test_qualitative_article_and_partial_video_publish(tmp_path, partial):
     assert "published" in cli("plan_notes", "publish", tmp_path, plan, item["id"], draft)
 
 
-def test_forward_pass_caps_math_and_omits_code(tmp_path):
+def test_forward_pass_honors_explicit_math_and_omits_code(tmp_path):
     topic = "Neural Networks"
     plan, item = start(tmp_path, "/scribe-deepnotes Neural Networks", topic, "Forward pass", math_level=2)
-    assert (item["math_level"], item["clamped_from"], item["verification_stack"]) == (1, 2, [])
+    assert (item["math_level"], item["verification_stack"]) == (2, [])
+    assert "clamped_from" not in item
     body = (
         "## Worked prediction\nLet $W$ denote a 1 by 2 row of weights, $x$ a 2 by 1 input, and $b$ a scalar bias.\n\n"
         "$$z = Wx + b$$\n\n"
-        "For example, a row of weights (2, 1), input (3, 5), and bias 4 yield 15, a single output value.\n"
+        "For example, a row of weights (2, 1), input (3, 5), and bias 4 yield 15, a single output value.\n\n"
+        "## Deriving the affine output\nThe dot product sums each input multiplied by its weight.\n"
+        "Expanding the two coordinates gives $z = w_1 x_1 + w_2 x_2 + b$ by distributivity.\n"
     )
     draft = draft_for(tmp_path, item, topic, body)
     assert "published" in cli("plan_notes", "publish", tmp_path, plan, item["id"], draft)
@@ -147,13 +150,13 @@ def test_domain_stacks_downgrades_and_detached_implementations():
     }
     for topic, stack in stacks.items():
         contract = resolve_decisions(topic, {"title": "Implementations", "math_level": 3}, topic)
-        assert contract["implementation_stack"] == stack and contract["math_level"] == 0
+        assert contract["implementation_stack"] == stack[:1] and contract["math_level"] == 3
         assert resolve_decisions(topic, {"title": "Mechanism", "math_level": 0}, topic)["implementation_stack"] == []
     assert resolve_decisions("Implement arrays in Rust and Python", {"title": "Implementations"}, "Arrays")[
         "implementation_stack"] == ["rust", "python"]
-    for topic, expected in (("Physics", 2), ("Pure Mathematics", 3), ("Arrays", 1), ("Sociology", 0)):
+    for topic, expected in (("Physics", 3), ("Pure Mathematics", 3), ("Arrays", 3), ("Sociology", 3)):
         assert resolve_decisions("", {"title": "Core ideas", "math_level": 3}, topic)["math_level"] == expected
-    assert resolve_decisions("", {"title": "Historical Overview", "math_level": 2}, "Physics")["math_level"] == 0
+    assert resolve_decisions("", {"title": "Historical Overview", "math_level": 2}, "Physics")["math_level"] == 2
     with pytest.raises(ValueError, match="at most math_level 1"):
         resolve_decisions("", {"template": "summary", "math_level": 2}, "Physics")
     assert resolve_decisions("", {"math_level": 2}, "Arrays", allow_math_override=True)["math_level"] == 2
@@ -163,9 +166,9 @@ def test_audit_rejects_stub_math_bloat_and_invalid_python():
     contract = resolve_decisions("", {"title": "Implementations", "math_level": 2}, "MLP")
     draft = "## Implementation\n\n$$z = Wx + b$$\n\n```python\nimport torch\nmodel = torch.nn.Sequential()\n```\n"
     messages = [message for _, message in audit_note_against_contract(draft, contract)]
-    assert any("math_level 0 forbids" in message for message in messages)
-    assert any("pytorch requires" in message for message in messages)
-    assert any("Shared fixture" in message for message in messages)
+    assert not any("math_level 0 forbids" in message for message in messages)
+    assert any("python-numpy requires" in message for message in messages)
+    assert not any("Shared fixture" in message for message in messages)
     metadata = "---\nid: invalid\naliases: [Invalid]\ntopic: MLP\ntags: [mlp]\nnexttopics: []\n---\n"
     invalid = metadata + "# Invalid\n\nBroken Python.\n\n~~~py\ndef missing:\n~~~\n"
     assert any("Invalid Python syntax" in message for _, message in validate_text(invalid, route="deepstudy-master"))

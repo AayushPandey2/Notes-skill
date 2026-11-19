@@ -167,38 +167,17 @@ For each equation, ask whether removing it prevents the reader from understandin
 
 ## DM-07
 
-**Title:** Math depth. **Purpose:** Calibrate mathematical work independently of code and topic track. **Decision question:** Must the reader recognize structure, compute, derive, or establish a guarantee?
+**Title:** Independent mathematical depth. **Purpose:** Match mathematics to each concept's objective. **Decision question:** Does this learner need awareness, a formula, application, derivation or proof?
 
-**Inputs:** Domain, subtopic title and purpose, route, requested level and user override.
-**Default:** Use the applicable domain default, subject to the necessity test.
-**Precedence:** DM-06 decides if math is needed and DM-08 decides whether to use derivatives.
+**Inputs:** Learning objectives, source obligations, prerequisites and explicit profile.
+**Default:** Lowest sufficient local depth; no subject-wide cap for deep study.
+**Precedence:** Explicit goals and source fidelity precede defaults.
 
-| Branch / depth | Output / choice | Leave out or link |
-|---|---|---|
-| Structural/logical (M0) | Terms, relationships, valid states, conditions, or invariants in prose or lightweight logic; math inclusion can still be “none.” | Decorative display equations and forced calculus. |
-| Operational (M1) | Useful formula with assumptions, symbol treatment, small calculation or trace, interpretation, relevant check. | A full proof of a result the reader only applies. |
-| Derivational (M2) | Starting definitions/objective, significant transformations, named justifications, conclusion and limitations. | Expanding routine arithmetic for an already fluent reader. |
-| Proof-level (M3) | Precise theorem or proposition, quantified assumptions, complete argument, and a counterexample to a dropped hypothesis. | Substituting simulation or empirical fit for proof. |
-| A local difficulty needs different depth | Record the exception and explain it where used; e.g., operational note with one brief derivation. | Promoting every formula to the deepest treatment. |
+New deep plans use per-concept M0?M5 from the [depth table](../references/adaptive-engine.md#selection-and-depth). Do not infer proof from ?exhaustive?, suppress a needed derivation because the title says implementation, or impose display-equation quotas. The legacy CLI `math_level` 0/1/2/3 remains an adapter to M0/M3/M4/M5. Structured concepts can vary within a note. Ordinary code, theory, visual and assessment levels remain independent.
 
-Use the lowest level sufficient for the outcome. Study notes start at M0. The planner uses these defaults and ceilings independently of the code-oriented subject family. An unknown domain starts at M0 and can reach M2 for an explicitly selected derivation.
+Existing saved contracts retain their former checks on resume; source-study and compact routes retain their existing CLI range and validation. New deep plans store `contract_version: 2` and use semantic review for mathematical sufficiency, without whole-document equation counts or mandatory proof headings. Display each central relation once where it is explained.
 
-| Domain | Default | Cap | When to raise depth |
-|---|---|---|---|
-| social-studies-humanities | M0 | M0 | Use dated events, percentages, and sourced statistics in prose. |
-| biology | M0 | M1 | A named quantitative law or an explicitly quantitative subtopic. |
-| coding-systems | M0 | M1 | Bounds, resource use, indexing, or memory layout arithmetic. |
-| chemistry | M0 | M2 | Operational stoichiometry, pH, or equilibrium at M1. Reserve M2 for physical chemistry. |
-| ml-applied | M1 | M1 | Forward pass, shape arithmetic, loss application, or parameter counts. |
-| ml-theory | M1 | M2 | Derive a bound, gradient, or optimization result when taught. |
-| physics | M1 | M2 | Use first-principles derivations only when outcomes require them. |
-| pure-mathematics | M2 | M3 | Use quantified proof when proving the guarantee is an outcome. |
-
-Clamp structural, historical, comparative, and dedicated implementation titles to M0 even inside quantitative curricula. An explicit planning override can lift the domain or subtopic ceiling up to M2, with M3 confined to pure mathematics on deep-study routes. API tables, cheat sheets and summaries reject M2 outside pure mathematics. A derivation with code can be scoped as a theory note with a narrowly chosen verification check. The companion implementation note applies the result without deriving it again.
-
-For deep study and source study, M0 forbids display math and formal proof apparatus. M1 uses at most three displays with definitions and a numeric trace, keeping simple assignments and comparisons inline. M2 uses two to six displays, explicit assumptions, justified steps, and at least two distinct boundary regimes. M3 uses a quantified theorem or proposition, a complete proof of the stated scope, and a counterexample to a dropped hypothesis. Display each central equation once and link or refer to it by name. [Math gates](math_gates.md) describe formatting and compatibility for other routes.
-
-**Example of change:** Applying a gradient update can be M1; deriving the update's component derivatives is M2; a pure-mathematics theorem with quantified assumptions and a complete proof earns M3.
+**Example of change:** One gradient-descent lesson uses M1 for motivation, M3 for loss calculation and M4 for update derivation; convergence proof is M5 only when requested.
 
 ## DM-08
 
@@ -372,17 +351,7 @@ Apply [rendering rules](authoring_rules.md#rendering); explain the inference bes
 
 `numpy.gradient` estimates derivatives of sampled values using finite differences; it is not automatic differentiation through an arbitrary model. [NumPy reference](https://numpy.org/doc/stable/reference/generated/numpy.gradient.html).
 
-For a dedicated implementation note, resolve the planned stack from the specialty below. An explicit tool list overrides the default. A conceptual or proof note may omit code, and a verification example selects the single tool that exposes the result unless another tool serves a distinct outcome.
-
-| Specialty | Planned implementations | What each reveals |
-|---|---|---|
-| Classical ML and tabular methods | NumPy, scikit-learn, PyTorch | Array update; estimator and evaluation pipeline; tensor and module API. |
-| Deep-learning layers and training | NumPy, PyTorch, TensorFlow/Keras | Array mechanics; autograd; layer or training workflow. |
-| DSA and algorithms | Python, C++ | Readable state transitions; STL and explicit types. |
-| Systems and memory | C, Rust | Layout and lifecycle; borrowing and ownership. |
-| Databases and queries | SQL | Schema, query, and execution plan. |
-| Web, asynchronous execution, and UI | TypeScript, JavaScript | Typed interface and runtime behavior. |
-| Non-computing | None by default | An explicitly requested simulation can select a suitable tool. |
+For a dedicated implementation note choose one primary tool for the learning objective. Specialty hints provide a fallback (NumPy for transparent numerical updates, Python for algorithm logic, C for layout, SQL for queries, TypeScript for typed web interfaces); explicitly selected tools win. Use scikit-learn for estimator workflows and a tensor framework for tensor/autodiff outcomes. Additional implementations require explicit comparison goals or distinct justified roles. Never automatically generate all specialty frameworks.
 
 **Example of change:** An ownership lesson selects Rust; a database isolation lesson selects SQL; neither receives an obligatory Python implementation.
 
@@ -448,7 +417,7 @@ For a required multi-stack note, state the common inputs and parameters in a **S
 
 When executed, record the actual command/environment details needed for reproduction, observed result, and limits of the check. A documentation check verifies a documented claim, not execution of the sample. Keep verification adjacent to the example/code or in one dedicated module.
 
-For required stacks, each example needs at least six substantive lines and an exercised result. Run the example via the planner's `verify-runtimes` command before publishing. For each stack, report under `### Verification — <stack-id>` with `Status: executed`, the observed `Version:` when reported, and one `text` fence with verbatim stdout. If the report says a package or tool is missing, use the exact static status and omit observed output and version. The publish gate reruns examples from trusted drafts and checks this evidence. Equivalent numeric examples print `PARITY: [<values>]` as one line of finite JSON numbers in the same input order. A workflow-only comparison may use `Parity: workflow-only — <specific reason>`.
+For required stacks, each example must exercise the intended behavior. New deep contracts have no code line quota; legacy contracts retain their earlier minimum. Run the example via the planner's `verify-runtimes` command before publishing. For each stack, report under `### Verification — <stack-id>` with `Status: executed`, the observed `Version:` when reported, and one `text` fence with verbatim stdout. If the report says a package or tool is missing, use the exact static status and omit observed output and version. The publish gate reruns examples from trusted drafts and checks this evidence. Equivalent numeric examples print `PARITY: [<values>]` as one line of finite JSON numbers in the same input order. A workflow-only comparison may use `Parity: workflow-only — <specific reason>`.
 
 **Example of change:** A manual gradient lesson adds a small smooth-point finite-difference check and reports tolerance; an inference-only lesson tests output shapes and values without a gradient check.
 
@@ -483,7 +452,7 @@ KEEP a reference matrix when several already-explained rules benefit from lookup
 
 | Branch / finding | Output / choice | Remove or repair |
 |---|---|---|
-| Retrieval would benefit the learner | Up to `2–3` high-signal questions requiring the selected explain/calculate/derive/implement/choose/verify/debug outcome; answers or checks when useful. | Fixed 5-question quotas, trivia, or unrelated cognitive tiers. |
+| Retrieval would benefit the learner | Select distinct checks for the taught objectives, with answers or checks when useful. Deep notes have no fixed question quota; legacy routes retain their limits. | Trivia, repeated checks or unrelated cognitive tiers. |
 | A takeaway is a useful retrieval cue | Brief cue pointing to the mechanism or decision. | Another full summary of the opening. |
 | A prerequisite, extension, comparison, or application is a real next step | Link an existing note with the relationship explained; use plain text for a future note not yet created. | Broken/ambiguous wikilinks and compulsory next-note promises. |
 | A real uncertainty remains | State the specific question, known limits, and what evidence would resolve it. | Fabricated confusion or empty open-question fields. |

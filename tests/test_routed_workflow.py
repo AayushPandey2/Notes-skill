@@ -170,7 +170,7 @@ def test_cnn_publication_and_interrupted_retry(tmp_path):
     vault = tmp_path / "vault"
     vault.mkdir()
     entries = [
-        _outline("Convolution Operation & Kernels", level=2,
+        _outline("Convolution Operation & Kernels", level=1,
                  routing_reason="Trace the discrete cross-correlation on a small kernel."),
         _outline("History of LeNet to ResNet",
                  routing_reason="Trace architectural changes and their motivation through historical evidence."),

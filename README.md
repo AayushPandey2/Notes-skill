@@ -278,3 +278,5 @@ scriptorium/
 Released under the [MIT License](LICENSE).
 
 Repository maintenance: run [audit_repository.py](scripts/audit_repository.py) for local links, anchors, documented CLI flags and Python syntax.
+
+Deep notes now use a [per-concept instructional engine](references/adaptive-engine.md) and one [master](templates/deepstudy-master.md). Supply `instructional_plan` in an outline to specify learner, objectives, prerequisites, source policy and independent depth profiles. Legacy outlines and commands remain supported. Source-grounded deep publication accepts `--coverage` receipts; see [source fidelity](references/source-fidelity.md). The [migration audit](references/deepnotes-migration.md) records intentional behavior changes, and [evaluation examples](examples/adaptive-deepnotes/README.md) show the tested scenarios and measurement limits.

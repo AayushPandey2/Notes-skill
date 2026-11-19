@@ -18,7 +18,7 @@ def audit(root=ROOT):
     errors = []
     checked = 0
     files = [p for p in root.rglob("*") if p.is_file() and not any(
-        x in p.parts for x in (".git", "__pycache__", ".pytest_cache"))]
+        x in p.parts for x in (".git", "__pycache__", ".pytest_cache", ".test-deps", ".venv"))]
     for path in files:
         if path.suffix not in {".md", ".py"}:
             continue

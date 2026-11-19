@@ -98,7 +98,7 @@ def test_validate_text_rejects_unrequested_physics_code_jargon_legacy_comments_a
         "#### Question 3\nC\n"
         "#### Question 4\nD\n"
     )
-    assert any("DM-20 violation" in msg for _, msg in validate_text(bad_qa))
+    assert not any("DM-20 violation" in msg for _, msg in validate_text(bad_qa))  # No deep question quota.
 
     clean_physics = _physics_note(
         "## Core Model\nEvery point on a wavefront emits secondary wavelets.\n\n"
@@ -123,7 +123,7 @@ def test_decision_matrix_cli_resolve_and_audit(tmp_path: Path) -> None:
         {"title": "Implementations", "purpose": "implement", "impl_weight": "high", "math_level": 1, "language": "python"},
         "Perceptron",
     )
-    assert ml_contract["implementation_stack"] == ["python-numpy", "scikit-learn", "pytorch"]
+    assert ml_contract["implementation_stack"] == ["python-numpy"]
 
     note_file = tmp_path / "01 - Huygens.md"
     note_file.write_text(_physics_note("## Mechanism\n```python\nx = 1\n```\n"), encoding="utf-8")

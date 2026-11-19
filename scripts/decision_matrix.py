@@ -250,6 +250,10 @@ def resolve_decisions(
     if is_non_math_subtopic(title, purpose):
         cap = 0
     math_level = min(requested_level, route_cap, requested_level if allow_math_override else cap)
+    if template in DEEP_ROUTES:
+        # New deep plans preserve explicit depth; domain is a hint, never a ceiling.
+        math_level = item.get("math_level") if item.get("math_level") is not None else (
+            0 if is_non_math_subtopic(title, purpose) else default)
 
     override = item["implementation_stack"] if "implementation_stack" in item else requested_stack(request)
     if override is not None:
@@ -286,7 +290,7 @@ def resolve_decisions(
     elif dedicated and template in DEEP_ROUTES and req_lang in {"", "none", "python"}:
         if specialty == "ml-theory":
             specialty = _specialty(effective_topic, "", "", None)
-        implementation_stack = list(STACKS.get(specialty, (language,)))
+        implementation_stack = list(STACKS.get(specialty, (language,)))[:1]
     elif domain in {"ml-applied", "ml-theory"} and req_lang in {"", "none"}:
         implementation_stack = ["python-numpy"]
     else:
@@ -317,7 +321,7 @@ def resolve_decisions(
     if visual_modality == "diagram-image":
         forbidden_patterns.append("mermaid_flowchart_for_geometry")
 
-    return {
+    contract = {
         "subject_family": subject_family,
         "domain": domain,
         "template": template,
@@ -337,10 +341,47 @@ def resolve_decisions(
         "omitted_sections": omitted_sections,
         "forbidden_patterns": forbidden_patterns,
     }
+    if template in DEEP_ROUTES:
+        from instructional_plan import from_legacy, normalize_plan
+        plan = normalize_plan(item["instructional_plan"]) if "instructional_plan" in item else from_legacy(item, contract)
+        depths = {key: max(c["depth"][key] for c in plan["concepts"]) for key in ("math", "code", "visual")}
+        contract.update({"contract_version": 2, "instructional_plan": plan,
+                         "math_level": (0, 0, 1, 1, 2, 3)[depths["math"]],
+                         "require_math_floor": False, "max_qa_items": None})
+        contract.pop("clamped_from", None)
+        if depths["code"] < 2:
+            if override:
+                raise ValueError("Explicit implementation stack conflicts with a non-executable instructional profile")
+            contract.update(code_depth="pseudocode" if depths["code"] else "none", language="none",
+                            implementation_stack=[], verify_stack=False)
+        else:
+            selected = override if override is not None else implementation_stack or ["python"]
+            if not selected:
+                raise ValueError("Executable code objective conflicts with an empty implementation stack")
+            contract.update(code_depth="from-scratch" if depths["code"] >= 4 else "illustrative",
+                            implementation_stack=selected, verify_stack=True,
+                            language="python" if selected[0] in {"python-numpy", "scikit-learn", "pytorch", "tensorflow-keras"} else selected[0])
+        # These are capabilities, not mandatory reader-facing section headings.
+        active = {name for c in plan["concepts"] for name, choice in c["modules"].items() if choice["status"] == "required"}
+        contract["required_sections"] = sorted(active)
+        contract["omitted_sections"] = ["code_verification"] if depths["code"] < 2 else []
+        contract["visual_modality"] = visual_modality if depths["visual"] else "none"
+        contract["forbidden_patterns"] = ["legacy_section_comments", "bare_root_domain_citations"]
+        if depths["code"] < 2:
+            contract["forbidden_patterns"] += ["fenced_code_blocks", "execution_claims"]
+    return contract
 
 
 def audit_math(prose: list[str], contract: dict[str, Any]) -> list[tuple[int, str]]:
     """Check structural evidence of the intended math depth."""
+    if contract.get("contract_version") == 2:
+        # Per-concept semantic review replaces document-wide display/heading quotas.
+        # With no saved profile, a standalone lint cannot infer instructional depth.
+        concepts = contract.get("instructional_plan", {}).get("concepts", [])
+        if contract.get("explicit_contract") and concepts and all(c["depth"]["math"] == 0 for c in concepts):
+            if DISPLAY_MATH.search("\n".join(prose)):
+                return [(1, "Display mathematics conflicts with the saved all-M0 instructional profile.")]
+        return []
     level = contract.get("math_level")
     if type(level) is not int:
         return []
@@ -426,14 +467,14 @@ def audit_note_against_contract(note_text: str, contract: dict[str, Any]) -> lis
     code_depth = contract.get("code_depth", "none")
     subject_family = contract.get("subject_family", "general")
     visual_modality = contract.get("visual_modality", "none")
-    max_qa = int(contract.get("max_qa_items", 3))
+    max_qa = contract.get("max_qa_items", 3)
 
     for idx, line in enumerate(note_text.splitlines(), 1):
         if LEGACY_SECTION_COMMENT_RE.search(line):
             findings.append((idx, "Legacy <!-- SECTION: S* --> marker is forbidden; use adaptive headings."))
 
     # Check fenced code blocks & Mermaid modality
-    enforce_no_code = code_depth == "none" and (subject_family == "non-computing" or bool(contract.get("explicit_contract")))
+    enforce_no_code = code_depth in {"none", "pseudocode"} and (subject_family == "non-computing" or bool(contract.get("explicit_contract")))
     has_code_fence = any(block.lang in CODE_LANG_FENCES for block in blocks)
     for block in blocks:
         if enforce_no_code and block.lang in CODE_LANG_FENCES:
@@ -446,7 +487,7 @@ def audit_note_against_contract(note_text: str, contract: dict[str, Any]) -> lis
         findings.extend(audit_math(lines, contract))
     stack = contract.get("implementation_stack", [])
     if stack and contract.get("verify_stack", True):
-        _, missing = required_examples(blocks, stack)
+        _, missing = required_examples(blocks, stack, minimum_lines=1 if contract.get("contract_version") == 2 else 6)
         findings.extend(missing)
         if len(stack) > 1:
             if not any(re.match(r"^(?:\*\*)?Shared fixture(?:\*\*)?:(?:\*\*)?\s*\S", line, re.I) for line in lines):
@@ -476,7 +517,7 @@ def audit_note_against_contract(note_text: str, contract: dict[str, Any]) -> lis
                 if phrase.lower() in line.lower():
                     findings.append((idx, f"DM-00 violation: CS/architecture phrasing '{phrase}' is forbidden in non-computing notes."))
 
-    if subject_family == "non-computing" or bool(contract.get("explicit_contract")):
+    if max_qa is not None and (subject_family == "non-computing" or bool(contract.get("explicit_contract"))):
         visible = "\n".join(lines)
         qa_matches = list(QA_HEADING_RE.finditer(visible))
         if len(qa_matches) > max_qa:

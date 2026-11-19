@@ -27,11 +27,10 @@ def test_master_gates_and_matrix_links_resolve():
     matrix_ids = re.findall(r"^## (DM-\d{2})$", guide, re.M)
     assert len(matrix_ids) == len(set(matrix_ids))
     assert set(matrix_ids) == {f"DM-{i:02}" for i in range(1, 21)}
-    assert set(re.findall(r"DM-\d{2}", master)) == set(matrix_ids)
-    for section in re.split(r"^#{2,6} .+\n", master, flags=re.M)[1:]:
-        for field in ("Decision-matrix IDs", "Include when", "Adapt when", "Omit or link when",
-                      "Quality check", "Duplication check"):
-            assert section.count(f"**{field}:**") == 1
+    # The master composes capabilities; detailed branch gates are progressively loaded.
+    assert "../references/adaptive-engine.md" in master
+    assert "../references/instructional-registry.json" in master
+    assert "Authoring gate" not in master
     for block in re.split(r"^## DM-\d{2}\n", guide, flags=re.M)[1:]:
         for field in ("**Title:**", "**Purpose:**", "**Decision question:**", "**Example of change:**"):
             assert field in block
@@ -105,8 +104,9 @@ def test_planner_preserves_independent_record_and_does_not_invent_frameworks(tmp
     assert entry["template"] == "deepstudy-master"
     assert entry["decision_record"] == record
     assert entry["verification_stack"] == ["python"]
-    assert entry["math_level"] == 0
-    assert entry["clamped_from"] == 3
+    assert entry["math_level"] == 3
+    assert "clamped_from" not in entry
+    assert entry["decision_contract"]["contract_version"] == 2
     for alias in note_layout.DEEP_ROUTES:
         routed = plan_notes.build_plan(tmp_path, "Study Check", ".", [{**item, "template": alias}])
         assert routed["plan"][0]["template"] == "deepstudy-master"

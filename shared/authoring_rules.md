@@ -18,7 +18,7 @@ Read the full supporting passage before citing it. Cite near claims; record vers
 
 ## Cohesion
 
-Explain the causal connection between ideas; use precise student-to-future-self prose and domain-natural headings (ban CS/architecture buzzwords like `"Computational Purpose"`, `"Position in the Broader Architecture"`, `"Taxonomic Lineage"`, `"Deep Theory Stack"`, `"Cross-Architecture Trade-Off"`, and `"Parameter Synthesis & Reverse-Engineering"` on non-software notes). Merge opening Core Model, Scope, Prerequisites, and History into one concise opening without repeating the thesis, and cap Q&A mastery sets at `2–3` non-overlapping questions. Define notation at first use and keep asymmetric example values.
+Explain the causal connection between ideas; use precise student-to-future-self prose and domain-natural headings (ban CS/architecture buzzwords like `"Computational Purpose"`, `"Position in the Broader Architecture"`, `"Taxonomic Lineage"`, `"Deep Theory Stack"`, `"Cross-Architecture Trade-Off"`, and `"Parameter Synthesis & Reverse-Engineering"` on non-software notes). Merge short opening material when it avoids repetition; give substantial missing prerequisites enough space before use. Deep-note mastery checks follow the objectives without a question quota; other routes retain their existing limits. Define notation at first use and keep asymmetric example values.
 
 ## Links and placement
 

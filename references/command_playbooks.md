@@ -12,7 +12,7 @@ Expand: inspect coverage with `vault_index.py --discover` and read `detected_wor
 
 ## Command C
 
-Deepnotes: resolve `decision_matrix.py` first (`code_depth="none"` and domain-natural headings for non-computing subjects; never emit unrequested Python/NumPy wrappers or legacy `<!-- SECTION: S* -->` markers). Select primary evidence and first-principles depth with the decision record. Persist the dependency plan, complete all pending notes, then run `validate_note.py` + scoped graph and semantic checks.
+Deepnotes: build the [instructional plan](adaptive-engine.md) from objectives, reader baseline and inspected sources, then persist through `plan_notes.py start`. Select subtemplates and module depths per concept; code needs a learning purpose and a justified primary tool. Compose with the single master, complete pending notes, and apply source coverage, runtime, structural and semantic checks. Never emit internal module headings or legacy markers.
 
 ## Command D
 

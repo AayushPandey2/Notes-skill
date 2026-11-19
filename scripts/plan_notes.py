@@ -287,7 +287,7 @@ def build_plan(
             tags=tags,
             allow_math_override=allow_math_override,
         )
-        if decision_contract["subject_family"] == "non-computing" and route in DEEP_ROUTES:
+        if decision_contract["subject_family"] == "non-computing" and route in DEEP_ROUTES and "instructional_plan" not in item:
             if lang != "none" or selected_stack or item.get("impl_weight") == "high":
                 raise ValueError(f"Non-computing topic '{title}' prohibits code/implementation. Request a simulation explicitly.")
         level = decision_contract["math_level"]
@@ -491,7 +491,7 @@ def _planned_examples(content: str, item: dict):
     blocks, prose = split_blocks("\n".join(content.splitlines()[body_start:]))
     contract = item.get("decision_contract") or {}
     stack = contract.get("implementation_stack", []) if contract.get("verify_stack") else []
-    examples, missing = required_examples(blocks, stack)
+    examples, missing = required_examples(blocks, stack, minimum_lines=1 if contract.get("contract_version") == 2 else 6)
     if findings := check_python(blocks) + missing:
         raise ValueError("\n".join(f"{body_start + line}: {message}" for line, message in findings))
     return examples, blocks, prose
@@ -502,7 +502,7 @@ def _check_export(path: Path, data: bytes) -> None:
         raise ValueError(f"Conflicting example output, preserved: {path}")
 
 
-def publish(vault: Path, plan_id: str, item_id: str, draft: Path, *, export_code: bool = False) -> str:
+def publish(vault: Path, plan_id: str, item_id: str, draft: Path, *, export_code: bool = False, coverage: dict | None = None) -> str:
     from validate_note import read_frontmatter, validate_text
 
     saved = _read_plan(vault, plan_id)
@@ -520,6 +520,14 @@ def publish(vault: Path, plan_id: str, item_id: str, draft: Path, *, export_code
     target = targets[item_id]
     data = (target if complete else draft).read_bytes()
     content = data.decode("utf-8-sig")
+    from instructional_plan import coverage_errors
+    instructional = (item.get("decision_contract") or {}).get("instructional_plan", {})
+    coverage_path = _under_vault(vault, (_plan_dir(vault, plan_id) / f"{item_id}.coverage.json").relative_to(vault).as_posix())
+    if complete and coverage is None and coverage_path.is_file():
+        coverage = json.loads(coverage_path.read_text(encoding="utf-8"))["report"]
+    errors = coverage_errors(instructional, coverage, content)
+    if errors:
+        raise ValueError("\n".join(errors))
     findings = validate_text(
         content, vault=vault, target=target, planned=targets.values(),
         route=item["template"], math_level=item["math_level"],
@@ -545,11 +553,21 @@ def publish(vault: Path, plan_id: str, item_id: str, draft: Path, *, export_code
     intent = _under_vault(vault, (journal / f"{item_id}.intent").relative_to(vault).as_posix())
     receipt = _under_vault(vault, (journal / f"{item_id}.done").relative_to(vault).as_posix())
     digest = _hash(data).encode()
+    if coverage is not None:
+        coverage_bytes = json.dumps({"draft_hash": digest.decode(), "report": coverage}, sort_keys=True, ensure_ascii=False).encode("utf-8")
+        if coverage_path.exists() and coverage_path.read_bytes() != coverage_bytes:
+            raise ValueError("Source coverage receipt differs from an earlier publication attempt")
     try:
         _write_once(intent, digest)
     except FileExistsError:
         if intent.read_bytes() != digest:
             raise ValueError("Publish already started with different draft bytes. Retry the original draft.")
+    if coverage is not None:
+        try:
+            _write_once(coverage_path, coverage_bytes)
+        except FileExistsError:
+            if coverage_path.read_bytes() != coverage_bytes:
+                raise ValueError("Conflicting source coverage receipt; existing report preserved")
     for export, example_data in exports.items():
         try:
             _write_once(export, example_data)
@@ -597,6 +615,7 @@ def main(argv: list[str] | None = None) -> int:
             sub.add_argument("draft", type=Path)
         if action == "publish":
             sub.add_argument("--export-code", action="store_true")
+            sub.add_argument("--coverage", type=Path, help="Validated source-element coverage report JSON.")
     args = parser.parse_args(argv)
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
@@ -608,7 +627,8 @@ def main(argv: list[str] | None = None) -> int:
         else:
             vault = resolve_vault_root(args.vault)
             if args.action == "publish":
-                print(publish(vault, args.plan_id, args.item_id, args.draft, export_code=args.export_code))
+                coverage = json.loads(args.coverage.read_text(encoding="utf-8-sig")) if args.coverage else None
+                print(publish(vault, args.plan_id, args.item_id, args.draft, export_code=args.export_code, coverage=coverage))
                 return 0
             if args.action == "verify-runtimes":
                 saved = _read_plan(vault, args.plan_id)

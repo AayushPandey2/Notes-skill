@@ -127,7 +127,7 @@ def check_python(blocks: list[Block]) -> list[tuple[int, str]]:
     return findings
 
 
-def _matches_stack(block: Block, stack: str) -> bool:
+def _matches_stack(block: Block, stack: str, minimum_lines: int = 6) -> bool:
     langs = PYTHON if stack == "python" or stack in PYTHON_PACKAGES else FENCE_LANGS.get(stack, {stack})
     if block.lang not in langs:
         return False
@@ -148,19 +148,20 @@ def _matches_stack(block: Block, stack: str) -> bool:
             return False
     else:
         code = re.sub(r"/\*[\s\S]*?\*/|(?m://[^\n]*|^\s*--[^\n]*)", "", code)
-    return sum(bool(line.strip()) for line in code.splitlines()) >= 6 and all(
+    return sum(bool(line.strip()) for line in code.splitlines()) >= minimum_lines and all(
         re.search(pattern, code, re.I) for pattern in STACK_PATTERNS.get(stack, ())
     )
 
 
-def required_examples(blocks: list[Block], stack: list[str]) -> tuple[dict[str, Block], list[tuple[int, str]]]:
+def required_examples(blocks: list[Block], stack: list[str], *, minimum_lines: int = 6) -> tuple[dict[str, Block], list[tuple[int, str]]]:
     examples = {}
     findings = []
     for name in stack:
-        matches = [block for block in blocks if _matches_stack(block, name)]
+        matches = [block for block in blocks if _matches_stack(block, name, minimum_lines)]
         if len(matches) != 1 or matches[0] in examples.values():
             line = matches[0].line if matches else 1
-            findings.append((line, f"DM-17: {name} requires one distinct runnable block with at least six substantive lines and an exercised result."))
+            requirement = "at least six substantive lines and " if minimum_lines == 6 else ""
+            findings.append((line, f"DM-17: {name} requires one distinct runnable block with {requirement}an exercised result."))
         else:
             examples[name] = matches[0]
     return examples, findings

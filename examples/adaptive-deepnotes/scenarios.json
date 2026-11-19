@@ -1,0 +1,486 @@
+[
+  {
+    "name": "A-conceptual",
+    "topic": "What is Artificial Intelligence?",
+    "item": {
+      "title": "What is Artificial Intelligence?",
+      "purpose": "explain",
+      "impl_weight": "low",
+      "density": "cohesive",
+      "routing_reason": "Scenario-driven instructional evaluation.",
+      "instructional_plan": {
+        "audience": "beginner",
+        "source_policy": "independent",
+        "concepts": [
+          {
+            "id": "meaning",
+            "title": "Meaning and distinctions",
+            "types": [
+              "conceptual"
+            ],
+            "objectives": [
+              "explain"
+            ],
+            "depth": {
+              "practice": 2
+            },
+            "prerequisites": [],
+            "reason": "Selected from the stated learning task."
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "B-mathematical",
+    "topic": "Gradient Descent",
+    "item": {
+      "title": "Gradient Descent",
+      "purpose": "explain",
+      "impl_weight": "low",
+      "density": "cohesive",
+      "routing_reason": "Scenario-driven instructional evaluation.",
+      "instructional_plan": {
+        "audience": "beginner",
+        "source_policy": "independent",
+        "concepts": [
+          {
+            "id": "loss",
+            "title": "Loss interpretation",
+            "types": [
+              "conceptual",
+              "mathematical"
+            ],
+            "objectives": [
+              "explain"
+            ],
+            "depth": {
+              "math": 2,
+              "visual": 2
+            },
+            "prerequisites": [],
+            "reason": "Selected from the stated learning task."
+          },
+          {
+            "id": "update",
+            "title": "Derive and compute an update",
+            "types": [
+              "mathematical"
+            ],
+            "objectives": [
+              "derive",
+              "calculate"
+            ],
+            "depth": {
+              "visual": 3
+            },
+            "prerequisites": [
+              {
+                "concept": "loss",
+                "treatment": "reminder"
+              },
+              {
+                "concept": "derivative",
+                "treatment": "explain"
+              }
+            ],
+            "reason": "Selected from the stated learning task."
+          },
+          {
+            "id": "code",
+            "title": "Implement the scalar update",
+            "types": [
+              "programming"
+            ],
+            "objectives": [
+              "implement"
+            ],
+            "depth": {},
+            "prerequisites": [
+              {
+                "concept": "update",
+                "treatment": "known"
+              }
+            ],
+            "reason": "Selected from the stated learning task."
+          }
+        ]
+      },
+      "implementation_stack": [
+        "python"
+      ]
+    }
+  },
+  {
+    "name": "C-programming",
+    "topic": "Binary Search",
+    "item": {
+      "title": "Binary Search",
+      "purpose": "explain",
+      "impl_weight": "low",
+      "density": "cohesive",
+      "routing_reason": "Scenario-driven instructional evaluation.",
+      "instructional_plan": {
+        "audience": "beginner",
+        "source_policy": "independent",
+        "concepts": [
+          {
+            "id": "search",
+            "title": "Search a sorted sequence",
+            "types": [
+              "algorithmic",
+              "programming"
+            ],
+            "objectives": [
+              "explain",
+              "trace",
+              "implement",
+              "debug"
+            ],
+            "depth": {
+              "code": 4,
+              "visual": 2
+            },
+            "prerequisites": [],
+            "reason": "Selected from the stated learning task."
+          }
+        ]
+      },
+      "implementation_stack": [
+        "python"
+      ]
+    }
+  },
+  {
+    "name": "D-architectural",
+    "topic": "Transformer Encoder",
+    "item": {
+      "title": "Transformer Encoder",
+      "purpose": "explain",
+      "impl_weight": "low",
+      "density": "cohesive",
+      "routing_reason": "Scenario-driven instructional evaluation.",
+      "instructional_plan": {
+        "audience": "beginner",
+        "source_policy": "independent",
+        "concepts": [
+          {
+            "id": "flow",
+            "title": "Components and tensor flow",
+            "types": [
+              "architectural",
+              "mathematical"
+            ],
+            "objectives": [
+              "explain",
+              "analyze"
+            ],
+            "depth": {
+              "math": 3,
+              "visual": 4
+            },
+            "prerequisites": [],
+            "reason": "Selected from the stated learning task."
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "E-procedural",
+    "topic": "Data Preprocessing with Pandas",
+    "item": {
+      "title": "Data Preprocessing with Pandas",
+      "purpose": "explain",
+      "impl_weight": "low",
+      "density": "cohesive",
+      "routing_reason": "Scenario-driven instructional evaluation.",
+      "instructional_plan": {
+        "audience": "beginner",
+        "source_policy": "independent",
+        "concepts": [
+          {
+            "id": "clean",
+            "title": "Transform and validate data",
+            "types": [
+              "procedural",
+              "programming",
+              "comparative"
+            ],
+            "objectives": [
+              "apply",
+              "implement",
+              "compare",
+              "debug"
+            ],
+            "depth": {
+              "code": 4,
+              "visual": 2
+            },
+            "prerequisites": [],
+            "reason": "Selected from the stated learning task."
+          }
+        ]
+      },
+      "implementation_stack": [
+        "python"
+      ]
+    }
+  },
+  {
+    "name": "F-historical",
+    "topic": "History of Machine Learning",
+    "item": {
+      "title": "History of Machine Learning",
+      "purpose": "explain",
+      "impl_weight": "low",
+      "density": "cohesive",
+      "routing_reason": "Scenario-driven instructional evaluation.",
+      "instructional_plan": {
+        "audience": "beginner",
+        "source_policy": "independent",
+        "concepts": [
+          {
+            "id": "chronology",
+            "title": "Developments in context",
+            "types": [
+              "historical",
+              "comparative"
+            ],
+            "objectives": [
+              "explain",
+              "compare"
+            ],
+            "depth": {
+              "visual": 2,
+              "practice": 2
+            },
+            "prerequisites": [],
+            "reason": "Selected from the stated learning task."
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "G-source",
+    "topic": "Ordered Lookup",
+    "item": {
+      "title": "Ordered Lookup",
+      "purpose": "explain",
+      "impl_weight": "low",
+      "density": "cohesive",
+      "routing_reason": "Scenario-driven instructional evaluation.",
+      "instructional_plan": {
+        "audience": "beginner",
+        "source_policy": "expanded",
+        "concepts": [
+          {
+            "id": "ordered",
+            "title": "Order and lookup",
+            "types": [
+              "conceptual",
+              "algorithmic"
+            ],
+            "objectives": [
+              "explain",
+              "trace"
+            ],
+            "depth": {
+              "visual": 2
+            },
+            "prerequisites": [],
+            "reason": "Selected from the stated learning task."
+          }
+        ],
+        "sources": [
+          {
+            "id": "definition",
+            "kind": "definition",
+            "location": "source-fixture.md, Definition",
+            "access": "full",
+            "required": true,
+            "concepts": [
+              "ordered"
+            ]
+          },
+          {
+            "id": "example",
+            "kind": "example",
+            "location": "source-fixture.md, Example",
+            "access": "full",
+            "required": true,
+            "concepts": [
+              "ordered"
+            ]
+          },
+          {
+            "id": "figure",
+            "kind": "figure",
+            "location": "source-fixture.md, Figure",
+            "access": "full",
+            "required": true,
+            "concepts": [
+              "ordered"
+            ]
+          },
+          {
+            "id": "exercise",
+            "kind": "exercise",
+            "location": "source-fixture.md, Exercise",
+            "access": "full",
+            "required": true,
+            "concepts": [
+              "ordered"
+            ]
+          },
+          {
+            "id": "qualification",
+            "kind": "qualification",
+            "location": "source-fixture.md, Qualification",
+            "access": "full",
+            "required": true,
+            "concepts": [
+              "ordered"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "H-mixed",
+    "topic": "Perceptron",
+    "item": {
+      "title": "Perceptron",
+      "purpose": "explain",
+      "impl_weight": "low",
+      "density": "cohesive",
+      "routing_reason": "Scenario-driven instructional evaluation.",
+      "instructional_plan": {
+        "audience": "beginner",
+        "source_policy": "independent",
+        "concepts": [
+          {
+            "id": "model",
+            "title": "Weighted prediction and geometry",
+            "types": [
+              "conceptual",
+              "mathematical"
+            ],
+            "objectives": [
+              "explain",
+              "calculate"
+            ],
+            "depth": {
+              "visual": 3
+            },
+            "prerequisites": [],
+            "reason": "Selected from the stated learning task."
+          },
+          {
+            "id": "learning",
+            "title": "Mistake-driven update",
+            "types": [
+              "algorithmic",
+              "programming"
+            ],
+            "objectives": [
+              "trace",
+              "implement",
+              "debug"
+            ],
+            "depth": {
+              "code": 4
+            },
+            "prerequisites": [
+              {
+                "concept": "model",
+                "treatment": "known"
+              }
+            ],
+            "reason": "Selected from the stated learning task."
+          }
+        ]
+      },
+      "implementation_stack": [
+        "python-numpy"
+      ]
+    }
+  },
+  {
+    "name": "I-beginner",
+    "topic": "Gradient Descent",
+    "item": {
+      "title": "Gradient Descent",
+      "purpose": "explain",
+      "impl_weight": "low",
+      "density": "cohesive",
+      "routing_reason": "Scenario-driven instructional evaluation.",
+      "instructional_plan": {
+        "audience": "beginner",
+        "source_policy": "independent",
+        "concepts": [
+          {
+            "id": "step",
+            "title": "Understand one step",
+            "types": [
+              "conceptual",
+              "mathematical"
+            ],
+            "objectives": [
+              "explain",
+              "calculate"
+            ],
+            "depth": {
+              "visual": 3
+            },
+            "prerequisites": [
+              {
+                "concept": "slope",
+                "treatment": "explain"
+              }
+            ],
+            "reason": "Selected from the stated learning task."
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "I-advanced",
+    "topic": "Gradient Descent",
+    "item": {
+      "title": "Gradient Descent",
+      "purpose": "explain",
+      "impl_weight": "low",
+      "density": "cohesive",
+      "routing_reason": "Scenario-driven instructional evaluation.",
+      "instructional_plan": {
+        "audience": "advanced",
+        "source_policy": "independent",
+        "concepts": [
+          {
+            "id": "guarantee",
+            "title": "Prove descent under smoothness",
+            "types": [
+              "mathematical"
+            ],
+            "objectives": [
+              "prove",
+              "analyze"
+            ],
+            "depth": {},
+            "prerequisites": [
+              {
+                "concept": "smoothness",
+                "treatment": "known"
+              }
+            ],
+            "reason": "Selected from the stated learning task."
+          }
+        ]
+      }
+    }
+  }
+]
