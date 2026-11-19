@@ -1,8 +1,7 @@
 <!-- scaffold:preflight
-Decision-Matrix Pre-Flight: [routing index](../shared/note_decision_matrix.md) and [shared decision guide](../shared/notes_decision_matrix.md).
-Switches: D01 route (`summary`); D02 single-source scope; D03 reader; D04 source synthesis & verification outcome; D05 source access + fact-check;
-D06–D09 `math_level`; D10 chronological anchor/timestamp sequence; D11 fact-check table; D12–D13 independent verification; D14 optional module (`conflict`); D15 final audit.
-Strip this block before emission. Load detailed DM branches only when active.
+Pre-Flight: [router](../router.md) and [authoring rules](../shared/authoring_rules.md).
+Route: `summary` (single-source scope, timestamp/anchor breakdown, independent fact-check audit, optional `conflict` module).
+Strip this block before emission.
 -->
 
 # Verified Source Deconstruction: Article, Documentation, or Video
@@ -11,8 +10,7 @@ Strip this block before emission. Load detailed DM branches only when active.
 
 ## 1. What source am I reviewing & what is its core thesis? (Metadata & 3-Bullet Thesis)
 
-<!-- Gate: DM-01, DM-03, DM-05.
-KEEP source identity, scope, and actual access. Only summarize claims the source supports. Remove this gate before publication. -->
+<!-- Authoring note: KEEP source identity, scope, and actual access. Only summarize claims the source supports. Remove this gate before publication. -->
 
 - `> [!info] Source Metadata & Accessibility Audit`:
     - **Title**: Exact source title
@@ -26,8 +24,7 @@ KEEP source identity, scope, and actual access. Only summarize claims the source
 
 ## 2. How does the material unfold section by section? (Anchored Section / Timestamp Breakdown)
 
-<!-- Gate: DM-04, DM-05, DM-11.
-KEEP the verified order and exact locators for accessible passages. State gaps and label added context. Remove this gate before publication. -->
+<!-- Authoring note: KEEP the verified order and exact locators for accessible passages. State gaps and label added context. Remove this gate before publication. -->
 
 - Chronological, deep-context breakdown of the argument, examples, and technical claims:
     - **For YouTube / Video sources**: Prefix every section with a verified clickable Markdown timestamp link formatted as `[03:42](https://www.youtube.com/watch?v=VIDEO_ID&t=222s)`.
@@ -35,16 +32,14 @@ KEEP the verified order and exact locators for accessible passages. State gaps a
 
 ## 3. Which claims hold up to independent verification? (Critical Evaluation & Fact-Check Audit)
 
-<!-- Gate: DM-05, DM-18, DM-19.
-ADAPT the audit to claims that can be checked. Give each independent result a source or mark it unverified. Remove this gate before publication. -->
+<!-- Authoring note: ADAPT the audit to claims that can be checked. Give each independent result a source or mark it unverified. Remove this gate before publication. -->
 
 - Distinguish the author's claims from independent technical verification using a structured table:`Claim / Practice in Source | Timestamp or Section | Independent Verification Status | Nuance, Correction, or Caveat`
 - Explicitly flag commercial sponsorships, affiliate bias, deprecated API calls, outdated best practices, or unbacked assertions (`[UNVERIFIED]`).
 
 ## 4. What are my actionable takeaways & follow-up vault notes? (Actions, Reflections & Commands)
 
-<!-- Gate: DM-03, DM-19, DM-20.
-KEEP applicable actions and links grounded in the source or explicitly labeled analysis. Remove this gate before publication. -->
+<!-- Authoring note: KEEP applicable actions and links grounded in the source or explicitly labeled analysis. Remove this gate before publication. -->
 
 - **Key Takeaways & Immediate Actions**: Bullet list of concrete techniques or mental models to apply.
 - **What I learned** (`2–3` sentences) & **Open Confusion** (`**Confusion** :: ...`).
@@ -53,12 +48,11 @@ KEEP applicable actions and links grounded in the source or explicitly labeled a
 <!-- optional: conflict -->
 ## [OPTIONAL] Where does independent evidence disagree? (Source Conflict)
 
-<!-- Gate: DM-05, DM-19.
-Include only a documented conflict. Attribute both claims and explain the comparison conditions. Remove this gate before publication. -->
+<!-- Authoring note: Include only a documented conflict. Attribute both claims and explain the comparison conditions. Remove this gate before publication. -->
 
 <!-- scaffold:activation
 Contextual Activation Guide
-- When to Include: A consequential claim in the article, docs, or video conflicts with inspected primary documentation, benchmarks, or specifications; D05, D14.
+- When to Include: A consequential claim in the article, docs, or video conflicts with inspected primary documentation, benchmarks, or specifications.
 - When to Omit Cleanly: Omit when Section 3's fact-check table already captures minor caveats or no substantive conflict exists. Delete this heading and block completely; never emit N/A. Renumber following sections and repair links.
 - What to Write: Align definitions and conditions between the source and primary authority, quote only necessary text, pinpoint the supported disagreement, and state what remains unresolved.
 -->

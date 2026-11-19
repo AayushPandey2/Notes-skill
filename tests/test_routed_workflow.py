@@ -47,7 +47,6 @@ def cli(script, *args, code=0):
     ("/scribe-distill CNN", "cheat-sheet", None),
     ("/scribe-compare Adam vs SGD", "comparison", None),
     ("/scribe-deepnotes CNN", "deepstudy-master", None),
-    ("Use deepstudy-coding template for CNN", "deepstudy-master", None),
     ("/scribe-deepnotes https://arxiv.org/abs/1706.03762", "paper-breakdown", None),
     ("/scribe-expand CNN", None, None),
     ("/scribe-ingest CNN https://example.test/docs", None, None),

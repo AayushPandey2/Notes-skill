@@ -20,7 +20,6 @@ if str(SCRIPT_DIR) not in sys.path:
 
 from vault_index import is_within_vault, resolve_vault_root
 from note_layout import ADAPTIVE_ROUTES, DEEP_ROUTES, ROUTES, body_skeleton
-from decision_matrix import resolve_decisions
 
 
 def _slugify(text: str) -> str:
@@ -178,19 +177,6 @@ def render_routed_note(args: argparse.Namespace, note_id: str) -> str:
     }
     frontmatter = yaml.safe_dump(metadata, allow_unicode=True, sort_keys=False)
     body = body_skeleton(route, args.math_level, args.number, args.title, narrow=args.narrow_practice)
-    if route in ADAPTIVE_ROUTES:
-        contract = getattr(args, "contract_data", None) or resolve_decisions(
-            args.title,
-            {"title": args.title, "template": route, "math_level": args.math_level,
-             "language": getattr(args, "language", None) or "none"},
-            topic,
-        )
-        body += (
-            f"\n<!-- decision-contract: subject={contract['subject_family']}; domain={contract.get('domain', 'general')}; "
-            f"math_level={contract['math_level']}; "
-            f"code_depth={contract['code_depth']}; visual={contract['visual_modality']}; "
-            f"max_qa={contract['max_qa_items']}; omit={','.join(contract['omitted_sections']) or 'none'} -->\n"
-        )
     extra_lines: list[str] = []
     if args.depends_on:
         extra_lines.append("- **Prerequisites:** " + ", ".join(_format_wikilink(n) for n in args.depends_on))

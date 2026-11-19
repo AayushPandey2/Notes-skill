@@ -336,7 +336,7 @@ def validate_text(text: str, *, vault: Path | None = None, target: Path | None =
     if math_level is not None and (type(math_level) is not int or math_level not in levels):
         report(1, f"math_level must be one of {levels} for this route.")
         return findings
-    if math_level is not None and (decision_contract or {}).get("domain") and math_level != decision_contract.get("math_level"):
+    if math_level is not None and (decision_contract or {}).get("domain") not in {None, "", "adaptive"} and math_level != decision_contract.get("math_level"):
         report(1, "math_level differs from the saved decision contract.")
         return findings
 
@@ -351,6 +351,8 @@ def validate_text(text: str, *, vault: Path | None = None, target: Path | None =
         report(start + 1, "Legacy <!-- SECTION: S* --> marker is forbidden; remove all section comments and use domain-natural headings.")
     if re.search(r"<!--\s*(?:Gate:|decision-contract:)", body, re.I):
         report(start + 1, "Remove authoring gates and decision records from the finished note.")
+    if re.search(r"(?:shared/notes?_decision_matrix\.md|templates/notes_decision_matrix\.md)", body, re.I):
+        report(start + 1, "Remove obsolete decision-matrix file references from the finished note.")
     clean = HTML_COMMENT.sub(lambda m: "\n" * m[0].count("\n"), body)
     prose, visible, structure, wording = [], [], [], []
     math, displays, preview_displays = 0, 0, 0

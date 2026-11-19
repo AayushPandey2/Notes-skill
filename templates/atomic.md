@@ -1,8 +1,7 @@
 <!-- scaffold:preflight
-Decision-Matrix Pre-Flight: [routing index](../shared/note_decision_matrix.md) and [shared decision guide](../shared/notes_decision_matrix.md).
-Switches: D01 route (`atomic`); D02 single-concept scope; D03 reader; D04 definition outcome; D05 single direct search;
-D06–D09 `math_level` (compact); D10 micro-example fixture; D11 visual (omit unless essential); D12–D13 manual check; D14 optional module (`boundary`); D15 audit (<150 words).
-Strip this block before emission. Load detailed DM branches only when active.
+Pre-Flight: [router](../router.md) and [authoring rules](../shared/authoring_rules.md).
+Route: `atomic` (single-concept scope, <150 words, single direct search, optional `boundary` module).
+Strip this block before emission.
 -->
 
 # Single-Concept Transcludable Knowledge Building Block
@@ -15,29 +14,25 @@ Strip this block before emission. Load detailed DM branches only when active.
 
 ## What is this concept and its governing claim?
 
-<!-- Gate: DM-01, DM-02, DM-03.
-KEEP one independently reusable claim. Define its essential terms within the note. Remove this gate before publication. -->
+<!-- Authoring note: KEEP one independently reusable claim. Define its essential terms within the note. Remove this gate before publication. -->
 
 - `2–3` high-precision sentences defining the exact concept or claim, plus its governing relationship or formula (`$$...$$` if `math_level >= 1`).
 
 ## What does a tiny concrete example look like?
 
-<!-- Gate: DM-05, DM-11.
-ADAPT to the smallest distinct concrete case. Attribute borrowed examples. Remove this gate before publication. -->
+<!-- Authoring note: ADAPT to the smallest distinct concrete case. Attribute borrowed examples. Remove this gate before publication. -->
 
 - One micro numerical, tensor-shape, or real-world example (`2–3` lines maximum) that makes the definition concrete at a glance.
 
 ## Where does the intuition break?
 
-<!-- Gate: DM-06, DM-19.
-KEEP the boundary where the claim changes. MERGE a one-line condition into the claim if it suffices. Remove this gate before publication. -->
+<!-- Authoring note: KEEP the boundary where the claim changes. MERGE a one-line condition into the claim if it suffices. Remove this gate before publication. -->
 
 - `1` crisp sentence naming the primary boundary condition or misconception.
 
 ## How does this connect to the vault?
 
-<!-- Gate: DM-19, DM-20.
-KEEP verified connections that explain where the concept applies. Remove this gate before publication. -->
+<!-- Authoring note: KEEP verified connections that explain where the concept applies. Remove this gate before publication. -->
 
 - `- **Parent / Broader:** [[Resolved Vault Note or Plan Entry]]`
 - `- **Contrasts With:** [[Resolved Vault Note or Plan Entry]]`
@@ -46,12 +41,11 @@ KEEP verified connections that explain where the concept applies. Remove this ga
 <!-- optional: boundary -->
 ## [OPTIONAL] Which nearby case falls outside this definition? (Boundary Case)
 
-<!-- Gate: DM-11, DM-19.
-Include a nearby contrast only when it exposes a distinct boundary. Remove this gate before publication. -->
+<!-- Authoring note: Include a nearby contrast only when it exposes a distinct boundary. Remove this gate before publication. -->
 
 <!-- scaffold:activation
 Contextual Activation Guide
-- When to Include: A plausible near miss clarifies membership within the strict `<150`-word body cap; D02, D14.
+- When to Include: A plausible near miss clarifies membership within the strict `<150`-word body cap.
 - When to Omit Cleanly: Omit if already covered in "Where does the intuition break?" or if adding it would breach the `<150`-word cap. Delete this heading and block completely; never emit N/A. Renumber following sections and repair links.
 - What to Write: State one discriminating condition and its consequence in 1–2 crisp lines; link fuller treatment rather than duplicating it.
 -->

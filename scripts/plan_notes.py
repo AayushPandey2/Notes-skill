@@ -259,11 +259,29 @@ def build_plan(
                 raise ValueError("/scribe-notes prohibits deepstudy-master.")
             route = lock or explicit_item_tpl
             if not route:
-                selected = select_route(item.get("purpose"), item.get("impl_weight"), item.get("density"))
+                selected = select_route(
+                    item.get("purpose", "explain"),
+                    item.get("impl_weight", "low"),
+                    item.get("density", "cohesive"),
+                )
                 route = "studynotes" if selected in DEEP_ROUTES else selected
             level = item.get("math_level", 0)
+        elif intent["command"] == "scribe-deepnotes" or "instructional_plan" in item:
+            # Modern adaptive deep-notes route: never call select_route() to switch subtopics
+            # into api-table, atomic, cheat-sheet, or comparison based on purpose/density/impl_weight.
+            route = lock or item.get("template") or "deepstudy-master"
+            level = item.get("math_level")
         else:
-            route = lock or item.get("template") or select_route(item.get("purpose"), item.get("impl_weight"), item.get("density"))
+            route = lock or item.get("template")
+            if not route:
+                if any(k in item for k in ("purpose", "impl_weight", "density")):
+                    route = select_route(
+                        item.get("purpose", "explain"),
+                        item.get("impl_weight", "low"),
+                        item.get("density", "cohesive"),
+                    )
+                else:
+                    route = "deepstudy-master"
             level = item.get("math_level")
         if route in DEEP_ROUTES:
             route = "deepstudy-master"
@@ -273,20 +291,30 @@ def build_plan(
         lang, verification_stack = _stack(item, route, language)
         selected_stack = item.get("implementation_stack")
         if intent["implementation_stack"] is not None and (
-            len(outline) == 1 or item.get("purpose") == "implement" or item.get("impl_weight") == "high"
-            or re.search(r"\bimplementations?\b", title, re.I)
+            len(outline) == 1 or "instructional_plan" in item or item.get("purpose") == "implement"
+            or item.get("impl_weight") == "high" or re.search(r"\bimplementations?\b", title, re.I)
         ):
             selected_stack = intent["implementation_stack"]
         tags = item.get("tags")
         if tags is not None and (not isinstance(tags, list) or any(not isinstance(tag, str) for tag in tags)):
             raise ValueError(f"{title}: tags must be a list of strings.")
-        decision_contract = resolve_decisions(
-            request,
-            {**item, "template": route, "math_level": level, "language": lang, "implementation_stack": selected_stack},
-            topic,
-            tags=tags,
-            allow_math_override=allow_math_override,
-        )
+        if route in DEEP_ROUTES and "instructional_plan" in item:
+            from instructional_plan import resolve_instructional_contract
+
+            decision_contract = resolve_instructional_contract(
+                request,
+                topic,
+                item["instructional_plan"],
+                item={**item, "template": route, "language": lang, "implementation_stack": selected_stack},
+            )
+        else:
+            decision_contract = resolve_decisions(
+                request,
+                {**item, "template": route, "math_level": level, "language": lang, "implementation_stack": selected_stack},
+                topic,
+                tags=tags,
+                allow_math_override=allow_math_override,
+            )
         if decision_contract["subject_family"] == "non-computing" and route in DEEP_ROUTES and "instructional_plan" not in item:
             if lang != "none" or selected_stack or item.get("impl_weight") == "high":
                 raise ValueError(f"Non-computing topic '{title}' prohibits code/implementation. Request a simulation explicitly.")
@@ -491,7 +519,7 @@ def _planned_examples(content: str, item: dict):
     blocks, prose = split_blocks("\n".join(content.splitlines()[body_start:]))
     contract = item.get("decision_contract") or {}
     stack = contract.get("implementation_stack", []) if contract.get("verify_stack") else []
-    examples, missing = required_examples(blocks, stack, minimum_lines=1 if contract.get("contract_version") == 2 else 6)
+    examples, missing = required_examples(blocks, stack, minimum_lines=1 if contract.get("contract_version") in {2, 3} else 6)
     if findings := check_python(blocks) + missing:
         raise ValueError("\n".join(f"{body_start + line}: {message}" for line, message in findings))
     return examples, blocks, prose

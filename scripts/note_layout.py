@@ -4,11 +4,10 @@ from pathlib import Path
 import re
 
 ROOT = Path(__file__).resolve().parent.parent
-DEEP_ROUTES = {"deepstudy-master", "deepstudy-coding", "deepstudy-general"}
+DEEP_ROUTES = {"deepstudy-master"}
 ROUTES = (
     "deepstudy-master", "api-table", "cheat-sheet", "atomic",
     "comparison", "summary", "practice", "dsa", "paper-breakdown", "studynotes",
-    "deepstudy-coding", "deepstudy-general",
 )
 ADAPTIVE_ROUTES = DEEP_ROUTES | {"studynotes"}
 LEGACY_STUDY_LAYOUT = (
@@ -123,8 +122,8 @@ def body_skeleton(route: str, level: int, number: str, title: str, *, narrow: bo
     lines = [title_heading(route, number, title), ""]
     if route in DEEP_ROUTES:
         return "\n".join(lines) + (
-            "\n<!-- scaffold: Read templates/deepstudy-master.md and shared/notes_decision_matrix.md; "
-            "complete the decision record and author only selected modules. Remove this instruction. -->\n"
+            "\n<!-- scaffold: Read templates/deepstudy-master.md and references/adaptive-engine.md; "
+            "compose only the selected instructional modules. Remove this instruction before publishing. -->\n"
         )
     if route == "studynotes":
         for section, heading in layout:

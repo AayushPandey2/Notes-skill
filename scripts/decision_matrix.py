@@ -213,13 +213,16 @@ def resolve_decisions(
     tags: list[str] | None = None,
     allow_math_override: bool = False,
 ) -> dict[str, Any]:
-    """Resolve DM-00 through DM-20 into a concrete Decision Contract for one note."""
+    """Resolve a note contract.
+
+    For modern deep-study plans (when `instructional_plan` is supplied), delegates directly
+    to `instructional_plan.resolve_instructional_contract()` (contract_version 3) without
+    running legacy domain math ceilings, keyword framework stacks, or regex visual rules.
+    Legacy outlines without `instructional_plan` are isolated through `legacy_contract_adapter`.
+    """
     item = item or {}
     title = str(item.get("title") or "").strip()
     effective_topic = str(topic or item.get("topic") or title or "").strip()
-    specialty = _specialty(effective_topic, title, request, tags)
-    domain = _domain(specialty)
-    subject_family = classify_subject(effective_topic, title, request, tags)
 
     template = item.get("template")
     if not template:
@@ -229,6 +232,28 @@ def resolve_decisions(
             template = "deepstudy-master"
     if template in DEEP_ROUTES:
         template = "deepstudy-master"
+
+    override = item["implementation_stack"] if "implementation_stack" in item else requested_stack(request)
+    if override is not None:
+        override = normalize_stack(override)
+
+    # Modern Adaptive Deep-Notes Engine Path (Contract v3) — Single Source of Truth
+    if template in DEEP_ROUTES and "instructional_plan" in item:
+        from instructional_plan import resolve_instructional_contract
+
+        item_with_stack = {**item, "template": "deepstudy-master"}
+        if override is not None:
+            item_with_stack["implementation_stack"] = override
+        return resolve_instructional_contract(
+            request,
+            effective_topic,
+            item["instructional_plan"],
+            item=item_with_stack,
+        )
+
+    specialty = _specialty(effective_topic, title, request, tags)
+    domain = _domain(specialty)
+    subject_family = classify_subject(effective_topic, title, request, tags)
 
     req_lang = str(item.get("language") or "none").strip().lower()
     impl_weight = str(item.get("impl_weight") or "low").strip().lower()
@@ -251,13 +276,10 @@ def resolve_decisions(
         cap = 0
     math_level = min(requested_level, route_cap, requested_level if allow_math_override else cap)
     if template in DEEP_ROUTES:
-        # New deep plans preserve explicit depth; domain is a hint, never a ceiling.
+        # Legacy deep outline adapter preserves explicit depth without a subject ceiling.
         math_level = item.get("math_level") if item.get("math_level") is not None else (
             0 if is_non_math_subtopic(title, purpose) else default)
 
-    override = item["implementation_stack"] if "implementation_stack" in item else requested_stack(request)
-    if override is not None:
-        override = normalize_stack(override)
     dedicated = purpose == "implement" or bool(re.search(r"\bimplementations?\b", title, re.I))
 
     if subject_family == "non-computing":
@@ -342,13 +364,12 @@ def resolve_decisions(
         "forbidden_patterns": forbidden_patterns,
     }
     if template in DEEP_ROUTES:
-        from instructional_plan import from_legacy, normalize_plan
-        plan = normalize_plan(item["instructional_plan"]) if "instructional_plan" in item else from_legacy(item, contract)
-        depths = {key: max(c["depth"][key] for c in plan["concepts"]) for key in ("math", "code", "visual")}
-        contract.update({"contract_version": 2, "instructional_plan": plan,
-                         "math_level": (0, 0, 1, 1, 2, 3)[depths["math"]],
-                         "require_math_floor": False, "max_qa_items": None})
+        from legacy_contract_adapter import adapt_legacy_contract
+
+        contract = adapt_legacy_contract(item, contract)
         contract.pop("clamped_from", None)
+        plan = contract["instructional_plan"]
+        depths = {key: max(c["depth"][key] for c in plan["concepts"]) for key in ("math", "code", "visual")}
         if depths["code"] < 2:
             if override:
                 raise ValueError("Explicit implementation stack conflicts with a non-executable instructional profile")
@@ -361,7 +382,6 @@ def resolve_decisions(
             contract.update(code_depth="from-scratch" if depths["code"] >= 4 else "illustrative",
                             implementation_stack=selected, verify_stack=True,
                             language="python" if selected[0] in {"python-numpy", "scikit-learn", "pytorch", "tensorflow-keras"} else selected[0])
-        # These are capabilities, not mandatory reader-facing section headings.
         active = {name for c in plan["concepts"] for name, choice in c["modules"].items() if choice["status"] == "required"}
         contract["required_sections"] = sorted(active)
         contract["omitted_sections"] = ["code_verification"] if depths["code"] < 2 else []
@@ -374,7 +394,7 @@ def resolve_decisions(
 
 def audit_math(prose: list[str], contract: dict[str, Any]) -> list[tuple[int, str]]:
     """Check structural evidence of the intended math depth."""
-    if contract.get("contract_version") == 2:
+    if contract.get("contract_version") in {2, 3}:
         # Per-concept semantic review replaces document-wide display/heading quotas.
         # With no saved profile, a standalone lint cannot infer instructional depth.
         concepts = contract.get("instructional_plan", {}).get("concepts", [])
@@ -462,6 +482,10 @@ def audit_math(prose: list[str], contract: dict[str, Any]) -> list[tuple[int, st
 
 def audit_note_against_contract(note_text: str, contract: dict[str, Any]) -> list[tuple[int, str]]:
     """Audit authored note Markdown against its Decision Contract. Returns (line_no, message) pairs."""
+    if contract.get("contract_version") == 3:
+        from instructional_plan import audit_modern_note
+        return audit_modern_note(note_text, contract)
+
     findings: list[tuple[int, str]] = []
     blocks, lines = split_blocks(note_text)
     code_depth = contract.get("code_depth", "none")
@@ -487,7 +511,7 @@ def audit_note_against_contract(note_text: str, contract: dict[str, Any]) -> lis
         findings.extend(audit_math(lines, contract))
     stack = contract.get("implementation_stack", [])
     if stack and contract.get("verify_stack", True):
-        _, missing = required_examples(blocks, stack, minimum_lines=1 if contract.get("contract_version") == 2 else 6)
+        _, missing = required_examples(blocks, stack, minimum_lines=1 if contract.get("contract_version") in {2, 3} else 6)
         findings.extend(missing)
         if len(stack) > 1:
             if not any(re.match(r"^(?:\*\*)?Shared fixture(?:\*\*)?:(?:\*\*)?\s*\S", line, re.I) for line in lines):

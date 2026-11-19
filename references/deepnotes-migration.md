@@ -1,48 +1,18 @@
 # Adaptive deep-notes migration
 
-## Inspection before implementation
+## Second-stage consolidation (Contract v3)
 
-The repository is a prompt-driven skill with Python helpers, not an API-based text generator. `SKILL.md` dispatches through `router.md`; command wrappers in `skills/` retain their names and relative links. `.agents/skills.json` discovers those wrappers. There are no installed model dependencies or provider usage records. Python helpers depend on PyYAML; tests additionally require pytest.
+The adaptive instructional engine (`references/adaptive-engine.md`, `references/instructional-registry.json`, `templates/deepstudy-master.md`, and `scripts/instructional_plan.py`) is the single source of truth for all new deep-note planning, subtemplate composition, selective module activation, per-concept depth assignment (`0–5`), implementation selection, visualization selection, and validation (`contract_version: 3`).
 
-| Stage | Existing implementation | Finding / migration |
-|---|---|---|
-| Intent | `plan_notes.inspect_request`, command locks and template selectors | Preserve commands and explicit format locks. |
-| Sources | Research protocol and run-local source dossier | Preserve inspected-passage rule; add four policies, element inventory and coverage receipts. |
-| Outline | Agent-authored JSON; earlier-item dependencies | Preserve resumability and note paths; add concept-level prerequisites and instructional plans. |
-| Template | One adaptive master, general/coding aliases, separate source-study format | Preserve one master and both aliases; replace repetitive authoring gates with composition rules. |
-| Classification | Title/topic regexes and broad domain | Useful fallback hints, insufficient for instructional decisions; structured types/objectives now take precedence. |
-| Mathematics | M0–3, domain ceilings, display quotas and heading tests | Legacy CLI numbers remain adapters; remove subject ceilings and quotas for new deep plans. |
-| Coding | Implementation purpose automatically selects several specialty frameworks | Select one primary tool; comparisons require explicit stacks or separate justified roles. |
-| Visuals | Domain hints plus Mermaid/image rules | Keep rendering; choose each visual for a specific relationship. |
-| Examples | Small fixtures, shared numerical parity | Preserve reproducibility; vary difficulty and count by outcome and error risk. |
-| Assembly | Agent writes selected modules; scaffold has no forced deep headings | Preserve; add explicit canonical homes, dependency ordering and compact chunk state. |
-| Fidelity | Attribution and access limits, no inventory gate | Add source inventory and publication receipts; source text never supplies execution instructions. |
-| QA | Schema, links, math heuristics, runnable evidence, semantic checklist | Preserve mechanical and runtime checks; distinguish structural evidence from semantic verification. |
-| Tokens | Progressive loading, cached vault index, selective extraction | Preserve; reduce duplicated master instructions and measure static instruction size separately from model usage. |
-| Delivery | Five-key YAML, syllabus, safe publication, practice, vault graph | Preserve output contracts and unaffected commands. |
+### Separation of responsibilities
 
-## Migration inventory
+1. **Command routing (`router.md`, `plan_notes.inspect_request`):** Determines which user-requested workflow or explicit output product runs (`/scribe-deepnotes` -> `deepstudy-master`, `/scribe-notes` -> `studynotes`, `/scribe-compare` -> `comparison`, `/scribe-practice` -> `practice`, `/scribe-distill` -> `cheat-sheet`, `/scribe-atomic-notes` -> `atomic`, `/scribe-dsa` -> `dsa`, standalone paper URL -> `paper-breakdown`, standalone article/video URL -> `summary`).
+2. **Instructional planning (`references/adaptive-engine.md`, `scripts/instructional_plan.py`):** Exclusively controls how a deep-study topic is taught: per-concept knowledge-type subtemplates, deduplicated subtemplate composition (`compose_concept_sequence`, `compose_document_outline`), selective module activation (`required`, `supporting`, `optional`, `excluded`), independent `0–5` depth dimensions (`math`, `code`, `visual`, `theory`, `practice`, `assessment`), prerequisite dependency graphs (`build_concept_dependency_graph`), concept-specific coding and visual selection, and source-element coverage receipts.
+3. **Legacy compatibility (`scripts/legacy_contract_adapter.py`):** Isolates conversion of historical outlines and saved v1/v2 plans (`from_legacy`, `adapt_legacy_contract`) so old artifacts remain readable without allowing obsolete heuristics to influence new deep-note generation.
 
-- **Preserve:** command wrappers, discovery, source-study route, vault index/graph, safe file handling, runtime evidence, five-key metadata, practice placement, general/coding aliases.
-- **Refactor:** router, detailed decision guide, math gates, research and verification guidance, planner/decision contract integration.
-- **Replace:** deep master section checklist, automatic multi-framework defaults, domain-based deep math clamps and equation quotas.
-- **Deprecate:** those defaults, not filenames or command names. Existing saved contracts retain their validation semantics; new plans use the versioned adaptive contract.
-- **Add:** compact knowledge subtemplates/module registry, per-concept profiles, source coverage gate, realistic evaluation fixtures and regression checks.
+### Retired legacy decision-matrix artifacts
 
-No user notes or unrelated functionality are removed. Repository changes are local; installing this checkout into a user-wide skill directory is a separate action.
-
-## Compatibility
-
-`/scribe-deepnotes`, `/scribe-notes`, `/scribe-expand`, deep template aliases and existing CLI flags remain. `/scribe-notes` continues to use `studynotes`, with its established source sequence and multi-file contract. Legacy `math_level` values 0/1/2/3 translate to adaptive M0/M3/M4/M5; they are not renamed to the new scale. Structured `instructional_plan` concepts use independent M/C/V/T/P/A levels 0–5. New deep plans no longer clamp explicit mathematics by discipline or require automatic framework tours. Old plans are not rewritten on resume.
-
-## Validation and measurement
-
-See [evaluation](../examples/adaptive-deepnotes/README.md) for scenario coverage, executable fixtures, measurements and limits. Static instruction size is an input-context proxy, not measured model tokens, latency, cost, or proof of educational improvement. No generation API is added; semantic planning and coherent prose remain the skill agent's responsibility.
-
-## Changed artifacts
-
-Existing files changed: the deep command wrapper, `router.md`, deep master, shared decision index/guide, math and authoring rules, research/verification protocols, command playbook and README. Python changes integrate the versioned plan in `decision_matrix.py`, source coverage receipts in `plan_notes.py`, adaptive executable-example checks in `note_verification.py`, and dependency-directory exclusion in the repository audit. Existing regression expectations changed only for the superseded deep quotas, automatic stacks and math clamps; publication fixtures retain their originally intended math depth explicitly.
-
-Added: `references/adaptive-engine.md`, `references/instructional-registry.json`, `references/source-fidelity.md`, this audit, `scripts/instructional_plan.py`, `tests/test_instructional_engine.py`, and the evaluation fixtures/reports under `examples/adaptive-deepnotes/`. No files or command names were removed. The old master content was replaced in place. Local test dependencies were installed in ignored `.test-deps/`; no runtime model dependency was added.
-
-Remaining limitations: prose and factual/source review still require the skill agent; structural receipts cannot prove source support, and heading order cannot prove within-section source order. Legacy source-study/compact formatting remains intentionally unchanged. Old outlines receive a compatibility plan; substantial or supplied-source work requires the agent to populate the structured plan before drafting. Provider usage and independent model-generation quality comparisons were unavailable. Global skill installation and GitHub publication were not part of this local migration.
+- Removed `shared/note_decision_matrix.md`, `shared/notes_decision_matrix.md`, and `templates/notes_decision_matrix.md` from the active repository after migrating all unique mathematical, coding, visual, and evidence rules into `references/adaptive-engine.md`, `shared/math_gates.md`, and `shared/authoring_rules.md`.
+- Removed `select_route(purpose, impl_weight, density)` from the `/scribe-deepnotes` and `instructional_plan` planning path so deep-study subtopics are never silently switched into `api-table`, `atomic`, `cheat-sheet`, or `comparison` by legacy `impl_weight` or `density` fields.
+- Removed silent `from_legacy()` fallback when a malformed `instructional_plan` is supplied; malformed plans raise actionable `ValueError` validation errors immediately.
+- Removed domain-keyword math ceilings, automatic multi-framework keyword stacks, regex visual overrides, and `<!-- decision-contract: ... -->` / `shared/notes_decision_matrix.md` scaffold comments from new deep-note scaffolds.

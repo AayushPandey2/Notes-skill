@@ -1,6 +1,6 @@
 # Scriptorium
 
-Deep-study notes use [deepstudy-master.md](templates/deepstudy-master.md) with the authoritative [notes_decision_matrix.md](templates/notes_decision_matrix.md). Complete the decision record, then keep only the modules justified by its 20 matrices. The coding/general filenames and selectors are compatibility aliases. Deep-study scaffolding and validation accept optional sections, math depths 0–3, and purpose-selected code without the older fixed table/footer requirements.
+Deep-study notes use [deepstudy-master.md](templates/deepstudy-master.md) with the authoritative [adaptive instructional engine](references/adaptive-engine.md) and [instructional registry](references/instructional-registry.json). Author a per-concept `instructional_plan` specifying knowledge-type subtemplates, objectives, prerequisites, and independent concept depth profiles (`0–5`), then compose only the selected modules. Deep-study scaffolding and validation accept adaptive sections, per-concept depths, and purpose-selected code without legacy decision-matrix ceilings or fixed table/footer quotas.
 
 A modular Obsidian study-note skill. Scriptorium routes individual subtopics to purpose-selected note formats, researches primary sources, expands existing coverage, and creates practice sets and quizzes.
 

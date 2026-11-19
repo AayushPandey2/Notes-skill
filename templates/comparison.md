@@ -1,9 +1,7 @@
 <!-- scaffold:preflight
-Decision-Matrix Pre-Flight: [routing index](../shared/note_decision_matrix.md) and [shared decision guide](../shared/notes_decision_matrix.md).
-Switches: D01 route (`comparison`); D02 family comparison scope; D03 reader; D04 choose/design outcome; D05 vault notes / primary benchmarks;
-D06–D09 `math_level`; D10 shared workload fixture & diverging causal pipeline; D11 visual (`flowchart TD` + matrix);
-D12–D13 verification / benchmark reproducibility; D14 optional modules (`measurement`, `operations`); D15 final audit.
-Strip this block before emission. Load detailed DM branches only when active.
+Pre-Flight: [router](../router.md) and [authoring rules](../shared/authoring_rules.md).
+Route: `comparison` (family trade-off scope, shared workload trace, optional `measurement` and `operations` modules).
+Strip this block before emission.
 -->
 
 # Decision-First Architectural, Algorithm & Tool Comparison
@@ -12,8 +10,7 @@ Strip this block before emission. Load detailed DM branches only when active.
 
 ## 1. Which option should I choose right now? (Choose X When... Verdict Block)
 
-<!-- Gate: DM-01, DM-03, DM-19.
-KEEP conditional decisions with explicit constraints. Remove this gate before publication. -->
+<!-- Authoring note: KEEP conditional decisions with explicit constraints. Remove this gate before publication. -->
 
 - `> [!tip] Executive Decision Rules ("Choose X When...")`:
     - **Choose `<Option A>` when**: Concrete workload, scale, constraint, and latency/accuracy profile.
@@ -23,8 +20,7 @@ KEEP conditional decisions with explicit constraints. Remove this gate before pu
 
 ## 2. How do they compare side by side on equivalent workloads? (Multi-Axis Comparison Matrix)
 
-<!-- Gate: DM-05, DM-17, DM-19.
-KEEP discriminating axes and compare equivalent conditions. Remove this gate before publication. -->
+<!-- Authoring note: KEEP discriminating axes and compare equivalent conditions. Remove this gate before publication. -->
 
 - Render a comprehensive Markdown table comparing all candidates on equivalent workloads (escape all internal pipes `\|`):`Decision Criterion | <Option A> | <Option B> | <Option C (if applicable)> | Governing Trade-Off / Winner`
 - Mandatory rows:
@@ -37,15 +33,13 @@ KEEP discriminating axes and compare equivalent conditions. Remove this gate bef
 
 ## 3. How do their mechanisms diverge under the hood? (Causal Pipeline & Mathematical Contrast)
 
-<!-- Gate: DM-04, DM-06, DM-07, DM-13.
-ADAPT the mechanism contrast to the explanation. Use math or a visual only when needed. Remove this gate before publication. -->
+<!-- Authoring note: ADAPT the mechanism contrast to the explanation. Use math or a visual only when needed. Remove this gate before publication. -->
 
 - Contrast the internal dataflow or equations (`math_level` `0–2` via `shared/math_gates.md`). Include a side-by-side or unified **Mermaid diagram** (`flowchart TD`) illustrating where the two causal pipelines diverge, followed by a `2–3` sentence summary.
 
 ## 4. What happens on the exact same workload and where does the winner flip? (Worked Benchmark & Crossover Edge Case)
 
-<!-- Gate: DM-11, DM-17, DM-18.
-KEEP a matched case that tests the decision. Label observed and expected results. Remove this gate before publication. -->
+<!-- Authoring note: KEEP a matched case that tests the decision. Label observed and expected results. Remove this gate before publication. -->
 
 - **Shared Workload Trace**: Run the **exact same Named Running Example** through `<Option A>` and `<Option B>` step by step (or in a runnable comparison code snippet).
 - **Verified Benchmarks**: Report quantitative benchmark numbers **only** when supported by a cited primary source or a reproducible local test run; otherwise mark `[UNVERIFIED]`.
@@ -53,8 +47,7 @@ KEEP a matched case that tests the decision. Label observed and expected results
 
 ## 5. What did I learn & how does this connect to my stack? (Gotchas, Sources & Reflections)
 
-<!-- Gate: DM-05, DM-19, DM-20.
-KEEP verified sources and caveats that can change the decision. Remove this gate before publication. -->
+<!-- Authoring note: KEEP verified sources and caveats that can change the decision. Remove this gate before publication. -->
 
 - `> [!caution] Migration & Selection Traps`: consequential `_Avoid_ -> True Invariant` entries.
 - **Primary Sources & Benchmark Verification Table**.
@@ -62,12 +55,11 @@ KEEP verified sources and caveats that can change the decision. Remove this gate
 <!-- optional: measurement -->
 ## [OPTIONAL] How can I reproduce this comparison? (Matched Evaluation)
 
-<!-- Gate: DM-17, DM-18.
-Include only when setup or parity requires explanation beyond the worked case. Remove this gate before publication. -->
+<!-- Authoring note: Include only when setup or parity requires explanation beyond the worked case. Remove this gate before publication. -->
 
 <!-- scaffold:activation
 Contextual Activation Guide
-- When to Include: The architectural choice hinges on measured latency, throughput, memory, or accuracy rather than purely qualitative/asymptotic properties; D12–D14.
+- When to Include: The architectural choice hinges on measured latency, throughput, memory, or accuracy rather than purely qualitative/asymptotic properties.
 - When to Omit Cleanly: Omit for purely theoretical/conceptual comparisons or when no benchmark protocol exists. Delete this heading and block completely; never emit N/A. Renumber following sections and repair links.
 - What to Write: Hold task, dataset/workload, split, metric, and resource budget constant; record material environment, observed vs. cited results, and uncertainty; flag any unavoidable mismatch.
 -->
@@ -79,12 +71,11 @@ Contextual Activation Guide
 <!-- optional: operations -->
 ## [OPTIONAL] How do I migrate safely and detect regressions? (Production Deployment & Observability Playbook)
 
-<!-- Gate: DM-14, DM-18, DM-19.
-Include when the reader needs a migration procedure with a measurable regression check. Remove this gate before publication. -->
+<!-- Authoring note: Include when the reader needs a migration procedure with a measurable regression check. Remove this gate before publication. -->
 
 <!-- scaffold:activation
 Contextual Activation Guide
-- When to Include: Switching between `<Option A>` and `<Option B>` in a live system carries data, latency, or compatibility migration risk; D04, D12–D14.
+- When to Include: Switching between `<Option A>` and `<Option B>` in a live system carries data, latency, or compatibility migration risk.
 - When to Omit Cleanly: Omit for greenfield algorithm comparisons or academic concept contrasts. Delete this heading and block completely; never emit N/A. Renumber following sections and repair links.
 - What to Write: Specify shadow/canary rollout criteria, key observability signals that catch regressions early, and the rollback trigger.
 -->

@@ -46,15 +46,15 @@ def draft_for(vault, item, topic, body):
     return draft
 
 
-def test_all_live_template_gates_use_shared_ids_and_source_template_has_five_keys():
-    matrix = (ROOT / "shared" / "notes_decision_matrix.md").read_text(encoding="utf-8")
-    ids = set(re.findall(r"^## (DM-\d\d)$", matrix, re.M))
-    for route in set(ROUTES) - {"deepstudy-coding", "deepstudy-general"}:
+def test_all_live_templates_reference_active_contracts_and_source_template_has_five_keys():
+    for route in ROUTES:
         source = (ROOT / "templates" / f"{route}.md").read_text(encoding="utf-8")
-        assert "../shared/notes_decision_matrix.md" in source
-        for section in re.split(r"^#{2,6} .+\n", source, flags=re.M)[1:]:
-            assert route == "deepstudy-master" or ("Gate:" in section or "Decision-matrix IDs:" in section)
-            assert set(re.findall(r"\bDM-\d\d\b", section)) <= ids
+        assert "../shared/authoring_rules.md" in source
+        assert "notes_decision_matrix.md" not in source
+        assert "note_decision_matrix.md" not in source
+        if route == "deepstudy-master":
+            assert "../references/adaptive-engine.md" in source
+            assert "../references/instructional-registry.json" in source
         if route == "studynotes":
             assert list(yaml.safe_load(source.split("---", 2)[1])) == ["id", "aliases", "topic", "tags", "nexttopics"]
             assert not re.search("teacher|student|class|lecture", source, re.I)
