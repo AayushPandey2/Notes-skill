@@ -34,7 +34,7 @@ def cli(script, *args, code=0):
     ("Create a practice set for my CNN notes", "practice", None),
     ("/scribe-atomic-notes Residual Connection", "atomic", None),
     ("scribe-atomic-notes Residual Connection", "atomic", None),
-    ("/scribe-notes Operating Systems", None, None),
+    ("/scribe-notes Operating Systems", "studynotes", None),
     ("Use studynotes template for Operating Systems", "studynotes", None),
     ("https://www.youtube.com/watch?v=example", "summary", None),
     ("Summarize this paper https://arxiv.org/abs/1706.03762", "summary", None),
@@ -46,7 +46,8 @@ def cli(script, *args, code=0):
     ("Use deepstudy-master template for CNN", "deepstudy-master", None),
     ("/scribe-distill CNN", "cheat-sheet", None),
     ("/scribe-compare Adam vs SGD", "comparison", None),
-    ("/scribe-deepnotes CNN", None, None),
+    ("/scribe-deepnotes CNN", "deepstudy-master", None),
+    ("Use deepstudy-coding template for CNN", "deepstudy-master", None),
     ("/scribe-deepnotes https://arxiv.org/abs/1706.03762", "paper-breakdown", None),
     ("/scribe-expand CNN", None, None),
     ("/scribe-ingest CNN https://example.test/docs", None, None),
@@ -77,6 +78,7 @@ def scaffold(vault, item, *, narrow=False, depends_on=()):
 
 def finish_fixture(draft):
     """Populate structural fixtures with a small addition example."""
+    draft = re.sub(r"^<!-- decision-contract:.+-->\n", "", draft, flags=re.M)
     fills = {
         "> <!-- scaffold: Introduce symbols and 1–3 display equations. -->":
             "> Let x be an integer input and y the integer output.\n> $$y = x + 1$$",
@@ -140,12 +142,15 @@ def test_scaffold_and_lint_all_layouts(tmp_path, route, level):
             "math_level": level, "language": "python" if route == "dsa" else "none"}
     raw = scaffold(tmp_path, item)
     assert raw == scaffold(tmp_path, item)
-    assert ("Key Equations" in raw) == (level > 0 and route not in layout.DEEP_ROUTES and route != "practice")
+    assert ("Key Equations" in raw) == (level > 0 and route not in layout.ADAPTIVE_ROUTES and route != "practice")
     fm = yaml.safe_load(raw.split("---\n", 2)[1])
     assert list(fm.keys()) == ["id", "aliases", "topic", "tags", "nexttopics"]
     note = tmp_path / "note.md"
     note.write_text(finish_fixture(raw), encoding="utf-8")
-    assert "Errors: 0" in cli("validate_note", note)
+    if level == 2 and route in {"api-table", "cheat-sheet", "summary"}:
+        assert "accepts at most math_level 1" in cli("validate_note", note, code=1)
+    else:
+        assert "Errors: 0" in cli("validate_note", note)
     assert any("Unauthorized frontmatter key" in msg for _, msg in validate_text(
         note.read_text(encoding="utf-8").replace("topic: CNN\n", "topic: CNN\ntitle: Extra\n", 1),
         route=route, math_level=level,
@@ -165,8 +170,8 @@ def test_cnn_publication_and_interrupted_retry(tmp_path):
     vault = tmp_path / "vault"
     vault.mkdir()
     entries = [
-        _outline("Convolution Operation & Kernels", "implement", "high", level=2, domain="ml",
-                 routing_reason="Derive discrete cross-correlation and compare a manual trace with PyTorch."),
+        _outline("Convolution Operation & Kernels", level=2,
+                 routing_reason="Trace the discrete cross-correlation on a small kernel."),
         _outline("History of LeNet to ResNet",
                  routing_reason="Trace architectural changes and their motivation through historical evidence."),
         _outline("PyTorch nn.Conv2d Parameters", "reference", density="callables", level=1,
@@ -180,10 +185,10 @@ def test_cnn_publication_and_interrupted_retry(tmp_path):
     plan = yaml.safe_load(cli("plan_notes", *command))
     plan_id = plan["plan_id"]
     assert [(n["template"], n["math_level"], n["output_path"]) for n in plan["plan"]] == [
-        ("deepstudy-master", 2, "01 - Convolution Operation & Kernels.md"),
+        ("deepstudy-master", 1, "01 - Convolution Operation & Kernels.md"),
         ("deepstudy-master", 0, "02 - History of LeNet to ResNet.md"),
-        ("api-table", 1, "03 - PyTorch nn.Conv2d Parameters.md"),
-        ("practice", 2, "Practice Sets/CNN - Practice Test.md"),
+        ("api-table", 0, "03 - PyTorch nn.Conv2d Parameters.md"),
+        ("practice", 1, "Practice Sets/CNN - Practice Test.md"),
     ]
     assert plan["plan"][0]["verification_stack"] == []
     assert not (vault / "CNN").exists()
@@ -196,6 +201,12 @@ def test_cnn_publication_and_interrupted_retry(tmp_path):
         links = [f"[[CNN/{Path(by_id[dep]['output_path']).with_suffix('').as_posix()}]]"
                  for dep in item.get("depends_on", ())]
         content = finish_fixture(scaffold(vault, item, depends_on=links))
+        if item["id"] == "01":
+            content += (
+                "\n## One kernel position\nLet $x_i$ denote each of two input cells and $w_i$ each weight.\n\n"
+                "$$y = w_1 x_1 + w_2 x_2$$\n\n"
+                "For example, inputs 2 and 3 with weights 1 and 4 yield 14.\n"
+            )
         if item["id"] == "02":
             content = content.replace("Each step preserves the integer count.",
                 '~~~mermaid\nflowchart TD\nA["Input"] --> B["Features"] --> C["Output"]\n~~~\n'

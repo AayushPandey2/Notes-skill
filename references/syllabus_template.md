@@ -9,12 +9,14 @@ nexttopics: ["[[01-<subtopic-1-slug>]]"]
 # <Topic Title> — Syllabus & Learning Graph
 
 <!-- AUTHORING CONTRACT:
+- Use the [shared decision guide](../shared/notes_decision_matrix.md) before selecting subtopics.
 - Write this file FIRST in Wave 1 before any 01-... note is created.
 - Nothing outside `allowed_subtopics` may be created during /scribe-deepnotes, /scribe-notes, or /scribe-expand.
 - Tangential concepts must be handled with a 2-sentence inline recap + [[link]] (if in vault) or plain text—never a new .md file.
 -->
 
 ## 1. Scope Boundary Contract
+<!-- Gate: DM-01, DM-02, DM-03. KEEP the scope and allowlist. Include out-of-scope entries when they prevent a plausible tangent. Match the saved plan. -->
 - **Core Learning Objective:** <!-- 1–2 sentences defining the exact start-to-end boundary of <Topic Title>. -->
 - **In-Scope Subtopics (Strict Allowlist):**
   1. `01-<subtopic-1-slug>.md` — <!-- 1-line scope -->
@@ -24,6 +26,7 @@ nexttopics: ["[[01-<subtopic-1-slug>]]"]
   - **<Prerequisite Topic 2>:** <!-- Why excluded; 2-sentence recap rule applies. -->
 
 ## 2. Detailed Learning-Flow Graph
+<!-- Gate: DM-02, DM-13, DM-20. KEEP valid dependency edges. ADAPT graph layers to the actual topic and confirm the order is acyclic. -->
 
 ```mermaid
 flowchart TD
@@ -51,6 +54,7 @@ flowchart TD
 - **Topological Mastery Order:** `01` $\to$ `02` $\to$ `03` $\to$ `04` $\to$ `05`
 
 ## 3. Subtopic Manifest & Status Matrix
+<!-- Gate: DM-01, DM-19, DM-20. KEEP planned note identities and their real dependencies. Update status from observed publication. -->
 
 | Order | Note | Layer | Prerequisites (`depends_on`) | Next | Status |
 |---|---|---|---|---|---|

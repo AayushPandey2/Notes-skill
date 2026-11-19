@@ -52,7 +52,7 @@ def test_scaffold_note_defaults_to_adaptive_deep_study(tmp_path: Path) -> None:
     text = out_file.read_text(encoding="utf-8")
     assert "# 02. Gradient Descent" in text
     assert "deepstudy-master" in text
-    assert "templates/notes_decision_matrix.md" in text
+    assert "shared/notes_decision_matrix.md" in text
     assert "Key Equations" not in text
     assert "## " not in text
 

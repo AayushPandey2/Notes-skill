@@ -701,6 +701,8 @@ def validate_file(
             topic_val,
             tags=[str(t) for t in tags_val],
         )
+        # Legacy vault scans lack the saved editorial decision for proof depth.
+        contract["math_level"] = None
         for c_line, c_msg in audit_note_against_contract(body_text, contract):
             findings.append({
                 "file": rel_file,

@@ -19,7 +19,7 @@ if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
 from vault_index import is_within_vault, resolve_vault_root
-from note_layout import DEEP_ROUTES, ROUTES, body_skeleton
+from note_layout import ADAPTIVE_ROUTES, DEEP_ROUTES, ROUTES, body_skeleton
 from decision_matrix import resolve_decisions
 
 
@@ -168,8 +168,6 @@ def render_routed_note(args: argparse.Namespace, note_id: str) -> str:
     if not tags:
         route_tag = "cheatsheet" if route == "cheat-sheet" else route
         tags = [_slugify(args.base_domain), _slugify(args.master_topic), _slugify(topic), route_tag]
-    if route in DEEP_ROUTES and "deepstudy-master" not in tags:
-        tags.append("deepstudy-master")
     nexttopics = [_format_wikilink(args.next_topic)] if args.next_topic else []
     metadata = {
         "id": note_id,
@@ -180,14 +178,16 @@ def render_routed_note(args: argparse.Namespace, note_id: str) -> str:
     }
     frontmatter = yaml.safe_dump(metadata, allow_unicode=True, sort_keys=False)
     body = body_skeleton(route, args.math_level, args.number, args.title, narrow=args.narrow_practice)
-    if route in DEEP_ROUTES:
+    if route in ADAPTIVE_ROUTES:
         contract = getattr(args, "contract_data", None) or resolve_decisions(
             args.title,
-            {"title": args.title, "math_level": args.math_level, "language": getattr(args, "language", None) or "none"},
+            {"title": args.title, "template": route, "math_level": args.math_level,
+             "language": getattr(args, "language", None) or "none"},
             topic,
         )
         body += (
-            f"\n<!-- decision-contract: subject={contract['subject_family']}; "
+            f"\n<!-- decision-contract: subject={contract['subject_family']}; domain={contract.get('domain', 'general')}; "
+            f"math_level={contract['math_level']}; "
             f"code_depth={contract['code_depth']}; visual={contract['visual_modality']}; "
             f"max_qa={contract['max_qa_items']}; omit={','.join(contract['omitted_sections']) or 'none'} -->\n"
         )

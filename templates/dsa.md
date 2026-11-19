@@ -1,5 +1,5 @@
 <!-- scaffold:preflight
-Decision-Matrix Pre-Flight: [note_decision_matrix.md](../shared/note_decision_matrix.md).
+Decision-Matrix Pre-Flight: [routing index](../shared/note_decision_matrix.md) and [shared decision guide](../shared/notes_decision_matrix.md).
 Switches: D01 route (`dsa`, locked language); D02 single-problem scope; D03 reader; D04 algorithmic track; D05 problem statement + docs;
 D06–D09 `math_level`/invariants; D10 tricky dry-run fixture; D11 dry-run table / optional state visual;
 D12–D13 locked language brute-force + optimal + edge harness; D14 optional modules (`complexity`, `visual`); D15 final audit.
@@ -13,6 +13,9 @@ Supports `/scribe-dsa cpp <problem>` and `/scribe-dsa python <problem>` (and any
 
 ## 1. What is the exact problem, what are the constraints & what complexity target do they force? (Problem Specification & Envelope)
 
+<!-- Gate: DM-01, DM-03, DM-05.
+KEEP the problem contract and actual constraints. State the resulting performance target. Remove this gate before publication. -->
+
 - **Problem Statement & I/O Contract**: Formal statement, input/output types, and concrete small example.
 - **Verified Constraints & Missing-Constraint Audit**: List all stated input bounds ($N$, value ranges, graph density, memory/time limits). Explicitly tag any missing constraint or assumption as `[ASSUMED / UNVERIFIED]`.
 - **Inferred Asymptotic Target Envelope**: Deduce the plausible required time and auxiliary space complexity class from the verified size and time limits (e.g., $N \le 2 \cdot 10^5$ suggests $O(N \log N)$ or $O(N)$ target) without promising exact wall-clock runtime from $N$ alone.
@@ -20,16 +23,25 @@ Supports `/scribe-dsa cpp <problem>` and `/scribe-dsa python <problem>` (and any
 
 ## 2. What is the brute-force baseline and why does it bottleneck? (Naive Approach & The Optimization Bridge)
 
+<!-- Gate: DM-04, DM-06, DM-19.
+Show the smallest baseline that exposes the bottleneck. Remove this gate before publication. -->
+
 - **Brute-Force Intuition & Runnable Code**: Explain the direct exhaustive approach and provide clean, runnable baseline code in the selected language.
 - **Exact Bottleneck Quantification**: Derive the brute-force Time and Space Complexity and quantify operation counts at maximum $N$ to explain why it exceeds time/memory limits.
 - **The Optimization Bridge**: Pinpoint the exact redundant computation (e.g., re-scanning elements, recomputing prefix states) and explain the structural insight that eliminates it. _(Guardrail: If the brute-force solution is already asymptotically optimal, prove why it matches the lower bound and do not invent a fake optimization)._
 
 ## 3. How does the optimal algorithm work step by step? (Mechanism, Correctness Justification & Dry-Run Table)
 
+<!-- Gate: DM-04, DM-09, DM-10, DM-11.
+Trace a discriminating input and justify the algorithm's invariant or pivot choice. Remove this gate before publication. -->
+
 - **Step-by-Step Optimal Mechanism & Correctness Proof**: Walk through the state transitions, prove why the invariant holds at initialization, maintenance, and termination (`math_level` `1` or `2`), and derive exact Time and Space Complexity (explicitly stating whether auxiliary space excludes the required output container).
 - **Complete Step-by-Step Dry-Run Table**: Choose a **tricky, non-trivial input** (one that triggers pointer adjustments, stack pops, or tie-breaking) and trace every loop iteration, index, auxiliary data structure state, and return update in a Markdown table (escaping all pipes `\|`).
 
 ## 4. How do I implement and stress-test the optimal solution? (Implementation & Edge-Case Suite)
+
+<!-- Gate: DM-14, DM-15, DM-18.
+KEEP a complete example in the selected language with credible edge-case results. Remove this gate before publication. -->
 
 - **Complete Optimal Implementation (`C++20` or `Python 3`)**:
     - Fully runnable, self-contained code with imports/includes and a test driver.
@@ -40,10 +52,16 @@ Supports `/scribe-dsa cpp <problem>` and `/scribe-dsa python <problem>` (and any
 
 ## 5. How does this pattern transfer to harder variations? (Related Problems, Twists & Reflections)
 
+<!-- Gate: DM-01, DM-19, DM-20.
+KEEP variations that change the selection rule or invariant. Remove this gate before publication. -->
+
 - **Related Problems (`2–3` Curated Follow-Ups)**: For each related problem, present its full problem prompt visibly, then place its structural twist and optimal solution adaptation inside an independently collapsed callout:`> [!example]- Reveal Structural Twist & Optimal Solution for <Related Problem Title>`
 
 <!-- optional: complexity -->
 ## [OPTIONAL] Why does the resource bound hold? (Formal Complexity & Lower-Bound Derivation)
+
+<!-- Gate: DM-06, DM-07, DM-09, DM-10.
+Include only formal resource reasoning allowed by the math contract. Explain a qualitative bound in prose when sufficient. Remove this gate before publication. -->
 
 <!-- scaffold:activation
 Contextual Activation Guide
@@ -58,6 +76,9 @@ Contextual Activation Guide
 
 <!-- optional: visual -->
 ## [OPTIONAL] How do pointers, windows, or structures evolve step by step? (Visual Diagram / ASCII State-Transition Walkthrough)
+
+<!-- Gate: DM-11, DM-13.
+Include a diagram only when a state transition is hard to follow in the trace. Remove this gate before publication. -->
 
 <!-- scaffold:activation
 Contextual Activation Guide

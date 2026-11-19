@@ -1,6 +1,6 @@
 # Reflection footer
 
-Non-deep routed scaffolds use the following reflection block; deep-study reflection is selected by D15. See [authoring rules](authoring_rules.md#rendering). Fill the reflection in the last section. For compact notes keep each entry brief and within the route's word cap. In practice use the Confusion field as the diagnostic review hook. Obsidian requires Dataview JavaScript queries enabled for the button to execute.
+Compact routed scaffolds use the following reflection block. Deep-study and source-study notes select useful reflection fields and widgets through [DM-20](notes_decision_matrix.md#dm-20). See [authoring rules](authoring_rules.md#rendering). Fill the applicable reflection fields in the final section, keeping entries within any route's word cap. Record a Confusion field only for a genuine unresolved issue where the route permits omission. Obsidian requires Dataview JavaScript queries enabled for the button to execute.
 
 <!-- scaffold:footer -->
 ### Metacognitive Reflection & Vault Integration

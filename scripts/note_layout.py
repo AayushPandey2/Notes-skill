@@ -4,10 +4,17 @@ from pathlib import Path
 import re
 
 ROOT = Path(__file__).resolve().parent.parent
-DEEP_ROUTES = {"deepstudy-master"}
+DEEP_ROUTES = {"deepstudy-master", "deepstudy-coding", "deepstudy-general"}
 ROUTES = (
     "deepstudy-master", "api-table", "cheat-sheet", "atomic",
     "comparison", "summary", "practice", "dsa", "paper-breakdown", "studynotes",
+    "deepstudy-coding", "deepstudy-general",
+)
+ADAPTIVE_ROUTES = DEEP_ROUTES | {"studynotes"}
+LEGACY_STUDY_LAYOUT = (
+    "What is this note about, where does the material come from, and what should I learn? (Overview, Source Context & Learning Goals)",
+    "How does the source develop each idea, and how can I understand it step by step? (Core Concepts & Sequential Breakdown)",
+    "What should I remember, test myself on, and study next? (Key Takeaways & Active Recall)",
 )
 PRACTICE_RANGES = ((1, 5), (6, 12), (13, 18))
 NARROW_RANGES = ((1, 3), (4, 7), (8, 11))
@@ -116,9 +123,15 @@ def body_skeleton(route: str, level: int, number: str, title: str, *, narrow: bo
     lines = [title_heading(route, number, title), ""]
     if route in DEEP_ROUTES:
         return "\n".join(lines) + (
-            "\n<!-- scaffold: Read templates/deepstudy-master.md and templates/notes_decision_matrix.md; "
+            "\n<!-- scaffold: Read templates/deepstudy-master.md and shared/notes_decision_matrix.md; "
             "complete the decision record and author only selected modules. Remove this instruction. -->\n"
         )
+    if route == "studynotes":
+        for section, heading in layout:
+            lines += [heading, "", "<!-- scaffold: Follow this section's gate in templates/studynotes.md. -->", ""]
+            if section == 1:
+                lines += [CALLOUTS[route][1][0], "> <!-- scaffold: Record actual source, access and scope. -->", ""]
+        return "\n".join(lines)
     if level and route != "practice":
         lines += ["> [!abstract] Key Equations", "> <!-- scaffold: Introduce symbols and 1–3 display equations. -->", ""]
     route_header = {
@@ -163,6 +176,11 @@ def heading_key(heading):
     return re.sub(r"^## (?:\d+\. )?", "", heading).strip()
 
 
+def matches_legacy_study(headings):
+    actual = [heading_key(heading) for heading in headings]
+    return [heading for heading in actual if heading in LEGACY_STUDY_LAYOUT] == list(LEGACY_STUDY_LAYOUT)
+
+
 def matches_layout(route, level, headings, *, narrow=False):
     optional = set(optional_headings(route))
     actual = [heading_key(h) for h in headings]
@@ -170,6 +188,13 @@ def matches_layout(route, level, headings, *, narrow=False):
         return False
     core = [h for h in actual if h not in optional]
     expected = [heading_key(h) for _, h in section_layout(route, level, narrow=narrow)]
+    if route == "studynotes":
+        required = {expected[0], expected[1], expected[-1]}
+        return (
+            required <= set(core)
+            and core == [heading for heading in expected if heading in core]
+            and all(heading.startswith(f"## {number}. ") for number, heading in enumerate(headings, 1))
+        )
     if route == "practice":
         def _tier_norm(text: str) -> str:
             return re.sub(r"\s*\(Q\d+–Q\d+\)\s*$", "", text).strip()

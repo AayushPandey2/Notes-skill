@@ -8,7 +8,7 @@ Strip this block before emission. Load detailed DM branches only when active.
 
 # Adaptive Deep Study Master
 
-This is the canonical deep-study template. The companion [notes_decision_matrix.md](../shared/notes_decision_matrix.md) is the single authority for section selection and depth. Use the [routing index](../shared/note_decision_matrix.md) to select relevant branches and complete its [decision record](../shared/notes_decision_matrix.md#decision-record) before drafting each note. The former coding/general names are compatibility links to this pair.
+This is the canonical deep-study template. The companion [notes_decision_matrix.md](../shared/notes_decision_matrix.md) is the single authority for section selection and depth. Follow the [authoring rules](../shared/authoring_rules.md), [math gate](../shared/math_gates.md), and applicable [footer widgets](../shared/footer_widgets.md). Use the [routing index](../shared/note_decision_matrix.md) to select relevant branches and complete its [decision record](../shared/notes_decision_matrix.md#decision-record) before drafting each note. The former coding/general names are compatibility links to this pair.
 
 This is an authoring specification, not text to paste wholesale into a finished note. The stable core is a single concise opening (**Core Model, Scope & Historical Context**, without repeating the thesis across separate intro/motivation blocks), followed by precise explanation to meet the outcome. Use **domain-natural headings** matching the topic's track (never CS/architecture buzzwords like *"Computational Purpose"*, *"Position in the Broader Architecture"*, *"Deep Theory Stack"*, or *"Cross-Architecture Trade-Off"* on non-software subjects). Strip all `<!-- SECTION: S* -->` markers, authoring gates, and unused headings before publication. Renumber retained inquiry headings after omission and repair local links.
 
@@ -109,7 +109,7 @@ Use meaningful invariants only where they apply. Discuss resource cost when it a
 > [!note] Authoring gate — remove after applying
 > - **Decision-matrix IDs:** [DM-06](../shared/notes_decision_matrix.md#dm-06), [DM-07](../shared/notes_decision_matrix.md#dm-07), [DM-08](../shared/notes_decision_matrix.md#dm-08), [DM-09](../shared/notes_decision_matrix.md#dm-09).
 > - **Include when:** Math defines the object or mechanism, predicts or quantifies behavior, supports a choice, or checks a result the reader needs.
-> - **Adapt when:** Use structural/logical constraints, operational formulas, derivational development, or proof-level statements as chosen independently of track and code depth.
+> - **Adapt when:** Use structural/logical constraints, operational formulas, derivational development, or proof-level statements at the effective level in the saved contract. Use the domain ceiling and subtopic gate in DM-07.
 > - **Omit or link when:** Equations add no explanatory or decision value; integrate a single useful relation into the mechanism or example, or link background theory.
 > - **Quality check:** What question does each central equation answer? Are symbols, shapes, units, assumptions, domains, interpretation, and relevant checks supplied as needed?
 > - **Duplication check:** Define and display each central relation once. Reference that equation from derivations, examples, and code instead of repeating a preview/table.
@@ -121,8 +121,8 @@ Apply DM-09's equation treatment. A forward pass or prediction trace needs no de
 > [!note] Authoring gate — remove after applying
 > - **Decision-matrix IDs:** [DM-03](../shared/notes_decision_matrix.md#dm-03), [DM-07](../shared/notes_decision_matrix.md#dm-07), [DM-08](../shared/notes_decision_matrix.md#dm-08), [DM-10](../shared/notes_decision_matrix.md#dm-10).
 > - **Include when:** Deriving a result or establishing a guarantee is itself an outcome, or the derivation resolves a central misconception needed for that outcome.
-> - **Adapt when:** Show the crucial transformation for operational use, named-rule steps for derivation, or a complete argument for a proof objective. Calibrate calculus using DM-08.
-> - **Omit or link when:** The reader only needs to apply the result; state its validity conditions and link its proof. A short derivation can live beside its equation without this heading.
+> - **Adapt when:** Show named-rule steps at M2, or a quantified theorem, complete proof and counterexample at M3. Calibrate calculus using DM-08.
+> - **Omit or link when:** The reader only needs to apply the result; state its validity conditions and link its proof. An aligned chain with explicit justifications can live beside its governing equation.
 > - **Quality check:** Are the target, assumptions, strategy, non-obvious steps, and conclusion justified? Is an approximation or one-way implication labeled? Is a numerical check clearly distinguished from proof?
 > - **Duplication check:** Reference existing definitions and example inputs; do not rederive the same result in the implementation section.
 
@@ -146,7 +146,7 @@ Apply DM-09's equation treatment. A forward pass or prediction trace needs no de
 > - **Quality check:** Is the purpose explicit? Does the fragment or runnable program fulfill it with understandable inputs/outputs and honest limits? Does every extra implementation have a distinct reason?
 > - **Duplication check:** Keep one code home per teaching purpose. Refer to the equation, trace, and shared comparison contract rather than copying them.
 
-State the selected tool and reason. Annotate shape, ownership, precision, or lifetime transitions only where they explain behavior or prevent a relevant error. Label toy/from-scratch examples as such; production-oriented treatment needs the actual task's operational constraints. No language is a default requirement.
+State the selected tool and reason. Annotate shape, ownership, precision, or lifetime transitions only where they explain behavior or prevent a relevant error. Label toy/from-scratch examples as such; production-oriented treatment needs the actual task's operational constraints. For a dedicated implementation note, use the planned stack and apply the earlier trace's fixture. At M0 refer to the update or governing relation in the earlier note. Use a matched trade-off table when the stack has multiple entries.
 
 ### Verification and reproducibility
 
@@ -154,7 +154,7 @@ State the selected tool and reason. Annotate shape, ownership, precision, or lif
 > - **Decision-matrix IDs:** [DM-05](../shared/notes_decision_matrix.md#dm-05), [DM-17](../shared/notes_decision_matrix.md#dm-17), [DM-18](../shared/notes_decision_matrix.md#dm-18).
 > - **Include when:** The reader must trust or reproduce a computation, implementation, empirical result, or diagnostic.
 > - **Adapt when:** Use expected hand results, assertions, numerical checks, matched evaluation, or operational checks according to the claim. This subsection may move beside mathematics or evidence even if Implementation is omitted.
-> - **Omit or link when:** There is no executable or empirical claim to verify (`language: "none"` omits code and all execution claims); if unexecuted, label `Status: static verification (not executed)` with zero fabricated version strings.
+> - **Omit or link when:** There is no executable or empirical claim to verify (`language: "none"` omits code and all execution claims); for a required stack, use the exact status, version and output from the runtime report as described in DM-18.
 > - **Quality check:** Are observed outputs verbatim stdout/stderr distinct from expected outputs? Are execution status, material versions, seeds, tolerances, boundary choices, and limitations accurate rather than inferred?
 > - **Duplication check:** Put each assertion or check here or beside the relevant example/code, never in both places. Failure-mode entries point to the check.
 
@@ -288,4 +288,4 @@ Contextual Activation Guide
 See [authoring rules](../shared/authoring_rules.md) for 5-key YAML, rendering, evidence, and cohesion.
 See [math gates](../shared/math_gates.md) for selected mathematical depth.
 See [footer contract](../shared/footer_widgets.md) for reflection behavior.
-- **Template Contract (`deepstudy-master`):** Complete the [decision record](../shared/notes_decision_matrix.md#decision-record) before drafting, decompose `/scribe-deepnotes` topics into a syllabus + `3–6` dependency-ordered subtopic notes unless single-note locked, use strict 5-key YAML (`id`, `aliases`, `topic`, `tags`, `nexttopics` — no extra tag required), emit only selected domain-natural modules (embedded `.png`/`.svg` figures in `assets/<topic>/` for spatial/physics/ML plots; multi-library/language implementations across dominant ecosystems like NumPy, scikit-learn, and PyTorch for ML/computing topics; `2–3` Q&A cap; specific non-homepage source URLs or `[UNVERIFIED]`), strip all authoring gates and `<!-- SECTION: S* -->` markers, and renumber retained headings sequentially.
+- **Template Contract (`deepstudy-master`):** Complete the [decision record](../shared/notes_decision_matrix.md#decision-record) before drafting, decompose `/scribe-deepnotes` topics into a syllabus + `3–6` dependency-ordered subtopic notes unless single-note locked, use strict 5-key YAML (`id`, `aliases`, `topic`, `tags`, `nexttopics` — no extra tag required), emit only selected domain-natural modules (embedded `.png`/`.svg` figures in `assets/<topic>/` for spatial/physics/ML plots; complete implementations and live verification for the saved stack when required; `2–3` Q&A cap; specific non-homepage source URLs or `[UNVERIFIED]`), strip all authoring gates and `<!-- SECTION: S* -->` markers, and renumber retained headings sequentially.

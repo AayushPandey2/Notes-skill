@@ -18,7 +18,8 @@ import yaml
 from note_layout import DEEP_ROUTES, ROUTES
 from scaffold_note import _slugify
 from vault_index import is_within_vault, resolve_notes_folder, resolve_vault_root, set_notes_folder
-from decision_matrix import classify_subject, explicit_code_requested, resolve_decisions
+from decision_matrix import normalize_stack, requested_stack, resolve_decisions
+from note_verification import EXTENSIONS, check_evidence, check_python, required_examples, split_blocks, verify_runtimes
 
 COMMANDS = {f"scribe-{name}" for name in (
     "dsa", "practice", "deepnotes", "expand", "doubt", "distill", "ingest", "compare", "quiz", "atomic-notes", "notes", "setfolder"
@@ -65,7 +66,7 @@ PAPER_PATHS = {
 }
 
 
-def inspect_request(request: str) -> dict:
+def inspect_request(request: str, *, stack: list[str] | None = None) -> dict:
     raw = request.strip()
     if not raw:
         raise ValueError("Provide a request.")
@@ -85,7 +86,7 @@ def inspect_request(request: str) -> dict:
         raise ValueError(f"Usage: /{command} <{arg_hint}>")
 
     sources = [match.group().rstrip(".,;") for match in URL.finditer(payload)]
-    route_names = "|".join(ROUTES)
+    route_names = "|".join(sorted(ROUTES, key=len, reverse=True))
     quote = "[" + chr(96) + "\"']?"
     explicit = re.search(
         rf"\btemplate\s*[:=]\s*{quote}({route_names}){quote}(?![\w-])"
@@ -115,10 +116,17 @@ def inspect_request(request: str) -> dict:
         is_paper = source.path != "/" and source.path.startswith(prefixes)
         source_lock = "paper-breakdown" if is_paper else "summary"
     locked = LOCKS.get(command)
+    selected = locked or override or source_lock or {
+        "scribe-notes": "studynotes", "scribe-deepnotes": "deepstudy-master",
+    }.get(command)
+    if selected in DEEP_ROUTES:
+        selected = "deepstudy-master"
+    implementation_stack = requested_stack(payload) if stack is None else normalize_stack(stack)
     return {
-        "command": command, "payload": payload, "template": locked or override or source_lock,
+        "command": command, "payload": payload, "template": selected,
         "lock": "command" if locked else "explicit" if override else "source" if source_lock else None,
         "language": language, "sources": sources,
+        "implementation_stack": implementation_stack,
         "mode": "setfolder" if command == "scribe-setfolder" else "existing-notes" if command in {"scribe-doubt", "scribe-quiz"} else "author",
     }
 
@@ -205,12 +213,12 @@ def _stack(item: dict, route: str, override: str | None) -> tuple[str, list[str]
 def build_plan(
     vault: Path, request: str, topic_folder: str, outline: list, *,
     template: str | None = None, language: str | None = None, topic_name: str | None = None,
-    legacy_names: bool = False,
+    legacy_names: bool = False, stack: list[str] | None = None, allow_math_override: bool = False,
 ) -> dict:
-    intent = inspect_request(request)
+    intent = inspect_request(request, stack=stack)
     if intent["mode"] != "author":
         raise ValueError(f"{intent['command']} uses existing notes and does not create a plan.")
-    lock = intent["template"] if intent["lock"] == "command" else template or intent["template"]
+    lock = intent["template"] if intent["lock"] == "command" else template or (intent["template"] if intent["lock"] else None)
     if intent["command"] == "scribe-notes" and (
         template in FORBIDDEN_STUDYNOTES_TEMPLATES or lock in FORBIDDEN_STUDYNOTES_TEMPLATES
     ):
@@ -249,9 +257,10 @@ def build_plan(
             explicit_item_tpl = item.get("template")
             if explicit_item_tpl in FORBIDDEN_STUDYNOTES_TEMPLATES:
                 raise ValueError("/scribe-notes prohibits deepstudy-master.")
-            route = lock or explicit_item_tpl or select_route(item.get("purpose"), item.get("impl_weight"), item.get("density"))
-            if route in FORBIDDEN_STUDYNOTES_TEMPLATES:
-                route = "studynotes"
+            route = lock or explicit_item_tpl
+            if not route:
+                selected = select_route(item.get("purpose"), item.get("impl_weight"), item.get("density"))
+                route = "studynotes" if selected in DEEP_ROUTES else selected
             level = item.get("math_level", 0)
         else:
             route = lock or item.get("template") or select_route(item.get("purpose"), item.get("impl_weight"), item.get("density"))
@@ -259,21 +268,37 @@ def build_plan(
         if route in DEEP_ROUTES:
             route = "deepstudy-master"
         levels = (0, 1, 2, 3) if route in DEEP_ROUTES else (0, 1, 2)
-        if route not in ROUTES or type(level) is not int or level not in levels:
+        if route not in ROUTES or (level is not None and (type(level) is not int or level not in levels)):
             raise ValueError(f"Invalid template or math_level for {title}")
-        lang, stack = _stack(item, route, language)
-        subject_family = classify_subject(topic, title, request)
-        if subject_family == "non-computing" and route in DEEP_ROUTES:
-            if (lang != "none" or item.get("impl_weight") == "high" or item.get("language") not in (None, "none")) and not explicit_code_requested(request, title):
-                raise ValueError(
-                    f"Non-computing topic '{title}' prohibits code/implementation (language={lang}); "
-                    "omit code or request simulation explicitly."
-                )
+        lang, verification_stack = _stack(item, route, language)
+        selected_stack = item.get("implementation_stack")
+        if intent["implementation_stack"] is not None and (
+            len(outline) == 1 or item.get("purpose") == "implement" or item.get("impl_weight") == "high"
+            or re.search(r"\bimplementations?\b", title, re.I)
+        ):
+            selected_stack = intent["implementation_stack"]
+        tags = item.get("tags")
+        if tags is not None and (not isinstance(tags, list) or any(not isinstance(tag, str) for tag in tags)):
+            raise ValueError(f"{title}: tags must be a list of strings.")
         decision_contract = resolve_decisions(
             request,
-            {**item, "template": route, "math_level": level, "language": lang},
+            {**item, "template": route, "math_level": level, "language": lang, "implementation_stack": selected_stack},
             topic,
+            tags=tags,
+            allow_math_override=allow_math_override,
         )
+        if decision_contract["subject_family"] == "non-computing" and route in DEEP_ROUTES:
+            if lang != "none" or selected_stack or item.get("impl_weight") == "high":
+                raise ValueError(f"Non-computing topic '{title}' prohibits code/implementation. Request a simulation explicitly.")
+        level = decision_contract["math_level"]
+        if decision_contract["verify_stack"]:
+            planned_lang = decision_contract["language"]
+            verify_names = decision_contract["implementation_stack"]
+            if route == "dsa" and (len(verify_names) != 1 or planned_lang != intent["language"] and intent["language"]):
+                raise ValueError("The DSA stack must match the command language.")
+            lang = planned_lang
+            if selected_stack is not None or not item.get("verification_stack"):
+                verification_stack = verify_names
         if route == "dsa" and lang not in LANGUAGES.values():
             raise ValueError("DSA requires a supported verification language.")
         filename = f"{item_id}-{_slugify(title)}.md" if legacy_names else f"{item_id} - {_name(title)}.md"
@@ -313,7 +338,9 @@ def build_plan(
         default_profile = "vault-notes" if intent["command"] in {"scribe-compare", "scribe-distill"} else PROFILES[route]
         entry = {
             "id": item_id, "note_id": _text(item, "note_id", default_id), "title": title,
-            "template": route, "math_level": level, "language": lang, "verification_stack": stack,
+            "template": route, "domain": decision_contract["domain"], "math_level": level,
+            **({"clamped_from": decision_contract["clamped_from"]} if "clamped_from" in decision_contract else {}),
+            "language": lang, "verification_stack": verification_stack,
             "source_profile": _text(item, "source_profile", default_profile),
             "routing_reason": _text(item, "routing_reason"),
             "decision_contract": decision_contract,
@@ -348,6 +375,7 @@ def build_plan(
         plan.append({
             "id": "practice", "note_id": f"{_slugify(topic)}-practice",
             "title": f"{topic} - Practice Test", "template": "practice",
+            "domain": plan[0]["domain"],
             "math_level": min(2, max(item["math_level"] for item in plan)),
             "language": with_stack[0]["language"] if with_stack else "none", "verification_stack": stacks[:3],
             "source_profile": "planned-notes", "routing_reason": "Topic-wide recall and synthesis across the planned notes.",
@@ -456,7 +484,25 @@ def start_plan(vault: Path, request: str, folder: str, outline: list, **options)
     return plan_id, saved
 
 
-def publish(vault: Path, plan_id: str, item_id: str, draft: Path) -> str:
+def _planned_examples(content: str, item: dict):
+    from validate_note import read_frontmatter
+
+    _, _, body_start = read_frontmatter(content)
+    blocks, prose = split_blocks("\n".join(content.splitlines()[body_start:]))
+    contract = item.get("decision_contract") or {}
+    stack = contract.get("implementation_stack", []) if contract.get("verify_stack") else []
+    examples, missing = required_examples(blocks, stack)
+    if findings := check_python(blocks) + missing:
+        raise ValueError("\n".join(f"{body_start + line}: {message}" for line, message in findings))
+    return examples, blocks, prose
+
+
+def _check_export(path: Path, data: bytes) -> None:
+    if path.is_symlink() or (path.exists() and (not path.is_file() or path.read_bytes() != data)):
+        raise ValueError(f"Conflicting example output, preserved: {path}")
+
+
+def publish(vault: Path, plan_id: str, item_id: str, draft: Path, *, export_code: bool = False) -> str:
     from validate_note import read_frontmatter, validate_text
 
     saved = _read_plan(vault, plan_id)
@@ -465,14 +511,15 @@ def publish(vault: Path, plan_id: str, item_id: str, draft: Path) -> str:
         raise ValueError(f"Unknown plan item: {item_id}")
     states = _status(vault, plan_id, saved)
     _require_no_conflicts(states)
-    if states[item_id] == "complete":
+    complete = states[item_id] == "complete"
+    if complete and not export_code:
         return "already complete"
     item = next(item for item in saved["plan"] if item["id"] == item_id)
     if any(states[dep] != "complete" for dep in item.get("depends_on", ())):
         raise ValueError("Publish the planned prerequisites before this note.")
-    data = draft.read_bytes()
-    content = data.decode("utf-8-sig")
     target = targets[item_id]
+    data = (target if complete else draft).read_bytes()
+    content = data.decode("utf-8-sig")
     findings = validate_text(
         content, vault=vault, target=target, planned=targets.values(),
         route=item["template"], math_level=item["math_level"],
@@ -484,6 +531,16 @@ def publish(vault: Path, plan_id: str, item_id: str, draft: Path) -> str:
     if metadata.get("id") != item["note_id"] or item["title"] not in (metadata.get("aliases") or []):
         raise ValueError(f"Draft metadata does not match planned identity: id={item['note_id']}, title={item['title']}")
 
+    examples, blocks, prose = _planned_examples(content, item)
+    if examples:
+        check_evidence(verify_runtimes(examples, prose), blocks, prose)
+    exports = {}
+    if export_code:
+        for name, block in examples.items():
+            export = _under_vault(vault, f"assets/{_slugify(metadata['topic'])}/examples/{_slugify(item['note_id'])}-{name}{EXTENSIONS.get(name, '.py')}")
+            exports[export] = block.code.encode("utf-8")
+            _check_export(export, exports[export])
+
     journal = _plan_dir(vault, plan_id)
     intent = _under_vault(vault, (journal / f"{item_id}.intent").relative_to(vault).as_posix())
     receipt = _under_vault(vault, (journal / f"{item_id}.done").relative_to(vault).as_posix())
@@ -493,22 +550,32 @@ def publish(vault: Path, plan_id: str, item_id: str, draft: Path) -> str:
     except FileExistsError:
         if intent.read_bytes() != digest:
             raise ValueError("Publish already started with different draft bytes. Retry the original draft.")
-    try:
-        _write_once(target, data)
-    except FileExistsError:
-        if target.is_symlink() or not target.is_file() or _hash(target.read_bytes()).encode() != digest:
-            raise ValueError(f"Conflicting output, preserved: {target.relative_to(vault)}")
-    try:
-        _write_once(receipt, digest)
-    except FileExistsError:
-        pass
+    for export, example_data in exports.items():
+        try:
+            _write_once(export, example_data)
+        except FileExistsError:
+            _check_export(export, example_data)
+    if not complete:
+        try:
+            _write_once(target, data)
+        except FileExistsError:
+            if target.is_symlink() or not target.is_file() or _hash(target.read_bytes()).encode() != digest:
+                raise ValueError(f"Conflicting output, preserved: {target.relative_to(vault)}")
+        try:
+            _write_once(receipt, digest)
+        except FileExistsError:
+            pass
+    if complete:
+        return f"already complete; exported {len(exports)} example(s)"
     return f"published {target.relative_to(vault).as_posix()}"
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="action", required=True)
-    commands.add_parser("inspect").add_argument("request")
+    inspect = commands.add_parser("inspect")
+    inspect.add_argument("request")
+    inspect.add_argument("--stack", help="Comma-separated stack names.")
     commands.add_parser("setfolder").add_argument("folder_path")
     start = commands.add_parser("start")
     start.add_argument("vault")
@@ -518,32 +585,45 @@ def main(argv: list[str] | None = None) -> int:
     start.add_argument("--topic", help="Display name when the topic folder uses a slug.")
     start.add_argument("--template", choices=ROUTES)
     start.add_argument("--language")
+    start.add_argument("--stack", help="Comma-separated stack names.")
+    start.add_argument("--allow-math-override", action="store_true")
     start.add_argument("--legacy-names", action="store_true")
-    for action in ("status", "publish"):
+    for action in ("status", "publish", "verify-runtimes"):
         sub = commands.add_parser(action)
         sub.add_argument("vault")
         sub.add_argument("plan_id")
-        if action == "publish":
+        if action in {"publish", "verify-runtimes"}:
             sub.add_argument("item_id")
             sub.add_argument("draft", type=Path)
+        if action == "publish":
+            sub.add_argument("--export-code", action="store_true")
     args = parser.parse_args(argv)
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
     try:
         if args.action == "inspect":
-            result = inspect_request(args.request)
+            result = inspect_request(args.request, stack=args.stack.split(",") if args.stack else None)
         elif args.action == "setfolder":
             result = set_notes_folder(args.folder_path)
         else:
             vault = resolve_vault_root(args.vault)
             if args.action == "publish":
-                print(publish(vault, args.plan_id, args.item_id, args.draft))
+                print(publish(vault, args.plan_id, args.item_id, args.draft, export_code=args.export_code))
+                return 0
+            if args.action == "verify-runtimes":
+                saved = _read_plan(vault, args.plan_id)
+                item = next((entry for entry in saved["plan"] if entry["id"] == args.item_id), None)
+                if item is None:
+                    raise ValueError(f"Unknown plan item: {args.item_id}")
+                examples, _, prose = _planned_examples(args.draft.read_text(encoding="utf-8-sig"), item)
+                print(json.dumps(verify_runtimes(examples, prose), indent=2, ensure_ascii=False))
                 return 0
             if args.action == "start":
                 outline = json.loads(args.outline.read_text(encoding="utf-8-sig")) if args.outline else []
                 plan_id, saved = start_plan(
                     vault, args.request, args.topic_folder, outline, template=args.template,
                     language=args.language, topic_name=args.topic, legacy_names=args.legacy_names,
+                    stack=args.stack.split(",") if args.stack else None, allow_math_override=args.allow_math_override,
                 )
             else:
                 plan_id = args.plan_id

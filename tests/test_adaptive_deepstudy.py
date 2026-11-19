@@ -15,8 +15,8 @@ import plan_notes
 from validate_note import validate_text
 
 
-def note(body, tags=None):
-    metadata = {"id": "adaptive-check", "aliases": ["Adaptive check"], "topic": "Template QA",
+def note(body, tags=None, topic="Template QA"):
+    metadata = {"id": "adaptive-check", "aliases": ["Adaptive check"], "topic": topic,
                 "tags": tags or ["deepstudy-master"], "nexttopics": []}
     return "---\n" + yaml.safe_dump(metadata, sort_keys=False) + "---\n\n# Adaptive check\n\n" + body
 
@@ -62,17 +62,18 @@ def test_legacy_selectors_share_adaptive_scaffold(route, level):
     ("## Definition\nA forward pass computes an output from inputs and fixed parameters.\n", 0),
     ("## Implementation\nIllustrative Python; expected output is 5. Not executed.\n\n"
      "```python\ndef affine(x):\n    return 2 * x + 1\nassert affine(2) == 5\n```\n", 0),
-    ("## Mechanism\nBatching connects the model's arithmetic to its memory budget.\n\n"
-     "## Model\nFor an output matrix with B rows and d columns stored at s bytes per entry, storage is\n\n"
-     "$$\nM = B d s\n$$\n\nHere M is bytes; buffers and allocator overhead are excluded.\n\n"
+    ("## Worked trace\nLet $M$ denote storage in bytes for a $B$ by $d$ matrix with $s$ bytes per entry.\n\n"
+     "$$\nM = B d s\n$$\n\nFor example, 2 rows, 3 columns and 4 bytes yield 24 bytes.\n\n"
      "## Implementation\nIllustrative NumPy; not executed.\n\n```python\nimport numpy as np\n"
-     "output = np.zeros((2, 3), dtype=np.float32)\nassert output.nbytes == 24\n```\n", 2),
-    ("## Argument\nFor every real x, squaring yields a nonnegative value.\n\n"
-     "$$\nx^2 \\ge 0\n$$\n\nIf x is negative, its square equals the square of -x, which is positive.\n", 3),
+     "output = np.zeros((2, 3), dtype=np.float32)\nassert output.nbytes == 24\n```\n", 1),
+    ("## Theorem\nFor every positive real $x$, its reciprocal is positive.\n\n"
+     "## Proof\nFor $x > 0$, division of the strict inequality by $x^2 > 0$ yields $1/x > 0$.\n\n"
+     "## Counterexample\nWith $x = -1$, the reciprocal is negative.\n", 3),
 ])
 def test_independent_concept_code_hybrid_and_proof_routes(body, level):
-    assert not validate_text(note(body), route="deepstudy-master", math_level=level)
-    assert not validate_text(note(body))  # Batch validation recognizes the route tag.
+    content = note(body, topic="Real Analysis" if level == 3 else "Template QA")
+    assert not validate_text(content, route="deepstudy-master", math_level=level)
+    assert not validate_text(content)  # Batch validation recognizes the route tag.
 
 
 def test_adaptive_notes_still_reject_residue_empty_sections_and_broken_links(tmp_path):
@@ -103,7 +104,9 @@ def test_planner_preserves_independent_record_and_does_not_invent_frameworks(tmp
     entry = plan["plan"][0]
     assert entry["template"] == "deepstudy-master"
     assert entry["decision_record"] == record
-    assert entry["verification_stack"] == []
+    assert entry["verification_stack"] == ["python"]
+    assert entry["math_level"] == 0
+    assert entry["clamped_from"] == 3
     for alias in note_layout.DEEP_ROUTES:
         routed = plan_notes.build_plan(tmp_path, "Study Check", ".", [{**item, "template": alias}])
         assert routed["plan"][0]["template"] == "deepstudy-master"
@@ -116,7 +119,7 @@ def test_planner_preserves_independent_record_and_does_not_invent_frameworks(tmp
 def test_synthesized_practice_supports_proof_level_parent_without_changing_its_route(tmp_path):
     item = {"title": "Check", "purpose": "explain", "impl_weight": "low", "density": "cohesive",
             "math_level": 3, "routing_reason": "Establish the stated guarantee."}
-    plan = plan_notes.build_plan(tmp_path, "Study Check", "Check", [item])["plan"]
+    plan = plan_notes.build_plan(tmp_path, "Study Real Analysis", "Real Analysis", [item])["plan"]
     assert plan[0]["math_level"] == 3
     assert plan[1]["template"] == "practice"
     assert plan[1]["math_level"] == 2  # Existing practice semantics include derivation/proof here.

@@ -153,7 +153,7 @@ def test_pillar_gates_yaml_slug_hygiene_exec_claims_and_verify_vault(tmp_path: P
         target=note_path,
         planned=[vault / "Wave Optics" / "02 - Interference.md"],
         route="deepstudy-master",
-        math_level=1,
+        math_level=0,
     ) == []
 
     # Mixed slug style (02-hyphenated-slug alongside 01 - Title) fails

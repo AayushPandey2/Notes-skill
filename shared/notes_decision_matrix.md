@@ -1,8 +1,21 @@
-# Deep-study decision matrices
+# Study-note decision matrices
 
-This is the authoritative decision guide for [deepstudy-master.md](../templates/deepstudy-master.md). Read it whenever a deep-study note is created or substantially revised. Complete the decision record, then apply the relevant matrices; their conclusions select, adapt, shorten, merge, link, or omit modules. They are not headings to reproduce in the study note. IDs DM-01 through DM-20 are stable; keep their numbered heading anchors when editing titles or wording.
+Use this guide for every built-in note template. The [routing index](note_decision_matrix.md) selects the route, and its template describes the section gates. The detailed decisions here apply across routes. Use KEEP when a section serves its role as written, ADAPT when its form or depth needs to change, MERGE when useful content belongs beside another explanation or a verified link, and OMIT when it adds no value. Remove any empty headings left by an omission.
 
-The rules here are editorial design decisions. Technical examples illustrate those rules; they are not a complete lesson on the example topic. The master owns the module structure and section gates; this file owns detailed branching logic. Neither imports the older fixed math/footer contracts.
+Resolve conflicts in order. Follow the explicit request and verified output contract, preserve source fidelity and visible access limits, respect the route and its source sequence, choose detail that serves the outcome, then eliminate duplication. Keep the decision record in planning state.
+
+The following mapping retains the established DM anchors. Some decisions use more than one existing matrix.
+
+| Requested decision | Established matrices |
+|---|---|
+| DM-01 Scope; DM-02 Reader; DM-03 Outcomes | DM-01, DM-02, DM-03 respectively |
+| DM-04 Source access; DM-05 Provenance | DM-05 for both |
+| DM-06 Explanation structure | DM-04, DM-10 |
+| DM-07 Math inclusion; DM-08 Math depth and calculus; DM-09 Notation | DM-06; DM-07 and DM-08; DM-09 respectively |
+| DM-10 Examples; DM-11 Analogies and visuals | DM-11; DM-12 and DM-13 respectively |
+| DM-12 Code inclusion; DM-13 Tool; DM-14 Implementations; DM-15 Verification | DM-14; DM-15; DM-16 and DM-17; DM-18 respectively |
+| DM-16 Reference selection; DM-17 Caveats | DM-19 for both, supported by DM-05 for evidence |
+| DM-18 Recall; DM-19 Links and footer; DM-20 Cohesion | DM-20 for all three |
 
 ## Decision record
 
@@ -15,8 +28,9 @@ Complete this compact record in planning state or a draft-side file, not by publ
 | Scope | Atomic mechanism, family/comparison, survey, or map of content; what is deferred and why. |
 | Track | Conceptual, mathematical, algorithmic, systems, applied, or hybrid; name the essential tracks when hybrid. |
 | Prerequisites | Explain locally vs. briefly refresh vs. link; confirm linked notes exist and identify the knowledge needed from each. |
+| Source access and order | Full, partial, metadata only, or synthesis. Record consulted passages, access gaps, and source or study sequence. |
 | Research need | No external verification, authoritative-source check, current documentation check, or deeper source comparison; list claims and sources to inspect. |
-| Math | Inclusion role or none; structural/logical, operational, derivational, or proof-level; any local depth exception and its purpose. |
+| Math | Domain, requested and effective level, inclusion role or none; structural/logical, operational, derivational, or proof-level; any local depth exception and its purpose. |
 | Derivatives/calculus | None, update intuition, scalar derivative, chain-rule derivation, implementation/debugging, or theorem-specific calculus; reason and needed conditions. |
 | Example and visual | Case that exposes the mechanism; important intermediate states; visual choice or none, with reason. |
 | Code | Purpose or none; language/tool; none, illustrative, from-scratch, standard library/framework, or production-oriented depth; selected layers and why each earns space. |
@@ -31,11 +45,16 @@ Keep these axes independent. “Systems” does not mean “little math”; “a
 
 **Title:** Topic scope and note architecture. **Purpose:** Choose a coherent unit of learning. **Decision question:** Is the reader learning one mechanism, choosing among relatives, surveying a field, or navigating a learning path?
 
+**Inputs:** User request, source scope, independent outcomes, existing topic map.
+**Default:** KEEP one bounded unit before proposing extra notes.
+**Precedence:** Source order and verified command scope govern splits.
+
 | Branch / condition | Output / choice | Leave out or link |
 |---|---|---|
 | One bounded mechanism or claim with one usable outcome | Atomic-mechanism note; explain it at the required depth, even if lengthy. “Atomic” here is a scope, not the separate short `atomic.md` template. | Independent prerequisite lessons and unrelated variants. |
 | Related methods must be distinguished or selected | Family/comparison note with shared axes, common model, and conditional selection rules. | Full implementation or derivation of every member; link child notes. |
 | Reader needs representative coverage and synthesis of a field | Survey organized by questions/taxonomy, with evidence-backed coverage boundaries and representative cases. | Pretending shallow coverage establishes mastery of each mechanism. |
+| Source sequence carries the reasoning | KEEP a source walkthrough with verified locators and claims in sequence. | Imposing a textbook sequence on a source-led note. |
 | Reader needs navigation, dependencies, or study sequence | Map of content with scope, prerequisites, linked note roles, and meaningful ordering. | Repeating child-note explanations. |
 | One note contains independently reusable outcomes or conflicting reader baselines | Split those units and keep an overview only if it connects them. | Splitting merely to meet a length quota. |
 
@@ -44,6 +63,10 @@ Keep these axes independent. “Systems” does not mean “little math”; “a
 ## DM-02
 
 **Title:** Reader baseline and prerequisites. **Purpose:** Supply enough foundation without reteaching a subject. **Decision question:** What must this reader know at the point of use?
+
+**Inputs:** Audience description, existing notes, expected task.
+**Default:** ADAPT with a short local definition of essential concepts.
+**Precedence:** DM-03 determines which prerequisites matter.
 
 | Branch / condition | Output / choice | Leave out or link |
 |---|---|---|
@@ -58,6 +81,10 @@ Keep these axes independent. “Systems” does not mean “little math”; “a
 ## DM-03
 
 **Title:** Learning outcome. **Purpose:** Make content selection accountable to a reader capability. **Decision question:** What should the reader be able to do afterward, and what would demonstrate it?
+
+**Inputs:** Requested task, available evidence, learner baseline.
+**Default:** KEEP a bounded explanation and one observable check.
+**Precedence:** DM-02 and DM-05 decide feasibility.
 
 | Branch / outcome | Output / choice | Leave out unless separately justified |
 |---|---|---|
@@ -76,6 +103,10 @@ Keep these axes independent. “Systems” does not mean “little math”; “a
 
 **Title:** Knowledge track. **Purpose:** Choose the explanatory structure without deciding math or code depth. **Decision question:** What kind of object or relationship carries the explanation?
 
+**Inputs:** Mechanism, causal evidence, algorithm steps, comparisons, proof goal.
+**Default:** KEEP a direct explanation and one discriminating example.
+**Precedence:** DM-03 selects the primary structure, then DM-06 and DM-14 select math and code independently.
+
 | Branch / track | Output / choice | Leave out or link |
 |---|---|---|
 | Conceptual | Meaning, distinctions, causal argument, representative cases, evidence when needed. | Invented equations or invariants. |
@@ -91,8 +122,17 @@ Keep these axes independent. “Systems” does not mean “little math”; “a
 
 **Title:** Research and source strategy. **Purpose:** Match verification effort to claims and uncertainty. **Decision question:** Which claims require external support, currentness, or comparison?
 
+**Inputs:** Assigned sources, accessible excerpts, timestamps, source claims, dates.
+**Default:** ADAPT to the material actually accessible and mark the gap.
+**Precedence:** Preserve source sequence and claim-level provenance before adding support.
+
 | Branch / research need | Output / choice | Leave out or label |
 |---|---|---|
+| Complete assigned source | KEEP its sequence and attach exact page, heading, or timestamp locators at claims and examples. | Rearranging it or mixing in unmarked additions. |
+| Partial assigned source | ADAPT to the passages or segments actually available. State known coverage and gaps. | Inferring what a missing segment says or fabricating locators. |
+| Metadata only | KEEP bibliographic identification and a specific access limitation. Request material when faithful treatment depends on it. | Attributing substantive claims or detailed learning outcomes. |
+| Several consulted references | ADAPT around an identified anchor or name the synthesis order. Label independent findings, interpretations, and added illustrations. | Presenting the synthesis as one source's sequence. |
+| No assigned source | ADAPT to a declared study outline and identify only inspected references. | Implying the outline came from a source. |
 | No external verification needed | Use supplied inspected material, an explicitly stated model, or self-contained reasoning for stable claims; distinguish a constructed example from evidence about the world. | New historical, empirical, disputed, or mutable claims masquerading as established facts. |
 | Authoritative-source check | Inspect an original paper, authoritative textbook, official standard, or relevant primary source; record the precise passage/result and conditions. | A snippet or abstract as support when the full claim is elsewhere. |
 | Current documentation check | Inspect official docs for the actual library/runtime/standard version; record version or access date as relevant. | Guessing behavior from another version or from remembered tutorials. |
@@ -102,11 +142,15 @@ Keep these axes independent. “Systems” does not mean “little math”; “a
 
 The overall research label summarizes the highest needed effort, but verification stays claim-specific. Cite beside the supported claim. Separate source findings, one's own measurements, and synthesis/inference. A source list is not evidence that its contents were inspected.
 
-**Example of change:** A symbolic recurrence under stated assumptions may require no new browsing; a current framework API comparison requires versioned official docs, and a throughput claim requires an actual benchmark setup.
+**Example of change:** With only two transcript segments, keep their verified locators in sequence and record the gap. A symbolic recurrence under stated assumptions may require no new browsing; a current framework API comparison requires versioned official docs, and a throughput claim requires an actual benchmark setup.
 
 ## DM-06
 
 **Title:** Math inclusion gate. **Purpose:** Decide whether notation earns space. **Decision question:** Does math define, quantify, predict, support a decision, or check something the reader needs?
+
+**Inputs:** Learning outcome, required computations, relevant validity conditions.
+**Default:** OMIT displays and use prose.
+**Precedence:** Apply DM-07 for the allowed depth and DM-09 for definition and placement.
 
 | Branch / role | Output / choice | Leave out |
 |---|---|---|
@@ -114,8 +158,10 @@ The overall research label summarizes the highest needed effort, but verificatio
 | Quantifies behavior or resource use | Provide the model, inputs, units/shape, assumptions, and interpretable result. | Precision the model or evidence does not support. |
 | Determines a design or selection decision | Show the inequality, objective, bound, or threshold and how it changes the choice. | Unused formalism. |
 | Helps verify behavior | Show a relevant shape, dimension, normalization, sign, or numerical check. | Calling that check a proof. |
-| Formal view is useful only to a secondary audience | Short optional formalization or linked note. | Interrupting the main explanation with unnecessary prerequisites. |
+| Formal detail serves only a secondary outcome | MERGE a link to a verified treatment if useful. | Extra equations without work for the reader to do. |
 | None of these roles applies | Omit equations; structural/logical reasoning may be sufficient. | Decorative notation or a blank math heading. |
+
+For each equation, ask whether removing it prevents the reader from understanding an essential defining relation, computing a required value, tracing an update, or checking a bound. Keep it only when the answer is yes.
 
 **Example of change:** An architecture-identification note may name layers without calculus; a memory-budget note includes parameter/storage arithmetic even though its track is systems.
 
@@ -123,21 +169,44 @@ The overall research label summarizes the highest needed effort, but verificatio
 
 **Title:** Math depth. **Purpose:** Calibrate mathematical work independently of code and topic track. **Decision question:** Must the reader recognize structure, compute, derive, or establish a guarantee?
 
+**Inputs:** Domain, subtopic title and purpose, route, requested level and user override.
+**Default:** Use the applicable domain default, subject to the necessity test.
+**Precedence:** DM-06 decides if math is needed and DM-08 decides whether to use derivatives.
+
 | Branch / depth | Output / choice | Leave out or link |
 |---|---|---|
 | Structural/logical (M0) | Terms, relationships, valid states, conditions, or invariants in prose or lightweight logic; math inclusion can still be “none.” | Decorative display equations and forced calculus. |
 | Operational (M1) | Useful formula with assumptions, symbol treatment, small calculation or trace, interpretation, relevant check. | A full proof of a result the reader only applies. |
 | Derivational (M2) | Starting definitions/objective, significant transformations, named justifications, conclusion and limitations. | Expanding routine arithmetic for an already fluent reader. |
-| Proof-level (M3) | Precise theorem/claim, quantified assumptions, proof strategy, complete logical argument and scope; counterexample when it clarifies why an assumption matters. | Substituting simulation or empirical fit for proof. |
+| Proof-level (M3) | Precise theorem or proposition, quantified assumptions, complete argument, and a counterexample to a dropped hypothesis. | Substituting simulation or empirical fit for proof. |
 | A local difficulty needs different depth | Record the exception and explain it where used; e.g., operational note with one brief derivation. | Promoting every formula to the deepest treatment. |
 
-These labels are semantic. If using numeric planning metadata in this repository, 0/1/2/3 map to M0/M1/M2/M3 for deep study; legacy non-deep templates retain their own levels.
+Use the lowest level sufficient for the outcome. Study notes start at M0. The planner uses these defaults and ceilings independently of the code-oriented subject family. An unknown domain starts at M0 and can reach M2 for an explicitly selected derivation.
 
-**Example of change:** Applying a gradient update can be M1; deriving the update's component derivatives is M2; proving a convergence guarantee with its assumptions is M3.
+| Domain | Default | Cap | When to raise depth |
+|---|---|---|---|
+| social-studies-humanities | M0 | M0 | Use dated events, percentages, and sourced statistics in prose. |
+| biology | M0 | M1 | A named quantitative law or an explicitly quantitative subtopic. |
+| coding-systems | M0 | M1 | Bounds, resource use, indexing, or memory layout arithmetic. |
+| chemistry | M0 | M2 | Operational stoichiometry, pH, or equilibrium at M1. Reserve M2 for physical chemistry. |
+| ml-applied | M1 | M1 | Forward pass, shape arithmetic, loss application, or parameter counts. |
+| ml-theory | M1 | M2 | Derive a bound, gradient, or optimization result when taught. |
+| physics | M1 | M2 | Use first-principles derivations only when outcomes require them. |
+| pure-mathematics | M2 | M3 | Use quantified proof when proving the guarantee is an outcome. |
+
+Clamp structural, historical, comparative, and dedicated implementation titles to M0 even inside quantitative curricula. An explicit planning override can lift the domain or subtopic ceiling up to M2, with M3 confined to pure mathematics on deep-study routes. API tables, cheat sheets and summaries reject M2 outside pure mathematics. A derivation with code can be scoped as a theory note with a narrowly chosen verification check. The companion implementation note applies the result without deriving it again.
+
+For deep study and source study, M0 forbids display math and formal proof apparatus. M1 uses at most three displays with definitions and a numeric trace, keeping simple assignments and comparisons inline. M2 uses two to six displays, explicit assumptions, justified steps, and at least two distinct boundary regimes. M3 uses a quantified theorem or proposition, a complete proof of the stated scope, and a counterexample to a dropped hypothesis. Display each central equation once and link or refer to it by name. [Math gates](math_gates.md) describe formatting and compatibility for other routes.
+
+**Example of change:** Applying a gradient update can be M1; deriving the update's component derivatives is M2; a pure-mathematics theorem with quantified assumptions and a complete proof earns M3.
 
 ## DM-08
 
 **Title:** Derivative/calculus gate. **Purpose:** Prevent calculus from being forced into architecture or prediction lessons. **Decision question:** Is local change, parameter learning, gradient correctness, or a calculus-based guarantee part of the outcome?
+
+**Inputs:** Forward or backward computation, parameter updates, differentiability.
+**Default:** OMIT derivatives.
+**Precedence:** Use only derivatives necessary at the effective DM-07 depth.
 
 | Branch / learning goal | Output / choice | Leave out or link |
 |---|---|---|
@@ -157,6 +226,10 @@ A neural-network forward pass/inference does not require derivatives. Ordinary g
 
 **Title:** Equation and symbol treatment. **Purpose:** Make central equations understandable and valid without repeated tables. **Decision question:** What must the reader know to interpret and apply this relation here?
 
+**Inputs:** Governing equation, variables, domains, units, shapes and assumptions.
+**Default:** ADAPT to inline definitions and one relevant check.
+**Precedence:** DM-06 and DM-07 govern equation inclusion and depth.
+
 | Branch / need | Output / choice | Leave out or link |
 |---|---|---|
 | Central equation defines/predicts something | State the question it answers; show the relation, define unfamiliar symbols/operators, explain assumptions, work a small example or derivation, interpret the result, and check a relevant property. | Equation previews repeated in multiple sections. |
@@ -174,6 +247,10 @@ Apply [rendering rules](authoring_rules.md#rendering). Use one canonical display
 
 **Title:** Derivation granularity. **Purpose:** Show enough reasoning to reproduce important transitions. **Decision question:** Which step would this reader otherwise have to guess?
 
+**Inputs:** Target result, baseline, known identities and meaningful transitions.
+**Default:** MERGE a short justification at the first non-obvious step.
+**Precedence:** DM-07 gates derivation and proof.
+
 | Branch / transition | Output / choice | Leave out or link |
 |---|---|---|
 | Routine arithmetic/rearrangement within the baseline | Compress; expand a representative step if needed. | A “why” paragraph for every arithmetic operation. |
@@ -188,6 +265,10 @@ Apply [rendering rules](authoring_rules.md#rendering). Use one canonical display
 
 **Title:** Example and trace design. **Purpose:** Expose mechanism with minimal bookkeeping. **Decision question:** What small case makes the important decision or transformation visible?
 
+**Inputs:** Source examples, intended task, fixture inputs and edge conditions.
+**Default:** KEEP one small labeled illustration if it closes a comprehension gap.
+**Precedence:** DM-05 governs attribution, and DM-18 governs verification.
+
 | Branch / mechanism | Output / choice | Leave out |
 |---|---|---|
 | Numerical transformation | Small distinct, often asymmetric values; trace the intermediate quantities that explain the output. | Large random datasets and repeated arithmetic. |
@@ -197,11 +278,17 @@ Apply [rendering rules](authoring_rules.md#rendering). Use one canonical display
 | Shared mechanism across math and code | Define the case once and keep names, values, assumptions, and outputs consistent. | Reintroducing full input tables at each layer. |
 | Survey or family has incompatible mechanisms | Use distinct named cases or linked examples with explicit roles. | Forcing one “running example” to fit everything. |
 
+Mark a borrowed example with a verified locator. Label an original teaching example as an added illustration. MERGE an integrated problem into the sequential explanation when it would interrupt the source order elsewhere. OMIT an example if it repeats a trace.
+
 **Example of change:** A tensor note uses a small rectangular input to expose axes instead of a square matrix whose mistaken transpose is hard to notice.
 
 ## DM-12
 
 **Title:** Analogy decision. **Purpose:** Improve intuition without importing false properties. **Decision question:** Does a familiar relation predict the specific unfamiliar behavior better than a direct case?
+
+**Inputs:** Proposed analogy and its point of failure.
+**Default:** OMIT analogy and explain directly.
+**Precedence:** DM-11 tests whether an example already works.
 
 | Branch / condition | Output / choice | Leave out |
 |---|---|---|
@@ -216,6 +303,10 @@ Apply [rendering rules](authoring_rules.md#rendering). Use one canonical display
 
 **Title:** Visual selection. **Purpose:** Match a visual to the relationship it clarifies. **Decision question:** Which relation is costly to reconstruct from prose alone?
 
+**Inputs:** Spatial geometry, data or control flow, comparative structure.
+**Default:** OMIT a visual if prose is sufficient.
+**Precedence:** Use a verified or generated figure for spatial geometry under the rendering rules.
+
 | Branch / relation | Output / choice | Leave out |
 |---|---|---|
 | Data/control flow or branching | Flowchart; use sequence diagram when actor-to-actor message order is the point. | Fake pipeline stages. |
@@ -229,20 +320,15 @@ Apply [rendering rules](authoring_rules.md#rendering). Use one canonical display
 
 Apply [rendering rules](authoring_rules.md#rendering); explain the inference beside the visual. Select the visual only for its teaching purpose.
 
-**Example of change:** A retry protocol gets a state diagram; broadcast rules get a tensor grid; a simple definition gets no diagram. A wavefront refraction proof uses an ASCII geometric sketch instead of a Mermaid flowchart box chain:
-
-```text
-Good (Geometric sketch):                  Bad (Mermaid prose boxes):
-        normal N                          flowchart TD
-           |  / incident ray (theta_1)      W0["Wavefront"] --> E1["Snell's Law"]
-   A ------+------ C  (interface)
-      \  theta_2 /
-       v refracted ray
-```
+**Example of change:** A retry protocol gets a state diagram, and broadcast rules get a tensor grid. A wavefront refraction explanation uses an embedded figure with the interface, normal, rays, and their angles. A simple definition can use prose alone.
 
 ## DM-14
 
 **Title:** Code inclusion gate. **Purpose:** Select code depth before choosing a language. **Decision question:** What would this code teach, demonstrate, or verify that the rest of the note does not?
+
+**Inputs:** Need to teach internals, use an API, or verify a claim.
+**Default:** OMIT runnable code.
+**Precedence:** DM-03 selects the goal; non-computing subjects need an explicit simulation request.
 
 > **Hard Non-Computing Subject Rule:** For non-computing subjects (Physics, Chemistry, Biology, Humanities, Pure Mathematics), **default to `None` (no code block)**. Never write Python/NumPy wrappers around closed-form formulas (like Snell's law, kinematics, or equilibrium equations). Include code **only** when the user explicitly requests a simulation/script or when the topic itself is computational modeling. Enforced programmatically by `scripts/decision_matrix.py`.
 
@@ -267,6 +353,10 @@ Good (Geometric sketch):                  Bad (Mermaid prose boxes):
 
 **Title:** Language/tool selection. **Purpose:** Choose the tool whose behavior matters to the outcome. **Decision question:** Which interface or abstraction must the reader understand or use?
 
+**Inputs:** Domain, user-selected tools, required semantic behavior.
+**Default:** KEEP one suitable tool when code is necessary.
+**Precedence:** Explicit selections take precedence over the domain defaults.
+
 | Branch / tool | Output / choice | Leave out or caveat |
 |---|---|---|
 | Language-independent algorithm | Pseudocode with explicit indexing, state, stopping, and relevant tie/ordering conventions. | Pretending it was executed. |
@@ -278,15 +368,31 @@ Good (Geometric sketch):                  Bad (Mermaid prose boxes):
 | Ownership, layout, types, concurrency, performance, or a course/task requirement | C, C++, Rust, or Java according to the behavior being taught. | Attributing the same memory model to all four languages. |
 | Relational queries or query plans | SQL in the named dialect/engine. | A Python replacement that hides database semantics. |
 | Process composition, environment, or deployment commands | Shell for the specified OS/shell, with concrete effects and expected behavior. | Invented portability. |
-| Multi-library / multi-language computing or ML topic | Implement across the **most widely used ecosystems** for that domain (e.g., for classical/neural ML algorithms like Perceptron or Logistic Regression: **Python + NumPy** from scratch, **scikit-learn**, and **PyTorch**; for TensorFlow-first tasks add Keras/TF; for systems/DSA include the dominant systems + scripting languages). | Collapsing an ML algorithm to a single toy snippet when practitioners use standard frameworks alongside NumPy. |
+| Dedicated implementation or explicit ecosystem comparison | Use the saved stack and the fixture shared across its implementations. | Adding unrelated ecosystems or duplicating earlier derivations. |
 
 `numpy.gradient` estimates derivatives of sampled values using finite differences; it is not automatic differentiation through an arbitrary model. [NumPy reference](https://numpy.org/doc/stable/reference/generated/numpy.gradient.html).
+
+For a dedicated implementation note, resolve the planned stack from the specialty below. An explicit tool list overrides the default. A conceptual or proof note may omit code, and a verification example selects the single tool that exposes the result unless another tool serves a distinct outcome.
+
+| Specialty | Planned implementations | What each reveals |
+|---|---|---|
+| Classical ML and tabular methods | NumPy, scikit-learn, PyTorch | Array update; estimator and evaluation pipeline; tensor and module API. |
+| Deep-learning layers and training | NumPy, PyTorch, TensorFlow/Keras | Array mechanics; autograd; layer or training workflow. |
+| DSA and algorithms | Python, C++ | Readable state transitions; STL and explicit types. |
+| Systems and memory | C, Rust | Layout and lifecycle; borrowing and ownership. |
+| Databases and queries | SQL | Schema, query, and execution plan. |
+| Web, asynchronous execution, and UI | TypeScript, JavaScript | Typed interface and runtime behavior. |
+| Non-computing | None by default | An explicitly requested simulation can select a suitable tool. |
 
 **Example of change:** An ownership lesson selects Rust; a database isolation lesson selects SQL; neither receives an obligatory Python implementation.
 
 ## DM-16
 
 **Title:** ML implementation ladder. **Purpose:** Select distinct teaching layers without requiring a sequence of frameworks. **Decision question:** Which abstraction levels must this ML lesson expose?
+
+**Inputs:** Intended ML abstraction, selected framework, available fixture.
+**Default:** KEEP one implementation or hand trace.
+**Precedence:** DM-15 sets the tool and DM-17 justifies additional implementation depth.
 
 | Branch / layer | Output / choice: what it teaches | Leave out unless separately needed |
 |---|---|---|
@@ -304,6 +410,10 @@ Select zero, one, or several layers according to distinct outcomes; the ladder i
 
 **Title:** Number and depth of implementations. **Purpose:** Justify each implementation and make comparisons meaningful. **Decision question:** Does another implementation reveal a different abstraction or answer an explicit comparison question?
 
+**Inputs:** Proposed stack, common fixture and distinct teaching roles.
+**Default:** OMIT additional implementations without a separate teaching role.
+**Precedence:** Reproduce each required stack under DM-18.
+
 | Branch / condition | Output / choice | Leave out or link |
 |---|---|---|
 | One task and one relevant abstraction | One implementation at DM-14's chosen depth. | Automatic “first-principles plus idiomatic” duplication. |
@@ -314,11 +424,17 @@ Select zero, one, or several layers according to distinct outcomes; the ladder i
 
 Toy/from-scratch examples must state their limitations. Comparable evaluation does not imply bitwise equality or production readiness.
 
+For a required multi-stack note, state the common inputs and parameters in a **Shared fixture** field or plain `Shared fixture:` line. Reuse the fixture from an earlier trace when it exists. Provide a runnable block for each planned stack and a table with columns Framework (or Language), Exposes, Hides, and Pitfall. Use the exact stack ID in the first column. Keep default differences visible.
+
 **Example of change:** A PyTorch/Keras comparison uses the same task, split, architecture, loss, and metric, and reports differences in initialization or execution instead of presenting unrelated demos as evidence.
 
 ## DM-18
 
 **Title:** Verification and reproducibility. **Purpose:** Match checks to claims and report exactly what was done. **Decision question:** What observable evidence would detect a consequential mistake here?
+
+**Inputs:** Reference outputs, fixture, runtime, bounds, determinism and tolerance.
+**Default:** Describe what could be checked and record the actual static or execution status.
+**Precedence:** Proof and source evidence retain their separate standards.
 
 | Branch / claim | Output / choice | Leave out or qualify |
 |---|---|---|
@@ -332,11 +448,17 @@ Toy/from-scratch examples must state their limitations. Comparable evaluation do
 
 When executed, record the actual command/environment details needed for reproduction, observed result, and limits of the check. A documentation check verifies a documented claim, not execution of the sample. Keep verification adjacent to the example/code or in one dedicated module.
 
+For required stacks, each example needs at least six substantive lines and an exercised result. Run the example via the planner's `verify-runtimes` command before publishing. For each stack, report under `### Verification — <stack-id>` with `Status: executed`, the observed `Version:` when reported, and one `text` fence with verbatim stdout. If the report says a package or tool is missing, use the exact static status and omit observed output and version. The publish gate reruns examples from trusted drafts and checks this evidence. Equivalent numeric examples print `PARITY: [<values>]` as one line of finite JSON numbers in the same input order. A workflow-only comparison may use `Parity: workflow-only — <specific reason>`.
+
 **Example of change:** A manual gradient lesson adds a small smooth-point finite-difference check and reports tolerance; an inference-only lesson tests output shapes and values without a gradient check.
 
 ## DM-19
 
 **Title:** Alternatives, failure modes, and boundaries. **Purpose:** Include only consequential decisions and errors. **Decision question:** What plausible choice, misuse, or failure would materially change the result?
+
+**Inputs:** Introduced rules, selection cues, real failure modes and evidence gaps.
+**Default:** OMIT secondary references and unsupported caveats.
+**Precedence:** DM-05 governs corrections and attribution.
 
 | Branch / need | Output / choice | Leave out or link |
 |---|---|---|
@@ -347,11 +469,17 @@ When executed, record the actual command/environment details needed for reproduc
 | Evidence supports less than the reader might infer | Identify confounding, sample/task limits, approximation, or untested regimes; narrow conclusions. | Using a caveat to preserve an otherwise unsupported general claim. |
 | No distinct decision/error remains | Omit the section or integrate a brief warning at the point of use. | Invented alternatives or gotchas. |
 
+KEEP a reference matrix when several already-explained rules benefit from lookup. Use rule, meaning, conditions, and notes or units. ADAPT to a decision guide when competing methods need recognition cues. MERGE into the explanation when one condition is enough. For uncertainty, distinguish a sourced correction, an observed boundary, an access gap, and a genuine open question. Name what would settle an open question.
+
 **Example of change:** An ML workflow retains leakage and train/inference mismatch if they affect the lesson; a memory-lifetime note retains use-after-free. Neither inherits the other's bug list.
 
 ## DM-20
 
 **Title:** Recall, connections, and final anti-filler audit. **Purpose:** Confirm that the finished note teaches its chosen outcome without residue. **Decision question:** What helps retrieval or transfer, and what can be removed without losing understanding?
+
+**Inputs:** Outcomes, explained concepts, candidate links and final draft.
+**Default:** KEEP a short teachable check and applicable footer elements.
+**Precedence:** Source fidelity and route constraints take precedence over enrichment.
 
 | Branch / finding | Output / choice | Remove or repair |
 |---|---|---|
@@ -363,5 +491,7 @@ When executed, record the actual command/environment details needed for reproduc
 | Unsupported history/measurement/current behavior or inferred execution appears | Verify, narrow, label unverified, or remove; require specific document URLs in citations (never bare root domains like `https://gallica.bnf.fr/` or `https://archive.org/`); keep source and execution status honest. | Fabricated citation details, bare homepage links, API claims, runtime versions when `code_depth == "none"`, and invented test results. |
 | Unused section, authoring gate, matrix, empty row, template token, or padding remains | Remove it and check the result still meets the outcome; shorten/merge where clearer. | Arbitrary word/sentence quotas, rigid stage counts, bug/implementation quotas, filler phrasing. |
 | Formatting or navigation is uncertain | Check Markdown table columns/escaped pipes, fences, callout quoting, math delimiters, and actual link targets; inspect rendering when available. | Claiming rendered QA when only source syntax was inspected. |
+
+Tie recall to the taught outcomes. Progress from a factual cue through causal explanation to application or diagnosis, with a short answer or non-spoiling hint. Choose links whose link text or surrounding prose explains the progression. Follow the [footer contract](footer_widgets.md) for applicable widgets and retain an open confusion only if it names a real unresolved issue.
 
 **Example of change:** A conceptual note ends after a precise distinction and a useful transfer question, with no math/code headings. A coding note keeps runnable verification without a forced proof or invented “open confusion.”
