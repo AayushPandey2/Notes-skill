@@ -34,7 +34,7 @@ from typing import Any
 import yaml
 from note_layout import ROUTES
 
-INDEX_VERSION = 3
+INDEX_VERSION = 5
 
 EXCLUDED_DIRS = {".git", ".trash", ".obsidian", "attachments", "scratchpad", "node_modules", "__pycache__"}
 COMMON_TEMPLATE_DIRS = {"templates", "_templates", "meta/templates", "00 - templates", "00-templates"}
@@ -49,19 +49,99 @@ DATAVIEW_INLINE_RE = re.compile(r"`=[^`]+`")
 # Vault Path Resolution & Containment
 # ---------------------------------------------------------------------------
 
+def _detect_obsidian_vault(start: Path | None = None) -> Path | None:
+    """Walk start and its parents looking for a .obsidian directory."""
+    cur = Path(os.path.realpath(start or Path.cwd()))
+    for cand in (cur, *cur.parents):
+        if (cand / ".obsidian").is_dir():
+            return cand
+    return None
+
+
+def _ensure_notes_folder(vault_root: Path) -> Path:
+    """Return an existing Notes folder (case-insensitive) under vault_root, or create Notes/."""
+    for child in vault_root.iterdir():
+        if child.is_dir() and child.name.lower() == "notes":
+            return child
+    notes_dir = vault_root / "Notes"
+    notes_dir.mkdir(parents=True, exist_ok=True)
+    return notes_dir
+
+
+def resolve_notes_folder(vault_root: Path) -> str | None:
+    """Return configured notes_folder relative name if it belongs to vault_root."""
+    cfg = Path.home() / ".scriptorium-config.json"
+    if not cfg.is_file():
+        return None
+    try:
+        data = json.loads(cfg.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    cfg_vault = data.get("vault_path")
+    notes_folder = data.get("notes_folder")
+    if cfg_vault and notes_folder and notes_folder != "." and Path(os.path.realpath(cfg_vault)) == Path(os.path.realpath(vault_root)):
+        return str(notes_folder).strip("/\\") or None
+    return None
+
+
+def set_notes_folder(folder_path: str | Path) -> dict[str, str]:
+    """Set the active notes folder (and parent vault_path) in ~/.scriptorium-config.json."""
+    target = Path(os.path.expanduser(str(folder_path)))
+    if target.exists() and not target.is_dir():
+        raise NotADirectoryError(f"Target path is not a directory: {target}")
+    target.mkdir(parents=True, exist_ok=True)
+    resolved_target = Path(os.path.realpath(target))
+    detected_vault = _detect_obsidian_vault(resolved_target)
+    if detected_vault is not None:
+        vault_root = detected_vault
+        rel = resolved_target.relative_to(vault_root).as_posix()
+        notes_folder = rel if rel else "."
+    else:
+        vault_root = resolved_target
+        notes_folder = "."
+    payload = {
+        "vault_path": str(vault_root),
+        "notes_folder": notes_folder,
+        "notes_path": str(resolved_target),
+    }
+    cfg = Path.home() / ".scriptorium-config.json"
+    cfg.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+    return payload
+
+
 def resolve_vault_root(explicit_path: str | Path | None = None) -> Path:
-    """Resolve and validate vault root from explicit arg, env, or ~/.scriptorium-config.json."""
+    """Resolve and validate vault root from explicit arg, env, ~/.scriptorium-config.json, or .obsidian/."""
     candidate = explicit_path or os.environ.get("SCRIPTORIUM_VAULT_PATH")
+    cfg = Path.home() / ".scriptorium-config.json"
+    if not candidate and cfg.is_file():
+        try:
+            data = json.loads(cfg.read_text(encoding="utf-8"))
+            candidate = data.get("vault_path")
+        except (OSError, json.JSONDecodeError) as exc:
+            raise ValueError(f"Failed reading vault config '{cfg}': {exc}") from exc
     if not candidate:
-        cfg = Path.home() / ".scriptorium-config.json"
-        if cfg.is_file():
+        detected = _detect_obsidian_vault()
+        if detected is not None:
+            notes_dir = _ensure_notes_folder(detected)
             try:
-                data = json.loads(cfg.read_text(encoding="utf-8"))
-                candidate = data.get("vault_path")
-            except (OSError, json.JSONDecodeError) as exc:
-                raise ValueError(f"Failed reading vault config '{cfg}': {exc}") from exc
-    if not candidate:
-        raise ValueError("Vault path not provided and neither SCRIPTORIUM_VAULT_PATH nor ~/.scriptorium-config.json is set.")
+                cfg.write_text(
+                    json.dumps(
+                        {
+                            "vault_path": str(detected),
+                            "notes_folder": notes_dir.name,
+                            "notes_path": str(notes_dir),
+                        },
+                        indent=2,
+                        ensure_ascii=False,
+                    ),
+                    encoding="utf-8",
+                )
+            except OSError:
+                pass
+            return detected
+        raise ValueError(
+            "Vault path not provided and neither SCRIPTORIUM_VAULT_PATH, ~/.scriptorium-config.json, nor a .obsidian/ folder was found."
+        )
 
     raw = Path(os.path.expanduser(str(candidate)))
     if not raw.exists():
@@ -208,10 +288,10 @@ def _extract_body_structure(text: str, start_idx: int) -> dict[str, Any]:
         if m_blk:
             block_ids.append(m_blk.group(1))
 
-        # Collect wikilinks
+        # Collect wikilinks (excluding ![[...]] non-markdown asset embeds)
         for m_wl in re.finditer(r"\[\[([^\]]+)\]\]", raw_line):
             target = re.split(r"\\?\|", m_wl.group(1), maxsplit=1)[0].split("#", 1)[0].strip()
-            if target:
+            if target and Path(target).suffix.lower() not in {".png", ".jpg", ".jpeg", ".svg", ".gif", ".webp", ".pdf"}:
                 links.append(target)
 
         # Inline tags: skip Markdown heading lines, strip inline comments, code, URLs, link destinations, escaped \#
@@ -467,13 +547,15 @@ def build_or_load_index(
         yaml_tags = _extract_yaml_tags(meta)
         all_tags_occ = yaml_tags + body_info["inline_tags"]
 
+        aliases = _as_str_list(meta.get("aliases"))
+        nexttopics = _as_str_list(meta.get("nexttopics") if "nexttopics" in meta else meta.get("next_topic"))
         notes_by_file[rel] = {
             "mtime_ns": st.st_mtime_ns,
             "size": st.st_size,
             "file": rel,
             "id": _as_str_or_none(meta.get("id")),
-            "title": _as_str_or_none(meta.get("title")),
-            "aliases": _as_str_list(meta.get("aliases")),
+            "title": _as_str_or_none(meta.get("title")) or (aliases[0] if aliases else None),
+            "aliases": aliases,
             "base_domain": _as_str_or_none(meta.get("base_domain")),
             "master_topic": _as_str_or_none(meta.get("master_topic")),
             "topic": _as_str_or_none(meta.get("topic")),
@@ -481,9 +563,10 @@ def build_or_load_index(
                 meta["template"] if meta.get("template") in ROUTES and meta.get("type") == meta["template"] else None
             ),
             "depends_on": _as_str_list(meta.get("depends_on")),
-            "next_topic": _as_str_or_none(meta.get("next_topic")),
+            "next_topic": nexttopics[0] if nexttopics else None,
+            "nexttopics": nexttopics,
             "status": _as_str_or_none(meta.get("status")),
-            "review_log": _as_str_list(meta.get("review_log")),
+            "review_log": _as_str_list(meta.get("review_log")) + re.findall(r"^\*\*Review\*\*\s*::\s*(.+)$", text, re.M),
             "headings": body_info["headings"],
             "yaml_tags": yaml_tags,
             "inline_tags": body_info["inline_tags"],
@@ -644,6 +727,42 @@ def _placement_evidence(notes: list[dict[str, Any]], topic_filter: str | None) -
         "candidates": candidates,
         "existing_numbering": sorted(numbered_prefixes),
     }
+
+
+def _detect_topic_workflow(matched: list[dict[str, Any]]) -> str | None:
+    """Infer whether existing topic notes follow /scribe-deepnotes ('deepnotes') or /scribe-notes ('notes')."""
+    notes_count = 0
+    deep_count = 0
+    auxiliary_types = {"practice", "atomic", "cheatsheet", "cheat-sheet", "comparison"}
+    for rec in matched:
+        if rec.get("note_type") in auxiliary_types:
+            continue
+        tags = {t.lower() for t in (rec.get("tags_unique") or [])}
+        ntype = (rec.get("note_type") or "").lower()
+        headings = " | ".join(h.lower() for h in (rec.get("headings") or []))
+
+        is_notes = bool(tags & {"study-notes", "studynotes", "classnotes", "class-notes"}) or ntype in {"studynotes", "classnotes"} or (
+            "source context & learning goals" in headings or "core concepts & sequential breakdown" in headings
+        )
+        is_deep = bool(tags & {"deepstudy-master", "deepstudy-coding", "deepstudy-general"}) or ntype in {
+            "deepstudy-master", "deepstudy-coding", "deepstudy-general"
+        } or ("central idea" in headings and "core model" in headings) or "first-principles intuition" in headings
+
+        if is_notes and not is_deep:
+            notes_count += 1
+        elif is_deep and not is_notes:
+            deep_count += 1
+        elif is_notes and is_deep:
+            notes_count += 1
+            deep_count += 1
+
+    if notes_count and deep_count:
+        return "mixed"
+    if notes_count:
+        return "notes"
+    if deep_count:
+        return "deepnotes"
+    return None
 
 
 def extract_note_sections(
@@ -811,6 +930,7 @@ def main(argv: list[str] | None = None) -> int:
             "index_version": full["index_version"],
             "completeness": full["completeness"],
             "cache_hit": full["cache_hit"],
+            "detected_workflow": _detect_topic_workflow(relevant),
             "templates": full["templates"],
             "relevant_notes": [_legacy_record(r) for r in relevant],
             "placement_conventions": _placement_evidence(full["notes"], args.topic),

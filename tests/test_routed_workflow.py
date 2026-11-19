@@ -34,8 +34,8 @@ def cli(script, *args, code=0):
     ("Create a practice set for my CNN notes", "practice", None),
     ("/scribe-atomic-notes Residual Connection", "atomic", None),
     ("scribe-atomic-notes Residual Connection", "atomic", None),
-    ("/scribe-classnotes Operating Systems", None, None),
-    ("Use classnotes template for Operating Systems", "classnotes", None),
+    ("/scribe-notes Operating Systems", None, None),
+    ("Use studynotes template for Operating Systems", "studynotes", None),
     ("https://www.youtube.com/watch?v=example", "summary", None),
     ("Summarize this paper https://arxiv.org/abs/1706.03762", "summary", None),
     ("https://arxiv.org/abs/1706.03762", "paper-breakdown", None),
@@ -43,11 +43,11 @@ def cli(script, *args, code=0):
     ("Study CNN using https://arxiv.org/abs/1706.03762 as reference", None, None),
     ("Create a cheat sheet on CNN", "cheat-sheet", None),
     ("Compare Adam vs SGD", "comparison", None),
-    ("Use deepstudy-general template for CNN", "deepstudy-general", None),
+    ("Use deepstudy-master template for CNN", "deepstudy-master", None),
     ("/scribe-distill CNN", "cheat-sheet", None),
     ("/scribe-compare Adam vs SGD", "comparison", None),
-    ("/scribe-notes CNN", None, None),
-    ("/scribe-notes https://arxiv.org/abs/1706.03762", "paper-breakdown", None),
+    ("/scribe-deepnotes CNN", None, None),
+    ("/scribe-deepnotes https://arxiv.org/abs/1706.03762", "paper-breakdown", None),
     ("/scribe-expand CNN", None, None),
     ("/scribe-ingest CNN https://example.test/docs", None, None),
 ])
@@ -60,7 +60,7 @@ def test_command_usage_and_read_only():
     cli("plan_notes", "inspect", "/scribe-dsa invalid", code=2)
     cli("plan_notes", "inspect", "/scribe-practice", code=2)
     cli("plan_notes", "inspect", "/scribe-atomic-notes", code=2)
-    cli("plan_notes", "inspect", "/scribe-classnotes", code=2)
+    cli("plan_notes", "inspect", "/scribe-notes", code=2)
     for command in ("doubt", "quiz"):
         assert planner.inspect_request(f"/scribe-{command} CNN")["mode"] == "existing-notes"
 
@@ -115,7 +115,7 @@ def finish_fixture(draft):
         ("Boundary / degenerate", "0 | 0 + 1 | 1 | Zero input"),
     ):
         draft = draft.replace(f"| {label} | | | | |", f"| {label} | {values} |")
-    if "template: atomic\n" in draft:
+    if "## What is this concept and its governing claim?" in draft:
         draft = draft.replace("Each step preserves the integer count.\n\n", "")
         draft = draft.replace("Let x be an integer input and y the integer output.", "x input; y output.")
         draft = draft.replace("Example Pebble uses x = 2 pebbles and returns y = 3 pebbles.", "Pebble counts integers.")
@@ -140,10 +140,20 @@ def test_scaffold_and_lint_all_layouts(tmp_path, route, level):
             "math_level": level, "language": "python" if route == "dsa" else "none"}
     raw = scaffold(tmp_path, item)
     assert raw == scaffold(tmp_path, item)
-    assert ("Key Equations" in raw) == (level > 0)
+    assert ("Key Equations" in raw) == (level > 0 and route not in layout.DEEP_ROUTES and route != "practice")
+    fm = yaml.safe_load(raw.split("---\n", 2)[1])
+    assert list(fm.keys()) == ["id", "aliases", "topic", "tags", "nexttopics"]
     note = tmp_path / "note.md"
     note.write_text(finish_fixture(raw), encoding="utf-8")
     assert "Errors: 0" in cli("validate_note", note)
+    assert any("Unauthorized frontmatter key" in msg for _, msg in validate_text(
+        note.read_text(encoding="utf-8").replace("topic: CNN\n", "topic: CNN\ntitle: Extra\n", 1),
+        route=route, math_level=level,
+    ))
+    assert any("Missing frontmatter key" in msg for _, msg in validate_text(
+        note.read_text(encoding="utf-8").replace("nexttopics: []\n", "", 1),
+        route=route, math_level=level,
+    ))
 
 
 def _outline(title, purpose="explain", weight="low", density="cohesive", level=0, **extra):
@@ -170,12 +180,12 @@ def test_cnn_publication_and_interrupted_retry(tmp_path):
     plan = yaml.safe_load(cli("plan_notes", *command))
     plan_id = plan["plan_id"]
     assert [(n["template"], n["math_level"], n["output_path"]) for n in plan["plan"]] == [
-        ("deepstudy-coding", 2, "01 - Convolution Operation & Kernels.md"),
-        ("deepstudy-general", 0, "02 - History of LeNet to ResNet.md"),
+        ("deepstudy-master", 2, "01 - Convolution Operation & Kernels.md"),
+        ("deepstudy-master", 0, "02 - History of LeNet to ResNet.md"),
         ("api-table", 1, "03 - PyTorch nn.Conv2d Parameters.md"),
         ("practice", 2, "Practice Sets/CNN - Practice Test.md"),
     ]
-    assert plan["plan"][0]["verification_stack"] == ["Python + NumPy", "Python + PyTorch"]
+    assert plan["plan"][0]["verification_stack"] == []
     assert not (vault / "CNN").exists()
     cli("scaffold_note", vault, "--syllabus", "--topic", "CNN", "--output", "CNN/00-MOC-cnn.md",
         "--allowed-subtopics", *(n["output_path"] for n in plan["plan"][:-1]))
@@ -207,7 +217,7 @@ def test_cnn_publication_and_interrupted_retry(tmp_path):
     assert graph["summary"]["broken_link_count"] == 0
     for item in plan["plan"]:
         rel = item["output_path"] if item["template"] in {"practice", "atomic", "cheat-sheet"} else f"CNN/{item['output_path']}"
-        assert graph["nodes"][rel]["note_type"] == item["template"]
+        assert rel in graph["nodes"]
 
 
 def test_destinations_and_collision_preflight(tmp_path):
@@ -233,28 +243,32 @@ def test_destinations_and_collision_preflight(tmp_path):
     assert planner._targets(tmp_path, nested)["01"] == tmp_path / "ML" / "Cheatsheets" / "cnn-CHEAT-SHEET.md"
     cn_plan = planner.build_plan(
         tmp_path,
-        "/scribe-classnotes Operating Systems",
+        "/scribe-notes Operating Systems",
         "Operating Systems",
         [
             {"title": "Process Scheduling", "purpose": "explain", "impl_weight": "low", "density": "cohesive",
-             "routing_reason": "Explain process scheduling in classnotes format."},
+             "routing_reason": "Explain process scheduling in studynotes format."},
             {"title": "CPU Queues Code", "purpose": "implement", "impl_weight": "high", "density": "cohesive",
-             "routing_reason": "Trace CPU queue scheduling in classnotes format."},
+             "routing_reason": "Trace CPU queue scheduling in studynotes format."},
             {"title": "Scheduling Cheat Sheet", "purpose": "revise", "impl_weight": "low", "density": "cohesive",
              "routing_reason": "Allow auxiliary cheat-sheet."},
         ],
     )
     assert [(n["template"], n["math_level"], n["source_profile"], n["output_path"]) for n in cn_plan["plan"]] == [
-        ("classnotes", 0, "fast-web-fetch", "01 - Process Scheduling.md"),
-        ("classnotes", 0, "fast-web-fetch", "02 - CPU Queues Code.md"),
+        ("studynotes", 0, "fast-web-fetch", "01 - Process Scheduling.md"),
+        ("studynotes", 0, "fast-web-fetch", "02 - CPU Queues Code.md"),
         ("cheat-sheet", 0, "vault-notes", "Cheatsheets/operating-systems-scheduling-CHEAT-SHEET.md"),
         ("practice", 0, "planned-notes", "Practice Sets/Operating Systems - Practice Test.md"),
     ]
-    for forbidden in ("deepstudy-coding", "deepstudy-general"):
+    for forbidden in layout.DEEP_ROUTES:
         with pytest.raises(ValueError, match="prohibits"):
-            planner.build_plan(tmp_path, "/scribe-classnotes OS", "OS", [_outline("Paging", template=forbidden)])
+            planner.build_plan(tmp_path, "/scribe-notes OS", "OS", [_outline("Paging", template=forbidden)])
         with pytest.raises(ValueError, match="prohibits"):
-            planner.build_plan(tmp_path, "/scribe-classnotes OS", "OS", [_outline("Paging")], template=forbidden)
+            planner.build_plan(tmp_path, "/scribe-notes OS", "OS", [_outline("Paging")], template=forbidden)
+    with pytest.raises(ValueError, match="multiple subtopic notes"):
+        planner.build_plan(tmp_path, "/scribe-notes OS", "OS", [_outline("Paging")])
+    with pytest.raises(ValueError, match="multiple subtopic notes"):
+        planner.build_plan(tmp_path, "/scribe-notes OS", "OS", [_outline("Paging"), _outline("Segmentation")])
     with pytest.raises(ValueError, match="Duplicate"):
         planner.build_plan(tmp_path, "CNN", "CNN", [
             _outline("One", output_path="same.md"), _outline("Two", output_path="SAME.md"),
@@ -352,7 +366,7 @@ For independent dice, each compatible pair contributes the product of the two fa
 Trace the compatible pairs for a sum of three before changing either die's weights.
 
 - Create an atomic note on the joint probability mass function.
-- Create a deepstudy-general note on polynomial coefficient convolution.
+- Create a deepstudy-master note on polynomial coefficient convolution.
 
 ### Metacognitive Reflection{footer}"""
     file = tmp_path / "video.md"
@@ -362,7 +376,7 @@ Trace the compatible pairs for a sum of three before changing either die's weigh
 
 
 def test_linter_rejects_malformed_constructs(tmp_path):
-    item = {"template": "deepstudy-general", "math_level": 0, "id": "01", "title": "Fixture",
+    item = {"template": "deepstudy-master", "math_level": 0, "id": "01", "title": "Fixture",
             "note_id": "fixture"}
     text = finish_fixture(scaffold(tmp_path, item))
     for bad, expected in (

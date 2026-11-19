@@ -1,3 +1,11 @@
+<!-- scaffold:preflight
+Decision-Matrix Pre-Flight: [note_decision_matrix.md](../shared/note_decision_matrix.md).
+Switches: D01 route (`comparison`); D02 family comparison scope; D03 reader; D04 choose/design outcome; D05 vault notes / primary benchmarks;
+D06–D09 `math_level`; D10 shared workload fixture & diverging causal pipeline; D11 visual (`flowchart TD` + matrix);
+D12–D13 verification / benchmark reproducibility; D14 optional modules (`measurement`, `operations`); D15 final audit.
+Strip this block before emission. Load detailed DM branches only when active.
+-->
+
 # Decision-First Architectural, Algorithm & Tool Comparison
 
 - **Header Block**: YAML frontmatter + `# <nn>. <Option A> vs. <Option B> — Decision & Trade-Off Analysis`.
@@ -33,10 +41,38 @@
 
 ## 5. What did I learn & how does this connect to my stack? (Gotchas, Sources & Reflections)
 
-- `> [!caution] Migration & Selection Traps`: 3+3+3+ `_Avoid_ -> True Invariant` entries.
+- `> [!caution] Migration & Selection Traps`: consequential `_Avoid_ -> True Invariant` entries.
 - **Primary Sources & Benchmark Verification Table**.
-- Append `shared/footer_widgets.md` (**What I learned**, **Open Confusion** `**Confusion** :: ...`, **Atomize**, **Connection**, and the `dataviewjs` **Mark Revisited** button).
 
-Follow [shared authoring rules](../shared/authoring_rules.md) and the [footer contract](../shared/footer_widgets.md). Apply the math gate only at the planned level. Scaffold comments are editing slots and must be removed before publication.
+<!-- optional: measurement -->
+## [OPTIONAL] How can I reproduce this comparison? (Matched Evaluation)
 
-> [!important] AGENT AUTHORING DIRECTIVE — `comparison` Always place the actionable `Choose X when...` verdict block at the very top of Section 1 and compare all options under strictly equivalent assumptions and workloads. Never invent unverified benchmark numbers, never hand-wave complexity assumptions, and always prove the trade-off by demonstrating a concrete crossover edge case that flips the decision. Execute the mandatory **Humanization & Cohesion Pass** so trade-offs read with a direct, insightful engineer-to-future-self tone, natural transitions, and zero AI clichés.
+<!-- scaffold:activation
+Contextual Activation Guide
+- When to Include: The architectural choice hinges on measured latency, throughput, memory, or accuracy rather than purely qualitative/asymptotic properties; D12–D14.
+- When to Omit Cleanly: Omit for purely theoretical/conceptual comparisons or when no benchmark protocol exists. Delete this heading and block completely; never emit N/A. Renumber following sections and repair links.
+- What to Write: Hold task, dataset/workload, split, metric, and resource budget constant; record material environment, observed vs. cited results, and uncertainty; flag any unavoidable mismatch.
+-->
+
+- **Context:** State the workload, controlled variables, and hardware/runtime environment.
+- **Analysis:** Compare observed or primary-cited metrics under matched budgets and explain any unavoidable protocol mismatch.
+- **Check:** State variance, execution status, and what the benchmark does not establish.
+
+<!-- optional: operations -->
+## [OPTIONAL] How do I migrate safely and detect regressions? (Production Deployment & Observability Playbook)
+
+<!-- scaffold:activation
+Contextual Activation Guide
+- When to Include: Switching between `<Option A>` and `<Option B>` in a live system carries data, latency, or compatibility migration risk; D04, D12–D14.
+- When to Omit Cleanly: Omit for greenfield algorithm comparisons or academic concept contrasts. Delete this heading and block completely; never emit N/A. Renumber following sections and repair links.
+- What to Write: Specify shadow/canary rollout criteria, key observability signals that catch regressions early, and the rollback trigger.
+-->
+
+- **Context:** State the migration boundary and live operational constraints.
+- **Analysis:** Outline compatibility checks, dual-run/canary signals, and rollback criteria.
+- **Check:** State the verification metric that confirms migration parity and its blind spots.
+
+See [authoring rules](../shared/authoring_rules.md) for 5-key YAML, rendering, evidence, and cohesion.
+See [math gates](../shared/math_gates.md) for selected mathematical depth.
+See [footer contract](../shared/footer_widgets.md) for reflection behavior.
+- **Template Contract (`comparison`):** Lead Section 1 with the actionable `Choose X when...` verdict, compare candidates under strictly equivalent workloads and assumptions, never fabricate benchmarks (`[UNVERIFIED]` when unmeasured), and prove the trade-off with a concrete crossover edge case.

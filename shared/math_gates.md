@@ -1,23 +1,9 @@
-# Math levels
+# Math gates
 
-- **0 — No formal math.** Use prose invariants, state transitions, constraints and manual traces. Omit the equation preview, display equations, mathematical anatomy and derivation sections completely.
-- **1 — Operational formula.** Under the H1 provide an `[!abstract] Key Equations` preview with 1–3 core display equations and short symbol introductions. In the applicable mechanism/theory section, state the domain and assumptions and show the governing display equation. Include the tables below. For a practice set use the scoped formulas from its notes and place tables/derivation in the scope section without revealing exercise solutions.
-- **2 — Derivation and limits.** Include level 1. Before the equation write 1–2 paragraphs of mathematical intuition about geometry, scale, dependence, and sensitivity. Analyze zero, normalized ±1, a degenerate or tie case, and ±∞ after stating the valid domain. Explain when a listed regime is outside that domain. Give a concrete counterexample to overgeneralization.
+Use [D06?D09](note_decision_matrix.md) for inclusion/depth and [detailed mathematical decisions](notes_decision_matrix.md#dm-06) when needed. Rendering follows [authoring rules](authoring_rules.md#rendering).
 
-## Complete Symbol Anatomy
+Good: state the formula's question, define symbols/shape/units and assumptions, show a useful calculation or justified transformation, interpret, then check a meaningful condition. Bad: repeat the same equation in an abstract, body and footer or test zero/infinity outside its domain.
 
-| Symbol / Operator | Meaning | Shape / Dimensions | Domain / Units | Directional Sensitivity |
-|---|---|---|---|---|
+Good: use unequal dimensions and distinct values to reveal axis/order errors. Bad: a symmetric fixture that passes after transposition. Good: name the chain rule at a non-obvious transition; bad: expand every addition while skipping the domain condition for division.
 
-Define each symbol, index and operator before use. Quantify how a change affects the output or why direction alone is insufficient.
-
-## Input-to-Output Behavior
-
-| Case | Concrete Inputs | Intermediate Computation | Final Output | Interpretation |
-|---|---|---|---|---|
-
-Include four rows in order: smallest non-trivial case, named running example, perturbed input showing sensitivity, and boundary/degenerate case.
-
-## Zero-skip proof or derivation (level 2)
-
-State the target, domain and proof strategy. Number every nontrivial algebraic/calculus step, render it in display math, and immediately follow it with `*Why this step holds:*`. Name the assumption, domain/division guards, and whether the move is an equivalence or implication. Finish with a dimensional sanity check, engineering consequence, and the scope of what remains unproven.
+Deep-study modules use semantic levels 0?3 without fixed math tables. Existing compact/reference/practice routes retain their scaffold contract until explicitly customized: level 0 omits displays; level 1 includes preview, symbol and behavior tables; level 2 adds justified derivation and valid-domain boundary analysis. Out-of-domain cases are labeled invalid, never evaluated as meaningful limits. Study-note derivations may be explicitly requested at level 2; do not invent derivations absent from the source without labeling them supplemental.

@@ -4,18 +4,19 @@ from pathlib import Path
 import re
 
 ROOT = Path(__file__).resolve().parent.parent
+DEEP_ROUTES = {"deepstudy-master"}
 ROUTES = (
-    "deepstudy-coding", "deepstudy-general", "api-table", "cheat-sheet", "atomic",
-    "comparison", "summary", "practice", "dsa", "paper-breakdown", "classnotes",
+    "deepstudy-master", "api-table", "cheat-sheet", "atomic",
+    "comparison", "summary", "practice", "dsa", "paper-breakdown", "studynotes",
 )
-PRACTICE_RANGES = ((1, 4), (5, 10), (11, 15))
+PRACTICE_RANGES = ((1, 5), (6, 12), (13, 18))
 NARROW_RANGES = ((1, 3), (4, 7), (8, 11))
 HINT = "> [!hint]- Need a nudge?"
 SOLUTION = "> [!tip]- Reveal approach and solution"
 MATH_SECTION = {
-    "deepstudy-coding": 3, "deepstudy-general": 3, "api-table": 1,
+    "api-table": 1,
     "cheat-sheet": 1, "atomic": 1, "comparison": 3, "summary": 2,
-    "practice": 1, "dsa": 3, "paper-breakdown": 2, "classnotes": 3,
+    "practice": 1, "dsa": 3, "paper-breakdown": 2, "studynotes": 2,
 }
 SYMBOL_TABLE = (
     "| Symbol / Operator | Meaning | Shape / Dimensions | Domain / Units | Directional Sensitivity |",
@@ -26,18 +27,6 @@ BEHAVIOR_TABLE = (
     "|---|---|---|---|---|",
 )
 CALLOUTS = {
-    "deepstudy-coding": {
-        2: ("> [!note] Zero-Baseline Prerequisites",),
-        3: ("> [!warning] Where the Analogy Breaks Down",),
-        6: ("> [!example]- Reveal Detailed Answer & Step-by-Step Breakdown",),
-        7: ("> [!caution] Silent Bugs, Gotchas & Anti-Patterns",),
-    },
-    "deepstudy-general": {
-        2: ("> [!note] Zero-Baseline Prerequisites",),
-        3: ("> [!warning] Where the Analogy Breaks Down",),
-        6: ("> [!example]- Reveal Detailed Answer & Step-by-Step Breakdown",),
-        7: ("> [!caution] Common Misconceptions & Anti-Patterns",),
-    },
     "api-table": {4: ("> [!caution] Performance Traps, Hidden Allocations & Silent Mutation Bugs",)},
     "cheat-sheet": {4: ("> [!caution] One-Line Exam & Interview Traps",)},
     "comparison": {
@@ -46,30 +35,25 @@ CALLOUTS = {
     },
     "summary": {1: ("> [!info] Source Metadata & Accessibility Audit",)},
     "paper-breakdown": {1: ("> [!info] Primary Paper Metadata",)},
-    "classnotes": {1: ("> [!info] Class Details",)},
+    "studynotes": {1: ("> [!info] Source & Scope Context",)},
 }
 
 
 def section_layout(route: str, level: int, *, narrow: bool = False) -> list[tuple[int, str]]:
     """Read just one spec. Return stable section IDs and rendered headings."""
-    if route not in ROUTES or level not in (0, 1, 2):
+    if route not in ROUTES or level not in ((0, 1, 2, 3) if route in DEEP_ROUTES else (0, 1, 2)):
         raise ValueError(f"Unknown route or math level: {route}, {level}")
+    if route in DEEP_ROUTES:
+        # The decision record, not a heading list, selects adaptive modules.
+        return []
     spec = (ROOT / "templates" / f"{route}.md").read_text(encoding="utf-8")
-    headings = re.findall(r"^## .+$", spec.split("> [!important] AGENT AUTHORING DIRECTIVE", 1)[0], re.M)
+    headings = re.findall(r"^## (?!\[OPTIONAL\]).+$", spec.split("> [!important] AGENT AUTHORING DIRECTIVE", 1)[0], re.M)
     layout = []
     for number, heading in enumerate(headings, 1):
-        if route == "deepstudy-coding":
-            if number == 4 and level == 0:
-                continue
-            if number == 4 and level == 1:
-                heading = "## 4. How do dimensions, shapes, and state invariants transform step by step?"
-            if number > 4 and level == 0:
-                heading = heading.replace(f"## {number}.", f"## {number - 1}.", 1)
-        if route == "deepstudy-general" and number == 4 and level < 2:
-            heading = heading.replace("Manual Trace & Derivation", "Manual Trace")
-        if route == "practice" and narrow and 2 <= number <= 4:
-            first, last = NARROW_RANGES[number - 2]
+        if route == "practice" and narrow and 1 <= number <= 3:
+            first, last = NARROW_RANGES[number - 1]
             heading = re.sub(r"Q\d+–Q\d+", f"Q{first}–Q{last}", heading)
+        heading = re.sub(r"^## \d+\.", f"## {len(layout) + 1}.", heading)
         layout.append((number, heading))
     return layout
 
@@ -80,7 +64,7 @@ def title_heading(route: str, number: str, title: str) -> str:
     if route == "practice":
         subject = re.sub(r" - Practice(?: Test)?$", "", title)
         return f"# {subject} — Active Recall & Synthesis Practice Set"
-    prefix = {"summary": "Summary: ", "dsa": "DSA: ", "paper-breakdown": "Paper Breakdown: ", "classnotes": "Class Notes: "}
+    prefix = {"summary": "Summary: ", "dsa": "DSA: ", "paper-breakdown": "Paper Breakdown: ", "studynotes": ""}
     if route == "comparison":
         return f"# {number}. {title} — Decision & Trade-Off Analysis"
     if route == "atomic":
@@ -128,8 +112,14 @@ def _proof_slots() -> list[str]:
 
 
 def body_skeleton(route: str, level: int, number: str, title: str, *, narrow: bool) -> str:
+    layout = section_layout(route, level, narrow=narrow)
     lines = [title_heading(route, number, title), ""]
-    if level:
+    if route in DEEP_ROUTES:
+        return "\n".join(lines) + (
+            "\n<!-- scaffold: Read templates/deepstudy-master.md and templates/notes_decision_matrix.md; "
+            "complete the decision record and author only selected modules. Remove this instruction. -->\n"
+        )
+    if level and route != "practice":
         lines += ["> [!abstract] Key Equations", "> <!-- scaffold: Introduce symbols and 1–3 display equations. -->", ""]
     route_header = {
         "comparison": "Core Trade-Off Verdict",
@@ -139,23 +129,49 @@ def body_skeleton(route: str, level: int, number: str, title: str, *, narrow: bo
     if route in route_header:
         lines += [f"> [!abstract] {route_header[route]}", "> <!-- scaffold: Fill the abstract. -->", ""]
 
-    for section, heading in section_layout(route, level, narrow=narrow):
-        lines += [heading, "", "<!-- scaffold: Author this section using the selected specification. -->", ""]
+    for section, heading in layout:
+        lines += [heading, ""]
+        if route != "practice":
+            lines += ["<!-- scaffold: Author this section using the selected specification. -->", ""]
         for wrapper in CALLOUTS.get(route, {}).get(section, ()):
             lines += [wrapper, "> <!-- scaffold: Fill the callout. -->", ""]
         if route == "cheat-sheet" and section == 1 and level:
             lines += ["> [!abstract] Core Equations & Bounds", "> <!-- scaffold: Add compact bounds. -->", ""]
-        if route == "practice" and 2 <= section <= 4:
-            first, last = (NARROW_RANGES if narrow else PRACTICE_RANGES)[section - 2]
+        if route == "practice" and 1 <= section <= 3:
+            first, last = (NARROW_RANGES if narrow else PRACTICE_RANGES)[section - 1]
             for question in range(first, last + 1):
                 lines += [
                     f"### Q{question}. <!-- scaffold: Question prompt. -->", "",
                     HINT, "> <!-- scaffold: Non-spoiling hint. -->", "",
                     SOLUTION, "> <!-- scaffold: Approach, final answer, and common trap. -->", "",
                 ]
-        if level and section == MATH_SECTION[route]:
-            lines += _math_slots(level, inline_proof=route != "deepstudy-coding", compact=route == "atomic")
-        if level == 2 and route == "deepstudy-coding" and section == 4:
-            lines += _proof_slots()
+        if level and route != "practice" and section == MATH_SECTION[route]:
+            lines += _math_slots(level, inline_proof=True, compact=route == "atomic")
+    if route == "practice":
+        return "\n".join(lines).rstrip() + "\n"
     footer = (ROOT / "shared" / "footer_widgets.md").read_text(encoding="utf-8")
     return "\n".join(lines) + "\n" + footer.split("<!-- scaffold:footer -->", 1)[1].lstrip("\n")
+
+
+def optional_headings(route):
+    """Read optional declarations from templates, never duplicate module IDs here."""
+    spec = (ROOT / "templates" / f"{route}.md").read_text(encoding="utf-8")
+    return re.findall(r"^## \[OPTIONAL\] (.+)$", spec, re.M)
+
+
+def heading_key(heading):
+    return re.sub(r"^## (?:\d+\. )?", "", heading).strip()
+
+
+def matches_layout(route, level, headings, *, narrow=False):
+    optional = set(optional_headings(route))
+    actual = [heading_key(h) for h in headings]
+    if len(actual) != len(set(actual)):
+        return False
+    core = [h for h in actual if h not in optional]
+    expected = [heading_key(h) for _, h in section_layout(route, level, narrow=narrow)]
+    if route == "practice":
+        def _tier_norm(text: str) -> str:
+            return re.sub(r"\s*\(Q\d+–Q\d+\)\s*$", "", text).strip()
+        return [_tier_norm(h) for h in core] == [_tier_norm(h) for h in expected]
+    return core == expected

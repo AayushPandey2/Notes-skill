@@ -10,20 +10,20 @@ import re
 import sys
 from urllib.parse import parse_qs, urlsplit
 
+import json
 import yaml
 
-from note_layout import BEHAVIOR_TABLE, HINT, NARROW_RANGES, PRACTICE_RANGES, ROUTES, SOLUTION, SYMBOL_TABLE, section_layout
+from note_layout import BEHAVIOR_TABLE, DEEP_ROUTES, HINT, NARROW_RANGES, PRACTICE_RANGES, ROUTES, SOLUTION, SYMBOL_TABLE, section_layout, matches_layout, optional_headings, heading_key
 from vault_index import is_within_vault, resolve_vault_root
 from verify_vault_notes import RAW_LATEX_IN_YAML_RE, UNRESOLVED_TPL_RE, _extract_anchors_and_blocks, _heading_slug, build_vault_index
 
-REQUIRED = {
-    "id", "title", "aliases", "type", "area", "base_domain", "master_topic", "topic",
-    "template", "math_level", "tags", "created", "mastery", "revisited_date",
-}
+from contracts import STRICT_KEYS as STRICT_KEYS
+REQUIRED = set(STRICT_KEYS)
 FENCE = re.compile(r"^\s*(" + chr(96) + r"{3,}|~{3,})(.*)$")
 TOKEN = re.compile(r"(" + chr(96) + r"+|\$+)")
 QUESTION = re.compile(r"^### Q(\d+)\. (\S.*)$")
 WIKILINK = re.compile(r"\[\[([^\]\n]+)\]\]")
+ASSET_EXTS = {".png", ".jpg", ".jpeg", ".svg", ".gif", ".webp", ".pdf"}
 HTML_COMMENT = re.compile(r"<!--.*?-->", re.S)
 WORD = re.compile(r"[\w]+(?:[-'’][\w]+)*", re.UNICODE)
 VIDEO_TIMESTAMP = re.compile(r"\[(\d{2,}):([0-5]\d)\]\((https?://[^\s)]+)\)")
@@ -100,9 +100,18 @@ def _inline(line: str, lineno: int, math: int, report) -> tuple[str, int, int]:
     return masked, math, displays
 
 
-def _mermaid(lines: list[str], start: int, report) -> None:
+def _mermaid(lines: list[str], start: int, report, *, adaptive: bool = False) -> None:
     meaningful = [(start + i, line.strip()) for i, line in enumerate(lines, 1)
                   if line.strip() and not line.lstrip().startswith("%%")]
+    if adaptive and any("$" in line for _, line in meaningful):
+        report(start, "Use Unicode rather than raw math delimiters in Mermaid.")
+    if adaptive and len(meaningful) >= 2 and meaningful[0][1] not in {"flowchart TD", "sequenceDiagram"}:
+        # This lightweight linter cannot parse every Mermaid grammar. Allow the
+        # selected visual form; rendering remains a separate authoring check.
+        if not re.fullmatch(r"(?:stateDiagram(?:-v2)?|timeline|mindmap|gantt|classDiagram|erDiagram|"
+                            r"(?:flowchart|graph)\s+(?:TD|TB|BT|LR|RL))", meaningful[0][1]):
+            report(start, "Unrecognized Mermaid diagram type; check rendering with Mermaid.")
+        return
     if len(meaningful) < 2 or meaningful[0][1] not in {"flowchart TD", "sequenceDiagram"}:
         report(start, "Expected a nonempty Mermaid flowchart TD or sequenceDiagram.")
         return
@@ -180,7 +189,7 @@ def _table_sizes(lines: list[tuple[int, str]], report) -> dict[str, int]:
 
 def _practice(lines: list[tuple[int, str]], narrow: bool, report) -> None:
     boundaries = [i for i, (_, line) in enumerate(lines) if line.startswith("## ") or QUESTION.fullmatch(line)]
-    buckets = {2: [], 3: [], 4: []}
+    buckets = {1: [], 2: [], 3: []}
     tier = 0
     recognized = set()
     for pos, i in enumerate(boundaries):
@@ -215,12 +224,12 @@ def _practice(lines: list[tuple[int, str]], narrow: bool, report) -> None:
     for number, line in lines:
         if line.strip().startswith(("> [!hint]", "> [!tip]")) and number not in recognized:
             report(number, "Practice callout is outside a question.")
-    ranges = NARROW_RANGES if narrow else PRACTICE_RANGES
-    for tier, (first, last) in enumerate(ranges, 2):
-        questions = buckets[tier]
-        minimum = (last - 1 if narrow else last - 3) if tier == 4 else last
-        if not any(questions == list(range(first, final + 1)) for final in range(minimum, last + 1)):
-            report(1, f"Tier {tier - 1} must contain consecutive questions Q{first} through Q{minimum}–Q{last}.")
+    ordered = buckets[1] + buckets[2] + buckets[3]
+    min_q, max_q = (10, 14) if narrow else (15, 20)
+    if any(not buckets[t] for t in (1, 2, 3)):
+        report(1, "Each of Tiers 1–3 must contain at least one question.")
+    elif ordered != list(range(1, len(ordered) + 1)) or not (min_q <= len(ordered) <= max_q):
+        report(1, f"Practice tiers must contain consecutive questions Q1–Q{len(ordered)} within {min_q}–{max_q} total questions.")
 
 
 def _link_checks(text: str, visible: list[tuple[int, str]], metadata: dict, vault: Path, target: Path,
@@ -235,6 +244,11 @@ def _link_checks(text: str, visible: list[tuple[int, str]], metadata: dict, vaul
         for match in WIKILINK.finditer(line):
             ref = re.split(r"\\?\|", match[1], maxsplit=1)[0]
             name, _, anchor = ref.partition("#")
+            if Path(name.strip()).suffix.lower() in ASSET_EXTS:
+                asset = name.strip().lstrip("/")
+                if not ((vault / asset).is_file() or any(vault.rglob(Path(asset).name))):
+                    report(number, f"Unresolved asset embed: {name}")
+                continue
             key = re.sub(r"\.md$", "", name.strip(), flags=re.I).replace("\\", "/").casefold()
             if not key:
                 resolved = target
@@ -259,8 +273,30 @@ def _link_checks(text: str, visible: list[tuple[int, str]], metadata: dict, vaul
                     report(number, f"Unresolved wikilink anchor: {ref}")
 
 
+def _infer_route_and_level(clean: str, headings: list[str], route: str | None, math_level: int | None) -> tuple[str | None, int]:
+    if math_level is not None:
+        level = math_level
+    elif "> [!abstract] Key Equations" not in clean:
+        level = 0
+    elif "### Mathematical Intuition" in clean or "### Boundary & Limit Analysis" in clean or "*Why this step holds:*" in clean:
+        level = 2
+    else:
+        level = 1
+
+    if route is not None:
+        return route, level
+    narrow = any("Q1–Q3" in h for h in headings)
+    for cand in ROUTES:
+        if cand in DEEP_ROUTES:
+            continue
+        if matches_layout(cand, level, headings, narrow=(cand == "practice" and narrow)):
+            return cand, level
+    return None, level
+
+
 def validate_text(text: str, *, vault: Path | None = None, target: Path | None = None,
-                  planned=(), index=None) -> list[tuple[int, str]]:
+                  planned=(), index=None, route: str | None = None, math_level: int | None = None,
+                  decision_contract: dict | None = None) -> list[tuple[int, str]]:
     findings = []
 
     def report(number, message):
@@ -270,43 +306,50 @@ def validate_text(text: str, *, vault: Path | None = None, target: Path | None =
         metadata, raw, start = read_frontmatter(text)
     except (ValueError, yaml.YAMLError) as exc:
         return [(1, str(exc))]
-    for key in sorted(REQUIRED - metadata.keys()):
+    keys = list(metadata.keys())
+    missing = [key for key in STRICT_KEYS if key not in metadata]
+    extra = [key for key in keys if key not in STRICT_KEYS]
+    for key in missing:
         report(1, f"Missing frontmatter key: {key}")
-    for key in ("id", "title", "area", "base_domain", "master_topic", "topic"):
+    for key in extra:
+        report(1, f"Unauthorized frontmatter key: {key}")
+    if not missing and not extra and keys != list(STRICT_KEYS):
+        report(1, "Frontmatter keys must be strictly ordered: id, aliases, topic, tags, nexttopics.")
+    for key in ("id", "topic"):
         if not isinstance(metadata.get(key), str) or not metadata[key].strip():
             report(1, f"{key} must be nonempty text.")
-    for key in ("aliases", "tags", "revisited_date"):
+    for key in ("aliases", "tags", "nexttopics"):
         if not isinstance(metadata.get(key), list):
             report(1, f"{key} must be a list.")
     aliases = metadata.get("aliases")
-    if isinstance(aliases, list) and (metadata.get("title") not in aliases or
-                                      any(not isinstance(alias, str) or not alias.strip() for alias in aliases)):
-        report(1, "Aliases must include the exact title and contain only nonempty strings.")
+    if isinstance(aliases, list) and (not aliases or any(not isinstance(alias, str) or not alias.strip() for alias in aliases)):
+        report(1, "Aliases must contain at least one nonempty string.")
     tags = metadata.get("tags")
+    if route is None and isinstance(tags, list) and any(tag in DEEP_ROUTES for tag in tags if isinstance(tag, str)):
+        route = "deepstudy-master"
     if isinstance(tags, list) and (not tags or any(not isinstance(tag, str) or
                                                  not re.fullmatch(r"[\w/-]+", tag) for tag in tags)):
         report(1, "Tags must contain valid Obsidian tags. Prefer kebab-case for new tags.")
+    nexttopics = metadata.get("nexttopics")
+    if isinstance(nexttopics, list) and any(not isinstance(item, str) or not item.strip() for item in nexttopics):
+        report(1, "nexttopics must contain only nonempty strings.")
     if "$" in raw or RAW_LATEX_IN_YAML_RE.search(raw):
         report(1, "Raw LaTeX in frontmatter.")
-    try:
-        date.fromisoformat(str(metadata.get("created")))
-        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(metadata["created"])):
-            raise ValueError
-    except ValueError:
-        report(1, "created must be a YYYY-MM-DD date.")
-    route, level = metadata.get("template"), metadata.get("math_level")
-    if route not in ROUTES or metadata.get("type") != route:
-        report(1, "type and template must match a built-in route.")
+    if route is not None and route not in ROUTES:
+        report(1, f"Unknown built-in route: {route}")
         return findings
-    if type(level) is not int or level not in (0, 1, 2):
-        report(1, "math_level must be 0, 1 or 2.")
+    levels = (0, 1, 2, 3) if route in DEEP_ROUTES else (0, 1, 2)
+    if math_level is not None and (type(math_level) is not int or math_level not in levels):
+        report(1, f"math_level must be one of {levels} for this route.")
         return findings
-    if route == "dsa" and (not isinstance(metadata.get("language"), str) or metadata["language"] in {"", "none"}):
-        report(1, "DSA requires a verification language.")
 
     body = "\n".join(text.splitlines()[start:])
+    if "[OPTIONAL]" in body:
+        report(start + 1, "Remove optional authoring markers before emission.")
     if re.search(r"<!--\s*scaffold:", body) or UNRESOLVED_TPL_RE.search(body):
         report(start + 1, "Unresolved scaffold or template field.")
+    if re.search(r"<!--\s*SECTION:\s*S\d+[^>]*-->", body, re.I):
+        report(start + 1, "Legacy <!-- SECTION: S* --> marker is forbidden; remove all section comments and use domain-natural headings.")
     clean = HTML_COMMENT.sub(lambda m: "\n" * m[0].count("\n"), body)
     prose, visible, structure, wording = [], [], [], []
     math, displays, preview_displays = 0, 0, 0
@@ -321,12 +364,12 @@ def validate_text(text: str, *, vault: Path | None = None, target: Path | None =
             opened, quote_depth, lang, first, contents = fence
             if depth == quote_depth and marker and marker[1][0] == opened[0] and len(marker[1]) >= len(opened) and not marker[2].strip():
                 if lang == "mermaid":
-                    _mermaid(contents, first, report)
+                    _mermaid(contents, first, report, adaptive=route in DEEP_ROUTES)
                 if lang == "dataviewjs":
                     js = "\n".join(contents)
                     if (re.search(r'\btext:\s*["\']Mark Revisited["\']', js)
                             and re.search(r'\bcreateEl\(\s*["\']button["\']', js)
-                            and "processFrontMatter" in js and "revisited_date" in js):
+                            and "app.vault.modify" in js and "**Revisited** ::" in js):
                         widget_end = number
                 fence = None
             else:
@@ -358,28 +401,83 @@ def validate_text(text: str, *, vault: Path | None = None, target: Path | None =
     if math:
         report(start + 1, "Unclosed display math.")
     tables = _table_sizes([(n, _strip_quotes(row)[1]) for n, row in prose], report)
+    if route in DEEP_ROUTES:
+        # Adaptive notes keep format/link checks, without old section/math/footer quotas.
+        if sum(row.startswith("# ") for _, row in prose) != 1:
+            report(start + 1, "Expected exactly one H1 title.")
+        if not any(row.strip() and not row.startswith("#") for _, row in prose):
+            report(start + 1, "The note has no authored explanation.")
+        for i, (line_no, row) in enumerate(prose):
+            if re.match(r"^#{2,6} ", row):
+                tail = [value for value in clean.splitlines()[line_no - start:] if value.strip()]
+                # Nested sections are valid content; reject only an empty peer/ancestor section.
+                next_heading = re.match(r"^(#{1,6}) ", tail[0]) if tail else None
+                if not tail or (next_heading and len(next_heading[1]) <= len(row.split()[0])):
+                    report(line_no, "Empty section heading.")
+        if "Authoring gate" in clean or "**Decision-matrix IDs:**" in clean:
+            report(start + 1, "Remove authoring gates from the finished note.")
+        from decision_matrix import audit_note_against_contract, check_slug_and_forward_links, resolve_decisions
+        if decision_contract is not None:
+            contract = {**decision_contract, "explicit_contract": True}
+        else:
+            contract = resolve_decisions(
+                str(metadata.get("topic") or ""),
+                {"title": (aliases or [""])[0], "math_level": math_level or 0},
+                str(metadata.get("topic") or ""),
+                tags=tags if isinstance(tags, list) else None,
+            )
+        for c_line, c_msg in audit_note_against_contract(body, contract):
+            report(start + c_line, c_msg)
+        existing_stems = None
+        if vault is not None:
+            idx_data = index if index is not None else build_vault_index(vault)
+            existing_stems = {p.stem.casefold() for p in idx_data["anchors_by_file"]} | {Path(p).stem.casefold() for p in planned}
+        for s_line, s_msg in check_slug_and_forward_links(
+            body,
+            metadata=metadata,
+            target_filename=target.name if target else None,
+            existing_stems=existing_stems,
+        ):
+            report(start + s_line, s_msg)
+        if vault is not None and target is not None:
+            yaml_links = [(n, row) for n, row in enumerate(raw.splitlines(), 2)]
+            _link_checks(text, yaml_links + visible, metadata, vault, target, planned, index, report)
+        return findings
     headings = [row for _, row in prose if row.startswith("## ")]
-    narrow = route == "practice" and any("Q1–Q3:" in h for h in headings)
-    if headings != [h for _, h in section_layout(route, level, narrow=narrow)]:
+    route, level = _infer_route_and_level(clean, headings, route, math_level)
+    if route is None:
+        report(start + 1, "Section headings or ordering do not match any built-in template.")
+        return findings
+    optional = set(optional_headings(route))
+    for pos, (n, row) in enumerate(prose):
+        if row.startswith("## ") and heading_key(row) in optional:
+            end = next((j for j in range(pos+1, len(prose)) if prose[j][1].startswith("## ")), len(prose))
+            contents = "\n".join(value for _, value in prose[pos+1:end])
+            for field in ("Context", "Analysis", "Check"):
+                if not re.search(rf"\*\*{field}:\*\*\s*\S", contents):
+                    report(n, f"Optional module needs a nonempty {field} field.")
+    narrow = route == "practice" and any("Q1–Q3" in h for h in headings)
+    if not matches_layout(route, level, headings, narrow=narrow):
         report(start + 1, "Section headings or ordering differ from the selected template.")
     if sum(row.startswith("# ") for _, row in prose) != 1:
         report(start + 1, "Expected exactly one H1 title.")
-    if level == 0:
-        if displays or preview_count:
-            report(start + 1, "math_level 0 omits formal display equations and equation callouts.")
-    else:
-        if preview_count != 1 or not 1 <= preview_displays <= 3 or displays <= preview_displays:
-            report(start + 1, "Include 1–3 Key Equations and a governing display equation in the body.")
-        if not tables.get(SYMBOL_TABLE[0]):
-            report(start + 1, "Missing Complete Symbol Anatomy table.")
-        if tables.get(BEHAVIOR_TABLE[0]) != 4:
-            report(start + 1, "Input-to-Output Behavior table must have four data rows.")
-    if level == 2:
-        for required in ("Mathematical Intuition", "Boundary & Limit Analysis", "Overgeneralization Counterexample"):
-            if not any(row == f"### {required}" for _, row in prose):
-                report(start + 1, f"Missing level 2 section: {required}")
-        if "*Why this step holds:*" not in clean:
-            report(start + 1, "Missing zero-skip derivation justification.")
+    if route != "practice":
+        if level == 0:
+            if displays or preview_count:
+                report(start + 1, "math_level 0 omits formal display equations and equation callouts.")
+        else:
+            if preview_count != 1 or not 1 <= preview_displays <= 3 or displays <= preview_displays:
+                report(start + 1, "Include 1–3 Key Equations and a governing display equation in the body.")
+            if not tables.get(SYMBOL_TABLE[0]):
+                report(start + 1, "Missing Complete Symbol Anatomy table.")
+            if tables.get(BEHAVIOR_TABLE[0]) != 4:
+                report(start + 1, "Input-to-Output Behavior table must have four data rows.")
+        if level == 2:
+            for required in ("Mathematical Intuition", "Boundary & Limit Analysis", "Overgeneralization Counterexample"):
+                if not any(row == f"### {required}" for _, row in prose):
+                    report(start + 1, f"Missing level 2 section: {required}")
+            if "*Why this step holds:*" not in clean:
+                report(start + 1, "Missing zero-skip derivation justification.")
 
     if route == "practice":
         _practice(structure, narrow, report)
@@ -391,13 +489,14 @@ def validate_text(text: str, *, vault: Path | None = None, target: Path | None =
                     seconds = int(match[1]) * 60 + int(match[2])
                     if parse_qs(source.query).get("t") != [f"{seconds}s"]:
                         report(number, "YouTube timestamp label must match the t=<seconds>s URL parameter.")
-    if not any(re.match(r"^\*\*Confusion\*\*\s*::\s*(?!None\s*$)\S", row, re.I) for _, row in prose):
-        report(start + 1, "Missing specific **Confusion** :: field.")
-    for field in ("What I learned", "Atomize", "Connection"):
-        if not any(re.match(rf"^- \*\*{field}\*\*:\s*\S", row) for _, row in prose):
-            report(start + 1, f"Missing reflection field: {field}")
-    if widget_end is None or any(row.strip() for n, row in prose if n > widget_end):
-        report(start + 1, "Missing trailing DataviewJS Mark Revisited widget.")
+    if route != "practice":
+        if not any(re.match(r"^\*\*Confusion\*\*\s*::\s*(?!None\s*$)\S", row, re.I) for _, row in prose):
+            report(start + 1, "Missing specific **Confusion** :: field.")
+        for field in ("What I learned", "Atomize", "Connection"):
+            if not any(re.match(rf"^- \*\*{field}\*\*:\s*\S", row) for _, row in prose):
+                report(start + 1, f"Missing reflection field: {field}")
+        if widget_end is None or any(row.strip() for n, row in prose if n > widget_end):
+            report(start + 1, "Missing trailing DataviewJS Mark Revisited widget.")
     if route in {"cheat-sheet", "atomic"}:
         words = sum(len(WORD.findall(row)) for row in wording)
         limit = 350 if route == "cheat-sheet" else 149
@@ -423,17 +522,28 @@ def validate_text(text: str, *, vault: Path | None = None, target: Path | None =
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("note", type=Path)
+    parser.add_argument("--format", choices=("text", "json"), default="text")
     parser.add_argument("--vault", help="Resolve wikilinks in this vault.")
+    parser.add_argument("--template", choices=ROUTES, help="Expected built-in route.")
+    parser.add_argument("--math-level", type=int, choices=(0, 1, 2, 3), help="Expected math level (3 is deep-study proof-level).")
     args = parser.parse_args(argv)
     try:
         vault = resolve_vault_root(args.vault) if args.vault else None
         target = args.note.resolve()
         if vault and not is_within_vault(vault, target):
             raise ValueError("Note is outside the specified vault.")
-        findings = validate_text(target.read_text(encoding="utf-8-sig"), vault=vault, target=target)
+        findings = validate_text(
+            target.read_text(encoding="utf-8-sig"),
+            vault=vault, target=target, route=args.template, math_level=args.math_level,
+        )
     except (OSError, ValueError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 2
+    if args.format == "json":
+        print(json.dumps({"errors": len(findings), "findings": [
+            {"file": str(args.note), "line": line, "code": "NOTE_CONTRACT", "fix": message}
+            for line, message in findings]}))
+        return 1 if findings else 0
     for line, message in findings:
         print(f"{args.note}:{line}: {message}")
     print(f"Errors: {len(findings)}")

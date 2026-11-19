@@ -1,3 +1,11 @@
+<!-- scaffold:preflight
+Decision-Matrix Pre-Flight: [note_decision_matrix.md](../shared/note_decision_matrix.md).
+Switches: D01 route (`api-table`); D02 scope; D03 reader; D04 track/outcome; D05 official versioned docs;
+D06–D09 `math_level`/shapes; D10 shared running fixture & execution topology; D11 visual modality;
+D12–D13 verification stack & recipe guards; D14 optional modules (`memory`, `operations`); D15 final audit.
+Strip this block before emission. Load detailed DM branches only when active.
+-->
+
 # Workflow-Organized API Reference, Execution Model & Cookbook
 
 - **Header Block**: YAML frontmatter + `# <nn>. <Subtopic Title>`. At positive math levels, use the Key Equations callout for governing shapes and costs (for example, Conv2d output dimensions).
@@ -22,10 +30,38 @@
 
 ## 4. Where do performance traps and silent bugs hide? (Limitations, Gotchas & Vault Connections)
 
-- `> [!caution] Performance Traps, Hidden Allocations & Silent Mutation Bugs`: 3+3+3+ `_Avoid_ -> True Invariant` entries exposing real production pitfalls (e.g., accidental copy inside a tight loop, mutating a sliced view and corrupting upstream data, implicit `float64` promotion) with a refuting snippet and diagnostic check (`np.shares_memory`, `.is_contiguous()`, etc.).
+- `> [!caution] Performance Traps, Hidden Allocations & Silent Mutation Bugs`: consequential `_Avoid_ -> True Invariant` entries exposing real production pitfalls (e.g., accidental copy inside a tight loop, mutating a sliced view and corrupting upstream data, implicit `float64` promotion) with a refuting snippet and diagnostic check (`np.shares_memory`, `.is_contiguous()`, etc.).
 - **Primary Sources & Official Versioned Docs Table** (`Library & Version | Direct Official Doc URL | Vault Link | Exact Signature / Behavior Verified`).
-- Append `shared/footer_widgets.md` (**What I learned**, **Open Confusion** `**Confusion** :: ...`, **Atomize**, **Connection**, and the `dataviewjs` **Mark Revisited** button).
 
-Follow [shared authoring rules](../shared/authoring_rules.md) and the [footer contract](../shared/footer_widgets.md). Apply the math gate only at the planned level. Scaffold comments are editing slots and must be removed before publication.
+<!-- optional: memory -->
+## [OPTIONAL] How do layout and allocation change performance? (Hardware, Memory Layout & Systems Performance Profile)
 
-> [!important] AGENT AUTHORING DIRECTIVE — `api-table` Retain the exact workflow-grouped table schema, escaped pipes (`\|`), shared setup contract, and reflection footer. Never dump an unorganized alphabetical list of functions or omit copy-vs-view / allocation semantics. Every signature, default parameter value, and return behavior must reflect verified official documentation for the stated library version, and every cookbook recipe must handle boundary edge cases cleanly. Execute the mandatory **Humanization & Cohesion Pass** so execution mental models and recipes read with a direct, practical engineer-to-future-self voice, natural narrative flow, and zero robotic AI clichés.
+<!-- scaffold:activation
+Contextual Activation Guide
+- When to Include: The API involves material view/copy semantics, memory strides, alignment, ownership transfer, or host/device transfers; D04, D10–D14.
+- When to Omit Cleanly: Omit if memory layout does not affect usage or is already covered in Section 1. Delete this heading and block completely; never emit N/A. Renumber following sections and repair links.
+- What to Write: Trace one concrete allocation or zero-copy view on the running example, state lifetime/aliasing constraints, compare layout choices, and specify a diagnostic check (`np.shares_memory`, `.is_contiguous()`, profiler) without inventing timings.
+-->
+
+- **Context:** State the specific trigger, library version, and memory/hardware assumptions activating this section.
+- **Analysis:** Trace one concrete allocation or zero-copy view, name lifetime/aliasing constraints, and compare relevant layout choices.
+- **Check:** State the diagnostic check and evidence limit (observed vs. unmeasured performance).
+
+<!-- optional: operations -->
+## [OPTIONAL] How do I debug, profile, and operate this API in production? (Production Deployment, Debugging & Observability Playbook)
+
+<!-- scaffold:activation
+Contextual Activation Guide
+- When to Include: Applied systems or ML engineering workflows where runtime diagnostics, concurrency limits, version drift, or failure recovery matter; D04, D12–D14.
+- When to Omit Cleanly: Omit for pure syntax lookup or single-script exercises. Delete this heading and block completely; never emit N/A. Renumber following sections and repair links.
+- What to Write: Define the operational contract, primary failure signals, minimal isolating check, and safe remediation/rollback without guessing metrics.
+-->
+
+- **Context:** State the production workload, runtime/version constraints, and failure surface activating this section.
+- **Analysis:** Map observable failure signals to root causes, isolating diagnostics, and concrete remediation steps.
+- **Check:** State what the diagnostic verifies and which production conditions remain untested.
+
+See [authoring rules](../shared/authoring_rules.md) for 5-key YAML, rendering, evidence, and cohesion.
+See [math gates](../shared/math_gates.md) for selected mathematical depth.
+See [footer contract](../shared/footer_widgets.md) for reflection behavior.
+- **Template Contract (`api-table`):** Group calls by workflow (never alphabetical dumps), escape table pipes (`\|`), specify copy-vs-view and allocation semantics against verified official versioned docs, and guard boundary cases in every recipe.

@@ -1,6 +1,14 @@
+<!-- scaffold:preflight
+Decision-Matrix Pre-Flight: [note_decision_matrix.md](../shared/note_decision_matrix.md).
+Switches: D01 route (`paper-breakdown`); D02 single-paper scope; D03 reader; D04 research synthesis/verification outcome; D05 primary paper + supplement;
+D06–D09 `math_level` (level 2 for core contribution equations); D10 running tensor/token fixture; D11 architecture diagram;
+D12–D13 minimal code sanity check / ablation audit; D14 optional module (`history`); D15 final audit.
+Strip this block before emission. Load detailed DM branches only when active.
+-->
+
 # Primary Research Paper Deconstruction, Derivation & Ablation Audit
 
-- **Header Block**: YAML frontmatter (`type: paper-breakdown`) + `# Paper Breakdown: <Paper Title>` + `> [!abstract] Core Equations & Contribution Summary`.
+- **Header Block**: Metadata per shared contract + `# Paper Breakdown: <Paper Title>` + `> [!abstract] Core Equations & Contribution Summary`.
 
 ## 1. What bottleneck was the field stuck on & what did this paper contribute? (Citation, Prior Wall & Breakthrough)
 
@@ -34,8 +42,22 @@
 - **Stated vs. Unstated Limitations**: Contrast the limitations acknowledged by the authors against practical deployment bottlenecks, scaling walls, or hidden assumptions.
 - **What Came Next**: How subsequent papers improved upon or superseded this mechanism (citing verified follow-up work when supported).
 - **Primary Sources & Paper Section/Equation Verification Table**.
-- Append `shared/footer_widgets.md` (**What I learned**, **Open Confusion** `**Confusion** :: ...`, **Atomize**, **Connection**, and the `dataviewjs` **Mark Revisited** button).
 
-Follow [shared authoring rules](../shared/authoring_rules.md) and the [footer contract](../shared/footer_widgets.md). Apply the math gate only at the planned level. Scaffold comments are editing slots and must be removed before publication.
+<!-- optional: history -->
+## [OPTIONAL] Which earlier constraint explains this design? (Historical Evolution & Competing Paradigms)
 
-> [!important] AGENT AUTHORING DIRECTIVE — `paper-breakdown` Ground every claim, equation number, and ablation metric directly in the primary paper and its supplementary material. Always use `math_level: 2` for equations essential to the paper's core contribution, explicitly label any explanatory derivation you construct that is distinct from the authors' own presentation, and transparently report when an ablation or metric was absent from the paper rather than inferring or fabricating results. Execute the mandatory **Humanization & Cohesion Pass** so the breakdown reads like a sharp researcher explaining the paper's true insight and limits to their future self, with logical transitions and zero AI clichés.
+<!-- scaffold:activation
+Contextual Activation Guide
+- When to Include: A verified historical bottleneck or competing paradigm directly motivates a core architectural or theoretical choice in the paper; D05, D14.
+- When to Omit Cleanly: Omit if Section 1's Pre-Paper Bottleneck already covers the lineage or if historical claims lack primary citations. Delete this heading and block completely; never emit N/A. Renumber following sections and repair links.
+- What to Write: Contrast documented prior capability and constraint with the paper's mechanism; cite primary passages and separate chronology from causal attribution.
+-->
+
+- **Context:** State the historical bottleneck, competing paradigm, and cited prior work.
+- **Analysis:** Contrast the prior limitation against this paper's design choice, keeping chronology distinct from causal attribution.
+- **Check:** Verify each historical attribution against inspected primary passages (mark gaps `[UNVERIFIED]`).
+
+See [authoring rules](../shared/authoring_rules.md) for 5-key YAML, rendering, evidence, and cohesion.
+See [math gates](../shared/math_gates.md) for selected mathematical depth.
+See [footer contract](../shared/footer_widgets.md) for reflection behavior.
+- **Template Contract (`paper-breakdown`):** Ground every claim, equation number, and ablation in the paper/supplement; use `math_level: 2` for core contribution equations; explicitly label added explanatory derivations as distinct from the authors' text; mark absent ablations `[ABLATION / RESULT ABSENT IN PAPER]`.

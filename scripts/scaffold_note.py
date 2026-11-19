@@ -1,17 +1,5 @@
 #!/usr/bin/env python3
-"""Deterministic 7-section deep-note skeleton generator for Scriptorium.
-
-Generates a compliant YAML frontmatter + > [!abstract] Key Equations +
-7-section deep-note Markdown skeleton so the LLM does not spend output
-tokens emitting boilerplate structure.
-
-Usage:
-  python3 scripts/scaffold_note.py "<vault_path>" \\
-      --output "ml/02-gradient-descent.md" \\
-      --id "ml-02" --number "02" --title "Gradient Descent" \\
-      --base-domain "Computer Science" --master-topic "Machine Learning" --topic "Optimization" \\
-      --tags ml optimization --depends-on "[[01-calculus|Calculus]]"
-"""
+"""Scaffold adaptive deep-study notes, other built-in routes, and syllabus maps."""
 
 from __future__ import annotations
 
@@ -20,6 +8,7 @@ import sys
 sys.dont_write_bytecode = True
 
 import argparse
+import json
 import re
 from datetime import date
 from pathlib import Path
@@ -30,7 +19,8 @@ if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
 from vault_index import is_within_vault, resolve_vault_root
-from note_layout import ROUTES, body_skeleton
+from note_layout import DEEP_ROUTES, ROUTES, body_skeleton
+from decision_matrix import resolve_decisions
 
 
 def _slugify(text: str) -> str:
@@ -72,205 +62,14 @@ def render_deep_note_skeleton(
     depends_on: list[str] | None = None,
     next_topic: str | None = None,
 ) -> str:
-    """Render a deterministic 7-section Scriptorium deep-note Markdown skeleton."""
-    alias_list = [title]
-    for a in aliases or []:
-        cleaned = a.strip()
-        if cleaned and cleaned not in alias_list:
-            alias_list.append(cleaned)
-
-    tag_list = list(
-        dict.fromkeys(
-            [t.strip().lstrip("#") for t in (tags or []) if t.strip()]
-            or [_slugify(base_domain), _slugify(master_topic), _slugify(topic), _slugify(title)]
-        )
+    """Compatibility entry point for the canonical adaptive deep-study scaffold."""
+    args = argparse.Namespace(
+        template="deepstudy-master", topic=topic, title=title, number=number,
+        base_domain=base_domain, master_topic=master_topic, aliases=aliases or [],
+        tags=tags or [], next_topic=next_topic, depends_on=depends_on or [],
+        math_level=0, narrow_practice=False, compared_notes=[],
     )
-
-    lines: list[str] = [
-        "---",
-        f"id: {_yaml_quote(note_id)}",
-        f"title: {_yaml_quote(title)}",
-        "aliases:",
-    ]
-    for a in alias_list:
-        lines.append(f"  - {_yaml_quote(a)}")
-    lines.extend(
-        [
-            f"base_domain: {_yaml_quote(base_domain)}",
-            f"master_topic: {_yaml_quote(master_topic)}",
-            f"topic: {_yaml_quote(topic)}",
-        ]
-    )
-    if depends_on:
-        lines.append("depends_on:")
-        for dep in depends_on:
-            lines.append(f"  - {_yaml_quote(_format_wikilink(dep))}")
-    if next_topic:
-        lines.append(f"next_topic: {_yaml_quote(_format_wikilink(next_topic))}")
-    lines.append("tags:")
-    for t in tag_list:
-        lines.append(f"  - {_yaml_quote(t)}")
-    lines.extend(
-        [
-            "---",
-            "",
-            f"# {number}. {title}",
-            "",
-            "> [!abstract] Key Equations",
-            "> - **<Equation Name>:**",
-            ">   $$<Display LaTeX Equation>$$",
-            "",
-            "<!-- SECTION: S1-SYNTHESIS -->",
-            "## 1. Executive Synthesis & Architectural Significance",
-            "",
-            "### Core Problem & Computational Purpose",
-            "<!-- 3-4 symbol-free sentences: problem, inputs/outputs, simpler-approach limit -->",
-            "",
-            "- **Learning outcome:** <!-- explain, solve, implement, or evaluate -->",
-            "- **Scope:** <!-- formulation, level, validity conditions, nearby topics -->",
-            "- **Practical recognition:** <!-- cue favoring this vs. alternative -->",
-            "",
-            "### Governing Mechanism & Unbreakable Invariant",
-            "<!-- 2-3 sentences: central mechanism + governing invariant & domain -->",
-            "",
-            "- **Validity boundary:** <!-- condition outside which mechanism changes -->",
-            "- **Success criterion:** <!-- how a correct result is recognized -->",
-            "",
-            "### Position in the Broader Architecture",
-            f"- **Taxonomic Lineage:** `{base_domain}` $\\to$ `{master_topic}` $\\to$ `{topic}` $\\to$ **`{title}`**",
-            "- **Systemic Role:** <!-- direct prerequisites, downstream consumers, real interface -->",
-            "- **Conceptual Mental Model:** <!-- 1-sentence mental model -->",
-            "",
-            "<!-- SECTION: S2-CONTEXT -->",
-            "## 2. Building Blocks & Deep Historical Context",
-            "",
-            "> [!note] Zero-Baseline Prerequisites",
-            "> Introduce terms in dependency order before using them in equations.",
-            "> - **<Term 1> ($x_i$):** <!-- meaning, type/domain/units, tiny example -->",
-            "> - **Readiness check:** <!-- small prerequisite task + short answer -->",
-            "> - **Prerequisite connections:** <!-- [[Exact Filename|Title]] + skill needed -->",
-            "",
-            "### Historical & Engineering Motivation (Why This Had to Be Invented)",
-            "",
-            "#### The Pre-Invention Bottleneck",
-            "<!-- 4-5 sentences cited to verified sources -->",
-            "",
-            "#### The Breakthrough & Core Insight",
-            "<!-- 4-5 sentences: conceptual shift, verified attribution/dates -->",
-            "",
-            "#### Theoretical Impact & Modern Legacy",
-            "<!-- 3-4 sentences: enabled capability, refinement, modern scope -->",
-            "",
-            "<!-- SECTION: S3-THEORY -->",
-            "## 3. Deep Theory Stack: Intuition to Formal Mathematics",
-            "",
-            "### Daily-Life Analogy",
-            "<!-- Concrete everyday analogy + explicit object mapping -->",
-            "",
-            "> [!warning] Where the Analogy Breaks Down",
-            "> <!-- 2-3 sentences: preserved, omitted, incorrect prediction -->",
-            "",
-            "### Step-by-Step Mechanism & Visuals",
-            "- **Assumptions before the trace:** <!-- A1, A2, ... -->",
-            "- **Running example:** <!-- Named example reused across Sections 3-5 -->",
-            "- **Causal Pipeline (`Input` $\\to$ `Internal State` $\\to$ `Decision / Output`):**",
-            "  1. **Signal Ingestion:**",
-            "  2. **Internal Aggregation / Transformation:**",
-            "  3. **Gate / Threshold / Activation Evaluation:**",
-            "  4. **Final Output Emission:**",
-            "",
-            "```mermaid",
-            "flowchart TD",
-            '    I["Inputs"] --> V{"Preconditions satisfied?"}',
-            '    V -- "Yes" --> T["Core transformation"]',
-            '    T --> O["Result"]',
-            '    V -- "No" --> E["Invalid case / revise"]',
-            "```",
-            "",
-            "#### Contrastive \"Is vs. Is Not\" Table",
-            f"| Dimension | {title} (What It IS) | <Closest Lookalike> (What It Is NOT) |",
-            "|---|---|---|",
-            "| **Core Mechanism** | | |",
-            "| **Parameter / Learning Nature** | | |",
-            "| **Governing Invariant** | | |",
-            "| **Primary Failure Mode** | | |",
-            "| **Appropriate Use** | | |",
-            "",
-            "### Mathematical Intuition",
-            "<!-- 1-2 paragraphs connecting operations to geometry/scale/dependence -->",
-            "",
-            "### Formal Equation & Complete Symbol Anatomy",
-            "",
-            "$$",
-            "<Governing Display LaTeX Equation>",
-            "$$",
-            "",
-            "| Symbol / Operator | Name & Physical Role | Tensor Shape / Domain / Units | Directional Sensitivity |",
-            "|---|---|---|---|",
-            "| $x_i$ | | | |",
-            "",
-            "#### Input-to-Output Behavior Table",
-            "| Concrete Inputs | Intermediate Computation | Final Output | Physical / Logical Interpretation |",
-            "|---|---|---|---|",
-            "| | | | |",
-            "",
-            "- **Boundary Limits & Extreme Regimes:**",
-            "  - **Zero Regime ($\\to 0$):**",
-            "  - **Unit / Normalized Regime ($\\to 1$ / $-1$):**",
-            "  - **Degenerate / Tie Regime:**",
-            "  - **Asymptotic Regime ($\\to \\pm\\infty$):**",
-            "",
-            "<!-- SECTION: S4-PROOF -->",
-            "## 4. Step-by-Step Mathematical Proof & Derivation (Zero Skips)",
-            "",
-            "1. **Step 1 (Base Axiom / Starting Definition):**",
-            "   $$",
-            "   <Starting definition>",
-            "   $$",
-            "   *Why this step holds:*",
-            "",
-            "<!-- SECTION: S5-CODE -->",
-            "## 5. Executable Verification (<Primary / Ecosystem Language List>)",
-            "",
-            "- **Selected Verification Stack:** `<Implementation 1>` · `<Implementation 2 (if applicable)>` · `<Implementation 3 (if applicable)>`",
-            "- **Shared Test Contract (Sections 3–4 Parity):**",
-            "  - *Running Example Input:* `<exact values>` $\\to$ *Expected Output:* `<exact expected result>`",
-            "  - *Boundary / Degenerate Case:* `<exact edge values>` $\\to$ *Expected Output:* `<exact expected result>`",
-            "  - *Invalid Input Guard:* `<malformed/out-of-domain input>` $\\to$ *Expected Behavior:* `<explicit exception / error return>`",
-            "",
-            "### Implementation 1 — <Language & Paradigm>",
-            "*Runtime & Dependencies:* `<runtime / compiler / packages>` · *Execution Status:* `not executed`",
-            "",
-            "```<lang-1>",
-            "// Self-contained verification matching Sections 3–4 notation and shared test contract",
-            "```",
-            "",
-            "<!-- SECTION: S6-QA-MASTERY -->",
-            "## 6. Deep Conceptual & Analytical Q&A Mastery Set",
-            "",
-            "#### Question 1 — First-Principles Mechanism & Intuition",
-            "",
-            "> [!example]- Reveal Detailed Answer & Step-by-Step Breakdown",
-            "> - **Direct Conclusion:**",
-            "> - **First-Principles Explanation:**",
-            "> - **Concrete Micro-Illustration:**",
-            "",
-            "<!-- SECTION: S7-SOURCES -->",
-            "## 7. Common Traps, Primary Sources & Bridge",
-            "",
-            "> [!caution] Common Misconceptions & Anti-Patterns",
-            "> - **_Avoid_:** <Misconception> $\\to$ **True Invariant:** <Correct invariant>",
-            "",
-            "### Primary Sources & Deep Links",
-            "| Source | Direct External Deep Link | Vault Deep Link | Exact Claim / Equation Verified |",
-            "|---|---|---|---|",
-            "| | | | |",
-            "",
-            "**Bridge to Next Topic:**",
-            "",
-        ]
-    )
-    return "\n".join(lines)
+    return render_routed_note(args, note_id)
 
 
 def render_syllabus_skeleton(
@@ -300,25 +99,16 @@ def render_syllabus_skeleton(
     lines: list[str] = [
         "---",
         f"id: {_yaml_quote(note_id)}",
-        f"title: {_yaml_quote(f'{topic} — Syllabus & Learning Graph')}",
         "aliases:",
+        f"  - {_yaml_quote(f'{topic} — Syllabus & Learning Graph')}",
         f"  - {_yaml_quote(f'{topic} Syllabus')}",
         f"  - {_yaml_quote(f'{topic} MOC')}",
-        f"base_domain: {_yaml_quote(base_domain)}",
-        f"master_topic: {_yaml_quote(master_topic)}",
         f"topic: {_yaml_quote(topic)}",
-        "note_type: syllabus",
-        "scope_locked: true",
-        "allowed_subtopics:",
+        "tags:",
     ]
-    for sub in allowed:
-        lines.append(f"  - {_yaml_quote(sub)}")
-    lines.append("excluded_adjacent_topics:")
-    for exc in excluded:
-        lines.append(f"  - {_yaml_quote(exc)}")
-    lines.append("tags:")
     for t in tag_list:
         lines.append(f"  - {_yaml_quote(t)}")
+    lines.append("nexttopics: []")
     lines.extend(
         [
             "---",
@@ -373,49 +163,52 @@ def render_syllabus_skeleton(
 
 def render_routed_note(args: argparse.Namespace, note_id: str) -> str:
     topic = args.topic
-    route = args.template
+    route = "deepstudy-master" if args.template in DEEP_ROUTES else args.template
     tags = [t.strip().lstrip("#") for t in args.tags if t.strip()]
     if not tags:
         route_tag = "cheatsheet" if route == "cheat-sheet" else route
         tags = [_slugify(args.base_domain), _slugify(args.master_topic), _slugify(topic), route_tag]
+    if route in DEEP_ROUTES and "deepstudy-master" not in tags:
+        tags.append("deepstudy-master")
+    nexttopics = [_format_wikilink(args.next_topic)] if args.next_topic else []
     metadata = {
         "id": note_id,
-        "title": args.title,
         "aliases": list(dict.fromkeys([args.title, *filter(None, map(str.strip, args.aliases))])),
-        "type": route,
-        "area": args.area or args.base_domain,
-        "base_domain": args.base_domain,
-        "master_topic": args.master_topic,
         "topic": topic,
-        "template": route,
-        "math_level": args.math_level,
         "tags": list(dict.fromkeys(tags)),
-        "created": args.created,
-        "mastery": 0,
-        "revisited_date": [],
+        "nexttopics": nexttopics,
     }
-    if route in {"cheat-sheet", "comparison"}:
-        metadata["note_type"] = "cheatsheet" if route == "cheat-sheet" else route
-    if route == "dsa" or args.language:
-        metadata["language"] = args.language or "none"
-    if args.compared_notes:
-        metadata["compared_notes"] = [_format_wikilink(n) for n in args.compared_notes]
-    if args.depends_on:
-        metadata["depends_on"] = [_format_wikilink(n) for n in args.depends_on]
-    if args.next_topic:
-        metadata["next_topic"] = _format_wikilink(args.next_topic)
     frontmatter = yaml.safe_dump(metadata, allow_unicode=True, sort_keys=False)
     body = body_skeleton(route, args.math_level, args.number, args.title, narrow=args.narrow_practice)
+    if route in DEEP_ROUTES:
+        contract = getattr(args, "contract_data", None) or resolve_decisions(
+            args.title,
+            {"title": args.title, "math_level": args.math_level, "language": getattr(args, "language", None) or "none"},
+            topic,
+        )
+        body += (
+            f"\n<!-- decision-contract: subject={contract['subject_family']}; "
+            f"code_depth={contract['code_depth']}; visual={contract['visual_modality']}; "
+            f"max_qa={contract['max_qa_items']}; omit={','.join(contract['omitted_sections']) or 'none'} -->\n"
+        )
+    extra_lines: list[str] = []
+    if args.depends_on:
+        extra_lines.append("- **Prerequisites:** " + ", ".join(_format_wikilink(n) for n in args.depends_on))
+    if args.compared_notes:
+        extra_lines.append("- **Compared Notes:** " + ", ".join(_format_wikilink(n) for n in args.compared_notes))
+    if extra_lines:
+        h1, rest = body.split("\n", 1)
+        body = f"{h1}\n\n" + "\n".join(extra_lines) + "\n" + rest
     return f"---\n{frontmatter}---\n\n{body}"
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Scaffold a routed note, legacy deep note, or syllabus MOC.")
+    parser = argparse.ArgumentParser(description="Scaffold an adaptive deep note, another routed note, or syllabus MOC.")
     parser.add_argument("vault_path", nargs="?", help="Path to Obsidian vault.")
     parser.add_argument("--output", help="Vault-relative output path (prints to stdout if omitted).")
     parser.add_argument("--syllabus", action="store_true", help="Scaffold a 00-MOC-<topic>.md syllabus boundary note.")
-    parser.add_argument("--template", choices=ROUTES, help="Built-in route; omit for the legacy deep-note layout.")
-    parser.add_argument("--math-level", type=int, choices=(0, 1, 2), default=0)
+    parser.add_argument("--template", choices=ROUTES, help="Built-in route; defaults to adaptive deep study.")
+    parser.add_argument("--math-level", type=int, choices=(0, 1, 2, 3), default=0)
     parser.add_argument("--language", help="Verification language, required for routed DSA notes.")
     parser.add_argument("--area", help="Area (defaults to base domain).")
     parser.add_argument("--created", type=date.fromisoformat, default=date.today())
@@ -435,10 +228,14 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--next-topic", help="Next topic wikilink.")
     parser.add_argument("--overwrite", action="store_true", help="Allow overwriting an existing file.")
     parser.add_argument("--dry-run", action="store_true", help="Print rendered skeleton without writing.")
+    parser.add_argument("--contract", type=Path, help="Optional JSON Decision Contract from decision_matrix.py.")
     args = parser.parse_args(argv)
+    args.contract_data = json.loads(args.contract.read_text(encoding="utf-8")) if args.contract else None
 
     if args.template and (args.syllabus or args.overwrite):
         parser.error("--template cannot be used with --syllabus or --overwrite")
+    if args.math_level == 3 and args.template and args.template not in DEEP_ROUTES:
+        parser.error("--math-level 3 is supported only for adaptive deep-study routes")
     if args.template == "dsa" and args.language in (None, "none"):
         parser.error("--language is required for --template dsa")
 
@@ -463,18 +260,8 @@ def main(argv: list[str] | None = None) -> int:
             print("ERROR: --title is required unless --syllabus is set.", file=sys.stderr)
             return 2
         note_id = args.note_id or f"{_slugify(args.topic)}-{args.number}"
-        content = render_deep_note_skeleton(
-            note_id=note_id,
-            number=args.number,
-            title=args.title,
-            base_domain=args.base_domain,
-            master_topic=args.master_topic,
-            topic=args.topic,
-            aliases=args.aliases,
-            tags=args.tags,
-            depends_on=args.depends_on,
-            next_topic=args.next_topic,
-        )
+        args.template = "deepstudy-master"
+        content = render_routed_note(args, note_id)
 
     if args.dry_run or not args.output:
         if hasattr(sys.stdout, "reconfigure"):

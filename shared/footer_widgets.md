@@ -1,6 +1,6 @@
 # Reflection footer
 
-The scaffold uses the following block for every route. Fill the reflection in the last section. For compact notes keep each entry brief and within the route's word cap. In practice use the Confusion field as the diagnostic review hook. Obsidian requires Dataview JavaScript queries enabled for the button to execute.
+Non-deep routed scaffolds use the following reflection block; deep-study reflection is selected by D15. See [authoring rules](authoring_rules.md#rendering). Fill the reflection in the last section. For compact notes keep each entry brief and within the route's word cap. In practice use the Confusion field as the diagnostic review hook. Obsidian requires Dataview JavaScript queries enabled for the button to execute.
 
 <!-- scaffold:footer -->
 ### Metacognitive Reflection & Vault Integration
@@ -18,12 +18,8 @@ btn.onclick = async () => {
     const file = path && app.vault.getAbstractFileByPath(path);
     if (!file) return;
     const today = window.moment().format("YYYY-MM-DD");
-    await app.fileManager.processFrontMatter(file, (fm) => {
-        if (!Array.isArray(fm.revisited_date)) {
-            fm.revisited_date = fm.revisited_date ? [fm.revisited_date] : [];
-        }
-        if (!fm.revisited_date.includes(today)) fm.revisited_date.push(today);
-    });
+    const content = await app.vault.read(file);
+    await app.vault.modify(file, content + "\n**Revisited** :: " + today + "\n");
     new Notice("Revisit logged for " + file.name + " — " + today);
 };
 ```

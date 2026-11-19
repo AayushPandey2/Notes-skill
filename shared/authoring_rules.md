@@ -1,27 +1,29 @@
 # Shared authoring rules
 
-- Frontmatter requires `id`, `title`, `aliases`, `type`, `area`, `base_domain`, `master_topic`, `topic`, `template`, `math_level`, `tags`, `created` (YYYY-MM-DD), `mastery`, and `revisited_date`. Include optional `depends_on`, `next_topic`, and legacy keys when required by the command. `type` and `template` match the route. Include the title and verified acronym/alternative names as aliases. Reuse exact existing tags, otherwise use kebab-case. No raw LaTeX in YAML.
-- Use one named, small, concrete running example in the first applicable prerequisites/mechanism section. Keep the same values, shapes, and names through intuition, equations, behavior tables, manual traces, and runnable assertions. Define all symbols and operators before using them, including in the equation preview. Introduce prerequisites in dependency order, with meaning, shape/domain/units, and an example for each.
-- Cite primary claims inline and record precise page, theorem, equation, doc section, or timestamp in the final primary-source table where the template calls for it. Label unsupported claims and unknown metrics `[UNVERIFIED]`. Keep source observations distinct from independent measurements. Never guess dates, quotations, or transcripts.
-- Use `[[Exact Filename|Title]]` for existing notes or siblings in the active plan. Disambiguate basenames with a vault-relative path. Use plain text for future concepts (`(pending note)` in atomic relationships). Transclude existing atomic notes with `![[Canonical Title]]`.
-- Escape every literal table pipe, even inside code or wiki aliases, as `\|`. Use native Obsidian `$...$` and `$$...$$` and keep code out of math. Use `flowchart TD` or `sequenceDiagram`, double-quote flowchart node labels, and use Unicode instead of LaTeX. Follow a diagram with 2–3 sentences tracing the mechanism.
-- For verification, define one shared contract with the running example and expected result, a boundary case, and an invalid-input guard. Use 1–3 materially distinct implementations with explicit assertions, runtime/version/dependencies and execution status. Log actual observations separately from expectations. Prefer a manual check if executable code adds no evidence.
-- **Centralized Output Directories:** Save all practice sets across all topics into the centralized `Practice Sets/` directory, all atomic notes into the centralized `Atomic Notes/` directory, and all cheatsheets into the centralized `Cheatsheets/` directory (named with clear topic/subtopic identifiers such as `<topic-slug>-CHEAT-SHEET.md` or `<topic-slug>-<subtopic-slug>-CHEAT-SHEET.md`), all located at the same sibling directory level as the `<subtopic>/` folders.
+## Metadata
 
-## Humanization & Cohesion Pass (Mandatory Before Finalizing Any Note)
+Generated notes have strictly these 5 ordered YAML keys: `id`, `aliases`, `topic`, `tags`, `nexttopics`. IDs/topic are nonempty strings; the others are lists. Aliases include the title; tags stay clean and topic-relevant (do not require or inject a `deepstudy-master` tag); `nexttopics` contains resolved forward wikilinks. Reject legacy/extra keys (`title`, `base_domain`, `master_topic`, `track`, `math_level`, `status`, `prerequisites`, etc.). Keep routing flags, language and review logs in planning state or body fields, never extra YAML keys. Preserve existing IDs when editing.
 
-Before validating or publishing any generated note, run a dedicated **Humanization & Cohesion Pass** enforcing these four authoring rules:
+## Rendering
 
-- **Conversational yet rigorous tone:** Write like an experienced student or engineer explaining concepts clearly to their future self—direct, intuitive, and insightful rather than encyclopedic or robotic.
-- **Logical narrative transitions:** Connect sections and concepts naturally—explain *why* one concept, constraint, or derivation step leads to the next, rather than dropping isolated blocks of bullet points.
-- **Eliminate AI clichés:** Ban robotic filler phrases (`"In conclusion,"`, `"It is important to note,"`, `"Delving into,"`, `"Crucial aspect,"`, `"Let's explore"`, `"At its core,"`, `"Serves as a testament"`).
-- **Synthesize, don't paste:** Rephrase retrieved web/source material into digestible mental models, intuitive analogies, and concrete examples rather than dumping raw definitions or copy-pasted prose.
+Use native `$...$` and separate-line `$$` math delimiters. Never place code inside math. Quote every line of a callout, including blank lines and answers: an unquoted blank ends the block. Good: `> [!note] Assumption` followed by `> $x > 0$`; bad: an unquoted equation intended to remain inside that callout.
 
-| Domain | Default verification choices |
-|---|---|
-| ML / deep learning | Python + NumPy, scikit-learn for classical APIs, PyTorch for tensors/autodiff |
-| DSA | C++20 or Python 3, optionally Rust or Java |
-| Systems / OS / concurrency | C17 or Rust, with a Python 3 simulation when useful |
-| Databases / data engineering | SQL (PostgreSQL or DuckDB), Python (pandas or polars) |
-| Web / distributed systems / APIs | TypeScript / Node.js or Go, with Python 3 when useful |
-| Pure math / logic | Python + SymPy / NumPy or a reproducible proof/counterexample check |
+Escape literal pipes in Markdown tables, even inside code or wikilink aliases: `[[Target\|Label]]`. Quote Mermaid node labels and use Unicode symbols: good `A["x ? y"]`, bad `A["$x$"]`. For spatial geometry, physics schematics, function plots, and ML decision boundaries, embed real `.png` or `.svg` figures saved under `assets/<topic>/` (`![[assets/<topic>/<figure>.png]]`)—either extracted from verified open-license primary sources (e.g., OpenStax / Wikimedia Commons) or rendered cleanly with Matplotlib/SVG—instead of ASCII `text` art blocks; reserve `mermaid flowchart` / `sequenceDiagram` for causal pipelines, state machines, and protocol exchanges. Check rendering separately when available; syntax checks do not establish visual correctness.
+
+Use `**Confusion** :: question` on its own line for Dataview. Do not emit empty or invented confusion. Strip scaffold comments, legacy `<!-- SECTION: S* -->` markers, authoring gates, optional markers, unused headings and placeholder rows before publication. If numbered sections are omitted, renumber retained sections consecutively and repair anchor links.
+
+## Evidence
+
+Read the full supporting passage before citing it. Cite near claims; record version/page/section when material. Never cite bare root domains/homepages (`https://gallica.bnf.fr/`, `https://arxiv.org/`, `https://archive.org/`, `https://openstax.org/`) in Primary Sources tables—omit the generic URL and mark `[UNVERIFIED]` if no specific deep link is verified. Distinguish source findings, inference, expected results and observed execution. When `language: "none"` (or no fenced code block exists), forbid execution claims (`executed via`, `Observed Execution Output`, `all assertions passed`); when code is not executed in a live shell, label `Status: static verification (not executed)` and never invent version strings.
+
+## Cohesion
+
+Explain the causal connection between ideas; use precise student-to-future-self prose and domain-natural headings (ban CS/architecture buzzwords like `"Computational Purpose"`, `"Position in the Broader Architecture"`, `"Taxonomic Lineage"`, `"Deep Theory Stack"`, `"Cross-Architecture Trade-Off"`, and `"Parameter Synthesis & Reverse-Engineering"` on non-software notes). Merge opening Core Model, Scope, Prerequisites, and History into one concise opening without repeating the thesis, and cap Q&A mastery sets at `2–3` non-overlapping questions. Define notation at first use and keep asymmetric example values.
+
+## Links and placement
+
+Standardize sequential filenames and body wikilinks on `01 - <Title>.md` (never mix `02-hyphenated-slug` style with `01 - Title` naming). Existing notes must match exact on-disk filenames; planned future notes mentioned via forward wikilink (`[[02 - ...]]`) must be listed in YAML `nexttopics`, otherwise keep future mentions as plain text until created. Practice, atomic notes and cheatsheets live in sibling `Practice Sets/`, `Atomic Notes/`, and `Cheatsheets/` directories; compare outputs live in `comparison/`.
+
+## Contracts
+
+Math: [math_gates.md](math_gates.md). Routing and module selection: [note_decision_matrix.md](note_decision_matrix.md). Reflection implementation: [footer_widgets.md](footer_widgets.md). Machine checks implement schema, syntax and links; authors remain responsible for source fidelity and reasoning.

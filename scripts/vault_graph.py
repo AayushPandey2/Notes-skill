@@ -197,15 +197,15 @@ def analyze_vault_graph(
                 # Cross-topic dependency still counts as an outgoing link for src
                 out_links[src].add(target)
 
-        # 2. next_topic
-        raw_next = n.get("next_topic")
-        if raw_next:
+        # 2. nexttopics / next_topic
+        raw_next_list = n.get("nexttopics") or ([n["next_topic"]] if n.get("next_topic") else [])
+        for raw_next in raw_next_list:
             target, cands = _resolve_target(raw_next, full_lookup)
             if target is None:
                 if len(cands) > 1:
-                    ambiguous_links.append({"source": src, "field": "next_topic", "target": raw_next, "candidates": cands})
+                    ambiguous_links.append({"source": src, "field": "nexttopics", "target": raw_next, "candidates": cands})
                 else:
-                    broken_links.append({"source": src, "field": "next_topic", "target": raw_next})
+                    broken_links.append({"source": src, "field": "nexttopics", "target": raw_next})
             elif target in scoped_files and target != src:
                 next_edges.append((src, target))
                 out_links[src].add(target)
@@ -390,7 +390,7 @@ def main(argv: list[str] | None = None) -> int:
     else:
         print(format_text_summary(report))
 
-    has_cycles = bool(report["depends_cycles"])
+    has_cycles = bool(report["depends_cycles"] or report["next_cycles"])
     has_broken = bool(report["broken_links"])
     if args.strict and (has_cycles or has_broken):
         return 1

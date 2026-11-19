@@ -1,0 +1,122 @@
+"""Adaptive authoring contracts, compatibility, and meaningful route regressions."""
+
+import re
+import sys
+from pathlib import Path
+
+import pytest
+import yaml
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "scripts"))
+
+import note_layout
+import plan_notes
+from validate_note import validate_text
+
+
+def note(body, tags=None):
+    metadata = {"id": "adaptive-check", "aliases": ["Adaptive check"], "topic": "Template QA",
+                "tags": tags or ["deepstudy-master"], "nexttopics": []}
+    return "---\n" + yaml.safe_dump(metadata, sort_keys=False) + "---\n\n# Adaptive check\n\n" + body
+
+
+def test_master_gates_and_matrix_links_resolve():
+    master = (ROOT / "templates/deepstudy-master.md").read_text(encoding="utf-8")
+    guide = (ROOT / "shared/notes_decision_matrix.md").read_text(encoding="utf-8")
+    matrix_ids = re.findall(r"^## (DM-\d{2})$", guide, re.M)
+    assert len(matrix_ids) == len(set(matrix_ids))
+    assert set(matrix_ids) == {f"DM-{i:02}" for i in range(1, 21)}
+    assert set(re.findall(r"DM-\d{2}", master)) == set(matrix_ids)
+    for section in re.split(r"^#{2,6} .+\n", master, flags=re.M)[1:]:
+        for field in ("Decision-matrix IDs", "Include when", "Adapt when", "Omit or link when",
+                      "Quality check", "Duplication check"):
+            assert section.count(f"**{field}:**") == 1
+    for block in re.split(r"^## DM-\d{2}\n", guide, flags=re.M)[1:]:
+        for field in ("**Title:**", "**Purpose:**", "**Decision question:**", "**Example of change:**"):
+            assert field in block
+    for file in ("deepstudy-master.md", "notes_decision_matrix.md"):
+        content = (ROOT / "templates" / file).read_text(encoding="utf-8")
+        for target in re.findall(r"\]\(([^)]+)\)", content):
+            if target.startswith("https://"):
+                continue
+            name, _, anchor = target.partition("#")
+            path = ROOT / "templates" / name
+            assert path.is_file(), target
+            if anchor:
+                headings = re.findall(r"^#+ (.+)$", path.read_text(encoding="utf-8"), re.M)
+                assert anchor in {re.sub(r"[^\w -]", "", h).lower().replace(" ", "-") for h in headings}
+
+
+@pytest.mark.parametrize("route", sorted(note_layout.DEEP_ROUTES))
+@pytest.mark.parametrize("level", (0, 1, 2, 3))
+def test_legacy_selectors_share_adaptive_scaffold(route, level):
+    scaffold = note_layout.body_skeleton(route, level, "01", "Check", narrow=False)
+    assert scaffold == note_layout.body_skeleton("deepstudy-master", level, "01", "Check", narrow=False)
+    assert "notes_decision_matrix.md" in scaffold
+    assert "## " not in scaffold
+    assert "dataviewjs" not in scaffold
+
+
+@pytest.mark.parametrize("body,level", [
+    ("## Definition\nA forward pass computes an output from inputs and fixed parameters.\n", 0),
+    ("## Implementation\nIllustrative Python; expected output is 5. Not executed.\n\n"
+     "```python\ndef affine(x):\n    return 2 * x + 1\nassert affine(2) == 5\n```\n", 0),
+    ("## Mechanism\nBatching connects the model's arithmetic to its memory budget.\n\n"
+     "## Model\nFor an output matrix with B rows and d columns stored at s bytes per entry, storage is\n\n"
+     "$$\nM = B d s\n$$\n\nHere M is bytes; buffers and allocator overhead are excluded.\n\n"
+     "## Implementation\nIllustrative NumPy; not executed.\n\n```python\nimport numpy as np\n"
+     "output = np.zeros((2, 3), dtype=np.float32)\nassert output.nbytes == 24\n```\n", 2),
+    ("## Argument\nFor every real x, squaring yields a nonnegative value.\n\n"
+     "$$\nx^2 \\ge 0\n$$\n\nIf x is negative, its square equals the square of -x, which is positive.\n", 3),
+])
+def test_independent_concept_code_hybrid_and_proof_routes(body, level):
+    assert not validate_text(note(body), route="deepstudy-master", math_level=level)
+    assert not validate_text(note(body))  # Batch validation recognizes the route tag.
+
+
+def test_adaptive_notes_still_reject_residue_empty_sections_and_broken_links(tmp_path):
+    for body, expected in [
+        ("<!-- scaffold: unfinished -->", "Unresolved scaffold"),
+        ("## Unused\n\n## Definition\nAn actual explanation.\n", "Empty section"),
+        ("An explanation.\n\n> [!note] Authoring gate\n> **Decision-matrix IDs:** DM-01", "Remove authoring"),
+        ("An explanation with $unclosed math", "Unclosed inline math"),
+    ]:
+        assert any(expected in message for _, message in validate_text(note(body)))
+    assert any("Unresolved wikilink" in message for _, message in validate_text(
+        note("An explanation linking [[Missing]]."), vault=tmp_path, target=tmp_path / "check.md"))
+
+
+def test_code_only_subsection_and_state_diagram_are_not_forced_into_flowchart():
+    body = "An event changes the state.\n\n## Visual\n```mermaid\nstateDiagram-v2\nIdle --> Busy: request\n```\n"
+    body += "\n## Implementation\n```python\nstate = 'Busy'\n```\n\n## Limits\nNo concurrency is modeled.\n"
+    assert not validate_text(note(body))
+
+
+def test_planner_preserves_independent_record_and_does_not_invent_frameworks(tmp_path):
+    record = {"reader": "familiar/intermediate", "track": "hybrid", "scope": "atomic mechanism",
+              "outcome": "verify", "research_need": "current documentation check",
+              "math": "proof-level", "code_depth": "standard library/framework"}
+    item = {"title": "Check", "purpose": "implement", "impl_weight": "high", "density": "cohesive",
+            "math_level": 3, "routing_reason": "Verify the selected behavior.", "decision_record": record}
+    plan = plan_notes.build_plan(tmp_path, "/scribe-deepnotes Check", ".", [item])
+    entry = plan["plan"][0]
+    assert entry["template"] == "deepstudy-master"
+    assert entry["decision_record"] == record
+    assert entry["verification_stack"] == []
+    for alias in note_layout.DEEP_ROUTES:
+        routed = plan_notes.build_plan(tmp_path, "Study Check", ".", [{**item, "template": alias}])
+        assert routed["plan"][0]["template"] == "deepstudy-master"
+    # A specific requested tool is preserved; code depth does not dictate math depth.
+    routed = plan_notes.build_plan(tmp_path, "Study Check", ".", [{**item, "math_level": 0,
+                                 "language": "rust", "verification_stack": ["Rust"]}])
+    assert routed["plan"][0]["verification_stack"] == ["Rust"]
+
+
+def test_synthesized_practice_supports_proof_level_parent_without_changing_its_route(tmp_path):
+    item = {"title": "Check", "purpose": "explain", "impl_weight": "low", "density": "cohesive",
+            "math_level": 3, "routing_reason": "Establish the stated guarantee."}
+    plan = plan_notes.build_plan(tmp_path, "Study Check", "Check", [item])["plan"]
+    assert plan[0]["math_level"] == 3
+    assert plan[1]["template"] == "practice"
+    assert plan[1]["math_level"] == 2  # Existing practice semantics include derivation/proof here.

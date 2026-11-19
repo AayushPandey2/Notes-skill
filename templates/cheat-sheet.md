@@ -1,3 +1,10 @@
+<!-- scaffold:preflight
+Decision-Matrix Pre-Flight: [note_decision_matrix.md](../shared/note_decision_matrix.md).
+Switches: D01 route (`cheat-sheet`); D02 revision scope; D03 reader; D04 rapid-recall outcome; D05 vault-notes extraction;
+D06–D09 `math_level` (compact bounds); D10 high-yield cues; D11 compact table; D12–D13 omit runnable code; D14 optional module (`selection`); D15 audit (≤350 words).
+Strip this block before emission. Load detailed DM branches only when active.
+-->
+
 # High-Density Pre-Exam & Interview Rapid-Recall Sheet
 
 **Strict Quantitative Caps**: Total Markdown body **≤350 words**; every ordinary bullet **≤20 words**. Measure directly before saving. Target 1 printed page / 1–2 screenfuls.
@@ -23,6 +30,21 @@
 - `> [!caution] One-Line Exam & Interview Traps`: `4–6` razor-sharp `_Trap_ -> _True Rule_` bullets (≤20 words each).
 - **Open Confusion**: `**Confusion** :: <1-line edge question>` + **Connection**: `[[Sibling Vault Links]]` + `dataviewjs` **Mark Revisited** button.
 
-Follow [shared authoring rules](../shared/authoring_rules.md) and the [footer contract](../shared/footer_widgets.md). Apply the math gate only at the planned level. Scaffold comments are editing slots and must be removed before publication.
+<!-- optional: selection -->
+## [OPTIONAL] Which condition changes my choice? (Selection Cue)
 
-> [!important] AGENT AUTHORING DIRECTIVE — `cheat-sheet` Enforce the ≤350-word total body cap and ≤20-word bullet cap ruthlessly while preserving 100% technical precision. Eliminate all conversational filler, historical narrative, and multi-paragraph explanations—pack every single line with exact formulas, decision thresholds, complexity bounds, and high-yield exam/interview traps.
+<!-- scaffold:activation
+Contextual Activation Guide
+- When to Include: A single sharp conditional flip prevents likely exam/interview misuse and fits within the `≤350`-word cap; D04, D14.
+- When to Omit Cleanly: Omit if Section 2 already covers the decision or if adding it breaches the `≤350`-word / `≤20`-word bullet cap. Delete this heading and block completely; never emit N/A. Renumber following sections and repair links.
+- What to Write: State the trigger, resulting choice, and decisive limitation in compact bullets (`≤20` words each); link the full comparison if available.
+-->
+
+- **Context:** State the decision trigger and constraint.
+- **Analysis:** Name the resulting choice and decisive limitation (`≤20` words).
+- **Check:** State the sanity check or linked full comparison.
+
+See [authoring rules](../shared/authoring_rules.md) for 5-key YAML, rendering, evidence, and cohesion.
+See [math gates](../shared/math_gates.md) for selected mathematical depth.
+See [footer contract](../shared/footer_widgets.md) for reflection behavior.
+- **Template Contract (`cheat-sheet`):** Enforce the `≤350`-word total body cap and `≤20`-word bullet cap ruthlessly; eliminate historical narrative and multi-paragraph prose in favor of exact formulas, decision thresholds, complexity bounds, and exam/interview traps.

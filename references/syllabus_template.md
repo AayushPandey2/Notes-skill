@@ -1,32 +1,16 @@
 ---
-id: moc-<topic-slug>
-title: <Topic Title> — Syllabus & Learning Graph
-aliases:
-  - <Topic Title> Syllabus
-  - <Topic Title> MOC
-base_domain: <Base Domain>
-master_topic: <Master Topic>
-topic: <Topic Title>
-note_type: syllabus
-scope_locked: true
-allowed_subtopics:
-  - "01-<subtopic-1-slug>.md"
-  - "02-<subtopic-2-slug>.md"
-excluded_adjacent_topics:
-  - "<Adjacent Topic 1> (separate topic — link only)"
-  - "<Prerequisite Topic 2> (external prerequisite — 2-sentence recap only)"
-tags:
-  - <base-domain-kebab>
-  - <master-topic-kebab>
-  - <topic-kebab>
-  - moc
+id: "moc-<topic-slug>"
+aliases: ["<Topic Title> — Syllabus & Learning Graph", "<Topic Title> Syllabus", "<Topic Title> MOC"]
+topic: "<Topic Title>"
+tags: [<base-domain-kebab>, <master-topic-kebab>, <topic-kebab>, moc]
+nexttopics: ["[[01-<subtopic-1-slug>]]"]
 ---
 
 # <Topic Title> — Syllabus & Learning Graph
 
 <!-- AUTHORING CONTRACT:
 - Write this file FIRST in Wave 1 before any 01-... note is created.
-- Nothing outside `allowed_subtopics` may be created during /scribe-notes or /scribe-expand.
+- Nothing outside `allowed_subtopics` may be created during /scribe-deepnotes, /scribe-notes, or /scribe-expand.
 - Tangential concepts must be handled with a 2-sentence inline recap + [[link]] (if in vault) or plain text—never a new .md file.
 -->
 

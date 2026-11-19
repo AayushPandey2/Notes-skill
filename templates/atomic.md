@@ -1,10 +1,17 @@
+<!-- scaffold:preflight
+Decision-Matrix Pre-Flight: [note_decision_matrix.md](../shared/note_decision_matrix.md).
+Switches: D01 route (`atomic`); D02 single-concept scope; D03 reader; D04 definition outcome; D05 single direct search;
+D06–D09 `math_level` (compact); D10 micro-example fixture; D11 visual (omit unless essential); D12–D13 manual check; D14 optional module (`boundary`); D15 audit (<150 words).
+Strip this block before emission. Load detailed DM branches only when active.
+-->
+
 # Single-Concept Transcludable Knowledge Building Block
 
 **Strict Quantitative Cap**: Total Markdown body **<150 words** (including the link block). Use canonical titles and paths so larger DeepStudy notes can embed this note via native Obsidian transclusion (`![[Canonical Title]]`). Never trigger recursive atomic generation.
 - **Routing & Destination Rules**:
     - Supports `/scribe-atomic-notes <topic name>` (bypasses deep multi-hop research workflows; uses a single, direct web search/fetch to gather core facts quickly) as well as atomic definitions planned inside a multi-note run.
     - Save all atomic notes into the centralized shared `Atomic Notes/` folder located at the **same directory level** (sibling level) as the `<subtopic>/` folders (e.g., `Atomic Notes/<topic_name>.md`).
-- **Header Block**: YAML frontmatter (`type: atomic`) + `# <Canonical Concept Title>`.
+- **Header Block**: Metadata per shared contract + `# <Canonical Concept Title>`.
 
 ## What is this concept and its governing claim?
 
@@ -24,6 +31,21 @@
 - `- **Contrasts With:** [[Resolved Vault Note or Plan Entry]]`
 - `- **Used In:** [[Resolved Vault Note or Plan Entry]]`_(If an honest target does not exist in the vault or current routing plan, keep the relationship label and write the suggested concept as plain text marked `(pending note)`—never fabricate a dead wiki-link)._
 
-Follow [shared authoring rules](../shared/authoring_rules.md) and the [footer contract](../shared/footer_widgets.md). Apply the math gate only at the planned level. Scaffold comments are editing slots and must be removed before publication.
+<!-- optional: boundary -->
+## [OPTIONAL] Which nearby case falls outside this definition? (Boundary Case)
 
-> [!important] AGENT AUTHORING DIRECTIVE — `atomic` Keep the entire Markdown body strictly under 150 words so this file functions as a clean, zero-fluff transclusion block (`![[...]]`) inside larger notes. Focus on one indivisible definition, one governing equation/invariant, one micro-example, and verified knowledge-graph links. Apply the mandatory **Humanization & Cohesion Pass** before finalizing: write in a conversational yet rigorous tone to your future self, connect the definition to the micro-example and boundary condition with natural transitions, ban AI clichés ("In conclusion," "It is important to note," "Delving into," "Crucial aspect," "Let's explore"), and synthesize retrieved facts into an intuitive mental model rather than pasting raw definitions.
+<!-- scaffold:activation
+Contextual Activation Guide
+- When to Include: A plausible near miss clarifies membership within the strict `<150`-word body cap; D02, D14.
+- When to Omit Cleanly: Omit if already covered in "Where does the intuition break?" or if adding it would breach the `<150`-word cap. Delete this heading and block completely; never emit N/A. Renumber following sections and repair links.
+- What to Write: State one discriminating condition and its consequence in 1–2 crisp lines; link fuller treatment rather than duplicating it.
+-->
+
+- **Context:** State the near-miss case and boundary condition.
+- **Analysis:** Identify the exact discriminating condition and consequence.
+- **Check:** State the quick membership test or linked reference.
+
+See [authoring rules](../shared/authoring_rules.md) for 5-key YAML, rendering, evidence, and cohesion.
+See [math gates](../shared/math_gates.md) for selected mathematical depth.
+See [footer contract](../shared/footer_widgets.md) for reflection behavior.
+- **Template Contract (`atomic`):** Keep total Markdown body strictly `<150` words for zero-fluff `![[Canonical Title]]` transclusion; focus on one indivisible concept, one micro-example, and verified links or `(pending note)`.

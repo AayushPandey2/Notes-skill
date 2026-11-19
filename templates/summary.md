@@ -1,6 +1,13 @@
+<!-- scaffold:preflight
+Decision-Matrix Pre-Flight: [note_decision_matrix.md](../shared/note_decision_matrix.md).
+Switches: D01 route (`summary`); D02 single-source scope; D03 reader; D04 source synthesis & verification outcome; D05 source access + fact-check;
+D06–D09 `math_level`; D10 chronological anchor/timestamp sequence; D11 fact-check table; D12–D13 independent verification; D14 optional module (`conflict`); D15 final audit.
+Strip this block before emission. Load detailed DM branches only when active.
+-->
+
 # Verified Source Deconstruction: Article, Documentation, or Video
 
-- **Header Block**: YAML frontmatter (`type: summary`) + `# Summary: <Source Title>`.
+- **Header Block**: Metadata per shared contract + `# Summary: <Source Title>`.
 
 ## 1. What source am I reviewing & what is its core thesis? (Metadata & 3-Bullet Thesis)
 
@@ -31,6 +38,21 @@
 - **What I learned** (`2–3` sentences) & **Open Confusion** (`**Confusion** :: ...`).
 - **Suggested Follow-Up Vault Notes (`2–3` Recommendations)**: Identify `2–3` high-leverage concepts from the source that deserve their own `Atomic` (via `/scribe-atomic-notes <topic name>`) or `DeepStudy` note. Provide the project's **exact single-command invocation** to create each note, keeping them strictly as unexecuted suggestions until the user requests them.
 
-Follow [shared authoring rules](../shared/authoring_rules.md) and the [footer contract](../shared/footer_widgets.md). Apply the math gate only at the planned level. Scaffold comments are editing slots and must be removed before publication.
+<!-- optional: conflict -->
+## [OPTIONAL] Where does independent evidence disagree? (Source Conflict)
 
-> [!important] AGENT AUTHORING DIRECTIVE — `summary` Treat source fidelity as sacred: never guess or fabricate video timestamps, quotes, publication dates, or author claims. Always separate what the source _claims_ from what you can _independently verify_, flag outdated practices or sponsorships transparently, and degrade gracefully to an honest labeled partial summary whenever a transcript or page body cannot be fetched. Execute the mandatory **Humanization & Cohesion Pass**: synthesize the source's core ideas into clear mental models with natural transitions and zero AI clichés rather than dumping copy-pasted text.
+<!-- scaffold:activation
+Contextual Activation Guide
+- When to Include: A consequential claim in the article, docs, or video conflicts with inspected primary documentation, benchmarks, or specifications; D05, D14.
+- When to Omit Cleanly: Omit when Section 3's fact-check table already captures minor caveats or no substantive conflict exists. Delete this heading and block completely; never emit N/A. Renumber following sections and repair links.
+- What to Write: Align definitions and conditions between the source and primary authority, quote only necessary text, pinpoint the supported disagreement, and state what remains unresolved.
+-->
+
+- **Context:** State the disputed source claim, timestamp/section, and conflicting primary authority.
+- **Analysis:** Align definitions and assumptions, isolate the exact supported disagreement, and separate opinion from factual error.
+- **Check:** State the primary-source verification status and any still-unverified edge condition.
+
+See [authoring rules](../shared/authoring_rules.md) for 5-key YAML, rendering, evidence, and cohesion.
+See [math gates](../shared/math_gates.md) for selected mathematical depth.
+See [footer contract](../shared/footer_widgets.md) for reflection behavior.
+- **Template Contract (`summary`):** Keep source claims distinct from independent verification, ensure every YouTube `[MM:SS]` timestamp matches `t=<seconds>s`, flag sponsorships/deprecated APIs, and degrade honestly to `[PARTIAL SUMMARY — TRANSCRIPT/TEXT UNAVAILABLE]` if full text is inaccessible.

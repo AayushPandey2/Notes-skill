@@ -1,6 +1,11 @@
 ---
 name: scriptorium
-description: Route Obsidian study-note requests, fast class notes, fast atomic notes, source summaries, DSA solutions, and practice sets. Supports scribe-notes, scribe-classnotes, scribe-atomic-notes, scribe-expand, scribe-doubt, scribe-distill, scribe-ingest, scribe-compare, scribe-quiz, scribe-dsa, and scribe-practice.
+description: Create, research, organize, and query Obsidian study notes, source summaries, algorithm solutions, and practice sets.
 ---
 
-Read [router.md](router.md) first. Accept slash commands, their prompt-style equivalents, explicit template selectors, and standalone source links. Resolve intent and plan each note before research. Use existing vault placement, tags, and command contracts (centralizing all practice sets in sibling `Practice Sets/`, all atomic notes in sibling `Atomic Notes/`, and all cheatsheets in sibling `Cheatsheets/` alongside `<subtopic>/` folders). Load only the selected specification from `templates/` per note. Scaffold, author, execute a mandatory **Humanization & Cohesion Pass** (conversational yet rigorous student/engineer-to-future-self tone, logical narrative transitions, zero AI clichés, and synthesized mental models rather than pasted definitions), validate, and publish each planned output. Resume missing outputs on retry and preserve existing notes.
+# Pre-flight routing
+
+1. Parse command and source using [router.md](router.md).
+2. For writing, resolve only applicable decisions in [shared/note_decision_matrix.md](shared/note_decision_matrix.md).
+3. Load the selected template and required shared contracts; never load the template directory as a bundle.
+4. Plan, research, draft, validate, then publish through the router workflow. Existing-note commands bypass generation.

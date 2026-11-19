@@ -1,6 +1,8 @@
 # Scriptorium
 
-A modular Obsidian study-note skill. Scriptorium routes individual subtopics to eleven note formats, researches primary sources, expands existing coverage, and creates practice sets and quizzes.
+Deep-study notes use [deepstudy-master.md](templates/deepstudy-master.md) with the authoritative [notes_decision_matrix.md](templates/notes_decision_matrix.md). Complete the decision record, then keep only the modules justified by its 20 matrices. The coding/general filenames and selectors are compatibility aliases. Deep-study scaffolding and validation accept optional sections, math depths 0–3, and purpose-selected code without the older fixed table/footer requirements.
+
+A modular Obsidian study-note skill. Scriptorium routes individual subtopics to purpose-selected note formats, researches primary sources, expands existing coverage, and creates practice sets and quizzes.
 
 ---
 
@@ -27,7 +29,7 @@ cd scriptorium
 ```
 If installing as an agent skill, place or symlink the `scriptorium/` folder inside your agent's skills directory (for example, `~/.gemini/config/skills/scriptorium` or your workspace skill path).
 
-To expose each `/scribe-*` command (`/scribe-notes`, `/scribe-classnotes`, `/scribe-atomic-notes`, `/scribe-expand`, `/scribe-doubt`, `/scribe-distill`, `/scribe-ingest`, `/scribe-compare`, `/scribe-quiz`, `/scribe-dsa`, `/scribe-practice`) as its own `/` autocomplete entry in Antigravity globally, add `~/.gemini/config/skills.json`:
+To expose each `/scribe-*` command (`/scribe-deepnotes`, `/scribe-notes`, `/scribe-atomic-notes`, `/scribe-expand`, `/scribe-doubt`, `/scribe-distill`, `/scribe-ingest`, `/scribe-compare`, `/scribe-quiz`, `/scribe-dsa`, `/scribe-practice`, `/scribe-setfolder`) as its own `/` autocomplete entry in Antigravity globally, add `~/.gemini/config/skills.json`:
 
 ```json
 {
@@ -76,7 +78,7 @@ python3 scripts/vault_index.py "<vault_path>" --fields file,title,topic
 
 ## Commands Reference
 
-### 1. `/scribe-notes <topic>` — Full Research & Multi-Note Generation
+### 1. `/scribe-deepnotes <topic>` — Full Research & Multi-Note Generation
 Builds a complete, interconnected subtopic tree (`01-...`, `02-...`, ...) from scratch.
 - **When to use:** Learning a new subject deeply from first principles.
 - **How it works:**
@@ -84,7 +86,7 @@ Builds a complete, interconnected subtopic tree (`01-...`, `02-...`, ...) from s
   2. Plans each subtopic and its dependencies before source retrieval, then writes the syllabus MOC.
   3. Reuses evidence across siblings, scaffolds each selected template, executes the mandatory **Humanization & Cohesion Pass**, and validates each draft before publication. A new topic gets a practice test in the centralized `Practice Sets/` folder.
   4. Verifies DAG acyclicity (`vault_graph.py --check-cycles`), runs scoped mechanical fixes (`verify_vault_notes.py --fix`), and audits semantics against [verification_checklist.md](references/verification_checklist.md).
-- **Example:** `/scribe-notes Gradient Descent`
+- **Example:** `/scribe-deepnotes Gradient Descent`
 
 ### 2. `/scribe-expand <topic name>` — Index-First Incremental Expansion
 Audits existing notes in `<topic name>` and fills missing foundational gaps or adds advanced subtopics without rewriting valid notes.
@@ -156,17 +158,17 @@ Generates a compact, transcludable `<150`-word atomic note without triggering a 
   4. Saves the generated file inside the centralized shared `Atomic Notes/` folder (`Atomic Notes/<topic_name>.md`) at the same directory level (sibling level) as the `<subtopic>/` folders.
 - **Example:** `/scribe-atomic-notes Residual Connection`
 
-### 11. `/scribe-classnotes <topic name>` — Fast Multi-Subtopic Class Notes
+### 11. `/scribe-notes <topic name>` — Fast Multi-Subtopic Source-Faithful Study Notes
 
-Replicates `/scribe-notes`'s multi-subtopic decomposition, `00-MOC-<topic-slug>.md`, and multi-file output structure while **bypassing deep research** and defaulting strictly to [templates/classnotes.md](templates/classnotes.md).
-- **When to use:** Fast, lecture-style multi-subtopic study notes without multi-stage primary-source deep research or heavy math.
+Replicates `/scribe-deepnotes`'s multi-subtopic decomposition, `00-MOC-<topic-slug>.md`, and multi-file output structure while **bypassing deep research** and defaulting strictly to [templates/studynotes.md](templates/studynotes.md).
+- **When to use:** Fast, source-faithful multi-subtopic study notes without multi-stage primary-source deep research or heavy math.
 - **How it works:**
   1. Explicitly disables and bypasses `references/research_protocol.md` (`Waves 1–4`), using fast, direct web searches/fetches only.
   2. Decomposes `<topic name>` into logical subtopics inside `<topic-folder>/` (`00-MOC-<topic-slug>.md` + numbered notes), routing auxiliary practice sets, cheatsheets, and atomic notes to their shared sibling folders (`Practice Sets/`, `Cheatsheets/`, `Atomic Notes/`).
-  3. Defaults all core notes strictly to [templates/classnotes.md](templates/classnotes.md); permits auxiliary templates (`practice`, `cheat-sheet`, `comparison`, `atomic`, `api-table`), while **strictly banning `deepstudy-coding` and `deepstudy-general`** (`deepnotes-coding` / `deepnotes-general`).
+  3. Defaults all core notes strictly to [templates/studynotes.md](templates/studynotes.md); permits auxiliary templates (`practice`, `cheat-sheet`, `comparison`, `atomic`, `api-table`), while **strictly banning `deepstudy-master`**.
   4. Minimizes mathematical notation (`math_level: 0` by default—plain language, intuitive analogies, structured text), allowing LaTeX/equations only when strictly essential to a Mathematics, Physics, or quantitative engineering topic.
   5. Applies the mandatory **Humanization & Cohesion Pass** for conversational, intuitive flow.
-- **Example:** `/scribe-classnotes Operating Systems Scheduling`
+- **Example:** `/scribe-notes Operating Systems Scheduling`
 
 ### Output Directory Hierarchy
 
@@ -202,7 +204,7 @@ When slash commands are unavailable, use the same command without the slash or a
 | [validate_note.py](scripts/validate_note.py) | Check routed notes and resolve links when a vault is provided | `<note.md>`, `--vault` |
 | [patch_links.py](scripts/patch_links.py) | Non-destructive YAML frontmatter & wikilink patcher | `--file`, `--add-depends-on`, `--remove-depends-on`, `--set-next-topic`, `--append-review-log`, `--rename-link OLD NEW`, `--dry-run` |
 | [vault_graph.py](scripts/vault_graph.py) | Read-only dependency DAG, cycle, broken-link & Mermaid analyzer | `--topic`, `--format json\|mermaid\|text`, `--include-body-links`, `--check-cycles`, `--strict` |
-| [verify_vault_notes.py](scripts/verify_vault_notes.py) | Scoped schema-aware validator and mechanical auto-repair tool | `--files`, `--manifest`, `--fix`, `--allow-cross-vault-writes` |
+| [verify_vault_notes.py](scripts/verify_vault_notes.py) | Scoped schema-aware validator and mechanical auto-repair tool | `--files`, `--manifest`, `--fix` |
 
 ### Common CLI Examples
 ```bash
@@ -214,7 +216,7 @@ python3 scripts/vault_index.py "<vault_path>" --extract "ml/01-gd.md" --sections
 
 # 3. Preview a routed scaffold to populate as a draft
 python3 scripts/scaffold_note.py "<vault_path>" \
-  --template deepstudy-coding --math-level 2 --number "02" --title "Stochastic Gradient Descent" \
+  --template deepstudy-master --math-level 2 --number "02" --title "Stochastic Gradient Descent" \
   --base-domain "Computer Science" --master-topic "Machine Learning" --topic "Optimization" \
   --depends-on "[[01-gd|Gradient Descent]]"
 
@@ -233,7 +235,7 @@ python3 scripts/vault_graph.py "<vault_path>" --topic "Optimization" --format me
 python3 scripts/verify_vault_notes.py "<vault_path>" --files "ml/02-sgd.md" --fix
 ```
 
-For a full write, follow the [plan and publish workflow](router.md#persist-the-plan-before-research). Plans live under `.scriptorium/plans/` in the vault. Reuse the request and topic folder to resume. Exclusive publication uses same-directory hard links, supported by NTFS and common Linux/macOS filesystems. Obsidian requires Dataview JavaScript queries enabled for **Mark Revisited**.
+For a full write, follow the [plan and publish workflow](router.md#plan-and-publish). Plans live under `.scriptorium/plans/` in the vault. Reuse the request and topic folder to resume. Exclusive publication uses same-directory hard links, supported by NTFS and common Linux/macOS filesystems. Obsidian requires Dataview JavaScript queries enabled for **Mark Revisited**.
 
 ---
 
@@ -274,3 +276,5 @@ scriptorium/
 ## License
 
 Released under the [MIT License](LICENSE).
+
+Repository maintenance: run [audit_repository.py](scripts/audit_repository.py) for local links, anchors, documented CLI flags and Python syntax; see [the staged audit](references/repository_audit.md) for inventory and results.
