@@ -234,6 +234,20 @@ def patch_frontmatter_text(
     if not isinstance(meta, dict):
         raise ValueError("YAML frontmatter must be a mapping.")
 
+    from contracts import STRICT_KEYS
+    if set(meta) == set(STRICT_KEYS):
+        additions = []
+        if add_depends_on:
+            additions.append("**Prerequisites** :: " + ", ".join(map(_format_wikilink, add_depends_on)))
+        if remove_depends_on:
+            raise ValueError("Remove body prerequisites explicitly; strict notes have no depends_on YAML key.")
+        if append_review_log:
+            additions.extend("**Review** :: " + entry.strip() for entry in append_review_log if entry.strip())
+        if set_status is not None:
+            additions.append("**Status** :: " + set_status.strip())
+        body += "".join(newline + entry + newline for entry in additions)
+        add_depends_on = append_review_log = None
+        set_status = None
     updated_lines = list(yaml_lines)
 
     # 1. depends_on
@@ -257,8 +271,17 @@ def patch_frontmatter_text(
                     existing_keys.add(key)
         updated_lines = _set_yaml_list_key(updated_lines, "depends_on", deps)
 
-    # 2. next_topic
-    if clear_next_topic:
+    # 2. nexttopics / next_topic
+    if "nexttopics" in meta or "next_topic" not in meta:
+        if clear_next_topic:
+            updated_lines = _set_yaml_list_key(updated_lines, "nexttopics", [])
+        elif set_next_topic is not None:
+            existing_next = _parse_existing_list(meta, "nexttopics")
+            formatted = _format_wikilink(set_next_topic)
+            if _link_target_key(formatted) not in {_link_target_key(x) for x in existing_next}:
+                existing_next.append(formatted)
+            updated_lines = _set_yaml_list_key(updated_lines, "nexttopics", existing_next)
+    elif clear_next_topic:
         updated_lines = _set_yaml_scalar_key(updated_lines, "next_topic", None)
     elif set_next_topic is not None:
         updated_lines = _set_yaml_scalar_key(updated_lines, "next_topic", _format_wikilink(set_next_topic))

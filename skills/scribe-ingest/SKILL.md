@@ -1,8 +1,6 @@
 ---
 name: scribe-ingest
-description: "Ingest a PDF, URL, or raw notes into a new non-destructive Obsidian note inside <topic>. Usage: /scribe-ingest <topic> <pdf|url|notes>"
+description: "Ingest a PDF, URL, or raw notes into a new non-destructive Obsidian note inside topic."
 ---
 
-# `/scribe-ingest`
-
-Resolve the Scriptorium base directory (`../scriptorium/`, `~/.gemini/config/skills/scriptorium/`, `~/.claude/skills/scriptorium/`, or `~/.codex/skills/scriptorium/`), read **only** `## Command E` in `references/command_playbooks.md`, and execute it for `$ARGUMENTS`.
+Dispatch `/scribe-ingest` with the user arguments through [the router](../../router.md). Load only its matching command branch.

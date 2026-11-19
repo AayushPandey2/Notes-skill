@@ -1,8 +1,6 @@
 ---
 name: scribe-notes
-description: "Research a topic from primary sources and generate interconnected 7-section Obsidian notes. Usage: /scribe-notes <topic>"
+description: "Create source-faithful structured multi-file subtopic study notes from supplied material or a bounded topic."
 ---
 
-# `/scribe-notes`
-
-Resolve the Scriptorium base directory (`../scriptorium/`, `~/.gemini/config/skills/scriptorium/`, `~/.claude/skills/scriptorium/`, or `~/.codex/skills/scriptorium/`), read **only** `## Command C` in `references/command_playbooks.md`, and execute it for `$ARGUMENTS`.
+Dispatch `/scribe-notes` with the user arguments through [the router](../../router.md). Load only its matching command branch (`Command I` + `studynotes`). Decompose topics into multiple focused, numbered subtopic files (`4–10+` notes, minimum `3` when no single source URL is locked) plus `00-MOC-<topic>.md`, never one monolithic note.

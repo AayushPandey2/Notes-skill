@@ -217,3 +217,80 @@ def test_unresolved_template_syntax_and_path_traversal_rejection(tmp_path: Path)
         capture_output=True, text=True, check=False,
     )
     assert p_trav.returncode == 2
+
+
+def test_auto_detect_obsidian_creates_notes_and_saves_config(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    vault = tmp_path / "MyVault"
+    (vault / ".obsidian").mkdir(parents=True)
+    sub = vault / "workspace"
+    sub.mkdir()
+    fake_home = tmp_path / "home"
+    fake_home.mkdir()
+    monkeypatch.delenv("SCRIPTORIUM_VAULT_PATH", raising=False)
+    monkeypatch.setattr(Path, "home", lambda: fake_home)
+    monkeypatch.chdir(sub)
+
+    resolved = vi.resolve_vault_root()
+    assert resolved == Path(os.path.realpath(vault))
+    assert (vault / "Notes").is_dir()
+    cfg = json.loads((fake_home / ".scriptorium-config.json").read_text(encoding="utf-8"))
+    assert Path(cfg["vault_path"]) == resolved
+    assert cfg["notes_folder"] == "Notes"
+    assert Path(cfg["notes_path"]) == resolved / "Notes"
+    assert vi.resolve_notes_folder(resolved) == "Notes"
+
+    custom = vault / "Study" / "AI"
+    saved = vi.set_notes_folder(custom)
+    assert Path(saved["vault_path"]) == resolved
+    assert saved["notes_folder"] == "Study/AI"
+    assert vi.resolve_notes_folder(resolved) == "Study/AI"
+
+
+def test_discover_detects_topic_workflow_notes_vs_deepnotes(tmp_path: Path) -> None:
+    vault = tmp_path / "vault"
+    (vault / "OS").mkdir(parents=True)
+    (vault / "Transformers").mkdir(parents=True)
+    (vault / "Mixed").mkdir(parents=True)
+
+    (vault / "OS" / "01 - Paging.md").write_text(
+        '---\nid: "01-paging"\ntopic: "OS"\ntags: [study-notes]\nnexttopics: []\n---\n\n'
+        '# Paging\n\n## 1. Overview, Source Context & Learning Goals\n',
+        encoding="utf-8",
+    )
+    (vault / "Transformers" / "01 - Attention.md").write_text(
+        '---\nid: "01-attention"\ntopic: "Transformers"\ntags: [deepstudy-master]\nnexttopics: []\n---\n\n'
+        '# Attention\n',
+        encoding="utf-8",
+    )
+    (vault / "Mixed" / "01 - A.md").write_text(
+        '---\nid: "01-a"\ntopic: "Mixed"\ntags: [study-notes]\nnexttopics: []\n---\n',
+        encoding="utf-8",
+    )
+    (vault / "Mixed" / "02 - B.md").write_text(
+        '---\nid: "02-b"\ntopic: "Mixed"\ntags: [deepstudy-master]\nnexttopics: []\n---\n',
+        encoding="utf-8",
+    )
+
+    p_notes = subprocess.run(
+        [sys.executable, "-B", str(SCRIPTS_DIR / "vault_index.py"), str(vault), "--discover", "--topic", "OS", "--no-cache"],
+        capture_output=True, text=True, check=True,
+    )
+    assert json.loads(p_notes.stdout)["detected_workflow"] == "notes"
+
+    p_deep = subprocess.run(
+        [sys.executable, "-B", str(SCRIPTS_DIR / "vault_index.py"), str(vault), "--discover", "--topic", "Transformers", "--no-cache"],
+        capture_output=True, text=True, check=True,
+    )
+    assert json.loads(p_deep.stdout)["detected_workflow"] == "deepnotes"
+
+    p_mixed = subprocess.run(
+        [sys.executable, "-B", str(SCRIPTS_DIR / "vault_index.py"), str(vault), "--discover", "--topic", "Mixed", "--no-cache"],
+        capture_output=True, text=True, check=True,
+    )
+    assert json.loads(p_mixed.stdout)["detected_workflow"] == "mixed"
+
+    p_none = subprocess.run(
+        [sys.executable, "-B", str(SCRIPTS_DIR / "vault_index.py"), str(vault), "--discover", "--topic", "NonExistent", "--no-cache"],
+        capture_output=True, text=True, check=True,
+    )
+    assert json.loads(p_none.stdout)["detected_workflow"] is None

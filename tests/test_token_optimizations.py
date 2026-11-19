@@ -19,7 +19,7 @@ import scaffold_note as sn
 import vault_index as vi
 
 
-def test_scaffold_note_creates_valid_7_section_skeleton(tmp_path: Path) -> None:
+def test_scaffold_note_defaults_to_adaptive_deep_study(tmp_path: Path) -> None:
     vault = tmp_path / "vault"
     vault.mkdir()
     rc = sn.main(
@@ -51,9 +51,10 @@ def test_scaffold_note_creates_valid_7_section_skeleton(tmp_path: Path) -> None:
     assert out_file.is_file()
     text = out_file.read_text(encoding="utf-8")
     assert "# 02. Gradient Descent" in text
-    assert "> [!abstract] Key Equations" in text
-    for sec in range(1, 8):
-        assert f"## {sec}." in text
+    assert "deepstudy-master" in text
+    assert "templates/notes_decision_matrix.md" in text
+    assert "Key Equations" not in text
+    assert "## " not in text
 
     # Refuses overwrite without --overwrite
     assert sn.main([str(vault), "--output", "ml/02-gradient-descent.md", "--title", "Gradient Descent", "--topic", "Optimization"]) == 2
@@ -121,12 +122,10 @@ def test_verify_vault_notes_accepts_multilang_s5_and_warns_above_3(tmp_path: Pat
     note.write_text(
         "---\n"
         'id: "dsa-01"\n'
-        'title: "Segment Tree"\n'
         'aliases: ["Segment Tree"]\n'
-        'base_domain: "CS"\n'
-        'master_topic: "DSA"\n'
         'topic: "Trees"\n'
         "tags: [cs, dsa]\n"
+        "nexttopics: []\n"
         "---\n\n"
         "# 01. Segment Tree\n\n"
         "> [!abstract] Key Equations\n"

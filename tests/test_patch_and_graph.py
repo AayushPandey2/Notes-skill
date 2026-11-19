@@ -88,7 +88,7 @@ def test_patch_frontmatter_preserves_body_and_supports_dry_run(tmp_path: Path) -
     yaml_part = updated.split("---", 2)[1]
     meta = yaml.safe_load(yaml_part)
     assert meta["depends_on"] == ["[[01-calculus]]", "[[00-linalg|Linear Algebra]]"]
-    assert meta["next_topic"] == "[[03-sgd|SGD]]"
+    assert meta["nexttopics"] == ["[[03-sgd|SGD]]"]
     assert meta["review_log"] == ["2026-11-18 | Score: 4/5 | Weak: step size bound"]
     assert meta["aliases"] == ["GD"]
     assert meta["status"] == "verified"
@@ -186,3 +186,10 @@ def test_vault_graph_detects_cycles_broken_links_and_isolated(tmp_path: Path) ->
 
     assert vg.main([str(vault), "--check-cycles", "--no-cache"]) == 1
     assert vg.main([str(vault), "--strict", "--no-cache"]) == 1
+
+    # Also catch nexttopics cycles via --check-cycles
+    nxt_vault = tmp_path / "nxt_vault"
+    (nxt_vault / "topic").mkdir(parents=True)
+    (nxt_vault / "topic" / "x.md").write_text('---\nid: "x"\naliases: ["X"]\ntopic: "T"\ntags: [t]\nnexttopics: ["[[y]]"]\n---\n', encoding="utf-8")
+    (nxt_vault / "topic" / "y.md").write_text('---\nid: "y"\naliases: ["Y"]\ntopic: "T"\ntags: [t]\nnexttopics: ["[[x]]"]\n---\n', encoding="utf-8")
+    assert vg.main([str(nxt_vault), "--check-cycles", "--no-cache"]) == 1

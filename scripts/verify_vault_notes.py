@@ -25,8 +25,9 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+from note_layout import ROUTES
 
-MANDATORY_TOPIC_KEYS = ("id", "title", "aliases", "base_domain", "master_topic", "topic", "tags")
+from contracts import STRICT_KEYS as MANDATORY_TOPIC_KEYS
 
 RAW_LATEX_IN_YAML_RE = re.compile(
     r"\\(?:mathbb|mathbf|mathcal|mathrm|text|operatorname|sum|prod|int|frac|dfrac|"
@@ -177,9 +178,13 @@ def build_vault_index(vault_root: Path) -> dict[str, Any]:
                             ts = str(t).strip().lstrip("#")
                             if ts:
                                 existing_tags.setdefault(_normalize_tag_key(ts), ts)
-                    if str(y_obj.get("note_type", "")).strip().lower() == "syllabus" and y_obj.get("scope_locked"):
-                        raw_allowed = y_obj.get("allowed_subtopics") or []
-                        if isinstance(raw_allowed, list):
+                    if md_file.name.upper().startswith("00-MOC-") or (
+                        str(y_obj.get("note_type", "")).strip().lower() == "syllabus" and y_obj.get("scope_locked")
+                    ):
+                        raw_allowed = y_obj.get("allowed_subtopics") or re.findall(
+                            r"^\s*\d+\.\s+`([^`]+\.md)`", text, flags=re.MULTILINE
+                        )
+                        if isinstance(raw_allowed, list) and raw_allowed:
                             dir_rel = md_file.parent.relative_to(vault_root).as_posix()
                             syllabi[dir_rel] = {
                                 "moc_rel": md_file.relative_to(vault_root).as_posix(),
@@ -470,7 +475,14 @@ def _resolve_note_schema(
         if ttype in {"custom", "builtin_deep", "builtin_cheatsheet", "builtin_comparison", "generic"}:
             return ttype
 
+    if Path(rel_file).name.upper().startswith("00-MOC-"):
+        return "builtin_syllabus"
+
     if y_obj:
+        if set(y_obj.keys()) == set(MANDATORY_TOPIC_KEYS):
+            return "routed"
+        if y_obj.get("template") in ROUTES:
+            return "routed"
         nt = str(y_obj.get("note_type", "")).strip().lower()
         if nt == "cheatsheet":
             return "builtin_cheatsheet"
@@ -533,7 +545,11 @@ def validate_file(
 
     # Enforce locked syllabus allowlist if a 00-MOC syllabus governs this folder
     syllabi = index.get("syllabi") or {}
-    if syllabi and schema not in {"builtin_syllabus", "builtin_cheatsheet", "builtin_comparison"}:
+    rel_parts = {p.lower() for p in Path(rel_file).parts[:-1]}
+    specialized = bool(rel_parts & {"practice sets", "atomic notes", "cheatsheets", "comparison"}) or (
+        y_obj and y_obj.get("template") in ("practice", "atomic", "cheat-sheet", "comparison")
+    )
+    if syllabi and not specialized and schema not in {"builtin_syllabus", "builtin_cheatsheet", "builtin_comparison"}:
         if not md_file.name.upper().startswith("00-MOC-"):
             cur_dir = md_file.parent
             matched_contract = None
@@ -562,6 +578,17 @@ def validate_file(
                             ),
                         }
                     )
+    if schema == "routed":
+        from validate_note import validate_text
+
+        v_findings = validate_text(text, vault=vault_root, target=md_file, index=index)
+        if not (len(v_findings) == 1 and "do not match any built-in template" in v_findings[0][1]):
+            findings.extend(
+                {"file": rel_file, "line": line, "level": "ERROR", "code": "ROUTED_NOTE_INVALID", "message": message}
+                for line, message in v_findings
+            )
+            return findings
+        schema = "builtin_deep" if "topics" in Path(rel_file).parts and manifest is None else "generic"
     is_builtin = schema.startswith("builtin_")
 
     if y_obj is not None:
@@ -661,6 +688,41 @@ def validate_file(
                         }
                     )
 
+    if schema == "builtin_deep" and isinstance(y_obj, dict):
+        from decision_matrix import audit_note_against_contract, check_slug_and_forward_links, resolve_decisions
+
+        body_text = "\n".join(lines[body_idx:]) if body_idx < len(lines) else ""
+        topic_val = str(y_obj.get("topic") or "")
+        aliases_val = y_obj.get("aliases") if isinstance(y_obj.get("aliases"), list) else []
+        tags_val = y_obj.get("tags") if isinstance(y_obj.get("tags"), list) else []
+        contract = resolve_decisions(
+            topic_val,
+            {"title": str(aliases_val[0]) if aliases_val else md_file.stem, "math_level": 0},
+            topic_val,
+            tags=[str(t) for t in tags_val],
+        )
+        for c_line, c_msg in audit_note_against_contract(body_text, contract):
+            findings.append({
+                "file": rel_file,
+                "line": body_idx + c_line,
+                "level": "ERROR",
+                "code": "DECISION_MATRIX_VIOLATION",
+                "message": c_msg,
+            })
+        for s_line, s_msg in check_slug_and_forward_links(
+            body_text,
+            metadata=y_obj,
+            target_filename=md_file.name,
+            existing_stems=set(stems.keys()),
+        ):
+            findings.append({
+                "file": rel_file,
+                "line": body_idx + s_line,
+                "level": "ERROR",
+                "code": "LINK_HYGIENE",
+                "message": s_msg,
+            })
+
     in_fence = False
     in_mermaid = False
     in_display = False
@@ -733,10 +795,23 @@ def validate_file(
                 }
             )
 
-        # Wikilinks across YAML + Body
+        # Wikilinks across YAML + Body (handling ![[...]] asset embeds separately from note links)
         for m_wl in re.finditer(r"\[\[([^\]]+)\]\]", raw_line):
             inner = m_wl.group(1)
             target_full = re.split(r"\\?\|", inner, maxsplit=1)[0].strip()
+            if Path(target_full).suffix.lower() in {".png", ".jpg", ".jpeg", ".svg", ".gif", ".webp", ".pdf"}:
+                asset = target_full.lstrip("/")
+                if not ((vault_root / asset).is_file() or any(vault_root.rglob(Path(asset).name))):
+                    findings.append(
+                        {
+                            "file": rel_file,
+                            "line": line_no,
+                            "level": "ERROR",
+                            "code": "UNRESOLVED_IMAGE_EMBED",
+                            "message": f"Unresolved image embed '![[{inner}]]'.",
+                        }
+                    )
+                continue
             if "#" in target_full:
                 target_part, anchor_part = target_full.split("#", 1)
                 target_part = target_part.strip()
@@ -1126,6 +1201,8 @@ def main(argv: list[str] | None = None) -> int:
             yl, _ = _split_frontmatter_lines(lines)
             y_obj = yaml.safe_load("\n".join(yl)) if yl else None
             schema = _resolve_note_schema(rel, y_obj if isinstance(y_obj, dict) else None, manifest)
+            if schema == "routed":
+                continue  # Routed notes are linted in draft and published without automatic repair.
             repairs.extend(
                 apply_mechanical_fixes(
                     md_file,
