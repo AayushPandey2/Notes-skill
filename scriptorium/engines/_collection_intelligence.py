@@ -111,6 +111,7 @@ class KnowledgeCollectionPlan:
     refinement_log: list[dict[str, Any]] = field(default_factory=list)
     validation: dict[str, Any] = field(default_factory=lambda: {"status": "pending"})
     diagnostic_quiz_enabled: bool = False  # Strictly False per Part 1.2
+    composition: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         data = asdict(self)
@@ -1817,10 +1818,11 @@ def build_knowledge_collection_plan(
         )
 
     # F10 synthesis notes & F13 assessment blueprint
-    syntheses = plan_and_render_synthesis_notes(plan, preferences, domain=hier["domain"]) if include_synthesis else []
+    composition = plan.scope_summary.get("composition", {})
+    syntheses = plan_and_render_synthesis_notes(plan, preferences, domain=hier["domain"]) if include_synthesis and not composition else []
     assessment = (
         build_collection_assessment(plan, preferences, competencies, answer_mode=answer_mode, domain=hier["domain"])
-        if include_assessment
+        if include_assessment and not composition
         else {}
     )
 
@@ -1855,4 +1857,5 @@ def build_knowledge_collection_plan(
         competencies=competencies,
         assessment_plan=assessment,
         diagnostic_quiz_enabled=False,
+        composition=composition,
     )

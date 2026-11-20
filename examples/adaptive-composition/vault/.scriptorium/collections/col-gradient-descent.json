@@ -1,0 +1,1051 @@
+{
+  "composition": {
+    "version": 1,
+    "output_profile": "comprehensive_multifile",
+    "topic": "Gradient Descent",
+    "source_policy": "adaptive",
+    "folder": "6 - Full Notes/Gradient Descent",
+    "moc_path": "6 - Full Notes/Gradient Descent/00 - Map of Contents.md",
+    "chapters": [
+      {
+        "id": "gd.ch1",
+        "title": "Why Local Descent Works",
+        "concepts": [
+          "gd.c1"
+        ],
+        "sections": [
+          "Why Local Descent Works"
+        ],
+        "path": "6 - Full Notes/Gradient Descent/01 - Why Local Descent Works.md"
+      },
+      {
+        "id": "gd.ch2",
+        "title": "Deriving the Update and Its Limits",
+        "concepts": [
+          "gd.c2"
+        ],
+        "sections": [
+          "Deriving the Update and Its Limits"
+        ],
+        "path": "6 - Full Notes/Gradient Descent/02 - Deriving the Update and Its Limits.md"
+      },
+      {
+        "id": "gd.ch3",
+        "title": "Tracing the Algorithm",
+        "concepts": [
+          "gd.c3"
+        ],
+        "sections": [
+          "Tracing the Algorithm"
+        ],
+        "path": "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md"
+      },
+      {
+        "id": "gd.ch4",
+        "title": "Implementing and Testing Descent",
+        "concepts": [
+          "gd.c4"
+        ],
+        "sections": [
+          "Implementing and Testing Descent"
+        ],
+        "path": "6 - Full Notes/Gradient Descent/04 - Implementing and Testing Descent.md"
+      },
+      {
+        "id": "gd.ch5",
+        "title": "Curvature and Failure Analysis",
+        "concepts": [
+          "gd.c5"
+        ],
+        "sections": [
+          "Curvature and Failure Analysis"
+        ],
+        "path": "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md"
+      }
+    ],
+    "concepts": [
+      {
+        "id": "gd.c1",
+        "title": "Why Local Descent Works",
+        "objectives": [
+          "explain local descent"
+        ],
+        "capabilities": [
+          "S01"
+        ],
+        "depth": {
+          "research": 1
+        },
+        "prerequisites": [],
+        "chapter": 1,
+        "depth_allocation": {
+          "levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 0,
+            "implementation": 0,
+            "research": 1,
+            "visual": 0,
+            "analytical": 0
+          },
+          "reasons": {
+            "conceptual": [
+              "learning objective: explain local descent"
+            ],
+            "mathematical": [],
+            "algorithmic": [],
+            "implementation": [],
+            "research": [
+              "explicit concept requirement"
+            ],
+            "visual": [],
+            "analytical": []
+          },
+          "external_retrieval_permitted": true,
+          "unresolved": []
+        },
+        "sequence": [
+          {
+            "stage": "motivation_and_problem",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "intuition_and_model",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "definitions_and_setup",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          }
+        ],
+        "research_obligations": [
+          {
+            "id": "gd.c1:S01:0",
+            "concept": "gd.c1",
+            "capability": "S01",
+            "requirement": "authoritative definition",
+            "source_policy": "adaptive",
+            "status": "pending",
+            "research_depth": 1,
+            "primary_required": false,
+            "freshness_required": false
+          }
+        ]
+      },
+      {
+        "id": "gd.c2",
+        "title": "Deriving the Update and Its Limits",
+        "objectives": [
+          "derive the stability condition"
+        ],
+        "capabilities": [
+          "S01",
+          "S02"
+        ],
+        "depth": {
+          "research": 1
+        },
+        "prerequisites": [
+          "gd.c1"
+        ],
+        "chapter": 2,
+        "depth_allocation": {
+          "levels": {
+            "conceptual": 0,
+            "mathematical": 3,
+            "algorithmic": 0,
+            "implementation": 0,
+            "research": 1,
+            "visual": 0,
+            "analytical": 0
+          },
+          "reasons": {
+            "conceptual": [],
+            "mathematical": [
+              "learning objective: derive the stability condition"
+            ],
+            "algorithmic": [],
+            "implementation": [],
+            "research": [
+              "explicit concept requirement"
+            ],
+            "visual": [],
+            "analytical": []
+          },
+          "external_retrieval_permitted": true,
+          "unresolved": []
+        },
+        "sequence": [
+          {
+            "stage": "motivation_and_problem",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "intuition_and_model",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "definitions_and_setup",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "mathematical_formulation",
+            "owner": "S02",
+            "contributors": [
+              "S02"
+            ],
+            "obligations": [
+              "variables and domains",
+              "assumptions",
+              "intermediate justified steps",
+              "boundary cases"
+            ]
+          },
+          {
+            "stage": "derivation_and_proof",
+            "owner": "S02",
+            "contributors": [
+              "S02"
+            ],
+            "obligations": [
+              "variables and domains",
+              "assumptions",
+              "intermediate justified steps",
+              "boundary cases"
+            ]
+          }
+        ],
+        "research_obligations": [
+          {
+            "id": "gd.c2:S01:0",
+            "concept": "gd.c2",
+            "capability": "S01",
+            "requirement": "authoritative definition",
+            "source_policy": "adaptive",
+            "status": "pending",
+            "research_depth": 1,
+            "primary_required": false,
+            "freshness_required": false
+          },
+          {
+            "id": "gd.c2:S02:0",
+            "concept": "gd.c2",
+            "capability": "S02",
+            "requirement": "formulation and assumptions",
+            "source_policy": "adaptive",
+            "status": "pending",
+            "research_depth": 1,
+            "primary_required": false,
+            "freshness_required": false
+          }
+        ]
+      },
+      {
+        "id": "gd.c3",
+        "title": "Tracing the Algorithm",
+        "objectives": [
+          "trace scalar states"
+        ],
+        "capabilities": [
+          "S01",
+          "S03",
+          "S09",
+          "S12"
+        ],
+        "depth": {
+          "research": 1
+        },
+        "prerequisites": [
+          "gd.c2"
+        ],
+        "chapter": 3,
+        "depth_allocation": {
+          "levels": {
+            "conceptual": 0,
+            "mathematical": 0,
+            "algorithmic": 3,
+            "implementation": 0,
+            "research": 1,
+            "visual": 0,
+            "analytical": 0
+          },
+          "reasons": {
+            "conceptual": [],
+            "mathematical": [],
+            "algorithmic": [
+              "learning objective: trace scalar states"
+            ],
+            "implementation": [],
+            "research": [
+              "explicit concept requirement"
+            ],
+            "visual": [],
+            "analytical": []
+          },
+          "external_retrieval_permitted": true,
+          "unresolved": []
+        },
+        "sequence": [
+          {
+            "stage": "motivation_and_problem",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "intuition_and_model",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "definitions_and_setup",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "algorithmic_procedure",
+            "owner": "S03",
+            "contributors": [
+              "S03"
+            ],
+            "obligations": [
+              "inputs and outputs",
+              "initial state",
+              "invariant",
+              "execution trace",
+              "time and space complexity"
+            ]
+          },
+          {
+            "stage": "worked_application",
+            "owner": "S03",
+            "contributors": [
+              "S03",
+              "S09",
+              "S12"
+            ],
+            "obligations": [
+              "inputs and outputs",
+              "initial state",
+              "invariant",
+              "execution trace",
+              "time and space complexity",
+              "knowns and unknowns",
+              "method selection",
+              "intermediate calculations",
+              "interpretation",
+              "learning objective",
+              "accurate labels",
+              "renderer verification",
+              "shared asset path"
+            ]
+          }
+        ],
+        "research_obligations": [
+          {
+            "id": "gd.c3:S01:0",
+            "concept": "gd.c3",
+            "capability": "S01",
+            "requirement": "authoritative definition",
+            "source_policy": "adaptive",
+            "status": "pending",
+            "research_depth": 1,
+            "primary_required": false,
+            "freshness_required": false
+          },
+          {
+            "id": "gd.c3:S03:0",
+            "concept": "gd.c3",
+            "capability": "S03",
+            "requirement": "algorithm specification",
+            "source_policy": "adaptive",
+            "status": "pending",
+            "research_depth": 1,
+            "primary_required": false,
+            "freshness_required": false
+          },
+          {
+            "id": "gd.c3:S09:0",
+            "concept": "gd.c3",
+            "capability": "S09",
+            "requirement": "reproducible calculation",
+            "source_policy": "adaptive",
+            "status": "pending",
+            "research_depth": 1,
+            "primary_required": false,
+            "freshness_required": false
+          },
+          {
+            "id": "gd.c3:S12:0",
+            "concept": "gd.c3",
+            "capability": "S12",
+            "requirement": "equation, data, or verified structure",
+            "source_policy": "adaptive",
+            "status": "pending",
+            "research_depth": 1,
+            "primary_required": false,
+            "freshness_required": false
+          }
+        ]
+      },
+      {
+        "id": "gd.c4",
+        "title": "Implementing and Testing Descent",
+        "objectives": [
+          "implement reproducible descent"
+        ],
+        "capabilities": [
+          "S01",
+          "S03",
+          "S04"
+        ],
+        "depth": {
+          "research": 1
+        },
+        "prerequisites": [
+          "gd.c3"
+        ],
+        "chapter": 4,
+        "depth_allocation": {
+          "levels": {
+            "conceptual": 0,
+            "mathematical": 0,
+            "algorithmic": 0,
+            "implementation": 3,
+            "research": 1,
+            "visual": 0,
+            "analytical": 0
+          },
+          "reasons": {
+            "conceptual": [],
+            "mathematical": [],
+            "algorithmic": [],
+            "implementation": [
+              "learning objective: implement reproducible descent"
+            ],
+            "research": [
+              "explicit concept requirement"
+            ],
+            "visual": [],
+            "analytical": []
+          },
+          "external_retrieval_permitted": true,
+          "unresolved": []
+        },
+        "sequence": [
+          {
+            "stage": "motivation_and_problem",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "intuition_and_model",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "definitions_and_setup",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "algorithmic_procedure",
+            "owner": "S03",
+            "contributors": [
+              "S03"
+            ],
+            "obligations": [
+              "inputs and outputs",
+              "initial state",
+              "invariant",
+              "execution trace",
+              "time and space complexity"
+            ]
+          },
+          {
+            "stage": "implementation_and_code",
+            "owner": "S04",
+            "contributors": [
+              "S04"
+            ],
+            "obligations": [
+              "runtime and dependency versions",
+              "complete code",
+              "test inputs and expected outputs",
+              "edge cases"
+            ]
+          },
+          {
+            "stage": "worked_application",
+            "owner": "S03",
+            "contributors": [
+              "S03"
+            ],
+            "obligations": [
+              "inputs and outputs",
+              "initial state",
+              "invariant",
+              "execution trace",
+              "time and space complexity"
+            ]
+          },
+          {
+            "stage": "interpretation_and_verification",
+            "owner": "S04",
+            "contributors": [
+              "S04"
+            ],
+            "obligations": [
+              "runtime and dependency versions",
+              "complete code",
+              "test inputs and expected outputs",
+              "edge cases"
+            ]
+          }
+        ],
+        "research_obligations": [
+          {
+            "id": "gd.c4:S01:0",
+            "concept": "gd.c4",
+            "capability": "S01",
+            "requirement": "authoritative definition",
+            "source_policy": "adaptive",
+            "status": "pending",
+            "research_depth": 1,
+            "primary_required": false,
+            "freshness_required": false
+          },
+          {
+            "id": "gd.c4:S03:0",
+            "concept": "gd.c4",
+            "capability": "S03",
+            "requirement": "algorithm specification",
+            "source_policy": "adaptive",
+            "status": "pending",
+            "research_depth": 1,
+            "primary_required": false,
+            "freshness_required": false
+          },
+          {
+            "id": "gd.c4:S04:0",
+            "concept": "gd.c4",
+            "capability": "S04",
+            "requirement": "versioned official API or algorithm",
+            "source_policy": "adaptive",
+            "status": "pending",
+            "research_depth": 1,
+            "primary_required": false,
+            "freshness_required": true
+          }
+        ]
+      },
+      {
+        "id": "gd.c5",
+        "title": "Curvature and Failure Analysis",
+        "objectives": [
+          "analyze curvature and boundaries"
+        ],
+        "capabilities": [
+          "S01",
+          "S10",
+          "S03",
+          "S17",
+          "S13",
+          "S14"
+        ],
+        "depth": {
+          "research": 1
+        },
+        "prerequisites": [
+          "gd.c4"
+        ],
+        "chapter": 5,
+        "depth_allocation": {
+          "levels": {
+            "conceptual": 0,
+            "mathematical": 0,
+            "algorithmic": 0,
+            "implementation": 0,
+            "research": 1,
+            "visual": 0,
+            "analytical": 3
+          },
+          "reasons": {
+            "conceptual": [],
+            "mathematical": [],
+            "algorithmic": [],
+            "implementation": [],
+            "research": [
+              "explicit concept requirement"
+            ],
+            "visual": [],
+            "analytical": [
+              "learning objective: analyze curvature and boundaries"
+            ]
+          },
+          "external_retrieval_permitted": true,
+          "unresolved": []
+        },
+        "sequence": [
+          {
+            "stage": "motivation_and_problem",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "intuition_and_model",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "definitions_and_setup",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "algorithmic_procedure",
+            "owner": "S03",
+            "contributors": [
+              "S03"
+            ],
+            "obligations": [
+              "inputs and outputs",
+              "initial state",
+              "invariant",
+              "execution trace",
+              "time and space complexity"
+            ]
+          },
+          {
+            "stage": "worked_application",
+            "owner": "S03",
+            "contributors": [
+              "S03"
+            ],
+            "obligations": [
+              "inputs and outputs",
+              "initial state",
+              "invariant",
+              "execution trace",
+              "time and space complexity"
+            ]
+          },
+          {
+            "stage": "comparison_and_distinctions",
+            "owner": "S13",
+            "contributors": [
+              "S13"
+            ],
+            "obligations": [
+              "typed columns",
+              "units and conditions",
+              "cell provenance",
+              "prose interpretation"
+            ]
+          },
+          {
+            "stage": "interpretation_and_verification",
+            "owner": "S17",
+            "contributors": [
+              "S17"
+            ],
+            "obligations": [
+              "objective and constraints",
+              "convergence assumptions",
+              "resource bounds"
+            ]
+          },
+          {
+            "stage": "limitations_and_boundaries",
+            "owner": "S10",
+            "contributors": [
+              "S10",
+              "S17"
+            ],
+            "obligations": [
+              "root causes",
+              "symptoms",
+              "boundary conditions",
+              "diagnosis and recovery",
+              "objective and constraints",
+              "convergence assumptions",
+              "resource bounds"
+            ]
+          },
+          {
+            "stage": "revision_and_consolidation",
+            "owner": "S14",
+            "contributors": [
+              "S14"
+            ],
+            "obligations": [
+              "shared principles",
+              "connections",
+              "qualified implications"
+            ]
+          }
+        ],
+        "research_obligations": [
+          {
+            "id": "gd.c5:S01:0",
+            "concept": "gd.c5",
+            "capability": "S01",
+            "requirement": "authoritative definition",
+            "source_policy": "adaptive",
+            "status": "pending",
+            "research_depth": 1,
+            "primary_required": false,
+            "freshness_required": false
+          },
+          {
+            "id": "gd.c5:S10:0",
+            "concept": "gd.c5",
+            "capability": "S10",
+            "requirement": "failure mechanism",
+            "source_policy": "adaptive",
+            "status": "pending",
+            "research_depth": 1,
+            "primary_required": false,
+            "freshness_required": false
+          },
+          {
+            "id": "gd.c5:S03:0",
+            "concept": "gd.c5",
+            "capability": "S03",
+            "requirement": "algorithm specification",
+            "source_policy": "adaptive",
+            "status": "pending",
+            "research_depth": 1,
+            "primary_required": false,
+            "freshness_required": false
+          },
+          {
+            "id": "gd.c5:S17:0",
+            "concept": "gd.c5",
+            "capability": "S17",
+            "requirement": "complexity and convergence conditions",
+            "source_policy": "adaptive",
+            "status": "pending",
+            "research_depth": 1,
+            "primary_required": false,
+            "freshness_required": false
+          },
+          {
+            "id": "gd.c5:S13:0",
+            "concept": "gd.c5",
+            "capability": "S13",
+            "requirement": "row evidence",
+            "source_policy": "adaptive",
+            "status": "pending",
+            "research_depth": 1,
+            "primary_required": false,
+            "freshness_required": false
+          },
+          {
+            "id": "gd.c5:S14:0",
+            "concept": "gd.c5",
+            "capability": "S14",
+            "requirement": "cross-source consistency",
+            "source_policy": "adaptive",
+            "status": "pending",
+            "research_depth": 1,
+            "primary_required": false,
+            "freshness_required": false
+          }
+        ]
+      }
+    ],
+    "notation": {
+      "x": "scalar iterate",
+      "alpha": "positive step size",
+      "H": "symmetric positive definite Hessian"
+    },
+    "visuals": [],
+    "tables": [],
+    "spec_hash": "854ec044043b8e2d5cf5433cb161f2b3c3fcdd8e026f71016194db8ef5214838",
+    "review_required": [
+      "factual_accuracy",
+      "derivation_correctness",
+      "reader_simulation",
+      "cross_chapter_coherence"
+    ]
+  },
+  "spec_hash": "854ec044043b8e2d5cf5433cb161f2b3c3fcdd8e026f71016194db8ef5214838",
+  "evidence": {
+    "gd.c1:S01:0": {
+      "source": "https://ocw.mit.edu/courses/6-7220j-nonlinear-optimization-spring-2025/mit6_7220_s25_lec12.pdf",
+      "location": "L12.1, equation 1; gradient method definition checked against the original lecture",
+      "verified": true,
+      "origin": "primary_lecture",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21"
+    },
+    "gd.c2:S01:0": {
+      "source": "https://ocw.mit.edu/courses/6-7220j-nonlinear-optimization-spring-2025/mit6_7220_s25_lec12.pdf",
+      "location": "L12.1, equation 1; gradient method definition checked against the original lecture",
+      "verified": true,
+      "origin": "primary_lecture",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21"
+    },
+    "gd.c2:S02:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "Deriving the Update and Its Limits",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21"
+    },
+    "gd.c3:S01:0": {
+      "source": "https://ocw.mit.edu/courses/6-7220j-nonlinear-optimization-spring-2025/mit6_7220_s25_lec12.pdf",
+      "location": "L12.1, equation 1; gradient method definition checked against the original lecture",
+      "verified": true,
+      "origin": "primary_lecture",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21"
+    },
+    "gd.c3:S03:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "Tracing the Algorithm",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21"
+    },
+    "gd.c3:S09:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "Tracing the Algorithm",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21"
+    },
+    "gd.c3:S12:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "Tracing the Algorithm",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21"
+    },
+    "gd.c4:S01:0": {
+      "source": "https://ocw.mit.edu/courses/6-7220j-nonlinear-optimization-spring-2025/mit6_7220_s25_lec12.pdf",
+      "location": "L12.1, equation 1; gradient method definition checked against the original lecture",
+      "verified": true,
+      "origin": "primary_lecture",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21"
+    },
+    "gd.c4:S03:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "Implementing and Testing Descent",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21"
+    },
+    "gd.c4:S04:0": {
+      "source": "https://docs.python.org/3/library/math.html",
+      "location": "math.isfinite / math.isclose; published code executed locally",
+      "verified": true,
+      "origin": "official_docs_and_execution",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21"
+    },
+    "gd.c5:S01:0": {
+      "source": "https://ocw.mit.edu/courses/6-7220j-nonlinear-optimization-spring-2025/mit6_7220_s25_lec12.pdf",
+      "location": "L12.1, equation 1; gradient method definition checked against the original lecture",
+      "verified": true,
+      "origin": "primary_lecture",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21"
+    },
+    "gd.c5:S10:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "Curvature and Failure Analysis",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21"
+    },
+    "gd.c5:S03:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "Curvature and Failure Analysis",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21"
+    },
+    "gd.c5:S17:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "Curvature and Failure Analysis",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21"
+    },
+    "gd.c5:S13:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "Curvature and Failure Analysis",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21"
+    },
+    "gd.c5:S14:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "Curvature and Failure Analysis",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21"
+    }
+  },
+  "reviews": {
+    "factual_accuracy": "Scope restricted to the explicitly defined quadratic; no empirical performance claims.",
+    "derivation_correctness": "Checked recurrence, induction, stability interval and SPD eigenbasis reduction; numerical checks executed.",
+    "reader_simulation": "Definitions precede symbols; trace states distinguished from updates; assumptions attached to extensions.",
+    "cross_chapter_coherence": "One running quadratic and notation; derivation, trace, implementation and limitations follow in order."
+  },
+  "checkpoints": {
+    "6 - Full Notes/Gradient Descent/01 - Why Local Descent Works.md": {
+      "hash": "be804882ca3b22acf740ce2941c65d2bb1c981a03693d23d379476baf5afec8c",
+      "status": "COMMITTED"
+    },
+    "6 - Full Notes/Gradient Descent/02 - Deriving the Update and Its Limits.md": {
+      "hash": "d253409aeffbc62929c47c005d47cde651ea8274f1281e88915048dcda032a4a",
+      "status": "COMMITTED"
+    },
+    "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md": {
+      "hash": "d328f44089ce32fec33eb15f36a663869e245c21e17fddaac5a78454ee7b577f",
+      "status": "COMMITTED"
+    },
+    "6 - Full Notes/Gradient Descent/04 - Implementing and Testing Descent.md": {
+      "hash": "b473eb064a1b087e5ffbc8792923338460f50f576f0dc9739ef8655438ce3336",
+      "status": "COMMITTED"
+    },
+    "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md": {
+      "hash": "020c0fe91f67c2a7705a401e72a04dea37a933afbc27c5f0c2c328b15b39f264",
+      "status": "COMMITTED"
+    },
+    "6 - Full Notes/Gradient Descent/00 - Map of Contents.md": {
+      "hash": "e578a079909ed4c69536f16828faefe87d463795808b51f6646c1e5aa6960846",
+      "status": "COMMITTED"
+    }
+  },
+  "asset_hashes": {
+    "assets/quadratic-iterations.svg": "13cce8a39d72484371ffd7b2c844d8a1db44cf568ec96adb882226586c2665c2"
+  },
+  "complete": true,
+  "errors": []
+}

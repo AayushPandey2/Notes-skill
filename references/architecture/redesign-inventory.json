@@ -1,0 +1,2930 @@
+{
+  "scope": "Repository tracked and nonignored text artifacts; generated fixture state included; virtualenv excluded",
+  "files": [
+    {
+      "path": ".agents/skills.json",
+      "classification": "preserve",
+      "purpose": "{",
+      "dependencies": [],
+      "references_from": [],
+      "bytes": 58
+    },
+    {
+      "path": "README.md",
+      "classification": "optimize",
+      "purpose": "Scriptorium",
+      "dependencies": [
+        "references/templates/masters/README.md",
+        "scripts/scribe.py",
+        "references/routing/routing-policy.md",
+        "references/routing/master-registry.yaml",
+        "references/templates/masters/deep-notes.md",
+        "references/workflows/notes-creation/adaptive-engine.md",
+        "references/workflows/notes-creation/instructional-registry.json",
+        "references/workflows/research/research-engine.md",
+        "references/workflows/notes-creation/pedagogical-intelligence.md",
+        "SKILL.md",
+        "router.md",
+        "scripts/scribe.py",
+        "scripts/vault_index.py",
+        "scripts/plan_notes.py",
+        "scripts/scaffold_note.py",
+        "scripts/validate_note.py",
+        "scripts/patch_links.py",
+        "scripts/vault_graph.py",
+        "scripts/verify_vault_notes.py",
+        "router.md#plan-and-publish",
+        "LICENSE",
+        "scripts/scribe.py",
+        "references/workflows/notes-creation/adaptive-engine.md",
+        "references/workflows/research/research-engine.md",
+        "references/templates/masters/deep-notes.md",
+        "references/workflows/research/source-fidelity.md",
+        "references/workflows/research/resource-recommendations.md",
+        "references/contracts/migration-notes.md",
+        "examples/adaptive-deepnotes/README.md",
+        "references/workflows/notes-creation/composition-contract.md"
+      ],
+      "references_from": [
+        "SKILL.md",
+        "references/README.md",
+        "references/templates/README.md",
+        "router.md",
+        "scriptorium/engines/orchestration.py",
+        "tests/test_instructional_engine.py",
+        "tests/test_research_engine.py",
+        "tests/test_routing_and_masters.py",
+        "references/workflows/notes-creation/composition-contract.md"
+      ],
+      "bytes": 19847
+    },
+    {
+      "path": "SKILL.md",
+      "classification": "optimize",
+      "purpose": "name: scriptorium",
+      "dependencies": [
+        "references/architecture/system-overview.md",
+        "references/architecture/template-module-catalog.md",
+        "router.md",
+        "references/routing/routing-policy.md",
+        "references/routing/master-registry.yaml",
+        "references/templates/masters/README.md",
+        "references/templates/variants/README.md",
+        "references/templates/subtemplates/README.md",
+        "references/workflows/notes-creation/adaptive-engine.md",
+        "references/workflows/research/research-engine.md",
+        "references/workflows/notes-creation/pedagogical-intelligence.md",
+        "references/templates/masters/deep-notes.md",
+        "references/workflows/notes-creation/instructional-registry.json",
+        "references/workflows/research/research-policy-registry.json",
+        "references/metadata/properties-policy.md",
+        "references/metadata/tag-taxonomy.md",
+        "shared/authoring_rules.md",
+        "shared/math_gates.md",
+        "references/workflows/notes-creation/composition-contract.md"
+      ],
+      "references_from": [
+        "README.md",
+        "examples/adaptive-deepnotes/measurements.json",
+        "references/architecture/system-overview.md",
+        "scriptorium/engines/_token_optimizer.py",
+        "scriptorium/engines/orchestration.py",
+        "skills/scribe-notes/SKILL.md",
+        "tests/test_instructional_engine.py",
+        "tests/test_research_engine.py"
+      ],
+      "bytes": 4565
+    },
+    {
+      "path": "examples/adaptive-composition/README.md",
+      "classification": "preserve",
+      "purpose": "Reproducible composition demonstration",
+      "dependencies": [],
+      "references_from": [
+        "references/workflows/notes-creation/composition-contract.md"
+      ],
+      "bytes": 1379
+    },
+    {
+      "path": "examples/adaptive-composition/drafts.json",
+      "classification": "preserve",
+      "purpose": "{",
+      "dependencies": [
+        "https://web.stanford.edu/~boyd/cvxbook/"
+      ],
+      "references_from": [],
+      "bytes": 12380
+    },
+    {
+      "path": "examples/adaptive-composition/evidence.json",
+      "classification": "preserve",
+      "purpose": "{",
+      "dependencies": [],
+      "references_from": [],
+      "bytes": 4486
+    },
+    {
+      "path": "examples/adaptive-composition/measurements.json",
+      "classification": "preserve",
+      "purpose": "{",
+      "dependencies": [],
+      "references_from": [],
+      "bytes": 414
+    },
+    {
+      "path": "examples/adaptive-composition/reviews.json",
+      "classification": "preserve",
+      "purpose": "{",
+      "dependencies": [],
+      "references_from": [],
+      "bytes": 520
+    },
+    {
+      "path": "examples/adaptive-composition/run.py",
+      "classification": "preserve",
+      "purpose": "Execute actual math, render figures, and publish an authored six-file fixture.",
+      "dependencies": [
+        "__future__",
+        "pathlib",
+        "scriptorium.engines._composition",
+        "scriptorium.engines._composition_visuals"
+      ],
+      "references_from": [
+        "README.md",
+        "SKILL.md",
+        "examples/adaptive-deepnotes/README.md",
+        "references/architecture/system-overview.md",
+        "references/contracts/migration-notes.md",
+        "references/metadata/properties-policy.md",
+        "references/routing/master-registry.yaml",
+        "references/templates/masters/assessment.md",
+        "references/templates/masters/deep-notes.md",
+        "references/templates/masters/implementation-guide.md",
+        "references/templates/masters/synthesis-revision.md",
+        "references/templates/modules/module-catalog.md",
+        "references/templates/subtemplates/computational.md",
+        "references/templates/subtemplates/historical.md",
+        "references/templates/variants/atomic-card.md",
+        "references/templates/variants/comparison-guide.md",
+        "references/templates/variants/paper-breakdown.md",
+        "references/templates/variants/syntax-reference.md",
+        "references/workflows/notes-creation/README.md",
+        "references/workflows/notes-creation/adaptive-engine.md",
+        "references/workflows/notes-creation/command-playbooks.md",
+        "references/workflows/notes-creation/instructional-registry.json",
+        "references/workflows/notes-creation/pedagogical-intelligence.md",
+        "references/workflows/notes-creation/pre-gen-gate.md",
+        "references/workflows/notes-creation/syllabus-template.md",
+        "references/workflows/research/README.md",
+        "references/workflows/research/research-engine.md",
+        "references/workflows/research/research-policy-registry.json",
+        "references/workflows/revision/README.md",
+        "references/workflows/revision/revision-and-linking.md",
+        "references/workflows/validation/README.md",
+        "router.md",
+        "scriptorium/engines/__init__.py",
+        "scriptorium/engines/_collection_intelligence.py",
+        "scriptorium/engines/_decision.py",
+        "scriptorium/engines/_instructional.py",
+        "scriptorium/engines/_interactive.py",
+        "scriptorium/engines/_pedagogical_core.py",
+        "scriptorium/engines/_token_optimizer.py",
+        "scriptorium/engines/_verification.py",
+        "scriptorium/engines/knowledge.py",
+        "scriptorium/engines/orchestration.py",
+        "scriptorium/engines/quality.py",
+        "scriptorium/engines/research.py",
+        "scriptorium/engines/vault.py",
+        "scriptorium/layout.py",
+        "scripts/patch_links.py",
+        "scripts/plan_notes.py",
+        "scripts/scaffold_note.py",
+        "scripts/scribe.py",
+        "scripts/verify_vault_notes.py",
+        "shared/authoring_rules.md",
+        "skills/scribe-setfolder/SKILL.md",
+        "tests/test_collection_intelligence_and_lifecycle.py",
+        "tests/test_decision_matrix.py",
+        "tests/test_explanation_intelligence.py",
+        "tests/test_instructional_engine.py",
+        "tests/test_patch_and_graph.py",
+        "tests/test_pedagogical_engine.py",
+        "tests/test_repository_architecture_audit.py",
+        "tests/test_research_engine.py",
+        "tests/test_routed_workflow.py",
+        "tests/test_routing_and_masters.py",
+        "tests/test_study_decisions.py",
+        "tests/test_token_efficiency_optimizer.py",
+        "tests/test_unified_engines_and_properties.py",
+        "tests/test_universal_notes_workflow.py",
+        "tests/test_vault_aware.py",
+        "examples/adaptive-composition/README.md",
+        "examples/adaptive-composition/drafts.json",
+        "examples/adaptive-composition/evidence.json",
+        "examples/adaptive-composition/measurements.json",
+        "examples/adaptive-composition/reviews.json",
+        "examples/adaptive-composition/sources.json",
+        "examples/adaptive-composition/vault/.scriptorium/collections/col-gradient-descent.json",
+        "examples/adaptive-composition/vault/6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md",
+        "references/architecture/redesign-audit.md",
+        "references/workflows/notes-creation/composition-contract.md",
+        "scriptorium/engines/_composition.py",
+        "tests/test_comprehensive_composition.py"
+      ],
+      "bytes": 20420
+    },
+    {
+      "path": "examples/adaptive-composition/scenarios.json",
+      "classification": "preserve",
+      "purpose": "[",
+      "dependencies": [],
+      "references_from": [],
+      "bytes": 1740
+    },
+    {
+      "path": "examples/adaptive-composition/sources.json",
+      "classification": "preserve",
+      "purpose": "{",
+      "dependencies": [],
+      "references_from": [],
+      "bytes": 2547
+    },
+    {
+      "path": "examples/adaptive-composition/spec.json",
+      "classification": "preserve",
+      "purpose": "{",
+      "dependencies": [],
+      "references_from": [],
+      "bytes": 2813
+    },
+    {
+      "path": "examples/adaptive-composition/vault/.scriptorium/collections/col-gradient-descent.json",
+      "classification": "preserve",
+      "purpose": "{",
+      "dependencies": [],
+      "references_from": [],
+      "bytes": 30684
+    },
+    {
+      "path": "examples/adaptive-composition/vault/6 - Full Notes/Gradient Descent/00 - Map of Contents.md",
+      "classification": "preserve",
+      "purpose": "id: gradient-descent.moc",
+      "dependencies": [],
+      "references_from": [],
+      "bytes": 706
+    },
+    {
+      "path": "examples/adaptive-composition/vault/6 - Full Notes/Gradient Descent/01 - Why Local Descent Works.md",
+      "classification": "preserve",
+      "purpose": "id: gd.ch1",
+      "dependencies": [
+        "https://web.stanford.edu/~boyd/cvxbook/"
+      ],
+      "references_from": [],
+      "bytes": 2496
+    },
+    {
+      "path": "examples/adaptive-composition/vault/6 - Full Notes/Gradient Descent/02 - Deriving the Update and Its Limits.md",
+      "classification": "preserve",
+      "purpose": "id: gd.ch2",
+      "dependencies": [],
+      "references_from": [],
+      "bytes": 2375
+    },
+    {
+      "path": "examples/adaptive-composition/vault/6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md",
+      "classification": "preserve",
+      "purpose": "id: gd.ch3",
+      "dependencies": [],
+      "references_from": [],
+      "bytes": 2417
+    },
+    {
+      "path": "examples/adaptive-composition/vault/6 - Full Notes/Gradient Descent/04 - Implementing and Testing Descent.md",
+      "classification": "preserve",
+      "purpose": "id: gd.ch4",
+      "dependencies": [],
+      "references_from": [],
+      "bytes": 2608
+    },
+    {
+      "path": "examples/adaptive-composition/vault/6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md",
+      "classification": "preserve",
+      "purpose": "id: gd.ch5",
+      "dependencies": [],
+      "references_from": [],
+      "bytes": 2932
+    },
+    {
+      "path": "examples/adaptive-deepnotes/README.md",
+      "classification": "preserve",
+      "purpose": "Adaptive-engine evaluation",
+      "dependencies": [
+        "scenarios.json",
+        "sample-notes.md",
+        "binary_search.py",
+        "source-fixture.md",
+        "measurements.json",
+        "../../references/workflows/notes-creation/instructional-registry.json",
+        "../../references/templates/masters/deep-notes.md",
+        "../../references/workflows/notes-creation/adaptive-engine.md"
+      ],
+      "references_from": [
+        "README.md"
+      ],
+      "bytes": 5085
+    },
+    {
+      "path": "examples/adaptive-deepnotes/binary_search.py",
+      "classification": "preserve",
+      "purpose": "A verified educational fixture: return a matching index, or -1 if absent.",
+      "dependencies": [],
+      "references_from": [
+        "examples/adaptive-deepnotes/README.md",
+        "scriptorium/engines/_explanation.py",
+        "tests/test_explanation_intelligence.py",
+        "tests/test_instructional_engine.py",
+        "tests/test_pedagogical_engine.py"
+      ],
+      "bytes": 820
+    },
+    {
+      "path": "examples/adaptive-deepnotes/measurements.json",
+      "classification": "preserve",
+      "purpose": "{",
+      "dependencies": [],
+      "references_from": [],
+      "bytes": 2634
+    },
+    {
+      "path": "examples/adaptive-deepnotes/sample-notes.md",
+      "classification": "preserve",
+      "purpose": "Illustrative outputs for review",
+      "dependencies": [
+        "source-fixture.md#definition",
+        "source-fixture.md#example",
+        "source-fixture.md#figure",
+        "source-fixture.md#exercise",
+        "source-fixture.md#qualification"
+      ],
+      "references_from": [],
+      "bytes": 4022
+    },
+    {
+      "path": "examples/adaptive-deepnotes/scenarios.json",
+      "classification": "preserve",
+      "purpose": "[",
+      "dependencies": [],
+      "references_from": [
+        "references/workflows/notes-creation/adaptive-engine.md",
+        "tests/test_instructional_engine.py"
+      ],
+      "bytes": 12450
+    },
+    {
+      "path": "examples/adaptive-deepnotes/source-fixture.md",
+      "classification": "preserve",
+      "purpose": "Ordered Lookup",
+      "dependencies": [],
+      "references_from": [],
+      "bytes": 1241
+    },
+    {
+      "path": "references/README.md",
+      "classification": "preserve",
+      "purpose": "Scriptorium Reference Library",
+      "dependencies": [
+        "architecture/system-overview.md",
+        "architecture/template-module-catalog.md",
+        "routing/README.md",
+        "templates/README.md",
+        "workflows/research/README.md",
+        "workflows/notes-creation/README.md",
+        "workflows/revision/README.md",
+        "workflows/validation/README.md",
+        "metadata/README.md",
+        "contracts/README.md"
+      ],
+      "references_from": [],
+      "bytes": 1771
+    },
+    {
+      "path": "references/architecture/redesign-audit.md",
+      "classification": "preserve",
+      "purpose": "Composition redesign audit",
+      "dependencies": [],
+      "references_from": [],
+      "bytes": 3385
+    },
+    {
+      "path": "references/architecture/system-overview.md",
+      "classification": "optimize",
+      "purpose": "Scriptorium System Architecture Overview",
+      "dependencies": [
+        "../../skills/scribe-notes/SKILL.md",
+        "../../scriptorium/engines/orchestration.py",
+        "../../scriptorium/engines/_interactive.py",
+        "../routing/master-registry.yaml",
+        "../routing/routing-policy.md",
+        "../../scriptorium/engines/research.py",
+        "../workflows/research/research-policy-registry.json",
+        "../../scriptorium/engines/knowledge.py",
+        "../../scriptorium/engines/_collection_intelligence.py",
+        "../../scriptorium/engines/pedagogy.py",
+        "../workflows/notes-creation/instructional-registry.json",
+        "../../scriptorium/engines/quality.py",
+        "../workflows/validation/verification-checklist.md",
+        "../../scriptorium/engines/vault.py",
+        "../metadata/properties-policy.md",
+        "template-module-catalog.md",
+        "../workflows/notes-creation/composition-contract.md"
+      ],
+      "references_from": [
+        "SKILL.md",
+        "references/routing/master-registry.yaml"
+      ],
+      "bytes": 7064
+    },
+    {
+      "path": "references/architecture/template-module-catalog.md",
+      "classification": "preserve",
+      "purpose": "Scriptorium Template, Variant, Subtemplate & Module Usage Catalog",
+      "dependencies": [
+        "../routing/master-registry.yaml",
+        "../workflows/notes-creation/instructional-registry.json",
+        "../templates/masters/deep-notes.md",
+        "../templates/masters/study-notes.md",
+        "../templates/masters/quick-reference.md",
+        "../templates/masters/worked-solutions.md",
+        "../templates/masters/implementation-guide.md",
+        "../templates/masters/assessment.md",
+        "../templates/masters/synthesis-revision.md",
+        "../templates/variants/lecture-order.md",
+        "../templates/variants/formula-sheet.md",
+        "../templates/variants/syntax-reference.md",
+        "../templates/variants/command-reference.md",
+        "../templates/variants/atomic-card.md",
+        "../templates/variants/flashcards.md",
+        "../templates/variants/mock-exam.md",
+        "../templates/variants/comparison-guide.md",
+        "../templates/variants/paper-breakdown.md",
+        "../templates/variants/quick-summary.md",
+        "../templates/variants/revision-pack.md",
+        "../templates/variants/concept-map.md",
+        "../templates/subtemplates/mathematical.md",
+        "../templates/subtemplates/computational.md",
+        "../templates/subtemplates/scientific.md",
+        "../templates/subtemplates/conceptual.md",
+        "../templates/subtemplates/historical.md",
+        "../templates/subtemplates/empirical.md"
+      ],
+      "references_from": [
+        "SKILL.md",
+        "references/routing/master-registry.yaml"
+      ],
+      "bytes": 14075
+    },
+    {
+      "path": "references/contracts/README.md",
+      "classification": "preserve",
+      "purpose": "Contracts & Migration Records",
+      "dependencies": [
+        "routing-contract.schema.json",
+        "migration-notes.md"
+      ],
+      "references_from": [],
+      "bytes": 345
+    },
+    {
+      "path": "references/contracts/migration-notes.md",
+      "classification": "preserve",
+      "purpose": "Adaptive deep-notes migration",
+      "dependencies": [],
+      "references_from": [
+        "README.md"
+      ],
+      "bytes": 8600
+    },
+    {
+      "path": "references/contracts/routing-contract.schema.json",
+      "classification": "preserve",
+      "purpose": "{",
+      "dependencies": [],
+      "references_from": [],
+      "bytes": 2191
+    },
+    {
+      "path": "references/metadata/README.md",
+      "classification": "preserve",
+      "purpose": "Scriptorium Metadata Policies",
+      "dependencies": [
+        "properties-policy.md",
+        "tag-taxonomy.md",
+        "note-naming.md"
+      ],
+      "references_from": [],
+      "bytes": 683
+    },
+    {
+      "path": "references/metadata/note-naming.md",
+      "classification": "preserve",
+      "purpose": "Note Naming and Multi-Artifact Consistency",
+      "dependencies": [],
+      "references_from": [],
+      "bytes": 886
+    },
+    {
+      "path": "references/metadata/properties-policy.md",
+      "classification": "optimize",
+      "purpose": "Obsidian Properties Policy",
+      "dependencies": [
+        "../workflows/notes-creation/composition-contract.md"
+      ],
+      "references_from": [
+        "SKILL.md",
+        "references/workflows/notes-creation/pre-gen-gate.md",
+        "scriptorium/engines/_token_optimizer.py",
+        "scriptorium/engines/orchestration.py",
+        "skills/scribe-notes/SKILL.md"
+      ],
+      "bytes": 2398
+    },
+    {
+      "path": "references/metadata/tag-taxonomy.md",
+      "classification": "preserve",
+      "purpose": "Central Tag Taxonomy",
+      "dependencies": [],
+      "references_from": [
+        "SKILL.md",
+        "references/workflows/notes-creation/pre-gen-gate.md",
+        "skills/scribe-notes/SKILL.md"
+      ],
+      "bytes": 1205
+    },
+    {
+      "path": "references/routing/README.md",
+      "classification": "preserve",
+      "purpose": "Routing Authority",
+      "dependencies": [
+        "master-registry.yaml",
+        "routing-policy.md",
+        "../../scriptorium/engines/orchestration.py",
+        "../../scripts/plan_notes.py"
+      ],
+      "references_from": [],
+      "bytes": 567
+    },
+    {
+      "path": "references/routing/master-registry.yaml",
+      "classification": "preserve",
+      "purpose": "registry_version: 1",
+      "dependencies": [],
+      "references_from": [
+        "README.md",
+        "SKILL.md",
+        "references/contracts/migration-notes.md",
+        "router.md",
+        "scriptorium/engines/orchestration.py",
+        "scripts/scribe.py",
+        "skills/scribe-notes/SKILL.md"
+      ],
+      "bytes": 13880
+    },
+    {
+      "path": "references/routing/routing-policy.md",
+      "classification": "preserve",
+      "purpose": "Intelligent Routing Policy",
+      "dependencies": [
+        "../../scriptorium/engines/orchestration.py",
+        "master-registry.yaml"
+      ],
+      "references_from": [
+        "README.md",
+        "SKILL.md",
+        "references/contracts/migration-notes.md",
+        "router.md",
+        "skills/scribe-notes/SKILL.md"
+      ],
+      "bytes": 3407
+    },
+    {
+      "path": "references/templates/README.md",
+      "classification": "preserve",
+      "purpose": "Scriptorium Template Library",
+      "dependencies": [
+        "masters/README.md",
+        "variants/README.md",
+        "subtemplates/README.md",
+        "modules/README.md"
+      ],
+      "references_from": [],
+      "bytes": 835
+    },
+    {
+      "path": "references/templates/masters/README.md",
+      "classification": "preserve",
+      "purpose": "Canonical Master Templates (M1–M7)",
+      "dependencies": [
+        "deep-notes.md",
+        "study-notes.md",
+        "quick-reference.md",
+        "worked-solutions.md",
+        "implementation-guide.md",
+        "assessment.md",
+        "synthesis-revision.md"
+      ],
+      "references_from": [
+        "README.md",
+        "SKILL.md",
+        "scriptorium/engines/orchestration.py"
+      ],
+      "bytes": 765
+    },
+    {
+      "path": "references/templates/masters/assessment.md",
+      "classification": "preserve",
+      "purpose": "<!-- scaffold:preflight",
+      "dependencies": [
+        "../../../router.md",
+        "../../../shared/authoring_rules.md",
+        "../../../shared/authoring_rules.md",
+        "../../../shared/math_gates.md"
+      ],
+      "references_from": [
+        "references/contracts/migration-notes.md",
+        "references/routing/master-registry.yaml",
+        "router.md",
+        "scriptorium/layout.py"
+      ],
+      "bytes": 5586
+    },
+    {
+      "path": "references/templates/masters/deep-notes.md",
+      "classification": "optimize",
+      "purpose": "M1 — Deep Learning Notes",
+      "dependencies": [
+        "../../workflows/notes-creation/adaptive-engine.md",
+        "../../workflows/notes-creation/instructional-registry.json",
+        "../../workflows/notes-creation/pedagogical-intelligence.md",
+        "../../workflows/research/research-engine.md",
+        "../../workflows/research/source-fidelity.md",
+        "../../../shared/authoring_rules.md",
+        "../../../shared/math_gates.md",
+        "../../workflows/research/resource-recommendations.md",
+        "../../../shared/footer_widgets.md",
+        "../../workflows/notes-creation/composition-contract.md"
+      ],
+      "references_from": [
+        "README.md",
+        "SKILL.md",
+        "examples/adaptive-deepnotes/README.md",
+        "references/contracts/migration-notes.md",
+        "references/routing/master-registry.yaml",
+        "router.md",
+        "scriptorium/layout.py",
+        "tests/test_adaptive_deepstudy.py",
+        "tests/test_token_optimizations.py"
+      ],
+      "bytes": 4645
+    },
+    {
+      "path": "references/templates/masters/implementation-guide.md",
+      "classification": "preserve",
+      "purpose": "<!-- scaffold:preflight",
+      "dependencies": [
+        "../../../router.md",
+        "../../../shared/authoring_rules.md",
+        "../../../shared/authoring_rules.md",
+        "../../../shared/math_gates.md",
+        "../../../shared/footer_widgets.md"
+      ],
+      "references_from": [
+        "references/contracts/migration-notes.md",
+        "references/routing/master-registry.yaml",
+        "router.md",
+        "scriptorium/layout.py",
+        "tests/test_token_efficiency_optimizer.py"
+      ],
+      "bytes": 7893
+    },
+    {
+      "path": "references/templates/masters/quick-reference.md",
+      "classification": "preserve",
+      "purpose": "<!-- scaffold:preflight",
+      "dependencies": [
+        "../../../router.md",
+        "../../../shared/authoring_rules.md",
+        "../../../shared/authoring_rules.md",
+        "../../../shared/math_gates.md",
+        "../../../shared/footer_widgets.md"
+      ],
+      "references_from": [
+        "references/contracts/migration-notes.md",
+        "references/routing/master-registry.yaml",
+        "router.md",
+        "scriptorium/layout.py"
+      ],
+      "bytes": 4362
+    },
+    {
+      "path": "references/templates/masters/study-notes.md",
+      "classification": "preserve",
+      "purpose": "id: \"<topic-slug>-<subtopic-number>\"",
+      "dependencies": [],
+      "references_from": [
+        "references/contracts/migration-notes.md",
+        "references/routing/master-registry.yaml",
+        "router.md",
+        "scriptorium/layout.py"
+      ],
+      "bytes": 6999
+    },
+    {
+      "path": "references/templates/masters/synthesis-revision.md",
+      "classification": "preserve",
+      "purpose": "<!-- scaffold:preflight",
+      "dependencies": [
+        "../../../router.md",
+        "../../workflows/revision/revision-and-linking.md",
+        "../../../shared/authoring_rules.md",
+        "../../../shared/authoring_rules.md",
+        "../../../shared/math_gates.md",
+        "../../../shared/footer_widgets.md"
+      ],
+      "references_from": [
+        "references/routing/master-registry.yaml",
+        "router.md",
+        "scriptorium/layout.py"
+      ],
+      "bytes": 2654
+    },
+    {
+      "path": "references/templates/masters/worked-solutions.md",
+      "classification": "preserve",
+      "purpose": "<!-- scaffold:preflight",
+      "dependencies": [
+        "../../../router.md",
+        "../../../shared/authoring_rules.md",
+        "../../../shared/math_gates.md",
+        "../../workflows/notes-creation/pedagogical-intelligence.md",
+        "../../../shared/authoring_rules.md",
+        "../../../shared/math_gates.md",
+        "../../../shared/footer_widgets.md"
+      ],
+      "references_from": [
+        "references/routing/master-registry.yaml",
+        "router.md",
+        "scriptorium/layout.py"
+      ],
+      "bytes": 3120
+    },
+    {
+      "path": "references/templates/modules/README.md",
+      "classification": "preserve",
+      "purpose": "Reusable Instructional Modules",
+      "dependencies": [
+        "module-catalog.md",
+        "../../workflows/notes-creation/instructional-registry.json",
+        "../../workflows/notes-creation/pedagogical-intelligence.md"
+      ],
+      "references_from": [],
+      "bytes": 490
+    },
+    {
+      "path": "references/templates/modules/module-catalog.md",
+      "classification": "preserve",
+      "purpose": "Reusable Instructional Module Catalog",
+      "dependencies": [
+        "../../workflows/notes-creation/instructional-registry.json",
+        "../../workflows/notes-creation/pedagogical-intelligence.md"
+      ],
+      "references_from": [
+        "references/contracts/migration-notes.md",
+        "references/routing/master-registry.yaml"
+      ],
+      "bytes": 2614
+    },
+    {
+      "path": "references/templates/subtemplates/README.md",
+      "classification": "optimize",
+      "purpose": "Knowledge-Type Subtemplates",
+      "dependencies": [
+        "mathematical.md",
+        "computational.md",
+        "scientific.md",
+        "conceptual.md",
+        "historical.md",
+        "empirical.md",
+        "../../workflows/notes-creation/composition-contract.md"
+      ],
+      "references_from": [
+        "SKILL.md",
+        "router.md"
+      ],
+      "bytes": 1491
+    },
+    {
+      "path": "references/templates/subtemplates/computational.md",
+      "classification": "preserve",
+      "purpose": "Subtemplate: Computational",
+      "dependencies": [
+        "../../workflows/notes-creation/adaptive-engine.md"
+      ],
+      "references_from": [
+        "references/routing/master-registry.yaml",
+        "tests/test_token_efficiency_optimizer.py"
+      ],
+      "bytes": 1847
+    },
+    {
+      "path": "references/templates/subtemplates/conceptual.md",
+      "classification": "preserve",
+      "purpose": "Subtemplate: Conceptual",
+      "dependencies": [],
+      "references_from": [
+        "references/routing/master-registry.yaml"
+      ],
+      "bytes": 1489
+    },
+    {
+      "path": "references/templates/subtemplates/empirical.md",
+      "classification": "preserve",
+      "purpose": "Subtemplate: Empirical",
+      "dependencies": [],
+      "references_from": [
+        "references/routing/master-registry.yaml"
+      ],
+      "bytes": 1427
+    },
+    {
+      "path": "references/templates/subtemplates/historical.md",
+      "classification": "preserve",
+      "purpose": "Subtemplate: Historical",
+      "dependencies": [],
+      "references_from": [
+        "references/routing/master-registry.yaml"
+      ],
+      "bytes": 1286
+    },
+    {
+      "path": "references/templates/subtemplates/mathematical.md",
+      "classification": "preserve",
+      "purpose": "Subtemplate: Mathematical",
+      "dependencies": [
+        "../../workflows/notes-creation/adaptive-engine.md",
+        "../../../shared/math_gates.md"
+      ],
+      "references_from": [
+        "references/routing/master-registry.yaml"
+      ],
+      "bytes": 1864
+    },
+    {
+      "path": "references/templates/subtemplates/scientific.md",
+      "classification": "preserve",
+      "purpose": "Subtemplate: Scientific",
+      "dependencies": [],
+      "references_from": [
+        "references/routing/master-registry.yaml"
+      ],
+      "bytes": 1499
+    },
+    {
+      "path": "references/templates/variants/README.md",
+      "classification": "preserve",
+      "purpose": "Template Variants",
+      "dependencies": [
+        "lecture-order.md",
+        "formula-sheet.md",
+        "syntax-reference.md",
+        "command-reference.md",
+        "atomic-card.md",
+        "flashcards.md",
+        "mock-exam.md",
+        "comparison-guide.md",
+        "paper-breakdown.md",
+        "quick-summary.md",
+        "revision-pack.md",
+        "concept-map.md"
+      ],
+      "references_from": [
+        "SKILL.md"
+      ],
+      "bytes": 1898
+    },
+    {
+      "path": "references/templates/variants/atomic-card.md",
+      "classification": "preserve",
+      "purpose": "<!-- scaffold:preflight",
+      "dependencies": [
+        "../../../router.md",
+        "../../../shared/authoring_rules.md",
+        "../../../shared/authoring_rules.md",
+        "../../../shared/math_gates.md",
+        "../../../shared/footer_widgets.md"
+      ],
+      "references_from": [
+        "references/contracts/migration-notes.md",
+        "references/routing/master-registry.yaml",
+        "scriptorium/layout.py"
+      ],
+      "bytes": 4215
+    },
+    {
+      "path": "references/templates/variants/command-reference.md",
+      "classification": "preserve",
+      "purpose": "Variant: Command Reference",
+      "dependencies": [
+        "../masters/quick-reference.md"
+      ],
+      "references_from": [
+        "references/routing/master-registry.yaml"
+      ],
+      "bytes": 615
+    },
+    {
+      "path": "references/templates/variants/comparison-guide.md",
+      "classification": "preserve",
+      "purpose": "<!-- scaffold:preflight",
+      "dependencies": [
+        "../../../router.md",
+        "../../../shared/authoring_rules.md",
+        "../../../shared/authoring_rules.md",
+        "../../../shared/math_gates.md",
+        "../../../shared/footer_widgets.md"
+      ],
+      "references_from": [
+        "references/contracts/migration-notes.md",
+        "references/routing/master-registry.yaml",
+        "scriptorium/layout.py"
+      ],
+      "bytes": 6516
+    },
+    {
+      "path": "references/templates/variants/concept-map.md",
+      "classification": "preserve",
+      "purpose": "Variant: Concept Map & Knowledge Network",
+      "dependencies": [
+        "../masters/synthesis-revision.md"
+      ],
+      "references_from": [
+        "references/routing/master-registry.yaml"
+      ],
+      "bytes": 773
+    },
+    {
+      "path": "references/templates/variants/flashcards.md",
+      "classification": "preserve",
+      "purpose": "Variant: Active-Recall Flashcards",
+      "dependencies": [
+        "../masters/assessment.md"
+      ],
+      "references_from": [
+        "references/routing/master-registry.yaml"
+      ],
+      "bytes": 720
+    },
+    {
+      "path": "references/templates/variants/formula-sheet.md",
+      "classification": "preserve",
+      "purpose": "Variant: Formula Sheet",
+      "dependencies": [
+        "../masters/quick-reference.md"
+      ],
+      "references_from": [
+        "references/routing/master-registry.yaml"
+      ],
+      "bytes": 760
+    },
+    {
+      "path": "references/templates/variants/lecture-order.md",
+      "classification": "preserve",
+      "purpose": "Variant: Lecture / Source-Order Study Notes",
+      "dependencies": [
+        "../masters/study-notes.md"
+      ],
+      "references_from": [
+        "references/routing/master-registry.yaml"
+      ],
+      "bytes": 999
+    },
+    {
+      "path": "references/templates/variants/mock-exam.md",
+      "classification": "preserve",
+      "purpose": "Variant: Mock Exam & Viva Preparation",
+      "dependencies": [
+        "../masters/assessment.md"
+      ],
+      "references_from": [
+        "references/routing/master-registry.yaml"
+      ],
+      "bytes": 795
+    },
+    {
+      "path": "references/templates/variants/paper-breakdown.md",
+      "classification": "preserve",
+      "purpose": "<!-- scaffold:preflight",
+      "dependencies": [
+        "../../../router.md",
+        "../../../shared/authoring_rules.md",
+        "../../../shared/authoring_rules.md",
+        "../../../shared/math_gates.md",
+        "../../../shared/footer_widgets.md"
+      ],
+      "references_from": [
+        "references/contracts/migration-notes.md",
+        "references/routing/master-registry.yaml",
+        "scriptorium/layout.py"
+      ],
+      "bytes": 6704
+    },
+    {
+      "path": "references/templates/variants/quick-summary.md",
+      "classification": "preserve",
+      "purpose": "<!-- scaffold:preflight",
+      "dependencies": [
+        "../../../router.md",
+        "../../../shared/authoring_rules.md",
+        "https://www.youtube.com/watch?v=VIDEO_ID&t=222s",
+        "../../../shared/authoring_rules.md",
+        "../../../shared/math_gates.md",
+        "../../../shared/footer_widgets.md"
+      ],
+      "references_from": [
+        "references/contracts/migration-notes.md",
+        "references/routing/master-registry.yaml",
+        "scriptorium/layout.py"
+      ],
+      "bytes": 5638
+    },
+    {
+      "path": "references/templates/variants/revision-pack.md",
+      "classification": "preserve",
+      "purpose": "Variant: Multi-Note Exam Revision Pack",
+      "dependencies": [
+        "../masters/synthesis-revision.md"
+      ],
+      "references_from": [
+        "references/routing/master-registry.yaml"
+      ],
+      "bytes": 777
+    },
+    {
+      "path": "references/templates/variants/syntax-reference.md",
+      "classification": "preserve",
+      "purpose": "<!-- scaffold:preflight",
+      "dependencies": [
+        "../../../router.md",
+        "../../../shared/authoring_rules.md",
+        "../../../shared/authoring_rules.md",
+        "../../../shared/math_gates.md",
+        "../../../shared/footer_widgets.md"
+      ],
+      "references_from": [
+        "references/contracts/migration-notes.md",
+        "references/routing/master-registry.yaml",
+        "scriptorium/layout.py"
+      ],
+      "bytes": 7267
+    },
+    {
+      "path": "references/workflows/notes-creation/README.md",
+      "classification": "preserve",
+      "purpose": "Notes-Creation Workflow",
+      "dependencies": [
+        "adaptive-engine.md",
+        "instructional-registry.json",
+        "pedagogical-intelligence.md",
+        "pre-gen-gate.md",
+        "command-playbooks.md",
+        "syllabus-template.md",
+        "../../../scriptorium/engines/pedagogy.py",
+        "../../../scriptorium/engines/pedagogy.py",
+        "../../../scripts/plan_notes.py"
+      ],
+      "references_from": [],
+      "bytes": 1203
+    },
+    {
+      "path": "references/workflows/notes-creation/adaptive-engine.md",
+      "classification": "preserve",
+      "purpose": "Instructional planning and composition",
+      "dependencies": [
+        "../../templates/masters/deep-notes.md",
+        "instructional-registry.json",
+        "../../../examples/adaptive-deepnotes/scenarios.json",
+        "../research/research-engine.md",
+        "pedagogical-intelligence.md",
+        "../research/source-fidelity.md"
+      ],
+      "references_from": [
+        "README.md",
+        "SKILL.md",
+        "examples/adaptive-deepnotes/README.md",
+        "router.md",
+        "scriptorium/layout.py",
+        "shared/authoring_rules.md",
+        "shared/footer_widgets.md",
+        "shared/math_gates.md",
+        "tests/test_adaptive_deepstudy.py",
+        "tests/test_token_optimizations.py"
+      ],
+      "bytes": 10697
+    },
+    {
+      "path": "references/workflows/notes-creation/command-playbooks.md",
+      "classification": "preserve",
+      "purpose": "Command playbooks",
+      "dependencies": [
+        "../../../router.md#plan-and-publish",
+        "../../../shared/authoring_rules.md",
+        "../research/research-engine.md",
+        "adaptive-engine.md",
+        "../research/research-engine.md",
+        "../research/resource-recommendations.md"
+      ],
+      "references_from": [
+        "router.md",
+        "skills/scribe-notes/SKILL.md"
+      ],
+      "bytes": 3782
+    },
+    {
+      "path": "references/workflows/notes-creation/composition-contract.md",
+      "classification": "preserve",
+      "purpose": "Comprehensive knowledge composition",
+      "dependencies": [
+        "../../../examples/adaptive-composition/README.md"
+      ],
+      "references_from": [
+        "README.md",
+        "SKILL.md",
+        "skills/scribe-notes/SKILL.md"
+      ],
+      "bytes": 8191
+    },
+    {
+      "path": "references/workflows/notes-creation/instructional-registry.json",
+      "classification": "optimize",
+      "purpose": "{",
+      "dependencies": [],
+      "references_from": [
+        "README.md",
+        "SKILL.md",
+        "examples/adaptive-deepnotes/README.md",
+        "router.md",
+        "scriptorium/engines/_instructional.py",
+        "scriptorium/engines/orchestration.py"
+      ],
+      "bytes": 23564
+    },
+    {
+      "path": "references/workflows/notes-creation/pedagogical-intelligence.md",
+      "classification": "preserve",
+      "purpose": "Pedagogical Intelligence & Learning Experience Layer",
+      "dependencies": [
+        "adaptive-engine.md",
+        "../research/research-engine.md",
+        "../validation/verification-checklist.md"
+      ],
+      "references_from": [
+        "README.md",
+        "SKILL.md"
+      ],
+      "bytes": 9167
+    },
+    {
+      "path": "references/workflows/notes-creation/pre-gen-gate.md",
+      "classification": "preserve",
+      "purpose": "Pre-Generation Resolution Gate (Mandatory Before Writing)",
+      "dependencies": [],
+      "references_from": [
+        "router.md",
+        "skills/scribe-notes/SKILL.md"
+      ],
+      "bytes": 3112
+    },
+    {
+      "path": "references/workflows/notes-creation/syllabus-template.md",
+      "classification": "preserve",
+      "purpose": "id: \"moc-<topic-slug>\"",
+      "dependencies": [
+        "adaptive-engine.md",
+        "../research/research-engine.md",
+        "../../../shared/authoring_rules.md"
+      ],
+      "references_from": [
+        "router.md"
+      ],
+      "bytes": 2802
+    },
+    {
+      "path": "references/workflows/research/README.md",
+      "classification": "preserve",
+      "purpose": "Research Workflow (ARRIE)",
+      "dependencies": [
+        "research-engine.md",
+        "research-policy-registry.json",
+        "source-fidelity.md",
+        "resource-recommendations.md",
+        "../../../scriptorium/engines/research.py",
+        "../../../scriptorium/engines/research.py"
+      ],
+      "references_from": [],
+      "bytes": 1050
+    },
+    {
+      "path": "references/workflows/research/research-engine.md",
+      "classification": "preserve",
+      "purpose": "Adaptive Research & Resource Intelligence Engine (ARRIE)",
+      "dependencies": [
+        "../notes-creation/adaptive-engine.md",
+        "research-policy-registry.json",
+        "resource-recommendations.md",
+        "source-fidelity.md",
+        "research-policy-registry.json",
+        "resource-recommendations.md"
+      ],
+      "references_from": [
+        "README.md",
+        "SKILL.md",
+        "router.md"
+      ],
+      "bytes": 10165
+    },
+    {
+      "path": "references/workflows/research/research-policy-registry.json",
+      "classification": "preserve",
+      "purpose": "{",
+      "dependencies": [],
+      "references_from": [
+        "SKILL.md",
+        "scriptorium/engines/orchestration.py"
+      ],
+      "bytes": 15492
+    },
+    {
+      "path": "references/workflows/research/resource-recommendations.md",
+      "classification": "preserve",
+      "purpose": "Learner-Aware Resource Recommendation Engine",
+      "dependencies": [],
+      "references_from": [
+        "README.md",
+        "router.md"
+      ],
+      "bytes": 2655
+    },
+    {
+      "path": "references/workflows/research/source-fidelity.md",
+      "classification": "preserve",
+      "purpose": "Source inventory and quality gate",
+      "dependencies": [
+        "research-engine.md"
+      ],
+      "references_from": [
+        "README.md",
+        "router.md",
+        "scriptorium/engines/_token_optimizer.py",
+        "scriptorium/engines/orchestration.py"
+      ],
+      "bytes": 4895
+    },
+    {
+      "path": "references/workflows/revision/README.md",
+      "classification": "preserve",
+      "purpose": "Revision & Knowledge-Integration Workflow",
+      "dependencies": [
+        "revision-and-linking.md",
+        "../../../scriptorium/engines/pedagogy.py",
+        "../../../scripts/patch_links.py",
+        "../../../scripts/vault_graph.py"
+      ],
+      "references_from": [],
+      "bytes": 537
+    },
+    {
+      "path": "references/workflows/revision/revision-and-linking.md",
+      "classification": "preserve",
+      "purpose": "Multi-Layer Revision, Knowledge Synthesis & Vault Linking",
+      "dependencies": [],
+      "references_from": [],
+      "bytes": 1515
+    },
+    {
+      "path": "references/workflows/validation/README.md",
+      "classification": "preserve",
+      "purpose": "Validation & Targeted Repair Workflow",
+      "dependencies": [
+        "verification-checklist.md",
+        "../../../scripts/validate_note.py",
+        "../../../scripts/verify_vault_notes.py",
+        "../../../scriptorium/engines/pedagogy.py",
+        "../../../scriptorium/engines/research.py",
+        "../../../scriptorium/engines/quality.py"
+      ],
+      "references_from": [],
+      "bytes": 794
+    },
+    {
+      "path": "references/workflows/validation/verification-checklist.md",
+      "classification": "preserve",
+      "purpose": "Semantic verification",
+      "dependencies": [
+        "../../../router.md#plan-and-publish",
+        "../research/research-engine.md",
+        "../research/source-fidelity.md#semantic-review-and-correction",
+        "../../../shared/authoring_rules.md#evidence",
+        "../research/resource-recommendations.md",
+        "../notes-creation/pedagogical-intelligence.md",
+        "../../../shared/authoring_rules.md#cohesion"
+      ],
+      "references_from": [
+        "router.md",
+        "scriptorium/engines/orchestration.py"
+      ],
+      "bytes": 2246
+    },
+    {
+      "path": "router.md",
+      "classification": "preserve",
+      "purpose": "Scriptorium routing",
+      "dependencies": [
+        "references/routing/routing-policy.md",
+        "references/routing/master-registry.yaml",
+        "references/templates/masters/deep-notes.md",
+        "references/templates/masters/study-notes.md",
+        "references/templates/masters/quick-reference.md",
+        "references/templates/masters/worked-solutions.md",
+        "references/templates/masters/implementation-guide.md",
+        "references/templates/masters/assessment.md",
+        "references/templates/masters/synthesis-revision.md",
+        "references/workflows/notes-creation/pre-gen-gate.md",
+        "references/workflows/notes-creation/adaptive-engine.md",
+        "references/workflows/research/research-engine.md",
+        "references/workflows/notes-creation/command-playbooks.md#command-a",
+        "references/workflows/notes-creation/command-playbooks.md#command-g",
+        "references/templates/subtemplates/README.md",
+        "references/workflows/notes-creation/adaptive-engine.md",
+        "references/workflows/notes-creation/command-playbooks.md",
+        "references/templates/masters/deep-notes.md",
+        "references/workflows/notes-creation/pre-gen-gate.md",
+        "references/workflows/notes-creation/adaptive-engine.md",
+        "references/workflows/notes-creation/syllabus-template.md",
+        "shared/authoring_rules.md",
+        "shared/math_gates.md",
+        "references/workflows/notes-creation/instructional-registry.json",
+        "references/workflows/research/research-engine.md",
+        "references/workflows/research/resource-recommendations.md",
+        "shared/authoring_rules.md#evidence",
+        "references/workflows/research/source-fidelity.md",
+        "references/workflows/validation/verification-checklist.md"
+      ],
+      "references_from": [
+        "README.md",
+        "SKILL.md",
+        "examples/adaptive-deepnotes/measurements.json",
+        "references/contracts/migration-notes.md",
+        "references/templates/masters/assessment.md",
+        "references/templates/masters/implementation-guide.md",
+        "references/templates/masters/quick-reference.md",
+        "references/templates/masters/synthesis-revision.md",
+        "references/templates/masters/worked-solutions.md",
+        "references/templates/variants/atomic-card.md",
+        "references/templates/variants/comparison-guide.md",
+        "references/templates/variants/paper-breakdown.md",
+        "references/templates/variants/quick-summary.md",
+        "references/templates/variants/syntax-reference.md",
+        "references/workflows/notes-creation/command-playbooks.md",
+        "references/workflows/validation/verification-checklist.md",
+        "scriptorium/engines/_token_optimizer.py",
+        "scriptorium/engines/orchestration.py",
+        "shared/authoring_rules.md",
+        "skills/scribe-doubt/SKILL.md",
+        "skills/scribe-notes/SKILL.md",
+        "skills/scribe-quiz/SKILL.md",
+        "tests/test_instructional_engine.py",
+        "tests/test_research_engine.py"
+      ],
+      "bytes": 8625
+    },
+    {
+      "path": "scriptorium/__init__.py",
+      "classification": "preserve",
+      "purpose": "Scriptorium — Unified Knowledge Intelligence & Multi-Master Obsidian Notes Package.",
+      "dependencies": [
+        "scriptorium.engines",
+        "scriptorium.engines._collection_intelligence",
+        "scriptorium.engines._interactive",
+        "scriptorium.engines._token_optimizer",
+        "scriptorium.engines.pedagogy",
+        "scriptorium.models"
+      ],
+      "references_from": [
+        "README.md",
+        "scriptorium/engines/_collection_intelligence.py",
+        "scriptorium/engines/_token_optimizer.py",
+        "scriptorium/engines/knowledge.py",
+        "scriptorium/engines/orchestration.py",
+        "scriptorium/engines/quality.py",
+        "scriptorium/engines/research.py"
+      ],
+      "bytes": 1947
+    },
+    {
+      "path": "scriptorium/engines/__init__.py",
+      "classification": "preserve",
+      "purpose": "Cohesive six-engine runtime for Scriptorium.",
+      "dependencies": [
+        "scriptorium.engines.knowledge",
+        "scriptorium.engines.orchestration",
+        "scriptorium.engines.pedagogy",
+        "scriptorium.engines.quality",
+        "scriptorium.engines.research",
+        "scriptorium.engines.vault"
+      ],
+      "references_from": [
+        "README.md",
+        "scriptorium/engines/_collection_intelligence.py",
+        "scriptorium/engines/_token_optimizer.py",
+        "scriptorium/engines/knowledge.py",
+        "scriptorium/engines/orchestration.py",
+        "scriptorium/engines/quality.py",
+        "scriptorium/engines/research.py"
+      ],
+      "bytes": 540
+    },
+    {
+      "path": "scriptorium/engines/_collection_intelligence.py",
+      "classification": "optimize",
+      "purpose": "Advanced Knowledge Collection Intelligence & Lifecycle System (F02-F15).",
+      "dependencies": [
+        "__future__",
+        "collections",
+        "dataclasses",
+        "datetime",
+        "pathlib",
+        "scriptorium.engines._interactive",
+        "scriptorium.engines.knowledge",
+        "scriptorium.engines.vault",
+        "scriptorium.models",
+        "typing"
+      ],
+      "references_from": [
+        "references/architecture/system-overview.md",
+        "scriptorium/__init__.py",
+        "scriptorium/engines/_token_optimizer.py",
+        "scriptorium/engines/knowledge.py",
+        "scriptorium/engines/orchestration.py",
+        "scriptorium/engines/pedagogy.py",
+        "scriptorium/engines/quality.py",
+        "scriptorium/engines/vault.py",
+        "tests/test_comprehensive_composition.py"
+      ],
+      "bytes": 84585
+    },
+    {
+      "path": "scriptorium/engines/_composition.py",
+      "classification": "preserve",
+      "purpose": "Comprehensive composition contracts, owned by E4; no retrieval or model calls.",
+      "dependencies": [
+        "__future__",
+        "_instructional",
+        "_interactive",
+        "copy",
+        "pathlib",
+        "scriptorium.models",
+        "typing",
+        "vault"
+      ],
+      "references_from": [
+        "scriptorium/engines/_explanation.py",
+        "scriptorium/engines/orchestration.py",
+        "scriptorium/engines/pedagogy.py",
+        "scriptorium/engines/quality.py",
+        "scriptorium/engines/research.py",
+        "scriptorium/engines/vault.py",
+        "scripts/scribe.py",
+        "examples/adaptive-composition/run.py",
+        "tests/test_comprehensive_composition.py"
+      ],
+      "bytes": 25734
+    },
+    {
+      "path": "scriptorium/engines/_composition_visuals.py",
+      "classification": "preserve",
+      "purpose": "Deterministic SVG figures for E4; all numbers come from supplied data.",
+      "dependencies": [
+        "__future__"
+      ],
+      "references_from": [
+        "examples/adaptive-composition/run.py",
+        "tests/test_comprehensive_composition.py"
+      ],
+      "bytes": 3800
+    },
+    {
+      "path": "scriptorium/engines/_decision.py",
+      "classification": "preserve",
+      "purpose": "Executable Decision Matrix engine for Scriptorium (DM-00 through DM-20).",
+      "dependencies": [
+        "__future__",
+        "pathlib",
+        "scriptorium.engines._instructional",
+        "scriptorium.engines._verification",
+        "scriptorium.layout",
+        "scriptorium.models",
+        "typing",
+        "urllib.parse"
+      ],
+      "references_from": [
+        "examples/adaptive-deepnotes/measurements.json",
+        "references/contracts/migration-notes.md",
+        "references/workflows/research/research-policy-registry.json",
+        "scriptorium/engines/_collection_intelligence.py",
+        "scriptorium/engines/_instructional.py",
+        "scriptorium/engines/_token_optimizer.py",
+        "scriptorium/engines/pedagogy.py",
+        "scripts/plan_notes.py",
+        "scripts/validate_note.py",
+        "scripts/verify_vault_notes.py",
+        "tests/test_adaptive_deepstudy.py",
+        "tests/test_decision_matrix.py",
+        "tests/test_instructional_engine.py",
+        "tests/test_study_decisions.py",
+        "tests/test_token_optimizations.py",
+        "tests/test_unified_engines_and_properties.py"
+      ],
+      "bytes": 32981
+    },
+    {
+      "path": "scriptorium/engines/_explanation.py",
+      "classification": "preserve",
+      "purpose": "Explanation Intelligence System (EIS-01 through EIS-06) inside Engine E4 (Pedagogy).",
+      "dependencies": [
+        "__future__",
+        "dataclasses",
+        "scriptorium.engines.vault",
+        "scriptorium.layout",
+        "scriptorium.models",
+        "typing"
+      ],
+      "references_from": [
+        "references/architecture/template-module-catalog.md",
+        "references/routing/master-registry.yaml",
+        "references/templates/modules/module-catalog.md",
+        "references/workflows/notes-creation/pedagogical-intelligence.md",
+        "references/workflows/research/research-policy-registry.json",
+        "references/workflows/research/resource-recommendations.md",
+        "scriptorium/engines/_collection_intelligence.py",
+        "scriptorium/engines/_pedagogical_core.py",
+        "scriptorium/engines/_token_optimizer.py",
+        "scriptorium/engines/knowledge.py",
+        "scriptorium/engines/pedagogy.py",
+        "scriptorium/engines/quality.py",
+        "scriptorium/engines/vault.py",
+        "scripts/scribe.py",
+        "tests/test_explanation_intelligence.py",
+        "tests/test_routing_and_masters.py",
+        "tests/test_token_efficiency_optimizer.py",
+        "tests/test_unified_engines_and_properties.py"
+      ],
+      "bytes": 78320
+    },
+    {
+      "path": "scriptorium/engines/_instructional.py",
+      "classification": "preserve",
+      "purpose": "Validate, normalize, compose, and audit agent-authored instructional decisions; no model calls.",
+      "dependencies": [
+        "__future__",
+        "copy",
+        "functools",
+        "pathlib",
+        "scriptorium.engines._instructional",
+        "scriptorium.engines._pedagogical_core",
+        "scriptorium.engines._verification",
+        "scriptorium.engines.research",
+        "scriptorium.models",
+        "typing",
+        "urllib.parse",
+        "verify_vault_notes"
+      ],
+      "references_from": [
+        "README.md",
+        "references/contracts/migration-notes.md",
+        "references/workflows/research/research-engine.md",
+        "router.md",
+        "scriptorium/engines/_decision.py",
+        "scriptorium/engines/pedagogy.py",
+        "scripts/plan_notes.py",
+        "tests/test_instructional_engine.py",
+        "tests/test_pedagogical_engine.py",
+        "tests/test_research_engine.py",
+        "scriptorium/engines/_composition.py"
+      ],
+      "bytes": 52891
+    },
+    {
+      "path": "scriptorium/engines/_interactive.py",
+      "classification": "preserve",
+      "purpose": "Universal /scribe-notes Interactive Configuration, Scope Detection, and Hierarchical Collection Planner.",
+      "dependencies": [
+        "__future__",
+        "dataclasses",
+        "pathlib",
+        "scriptorium.engines.orchestration",
+        "scriptorium.models",
+        "typing"
+      ],
+      "references_from": [
+        "references/architecture/system-overview.md",
+        "scriptorium/__init__.py",
+        "scriptorium/engines/_collection_intelligence.py",
+        "scriptorium/engines/orchestration.py",
+        "scriptorium/engines/pedagogy.py",
+        "scripts/scribe.py",
+        "tests/test_collection_intelligence_and_lifecycle.py",
+        "tests/test_repository_architecture_audit.py",
+        "tests/test_universal_notes_workflow.py",
+        "references/architecture/redesign-audit.md",
+        "scriptorium/engines/_composition.py",
+        "tests/test_comprehensive_composition.py"
+      ],
+      "bytes": 63383
+    },
+    {
+      "path": "scriptorium/engines/_pedagogical_core.py",
+      "classification": "preserve",
+      "purpose": "Unified Pedagogical Intelligence & Learning Experience Engine (P01-P11) for Scriptorium.",
+      "dependencies": [
+        "__future__",
+        "collections",
+        "copy",
+        "pathlib",
+        "scriptorium.engines._verification",
+        "typing",
+        "vault_graph",
+        "vault_index",
+        "verify_vault_notes"
+      ],
+      "references_from": [
+        "scriptorium/engines/_instructional.py",
+        "scriptorium/engines/pedagogy.py",
+        "scripts/scribe.py",
+        "tests/test_pedagogical_engine.py"
+      ],
+      "bytes": 58733
+    },
+    {
+      "path": "scriptorium/engines/_token_optimizer.py",
+      "classification": "preserve",
+      "purpose": "Scriptorium Token Efficiency, Prompt Compilation, Multi-Level Cache & Zero-Quality-Loss Optimizer.",
+      "dependencies": [
+        "__future__",
+        "dataclasses",
+        "pathlib",
+        "scriptorium.engines._collection_intelligence",
+        "scriptorium.engines.orchestration",
+        "scriptorium.engines.quality",
+        "scriptorium.models",
+        "typing"
+      ],
+      "references_from": [
+        "references/architecture/system-overview.md",
+        "scriptorium/__init__.py",
+        "scriptorium/engines/orchestration.py",
+        "scriptorium/engines/quality.py",
+        "tests/test_token_efficiency_optimizer.py"
+      ],
+      "bytes": 45044
+    },
+    {
+      "path": "scriptorium/engines/_verification.py",
+      "classification": "preserve",
+      "purpose": "Extract runnable note examples and verify their published evidence.",
+      "dependencies": [
+        "__future__",
+        "dataclasses",
+        "pathlib"
+      ],
+      "references_from": [
+        "references/architecture/template-module-catalog.md",
+        "references/routing/master-registry.yaml",
+        "references/templates/modules/module-catalog.md",
+        "references/templates/subtemplates/computational.md",
+        "references/workflows/notes-creation/instructional-registry.json",
+        "references/workflows/notes-creation/pedagogical-intelligence.md",
+        "references/workflows/research/research-policy-registry.json",
+        "scriptorium/engines/_decision.py",
+        "scriptorium/engines/_instructional.py",
+        "scriptorium/engines/_pedagogical_core.py",
+        "scriptorium/engines/knowledge.py",
+        "scriptorium/engines/orchestration.py",
+        "scriptorium/engines/quality.py",
+        "scriptorium/engines/research.py",
+        "scriptorium/models.py",
+        "scripts/plan_notes.py",
+        "scripts/validate_note.py",
+        "tests/test_decision_matrix.py",
+        "tests/test_instructional_engine.py",
+        "tests/test_research_engine.py",
+        "tests/test_study_decisions.py",
+        "tests/test_token_efficiency_optimizer.py",
+        "examples/adaptive-composition/vault/.scriptorium/collections/col-gradient-descent.json"
+      ],
+      "bytes": 15026
+    },
+    {
+      "path": "scriptorium/engines/knowledge.py",
+      "classification": "preserve",
+      "purpose": "Engine E3 — Knowledge Integrity Engine for Scriptorium.",
+      "dependencies": [
+        "__future__",
+        "collections",
+        "dataclasses",
+        "scriptorium.engines._collection_intelligence",
+        "scriptorium.models",
+        "typing"
+      ],
+      "references_from": [
+        "README.md",
+        "SKILL.md",
+        "references/architecture/system-overview.md",
+        "references/architecture/template-module-catalog.md",
+        "references/contracts/README.md",
+        "references/contracts/migration-notes.md",
+        "references/contracts/routing-contract.schema.json",
+        "references/routing/README.md",
+        "references/routing/master-registry.yaml",
+        "references/routing/routing-policy.md",
+        "references/templates/README.md",
+        "references/templates/masters/assessment.md",
+        "references/templates/masters/deep-notes.md",
+        "references/templates/variants/paper-breakdown.md",
+        "references/workflows/notes-creation/README.md",
+        "references/workflows/notes-creation/instructional-registry.json",
+        "references/workflows/notes-creation/pedagogical-intelligence.md",
+        "references/workflows/research/research-engine.md",
+        "references/workflows/research/research-policy-registry.json",
+        "router.md",
+        "scriptorium/engines/__init__.py",
+        "scriptorium/engines/_collection_intelligence.py",
+        "scriptorium/engines/_instructional.py",
+        "scriptorium/engines/_interactive.py",
+        "scriptorium/engines/_pedagogical_core.py",
+        "scriptorium/engines/_token_optimizer.py",
+        "scriptorium/engines/orchestration.py",
+        "scriptorium/engines/pedagogy.py",
+        "scriptorium/engines/vault.py",
+        "scripts/plan_notes.py",
+        "scripts/scribe.py",
+        "tests/test_collection_intelligence_and_lifecycle.py",
+        "tests/test_repository_architecture_audit.py",
+        "tests/test_routing_and_masters.py",
+        "tests/test_token_efficiency_optimizer.py",
+        "tests/test_unified_engines_and_properties.py",
+        "references/architecture/redesign-audit.md",
+        "references/workflows/notes-creation/composition-contract.md",
+        "scriptorium/engines/_composition.py",
+        "tests/test_comprehensive_composition.py"
+      ],
+      "bytes": 27093
+    },
+    {
+      "path": "scriptorium/engines/orchestration.py",
+      "classification": "preserve",
+      "purpose": "Engine E1 — Orchestration and Routing Engine for Scriptorium.",
+      "dependencies": [
+        "__future__",
+        "functools",
+        "pathlib",
+        "scriptorium.engines._collection_intelligence",
+        "scriptorium.engines._interactive",
+        "scriptorium.engines._token_optimizer",
+        "scriptorium.models",
+        "typing",
+        "urllib.parse"
+      ],
+      "references_from": [
+        "README.md",
+        "SKILL.md",
+        "references/architecture/system-overview.md",
+        "references/architecture/template-module-catalog.md",
+        "references/contracts/migration-notes.md",
+        "references/routing/README.md",
+        "references/routing/master-registry.yaml",
+        "references/routing/routing-policy.md",
+        "scriptorium/engines/__init__.py",
+        "scriptorium/engines/_collection_intelligence.py",
+        "scriptorium/engines/_interactive.py",
+        "scriptorium/engines/_token_optimizer.py",
+        "scriptorium/engines/quality.py",
+        "scripts/plan_notes.py",
+        "scripts/scribe.py",
+        "tests/test_routing_and_masters.py"
+      ],
+      "bytes": 77147
+    },
+    {
+      "path": "scriptorium/engines/pedagogy.py",
+      "classification": "optimize",
+      "purpose": "Engine E4 — Pedagogical and Composition Engine for Scriptorium.",
+      "dependencies": [
+        "__future__",
+        "_composition",
+        "scriptorium.engines",
+        "scriptorium.engines._collection_intelligence",
+        "scriptorium.engines._explanation",
+        "scriptorium.engines._instructional",
+        "scriptorium.engines._interactive",
+        "scriptorium.engines._pedagogical_core",
+        "scriptorium.models",
+        "typing"
+      ],
+      "references_from": [
+        "README.md",
+        "references/architecture/system-overview.md",
+        "references/contracts/migration-notes.md",
+        "references/routing/master-registry.yaml",
+        "references/templates/masters/worked-solutions.md",
+        "references/workflows/notes-creation/README.md",
+        "references/workflows/notes-creation/adaptive-engine.md",
+        "references/workflows/notes-creation/pedagogical-intelligence.md",
+        "references/workflows/revision/README.md",
+        "references/workflows/validation/README.md",
+        "references/workflows/validation/verification-checklist.md",
+        "router.md",
+        "scriptorium/__init__.py",
+        "scriptorium/engines/__init__.py",
+        "scriptorium/engines/_token_optimizer.py",
+        "scriptorium/engines/orchestration.py",
+        "scriptorium/engines/quality.py",
+        "scriptorium/engines/vault.py",
+        "scripts/scribe.py",
+        "tests/test_pedagogical_engine.py",
+        "references/architecture/redesign-audit.md",
+        "scriptorium/engines/_composition.py"
+      ],
+      "bytes": 23438
+    },
+    {
+      "path": "scriptorium/engines/quality.py",
+      "classification": "optimize",
+      "purpose": "Engine E5 — Quality and Verification Engine for Scriptorium.",
+      "dependencies": [
+        "__future__",
+        "_composition",
+        "dataclasses",
+        "pathlib",
+        "scriptorium.engines._collection_intelligence",
+        "scriptorium.engines._token_optimizer",
+        "scriptorium.engines._verification",
+        "scriptorium.engines.orchestration",
+        "scriptorium.engines.pedagogy",
+        "scriptorium.engines.vault",
+        "scriptorium.models",
+        "typing",
+        "urllib.parse"
+      ],
+      "references_from": [
+        "README.md",
+        "SKILL.md",
+        "examples/adaptive-deepnotes/README.md",
+        "examples/adaptive-deepnotes/measurements.json",
+        "examples/adaptive-deepnotes/sample-notes.md",
+        "references/architecture/system-overview.md",
+        "references/contracts/migration-notes.md",
+        "references/routing/master-registry.yaml",
+        "references/templates/masters/deep-notes.md",
+        "references/workflows/notes-creation/pedagogical-intelligence.md",
+        "references/workflows/research/source-fidelity.md",
+        "references/workflows/validation/README.md",
+        "router.md",
+        "scriptorium/engines/__init__.py",
+        "scriptorium/engines/_collection_intelligence.py",
+        "scriptorium/engines/_explanation.py",
+        "scriptorium/engines/_instructional.py",
+        "scriptorium/engines/_pedagogical_core.py",
+        "scriptorium/engines/_token_optimizer.py",
+        "scriptorium/engines/orchestration.py",
+        "scriptorium/engines/pedagogy.py",
+        "scripts/scribe.py",
+        "scripts/validate_note.py",
+        "tests/test_adaptive_deepstudy.py",
+        "tests/test_collection_intelligence_and_lifecycle.py",
+        "tests/test_pedagogical_engine.py",
+        "tests/test_repository_architecture_audit.py",
+        "tests/test_routed_workflow.py",
+        "tests/test_routing_and_masters.py",
+        "tests/test_token_efficiency_optimizer.py",
+        "tests/test_unified_engines_and_properties.py",
+        "tests/test_universal_notes_workflow.py",
+        "examples/adaptive-composition/README.md",
+        "examples/adaptive-composition/drafts.json",
+        "examples/adaptive-composition/measurements.json",
+        "examples/adaptive-composition/run.py",
+        "examples/adaptive-composition/vault/6 - Full Notes/Gradient Descent/02 - Deriving the Update and Its Limits.md",
+        "references/architecture/redesign-audit.md",
+        "references/workflows/notes-creation/composition-contract.md",
+        "scriptorium/engines/_composition.py",
+        "tests/test_comprehensive_composition.py"
+      ],
+      "bytes": 43465
+    },
+    {
+      "path": "scriptorium/engines/research.py",
+      "classification": "optimize",
+      "purpose": "Adaptive Research & Resource Intelligence Engine (ARRIE) for Scriptorium.",
+      "dependencies": [
+        "__future__",
+        "_composition",
+        "copy",
+        "datetime",
+        "functools",
+        "pathlib",
+        "scriptorium.models",
+        "typing",
+        "urllib.parse"
+      ],
+      "references_from": [
+        "README.md",
+        "SKILL.md",
+        "references/README.md",
+        "references/architecture/system-overview.md",
+        "references/architecture/template-module-catalog.md",
+        "references/contracts/migration-notes.md",
+        "references/contracts/routing-contract.schema.json",
+        "references/routing/master-registry.yaml",
+        "references/routing/routing-policy.md",
+        "references/templates/masters/deep-notes.md",
+        "references/templates/masters/study-notes.md",
+        "references/templates/subtemplates/empirical.md",
+        "references/templates/variants/atomic-card.md",
+        "references/workflows/notes-creation/adaptive-engine.md",
+        "references/workflows/notes-creation/command-playbooks.md",
+        "references/workflows/notes-creation/instructional-registry.json",
+        "references/workflows/notes-creation/pedagogical-intelligence.md",
+        "references/workflows/notes-creation/syllabus-template.md",
+        "references/workflows/research/README.md",
+        "references/workflows/research/research-engine.md",
+        "references/workflows/research/research-policy-registry.json",
+        "references/workflows/research/resource-recommendations.md",
+        "references/workflows/research/source-fidelity.md",
+        "references/workflows/validation/README.md",
+        "references/workflows/validation/verification-checklist.md",
+        "router.md",
+        "scriptorium/engines/__init__.py",
+        "scriptorium/engines/_instructional.py",
+        "scriptorium/engines/_interactive.py",
+        "scriptorium/engines/_pedagogical_core.py",
+        "scriptorium/engines/_token_optimizer.py",
+        "scriptorium/engines/knowledge.py",
+        "scriptorium/engines/orchestration.py",
+        "scripts/plan_notes.py",
+        "scripts/scribe.py",
+        "scripts/validate_note.py",
+        "tests/test_adaptive_deepstudy.py",
+        "tests/test_research_engine.py",
+        "tests/test_routing_and_masters.py",
+        "tests/test_token_efficiency_optimizer.py",
+        "tests/test_unified_engines_and_properties.py",
+        "examples/adaptive-composition/README.md",
+        "examples/adaptive-composition/run.py",
+        "examples/adaptive-composition/sources.json",
+        "examples/adaptive-composition/spec.json",
+        "examples/adaptive-composition/vault/.scriptorium/collections/col-gradient-descent.json",
+        "references/architecture/redesign-audit.md",
+        "references/workflows/notes-creation/composition-contract.md",
+        "scriptorium/engines/_composition.py",
+        "tests/test_comprehensive_composition.py"
+      ],
+      "bytes": 73626
+    },
+    {
+      "path": "scriptorium/engines/vault.py",
+      "classification": "optimize",
+      "purpose": "Engine E6 — Vault and Notes Lifecycle Engine for Scriptorium.",
+      "dependencies": [
+        "__future__",
+        "_composition",
+        "datetime",
+        "pathlib",
+        "scriptorium.engines._collection_intelligence",
+        "scriptorium.engines.pedagogy",
+        "scriptorium.layout",
+        "scriptorium.models",
+        "typing"
+      ],
+      "references_from": [
+        "README.md",
+        "examples/adaptive-deepnotes/sample-notes.md",
+        "references/README.md",
+        "references/architecture/system-overview.md",
+        "references/contracts/migration-notes.md",
+        "references/metadata/README.md",
+        "references/metadata/note-naming.md",
+        "references/metadata/properties-policy.md",
+        "references/metadata/tag-taxonomy.md",
+        "references/routing/master-registry.yaml",
+        "references/routing/routing-policy.md",
+        "references/templates/masters/deep-notes.md",
+        "references/templates/modules/module-catalog.md",
+        "references/templates/variants/atomic-card.md",
+        "references/templates/variants/quick-summary.md",
+        "references/templates/variants/revision-pack.md",
+        "references/workflows/notes-creation/README.md",
+        "references/workflows/notes-creation/command-playbooks.md",
+        "references/workflows/notes-creation/pedagogical-intelligence.md",
+        "references/workflows/notes-creation/pre-gen-gate.md",
+        "references/workflows/notes-creation/syllabus-template.md",
+        "references/workflows/research/research-engine.md",
+        "references/workflows/research/research-policy-registry.json",
+        "references/workflows/revision/README.md",
+        "references/workflows/revision/revision-and-linking.md",
+        "references/workflows/validation/README.md",
+        "router.md",
+        "scriptorium/engines/__init__.py",
+        "scriptorium/engines/_collection_intelligence.py",
+        "scriptorium/engines/_explanation.py",
+        "scriptorium/engines/_instructional.py",
+        "scriptorium/engines/_interactive.py",
+        "scriptorium/engines/_pedagogical_core.py",
+        "scriptorium/engines/_token_optimizer.py",
+        "scriptorium/engines/knowledge.py",
+        "scriptorium/engines/orchestration.py",
+        "scriptorium/engines/quality.py",
+        "scripts/patch_links.py",
+        "scripts/plan_notes.py",
+        "scripts/scaffold_note.py",
+        "scripts/scribe.py",
+        "scripts/validate_note.py",
+        "scripts/vault_graph.py",
+        "scripts/vault_index.py",
+        "scripts/verify_vault_notes.py",
+        "shared/footer_widgets.md",
+        "skills/scribe-doubt/SKILL.md",
+        "skills/scribe-notes/SKILL.md",
+        "skills/scribe-setfolder/SKILL.md",
+        "tests/test_adaptive_deepstudy.py",
+        "tests/test_collection_intelligence_and_lifecycle.py",
+        "tests/test_decision_matrix.py",
+        "tests/test_explanation_intelligence.py",
+        "tests/test_instructional_engine.py",
+        "tests/test_patch_and_graph.py",
+        "tests/test_pedagogical_engine.py",
+        "tests/test_repository_architecture_audit.py",
+        "tests/test_research_engine.py",
+        "tests/test_routed_workflow.py",
+        "tests/test_routing_and_masters.py",
+        "tests/test_study_decisions.py",
+        "tests/test_syllabus_boundary.py",
+        "tests/test_token_efficiency_optimizer.py",
+        "tests/test_token_optimizations.py",
+        "tests/test_unified_engines_and_properties.py",
+        "tests/test_universal_notes_workflow.py",
+        "tests/test_vault_aware.py",
+        "examples/adaptive-composition/README.md",
+        "examples/adaptive-composition/run.py",
+        "references/architecture/redesign-audit.md",
+        "references/workflows/notes-creation/composition-contract.md",
+        "scriptorium/engines/_composition.py",
+        "tests/test_comprehensive_composition.py"
+      ],
+      "bytes": 51937
+    },
+    {
+      "path": "scriptorium/layout.py",
+      "classification": "preserve",
+      "purpose": "Shared structural layout contract for M1-M7 masters and compatibility routes.",
+      "dependencies": [
+        "__future__",
+        "functools",
+        "pathlib"
+      ],
+      "references_from": [
+        "README.md",
+        "references/architecture/system-overview.md",
+        "references/contracts/migration-notes.md",
+        "references/metadata/properties-policy.md",
+        "references/templates/masters/deep-notes.md",
+        "references/templates/masters/implementation-guide.md",
+        "references/templates/subtemplates/README.md",
+        "references/templates/variants/syntax-reference.md",
+        "references/workflows/research/source-fidelity.md",
+        "router.md",
+        "scriptorium/engines/_decision.py",
+        "scriptorium/engines/_explanation.py",
+        "scriptorium/engines/orchestration.py",
+        "scriptorium/engines/vault.py",
+        "scripts/plan_notes.py",
+        "scripts/scaffold_note.py",
+        "scripts/scribe.py",
+        "scripts/validate_note.py",
+        "scripts/vault_index.py",
+        "scripts/verify_vault_notes.py",
+        "shared/math_gates.md",
+        "skills/scribe-notes/SKILL.md",
+        "tests/test_adaptive_deepstudy.py",
+        "tests/test_instructional_engine.py",
+        "tests/test_optional_contract.py",
+        "tests/test_routed_workflow.py",
+        "tests/test_routing_and_masters.py",
+        "tests/test_study_decisions.py",
+        "references/workflows/notes-creation/composition-contract.md"
+      ],
+      "bytes": 13100
+    },
+    {
+      "path": "scriptorium/models.py",
+      "classification": "preserve",
+      "purpose": "Shared data models, error taxonomy, YAML/frontmatter parsing, and caching for Scriptorium.",
+      "dependencies": [
+        "__future__",
+        "dataclasses",
+        "functools",
+        "pathlib",
+        "typing"
+      ],
+      "references_from": [
+        "README.md",
+        "references/contracts/migration-notes.md",
+        "references/templates/subtemplates/README.md",
+        "references/templates/subtemplates/scientific.md",
+        "references/templates/variants/quick-summary.md",
+        "scriptorium/__init__.py",
+        "scriptorium/engines/_collection_intelligence.py",
+        "scriptorium/engines/_decision.py",
+        "scriptorium/engines/_explanation.py",
+        "scriptorium/engines/_instructional.py",
+        "scriptorium/engines/_interactive.py",
+        "scriptorium/engines/_token_optimizer.py",
+        "scriptorium/engines/knowledge.py",
+        "scriptorium/engines/orchestration.py",
+        "scriptorium/engines/pedagogy.py",
+        "scriptorium/engines/quality.py",
+        "scriptorium/engines/research.py",
+        "scriptorium/engines/vault.py",
+        "scripts/patch_links.py",
+        "scripts/plan_notes.py",
+        "scripts/scaffold_note.py",
+        "scripts/scribe.py",
+        "scripts/validate_note.py",
+        "scripts/verify_vault_notes.py",
+        "tests/test_research_engine.py",
+        "tests/test_routing_and_masters.py",
+        "tests/test_unified_engines_and_properties.py",
+        "references/architecture/redesign-audit.md",
+        "scriptorium/engines/_composition.py",
+        "tests/test_comprehensive_composition.py"
+      ],
+      "bytes": 10232
+    },
+    {
+      "path": "scripts/patch_links.py",
+      "classification": "preserve",
+      "purpose": "Deterministic, non-destructive frontmatter and wikilink patcher for Scriptorium vaults.",
+      "dependencies": [
+        "__future__",
+        "pathlib",
+        "scriptorium.models",
+        "typing",
+        "vault_index"
+      ],
+      "references_from": [
+        "README.md",
+        "references/architecture/system-overview.md",
+        "references/contracts/migration-notes.md",
+        "references/workflows/notes-creation/command-playbooks.md",
+        "references/workflows/revision/README.md",
+        "references/workflows/revision/revision-and-linking.md",
+        "tests/test_optional_contract.py",
+        "tests/test_patch_and_graph.py",
+        "tests/test_unified_engines_and_properties.py"
+      ],
+      "bytes": 22008
+    },
+    {
+      "path": "scripts/plan_notes.py",
+      "classification": "preserve",
+      "purpose": "Resolve request locks, save an outlined plan, and publish validated notes.",
+      "dependencies": [
+        "__future__",
+        "pathlib",
+        "scriptorium.engines._decision",
+        "scriptorium.engines._instructional",
+        "scriptorium.engines._verification",
+        "scriptorium.engines.orchestration",
+        "scriptorium.engines.research",
+        "scriptorium.layout",
+        "scriptorium.models",
+        "urllib.parse",
+        "validate_note",
+        "vault_index"
+      ],
+      "references_from": [
+        "README.md",
+        "SKILL.md",
+        "references/architecture/system-overview.md",
+        "references/contracts/migration-notes.md",
+        "references/routing/README.md",
+        "references/templates/masters/deep-notes.md",
+        "references/templates/masters/implementation-guide.md",
+        "references/templates/modules/module-catalog.md",
+        "references/templates/subtemplates/computational.md",
+        "references/workflows/notes-creation/README.md",
+        "references/workflows/notes-creation/adaptive-engine.md",
+        "references/workflows/notes-creation/command-playbooks.md",
+        "references/workflows/notes-creation/pedagogical-intelligence.md",
+        "references/workflows/research/research-engine.md",
+        "references/workflows/research/source-fidelity.md",
+        "router.md",
+        "scriptorium/engines/_pedagogical_core.py",
+        "shared/authoring_rules.md",
+        "skills/scribe-setfolder/SKILL.md",
+        "tests/test_adaptive_deepstudy.py",
+        "tests/test_decision_matrix.py",
+        "tests/test_instructional_engine.py",
+        "tests/test_pedagogical_engine.py",
+        "tests/test_research_engine.py",
+        "tests/test_routed_workflow.py",
+        "tests/test_routing_and_masters.py",
+        "tests/test_study_decisions.py",
+        "tests/test_unified_engines_and_properties.py"
+      ],
+      "bytes": 38638
+    },
+    {
+      "path": "scripts/scaffold_note.py",
+      "classification": "preserve",
+      "purpose": "Scaffold adaptive deep-study notes, M1-M7 routed notes, and syllabus maps with Obsidian Properties.",
+      "dependencies": [
+        "__future__",
+        "datetime",
+        "pathlib",
+        "scriptorium.engines.vault",
+        "scriptorium.layout",
+        "scriptorium.models",
+        "vault_index"
+      ],
+      "references_from": [
+        "README.md",
+        "SKILL.md",
+        "references/architecture/system-overview.md",
+        "references/contracts/migration-notes.md",
+        "router.md",
+        "tests/test_optional_contract.py",
+        "tests/test_routed_workflow.py",
+        "tests/test_study_decisions.py",
+        "tests/test_syllabus_boundary.py",
+        "tests/test_token_optimizations.py",
+        "tests/test_unified_engines_and_properties.py"
+      ],
+      "bytes": 11327
+    },
+    {
+      "path": "scripts/scribe.py",
+      "classification": "optimize",
+      "purpose": "Unified thin CLI entry point delegating to Scriptorium's six cohesive engines.",
+      "dependencies": [
+        "__future__",
+        "datetime",
+        "pathlib",
+        "scriptorium.engines",
+        "scriptorium.engines._composition",
+        "scriptorium.engines._interactive",
+        "scriptorium.engines.knowledge",
+        "scriptorium.engines.orchestration",
+        "scriptorium.engines.pedagogy",
+        "scriptorium.engines.quality",
+        "scriptorium.engines.vault",
+        "scriptorium.models"
+      ],
+      "references_from": [
+        "README.md",
+        "SKILL.md",
+        "examples/adaptive-deepnotes/measurements.json",
+        "examples/adaptive-deepnotes/sample-notes.md",
+        "references/architecture/system-overview.md",
+        "references/architecture/template-module-catalog.md",
+        "references/contracts/migration-notes.md",
+        "references/metadata/properties-policy.md",
+        "references/routing/README.md",
+        "references/routing/master-registry.yaml",
+        "references/routing/routing-policy.md",
+        "references/templates/masters/assessment.md",
+        "references/templates/masters/deep-notes.md",
+        "references/templates/masters/implementation-guide.md",
+        "references/templates/masters/quick-reference.md",
+        "references/templates/masters/study-notes.md",
+        "references/templates/masters/synthesis-revision.md",
+        "references/templates/masters/worked-solutions.md",
+        "references/templates/subtemplates/computational.md",
+        "references/templates/subtemplates/conceptual.md",
+        "references/templates/subtemplates/empirical.md",
+        "references/templates/subtemplates/historical.md",
+        "references/templates/subtemplates/mathematical.md",
+        "references/templates/subtemplates/scientific.md",
+        "references/templates/variants/atomic-card.md",
+        "references/templates/variants/mock-exam.md",
+        "references/templates/variants/paper-breakdown.md",
+        "references/templates/variants/quick-summary.md",
+        "references/workflows/notes-creation/README.md",
+        "references/workflows/notes-creation/adaptive-engine.md",
+        "references/workflows/notes-creation/command-playbooks.md",
+        "references/workflows/notes-creation/pedagogical-intelligence.md",
+        "references/workflows/notes-creation/pre-gen-gate.md",
+        "references/workflows/notes-creation/syllabus-template.md",
+        "references/workflows/research/README.md",
+        "references/workflows/research/research-engine.md",
+        "references/workflows/research/resource-recommendations.md",
+        "references/workflows/research/source-fidelity.md",
+        "references/workflows/revision/README.md",
+        "references/workflows/validation/README.md",
+        "references/workflows/validation/verification-checklist.md",
+        "router.md",
+        "scriptorium/engines/_decision.py",
+        "scriptorium/engines/_explanation.py",
+        "scriptorium/engines/_interactive.py",
+        "scriptorium/engines/_pedagogical_core.py",
+        "scriptorium/engines/_token_optimizer.py",
+        "scriptorium/engines/orchestration.py",
+        "scriptorium/engines/vault.py",
+        "scripts/plan_notes.py",
+        "scripts/vault_index.py",
+        "skills/scribe-doubt/SKILL.md",
+        "skills/scribe-notes/SKILL.md",
+        "skills/scribe-quiz/SKILL.md",
+        "skills/scribe-setfolder/SKILL.md",
+        "tests/test_adaptive_deepstudy.py",
+        "tests/test_collection_intelligence_and_lifecycle.py",
+        "tests/test_decision_matrix.py",
+        "tests/test_explanation_intelligence.py",
+        "tests/test_instructional_engine.py",
+        "tests/test_pedagogical_engine.py",
+        "tests/test_repository_architecture_audit.py",
+        "tests/test_research_engine.py",
+        "tests/test_routed_workflow.py",
+        "tests/test_routing_and_masters.py",
+        "tests/test_study_decisions.py",
+        "tests/test_token_efficiency_optimizer.py",
+        "tests/test_unified_engines_and_properties.py",
+        "tests/test_universal_notes_workflow.py",
+        "references/workflows/notes-creation/composition-contract.md",
+        "tests/test_comprehensive_composition.py"
+      ],
+      "bytes": 22308
+    },
+    {
+      "path": "scripts/validate_note.py",
+      "classification": "preserve",
+      "purpose": "Lint a built-in Scriptorium note; optionally resolve vault links.",
+      "dependencies": [
+        "__future__",
+        "datetime",
+        "pathlib",
+        "scriptorium.engines._decision",
+        "scriptorium.engines._verification",
+        "scriptorium.engines.research",
+        "scriptorium.layout",
+        "scriptorium.models",
+        "urllib.parse",
+        "vault_index",
+        "verify_vault_notes"
+      ],
+      "references_from": [
+        "README.md",
+        "references/architecture/system-overview.md",
+        "references/contracts/migration-notes.md",
+        "references/templates/masters/deep-notes.md",
+        "references/templates/modules/module-catalog.md",
+        "references/workflows/notes-creation/pedagogical-intelligence.md",
+        "references/workflows/validation/README.md",
+        "references/workflows/validation/verification-checklist.md",
+        "router.md",
+        "scriptorium/engines/_collection_intelligence.py",
+        "scriptorium/engines/_instructional.py",
+        "scriptorium/engines/quality.py",
+        "scriptorium/engines/research.py",
+        "scripts/plan_notes.py",
+        "scripts/verify_vault_notes.py",
+        "tests/test_adaptive_deepstudy.py",
+        "tests/test_decision_matrix.py",
+        "tests/test_instructional_engine.py",
+        "tests/test_optional_contract.py",
+        "tests/test_pedagogical_engine.py",
+        "tests/test_research_engine.py",
+        "tests/test_routed_workflow.py",
+        "tests/test_study_decisions.py",
+        "tests/test_unified_engines_and_properties.py"
+      ],
+      "bytes": 33113
+    },
+    {
+      "path": "scripts/vault_graph.py",
+      "classification": "preserve",
+      "purpose": "Read-only Obsidian vault graph & DAG topology analyzer for Scriptorium.",
+      "dependencies": [
+        "__future__",
+        "collections",
+        "pathlib",
+        "typing",
+        "vault_index"
+      ],
+      "references_from": [
+        "README.md",
+        "references/architecture/system-overview.md",
+        "references/contracts/migration-notes.md",
+        "references/workflows/notes-creation/pedagogical-intelligence.md",
+        "references/workflows/revision/README.md",
+        "references/workflows/revision/revision-and-linking.md",
+        "router.md",
+        "scriptorium/engines/_pedagogical_core.py",
+        "tests/test_patch_and_graph.py",
+        "tests/test_routed_workflow.py",
+        "tests/test_unified_engines_and_properties.py"
+      ],
+      "bytes": 15058
+    },
+    {
+      "path": "scripts/vault_index.py",
+      "classification": "preserve",
+      "purpose": "Content-aware, vault-aware, read-only Obsidian metadata, template & tag indexer.",
+      "dependencies": [
+        "__future__",
+        "pathlib",
+        "scriptorium.layout",
+        "typing"
+      ],
+      "references_from": [
+        "README.md",
+        "references/architecture/system-overview.md",
+        "references/contracts/migration-notes.md",
+        "references/workflows/notes-creation/command-playbooks.md",
+        "references/workflows/notes-creation/pedagogical-intelligence.md",
+        "references/workflows/notes-creation/pre-gen-gate.md",
+        "references/workflows/revision/revision-and-linking.md",
+        "router.md",
+        "scriptorium/engines/_collection_intelligence.py",
+        "scriptorium/engines/_pedagogical_core.py",
+        "scripts/patch_links.py",
+        "scripts/plan_notes.py",
+        "scripts/scaffold_note.py",
+        "scripts/validate_note.py",
+        "scripts/vault_graph.py",
+        "scripts/verify_vault_notes.py",
+        "tests/test_syllabus_boundary.py",
+        "tests/test_token_optimizations.py",
+        "tests/test_unified_engines_and_properties.py",
+        "tests/test_vault_aware.py"
+      ],
+      "bytes": 39142
+    },
+    {
+      "path": "scripts/verify_vault_notes.py",
+      "classification": "preserve",
+      "purpose": "Template-aware, scoped, read-by-default Obsidian vault validator with safe --fix.",
+      "dependencies": [
+        "__future__",
+        "pathlib",
+        "scriptorium.engines._decision",
+        "scriptorium.layout",
+        "scriptorium.models",
+        "typing",
+        "validate_note"
+      ],
+      "references_from": [
+        "README.md",
+        "references/architecture/system-overview.md",
+        "references/contracts/migration-notes.md",
+        "references/workflows/notes-creation/pre-gen-gate.md",
+        "references/workflows/validation/README.md",
+        "router.md",
+        "scriptorium/engines/_instructional.py",
+        "scriptorium/engines/_pedagogical_core.py",
+        "scripts/validate_note.py",
+        "tests/test_decision_matrix.py",
+        "tests/test_routed_workflow.py",
+        "tests/test_syllabus_boundary.py",
+        "tests/test_token_optimizations.py",
+        "tests/test_unified_engines_and_properties.py",
+        "tests/test_vault_aware.py"
+      ],
+      "bytes": 49843
+    },
+    {
+      "path": "shared/authoring_rules.md",
+      "classification": "preserve",
+      "purpose": "Shared authoring rules",
+      "dependencies": [
+        "math_gates.md",
+        "../references/workflows/notes-creation/adaptive-engine.md",
+        "../router.md",
+        "footer_widgets.md"
+      ],
+      "references_from": [
+        "SKILL.md",
+        "references/contracts/migration-notes.md",
+        "references/templates/masters/assessment.md",
+        "references/templates/masters/deep-notes.md",
+        "references/templates/masters/implementation-guide.md",
+        "references/templates/masters/quick-reference.md",
+        "references/templates/masters/study-notes.md",
+        "references/templates/masters/synthesis-revision.md",
+        "references/templates/masters/worked-solutions.md",
+        "references/templates/variants/atomic-card.md",
+        "references/templates/variants/comparison-guide.md",
+        "references/templates/variants/paper-breakdown.md",
+        "references/templates/variants/quick-summary.md",
+        "references/templates/variants/syntax-reference.md",
+        "references/workflows/notes-creation/command-playbooks.md",
+        "references/workflows/notes-creation/pre-gen-gate.md",
+        "references/workflows/notes-creation/syllabus-template.md",
+        "references/workflows/validation/verification-checklist.md",
+        "router.md",
+        "tests/test_instructional_engine.py",
+        "tests/test_study_decisions.py"
+      ],
+      "bytes": 4983
+    },
+    {
+      "path": "shared/footer_widgets.md",
+      "classification": "preserve",
+      "purpose": "Reflection footer",
+      "dependencies": [
+        "../references/workflows/notes-creation/adaptive-engine.md",
+        "authoring_rules.md#rendering"
+      ],
+      "references_from": [
+        "references/templates/masters/deep-notes.md",
+        "references/templates/masters/implementation-guide.md",
+        "references/templates/masters/quick-reference.md",
+        "references/templates/masters/study-notes.md",
+        "references/templates/masters/synthesis-revision.md",
+        "references/templates/masters/worked-solutions.md",
+        "references/templates/variants/atomic-card.md",
+        "references/templates/variants/comparison-guide.md",
+        "references/templates/variants/paper-breakdown.md",
+        "references/templates/variants/quick-summary.md",
+        "references/templates/variants/syntax-reference.md",
+        "tests/test_instructional_engine.py"
+      ],
+      "bytes": 1553
+    },
+    {
+      "path": "shared/math_gates.md",
+      "classification": "preserve",
+      "purpose": "Math gates",
+      "dependencies": [
+        "../references/workflows/notes-creation/adaptive-engine.md#selection-and-depth",
+        "authoring_rules.md#rendering",
+        "../references/workflows/notes-creation/adaptive-engine.md#selection-and-depth"
+      ],
+      "references_from": [
+        "SKILL.md",
+        "references/contracts/migration-notes.md",
+        "references/templates/masters/assessment.md",
+        "references/templates/masters/deep-notes.md",
+        "references/templates/masters/implementation-guide.md",
+        "references/templates/masters/quick-reference.md",
+        "references/templates/masters/study-notes.md",
+        "references/templates/masters/synthesis-revision.md",
+        "references/templates/masters/worked-solutions.md",
+        "references/templates/modules/module-catalog.md",
+        "references/templates/subtemplates/mathematical.md",
+        "references/templates/variants/atomic-card.md",
+        "references/templates/variants/comparison-guide.md",
+        "references/templates/variants/paper-breakdown.md",
+        "references/templates/variants/quick-summary.md",
+        "references/templates/variants/syntax-reference.md",
+        "router.md",
+        "scriptorium/engines/_token_optimizer.py",
+        "tests/test_instructional_engine.py"
+      ],
+      "bytes": 2123
+    },
+    {
+      "path": "skills/scribe-doubt/SKILL.md",
+      "classification": "preserve",
+      "purpose": "name: scribe-doubt",
+      "dependencies": [
+        "../../router.md"
+      ],
+      "references_from": [],
+      "bytes": 273
+    },
+    {
+      "path": "skills/scribe-notes/SKILL.md",
+      "classification": "optimize",
+      "purpose": "name: scribe-notes",
+      "dependencies": [
+        "../../references/workflows/notes-creation/composition-contract.md"
+      ],
+      "references_from": [
+        "references/architecture/system-overview.md",
+        "scriptorium/engines/_token_optimizer.py"
+      ],
+      "bytes": 4764
+    },
+    {
+      "path": "skills/scribe-quiz/SKILL.md",
+      "classification": "preserve",
+      "purpose": "name: scribe-quiz",
+      "dependencies": [
+        "../../router.md"
+      ],
+      "references_from": [],
+      "bytes": 279
+    },
+    {
+      "path": "skills/scribe-setfolder/SKILL.md",
+      "classification": "preserve",
+      "purpose": "name: scribe-setfolder",
+      "dependencies": [],
+      "references_from": [],
+      "bytes": 573
+    },
+    {
+      "path": "tests/test_adaptive_deepstudy.py",
+      "classification": "preserve",
+      "purpose": "Adaptive authoring contracts, compatibility, and meaningful route regressions.",
+      "dependencies": [
+        "pathlib",
+        "scriptorium",
+        "validate_note"
+      ],
+      "references_from": [],
+      "bytes": 6765
+    },
+    {
+      "path": "tests/test_collection_intelligence_and_lifecycle.py",
+      "classification": "preserve",
+      "purpose": "Comprehensive tests for Scriptorium Knowledge Collection Intelligence & Lifecycle (F02-F15).",
+      "dependencies": [
+        "__future__",
+        "pathlib",
+        "scriptorium"
+      ],
+      "references_from": [],
+      "bytes": 21315
+    },
+    {
+      "path": "tests/test_comprehensive_composition.py",
+      "classification": "preserve",
+      "purpose": "Observable comprehensive composition, publication, and recovery behavior.",
+      "dependencies": [
+        "pathlib",
+        "scriptorium.engines",
+        "scriptorium.engines._collection_intelligence",
+        "scriptorium.engines._composition",
+        "scriptorium.engines._composition_visuals",
+        "scriptorium.engines._interactive",
+        "scriptorium.models"
+      ],
+      "references_from": [],
+      "bytes": 12240
+    },
+    {
+      "path": "tests/test_decision_matrix.py",
+      "classification": "preserve",
+      "purpose": "",
+      "dependencies": [
+        "__future__",
+        "pathlib",
+        "scriptorium.engines",
+        "validate_note"
+      ],
+      "references_from": [],
+      "bytes": 8832
+    },
+    {
+      "path": "tests/test_explanation_intelligence.py",
+      "classification": "preserve",
+      "purpose": "Golden Evaluation & Cross-Domain Suite for the Explanation Intelligence System (EIS-01..EIS-07).",
+      "dependencies": [
+        "__future__",
+        "pathlib",
+        "scriptorium",
+        "scriptorium.engines._explanation"
+      ],
+      "references_from": [],
+      "bytes": 17618
+    },
+    {
+      "path": "tests/test_instructional_engine.py",
+      "classification": "preserve",
+      "purpose": "Behavioral scenarios for per-concept planning, composition, selective module activation, source gating, and negative legacy regression checks.",
+      "dependencies": [
+        "copy",
+        "pathlib",
+        "plan_notes",
+        "scriptorium",
+        "scriptorium.engines._decision",
+        "scriptorium.engines._instructional",
+        "scriptorium.engines._verification",
+        "validate_note"
+      ],
+      "references_from": [
+        "README.md"
+      ],
+      "bytes": 24793
+    },
+    {
+      "path": "tests/test_optional_contract.py",
+      "classification": "preserve",
+      "purpose": "Optional declarations must accept omission and reject incomplete inclusion.",
+      "dependencies": [
+        "patch_links",
+        "pathlib",
+        "scaffold_note",
+        "scriptorium",
+        "test_routed_workflow",
+        "validate_note"
+      ],
+      "references_from": [],
+      "bytes": 2546
+    },
+    {
+      "path": "tests/test_patch_and_graph.py",
+      "classification": "preserve",
+      "purpose": "Tests for scripts/patch_links.py and scripts/vault_graph.py.",
+      "dependencies": [
+        "__future__",
+        "pathlib"
+      ],
+      "references_from": [
+        "README.md"
+      ],
+      "bytes": 6925
+    },
+    {
+      "path": "tests/test_pedagogical_engine.py",
+      "classification": "preserve",
+      "purpose": "Comprehensive verification of the Pedagogical Intelligence Layer (P01-P11).",
+      "dependencies": [
+        "__future__",
+        "pathlib",
+        "scriptorium.engines",
+        "validate_note"
+      ],
+      "references_from": [
+        "README.md"
+      ],
+      "bytes": 25765
+    },
+    {
+      "path": "tests/test_repository_architecture_audit.py",
+      "classification": "preserve",
+      "purpose": "Repository Reorganization, Template/Module Catalog & End-to-End Integration Audit Tests.",
+      "dependencies": [
+        "__future__",
+        "pathlib",
+        "scriptorium",
+        "scriptorium.engines._interactive"
+      ],
+      "references_from": [
+        "references/architecture/template-module-catalog.md"
+      ],
+      "bytes": 6398
+    },
+    {
+      "path": "tests/test_research_engine.py",
+      "classification": "preserve",
+      "purpose": "Comprehensive verification of ARRIE (Adaptive Research & Resource Intelligence Engine).",
+      "dependencies": [
+        "__future__",
+        "datetime",
+        "pathlib",
+        "scriptorium.engines",
+        "validate_note"
+      ],
+      "references_from": [
+        "README.md"
+      ],
+      "bytes": 35384
+    },
+    {
+      "path": "tests/test_routed_workflow.py",
+      "classification": "preserve",
+      "purpose": "Exercise the built-in router, scaffold, publisher and both validators.",
+      "dependencies": [
+        "pathlib",
+        "scriptorium",
+        "validate_note"
+      ],
+      "references_from": [
+        "README.md",
+        "tests/test_optional_contract.py"
+      ],
+      "bytes": 25341
+    },
+    {
+      "path": "tests/test_routing_and_masters.py",
+      "classification": "preserve",
+      "purpose": "Comprehensive validation for the Seven Canonical Master Templates (M1-M7),",
+      "dependencies": [
+        "__future__",
+        "pathlib",
+        "scriptorium",
+        "scriptorium.engines",
+        "scriptorium.engines.vault"
+      ],
+      "references_from": [
+        "README.md"
+      ],
+      "bytes": 20006
+    },
+    {
+      "path": "tests/test_study_decisions.py",
+      "classification": "preserve",
+      "purpose": "Exercise source-study, math routing, and executable evidence through publish.",
+      "dependencies": [
+        "pathlib",
+        "scriptorium.engines._decision",
+        "scriptorium.engines._verification",
+        "scriptorium.layout",
+        "validate_note"
+      ],
+      "references_from": [],
+      "bytes": 10977
+    },
+    {
+      "path": "tests/test_syllabus_boundary.py",
+      "classification": "preserve",
+      "purpose": "Tests for 00-MOC syllabus boundary enforcement & scaffolding.",
+      "dependencies": [
+        "__future__",
+        "pathlib"
+      ],
+      "references_from": [],
+      "bytes": 2754
+    },
+    {
+      "path": "tests/test_token_efficiency_optimizer.py",
+      "classification": "preserve",
+      "purpose": "Tests for Scriptorium Token Efficiency, Prompt Compilation, Multi-Level Cache & Zero-Quality-Loss Optimization.",
+      "dependencies": [
+        "__future__",
+        "pathlib",
+        "scriptorium",
+        "scriptorium.engines._token_optimizer"
+      ],
+      "references_from": [],
+      "bytes": 12888
+    },
+    {
+      "path": "tests/test_token_optimizations.py",
+      "classification": "preserve",
+      "purpose": "Tests for token-optimization features: scaffold_note.py, --fields, and --extract.",
+      "dependencies": [
+        "__future__",
+        "pathlib"
+      ],
+      "references_from": [
+        "README.md"
+      ],
+      "bytes": 5671
+    },
+    {
+      "path": "tests/test_unified_engines_and_properties.py",
+      "classification": "preserve",
+      "purpose": "Comprehensive test suite for:",
+      "dependencies": [
+        "__future__",
+        "pathlib",
+        "scriptorium",
+        "scriptorium.engines.knowledge",
+        "scriptorium.engines.quality",
+        "scriptorium.models"
+      ],
+      "references_from": [
+        "README.md"
+      ],
+      "bytes": 28805
+    },
+    {
+      "path": "tests/test_universal_notes_workflow.py",
+      "classification": "preserve",
+      "purpose": "Comprehensive tests for Universal /scribe-notes, Interactive Intelligence & Hierarchical Knowledge Generation.",
+      "dependencies": [
+        "__future__",
+        "pathlib",
+        "scriptorium",
+        "scriptorium.engines._interactive"
+      ],
+      "references_from": [],
+      "bytes": 17092
+    },
+    {
+      "path": "tests/test_vault_aware.py",
+      "classification": "preserve",
+      "purpose": "Regression tests for content-aware and vault-aware Scriptorium indexing & validation.",
+      "dependencies": [
+        "__future__",
+        "pathlib"
+      ],
+      "references_from": [
+        "README.md"
+      ],
+      "bytes": 12546
+    }
+  ]
+}

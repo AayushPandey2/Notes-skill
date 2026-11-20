@@ -9,7 +9,11 @@ description: Universal adaptive note-creation command. Interactively calibrates 
 
 > **Non-note commands preserved separately:** `/scribe-doubt` (read-only vault Q&A), `/scribe-quiz` (interactive active-recall quizzing), `/scribe-setfolder` (vault target configuration).
 
-## Mandatory Execution Contract
+## Comprehensive topic collections
+
+For full-topic M1 notes, follow [the composition contract](../../references/workflows/notes-creation/composition-contract.md). After scope calibration, supply a shared concept plan and subject-specific five-chapter allocation to `notes compose`. Author and verify complete chapters before publication. This profile uses exactly `id`, `aliases`, `topic`, `tags`, `nexttopics`; internal metadata stays in manifests. The legacy grouped-file preview below is a provisional concept inventory. `notes generate --legacy-layout` is available for existing nested collections. Other masters and explicitly narrow single notes retain the workflow below.
+
+## Legacy and single-note execution contract
 
 1. **Always start with the Interactive Configuration Gate (before generating final notes):**
    - Inspect the request via `python scripts/scribe.py notes start "<request>" --vault "<vault>"` (or `OrchestrationEngine.start_notes_session()`).

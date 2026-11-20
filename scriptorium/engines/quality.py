@@ -641,6 +641,14 @@ def repair_explanatory_friction(
 
 
 class QualityEngine:
+    def validate_composition(self, vault_root: Path, composition: dict[str, Any]) -> dict[str, Any]:
+        from ._composition import validate_published_composition
+        return validate_published_composition(vault_root, composition)
+
+    def validate_composition_chapter(self, text: str, **kwargs: Any) -> list[str]:
+        from ._composition import validate_chapter
+        return validate_chapter(text, **kwargs)
+
     """Cohesive Engine E5 facade for verification, representation checks, EIS-07 clarity review, targeted repair, auditing, and golden evals."""
 
     def __init__(self, root: Path = REPO_ROOT):

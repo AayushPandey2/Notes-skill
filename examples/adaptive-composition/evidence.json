@@ -1,0 +1,130 @@
+{
+  "gd.c1:S01:0": {
+    "source": "https://ocw.mit.edu/courses/6-7220j-nonlinear-optimization-spring-2025/mit6_7220_s25_lec12.pdf",
+    "location": "L12.1, equation 1; gradient method definition checked against the original lecture",
+    "verified": true,
+    "origin": "primary_lecture",
+    "version": "3.14.7",
+    "checked_at": "2026-11-21"
+  },
+  "gd.c2:S01:0": {
+    "source": "https://ocw.mit.edu/courses/6-7220j-nonlinear-optimization-spring-2025/mit6_7220_s25_lec12.pdf",
+    "location": "L12.1, equation 1; gradient method definition checked against the original lecture",
+    "verified": true,
+    "origin": "primary_lecture",
+    "version": "3.14.7",
+    "checked_at": "2026-11-21"
+  },
+  "gd.c2:S02:0": {
+    "source": "run.py authored quadratic derivations and assertions",
+    "location": "Deriving the Update and Its Limits",
+    "verified": true,
+    "origin": "derived",
+    "version": "3.14.7",
+    "checked_at": "2026-11-21"
+  },
+  "gd.c3:S01:0": {
+    "source": "https://ocw.mit.edu/courses/6-7220j-nonlinear-optimization-spring-2025/mit6_7220_s25_lec12.pdf",
+    "location": "L12.1, equation 1; gradient method definition checked against the original lecture",
+    "verified": true,
+    "origin": "primary_lecture",
+    "version": "3.14.7",
+    "checked_at": "2026-11-21"
+  },
+  "gd.c3:S03:0": {
+    "source": "run.py authored quadratic derivations and assertions",
+    "location": "Tracing the Algorithm",
+    "verified": true,
+    "origin": "derived",
+    "version": "3.14.7",
+    "checked_at": "2026-11-21"
+  },
+  "gd.c3:S09:0": {
+    "source": "run.py authored quadratic derivations and assertions",
+    "location": "Tracing the Algorithm",
+    "verified": true,
+    "origin": "derived",
+    "version": "3.14.7",
+    "checked_at": "2026-11-21"
+  },
+  "gd.c3:S12:0": {
+    "source": "run.py authored quadratic derivations and assertions",
+    "location": "Tracing the Algorithm",
+    "verified": true,
+    "origin": "derived",
+    "version": "3.14.7",
+    "checked_at": "2026-11-21"
+  },
+  "gd.c4:S01:0": {
+    "source": "https://ocw.mit.edu/courses/6-7220j-nonlinear-optimization-spring-2025/mit6_7220_s25_lec12.pdf",
+    "location": "L12.1, equation 1; gradient method definition checked against the original lecture",
+    "verified": true,
+    "origin": "primary_lecture",
+    "version": "3.14.7",
+    "checked_at": "2026-11-21"
+  },
+  "gd.c4:S03:0": {
+    "source": "run.py authored quadratic derivations and assertions",
+    "location": "Implementing and Testing Descent",
+    "verified": true,
+    "origin": "derived",
+    "version": "3.14.7",
+    "checked_at": "2026-11-21"
+  },
+  "gd.c4:S04:0": {
+    "source": "https://docs.python.org/3/library/math.html",
+    "location": "math.isfinite / math.isclose; published code executed locally",
+    "verified": true,
+    "origin": "official_docs_and_execution",
+    "version": "3.14.7",
+    "checked_at": "2026-11-21"
+  },
+  "gd.c5:S01:0": {
+    "source": "https://ocw.mit.edu/courses/6-7220j-nonlinear-optimization-spring-2025/mit6_7220_s25_lec12.pdf",
+    "location": "L12.1, equation 1; gradient method definition checked against the original lecture",
+    "verified": true,
+    "origin": "primary_lecture",
+    "version": "3.14.7",
+    "checked_at": "2026-11-21"
+  },
+  "gd.c5:S10:0": {
+    "source": "run.py authored quadratic derivations and assertions",
+    "location": "Curvature and Failure Analysis",
+    "verified": true,
+    "origin": "derived",
+    "version": "3.14.7",
+    "checked_at": "2026-11-21"
+  },
+  "gd.c5:S03:0": {
+    "source": "run.py authored quadratic derivations and assertions",
+    "location": "Curvature and Failure Analysis",
+    "verified": true,
+    "origin": "derived",
+    "version": "3.14.7",
+    "checked_at": "2026-11-21"
+  },
+  "gd.c5:S17:0": {
+    "source": "run.py authored quadratic derivations and assertions",
+    "location": "Curvature and Failure Analysis",
+    "verified": true,
+    "origin": "derived",
+    "version": "3.14.7",
+    "checked_at": "2026-11-21"
+  },
+  "gd.c5:S13:0": {
+    "source": "run.py authored quadratic derivations and assertions",
+    "location": "Curvature and Failure Analysis",
+    "verified": true,
+    "origin": "derived",
+    "version": "3.14.7",
+    "checked_at": "2026-11-21"
+  },
+  "gd.c5:S14:0": {
+    "source": "run.py authored quadratic derivations and assertions",
+    "location": "Curvature and Failure Analysis",
+    "verified": true,
+    "origin": "derived",
+    "version": "3.14.7",
+    "checked_at": "2026-11-21"
+  }
+}

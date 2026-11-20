@@ -31,3 +31,7 @@ Validate Contract v3 (`validate_note.py --contract --evidence --pedagogical-plan
 
 **Positive examples:** *"Explain backpropagation from scratch with derivation, graph, example, and Python code."* / *"Teach me PCA from geometric intuition through eigenvalues."*  
 **Negative examples:** *"Pandas cheat sheet"* -> `M3`; *"Solve these 10 integrals step by step"* -> `M4`; *"Compare Adam vs SGD"* -> `M7`.
+
+## Comprehensive composition profile
+
+The [composition contract](../../workflows/notes-creation/composition-contract.md) defines full-topic M1 collections: one MOC, five comprehensive chapters, shared S01?S18 capabilities in the existing instructional registry, independent depth dimensions, and authored publication with exactly five YAML keys. Its profile-specific rules take precedence over legacy collection metadata and file layout above. Existing single-note and M2?M7 contracts remain supported.

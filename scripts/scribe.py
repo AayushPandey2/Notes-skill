@@ -24,6 +24,12 @@ from scriptorium.engines.vault import VaultEngine
 from scriptorium.models import dump_frontmatter
 
 
+def _composition_preferences(spec):
+    from scriptorium.engines._interactive import ResolvedNotePreferences
+    return ResolvedNotePreferences("Rigorous topic understanding", "M1", None, "comprehensive", {},
+        "hierarchical_collection", [], spec.get("source_policy", "adaptive"))
+
+
 def main(argv: list[str] | None = None) -> int:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
@@ -80,6 +86,16 @@ def main(argv: list[str] | None = None) -> int:
     p_notes = sub.add_parser("notes", help="Universal /scribe-notes interactive session, collection planning, generation, and validation.")
     notes_sub = p_notes.add_subparsers(dest="notes_action", required=True)
 
+    pn_comp = notes_sub.add_parser("compose", help="Plan or publish a comprehensive six-file collection from shared concept decisions.")
+    pn_comp.add_argument("--spec", type=Path, required=True, help="JSON topic, five chapters, concepts, notation, and obligations.")
+    pn_comp.add_argument("--vault", type=Path)
+    pn_comp.add_argument("--drafts", type=Path, help="JSON mapping chapter IDs to authored Markdown bodies.")
+    pn_comp.add_argument("--evidence", type=Path, help="JSON evidence records keyed by obligation ID.")
+    pn_comp.add_argument("--reviews", type=Path, help="JSON review names mapped to review evidence.")
+    pn_comp.add_argument("--expected-hashes", type=Path, help="JSON expected hashes for reviewed chapter replacements.")
+    pn_comp.add_argument("--publish", action="store_true")
+    pn_comp.add_argument("--validate", action="store_true", help="Validate a previously published composition without writing.")
+
     pn_start = notes_sub.add_parser("start", help="Start an interactive /scribe-notes session with inferred recommendations & questions.")
     pn_start.add_argument("request", nargs="?", default="/scribe-notes", help="User request or topic.")
     pn_start.add_argument("--vault", type=Path, help="Optional vault root to persist session state.")
@@ -100,6 +116,7 @@ def main(argv: list[str] | None = None) -> int:
     pn_gen.add_argument("--synthesis", action="store_true", help="Generate M7 cross-note synthesis notes when warranted (F10).")
     pn_gen.add_argument("--assessment", action="store_true", help="Generate M6 competency-aligned collection assessment (F13).")
     pn_gen.add_argument("--validate", action="store_true", help="Run collection-wide quality validation after generation.")
+    pn_gen.add_argument("--legacy-layout", action="store_true", help="Retain nested concept files for an existing legacy collection.")
 
     pn_val = notes_sub.add_parser("validate", help="Run collection-wide validation for a generated /scribe-notes session.")
     pn_val.add_argument("--vault", type=Path, required=True)
@@ -219,6 +236,36 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.command == "notes":
+        if args.notes_action == "compose":
+            try:
+                ped = PedagogyEngine()
+                spec = json.loads(args.spec.read_text(encoding="utf-8-sig"))
+                composition = ped.plan_composition(spec)
+                if args.validate and not args.publish:
+                    if not args.vault:
+                        raise ValueError("Validation requires --vault")
+                    from scriptorium.engines._composition import validate_published_composition
+                    result = validate_published_composition(args.vault, composition)
+                    print(json.dumps(result, indent=2, ensure_ascii=False))
+                    return 0 if result["valid"] else 1
+                if not args.publish:
+                    print(json.dumps(composition, indent=2, ensure_ascii=False))
+                    return 0
+                if not all((args.vault, args.drafts, args.evidence, args.reviews)):
+                    raise ValueError("Publication requires --vault, --drafts, --evidence, and --reviews")
+                def read_json(path):
+                    return json.loads(path.read_text(encoding="utf-8-sig"))
+                from scriptorium.engines._composition import to_collection_plan
+                plan = to_collection_plan(composition)
+                kcp = orch.build_kcp(args.vault, plan, _composition_preferences(spec), include_synthesis=False)
+                result = vault.publish_composition(args.vault, kcp.composition, read_json(args.drafts),
+                    evidence=read_json(args.evidence), reviews=read_json(args.reviews),
+                    expected_hashes=read_json(args.expected_hashes) if args.expected_hashes else None)
+                print(json.dumps(result, indent=2, ensure_ascii=False))
+                return 0 if result["complete"] else 1
+            except (ValueError, OSError, KeyError) as exc:
+                print(json.dumps({"complete": False, "error": str(exc)}, ensure_ascii=False))
+                return 1
         if args.notes_action == "start":
             existing_topics: list[str] = []
             if args.vault and args.vault.is_dir():
@@ -266,6 +313,10 @@ def main(argv: list[str] | None = None) -> int:
                 print(json.dumps({
                     "error": f"Session '{args.session_id}' is in stage '{state.stage}'; approve configuration/plan before generating.",
                 }, indent=2))
+                return 1
+            if state.resolved_preferences.master == "M1" and state.collection_plan.organization == "hierarchical_collection" and not args.legacy_layout:
+                print(json.dumps({"complete": False, "status": "requires_composition_spec",
+                    "message": "Full-topic notes use five authored chapters. Use notes compose --spec with the shared concept/chapter plan; --legacy-layout retains an existing nested collection."}, indent=2))
                 return 1
             if args.checkpoints:
                 kcp = orch.build_kcp(

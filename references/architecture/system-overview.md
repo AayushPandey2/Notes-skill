@@ -84,3 +84,7 @@ Scriptorium minimizes avoidable LLM token overhead without shortening notes, dro
 - **Partitioned Collection Context & Minimal Span Repair:** Sends Global/Group/Note slices per child note rather than full collection prose, runs deterministic validations locally at 0 LLM tokens with an `L9` audit trail, and extracts minimal defective spans for targeted repairs.
 
 See [template-module-catalog.md](template-module-catalog.md) for the complete Master, Variant, Subtemplate, and Module inventory and usage matrix.
+
+## Comprehensive composition profile
+
+The [composition contract](../workflows/notes-creation/composition-contract.md) defines full-topic M1 collections: one MOC, five comprehensive chapters, shared S01?S18 capabilities in the existing instructional registry, independent depth dimensions, and authored publication with exactly five YAML keys. Its profile-specific rules take precedence over legacy collection metadata and file layout above. Existing single-note and M2?M7 contracts remain supported.

@@ -404,6 +404,18 @@ def validate_compression(
 
 
 class PedagogyEngine:
+    def plan_composition(self, specification: dict[str, Any]) -> dict[str, Any]:
+        from ._composition import build_composition
+        return build_composition(specification)
+
+    def render_table(self, specification: dict[str, Any]) -> str:
+        from ._composition import render_table
+        return render_table(specification)
+
+    def select_visual(self, requirement: dict[str, Any], *, available: set[str]) -> dict[str, Any]:
+        from ._composition import select_visual
+        return select_visual(requirement, available=available)
+
     """Cohesive Engine E4 facade integrating Contract v3, P01-P11, gaps, density, examples, and compression."""
 
     def normalize_plan(self, raw_plan: dict[str, Any]) -> dict[str, Any]:

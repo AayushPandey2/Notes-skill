@@ -1,0 +1,147 @@
+{
+  "topic": "Gradient Descent",
+  "source_policy": "adaptive",
+  "scope": "Exact gradient descent on smooth quadratic objectives; not every optimizer",
+  "notation": {
+    "x": "scalar iterate",
+    "alpha": "positive step size",
+    "H": "symmetric positive definite Hessian"
+  },
+  "chapters": [
+    {
+      "id": "gd.ch1",
+      "title": "Why Local Descent Works",
+      "concepts": [
+        "gd.c1"
+      ],
+      "sections": [
+        "Why Local Descent Works"
+      ]
+    },
+    {
+      "id": "gd.ch2",
+      "title": "Deriving the Update and Its Limits",
+      "concepts": [
+        "gd.c2"
+      ],
+      "sections": [
+        "Deriving the Update and Its Limits"
+      ]
+    },
+    {
+      "id": "gd.ch3",
+      "title": "Tracing the Algorithm",
+      "concepts": [
+        "gd.c3"
+      ],
+      "sections": [
+        "Tracing the Algorithm"
+      ]
+    },
+    {
+      "id": "gd.ch4",
+      "title": "Implementing and Testing Descent",
+      "concepts": [
+        "gd.c4"
+      ],
+      "sections": [
+        "Implementing and Testing Descent"
+      ]
+    },
+    {
+      "id": "gd.ch5",
+      "title": "Curvature and Failure Analysis",
+      "concepts": [
+        "gd.c5"
+      ],
+      "sections": [
+        "Curvature and Failure Analysis"
+      ]
+    }
+  ],
+  "concepts": [
+    {
+      "id": "gd.c1",
+      "title": "Why Local Descent Works",
+      "objectives": [
+        "explain local descent"
+      ],
+      "capabilities": [
+        "S01"
+      ],
+      "depth": {
+        "research": 1
+      },
+      "prerequisites": []
+    },
+    {
+      "id": "gd.c2",
+      "title": "Deriving the Update and Its Limits",
+      "objectives": [
+        "derive the stability condition"
+      ],
+      "capabilities": [
+        "S02"
+      ],
+      "depth": {
+        "research": 1
+      },
+      "prerequisites": [
+        "gd.c1"
+      ]
+    },
+    {
+      "id": "gd.c3",
+      "title": "Tracing the Algorithm",
+      "objectives": [
+        "trace scalar states"
+      ],
+      "capabilities": [
+        "S03",
+        "S09",
+        "S12"
+      ],
+      "depth": {
+        "research": 1
+      },
+      "prerequisites": [
+        "gd.c2"
+      ]
+    },
+    {
+      "id": "gd.c4",
+      "title": "Implementing and Testing Descent",
+      "objectives": [
+        "implement reproducible descent"
+      ],
+      "capabilities": [
+        "S04"
+      ],
+      "depth": {
+        "research": 1
+      },
+      "prerequisites": [
+        "gd.c3"
+      ]
+    },
+    {
+      "id": "gd.c5",
+      "title": "Curvature and Failure Analysis",
+      "objectives": [
+        "analyze curvature and boundaries"
+      ],
+      "capabilities": [
+        "S10",
+        "S17",
+        "S13",
+        "S14"
+      ],
+      "depth": {
+        "research": 1
+      },
+      "prerequisites": [
+        "gd.c4"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "elapsed_seconds": 0.041497600032016635,
+  "files_in_topic": 6,
+  "published_python_blocks_executed": 1,
+  "numeric_assertions_executed": true,
+  "svg_assets_generated": 3,
+  "all_capability_contract_bytes": 20337,
+  "model_calls": 0,
+  "retrieval_calls_in_runner": 0,
+  "actual_model_tokens": null,
+  "quality_comparison": "not measured",
+  "baseline_pytest": {
+    "passed": 355,
+    "seconds": 104.61
+  }
+}

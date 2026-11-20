@@ -1,0 +1,6 @@
+{
+  "factual_accuracy": "Scope restricted to the explicitly defined quadratic; no empirical performance claims.",
+  "derivation_correctness": "Checked recurrence, induction, stability interval and SPD eigenbasis reduction; numerical checks executed.",
+  "reader_simulation": "Definitions precede symbols; trace states distinguished from updates; assumptions attached to extensions.",
+  "cross_chapter_coherence": "One running quadratic and notation; derivation, trace, implementation and limitations follow in order."
+}

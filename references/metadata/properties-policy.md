@@ -25,3 +25,7 @@ When updating an existing note via `VaultEngine.update_note()` or `scripts/scrib
 - Prevent duplicate frontmatter blocks; re-running an identical update is strictly idempotent.
 
 Deterministic implementation: `scriptorium/engines/vault.py` (`build_obsidian_properties`, `validate_obsidian_properties`, `incremental_update_note`).
+
+## Comprehensive composition profile
+
+The [composition contract](../workflows/notes-creation/composition-contract.md) defines full-topic M1 collections: one MOC, five comprehensive chapters, shared S01?S18 capabilities in the existing instructional registry, independent depth dimensions, and authored publication with exactly five YAML keys. Its profile-specific rules take precedence over legacy collection metadata and file layout above. Existing single-note and M2?M7 contracts remain supported.

@@ -1541,6 +1541,11 @@ class ResearchCache:
 # ---------------------------------------------------------------------------
 
 class ResearchEngine:
+    def composition_evidence_status(self, composition: dict[str, Any], evidence: dict[str, Any]) -> dict[str, Any]:
+        from ._composition import evidence_status
+        obligations = [o for c in composition["concepts"] for o in c["research_obligations"]]
+        return evidence_status(obligations, evidence)
+
     """Cohesive Engine E2 facade for ARRIE research planning, evidence verification, curation, caching, and citation audit."""
 
     def __init__(self, cache_dir: Path | None = None):

@@ -1,0 +1,46 @@
+{
+  "date": "2026-11-21",
+  "baseline": {
+    "command": ".venv/Scripts/python.exe -m pytest -q",
+    "passed": 355,
+    "seconds": 104.61,
+    "execution": "approved access to existing pytest temporary directory"
+  },
+  "final": {
+    "command": ".venv/Scripts/python.exe -m pytest -q",
+    "passed": 381,
+    "seconds": 100.79,
+    "execution": "approved access to existing pytest temporary directory"
+  },
+  "new_behavior_tests": 26,
+  "repository_audit": {
+    "valid": true,
+    "local_links_checked": 339,
+    "errors": [],
+    "authority_issues": [],
+    "master_count": 7,
+    "variant_count": 12,
+    "knowledge_type_document_count": 6,
+    "module_count": 17,
+    "public_command_count": 4
+  },
+  "skills": {
+    "root": "Skill is valid!",
+    "scribe_notes": "Skill is valid!"
+  },
+  "example": {
+    "authored_chapters": 5,
+    "moc_files": 1,
+    "published_python_blocks_executed": 1,
+    "svg_assets": 3,
+    "cli_publication": "complete; zero chapter rewrites on identical rerun",
+    "cli_validation": "valid; no errors"
+  },
+  "diff_whitespace_check": "passed",
+  "limitations": [
+    "Single pytest timings are not a controlled performance benchmark.",
+    "Optimizer token results are estimates on synthetic workloads, not live model usage.",
+    "Passing structural checks does not prove factual entailment or pedagogical quality.",
+    "Full master-prompt acceptance remains incomplete; see redesign-report.md."
+  ]
+}
