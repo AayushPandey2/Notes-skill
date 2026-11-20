@@ -48,3 +48,24 @@ Sequence: baseline tests and inventory → shared capability/depth contracts →
 allocation and KCP integration → authored publication gate → tables and visuals →
 CLI and skill routing → adversarial regression tests → reproducible examples →
 measured benchmarks and limitations report. Existing vaults are not migrated in place.
+
+## Unified 3.0 audit follow-up (2026-11-21)
+
+The current working baseline passed 381 tests in 98.64 seconds. The unified
+architecture/audit specifications exposed additional operational gaps: review
+strings accepted without artifact evidence, selected-but-unexecuted renderers,
+unfulfilled depth/capability declarations, missing independent assessments and
+stale template/registry cache entries. The new integrity regressions demonstrate
+refusal for each failure rather than merely recording configuration.
+
+After behavioral integration, composition was safely grouped into one package
+with canonical planning/publication, obligation, semantic-check and visual owners.
+Historical modules remain import aliases. Conditional masters, research modes,
+utilities and source-only behavior are preserved. Hash-preserving Git attributes
+and ignored generated caches support reproducible artifacts. No historical user
+notes or rarely activated mechanisms were removed.
+
+The updated [inventory](redesign-inventory.json), [implementation report](redesign-report.md)
+and [validation results](validation-results.json) supersede the initial audit's
+prospective organization and baseline discussion. Static caller evidence remains
+insufficient to authorize deletion.

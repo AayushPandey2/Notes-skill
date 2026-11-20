@@ -12,6 +12,7 @@ from __future__ import annotations
 import ast
 from dataclasses import asdict, dataclass, field
 import operator
+import subprocess
 from pathlib import Path
 import re
 from typing import Any, Callable
@@ -58,6 +59,7 @@ def audit_repository(root: Path = REPO_ROOT) -> dict[str, Any]:
     files = [
         p for p in root.rglob("*")
         if p.is_file() and not any(x in p.parts for x in (".git", "__pycache__", ".pytest_cache", ".test-deps", ".venv"))
+        and not (".scriptorium" in p.parts and "cache" in p.parts)
     ]
     for path in files:
         if path.suffix not in {".md", ".py"}:
@@ -90,6 +92,64 @@ def audit_repository(root: Path = REPO_ROOT) -> dict[str, Any]:
                 if flag not in implementation:
                     errors.append({"file": str(path.relative_to(root)), "target": script + " " + flag, "fix": "Resolve CLI flag"})
     return {"files": len(files), "local_links": checked, "errors": errors}
+
+
+def repository_inventory(root: Path = REPO_ROOT) -> dict[str, Any]:
+    """Read-only dependency/size evidence. Textual reachability never authorizes deletion."""
+    listed = subprocess.run(["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"],
+                            cwd=root, capture_output=True, check=True).stdout.decode("utf-8").split("\0")
+    paths = sorted({name for name in listed if name and (root/name).is_file()})
+    changed = set(subprocess.run(["git", "diff", "--name-only"], cwd=root, capture_output=True, check=True).stdout.decode("utf-8").splitlines())
+    modules = {p[:-3].replace("/", "."): p for p in paths if p.endswith(".py")}
+    modules.update({name.removesuffix(".__init__"): path for name, path in list(modules.items()) if name.endswith(".__init__")})
+    outgoing, entries = {}, []
+    for name in paths:
+        path = root/name
+        try:
+            raw = path.read_text(encoding="utf-8-sig")
+        except (UnicodeError, OSError):
+            raw = ""
+        dependencies = set()
+        purpose = next((line.lstrip("# ") for line in raw.splitlines() if line.startswith("# ")), "supporting data or configuration")
+        if name.endswith(".py"):
+            import importlib.util
+            tree = ast.parse(raw)
+            purpose = (ast.get_docstring(tree) or "Python runtime/helper").splitlines()[0]
+            module = name[:-3].replace("/", ".")
+            package = module.removesuffix(".__init__") if module.endswith(".__init__") else module.rpartition(".")[0]
+            for node in ast.walk(tree):
+                names = []
+                if isinstance(node, ast.Import):
+                    names = [alias.name for alias in node.names]
+                elif isinstance(node, ast.ImportFrom):
+                    target = "."*node.level+(node.module or "")
+                    try:
+                        target = importlib.util.resolve_name(target, package) if node.level else target
+                    except (ImportError, ValueError):
+                        continue
+                    names = [target, *[target+"."+alias.name for alias in node.names]]
+                dependencies.update(modules[n] for n in names if n in modules)
+        for target in re.findall(r"\]\(([^)#]+)(?:#[^)]*)?\)", raw):
+            if "://" not in target:
+                resolved = (path.parent/unquote(target)).resolve()
+                if resolved.is_relative_to(root.resolve()) and resolved.is_file():
+                    dependencies.add(resolved.relative_to(root.resolve()).as_posix())
+        dependencies.update(target for target in re.findall(r"(?:references|shared|skills|scripts|scriptorium)/[\w./-]+\.(?:md|py|json|yaml)", raw)
+                            if target in paths)
+        outgoing[name] = sorted(dependencies-{name})
+        action = "MOVE" if name in {"scriptorium/engines/_composition.py", "scriptorium/engines/_composition_visuals.py"} else "OPTIMIZE" if name in changed else "KEEP"
+        entries.append({"path": name, "purpose": purpose, "action": action, "lines": len(raw.splitlines()), "bytes": path.stat().st_size,
+                        "estimated_context_tokens": (len(raw)+3)//4, "outbound": outgoing[name], "inbound": [],
+                        "execution_path": "CLI/test import or selectively loaded reference; inspect inbound edges",
+                        "safety": "preserve; absence of a static caller is not proof of dead behavior"})
+    by_name = {e["path"]: e for e in entries}
+    for name, targets in outgoing.items():
+        for target in targets:
+            if target in by_name:
+                by_name[target]["inbound"].append(name)
+    return {"scope": "Tracked and nonignored repository files, before emitting this inventory; dynamic imports and prose references may be incomplete.",
+            "token_method": "ceil(characters/4) estimate; not provider tokens", "files": entries,
+            "deletion_authorized_by_inventory": False, "totals": {"files": len(entries), "bytes": sum(e["bytes"] for e in entries)}}
 
 
 # ---------------------------------------------------------------------------
@@ -679,8 +739,11 @@ class QualityEngine:
     def repair_clarity(self, note_text: str, **kwargs: Any) -> dict[str, Any]:
         return repair_explanatory_friction(note_text, repair_engine=self.repair, **kwargs)
 
-    def audit_repo(self) -> dict[str, Any]:
-        return audit_repository(self.root)
+    def audit_repo(self, *, include_inventory: bool = False) -> dict[str, Any]:
+        result = audit_repository(self.root)
+        if include_inventory:
+            result["inventory"] = repository_inventory(self.root)
+        return result
 
     def lint_authority(self) -> dict[str, Any]:
         return lint_instruction_authority(self.root)

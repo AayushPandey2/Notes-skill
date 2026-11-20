@@ -1,0 +1,48 @@
+.gitattributes
+.gitignore
+README.md
+SKILL.md
+examples/adaptive-composition/README.md
+examples/adaptive-composition/drafts.json
+examples/adaptive-composition/evidence.json
+examples/adaptive-composition/measurements.json
+examples/adaptive-composition/reviews.json
+examples/adaptive-composition/run.py
+examples/adaptive-composition/spec.json
+examples/adaptive-composition/vault/.scriptorium/collections/col-gradient-descent.json
+examples/adaptive-composition/vault/.scriptorium/evidence/python-math-3.14.txt
+examples/adaptive-composition/vault/.scriptorium/renderers/col-gradient-descent.json
+examples/adaptive-composition/vault/.scriptorium/validation/col-gradient-descent.json
+examples/adaptive-composition/vault/6 - Full Notes/Gradient Descent/00 - Map of Contents.md
+examples/adaptive-composition/vault/6 - Full Notes/Gradient Descent/01 - Why Local Descent Works.md
+examples/adaptive-composition/vault/6 - Full Notes/Gradient Descent/02 - Deriving the Update and Its Limits.md
+examples/adaptive-composition/vault/6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md
+examples/adaptive-composition/vault/6 - Full Notes/Gradient Descent/04 - Implementing and Testing Descent.md
+examples/adaptive-composition/vault/6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md
+examples/adaptive-composition/vault/assets/scriptorium/dc77bb9061f9b8f9e757d16a9019cfe646b558687d59fa724f3e60a2e6d3c49c.svg
+references/README.md
+references/architecture/final-tree.txt
+references/architecture/modified-files.txt
+references/architecture/redesign-audit.md
+references/architecture/redesign-inventory.json
+references/architecture/redesign-report.md
+references/architecture/system-overview.md
+references/architecture/validation-results.json
+references/contracts/README.md
+references/contracts/composition-integrity.md
+references/contracts/migration-notes.md
+references/workflows/notes-creation/composition-contract.md
+scriptorium/engines/_composition.py
+scriptorium/engines/_composition_visuals.py
+scriptorium/engines/_instructional.py
+scriptorium/engines/_token_optimizer.py
+scriptorium/engines/composition/__init__.py
+scriptorium/engines/composition/checks.py
+scriptorium/engines/composition/contracts.py
+scriptorium/engines/composition/visuals.py
+scriptorium/engines/orchestration.py
+scriptorium/engines/quality.py
+scripts/scribe.py
+skills/scribe-notes/SKILL.md
+tests/test_composition_integrity.py
+tests/test_comprehensive_composition.py

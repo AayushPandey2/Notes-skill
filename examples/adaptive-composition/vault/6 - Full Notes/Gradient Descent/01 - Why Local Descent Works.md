@@ -46,3 +46,37 @@ The next chapter derives exactly when the quadratic iteration succeeds.
 For general gradient methods and their assumptions, consult
 [Boyd and Vandenberghe, chapter 9](https://web.stanford.edu/~boyd/cvxbook/).
 The particular scalar calculations below are derived directly from f(x)=x²/2.
+
+## Check your understanding
+
+**Question (gd.q1.1):** Why is the negative derivative locally useful?
+
+> [!hint]- Show hint
+> Write the linear term f'(x)d.
+
+> [!answer]- Show detailed answer
+> With d=-alpha f'(x), the linear term is -alpha[f'(x)]². It is negative for a nonzero derivative and positive alpha, but the neglected remainder still matters.
+
+**Question (gd.q1.2):** For x=4 and alpha=0.25, what are the new state and cost?
+
+> [!hint]- Show hint
+> Use the derivative x for this quadratic.
+
+> [!answer]- Show detailed answer
+> The new state is 4-0.25(4)=3. The objective changes from 4²/2=8 to 3²/2=4.5.
+
+**Question (gd.q1.3):** Does a zero derivative certify a minimum?
+
+> [!hint]- Show hint
+> Compare a positive and a negative quadratic.
+
+> [!answer]- Show detailed answer
+> No. At zero, both x²/2 and -x²/2 have zero derivative, but the second has a maximum. Curvature and the domain determine the conclusion.
+
+**Question (gd.q1.4):** Does steepest decrease depend on the chosen norm?
+
+> [!hint]- Show hint
+> The norm constrains the allowed displacements.
+
+> [!answer]- Show detailed answer
+> Yes. The negative gradient gives steepest Euclidean first-order decrease per unit Euclidean displacement. A different geometry changes the constrained direction problem.

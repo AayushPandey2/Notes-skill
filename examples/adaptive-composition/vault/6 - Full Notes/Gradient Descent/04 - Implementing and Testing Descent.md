@@ -60,3 +60,39 @@ caused by poor scaling; a small update can be caused by a tiny step; reaching th
 cap means the budget ended. Report the stopping reason rather than converting
 every termination into success. Floating-point tolerance checks need an absolute
 tolerance near zero and a relative tolerance for larger values.
+
+Python's math.isfinite accepts zero and rejects infinity and NaN. See [the versioned Python documentation](https://docs.python.org/3.14/library/math.html#math.isfinite).
+
+## Check your understanding
+
+**Question (gd.q4.1):** Why test the loop against a closed form?
+
+> [!hint]- Show hint
+> Consider two implementations with the same indexing mistake.
+
+> [!answer]- Show detailed answer
+> A separately derived expression gives an independent numerical oracle. Repeating the loop in the test could reproduce the same error; list-length and boundary checks separately test semantics.
+
+**Question (gd.q4.2):** What should a zero-update request return for x=4?
+
+> [!hint]- Show hint
+> No update has been executed.
+
+> [!answer]- Show detailed answer
+> The list is [4.0], with length one. Returning an empty list would lose the specified initialization entry.
+
+**Question (gd.q4.3):** Does passing isfinite imply a stable learning rate?
+
+> [!hint]- Show hint
+> Consider alpha=2.1 for a few iterations.
+
+> [!answer]- Show detailed answer
+> No. Values can remain finite while growing in magnitude. isfinite detects infinity and NaN; stability follows from the mathematical multiplier condition.
+
+**Question (gd.q4.4):** Why use absolute tolerance near zero?
+
+> [!hint]- Show hint
+> Compare a nonzero tiny value to zero using relative tolerance only.
+
+> [!answer]- Show detailed answer
+> A relative bound scales with the compared magnitudes and can reject every nonzero comparison to zero for tolerance below one. An appropriate absolute tolerance specifies the allowed near-zero error.

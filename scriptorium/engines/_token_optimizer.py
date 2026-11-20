@@ -232,12 +232,6 @@ def select_context_bundle(
         "code_depth": code_depth,
         "registry_version": reg.get("registry_version", 1),
     }
-    if cache is not None:
-        ckey = cache.build_key("L5_template_resolution", user_scope=user_scope, dependencies=deps)
-        hit, cached = cache.get(ckey, expected_user_scope=user_scope)
-        if hit:
-            return {**cached, "cache_hit": True}
-
     mspec = reg["masters"][master]
     selected_files: list[tuple[str, str]] = []  # (role, rel_path)
     selected_files.append(("master", mspec["path"]))
@@ -277,6 +271,16 @@ def select_context_bundle(
         selected_files.append(("policy:source_fidelity", "references/workflows/research/source-fidelity.md"))
     selected_files.append(("policy:properties", "references/metadata/properties-policy.md"))
 
+    # Registry version alone cannot invalidate edits to an active policy/template.
+    # Hash only selected dependencies; unrelated templates do not evict this bundle.
+    deps["selected_hashes"] = {rel: content_hash((root / rel).read_bytes()) for _, rel in selected_files if (root / rel).is_file()}
+    deps["module_contracts"] = {mid: mod_reg[mid] for mid in closed_modules}
+    if cache is not None:
+        ckey = cache.build_key("L5_template_resolution", user_scope=user_scope, dependencies=deps)
+        hit, cached = cache.get(ckey, expected_user_scope=user_scope)
+        if hit:
+            return {**cached, "cache_hit": True, "context_file_reads": 1+len(deps["selected_hashes"])}
+
     loaded_docs: list[dict[str, Any]] = []
     total_tokens = 0
     for role, rel in selected_files:
@@ -310,6 +314,7 @@ def select_context_bundle(
         "module_contracts": module_contracts,
         "estimated_tokens": total_tokens,
         "cache_hit": False,
+        "context_file_reads": 1+len(deps["selected_hashes"])+len(loaded_docs),
     }
     if cache is not None:
         cache.put(ckey, result, user_scope=user_scope)

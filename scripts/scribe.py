@@ -94,6 +94,9 @@ def main(argv: list[str] | None = None) -> int:
     pn_comp.add_argument("--reviews", type=Path, help="JSON review names mapped to review evidence.")
     pn_comp.add_argument("--expected-hashes", type=Path, help="JSON expected hashes for reviewed chapter replacements.")
     pn_comp.add_argument("--publish", action="store_true")
+    pn_comp.add_argument("--prepare", action="store_true", help="Render assets and insert planned tables/questions; output chapter bodies to review.")
+    pn_comp.add_argument("--repair", action="append", default=[], help="Failed obligation ID for a dependency-aware repair plan; repeat as needed.")
+    pn_comp.add_argument("--context", action="append", default=[], help="Compile selective authoring context for a concept ID; repeat as needed.")
     pn_comp.add_argument("--validate", action="store_true", help="Validate a previously published composition without writing.")
 
     pn_start = notes_sub.add_parser("start", help="Start an interactive /scribe-notes session with inferred recommendations & questions.")
@@ -136,7 +139,8 @@ def main(argv: list[str] | None = None) -> int:
     p_opt.add_argument("--has-source", action="store_true")
 
     sub.add_parser("evaluate", help="Run the golden evaluation harness across all masters and lifecycle tasks.")
-    sub.add_parser("audit", help="Run consolidated repository link/CLI/syntax audit and instruction authority lint.")
+    p_audit = sub.add_parser("audit", help="Run consolidated repository link/CLI/syntax audit and instruction authority lint.")
+    p_audit.add_argument("--inventory", action="store_true", help="Include per-file purpose, dependencies, size, estimated context cost and preservation decisions.")
     sub.add_parser("validate-registry", help="Validate references/routing/master-registry.yaml.")
 
     args = parser.parse_args(args_list)
@@ -241,6 +245,23 @@ def main(argv: list[str] | None = None) -> int:
                 ped = PedagogyEngine()
                 spec = json.loads(args.spec.read_text(encoding="utf-8-sig"))
                 composition = ped.plan_composition(spec)
+                if sum(bool(x) for x in (args.prepare, args.publish, args.validate, args.repair, args.context)) > 1:
+                    raise ValueError("Choose one of --prepare, --publish, --validate, --context or --repair")
+                if args.context:
+                    from scriptorium.engines.composition import compile_context
+                    print(json.dumps(compile_context(composition, args.context), indent=2, ensure_ascii=False))
+                    return 0
+                if args.repair:
+                    from scriptorium.engines.composition.contracts import repair_plan
+                    print(json.dumps(repair_plan(composition, args.repair), indent=2, ensure_ascii=False))
+                    return 0
+                if args.prepare:
+                    if not args.vault or not args.drafts:
+                        raise ValueError("Preparation requires --vault and --drafts")
+                    from scriptorium.engines._composition import prepare_composition
+                    bodies, renderers = prepare_composition(args.vault, composition, json.loads(args.drafts.read_text(encoding="utf-8-sig")))
+                    print(json.dumps({"drafts": bodies, "renderers": renderers, "obligations": composition["obligations"]}, indent=2, ensure_ascii=False))
+                    return 0 if all(r["status"] == "verified" for r in renderers.values()) else 1
                 if args.validate and not args.publish:
                     if not args.vault:
                         raise ValueError("Validation requires --vault")
@@ -391,7 +412,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if report["all_passed"] else 1
 
     if args.command == "audit":
-        repo_audit = quality.audit_repo()
+        repo_audit = quality.audit_repo(include_inventory=args.inventory)
         auth_audit = quality.lint_authority()
         reg_audit = orch.validate_registry()
         ok = (not repo_audit["errors"]) and auth_audit["valid"] and reg_audit["valid"]

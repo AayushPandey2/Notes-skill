@@ -313,10 +313,15 @@ SECRET_PATTERNS = (
 )
 
 
-@lru_cache(maxsize=4)
 def load_master_registry(root: Path = ROOT) -> dict[str, Any]:
     path = root / "references" / "routing" / "master-registry.yaml"
-    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    return _parse_master_registry(path.read_text(encoding="utf-8"))
+
+
+@lru_cache(maxsize=4)
+def _parse_master_registry(raw: str) -> dict[str, Any]:
+    """Cache parsing by content, so edits cannot reuse a stale authority registry."""
+    data = yaml.safe_load(raw)
     if not isinstance(data, dict):
         raise TemplateResolutionError("Master registry must be a YAML mapping.")
     return data

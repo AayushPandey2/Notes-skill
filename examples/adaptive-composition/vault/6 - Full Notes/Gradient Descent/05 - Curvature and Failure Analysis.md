@@ -42,11 +42,11 @@ alpha=2/(lambda_min+lambda_max), with factor
 positive definite quadratic and exact arithmetic. It is not a recommendation for
 choosing an unknown neural network's learning rate.
 
-| Symptom | Mechanism under stated model | Check | Possible response |
-|---|---|---|---|
-| Growing alternating states | An eigenvalue gives a multiplier below -1 | Compare alpha with 2/lambda_max | Reduce step or estimate curvature |
-| Very slow stable progress | A multiplier is close to 1 | Inspect scale and spectral spread | Rescale or precondition |
-| Flat gradient away from desired solution | Quadratic assumptions may not apply | Inspect objective and stationary point | Reassess model and stopping test |
+| Symptom | Latent property under the stated model | Candidate cause | Diagnostic measurement | Evidence status | Possible response |
+|---|---|---|---|---|---|
+| Growing alternating states | Noncontracting eigen-direction | Step exceeds the quadratic stability range | Compare alpha with 2/lambda_max | Derived for the stated quadratic; not inferred from arbitrary logs | Reduce step or estimate curvature |
+| Very slow stable progress | Weak contraction | A multiplier is close to 1 | Inspect scale and spectral spread | Conditional analytical explanation | Rescale or precondition |
+| Flat gradient away from desired solution | Stationarity may be uninformative | Quadratic assumptions may not apply | Inspect objective and stationary point | Candidate diagnosis, not established cause | Reassess model and stopping test |
 
 The table is a diagnostic aid, not a proof of the cause for arbitrary training
 logs. Preconditioning changes the geometry so that a descent step can account
@@ -56,3 +56,37 @@ stationary points beyond minima; adaptive methods introduce extra state. Each
 requires additional assumptions and analysis. Reconstruct the argument by asking
 what the update multiplier is, which assumptions justify it, and whether its
 magnitude contracts every relevant direction.
+
+## Check your understanding
+
+**Question (gd.q5.1):** Why does lambda_max limit the SPD quadratic step?
+
+> [!hint]- Show hint
+> Require every eigen-direction multiplier to contract.
+
+> [!answer]- Show detailed answer
+> Each positive eigenvalue requires 0<alpha<2/lambda_i. Intersecting these intervals yields 0<alpha<2/lambda_max; the eigenbasis reduction assumes a real symmetric positive definite Hessian.
+
+**Question (gd.q5.2):** For eigenvalues 1 and 100 and alpha=0.01, find both multipliers.
+
+> [!hint]- Show hint
+> Evaluate 1-alpha lambda_i.
+
+> [!answer]- Show detailed answer
+> They are 0.99 and 0. The stiff coordinate disappears in one ideal update, while the first contracts by only one percent per step.
+
+**Question (gd.q5.3):** Do oscillating training logs prove an excessively large fixed step?
+
+> [!hint]- Show hint
+> The table analyzed an explicitly stated quadratic.
+
+> [!answer]- Show detailed answer
+> No. That is one candidate cause under the quadratic model. Other objectives, stochastic noise and extra optimizer state require their own diagnostics and controlled evidence.
+
+**Question (gd.q5.4):** Does the balanced quadratic step prescribe a neural network learning rate?
+
+> [!hint]- Show hint
+> Check whether its Hessian is fixed, known and SPD.
+
+> [!answer]- Show detailed answer
+> No. The derived 2/(lambda_min+lambda_max) result assumes a fixed positive definite quadratic and exact arithmetic. Those assumptions do not generally describe neural network training.

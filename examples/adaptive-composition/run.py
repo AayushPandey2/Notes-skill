@@ -6,11 +6,17 @@ import math
 from pathlib import Path
 import sys
 import time
+import platform
+import re
+import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-from scriptorium.engines._composition import build_composition, capabilities, publish_composition, resolve_capabilities
+from scriptorium.engines.composition import (
+    build_composition, capabilities, compile_context, prepare_composition, publish_composition, resolve_capabilities,
+)
 from scriptorium.engines._composition_visuals import architecture_svg, scientific_svg, validate_svg
+from scriptorium.models import content_hash
 
 HERE = Path(__file__).resolve().parent
 
@@ -178,8 +184,6 @@ holds before the loop, and the recurrence preserves both its numerical and list
 length statements. At termination k=K, it proves what the returned trace means.
 It does not assert that K updates meet a particular accuracy target.
 
-![[assets/quadratic-iterations.svg]]
-
 The curves use the exact recurrence on a synthetic quadratic, not experimental
 training measurements. The stable alpha=0.25 curve keeps its sign; alpha=1.5
 alternates with decreasing amplitude; alpha=2.1 grows in magnitude. The axes show
@@ -278,11 +282,11 @@ alpha=2/(lambda_min+lambda_max), with factor
 positive definite quadratic and exact arithmetic. It is not a recommendation for
 choosing an unknown neural network's learning rate.
 
-| Symptom | Mechanism under stated model | Check | Possible response |
-|---|---|---|---|
-| Growing alternating states | An eigenvalue gives a multiplier below -1 | Compare alpha with 2/lambda_max | Reduce step or estimate curvature |
-| Very slow stable progress | A multiplier is close to 1 | Inspect scale and spectral spread | Rescale or precondition |
-| Flat gradient away from desired solution | Quadratic assumptions may not apply | Inspect objective and stationary point | Reassess model and stopping test |
+| Symptom | Latent property under the stated model | Candidate cause | Diagnostic measurement | Evidence status | Possible response |
+|---|---|---|---|---|---|
+| Growing alternating states | Noncontracting eigen-direction | Step exceeds the quadratic stability range | Compare alpha with 2/lambda_max | Derived for the stated quadratic; not inferred from arbitrary logs | Reduce step or estimate curvature |
+| Very slow stable progress | Weak contraction | A multiplier is close to 1 | Inspect scale and spectral spread | Conditional analytical explanation | Rescale or precondition |
+| Flat gradient away from desired solution | Stationarity may be uninformative | Quadratic assumptions may not apply | Inspect objective and stationary point | Candidate diagnosis, not established cause | Reassess model and stopping test |
 
 The table is a diagnostic aid, not a proof of the cause for arbitrary training
 logs. Preconditioning changes the geometry so that a descent step can account
@@ -293,32 +297,155 @@ requires additional assumptions and analysis. Reconstruct the argument by asking
 what the update multiplier is, which assumptions justify it, and whether its
 magnitude contracts every relevant direction.
 ''']
+    # Ten owned concepts, rather than a graph that merely renames five files.
+    subsidiary = [
+        ("gd.direction", "Descent direction and finite step length", "explain why local direction and finite step length differ"),
+        ("gd.boundary", "Stability boundaries and exceptional initialization", "explain stability boundaries and the zero initialization exception"),
+        ("gd.trace", "Trace indexing and memory", "explain trace indexing and the storage tradeoff"),
+        ("gd.tolerance", "Finite checks and numerical tolerance", "explain finite-value checks and numerical tolerance"),
+        ("gd.spectrum", "Eigenvalue spread and conditional diagnostics", "explain spectral spread and the limits of symptom-based diagnosis")]
+    main_titles = ["First-order descent model", "Exact quadratic recurrence", "Simultaneous state updates", "Scalar implementation and independent oracle", "SPD eigenbasis reduction"]
+    interleaved = []
+    for i, (concept, (subid, title, objective)) in enumerate(zip(spec["concepts"], subsidiary)):
+        concept["title"], concept["section"] = main_titles[i], chapter_titles[i]
+        if i: concept["prerequisites"] = [subsidiary[i-1][0]]
+        extra = {"id": subid, "title": title, "section": chapter_titles[i], "objectives": [objective],
+                 "capabilities": ["S01"], "prerequisites": [concept["id"]]}
+        spec["chapters"][i]["concepts"].append(subid)
+        interleaved.extend([concept, extra])
+    # Keep references to the five principal concepts below, then interleave them
+    # into pedagogical order immediately before compiling the shared plan.
+    spec["concepts"][0]["terminology"] = [{"term": "derivative", "definition": "The derivative f'(x) is the slope of the tangent approximation.",
+        "first_use": "Choosing d=-alpha f'(x)"}]
+    spec["concepts"][2]["costs"] = [{"id": "gd.trace-cost", "kind": "theoretical_estimate", "dense_tensor_size": "one current scalar; K+1 stored states",
+        "operations": "K multiplications and K subtractions, plus finite checks", "activation_memory": "O(K) trace, or O(1) final-state storage",
+        "backward_cost": "no autodiff backward pass; analytic gradient x", "padding": "none", "kernel": "scalar Python operations",
+        "hardware": "abstract operation count; runtime depends on interpreter and hardware", "protocol": "fixed number of updates",
+        "artifact_excerpt": "Each scalar update takes constant arithmetic work, so K steps require O(K) work."}]
+    spec["concepts"][4]["failures"] = [{"id": "gd.instability-diagnosis", "symptom": "growing alternating states", "latent_property": "noncontracting eigen-direction",
+        "candidate_cause": "step exceeds the quadratic stability range", "diagnostic": "compare alpha with 2/lambda_max", "measurement": "spectrum of the fixed SPD Hessian",
+        "evidence_status": "conditional analytical derivation", "remediation": "reduce step or estimate curvature", "cause_established": False,
+        "artifact_excerpt": "| Growing alternating states | Noncontracting eigen-direction |"}]
+    # Contracts refer to actual explanations, exact algebra and the displayed code.
+    proof_claim = "The final equality is not an approximation for this objective."
+    spec["concepts"][1]["proofs"] = [{"id": "gd.quadratic-proof", "claim": proof_claim,
+        "assumptions": ["real scalar state", "fixed finite positive alpha", "objective x squared over two"],
+        "domain": "real scalar quadratic", "scope": "finite_update", "approximations": [],
+        "boundary_conditions": ["alpha=0: fixed state", "alpha=1: zero in one step", "alpha=2: constant magnitude", "x0=0: fixed zero"],
+        "steps": [{"lhs": "x-alpha*x", "rhs": "(1-alpha)*x", "relation": "identity", "reason": "factor x"},
+                  {"lhs": "((1-alpha)*x)**2/2", "rhs": "(1-alpha)**2*x*x/2", "relation": "identity", "reason": "substitute into objective"}],
+        "checks": [{"expression": "(1-a)*x", "variables": {"a": a, "x": 4}, "expected": expected, "comparison": "exact"}
+                   for a, expected in [(0, 4), (1, 0), (2, -4)]]}]
+    spec["concepts"][2]["visual_review"] = {"objective": "Separate state oscillation from decreasing loss",
+        "difficulty": "A loss curve hides changes of sign", "representation": "scientific state trajectories",
+        "placement": chapter_titles[2], "validation": "Recompute scalar recurrence, verify data, axes and embed"}
+    spec["concepts"][2]["examples"] = [{"id": "gd.synthetic-trace", "kind": "synthetic_numerical", "state_origin": "stipulated_scalar_states",
+        "artifact_excerpt": "| 0 | 4 | 4 | -1 | 3 |"}]
+    spec["visuals"] = [{"id": "gd.trajectory", "concept": "gd.c3", "section": chapter_titles[2],
+        "kind": "distribution", "objective": "Exact quadratic gradient descent trajectories", "data": curves,
+        "xlabel": "completed updates k", "ylabel": "state x_k", "units": "dimensionless synthetic quadratic",
+        "interpretation": "These deterministic synthetic trajectories illustrate the proved recurrence; they are not training experiments."}]
+    code = re.findall(r"```python\n(.*?)```", bodies[3], re.S)[0]
+    execution = {"level": "unit_tested", "command": "python examples/adaptive-composition/run.py (displayed block compiled and executed)",
+        "code": code, "code_hash": content_hash(code), "runtime": platform.python_version(), "dependencies": {"math": "Python standard library"},
+        "inputs": {"x": 4., "alpha": .25, "iterations": 12}, "stdout": "", "hardware": platform.machine(), "seed": "not used: deterministic",
+        "limitations": "Scalar CPU demonstration with assertions; no GPU, model inference, training or experimental reproduction."}
+    exec(compile(code, "published-example", "exec"), {})
+    spec["concepts"][3]["implementations"] = [{"id": "gd.implementation", "level": "end_to_end", "backend": "Python standard library",
+        "assumptions": ["objective x squared over two", "finite scalar inputs"], "claims_full_training_step": False, "execution": execution}]
+    spec["concepts"][3]["examples"] = [{"id": "gd.executed-example", "kind": "executable_demonstration", "state_origin": "scalar_execution",
+                                         "artifact_excerpt": code, "execution": execution}]
+    source_claim = "Python's math.isfinite accepts zero and rejects infinity and NaN."
+    bodies[3] += "\n" + source_claim + " See [the versioned Python documentation](https://docs.python.org/3.14/library/math.html#math.isfinite).\n"
+    snapshot = vault / ".scriptorium/evidence/python-math-3.14.txt"
+    snapshot.parent.mkdir(parents=True, exist_ok=True)
+    excerpt = "Return True if x is neither an infinity nor a NaN, and False otherwise. (Note that 0.0 is considered finite.)"
+    snapshot.write_bytes(("Python 3.14 documentation, math.isfinite; inspected 2026-11-21.\n" + excerpt + "\n").encode("utf-8"))
+    spec["concepts"][3]["claims"] = [{"id": "gd.python-source", "text": source_claim, "classification": "reported_source_claim", "origin": "reported",
+        "source": {"id": "https://docs.python.org/3.14/library/math.html#math.isfinite", "version": "Python 3.14 documentation",
+                   "location": "math.isfinite, return-value definition", "verification_method": "opened official versioned documentation and checked definition plus runtime boundaries",
+                   "status": "verified", "limits": "isfinite semantics only; not convergence evidence", "snapshot": snapshot.relative_to(vault).as_posix(),
+                   "excerpt": excerpt, "hash": content_hash(snapshot.read_bytes()), "origin": "official_documentation"}}]
+    assert math.isfinite(0.) and not math.isfinite(float("inf")) and not math.isfinite(float("nan"))
+    question_sets = [
+        [("conceptual", "Why is the negative derivative locally useful?", "Write the linear term f'(x)d.", "With d=-alpha f'(x), the linear term is -alpha[f'(x)]². It is negative for a nonzero derivative and positive alpha, but the neglected remainder still matters."),
+         ("numerical", "For x=4 and alpha=0.25, what are the new state and cost?", "Use the derivative x for this quadratic.", "The new state is 4-0.25(4)=3. The objective changes from 4²/2=8 to 3²/2=4.5."),
+         ("diagnosis", "Does a zero derivative certify a minimum?", "Compare a positive and a negative quadratic.", "No. At zero, both x²/2 and -x²/2 have zero derivative, but the second has a maximum. Curvature and the domain determine the conclusion."),
+         ("comparison", "Does steepest decrease depend on the chosen norm?", "The norm constrains the allowed displacements.", "Yes. The negative gradient gives steepest Euclidean first-order decrease per unit Euclidean displacement. A different geometry changes the constrained direction problem.")],
+        [("mathematical", "Derive the scalar contraction interval.", "Require |1-alpha|<1.", "For nonzero initialization, the exact state multiplier contracts when -1<1-alpha<1. Subtract one and reverse signs to obtain 0<alpha<2. The special initialization x0=0 stays fixed outside that interval too."),
+         ("numerical", "At alpha=1.5 and x0=4, find x1, x2 and the two costs.", "The multiplier is -0.5.", "x1=-2 and x2=1; their costs are 2 and 0.5. Signs alternate while magnitudes and cost decrease."),
+         ("diagnosis", "Why does alpha=2 fail to contract a nonzero initial state?", "Compute the state multiplier and its square.", "The state multiplier is -1, giving alternating states with constant magnitude. Its squared multiplier is 1, so the objective also remains constant."),
+         ("comparison", "Can this exact recurrence be used for every smooth objective?", "Identify what made the derivative equal x.", "No. The recurrence uses the exact quadratic derivative. A general smooth objective needs its own gradient and additional assumptions such as a Lipschitz gradient for a descent bound.")],
+        [("conceptual", "What does trace entry k represent?", "Distinguish initialization from updates.", "Entry zero is the initialization. Entry k is the state after k completed simultaneous updates, so K updates return K+1 entries."),
+         ("numerical", "Complete the alpha=0.25 trace after x=2.25.", "Evaluate the gradient at the old state.", "The gradient is 2.25 and displacement is -0.5625, giving next state 1.6875. Recomputing during coordinate writes would change a vector algorithm."),
+         ("diagnosis", "Can twelve finite iterates establish long-run convergence?", "Separate a finite observation from the multiplier proof.", "No. A divergent multiplier can produce finite outputs for many steps. The exact closed form and its contraction condition establish the long-run behavior for this quadratic."),
+         ("implementation", "How can final-state storage reduce memory?", "Which entries does a final-state client consume?", "Keep only the current scalar state and overwrite it after computing the gradient from the old value. This uses O(1) working storage while retaining O(K) arithmetic work.")],
+        [("implementation", "Why test the loop against a closed form?", "Consider two implementations with the same indexing mistake.", "A separately derived expression gives an independent numerical oracle. Repeating the loop in the test could reproduce the same error; list-length and boundary checks separately test semantics."),
+         ("numerical", "What should a zero-update request return for x=4?", "No update has been executed.", "The list is [4.0], with length one. Returning an empty list would lose the specified initialization entry."),
+         ("diagnosis", "Does passing isfinite imply a stable learning rate?", "Consider alpha=2.1 for a few iterations.", "No. Values can remain finite while growing in magnitude. isfinite detects infinity and NaN; stability follows from the mathematical multiplier condition."),
+         ("comparison", "Why use absolute tolerance near zero?", "Compare a nonzero tiny value to zero using relative tolerance only.", "A relative bound scales with the compared magnitudes and can reject every nonzero comparison to zero for tolerance below one. An appropriate absolute tolerance specifies the allowed near-zero error.")],
+        [("mathematical", "Why does lambda_max limit the SPD quadratic step?", "Require every eigen-direction multiplier to contract.", "Each positive eigenvalue requires 0<alpha<2/lambda_i. Intersecting these intervals yields 0<alpha<2/lambda_max; the eigenbasis reduction assumes a real symmetric positive definite Hessian."),
+         ("numerical", "For eigenvalues 1 and 100 and alpha=0.01, find both multipliers.", "Evaluate 1-alpha lambda_i.", "They are 0.99 and 0. The stiff coordinate disappears in one ideal update, while the first contracts by only one percent per step."),
+         ("diagnosis", "Do oscillating training logs prove an excessively large fixed step?", "The table analyzed an explicitly stated quadratic.", "No. That is one candidate cause under the quadratic model. Other objectives, stochastic noise and extra optimizer state require their own diagnostics and controlled evidence."),
+         ("comparison", "Does the balanced quadratic step prescribe a neural network learning rate?", "Check whether its Hessian is fixed, known and SPD.", "No. The derived 2/(lambda_min+lambda_max) result assumes a fixed positive definite quadratic and exact arithmetic. Those assumptions do not generally describe neural network training.")]]
+    spec["assessments"] = [{"id": f"gd.q{i}.{j}", "chapter": f"gd.ch{i}", "objectives": [f"gd.c{i}:objective:0"],
+                            "type": kind, "question": question, "hint": hint, "solution": solution}
+                           for i, questions in enumerate(question_sets, 1) for j, (kind, question, hint, solution) in enumerate(questions, 1)]
+    for question in spec["assessments"]:
+        chapter_number, item = map(int, question["id"].removeprefix("gd.q").split("."))
+        if item in ({1, 4} if chapter_number == 1 else {1, 4} if chapter_number == 3 else {3, 4}):
+            question["objectives"].append(subsidiary[chapter_number-1][0]+":objective:0")
+    spec["concepts"] = interleaved
     composition = build_composition(spec)
     drafts = {f"gd.ch{i}": body for i, body in enumerate(bodies, 1)}
+    drafts, renderer_results = prepare_composition(vault, composition, drafts)
     # Deterministic demo evidence is tied to derivations and executable checks,
     # not falsely presented as externally verified research.
     evidence = {o["id"]: {"source": "run.py authored quadratic derivations and assertions", "location": c["title"],
-                           "verified": True, "origin": "derived", "version": sys.version.split()[0], "checked_at": "2026-11-21"}
+                           "verified": True, "origin": "derived", "version": sys.version.split()[0], "checked_at": "2026-11-21",
+                           "claim": o["requirement"], "classification": "engineering_inference",
+                           "verification_method": "inspect bounded quadratic derivation, executed assertions and authored chapter",
+                           "limits": "Authored educational demonstration; not independent research or full-model reproduction."}
                 for c in composition["concepts"] for o in c["research_obligations"]}
-    for concept in composition["concepts"]:
-        for obligation in concept["research_obligations"]:
-            record = evidence[obligation["id"]]
-            if obligation["capability"] == "S01":
-                record.update(source="https://ocw.mit.edu/courses/6-7220j-nonlinear-optimization-spring-2025/mit6_7220_s25_lec12.pdf",
-                              location="L12.1, equation 1; gradient method definition checked against the original lecture", origin="primary_lecture")
-            elif obligation["capability"] == "S04":
-                record.update(source="https://docs.python.org/3/library/math.html", origin="official_docs_and_execution",
-                              location="math.isfinite / math.isclose; published code executed locally")
-    reviews = {"factual_accuracy": "Scope restricted to the explicitly defined quadratic; no empirical performance claims.",
-               "derivation_correctness": "Checked recurrence, induction, stability interval and SPD eigenbasis reduction; numerical checks executed.",
-               "reader_simulation": "Definitions precede symbols; trace states distinguished from updates; assumptions attached to extensions.",
-               "cross_chapter_coherence": "One running quadratic and notation; derivation, trace, implementation and limitations follow in order."}
-    # Execute the exact published Python block too.
-    import re
-    for code in re.findall(r"```python\n(.*?)```", "\n".join(bodies), re.S):
-        exec(compile(code, "published-example", "exec"), {})
-    result = publish_composition(vault, composition, drafts, evidence=evidence, reviews=reviews)
+    methods = {"factual_accuracy": "Review the explicit quadratic scope and the pinned Python isfinite excerpt.",
+               "derivation_correctness": "Expand exact polynomial identities; inspect induction and SPD assumptions; execute boundary checks.",
+               "reader_simulation": "Walk definitions, symbols, trace, questions and worked answers in order.",
+               "cross_chapter_coherence": "Trace the same quadratic and notation from motivation through implementation and limits."}
+    def receipt(chapter_ids, method):
+        return {"verifier": "authored demonstration reviewer (Codex)", "method": method, "result": "pass",
+                "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+                "evidence": [{"chapter": cid, "hash": content_hash(drafts[cid]), "excerpt": drafts[cid].splitlines()[4]}
+                             for cid in chapter_ids]}
+    reviews = {name: receipt(drafts, method) for name, method in methods.items()}
+    reviews["obligations"] = {o["id"]: receipt([o["owner"]], "Review requirement: " + o["deliverable"] + "; inspect corresponding chapter and scoped verifier result.")
+                              for o in composition["obligations"]}
+    # These are repository-owned demo files. Use reviewed current digests to update
+    # them; the CLI never infers overwrite authorization for a user's vault.
+    expected = {c["path"]: content_hash((vault/c["path"]).read_text(encoding="utf-8-sig"))
+                for c in composition["chapters"] if (vault/c["path"]).exists()}
+    if (vault/composition["moc_path"]).exists():
+        expected[composition["moc_path"]] = content_hash((vault/composition["moc_path"]).read_text(encoding="utf-8-sig"))
+    result = publish_composition(vault, composition, drafts, evidence=evidence, reviews=reviews, expected_hashes=expected)
     assert result["complete"], result.get("errors")
+    resumed = publish_composition(vault, composition, drafts, evidence=evidence, reviews=reviews)
+    assert resumed["complete"] and not resumed["written_paths"]
+    invalid = dict(reviews)
+    invalid["obligations"] = {**reviews["obligations"], "gd.quadratic-proof": {**reviews["obligations"]["gd.quadratic-proof"], "result": "fail"}}
+    refused = publish_composition(vault, composition, drafts, evidence=evidence, reviews=invalid)
+    assert not refused["complete"] and not refused["written_paths"]
+    # Measure a genuinely cold scope without deleting an existing vault cache.
+    with tempfile.TemporaryDirectory(prefix="scriptorium-integrity-") as temporary:
+        benchmark_vault = Path(temporary).resolve()
+        assert benchmark_vault.parent == Path(tempfile.gettempdir()).resolve()
+        benchmark_source = benchmark_vault/snapshot.relative_to(vault)
+        benchmark_source.parent.mkdir(parents=True, exist_ok=True)
+        benchmark_source.write_bytes(snapshot.read_bytes())
+        cold = publish_composition(benchmark_vault, composition, drafts, evidence=evidence, reviews=reviews)
+        warm = publish_composition(benchmark_vault, composition, drafts, evidence=evidence, reviews=reviews)
+        assert cold["complete"] and warm["complete"] and not warm["written_paths"]
+        assert cold["validation"]["metrics"]["cached_checks"] == 0
+        assert warm["validation"]["metrics"]["cached_checks"] == len(composition["obligations"])
+    context = compile_context(composition, ["gd.c1"])
     scenarios = []
     for topic, selected in [("Gradient Descent", ["S02", "S03", "S04", "S12", "S10"]),
                             ("Transformer Architecture", ["S05", "S02", "S13", "S06"]),
@@ -334,9 +461,14 @@ magnitude contracts every relevant direction.
                         "scenarios.json": scenarios,
                         "measurements.json": {"elapsed_seconds": time.perf_counter()-started, "files_in_topic": 6,
                             "published_python_blocks_executed": 1, "numeric_assertions_executed": True,
-                            "svg_assets_generated": len(figures), "all_capability_contract_bytes": len(json.dumps(capabilities()).encode()),
+                            "svg_assets_generated": len(figures) + len(renderer_results), "all_capability_contract_bytes": len(json.dumps(capabilities()).encode()),
                             "model_calls": 0, "retrieval_calls_in_runner": 0, "actual_model_tokens": None,
-                            "quality_comparison": "not measured", "baseline_pytest": {"passed": 355, "seconds": 104.61}}}.items():
+                            "quality_comparison": "not measured", "baseline_pytest": {"passed": 381, "seconds": 98.64},
+                            "validation": result["validation"]["metrics"], "cold_validation": cold["validation"]["metrics"],
+                            "warm_validation": warm["validation"]["metrics"],
+                            "repeat_written_paths": resumed["written_paths"], "false_completion_refused": not refused["complete"],
+                            "selected_context_estimated_tokens": context["tokens"]["total_processed_tokens"],
+                            "context_file_reads": context["context_file_reads"], "renderers": renderer_results}}.items():
         (HERE/name).write_text(json.dumps(value, indent=2, ensure_ascii=False)+"\n", encoding="utf-8")
     print(json.dumps({"complete": result["complete"], "written_paths": result["written_paths"], "scenarios": len(scenarios)}))
 

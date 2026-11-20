@@ -1,0 +1,4287 @@
+{
+  "complete": false,
+  "errors": [
+    "gd.quadratic-proof: review did not pass",
+    "gd.c2:objective:0: unresolved dependencies ['gd.quadratic-proof']",
+    "gd.c2:depth:mathematical: unresolved dependencies ['gd.c2:objective:0', 'gd.quadratic-proof']",
+    "gd.c2:depth:research: unresolved dependencies ['gd.c2:objective:0', 'gd.quadratic-proof']",
+    "gd.c2:capability:S01: unresolved dependencies ['gd.c2:objective:0', 'gd.quadratic-proof']",
+    "gd.c2:capability:S02: unresolved dependencies ['gd.c2:objective:0', 'gd.quadratic-proof']"
+  ],
+  "written_paths": [],
+  "validation": {
+    "complete": false,
+    "errors": [
+      "gd.quadratic-proof: review did not pass",
+      "gd.c2:objective:0: unresolved dependencies ['gd.quadratic-proof']",
+      "gd.c2:depth:mathematical: unresolved dependencies ['gd.c2:objective:0', 'gd.quadratic-proof']",
+      "gd.c2:depth:research: unresolved dependencies ['gd.c2:objective:0', 'gd.quadratic-proof']",
+      "gd.c2:capability:S01: unresolved dependencies ['gd.c2:objective:0', 'gd.quadratic-proof']",
+      "gd.c2:capability:S02: unresolved dependencies ['gd.c2:objective:0', 'gd.quadratic-proof']"
+    ],
+    "obligations": [
+      {
+        "id": "gd.c1:objective:0",
+        "concept": "gd.c1",
+        "owner": "gd.ch1",
+        "chapter": "6 - Full Notes/Gradient Descent/01 - Why Local Descent Works.md",
+        "section": "Why Local Descent Works",
+        "deliverable": "explain local descent",
+        "dependencies": [],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c1:objective:0"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c1:objective:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c1:depth:conceptual",
+        "concept": "gd.c1",
+        "owner": "gd.ch1",
+        "chapter": "6 - Full Notes/Gradient Descent/01 - Why Local Descent Works.md",
+        "section": "Why Local Descent Works",
+        "deliverable": "Level 2: explain the mechanism, prerequisite bridge and limits",
+        "dependencies": [
+          "gd.c1:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c1:depth:conceptual"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c1:depth:conceptual",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c1:depth:research",
+        "concept": "gd.c1",
+        "owner": "gd.ch1",
+        "chapter": "6 - Full Notes/Gradient Descent/01 - Why Local Descent Works.md",
+        "section": "Why Local Descent Works",
+        "deliverable": "Level 1: attach claim-level evidence with source scope, uncertainty and version",
+        "dependencies": [
+          "gd.c1:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c1:depth:research"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c1:depth:research",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c1:capability:S01",
+        "concept": "gd.c1",
+        "owner": "gd.ch1",
+        "chapter": "6 - Full Notes/Gradient Descent/01 - Why Local Descent Works.md",
+        "section": "Why Local Descent Works",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "gd.c1:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c1:capability:S01"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c1:capability:S01",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c1:S01:0",
+        "concept": "gd.c1",
+        "owner": "gd.ch1",
+        "chapter": "6 - Full Notes/Gradient Descent/01 - Why Local Descent Works.md",
+        "section": "Why Local Descent Works",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c1:S01:0"
+        ],
+        "validation": {
+          "verifier": "KCP/research_record",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c1:S01:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c1:term:0",
+        "concept": "gd.c1",
+        "owner": "gd.ch1",
+        "chapter": "6 - Full Notes/Gradient Descent/01 - Why Local Descent Works.md",
+        "section": "Why Local Descent Works",
+        "deliverable": "Define derivative before use",
+        "dependencies": [],
+        "verifier": "terminology",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c1:term:0"
+        ],
+        "validation": {
+          "verifier": "KCP/terminology",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c1:term:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.direction:objective:0",
+        "concept": "gd.direction",
+        "owner": "gd.ch1",
+        "chapter": "6 - Full Notes/Gradient Descent/01 - Why Local Descent Works.md",
+        "section": "Why Local Descent Works",
+        "deliverable": "explain why local direction and finite step length differ",
+        "dependencies": [],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.direction:objective:0"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.direction:objective:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.direction:depth:conceptual",
+        "concept": "gd.direction",
+        "owner": "gd.ch1",
+        "chapter": "6 - Full Notes/Gradient Descent/01 - Why Local Descent Works.md",
+        "section": "Why Local Descent Works",
+        "deliverable": "Level 2: explain the mechanism, prerequisite bridge and limits",
+        "dependencies": [
+          "gd.direction:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.direction:depth:conceptual"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.direction:depth:conceptual",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.direction:capability:S01",
+        "concept": "gd.direction",
+        "owner": "gd.ch1",
+        "chapter": "6 - Full Notes/Gradient Descent/01 - Why Local Descent Works.md",
+        "section": "Why Local Descent Works",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "gd.direction:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.direction:capability:S01"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.direction:capability:S01",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.direction:S01:0",
+        "concept": "gd.direction",
+        "owner": "gd.ch1",
+        "chapter": "6 - Full Notes/Gradient Descent/01 - Why Local Descent Works.md",
+        "section": "Why Local Descent Works",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.direction:S01:0"
+        ],
+        "validation": {
+          "verifier": "KCP/research_record",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.direction:S01:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c2:objective:0",
+        "concept": "gd.c2",
+        "owner": "gd.ch2",
+        "chapter": "6 - Full Notes/Gradient Descent/02 - Deriving the Update and Its Limits.md",
+        "section": "Deriving the Update and Its Limits",
+        "deliverable": "derive the stability condition",
+        "dependencies": [
+          "gd.quadratic-proof"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "blocked",
+        "evidence": [
+          "reviews.obligations.gd.c2:objective:0"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "blocked",
+          "evidence": "reviews.obligations.gd.c2:objective:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [
+            "unresolved dependencies: ['gd.quadratic-proof']"
+          ],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified",
+          "blocked"
+        ]
+      },
+      {
+        "id": "gd.c2:depth:mathematical",
+        "concept": "gd.c2",
+        "owner": "gd.ch2",
+        "chapter": "6 - Full Notes/Gradient Descent/02 - Deriving the Update and Its Limits.md",
+        "section": "Deriving the Update and Its Limits",
+        "deliverable": "Level 3: state assumptions and show intermediate derivation with boundary checks",
+        "dependencies": [
+          "gd.c2:objective:0",
+          "gd.quadratic-proof"
+        ],
+        "verifier": "review",
+        "domain": "mathematical",
+        "severity": "critical",
+        "status": "blocked",
+        "evidence": [
+          "reviews.obligations.gd.c2:depth:mathematical"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "blocked",
+          "evidence": "reviews.obligations.gd.c2:depth:mathematical",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [
+            "unresolved dependencies: ['gd.c2:objective:0', 'gd.quadratic-proof']"
+          ],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified",
+          "blocked"
+        ]
+      },
+      {
+        "id": "gd.c2:depth:research",
+        "concept": "gd.c2",
+        "owner": "gd.ch2",
+        "chapter": "6 - Full Notes/Gradient Descent/02 - Deriving the Update and Its Limits.md",
+        "section": "Deriving the Update and Its Limits",
+        "deliverable": "Level 1: attach claim-level evidence with source scope, uncertainty and version",
+        "dependencies": [
+          "gd.c2:objective:0",
+          "gd.quadratic-proof"
+        ],
+        "verifier": "review",
+        "domain": "research",
+        "severity": "critical",
+        "status": "blocked",
+        "evidence": [
+          "reviews.obligations.gd.c2:depth:research"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "blocked",
+          "evidence": "reviews.obligations.gd.c2:depth:research",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [
+            "unresolved dependencies: ['gd.c2:objective:0', 'gd.quadratic-proof']"
+          ],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified",
+          "blocked"
+        ]
+      },
+      {
+        "id": "gd.c2:capability:S01",
+        "concept": "gd.c2",
+        "owner": "gd.ch2",
+        "chapter": "6 - Full Notes/Gradient Descent/02 - Deriving the Update and Its Limits.md",
+        "section": "Deriving the Update and Its Limits",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "gd.c2:objective:0",
+          "gd.quadratic-proof"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "blocked",
+        "evidence": [
+          "reviews.obligations.gd.c2:capability:S01"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "blocked",
+          "evidence": "reviews.obligations.gd.c2:capability:S01",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [
+            "unresolved dependencies: ['gd.c2:objective:0', 'gd.quadratic-proof']"
+          ],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified",
+          "blocked"
+        ]
+      },
+      {
+        "id": "gd.c2:capability:S02",
+        "concept": "gd.c2",
+        "owner": "gd.ch2",
+        "chapter": "6 - Full Notes/Gradient Descent/02 - Deriving the Update and Its Limits.md",
+        "section": "Deriving the Update and Its Limits",
+        "deliverable": "Deliver the active S02 technical contributions",
+        "dependencies": [
+          "gd.c2:objective:0",
+          "gd.quadratic-proof"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "blocked",
+        "evidence": [
+          "reviews.obligations.gd.c2:capability:S02"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "blocked",
+          "evidence": "reviews.obligations.gd.c2:capability:S02",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [
+            "unresolved dependencies: ['gd.c2:objective:0', 'gd.quadratic-proof']"
+          ],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified",
+          "blocked"
+        ]
+      },
+      {
+        "id": "gd.c2:S01:0",
+        "concept": "gd.c2",
+        "owner": "gd.ch2",
+        "chapter": "6 - Full Notes/Gradient Descent/02 - Deriving the Update and Its Limits.md",
+        "section": "Deriving the Update and Its Limits",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c2:S01:0"
+        ],
+        "validation": {
+          "verifier": "KCP/research_record",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c2:S01:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c2:S02:0",
+        "concept": "gd.c2",
+        "owner": "gd.ch2",
+        "chapter": "6 - Full Notes/Gradient Descent/02 - Deriving the Update and Its Limits.md",
+        "section": "Deriving the Update and Its Limits",
+        "deliverable": "formulation and assumptions",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c2:S02:0"
+        ],
+        "validation": {
+          "verifier": "KCP/research_record",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c2:S02:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.quadratic-proof",
+        "concept": "gd.c2",
+        "owner": "gd.ch2",
+        "chapter": "6 - Full Notes/Gradient Descent/02 - Deriving the Update and Its Limits.md",
+        "section": "Deriving the Update and Its Limits",
+        "deliverable": "The final equality is not an approximation for this objective.",
+        "dependencies": [],
+        "verifier": "proof",
+        "domain": "mathematical",
+        "severity": "critical",
+        "status": "generated",
+        "evidence": [
+          "reviews.obligations.gd.quadratic-proof"
+        ],
+        "validation": {
+          "verifier": "KCP/proof",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "fail",
+          "evidence": "reviews.obligations.gd.quadratic-proof",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [
+            "review did not pass"
+          ],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated"
+        ]
+      },
+      {
+        "id": "gd.boundary:objective:0",
+        "concept": "gd.boundary",
+        "owner": "gd.ch2",
+        "chapter": "6 - Full Notes/Gradient Descent/02 - Deriving the Update and Its Limits.md",
+        "section": "Deriving the Update and Its Limits",
+        "deliverable": "explain stability boundaries and the zero initialization exception",
+        "dependencies": [],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.boundary:objective:0"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.boundary:objective:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.boundary:depth:conceptual",
+        "concept": "gd.boundary",
+        "owner": "gd.ch2",
+        "chapter": "6 - Full Notes/Gradient Descent/02 - Deriving the Update and Its Limits.md",
+        "section": "Deriving the Update and Its Limits",
+        "deliverable": "Level 2: explain the mechanism, prerequisite bridge and limits",
+        "dependencies": [
+          "gd.boundary:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.boundary:depth:conceptual"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.boundary:depth:conceptual",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.boundary:capability:S01",
+        "concept": "gd.boundary",
+        "owner": "gd.ch2",
+        "chapter": "6 - Full Notes/Gradient Descent/02 - Deriving the Update and Its Limits.md",
+        "section": "Deriving the Update and Its Limits",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "gd.boundary:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.boundary:capability:S01"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.boundary:capability:S01",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.boundary:S01:0",
+        "concept": "gd.boundary",
+        "owner": "gd.ch2",
+        "chapter": "6 - Full Notes/Gradient Descent/02 - Deriving the Update and Its Limits.md",
+        "section": "Deriving the Update and Its Limits",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.boundary:S01:0"
+        ],
+        "validation": {
+          "verifier": "KCP/research_record",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.boundary:S01:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c3:objective:0",
+        "concept": "gd.c3",
+        "owner": "gd.ch3",
+        "chapter": "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md",
+        "section": "Tracing the Algorithm",
+        "deliverable": "trace scalar states",
+        "dependencies": [],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c3:objective:0"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c3:objective:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c3:depth:algorithmic",
+        "concept": "gd.c3",
+        "owner": "gd.ch3",
+        "chapter": "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md",
+        "section": "Tracing the Algorithm",
+        "deliverable": "Level 3: trace actual algorithm state, invariants and termination",
+        "dependencies": [
+          "gd.c3:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c3:depth:algorithmic"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c3:depth:algorithmic",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c3:depth:research",
+        "concept": "gd.c3",
+        "owner": "gd.ch3",
+        "chapter": "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md",
+        "section": "Tracing the Algorithm",
+        "deliverable": "Level 1: attach claim-level evidence with source scope, uncertainty and version",
+        "dependencies": [
+          "gd.c3:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c3:depth:research"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c3:depth:research",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c3:capability:S01",
+        "concept": "gd.c3",
+        "owner": "gd.ch3",
+        "chapter": "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md",
+        "section": "Tracing the Algorithm",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "gd.c3:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c3:capability:S01"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c3:capability:S01",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c3:capability:S03",
+        "concept": "gd.c3",
+        "owner": "gd.ch3",
+        "chapter": "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md",
+        "section": "Tracing the Algorithm",
+        "deliverable": "Deliver the active S03 technical contributions",
+        "dependencies": [
+          "gd.c3:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c3:capability:S03"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c3:capability:S03",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c3:capability:S09",
+        "concept": "gd.c3",
+        "owner": "gd.ch3",
+        "chapter": "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md",
+        "section": "Tracing the Algorithm",
+        "deliverable": "Deliver the active S09 technical contributions",
+        "dependencies": [
+          "gd.c3:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c3:capability:S09"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c3:capability:S09",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c3:capability:S12",
+        "concept": "gd.c3",
+        "owner": "gd.ch3",
+        "chapter": "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md",
+        "section": "Tracing the Algorithm",
+        "deliverable": "Deliver the active S12 technical contributions",
+        "dependencies": [
+          "gd.c3:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c3:capability:S12"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c3:capability:S12",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c3:S01:0",
+        "concept": "gd.c3",
+        "owner": "gd.ch3",
+        "chapter": "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md",
+        "section": "Tracing the Algorithm",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c3:S01:0"
+        ],
+        "validation": {
+          "verifier": "KCP/research_record",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c3:S01:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c3:S03:0",
+        "concept": "gd.c3",
+        "owner": "gd.ch3",
+        "chapter": "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md",
+        "section": "Tracing the Algorithm",
+        "deliverable": "algorithm specification",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c3:S03:0"
+        ],
+        "validation": {
+          "verifier": "KCP/research_record",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c3:S03:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c3:S09:0",
+        "concept": "gd.c3",
+        "owner": "gd.ch3",
+        "chapter": "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md",
+        "section": "Tracing the Algorithm",
+        "deliverable": "reproducible calculation",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c3:S09:0"
+        ],
+        "validation": {
+          "verifier": "KCP/research_record",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c3:S09:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c3:S12:0",
+        "concept": "gd.c3",
+        "owner": "gd.ch3",
+        "chapter": "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md",
+        "section": "Tracing the Algorithm",
+        "deliverable": "equation, data, or verified structure",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c3:S12:0"
+        ],
+        "validation": {
+          "verifier": "KCP/research_record",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c3:S12:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.synthetic-trace",
+        "concept": "gd.c3",
+        "owner": "gd.ch3",
+        "chapter": "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md",
+        "section": "Tracing the Algorithm",
+        "deliverable": "examples",
+        "dependencies": [],
+        "verifier": "example",
+        "domain": "computational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.synthetic-trace"
+        ],
+        "validation": {
+          "verifier": "KCP/example",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.synthetic-trace",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.trace-cost",
+        "concept": "gd.c3",
+        "owner": "gd.ch3",
+        "chapter": "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md",
+        "section": "Tracing the Algorithm",
+        "deliverable": "costs",
+        "dependencies": [],
+        "verifier": "cost",
+        "domain": "computational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.trace-cost"
+        ],
+        "validation": {
+          "verifier": "KCP/cost",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.trace-cost",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c3:visual-opportunity",
+        "concept": "gd.c3",
+        "owner": "gd.ch3",
+        "chapter": "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md",
+        "section": "Tracing the Algorithm",
+        "deliverable": "Review visual learning difficulty and placement",
+        "dependencies": [],
+        "verifier": "visual_review",
+        "domain": "visual",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c3:visual-opportunity"
+        ],
+        "validation": {
+          "verifier": "KCP/visual_review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c3:visual-opportunity",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.trace:objective:0",
+        "concept": "gd.trace",
+        "owner": "gd.ch3",
+        "chapter": "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md",
+        "section": "Tracing the Algorithm",
+        "deliverable": "explain trace indexing and the storage tradeoff",
+        "dependencies": [],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.trace:objective:0"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.trace:objective:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.trace:depth:conceptual",
+        "concept": "gd.trace",
+        "owner": "gd.ch3",
+        "chapter": "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md",
+        "section": "Tracing the Algorithm",
+        "deliverable": "Level 2: explain the mechanism, prerequisite bridge and limits",
+        "dependencies": [
+          "gd.trace:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.trace:depth:conceptual"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.trace:depth:conceptual",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.trace:capability:S01",
+        "concept": "gd.trace",
+        "owner": "gd.ch3",
+        "chapter": "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md",
+        "section": "Tracing the Algorithm",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "gd.trace:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.trace:capability:S01"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.trace:capability:S01",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.trace:S01:0",
+        "concept": "gd.trace",
+        "owner": "gd.ch3",
+        "chapter": "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md",
+        "section": "Tracing the Algorithm",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.trace:S01:0"
+        ],
+        "validation": {
+          "verifier": "KCP/research_record",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.trace:S01:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c4:objective:0",
+        "concept": "gd.c4",
+        "owner": "gd.ch4",
+        "chapter": "6 - Full Notes/Gradient Descent/04 - Implementing and Testing Descent.md",
+        "section": "Implementing and Testing Descent",
+        "deliverable": "implement reproducible descent",
+        "dependencies": [
+          "gd.python-source"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c4:objective:0"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c4:objective:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c4:depth:implementation",
+        "concept": "gd.c4",
+        "owner": "gd.ch4",
+        "chapter": "6 - Full Notes/Gradient Descent/04 - Implementing and Testing Descent.md",
+        "section": "Implementing and Testing Descent",
+        "deliverable": "Level 3: state backend, input/output contract, executable path and testing level",
+        "dependencies": [
+          "gd.c4:objective:0",
+          "gd.python-source"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c4:depth:implementation"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c4:depth:implementation",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c4:depth:research",
+        "concept": "gd.c4",
+        "owner": "gd.ch4",
+        "chapter": "6 - Full Notes/Gradient Descent/04 - Implementing and Testing Descent.md",
+        "section": "Implementing and Testing Descent",
+        "deliverable": "Level 1: attach claim-level evidence with source scope, uncertainty and version",
+        "dependencies": [
+          "gd.c4:objective:0",
+          "gd.python-source"
+        ],
+        "verifier": "review",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c4:depth:research"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c4:depth:research",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c4:capability:S01",
+        "concept": "gd.c4",
+        "owner": "gd.ch4",
+        "chapter": "6 - Full Notes/Gradient Descent/04 - Implementing and Testing Descent.md",
+        "section": "Implementing and Testing Descent",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "gd.c4:objective:0",
+          "gd.python-source"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c4:capability:S01"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c4:capability:S01",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c4:capability:S03",
+        "concept": "gd.c4",
+        "owner": "gd.ch4",
+        "chapter": "6 - Full Notes/Gradient Descent/04 - Implementing and Testing Descent.md",
+        "section": "Implementing and Testing Descent",
+        "deliverable": "Deliver the active S03 technical contributions",
+        "dependencies": [
+          "gd.c4:objective:0",
+          "gd.python-source"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c4:capability:S03"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c4:capability:S03",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c4:capability:S04",
+        "concept": "gd.c4",
+        "owner": "gd.ch4",
+        "chapter": "6 - Full Notes/Gradient Descent/04 - Implementing and Testing Descent.md",
+        "section": "Implementing and Testing Descent",
+        "deliverable": "Deliver the active S04 technical contributions",
+        "dependencies": [
+          "gd.c4:objective:0",
+          "gd.python-source"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c4:capability:S04"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c4:capability:S04",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c4:S01:0",
+        "concept": "gd.c4",
+        "owner": "gd.ch4",
+        "chapter": "6 - Full Notes/Gradient Descent/04 - Implementing and Testing Descent.md",
+        "section": "Implementing and Testing Descent",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c4:S01:0"
+        ],
+        "validation": {
+          "verifier": "KCP/research_record",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c4:S01:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c4:S03:0",
+        "concept": "gd.c4",
+        "owner": "gd.ch4",
+        "chapter": "6 - Full Notes/Gradient Descent/04 - Implementing and Testing Descent.md",
+        "section": "Implementing and Testing Descent",
+        "deliverable": "algorithm specification",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c4:S03:0"
+        ],
+        "validation": {
+          "verifier": "KCP/research_record",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c4:S03:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c4:S04:0",
+        "concept": "gd.c4",
+        "owner": "gd.ch4",
+        "chapter": "6 - Full Notes/Gradient Descent/04 - Implementing and Testing Descent.md",
+        "section": "Implementing and Testing Descent",
+        "deliverable": "versioned official API or algorithm",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c4:S04:0"
+        ],
+        "validation": {
+          "verifier": "KCP/research_record",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c4:S04:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.python-source",
+        "concept": "gd.c4",
+        "owner": "gd.ch4",
+        "chapter": "6 - Full Notes/Gradient Descent/04 - Implementing and Testing Descent.md",
+        "section": "Implementing and Testing Descent",
+        "deliverable": "Python's math.isfinite accepts zero and rejects infinity and NaN.",
+        "dependencies": [],
+        "verifier": "claim",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.python-source"
+        ],
+        "validation": {
+          "verifier": "KCP/claim",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.python-source",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.executed-example",
+        "concept": "gd.c4",
+        "owner": "gd.ch4",
+        "chapter": "6 - Full Notes/Gradient Descent/04 - Implementing and Testing Descent.md",
+        "section": "Implementing and Testing Descent",
+        "deliverable": "examples",
+        "dependencies": [],
+        "verifier": "example",
+        "domain": "computational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.executed-example"
+        ],
+        "validation": {
+          "verifier": "KCP/example",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.executed-example",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.implementation",
+        "concept": "gd.c4",
+        "owner": "gd.ch4",
+        "chapter": "6 - Full Notes/Gradient Descent/04 - Implementing and Testing Descent.md",
+        "section": "Implementing and Testing Descent",
+        "deliverable": "implementations",
+        "dependencies": [],
+        "verifier": "implementation",
+        "domain": "computational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.implementation"
+        ],
+        "validation": {
+          "verifier": "KCP/implementation",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.implementation",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.tolerance:objective:0",
+        "concept": "gd.tolerance",
+        "owner": "gd.ch4",
+        "chapter": "6 - Full Notes/Gradient Descent/04 - Implementing and Testing Descent.md",
+        "section": "Implementing and Testing Descent",
+        "deliverable": "explain finite-value checks and numerical tolerance",
+        "dependencies": [],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.tolerance:objective:0"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.tolerance:objective:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.tolerance:depth:conceptual",
+        "concept": "gd.tolerance",
+        "owner": "gd.ch4",
+        "chapter": "6 - Full Notes/Gradient Descent/04 - Implementing and Testing Descent.md",
+        "section": "Implementing and Testing Descent",
+        "deliverable": "Level 2: explain the mechanism, prerequisite bridge and limits",
+        "dependencies": [
+          "gd.tolerance:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.tolerance:depth:conceptual"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.tolerance:depth:conceptual",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.tolerance:capability:S01",
+        "concept": "gd.tolerance",
+        "owner": "gd.ch4",
+        "chapter": "6 - Full Notes/Gradient Descent/04 - Implementing and Testing Descent.md",
+        "section": "Implementing and Testing Descent",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "gd.tolerance:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.tolerance:capability:S01"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.tolerance:capability:S01",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.tolerance:S01:0",
+        "concept": "gd.tolerance",
+        "owner": "gd.ch4",
+        "chapter": "6 - Full Notes/Gradient Descent/04 - Implementing and Testing Descent.md",
+        "section": "Implementing and Testing Descent",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.tolerance:S01:0"
+        ],
+        "validation": {
+          "verifier": "KCP/research_record",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.tolerance:S01:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c5:objective:0",
+        "concept": "gd.c5",
+        "owner": "gd.ch5",
+        "chapter": "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md",
+        "section": "Curvature and Failure Analysis",
+        "deliverable": "analyze curvature and boundaries",
+        "dependencies": [],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c5:objective:0"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c5:objective:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c5:depth:research",
+        "concept": "gd.c5",
+        "owner": "gd.ch5",
+        "chapter": "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md",
+        "section": "Curvature and Failure Analysis",
+        "deliverable": "Level 1: attach claim-level evidence with source scope, uncertainty and version",
+        "dependencies": [
+          "gd.c5:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c5:depth:research"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c5:depth:research",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c5:depth:analytical",
+        "concept": "gd.c5",
+        "owner": "gd.ch5",
+        "chapter": "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md",
+        "section": "Curvature and Failure Analysis",
+        "deliverable": "Level 3: compare assumptions, alternatives, failure diagnostics and downstream effects",
+        "dependencies": [
+          "gd.c5:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c5:depth:analytical"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c5:depth:analytical",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c5:capability:S01",
+        "concept": "gd.c5",
+        "owner": "gd.ch5",
+        "chapter": "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md",
+        "section": "Curvature and Failure Analysis",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "gd.c5:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c5:capability:S01"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c5:capability:S01",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c5:capability:S10",
+        "concept": "gd.c5",
+        "owner": "gd.ch5",
+        "chapter": "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md",
+        "section": "Curvature and Failure Analysis",
+        "deliverable": "Deliver the active S10 technical contributions",
+        "dependencies": [
+          "gd.c5:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c5:capability:S10"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c5:capability:S10",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c5:capability:S03",
+        "concept": "gd.c5",
+        "owner": "gd.ch5",
+        "chapter": "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md",
+        "section": "Curvature and Failure Analysis",
+        "deliverable": "Deliver the active S03 technical contributions",
+        "dependencies": [
+          "gd.c5:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c5:capability:S03"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c5:capability:S03",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c5:capability:S17",
+        "concept": "gd.c5",
+        "owner": "gd.ch5",
+        "chapter": "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md",
+        "section": "Curvature and Failure Analysis",
+        "deliverable": "Deliver the active S17 technical contributions",
+        "dependencies": [
+          "gd.c5:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c5:capability:S17"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c5:capability:S17",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c5:capability:S13",
+        "concept": "gd.c5",
+        "owner": "gd.ch5",
+        "chapter": "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md",
+        "section": "Curvature and Failure Analysis",
+        "deliverable": "Deliver the active S13 technical contributions",
+        "dependencies": [
+          "gd.c5:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c5:capability:S13"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c5:capability:S13",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c5:capability:S14",
+        "concept": "gd.c5",
+        "owner": "gd.ch5",
+        "chapter": "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md",
+        "section": "Curvature and Failure Analysis",
+        "deliverable": "Deliver the active S14 technical contributions",
+        "dependencies": [
+          "gd.c5:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c5:capability:S14"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c5:capability:S14",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c5:S01:0",
+        "concept": "gd.c5",
+        "owner": "gd.ch5",
+        "chapter": "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md",
+        "section": "Curvature and Failure Analysis",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c5:S01:0"
+        ],
+        "validation": {
+          "verifier": "KCP/research_record",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c5:S01:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c5:S10:0",
+        "concept": "gd.c5",
+        "owner": "gd.ch5",
+        "chapter": "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md",
+        "section": "Curvature and Failure Analysis",
+        "deliverable": "failure mechanism",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c5:S10:0"
+        ],
+        "validation": {
+          "verifier": "KCP/research_record",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c5:S10:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c5:S03:0",
+        "concept": "gd.c5",
+        "owner": "gd.ch5",
+        "chapter": "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md",
+        "section": "Curvature and Failure Analysis",
+        "deliverable": "algorithm specification",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c5:S03:0"
+        ],
+        "validation": {
+          "verifier": "KCP/research_record",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c5:S03:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c5:S17:0",
+        "concept": "gd.c5",
+        "owner": "gd.ch5",
+        "chapter": "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md",
+        "section": "Curvature and Failure Analysis",
+        "deliverable": "complexity and convergence conditions",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c5:S17:0"
+        ],
+        "validation": {
+          "verifier": "KCP/research_record",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c5:S17:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c5:S13:0",
+        "concept": "gd.c5",
+        "owner": "gd.ch5",
+        "chapter": "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md",
+        "section": "Curvature and Failure Analysis",
+        "deliverable": "row evidence",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c5:S13:0"
+        ],
+        "validation": {
+          "verifier": "KCP/research_record",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c5:S13:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.c5:S14:0",
+        "concept": "gd.c5",
+        "owner": "gd.ch5",
+        "chapter": "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md",
+        "section": "Curvature and Failure Analysis",
+        "deliverable": "cross-source consistency",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.c5:S14:0"
+        ],
+        "validation": {
+          "verifier": "KCP/research_record",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.c5:S14:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.instability-diagnosis",
+        "concept": "gd.c5",
+        "owner": "gd.ch5",
+        "chapter": "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md",
+        "section": "Curvature and Failure Analysis",
+        "deliverable": "failures",
+        "dependencies": [],
+        "verifier": "failure",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.instability-diagnosis"
+        ],
+        "validation": {
+          "verifier": "KCP/failure",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.instability-diagnosis",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.spectrum:objective:0",
+        "concept": "gd.spectrum",
+        "owner": "gd.ch5",
+        "chapter": "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md",
+        "section": "Curvature and Failure Analysis",
+        "deliverable": "explain spectral spread and the limits of symptom-based diagnosis",
+        "dependencies": [],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.spectrum:objective:0"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.spectrum:objective:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.spectrum:depth:conceptual",
+        "concept": "gd.spectrum",
+        "owner": "gd.ch5",
+        "chapter": "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md",
+        "section": "Curvature and Failure Analysis",
+        "deliverable": "Level 2: explain the mechanism, prerequisite bridge and limits",
+        "dependencies": [
+          "gd.spectrum:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.spectrum:depth:conceptual"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.spectrum:depth:conceptual",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.spectrum:capability:S01",
+        "concept": "gd.spectrum",
+        "owner": "gd.ch5",
+        "chapter": "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md",
+        "section": "Curvature and Failure Analysis",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "gd.spectrum:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.spectrum:capability:S01"
+        ],
+        "validation": {
+          "verifier": "KCP/review",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.spectrum:capability:S01",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.spectrum:S01:0",
+        "concept": "gd.spectrum",
+        "owner": "gd.ch5",
+        "chapter": "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md",
+        "section": "Curvature and Failure Analysis",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.spectrum:S01:0"
+        ],
+        "validation": {
+          "verifier": "KCP/research_record",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.spectrum:S01:0",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.trajectory",
+        "concept": "gd.c3",
+        "owner": "gd.ch3",
+        "chapter": "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md",
+        "section": "Tracing the Algorithm",
+        "deliverable": "Exact quadratic gradient descent trajectories",
+        "dependencies": [],
+        "verifier": "visual",
+        "domain": "visual",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.trajectory"
+        ],
+        "validation": {
+          "verifier": "KCP/visual",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.trajectory",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.ch1:assessment",
+        "concept": "gd.c1",
+        "owner": "gd.ch1",
+        "chapter": "6 - Full Notes/Gradient Descent/01 - Why Local Descent Works.md",
+        "section": "Why Local Descent Works",
+        "deliverable": "Four to five diverse final questions, hints, solutions and objective coverage",
+        "dependencies": [
+          "gd.direction:objective:0"
+        ],
+        "verifier": "assessment",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.ch1:assessment"
+        ],
+        "validation": {
+          "verifier": "KCP/assessment",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.ch1:assessment",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.ch2:assessment",
+        "concept": "gd.c2",
+        "owner": "gd.ch2",
+        "chapter": "6 - Full Notes/Gradient Descent/02 - Deriving the Update and Its Limits.md",
+        "section": "Deriving the Update and Its Limits",
+        "deliverable": "Four to five diverse final questions, hints, solutions and objective coverage",
+        "dependencies": [
+          "gd.boundary:objective:0"
+        ],
+        "verifier": "assessment",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.ch2:assessment"
+        ],
+        "validation": {
+          "verifier": "KCP/assessment",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.ch2:assessment",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.ch3:assessment",
+        "concept": "gd.c3",
+        "owner": "gd.ch3",
+        "chapter": "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md",
+        "section": "Tracing the Algorithm",
+        "deliverable": "Four to five diverse final questions, hints, solutions and objective coverage",
+        "dependencies": [
+          "gd.trace:objective:0"
+        ],
+        "verifier": "assessment",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.ch3:assessment"
+        ],
+        "validation": {
+          "verifier": "KCP/assessment",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.ch3:assessment",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.ch4:assessment",
+        "concept": "gd.c4",
+        "owner": "gd.ch4",
+        "chapter": "6 - Full Notes/Gradient Descent/04 - Implementing and Testing Descent.md",
+        "section": "Implementing and Testing Descent",
+        "deliverable": "Four to five diverse final questions, hints, solutions and objective coverage",
+        "dependencies": [
+          "gd.tolerance:objective:0"
+        ],
+        "verifier": "assessment",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.ch4:assessment"
+        ],
+        "validation": {
+          "verifier": "KCP/assessment",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.ch4:assessment",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      },
+      {
+        "id": "gd.ch5:assessment",
+        "concept": "gd.c5",
+        "owner": "gd.ch5",
+        "chapter": "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md",
+        "section": "Curvature and Failure Analysis",
+        "deliverable": "Four to five diverse final questions, hints, solutions and objective coverage",
+        "dependencies": [
+          "gd.spectrum:objective:0"
+        ],
+        "verifier": "assessment",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "verified",
+        "evidence": [
+          "reviews.obligations.gd.ch5:assessment"
+        ],
+        "validation": {
+          "verifier": "KCP/assessment",
+          "method": "scoped deterministic checks plus artifact-bound review",
+          "result": "pass",
+          "evidence": "reviews.obligations.gd.ch5:assessment",
+          "limitations": "Checks validate explicit contracts; source entailment and open-ended teaching require review.",
+          "errors": [],
+          "cached": true
+        },
+        "status_history": [
+          "planned",
+          "ready",
+          "generated",
+          "verified"
+        ]
+      }
+    ],
+    "outcomes": {
+      "structural": {
+        "status": "pass",
+        "method": "YAML, sections, fences, links, assets and expected digests"
+      },
+      "computational": {
+        "status": "pass",
+        "obligations": [
+          "gd.synthetic-trace",
+          "gd.trace-cost",
+          "gd.executed-example",
+          "gd.implementation"
+        ]
+      },
+      "mathematical": {
+        "status": "fail",
+        "obligations": [
+          "gd.c2:depth:mathematical",
+          "gd.quadratic-proof"
+        ]
+      },
+      "research": {
+        "status": "fail",
+        "obligations": [
+          "gd.c1:depth:research",
+          "gd.c1:S01:0",
+          "gd.direction:S01:0",
+          "gd.c2:depth:research",
+          "gd.c2:S01:0",
+          "gd.c2:S02:0",
+          "gd.boundary:S01:0",
+          "gd.c3:depth:research",
+          "gd.c3:S01:0",
+          "gd.c3:S03:0",
+          "gd.c3:S09:0",
+          "gd.c3:S12:0",
+          "gd.trace:S01:0",
+          "gd.c4:depth:research",
+          "gd.c4:S01:0",
+          "gd.c4:S03:0",
+          "gd.c4:S04:0",
+          "gd.python-source",
+          "gd.tolerance:S01:0",
+          "gd.c5:depth:research",
+          "gd.c5:S01:0",
+          "gd.c5:S10:0",
+          "gd.c5:S03:0",
+          "gd.c5:S17:0",
+          "gd.c5:S13:0",
+          "gd.c5:S14:0",
+          "gd.spectrum:S01:0"
+        ]
+      },
+      "visual": {
+        "status": "pass",
+        "obligations": [
+          "gd.c3:visual-opportunity",
+          "gd.trajectory"
+        ]
+      },
+      "educational": {
+        "status": "fail",
+        "obligations": [
+          "gd.c1:objective:0",
+          "gd.c1:depth:conceptual",
+          "gd.c1:capability:S01",
+          "gd.c1:term:0",
+          "gd.direction:objective:0",
+          "gd.direction:depth:conceptual",
+          "gd.direction:capability:S01",
+          "gd.c2:objective:0",
+          "gd.c2:capability:S01",
+          "gd.c2:capability:S02",
+          "gd.boundary:objective:0",
+          "gd.boundary:depth:conceptual",
+          "gd.boundary:capability:S01",
+          "gd.c3:objective:0",
+          "gd.c3:depth:algorithmic",
+          "gd.c3:capability:S01",
+          "gd.c3:capability:S03",
+          "gd.c3:capability:S09",
+          "gd.c3:capability:S12",
+          "gd.trace:objective:0",
+          "gd.trace:depth:conceptual",
+          "gd.trace:capability:S01",
+          "gd.c4:objective:0",
+          "gd.c4:depth:implementation",
+          "gd.c4:capability:S01",
+          "gd.c4:capability:S03",
+          "gd.c4:capability:S04",
+          "gd.tolerance:objective:0",
+          "gd.tolerance:depth:conceptual",
+          "gd.tolerance:capability:S01",
+          "gd.c5:objective:0",
+          "gd.c5:depth:analytical",
+          "gd.c5:capability:S01",
+          "gd.c5:capability:S10",
+          "gd.c5:capability:S03",
+          "gd.c5:capability:S17",
+          "gd.c5:capability:S13",
+          "gd.c5:capability:S14",
+          "gd.instability-diagnosis",
+          "gd.spectrum:objective:0",
+          "gd.spectrum:depth:conceptual",
+          "gd.spectrum:capability:S01",
+          "gd.ch1:assessment",
+          "gd.ch2:assessment",
+          "gd.ch3:assessment",
+          "gd.ch4:assessment",
+          "gd.ch5:assessment"
+        ]
+      }
+    },
+    "disclosure": {
+      "format": "Obsidian native independently folded callouts",
+      "ui_tested": false,
+      "limitation": "Reading View, Live Preview, keyboard, mobile and themes require a live Obsidian environment."
+    },
+    "metrics": {
+      "elapsed_seconds": 0.13738299999386072,
+      "obligations": 82,
+      "cached_checks": 82,
+      "model_calls": 0,
+      "model_tokens": null,
+      "cache": {
+        "hits": 82,
+        "misses": 0,
+        "invalidations": 0,
+        "corrupt_evictions": 0
+      }
+    }
+  },
+  "renderers": {
+    "gd.trajectory": {
+      "renderer": "scientific",
+      "selected_renderer": "scientific",
+      "available": true,
+      "attempted": true,
+      "status": "verified",
+      "input_hash": "dc77bb9061f9b8f9e757d16a9019cfe646b558687d59fa724f3e60a2e6d3c49c",
+      "path": "assets/scriptorium/dc77bb9061f9b8f9e757d16a9019cfe646b558687d59fa724f3e60a2e6d3c49c.svg",
+      "hash": "618771cdf50d229cb472024134b6d18aaf8f1c91d20332da3cb37ee0dd6f431d",
+      "failure_reason": null,
+      "fallback": null,
+      "renderer_version": "216bba947d7d232a55ccf89d8570567803ada77038fd81418d131bbf55fded2e",
+      "cached": true,
+      "validation": {
+        "method": "regenerate from numerical inputs or verified flow/mask and compare exact SVG",
+        "result": "pass",
+        "limits": "Visual semantics are checked against supplied contracts; browser/theme rendering is untested."
+      },
+      "elapsed_seconds": 0.0008842000970616937
+    }
+  },
+  "reviews": {
+    "factual_accuracy": {
+      "verifier": "authored demonstration reviewer (Codex)",
+      "method": "Review the explicit quadratic scope and the pinned Python isfinite excerpt.",
+      "result": "pass",
+      "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+      "evidence": [
+        {
+          "chapter": "gd.ch1",
+          "hash": "9583f139b1ca2fac1a7f79f8a772c2a1eb0b5a1760725f5a9c56969daa57e8a2",
+          "excerpt": "Suppose a model has one adjustable parameter x, and a differentiable objective f"
+        },
+        {
+          "chapter": "gd.ch2",
+          "hash": "220f2cd4eb0b17b419665e23625546d8beadfaa6505fc6791ba83897044749eb",
+          "excerpt": "Let x_k denote the parameter after k completed updates; x_0 is the initialization."
+        },
+        {
+          "chapter": "gd.ch3",
+          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
+        },
+        {
+          "chapter": "gd.ch4",
+          "hash": "950bd6c97c6708c2a06be6486236059c8f17a8da2e1d088477b7fddc52ad2d8a",
+          "excerpt": "This complete implementation uses only Python 3's standard library. The objective"
+        },
+        {
+          "chapter": "gd.ch5",
+          "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+          "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+        }
+      ]
+    },
+    "derivation_correctness": {
+      "verifier": "authored demonstration reviewer (Codex)",
+      "method": "Expand exact polynomial identities; inspect induction and SPD assumptions; execute boundary checks.",
+      "result": "pass",
+      "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+      "evidence": [
+        {
+          "chapter": "gd.ch1",
+          "hash": "9583f139b1ca2fac1a7f79f8a772c2a1eb0b5a1760725f5a9c56969daa57e8a2",
+          "excerpt": "Suppose a model has one adjustable parameter x, and a differentiable objective f"
+        },
+        {
+          "chapter": "gd.ch2",
+          "hash": "220f2cd4eb0b17b419665e23625546d8beadfaa6505fc6791ba83897044749eb",
+          "excerpt": "Let x_k denote the parameter after k completed updates; x_0 is the initialization."
+        },
+        {
+          "chapter": "gd.ch3",
+          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
+        },
+        {
+          "chapter": "gd.ch4",
+          "hash": "950bd6c97c6708c2a06be6486236059c8f17a8da2e1d088477b7fddc52ad2d8a",
+          "excerpt": "This complete implementation uses only Python 3's standard library. The objective"
+        },
+        {
+          "chapter": "gd.ch5",
+          "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+          "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+        }
+      ]
+    },
+    "reader_simulation": {
+      "verifier": "authored demonstration reviewer (Codex)",
+      "method": "Walk definitions, symbols, trace, questions and worked answers in order.",
+      "result": "pass",
+      "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+      "evidence": [
+        {
+          "chapter": "gd.ch1",
+          "hash": "9583f139b1ca2fac1a7f79f8a772c2a1eb0b5a1760725f5a9c56969daa57e8a2",
+          "excerpt": "Suppose a model has one adjustable parameter x, and a differentiable objective f"
+        },
+        {
+          "chapter": "gd.ch2",
+          "hash": "220f2cd4eb0b17b419665e23625546d8beadfaa6505fc6791ba83897044749eb",
+          "excerpt": "Let x_k denote the parameter after k completed updates; x_0 is the initialization."
+        },
+        {
+          "chapter": "gd.ch3",
+          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
+        },
+        {
+          "chapter": "gd.ch4",
+          "hash": "950bd6c97c6708c2a06be6486236059c8f17a8da2e1d088477b7fddc52ad2d8a",
+          "excerpt": "This complete implementation uses only Python 3's standard library. The objective"
+        },
+        {
+          "chapter": "gd.ch5",
+          "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+          "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+        }
+      ]
+    },
+    "cross_chapter_coherence": {
+      "verifier": "authored demonstration reviewer (Codex)",
+      "method": "Trace the same quadratic and notation from motivation through implementation and limits.",
+      "result": "pass",
+      "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+      "evidence": [
+        {
+          "chapter": "gd.ch1",
+          "hash": "9583f139b1ca2fac1a7f79f8a772c2a1eb0b5a1760725f5a9c56969daa57e8a2",
+          "excerpt": "Suppose a model has one adjustable parameter x, and a differentiable objective f"
+        },
+        {
+          "chapter": "gd.ch2",
+          "hash": "220f2cd4eb0b17b419665e23625546d8beadfaa6505fc6791ba83897044749eb",
+          "excerpt": "Let x_k denote the parameter after k completed updates; x_0 is the initialization."
+        },
+        {
+          "chapter": "gd.ch3",
+          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
+        },
+        {
+          "chapter": "gd.ch4",
+          "hash": "950bd6c97c6708c2a06be6486236059c8f17a8da2e1d088477b7fddc52ad2d8a",
+          "excerpt": "This complete implementation uses only Python 3's standard library. The objective"
+        },
+        {
+          "chapter": "gd.ch5",
+          "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+          "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+        }
+      ]
+    },
+    "obligations": {
+      "gd.c1:objective:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: explain local descent; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch1",
+            "hash": "9583f139b1ca2fac1a7f79f8a772c2a1eb0b5a1760725f5a9c56969daa57e8a2",
+            "excerpt": "Suppose a model has one adjustable parameter x, and a differentiable objective f"
+          }
+        ]
+      },
+      "gd.c1:depth:conceptual": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Level 2: explain the mechanism, prerequisite bridge and limits; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch1",
+            "hash": "9583f139b1ca2fac1a7f79f8a772c2a1eb0b5a1760725f5a9c56969daa57e8a2",
+            "excerpt": "Suppose a model has one adjustable parameter x, and a differentiable objective f"
+          }
+        ]
+      },
+      "gd.c1:depth:research": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Level 1: attach claim-level evidence with source scope, uncertainty and version; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch1",
+            "hash": "9583f139b1ca2fac1a7f79f8a772c2a1eb0b5a1760725f5a9c56969daa57e8a2",
+            "excerpt": "Suppose a model has one adjustable parameter x, and a differentiable objective f"
+          }
+        ]
+      },
+      "gd.c1:capability:S01": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Deliver the active S01 technical contributions; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch1",
+            "hash": "9583f139b1ca2fac1a7f79f8a772c2a1eb0b5a1760725f5a9c56969daa57e8a2",
+            "excerpt": "Suppose a model has one adjustable parameter x, and a differentiable objective f"
+          }
+        ]
+      },
+      "gd.c1:S01:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: authoritative definition; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch1",
+            "hash": "9583f139b1ca2fac1a7f79f8a772c2a1eb0b5a1760725f5a9c56969daa57e8a2",
+            "excerpt": "Suppose a model has one adjustable parameter x, and a differentiable objective f"
+          }
+        ]
+      },
+      "gd.c1:term:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Define derivative before use; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch1",
+            "hash": "9583f139b1ca2fac1a7f79f8a772c2a1eb0b5a1760725f5a9c56969daa57e8a2",
+            "excerpt": "Suppose a model has one adjustable parameter x, and a differentiable objective f"
+          }
+        ]
+      },
+      "gd.direction:objective:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: explain why local direction and finite step length differ; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch1",
+            "hash": "9583f139b1ca2fac1a7f79f8a772c2a1eb0b5a1760725f5a9c56969daa57e8a2",
+            "excerpt": "Suppose a model has one adjustable parameter x, and a differentiable objective f"
+          }
+        ]
+      },
+      "gd.direction:depth:conceptual": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Level 2: explain the mechanism, prerequisite bridge and limits; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch1",
+            "hash": "9583f139b1ca2fac1a7f79f8a772c2a1eb0b5a1760725f5a9c56969daa57e8a2",
+            "excerpt": "Suppose a model has one adjustable parameter x, and a differentiable objective f"
+          }
+        ]
+      },
+      "gd.direction:capability:S01": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Deliver the active S01 technical contributions; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch1",
+            "hash": "9583f139b1ca2fac1a7f79f8a772c2a1eb0b5a1760725f5a9c56969daa57e8a2",
+            "excerpt": "Suppose a model has one adjustable parameter x, and a differentiable objective f"
+          }
+        ]
+      },
+      "gd.direction:S01:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: authoritative definition; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch1",
+            "hash": "9583f139b1ca2fac1a7f79f8a772c2a1eb0b5a1760725f5a9c56969daa57e8a2",
+            "excerpt": "Suppose a model has one adjustable parameter x, and a differentiable objective f"
+          }
+        ]
+      },
+      "gd.c2:objective:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: derive the stability condition; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch2",
+            "hash": "220f2cd4eb0b17b419665e23625546d8beadfaa6505fc6791ba83897044749eb",
+            "excerpt": "Let x_k denote the parameter after k completed updates; x_0 is the initialization."
+          }
+        ]
+      },
+      "gd.c2:depth:mathematical": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Level 3: state assumptions and show intermediate derivation with boundary checks; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch2",
+            "hash": "220f2cd4eb0b17b419665e23625546d8beadfaa6505fc6791ba83897044749eb",
+            "excerpt": "Let x_k denote the parameter after k completed updates; x_0 is the initialization."
+          }
+        ]
+      },
+      "gd.c2:depth:research": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Level 1: attach claim-level evidence with source scope, uncertainty and version; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch2",
+            "hash": "220f2cd4eb0b17b419665e23625546d8beadfaa6505fc6791ba83897044749eb",
+            "excerpt": "Let x_k denote the parameter after k completed updates; x_0 is the initialization."
+          }
+        ]
+      },
+      "gd.c2:capability:S01": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Deliver the active S01 technical contributions; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch2",
+            "hash": "220f2cd4eb0b17b419665e23625546d8beadfaa6505fc6791ba83897044749eb",
+            "excerpt": "Let x_k denote the parameter after k completed updates; x_0 is the initialization."
+          }
+        ]
+      },
+      "gd.c2:capability:S02": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Deliver the active S02 technical contributions; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch2",
+            "hash": "220f2cd4eb0b17b419665e23625546d8beadfaa6505fc6791ba83897044749eb",
+            "excerpt": "Let x_k denote the parameter after k completed updates; x_0 is the initialization."
+          }
+        ]
+      },
+      "gd.c2:S01:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: authoritative definition; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch2",
+            "hash": "220f2cd4eb0b17b419665e23625546d8beadfaa6505fc6791ba83897044749eb",
+            "excerpt": "Let x_k denote the parameter after k completed updates; x_0 is the initialization."
+          }
+        ]
+      },
+      "gd.c2:S02:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: formulation and assumptions; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch2",
+            "hash": "220f2cd4eb0b17b419665e23625546d8beadfaa6505fc6791ba83897044749eb",
+            "excerpt": "Let x_k denote the parameter after k completed updates; x_0 is the initialization."
+          }
+        ]
+      },
+      "gd.quadratic-proof": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: The final equality is not an approximation for this objective.; inspect corresponding chapter and scoped verifier result.",
+        "result": "fail",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch2",
+            "hash": "220f2cd4eb0b17b419665e23625546d8beadfaa6505fc6791ba83897044749eb",
+            "excerpt": "Let x_k denote the parameter after k completed updates; x_0 is the initialization."
+          }
+        ]
+      },
+      "gd.boundary:objective:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: explain stability boundaries and the zero initialization exception; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch2",
+            "hash": "220f2cd4eb0b17b419665e23625546d8beadfaa6505fc6791ba83897044749eb",
+            "excerpt": "Let x_k denote the parameter after k completed updates; x_0 is the initialization."
+          }
+        ]
+      },
+      "gd.boundary:depth:conceptual": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Level 2: explain the mechanism, prerequisite bridge and limits; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch2",
+            "hash": "220f2cd4eb0b17b419665e23625546d8beadfaa6505fc6791ba83897044749eb",
+            "excerpt": "Let x_k denote the parameter after k completed updates; x_0 is the initialization."
+          }
+        ]
+      },
+      "gd.boundary:capability:S01": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Deliver the active S01 technical contributions; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch2",
+            "hash": "220f2cd4eb0b17b419665e23625546d8beadfaa6505fc6791ba83897044749eb",
+            "excerpt": "Let x_k denote the parameter after k completed updates; x_0 is the initialization."
+          }
+        ]
+      },
+      "gd.boundary:S01:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: authoritative definition; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch2",
+            "hash": "220f2cd4eb0b17b419665e23625546d8beadfaa6505fc6791ba83897044749eb",
+            "excerpt": "Let x_k denote the parameter after k completed updates; x_0 is the initialization."
+          }
+        ]
+      },
+      "gd.c3:objective:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: trace scalar states; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch3",
+            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
+          }
+        ]
+      },
+      "gd.c3:depth:algorithmic": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Level 3: trace actual algorithm state, invariants and termination; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch3",
+            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
+          }
+        ]
+      },
+      "gd.c3:depth:research": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Level 1: attach claim-level evidence with source scope, uncertainty and version; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch3",
+            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
+          }
+        ]
+      },
+      "gd.c3:capability:S01": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Deliver the active S01 technical contributions; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch3",
+            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
+          }
+        ]
+      },
+      "gd.c3:capability:S03": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Deliver the active S03 technical contributions; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch3",
+            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
+          }
+        ]
+      },
+      "gd.c3:capability:S09": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Deliver the active S09 technical contributions; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch3",
+            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
+          }
+        ]
+      },
+      "gd.c3:capability:S12": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Deliver the active S12 technical contributions; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch3",
+            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
+          }
+        ]
+      },
+      "gd.c3:S01:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: authoritative definition; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch3",
+            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
+          }
+        ]
+      },
+      "gd.c3:S03:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: algorithm specification; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch3",
+            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
+          }
+        ]
+      },
+      "gd.c3:S09:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: reproducible calculation; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch3",
+            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
+          }
+        ]
+      },
+      "gd.c3:S12:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: equation, data, or verified structure; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch3",
+            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
+          }
+        ]
+      },
+      "gd.synthetic-trace": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: examples; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch3",
+            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
+          }
+        ]
+      },
+      "gd.trace-cost": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: costs; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch3",
+            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
+          }
+        ]
+      },
+      "gd.c3:visual-opportunity": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Review visual learning difficulty and placement; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch3",
+            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
+          }
+        ]
+      },
+      "gd.trace:objective:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: explain trace indexing and the storage tradeoff; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch3",
+            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
+          }
+        ]
+      },
+      "gd.trace:depth:conceptual": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Level 2: explain the mechanism, prerequisite bridge and limits; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch3",
+            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
+          }
+        ]
+      },
+      "gd.trace:capability:S01": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Deliver the active S01 technical contributions; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch3",
+            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
+          }
+        ]
+      },
+      "gd.trace:S01:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: authoritative definition; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch3",
+            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
+          }
+        ]
+      },
+      "gd.c4:objective:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: implement reproducible descent; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch4",
+            "hash": "950bd6c97c6708c2a06be6486236059c8f17a8da2e1d088477b7fddc52ad2d8a",
+            "excerpt": "This complete implementation uses only Python 3's standard library. The objective"
+          }
+        ]
+      },
+      "gd.c4:depth:implementation": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Level 3: state backend, input/output contract, executable path and testing level; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch4",
+            "hash": "950bd6c97c6708c2a06be6486236059c8f17a8da2e1d088477b7fddc52ad2d8a",
+            "excerpt": "This complete implementation uses only Python 3's standard library. The objective"
+          }
+        ]
+      },
+      "gd.c4:depth:research": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Level 1: attach claim-level evidence with source scope, uncertainty and version; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch4",
+            "hash": "950bd6c97c6708c2a06be6486236059c8f17a8da2e1d088477b7fddc52ad2d8a",
+            "excerpt": "This complete implementation uses only Python 3's standard library. The objective"
+          }
+        ]
+      },
+      "gd.c4:capability:S01": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Deliver the active S01 technical contributions; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch4",
+            "hash": "950bd6c97c6708c2a06be6486236059c8f17a8da2e1d088477b7fddc52ad2d8a",
+            "excerpt": "This complete implementation uses only Python 3's standard library. The objective"
+          }
+        ]
+      },
+      "gd.c4:capability:S03": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Deliver the active S03 technical contributions; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch4",
+            "hash": "950bd6c97c6708c2a06be6486236059c8f17a8da2e1d088477b7fddc52ad2d8a",
+            "excerpt": "This complete implementation uses only Python 3's standard library. The objective"
+          }
+        ]
+      },
+      "gd.c4:capability:S04": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Deliver the active S04 technical contributions; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch4",
+            "hash": "950bd6c97c6708c2a06be6486236059c8f17a8da2e1d088477b7fddc52ad2d8a",
+            "excerpt": "This complete implementation uses only Python 3's standard library. The objective"
+          }
+        ]
+      },
+      "gd.c4:S01:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: authoritative definition; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch4",
+            "hash": "950bd6c97c6708c2a06be6486236059c8f17a8da2e1d088477b7fddc52ad2d8a",
+            "excerpt": "This complete implementation uses only Python 3's standard library. The objective"
+          }
+        ]
+      },
+      "gd.c4:S03:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: algorithm specification; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch4",
+            "hash": "950bd6c97c6708c2a06be6486236059c8f17a8da2e1d088477b7fddc52ad2d8a",
+            "excerpt": "This complete implementation uses only Python 3's standard library. The objective"
+          }
+        ]
+      },
+      "gd.c4:S04:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: versioned official API or algorithm; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch4",
+            "hash": "950bd6c97c6708c2a06be6486236059c8f17a8da2e1d088477b7fddc52ad2d8a",
+            "excerpt": "This complete implementation uses only Python 3's standard library. The objective"
+          }
+        ]
+      },
+      "gd.python-source": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Python's math.isfinite accepts zero and rejects infinity and NaN.; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch4",
+            "hash": "950bd6c97c6708c2a06be6486236059c8f17a8da2e1d088477b7fddc52ad2d8a",
+            "excerpt": "This complete implementation uses only Python 3's standard library. The objective"
+          }
+        ]
+      },
+      "gd.executed-example": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: examples; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch4",
+            "hash": "950bd6c97c6708c2a06be6486236059c8f17a8da2e1d088477b7fddc52ad2d8a",
+            "excerpt": "This complete implementation uses only Python 3's standard library. The objective"
+          }
+        ]
+      },
+      "gd.implementation": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: implementations; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch4",
+            "hash": "950bd6c97c6708c2a06be6486236059c8f17a8da2e1d088477b7fddc52ad2d8a",
+            "excerpt": "This complete implementation uses only Python 3's standard library. The objective"
+          }
+        ]
+      },
+      "gd.tolerance:objective:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: explain finite-value checks and numerical tolerance; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch4",
+            "hash": "950bd6c97c6708c2a06be6486236059c8f17a8da2e1d088477b7fddc52ad2d8a",
+            "excerpt": "This complete implementation uses only Python 3's standard library. The objective"
+          }
+        ]
+      },
+      "gd.tolerance:depth:conceptual": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Level 2: explain the mechanism, prerequisite bridge and limits; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch4",
+            "hash": "950bd6c97c6708c2a06be6486236059c8f17a8da2e1d088477b7fddc52ad2d8a",
+            "excerpt": "This complete implementation uses only Python 3's standard library. The objective"
+          }
+        ]
+      },
+      "gd.tolerance:capability:S01": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Deliver the active S01 technical contributions; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch4",
+            "hash": "950bd6c97c6708c2a06be6486236059c8f17a8da2e1d088477b7fddc52ad2d8a",
+            "excerpt": "This complete implementation uses only Python 3's standard library. The objective"
+          }
+        ]
+      },
+      "gd.tolerance:S01:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: authoritative definition; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch4",
+            "hash": "950bd6c97c6708c2a06be6486236059c8f17a8da2e1d088477b7fddc52ad2d8a",
+            "excerpt": "This complete implementation uses only Python 3's standard library. The objective"
+          }
+        ]
+      },
+      "gd.c5:objective:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: analyze curvature and boundaries; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch5",
+            "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+            "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+          }
+        ]
+      },
+      "gd.c5:depth:research": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Level 1: attach claim-level evidence with source scope, uncertainty and version; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch5",
+            "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+            "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+          }
+        ]
+      },
+      "gd.c5:depth:analytical": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Level 3: compare assumptions, alternatives, failure diagnostics and downstream effects; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch5",
+            "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+            "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+          }
+        ]
+      },
+      "gd.c5:capability:S01": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Deliver the active S01 technical contributions; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch5",
+            "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+            "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+          }
+        ]
+      },
+      "gd.c5:capability:S10": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Deliver the active S10 technical contributions; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch5",
+            "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+            "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+          }
+        ]
+      },
+      "gd.c5:capability:S03": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Deliver the active S03 technical contributions; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch5",
+            "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+            "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+          }
+        ]
+      },
+      "gd.c5:capability:S17": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Deliver the active S17 technical contributions; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch5",
+            "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+            "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+          }
+        ]
+      },
+      "gd.c5:capability:S13": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Deliver the active S13 technical contributions; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch5",
+            "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+            "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+          }
+        ]
+      },
+      "gd.c5:capability:S14": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Deliver the active S14 technical contributions; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch5",
+            "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+            "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+          }
+        ]
+      },
+      "gd.c5:S01:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: authoritative definition; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch5",
+            "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+            "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+          }
+        ]
+      },
+      "gd.c5:S10:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: failure mechanism; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch5",
+            "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+            "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+          }
+        ]
+      },
+      "gd.c5:S03:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: algorithm specification; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch5",
+            "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+            "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+          }
+        ]
+      },
+      "gd.c5:S17:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: complexity and convergence conditions; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch5",
+            "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+            "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+          }
+        ]
+      },
+      "gd.c5:S13:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: row evidence; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch5",
+            "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+            "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+          }
+        ]
+      },
+      "gd.c5:S14:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: cross-source consistency; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch5",
+            "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+            "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+          }
+        ]
+      },
+      "gd.instability-diagnosis": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: failures; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch5",
+            "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+            "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+          }
+        ]
+      },
+      "gd.spectrum:objective:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: explain spectral spread and the limits of symptom-based diagnosis; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch5",
+            "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+            "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+          }
+        ]
+      },
+      "gd.spectrum:depth:conceptual": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Level 2: explain the mechanism, prerequisite bridge and limits; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch5",
+            "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+            "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+          }
+        ]
+      },
+      "gd.spectrum:capability:S01": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Deliver the active S01 technical contributions; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch5",
+            "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+            "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+          }
+        ]
+      },
+      "gd.spectrum:S01:0": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: authoritative definition; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch5",
+            "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+            "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+          }
+        ]
+      },
+      "gd.trajectory": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Exact quadratic gradient descent trajectories; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch3",
+            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
+          }
+        ]
+      },
+      "gd.ch1:assessment": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Four to five diverse final questions, hints, solutions and objective coverage; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch1",
+            "hash": "9583f139b1ca2fac1a7f79f8a772c2a1eb0b5a1760725f5a9c56969daa57e8a2",
+            "excerpt": "Suppose a model has one adjustable parameter x, and a differentiable objective f"
+          }
+        ]
+      },
+      "gd.ch2:assessment": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Four to five diverse final questions, hints, solutions and objective coverage; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch2",
+            "hash": "220f2cd4eb0b17b419665e23625546d8beadfaa6505fc6791ba83897044749eb",
+            "excerpt": "Let x_k denote the parameter after k completed updates; x_0 is the initialization."
+          }
+        ]
+      },
+      "gd.ch3:assessment": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Four to five diverse final questions, hints, solutions and objective coverage; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch3",
+            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
+          }
+        ]
+      },
+      "gd.ch4:assessment": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Four to five diverse final questions, hints, solutions and objective coverage; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch4",
+            "hash": "950bd6c97c6708c2a06be6486236059c8f17a8da2e1d088477b7fddc52ad2d8a",
+            "excerpt": "This complete implementation uses only Python 3's standard library. The objective"
+          }
+        ]
+      },
+      "gd.ch5:assessment": {
+        "verifier": "authored demonstration reviewer (Codex)",
+        "method": "Review requirement: Four to five diverse final questions, hints, solutions and objective coverage; inspect corresponding chapter and scoped verifier result.",
+        "result": "pass",
+        "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
+        "evidence": [
+          {
+            "chapter": "gd.ch5",
+            "hash": "9414ab80a82280c41811fd0d6772aea0a3871f111889d3e6c3480eb43b70a98f",
+            "excerpt": "The scalar model suggests why one fixed step can perform poorly in several"
+          }
+        ]
+      }
+    }
+  },
+  "evidence": {
+    "gd.c1:S01:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "First-order descent model",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21",
+      "claim": "authoritative definition",
+      "classification": "engineering_inference",
+      "verification_method": "inspect bounded quadratic derivation, executed assertions and authored chapter",
+      "limits": "Authored educational demonstration; not independent research or full-model reproduction."
+    },
+    "gd.direction:S01:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "Descent direction and finite step length",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21",
+      "claim": "authoritative definition",
+      "classification": "engineering_inference",
+      "verification_method": "inspect bounded quadratic derivation, executed assertions and authored chapter",
+      "limits": "Authored educational demonstration; not independent research or full-model reproduction."
+    },
+    "gd.c2:S01:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "Exact quadratic recurrence",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21",
+      "claim": "authoritative definition",
+      "classification": "engineering_inference",
+      "verification_method": "inspect bounded quadratic derivation, executed assertions and authored chapter",
+      "limits": "Authored educational demonstration; not independent research or full-model reproduction."
+    },
+    "gd.c2:S02:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "Exact quadratic recurrence",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21",
+      "claim": "formulation and assumptions",
+      "classification": "engineering_inference",
+      "verification_method": "inspect bounded quadratic derivation, executed assertions and authored chapter",
+      "limits": "Authored educational demonstration; not independent research or full-model reproduction."
+    },
+    "gd.boundary:S01:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "Stability boundaries and exceptional initialization",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21",
+      "claim": "authoritative definition",
+      "classification": "engineering_inference",
+      "verification_method": "inspect bounded quadratic derivation, executed assertions and authored chapter",
+      "limits": "Authored educational demonstration; not independent research or full-model reproduction."
+    },
+    "gd.c3:S01:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "Simultaneous state updates",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21",
+      "claim": "authoritative definition",
+      "classification": "engineering_inference",
+      "verification_method": "inspect bounded quadratic derivation, executed assertions and authored chapter",
+      "limits": "Authored educational demonstration; not independent research or full-model reproduction."
+    },
+    "gd.c3:S03:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "Simultaneous state updates",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21",
+      "claim": "algorithm specification",
+      "classification": "engineering_inference",
+      "verification_method": "inspect bounded quadratic derivation, executed assertions and authored chapter",
+      "limits": "Authored educational demonstration; not independent research or full-model reproduction."
+    },
+    "gd.c3:S09:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "Simultaneous state updates",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21",
+      "claim": "reproducible calculation",
+      "classification": "engineering_inference",
+      "verification_method": "inspect bounded quadratic derivation, executed assertions and authored chapter",
+      "limits": "Authored educational demonstration; not independent research or full-model reproduction."
+    },
+    "gd.c3:S12:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "Simultaneous state updates",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21",
+      "claim": "equation, data, or verified structure",
+      "classification": "engineering_inference",
+      "verification_method": "inspect bounded quadratic derivation, executed assertions and authored chapter",
+      "limits": "Authored educational demonstration; not independent research or full-model reproduction."
+    },
+    "gd.trace:S01:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "Trace indexing and memory",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21",
+      "claim": "authoritative definition",
+      "classification": "engineering_inference",
+      "verification_method": "inspect bounded quadratic derivation, executed assertions and authored chapter",
+      "limits": "Authored educational demonstration; not independent research or full-model reproduction."
+    },
+    "gd.c4:S01:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "Scalar implementation and independent oracle",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21",
+      "claim": "authoritative definition",
+      "classification": "engineering_inference",
+      "verification_method": "inspect bounded quadratic derivation, executed assertions and authored chapter",
+      "limits": "Authored educational demonstration; not independent research or full-model reproduction."
+    },
+    "gd.c4:S03:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "Scalar implementation and independent oracle",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21",
+      "claim": "algorithm specification",
+      "classification": "engineering_inference",
+      "verification_method": "inspect bounded quadratic derivation, executed assertions and authored chapter",
+      "limits": "Authored educational demonstration; not independent research or full-model reproduction."
+    },
+    "gd.c4:S04:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "Scalar implementation and independent oracle",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21",
+      "claim": "versioned official API or algorithm",
+      "classification": "engineering_inference",
+      "verification_method": "inspect bounded quadratic derivation, executed assertions and authored chapter",
+      "limits": "Authored educational demonstration; not independent research or full-model reproduction."
+    },
+    "gd.tolerance:S01:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "Finite checks and numerical tolerance",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21",
+      "claim": "authoritative definition",
+      "classification": "engineering_inference",
+      "verification_method": "inspect bounded quadratic derivation, executed assertions and authored chapter",
+      "limits": "Authored educational demonstration; not independent research or full-model reproduction."
+    },
+    "gd.c5:S01:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "SPD eigenbasis reduction",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21",
+      "claim": "authoritative definition",
+      "classification": "engineering_inference",
+      "verification_method": "inspect bounded quadratic derivation, executed assertions and authored chapter",
+      "limits": "Authored educational demonstration; not independent research or full-model reproduction."
+    },
+    "gd.c5:S10:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "SPD eigenbasis reduction",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21",
+      "claim": "failure mechanism",
+      "classification": "engineering_inference",
+      "verification_method": "inspect bounded quadratic derivation, executed assertions and authored chapter",
+      "limits": "Authored educational demonstration; not independent research or full-model reproduction."
+    },
+    "gd.c5:S03:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "SPD eigenbasis reduction",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21",
+      "claim": "algorithm specification",
+      "classification": "engineering_inference",
+      "verification_method": "inspect bounded quadratic derivation, executed assertions and authored chapter",
+      "limits": "Authored educational demonstration; not independent research or full-model reproduction."
+    },
+    "gd.c5:S17:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "SPD eigenbasis reduction",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21",
+      "claim": "complexity and convergence conditions",
+      "classification": "engineering_inference",
+      "verification_method": "inspect bounded quadratic derivation, executed assertions and authored chapter",
+      "limits": "Authored educational demonstration; not independent research or full-model reproduction."
+    },
+    "gd.c5:S13:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "SPD eigenbasis reduction",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21",
+      "claim": "row evidence",
+      "classification": "engineering_inference",
+      "verification_method": "inspect bounded quadratic derivation, executed assertions and authored chapter",
+      "limits": "Authored educational demonstration; not independent research or full-model reproduction."
+    },
+    "gd.c5:S14:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "SPD eigenbasis reduction",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21",
+      "claim": "cross-source consistency",
+      "classification": "engineering_inference",
+      "verification_method": "inspect bounded quadratic derivation, executed assertions and authored chapter",
+      "limits": "Authored educational demonstration; not independent research or full-model reproduction."
+    },
+    "gd.spectrum:S01:0": {
+      "source": "run.py authored quadratic derivations and assertions",
+      "location": "Eigenvalue spread and conditional diagnostics",
+      "verified": true,
+      "origin": "derived",
+      "version": "3.14.7",
+      "checked_at": "2026-11-21",
+      "claim": "authoritative definition",
+      "classification": "engineering_inference",
+      "verification_method": "inspect bounded quadratic derivation, executed assertions and authored chapter",
+      "limits": "Authored educational demonstration; not independent research or full-model reproduction."
+    }
+  }
+}

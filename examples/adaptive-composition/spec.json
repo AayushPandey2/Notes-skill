@@ -12,7 +12,8 @@
       "id": "gd.ch1",
       "title": "Why Local Descent Works",
       "concepts": [
-        "gd.c1"
+        "gd.c1",
+        "gd.direction"
       ],
       "sections": [
         "Why Local Descent Works"
@@ -22,7 +23,8 @@
       "id": "gd.ch2",
       "title": "Deriving the Update and Its Limits",
       "concepts": [
-        "gd.c2"
+        "gd.c2",
+        "gd.boundary"
       ],
       "sections": [
         "Deriving the Update and Its Limits"
@@ -32,7 +34,8 @@
       "id": "gd.ch3",
       "title": "Tracing the Algorithm",
       "concepts": [
-        "gd.c3"
+        "gd.c3",
+        "gd.trace"
       ],
       "sections": [
         "Tracing the Algorithm"
@@ -42,7 +45,8 @@
       "id": "gd.ch4",
       "title": "Implementing and Testing Descent",
       "concepts": [
-        "gd.c4"
+        "gd.c4",
+        "gd.tolerance"
       ],
       "sections": [
         "Implementing and Testing Descent"
@@ -52,7 +56,8 @@
       "id": "gd.ch5",
       "title": "Curvature and Failure Analysis",
       "concepts": [
-        "gd.c5"
+        "gd.c5",
+        "gd.spectrum"
       ],
       "sections": [
         "Curvature and Failure Analysis"
@@ -62,7 +67,7 @@
   "concepts": [
     {
       "id": "gd.c1",
-      "title": "Why Local Descent Works",
+      "title": "First-order descent model",
       "objectives": [
         "explain local descent"
       ],
@@ -72,11 +77,33 @@
       "depth": {
         "research": 1
       },
-      "prerequisites": []
+      "prerequisites": [],
+      "section": "Why Local Descent Works",
+      "terminology": [
+        {
+          "term": "derivative",
+          "definition": "The derivative f'(x) is the slope of the tangent approximation.",
+          "first_use": "Choosing d=-alpha f'(x)"
+        }
+      ]
+    },
+    {
+      "id": "gd.direction",
+      "title": "Descent direction and finite step length",
+      "section": "Why Local Descent Works",
+      "objectives": [
+        "explain why local direction and finite step length differ"
+      ],
+      "capabilities": [
+        "S01"
+      ],
+      "prerequisites": [
+        "gd.c1"
+      ]
     },
     {
       "id": "gd.c2",
-      "title": "Deriving the Update and Its Limits",
+      "title": "Exact quadratic recurrence",
       "objectives": [
         "derive the stability condition"
       ],
@@ -87,12 +114,90 @@
         "research": 1
       },
       "prerequisites": [
-        "gd.c1"
+        "gd.direction"
+      ],
+      "section": "Deriving the Update and Its Limits",
+      "proofs": [
+        {
+          "id": "gd.quadratic-proof",
+          "claim": "The final equality is not an approximation for this objective.",
+          "assumptions": [
+            "real scalar state",
+            "fixed finite positive alpha",
+            "objective x squared over two"
+          ],
+          "domain": "real scalar quadratic",
+          "scope": "finite_update",
+          "approximations": [],
+          "boundary_conditions": [
+            "alpha=0: fixed state",
+            "alpha=1: zero in one step",
+            "alpha=2: constant magnitude",
+            "x0=0: fixed zero"
+          ],
+          "steps": [
+            {
+              "lhs": "x-alpha*x",
+              "rhs": "(1-alpha)*x",
+              "relation": "identity",
+              "reason": "factor x"
+            },
+            {
+              "lhs": "((1-alpha)*x)**2/2",
+              "rhs": "(1-alpha)**2*x*x/2",
+              "relation": "identity",
+              "reason": "substitute into objective"
+            }
+          ],
+          "checks": [
+            {
+              "expression": "(1-a)*x",
+              "variables": {
+                "a": 0,
+                "x": 4
+              },
+              "expected": 4,
+              "comparison": "exact"
+            },
+            {
+              "expression": "(1-a)*x",
+              "variables": {
+                "a": 1,
+                "x": 4
+              },
+              "expected": 0,
+              "comparison": "exact"
+            },
+            {
+              "expression": "(1-a)*x",
+              "variables": {
+                "a": 2,
+                "x": 4
+              },
+              "expected": -4,
+              "comparison": "exact"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gd.boundary",
+      "title": "Stability boundaries and exceptional initialization",
+      "section": "Deriving the Update and Its Limits",
+      "objectives": [
+        "explain stability boundaries and the zero initialization exception"
+      ],
+      "capabilities": [
+        "S01"
+      ],
+      "prerequisites": [
+        "gd.c2"
       ]
     },
     {
       "id": "gd.c3",
-      "title": "Tracing the Algorithm",
+      "title": "Simultaneous state updates",
       "objectives": [
         "trace scalar states"
       ],
@@ -105,12 +210,57 @@
         "research": 1
       },
       "prerequisites": [
-        "gd.c2"
+        "gd.boundary"
+      ],
+      "section": "Tracing the Algorithm",
+      "costs": [
+        {
+          "id": "gd.trace-cost",
+          "kind": "theoretical_estimate",
+          "dense_tensor_size": "one current scalar; K+1 stored states",
+          "operations": "K multiplications and K subtractions, plus finite checks",
+          "activation_memory": "O(K) trace, or O(1) final-state storage",
+          "backward_cost": "no autodiff backward pass; analytic gradient x",
+          "padding": "none",
+          "kernel": "scalar Python operations",
+          "hardware": "abstract operation count; runtime depends on interpreter and hardware",
+          "protocol": "fixed number of updates",
+          "artifact_excerpt": "Each scalar update takes constant arithmetic work, so K steps require O(K) work."
+        }
+      ],
+      "visual_review": {
+        "objective": "Separate state oscillation from decreasing loss",
+        "difficulty": "A loss curve hides changes of sign",
+        "representation": "scientific state trajectories",
+        "placement": "Tracing the Algorithm",
+        "validation": "Recompute scalar recurrence, verify data, axes and embed"
+      },
+      "examples": [
+        {
+          "id": "gd.synthetic-trace",
+          "kind": "synthetic_numerical",
+          "state_origin": "stipulated_scalar_states",
+          "artifact_excerpt": "| 0 | 4 | 4 | -1 | 3 |"
+        }
+      ]
+    },
+    {
+      "id": "gd.trace",
+      "title": "Trace indexing and memory",
+      "section": "Tracing the Algorithm",
+      "objectives": [
+        "explain trace indexing and the storage tradeoff"
+      ],
+      "capabilities": [
+        "S01"
+      ],
+      "prerequisites": [
+        "gd.c3"
       ]
     },
     {
       "id": "gd.c4",
-      "title": "Implementing and Testing Descent",
+      "title": "Scalar implementation and independent oracle",
       "objectives": [
         "implement reproducible descent"
       ],
@@ -121,12 +271,105 @@
         "research": 1
       },
       "prerequisites": [
-        "gd.c3"
+        "gd.trace"
+      ],
+      "section": "Implementing and Testing Descent",
+      "implementations": [
+        {
+          "id": "gd.implementation",
+          "level": "end_to_end",
+          "backend": "Python standard library",
+          "assumptions": [
+            "objective x squared over two",
+            "finite scalar inputs"
+          ],
+          "claims_full_training_step": false,
+          "execution": {
+            "level": "unit_tested",
+            "command": "python examples/adaptive-composition/run.py (displayed block compiled and executed)",
+            "code": "import math\n\ndef descend(x, alpha, iterations):\n    if not math.isfinite(x) or not math.isfinite(alpha) or alpha <= 0:\n        raise ValueError(\"finite initial state and positive step required\")\n    if type(iterations) is not int or iterations < 0:\n        raise ValueError(\"nonnegative integer count required\")\n    states = [x]\n    for _ in range(iterations):\n        x -= alpha * x\n        if not math.isfinite(x):\n            raise ArithmeticError(\"nonfinite iterate\")\n        states.append(x)\n    return states\n\nstates = descend(4.0, 0.25, 12)\nassert len(states) == 13\nfor k, value in enumerate(states):\n    assert math.isclose(value, 4.0 * 0.75**k, rel_tol=1e-12)\nassert descend(4.0, 1.0, 1) == [4.0, 0.0]\nassert descend(4.0, 2.0, 2) == [4.0, -4.0, 4.0]\nassert descend(4.0, 0.25, 0) == [4.0]\n",
+            "code_hash": "e0f4e4be6cf2bb0a657dcfbdbf31a4b3ead891790883456e461951125ac664ed",
+            "runtime": "3.14.7",
+            "dependencies": {
+              "math": "Python standard library"
+            },
+            "inputs": {
+              "x": 4.0,
+              "alpha": 0.25,
+              "iterations": 12
+            },
+            "stdout": "",
+            "hardware": "AMD64",
+            "seed": "not used: deterministic",
+            "limitations": "Scalar CPU demonstration with assertions; no GPU, model inference, training or experimental reproduction."
+          }
+        }
+      ],
+      "examples": [
+        {
+          "id": "gd.executed-example",
+          "kind": "executable_demonstration",
+          "state_origin": "scalar_execution",
+          "artifact_excerpt": "import math\n\ndef descend(x, alpha, iterations):\n    if not math.isfinite(x) or not math.isfinite(alpha) or alpha <= 0:\n        raise ValueError(\"finite initial state and positive step required\")\n    if type(iterations) is not int or iterations < 0:\n        raise ValueError(\"nonnegative integer count required\")\n    states = [x]\n    for _ in range(iterations):\n        x -= alpha * x\n        if not math.isfinite(x):\n            raise ArithmeticError(\"nonfinite iterate\")\n        states.append(x)\n    return states\n\nstates = descend(4.0, 0.25, 12)\nassert len(states) == 13\nfor k, value in enumerate(states):\n    assert math.isclose(value, 4.0 * 0.75**k, rel_tol=1e-12)\nassert descend(4.0, 1.0, 1) == [4.0, 0.0]\nassert descend(4.0, 2.0, 2) == [4.0, -4.0, 4.0]\nassert descend(4.0, 0.25, 0) == [4.0]\n",
+          "execution": {
+            "level": "unit_tested",
+            "command": "python examples/adaptive-composition/run.py (displayed block compiled and executed)",
+            "code": "import math\n\ndef descend(x, alpha, iterations):\n    if not math.isfinite(x) or not math.isfinite(alpha) or alpha <= 0:\n        raise ValueError(\"finite initial state and positive step required\")\n    if type(iterations) is not int or iterations < 0:\n        raise ValueError(\"nonnegative integer count required\")\n    states = [x]\n    for _ in range(iterations):\n        x -= alpha * x\n        if not math.isfinite(x):\n            raise ArithmeticError(\"nonfinite iterate\")\n        states.append(x)\n    return states\n\nstates = descend(4.0, 0.25, 12)\nassert len(states) == 13\nfor k, value in enumerate(states):\n    assert math.isclose(value, 4.0 * 0.75**k, rel_tol=1e-12)\nassert descend(4.0, 1.0, 1) == [4.0, 0.0]\nassert descend(4.0, 2.0, 2) == [4.0, -4.0, 4.0]\nassert descend(4.0, 0.25, 0) == [4.0]\n",
+            "code_hash": "e0f4e4be6cf2bb0a657dcfbdbf31a4b3ead891790883456e461951125ac664ed",
+            "runtime": "3.14.7",
+            "dependencies": {
+              "math": "Python standard library"
+            },
+            "inputs": {
+              "x": 4.0,
+              "alpha": 0.25,
+              "iterations": 12
+            },
+            "stdout": "",
+            "hardware": "AMD64",
+            "seed": "not used: deterministic",
+            "limitations": "Scalar CPU demonstration with assertions; no GPU, model inference, training or experimental reproduction."
+          }
+        }
+      ],
+      "claims": [
+        {
+          "id": "gd.python-source",
+          "text": "Python's math.isfinite accepts zero and rejects infinity and NaN.",
+          "classification": "reported_source_claim",
+          "origin": "reported",
+          "source": {
+            "id": "https://docs.python.org/3.14/library/math.html#math.isfinite",
+            "version": "Python 3.14 documentation",
+            "location": "math.isfinite, return-value definition",
+            "verification_method": "opened official versioned documentation and checked definition plus runtime boundaries",
+            "status": "verified",
+            "limits": "isfinite semantics only; not convergence evidence",
+            "snapshot": ".scriptorium/evidence/python-math-3.14.txt",
+            "excerpt": "Return True if x is neither an infinity nor a NaN, and False otherwise. (Note that 0.0 is considered finite.)",
+            "hash": "0d46b781329c7cb7890325c94a9fd02d61d7c78b2515047edca7d7ddd45b2e9e",
+            "origin": "official_documentation"
+          }
+        }
+      ]
+    },
+    {
+      "id": "gd.tolerance",
+      "title": "Finite checks and numerical tolerance",
+      "section": "Implementing and Testing Descent",
+      "objectives": [
+        "explain finite-value checks and numerical tolerance"
+      ],
+      "capabilities": [
+        "S01"
+      ],
+      "prerequisites": [
+        "gd.c4"
       ]
     },
     {
       "id": "gd.c5",
-      "title": "Curvature and Failure Analysis",
+      "title": "SPD eigenbasis reduction",
       "objectives": [
         "analyze curvature and boundaries"
       ],
@@ -140,8 +383,446 @@
         "research": 1
       },
       "prerequisites": [
-        "gd.c4"
+        "gd.tolerance"
+      ],
+      "section": "Curvature and Failure Analysis",
+      "failures": [
+        {
+          "id": "gd.instability-diagnosis",
+          "symptom": "growing alternating states",
+          "latent_property": "noncontracting eigen-direction",
+          "candidate_cause": "step exceeds the quadratic stability range",
+          "diagnostic": "compare alpha with 2/lambda_max",
+          "measurement": "spectrum of the fixed SPD Hessian",
+          "evidence_status": "conditional analytical derivation",
+          "remediation": "reduce step or estimate curvature",
+          "cause_established": false,
+          "artifact_excerpt": "| Growing alternating states | Noncontracting eigen-direction |"
+        }
       ]
+    },
+    {
+      "id": "gd.spectrum",
+      "title": "Eigenvalue spread and conditional diagnostics",
+      "section": "Curvature and Failure Analysis",
+      "objectives": [
+        "explain spectral spread and the limits of symptom-based diagnosis"
+      ],
+      "capabilities": [
+        "S01"
+      ],
+      "prerequisites": [
+        "gd.c5"
+      ]
+    }
+  ],
+  "visuals": [
+    {
+      "id": "gd.trajectory",
+      "concept": "gd.c3",
+      "section": "Tracing the Algorithm",
+      "kind": "distribution",
+      "objective": "Exact quadratic gradient descent trajectories",
+      "data": {
+        "alpha=0.25": [
+          [
+            0,
+            4.0
+          ],
+          [
+            1,
+            3.0
+          ],
+          [
+            2,
+            2.25
+          ],
+          [
+            3,
+            1.6875
+          ],
+          [
+            4,
+            1.265625
+          ],
+          [
+            5,
+            0.94921875
+          ],
+          [
+            6,
+            0.7119140625
+          ],
+          [
+            7,
+            0.533935546875
+          ],
+          [
+            8,
+            0.40045166015625
+          ],
+          [
+            9,
+            0.3003387451171875
+          ],
+          [
+            10,
+            0.22525405883789062
+          ],
+          [
+            11,
+            0.16894054412841797
+          ],
+          [
+            12,
+            0.12670540809631348
+          ]
+        ],
+        "alpha=1.5": [
+          [
+            0,
+            4.0
+          ],
+          [
+            1,
+            -2.0
+          ],
+          [
+            2,
+            1.0
+          ],
+          [
+            3,
+            -0.5
+          ],
+          [
+            4,
+            0.25
+          ],
+          [
+            5,
+            -0.125
+          ],
+          [
+            6,
+            0.0625
+          ],
+          [
+            7,
+            -0.03125
+          ],
+          [
+            8,
+            0.015625
+          ],
+          [
+            9,
+            -0.0078125
+          ],
+          [
+            10,
+            0.00390625
+          ],
+          [
+            11,
+            -0.001953125
+          ],
+          [
+            12,
+            0.0009765625
+          ]
+        ],
+        "alpha=2.1": [
+          [
+            0,
+            4.0
+          ],
+          [
+            1,
+            -4.4
+          ],
+          [
+            2,
+            4.840000000000002
+          ],
+          [
+            3,
+            -5.324000000000002
+          ],
+          [
+            4,
+            5.8564000000000025
+          ],
+          [
+            5,
+            -6.442040000000004
+          ],
+          [
+            6,
+            7.086244000000004
+          ],
+          [
+            7,
+            -7.794868400000006
+          ],
+          [
+            8,
+            8.574355240000006
+          ],
+          [
+            9,
+            -9.43179076400001
+          ],
+          [
+            10,
+            10.374969840400013
+          ],
+          [
+            11,
+            -11.412466824440013
+          ],
+          [
+            12,
+            12.553713506884016
+          ]
+        ]
+      },
+      "xlabel": "completed updates k",
+      "ylabel": "state x_k",
+      "units": "dimensionless synthetic quadratic",
+      "interpretation": "These deterministic synthetic trajectories illustrate the proved recurrence; they are not training experiments."
+    }
+  ],
+  "assessments": [
+    {
+      "id": "gd.q1.1",
+      "chapter": "gd.ch1",
+      "objectives": [
+        "gd.c1:objective:0",
+        "gd.direction:objective:0"
+      ],
+      "type": "conceptual",
+      "question": "Why is the negative derivative locally useful?",
+      "hint": "Write the linear term f'(x)d.",
+      "solution": "With d=-alpha f'(x), the linear term is -alpha[f'(x)]². It is negative for a nonzero derivative and positive alpha, but the neglected remainder still matters."
+    },
+    {
+      "id": "gd.q1.2",
+      "chapter": "gd.ch1",
+      "objectives": [
+        "gd.c1:objective:0"
+      ],
+      "type": "numerical",
+      "question": "For x=4 and alpha=0.25, what are the new state and cost?",
+      "hint": "Use the derivative x for this quadratic.",
+      "solution": "The new state is 4-0.25(4)=3. The objective changes from 4²/2=8 to 3²/2=4.5."
+    },
+    {
+      "id": "gd.q1.3",
+      "chapter": "gd.ch1",
+      "objectives": [
+        "gd.c1:objective:0"
+      ],
+      "type": "diagnosis",
+      "question": "Does a zero derivative certify a minimum?",
+      "hint": "Compare a positive and a negative quadratic.",
+      "solution": "No. At zero, both x²/2 and -x²/2 have zero derivative, but the second has a maximum. Curvature and the domain determine the conclusion."
+    },
+    {
+      "id": "gd.q1.4",
+      "chapter": "gd.ch1",
+      "objectives": [
+        "gd.c1:objective:0",
+        "gd.direction:objective:0"
+      ],
+      "type": "comparison",
+      "question": "Does steepest decrease depend on the chosen norm?",
+      "hint": "The norm constrains the allowed displacements.",
+      "solution": "Yes. The negative gradient gives steepest Euclidean first-order decrease per unit Euclidean displacement. A different geometry changes the constrained direction problem."
+    },
+    {
+      "id": "gd.q2.1",
+      "chapter": "gd.ch2",
+      "objectives": [
+        "gd.c2:objective:0"
+      ],
+      "type": "mathematical",
+      "question": "Derive the scalar contraction interval.",
+      "hint": "Require |1-alpha|<1.",
+      "solution": "For nonzero initialization, the exact state multiplier contracts when -1<1-alpha<1. Subtract one and reverse signs to obtain 0<alpha<2. The special initialization x0=0 stays fixed outside that interval too."
+    },
+    {
+      "id": "gd.q2.2",
+      "chapter": "gd.ch2",
+      "objectives": [
+        "gd.c2:objective:0"
+      ],
+      "type": "numerical",
+      "question": "At alpha=1.5 and x0=4, find x1, x2 and the two costs.",
+      "hint": "The multiplier is -0.5.",
+      "solution": "x1=-2 and x2=1; their costs are 2 and 0.5. Signs alternate while magnitudes and cost decrease."
+    },
+    {
+      "id": "gd.q2.3",
+      "chapter": "gd.ch2",
+      "objectives": [
+        "gd.c2:objective:0",
+        "gd.boundary:objective:0"
+      ],
+      "type": "diagnosis",
+      "question": "Why does alpha=2 fail to contract a nonzero initial state?",
+      "hint": "Compute the state multiplier and its square.",
+      "solution": "The state multiplier is -1, giving alternating states with constant magnitude. Its squared multiplier is 1, so the objective also remains constant."
+    },
+    {
+      "id": "gd.q2.4",
+      "chapter": "gd.ch2",
+      "objectives": [
+        "gd.c2:objective:0",
+        "gd.boundary:objective:0"
+      ],
+      "type": "comparison",
+      "question": "Can this exact recurrence be used for every smooth objective?",
+      "hint": "Identify what made the derivative equal x.",
+      "solution": "No. The recurrence uses the exact quadratic derivative. A general smooth objective needs its own gradient and additional assumptions such as a Lipschitz gradient for a descent bound."
+    },
+    {
+      "id": "gd.q3.1",
+      "chapter": "gd.ch3",
+      "objectives": [
+        "gd.c3:objective:0",
+        "gd.trace:objective:0"
+      ],
+      "type": "conceptual",
+      "question": "What does trace entry k represent?",
+      "hint": "Distinguish initialization from updates.",
+      "solution": "Entry zero is the initialization. Entry k is the state after k completed simultaneous updates, so K updates return K+1 entries."
+    },
+    {
+      "id": "gd.q3.2",
+      "chapter": "gd.ch3",
+      "objectives": [
+        "gd.c3:objective:0"
+      ],
+      "type": "numerical",
+      "question": "Complete the alpha=0.25 trace after x=2.25.",
+      "hint": "Evaluate the gradient at the old state.",
+      "solution": "The gradient is 2.25 and displacement is -0.5625, giving next state 1.6875. Recomputing during coordinate writes would change a vector algorithm."
+    },
+    {
+      "id": "gd.q3.3",
+      "chapter": "gd.ch3",
+      "objectives": [
+        "gd.c3:objective:0"
+      ],
+      "type": "diagnosis",
+      "question": "Can twelve finite iterates establish long-run convergence?",
+      "hint": "Separate a finite observation from the multiplier proof.",
+      "solution": "No. A divergent multiplier can produce finite outputs for many steps. The exact closed form and its contraction condition establish the long-run behavior for this quadratic."
+    },
+    {
+      "id": "gd.q3.4",
+      "chapter": "gd.ch3",
+      "objectives": [
+        "gd.c3:objective:0",
+        "gd.trace:objective:0"
+      ],
+      "type": "implementation",
+      "question": "How can final-state storage reduce memory?",
+      "hint": "Which entries does a final-state client consume?",
+      "solution": "Keep only the current scalar state and overwrite it after computing the gradient from the old value. This uses O(1) working storage while retaining O(K) arithmetic work."
+    },
+    {
+      "id": "gd.q4.1",
+      "chapter": "gd.ch4",
+      "objectives": [
+        "gd.c4:objective:0"
+      ],
+      "type": "implementation",
+      "question": "Why test the loop against a closed form?",
+      "hint": "Consider two implementations with the same indexing mistake.",
+      "solution": "A separately derived expression gives an independent numerical oracle. Repeating the loop in the test could reproduce the same error; list-length and boundary checks separately test semantics."
+    },
+    {
+      "id": "gd.q4.2",
+      "chapter": "gd.ch4",
+      "objectives": [
+        "gd.c4:objective:0"
+      ],
+      "type": "numerical",
+      "question": "What should a zero-update request return for x=4?",
+      "hint": "No update has been executed.",
+      "solution": "The list is [4.0], with length one. Returning an empty list would lose the specified initialization entry."
+    },
+    {
+      "id": "gd.q4.3",
+      "chapter": "gd.ch4",
+      "objectives": [
+        "gd.c4:objective:0",
+        "gd.tolerance:objective:0"
+      ],
+      "type": "diagnosis",
+      "question": "Does passing isfinite imply a stable learning rate?",
+      "hint": "Consider alpha=2.1 for a few iterations.",
+      "solution": "No. Values can remain finite while growing in magnitude. isfinite detects infinity and NaN; stability follows from the mathematical multiplier condition."
+    },
+    {
+      "id": "gd.q4.4",
+      "chapter": "gd.ch4",
+      "objectives": [
+        "gd.c4:objective:0",
+        "gd.tolerance:objective:0"
+      ],
+      "type": "comparison",
+      "question": "Why use absolute tolerance near zero?",
+      "hint": "Compare a nonzero tiny value to zero using relative tolerance only.",
+      "solution": "A relative bound scales with the compared magnitudes and can reject every nonzero comparison to zero for tolerance below one. An appropriate absolute tolerance specifies the allowed near-zero error."
+    },
+    {
+      "id": "gd.q5.1",
+      "chapter": "gd.ch5",
+      "objectives": [
+        "gd.c5:objective:0"
+      ],
+      "type": "mathematical",
+      "question": "Why does lambda_max limit the SPD quadratic step?",
+      "hint": "Require every eigen-direction multiplier to contract.",
+      "solution": "Each positive eigenvalue requires 0<alpha<2/lambda_i. Intersecting these intervals yields 0<alpha<2/lambda_max; the eigenbasis reduction assumes a real symmetric positive definite Hessian."
+    },
+    {
+      "id": "gd.q5.2",
+      "chapter": "gd.ch5",
+      "objectives": [
+        "gd.c5:objective:0"
+      ],
+      "type": "numerical",
+      "question": "For eigenvalues 1 and 100 and alpha=0.01, find both multipliers.",
+      "hint": "Evaluate 1-alpha lambda_i.",
+      "solution": "They are 0.99 and 0. The stiff coordinate disappears in one ideal update, while the first contracts by only one percent per step."
+    },
+    {
+      "id": "gd.q5.3",
+      "chapter": "gd.ch5",
+      "objectives": [
+        "gd.c5:objective:0",
+        "gd.spectrum:objective:0"
+      ],
+      "type": "diagnosis",
+      "question": "Do oscillating training logs prove an excessively large fixed step?",
+      "hint": "The table analyzed an explicitly stated quadratic.",
+      "solution": "No. That is one candidate cause under the quadratic model. Other objectives, stochastic noise and extra optimizer state require their own diagnostics and controlled evidence."
+    },
+    {
+      "id": "gd.q5.4",
+      "chapter": "gd.ch5",
+      "objectives": [
+        "gd.c5:objective:0",
+        "gd.spectrum:objective:0"
+      ],
+      "type": "comparison",
+      "question": "Does the balanced quadratic step prescribe a neural network learning rate?",
+      "hint": "Check whether its Hessian is fixed, known and SPD.",
+      "solution": "No. The derived 2/(lambda_min+lambda_max) result assumes a fixed positive definite quadratic and exact arithmetic. Those assumptions do not generally describe neural network training."
     }
   ]
 }

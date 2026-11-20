@@ -253,4 +253,24 @@ Deep learning notes (`M1`) use the [per-concept instructional engine](references
 
 ## Comprehensive composition profile
 
-The [composition contract](references/workflows/notes-creation/composition-contract.md) defines full-topic M1 collections: one MOC, five comprehensive chapters, shared S01?S18 capabilities in the existing instructional registry, independent depth dimensions, and authored publication with exactly five YAML keys. Its profile-specific rules take precedence over legacy collection metadata and file layout above. Existing single-note and M2?M7 contracts remain supported.
+The [composition contract](references/workflows/notes-creation/composition-contract.md) defines full-topic M1 collections: one MOC, five comprehensive chapters, shared S01–S18 capabilities in the existing instructional registry, independent depth dimensions, and authored publication with exactly five YAML keys. Its profile-specific rules take precedence over legacy collection metadata and file layout above. Existing single-note and M2–M7 contracts remain supported.
+
+[KCP v2 integrity](references/contracts/composition-integrity.md) adds executable
+educational obligations, artifact-bound reviews, scoped mathematical/technical
+checks, versioned claim evidence, persisted renderer execution, and objective-aligned
+assessment. Open critical obligations block publication even when YAML and links pass.
+Composition code lives under `scriptorium/engines/composition/`; historical imports
+remain compatible. See the [implementation report](references/architecture/redesign-report.md)
+for the A1–A7/F01–F25 map, exact validation evidence, changes and limitations.
+
+```bash
+# Inspect obligations, prepare actual assets/questions, then review the returned bodies.
+python scripts/scribe.py notes compose --spec spec.json
+python scripts/scribe.py notes compose --spec spec.json --vault vault --drafts drafts.json --prepare
+# Compile only the active concept's instructions or inspect repair impact.
+python scripts/scribe.py notes compose --spec spec.json --context concept-id
+python scripts/scribe.py notes compose --spec spec.json --repair failed-obligation-id
+# Execute the repository-owned example and inspect repository dependencies.
+python examples/adaptive-composition/run.py
+python scripts/scribe.py audit --inventory
+```

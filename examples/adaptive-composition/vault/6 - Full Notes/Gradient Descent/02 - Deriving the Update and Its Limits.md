@@ -51,3 +51,37 @@ For a general function with an L-Lipschitz gradient, the descent lemma supplies
 an upper quadratic bound, not this exact recurrence. We must state that assumption
 before using an analogous sufficient step condition. Quadratic equality cannot
 be silently transferred to arbitrary objectives.
+
+## Check your understanding
+
+**Question (gd.q2.1):** Derive the scalar contraction interval.
+
+> [!hint]- Show hint
+> Require |1-alpha|<1.
+
+> [!answer]- Show detailed answer
+> For nonzero initialization, the exact state multiplier contracts when -1<1-alpha<1. Subtract one and reverse signs to obtain 0<alpha<2. The special initialization x0=0 stays fixed outside that interval too.
+
+**Question (gd.q2.2):** At alpha=1.5 and x0=4, find x1, x2 and the two costs.
+
+> [!hint]- Show hint
+> The multiplier is -0.5.
+
+> [!answer]- Show detailed answer
+> x1=-2 and x2=1; their costs are 2 and 0.5. Signs alternate while magnitudes and cost decrease.
+
+**Question (gd.q2.3):** Why does alpha=2 fail to contract a nonzero initial state?
+
+> [!hint]- Show hint
+> Compute the state multiplier and its square.
+
+> [!answer]- Show detailed answer
+> The state multiplier is -1, giving alternating states with constant magnitude. Its squared multiplier is 1, so the objective also remains constant.
+
+**Question (gd.q2.4):** Can this exact recurrence be used for every smooth objective?
+
+> [!hint]- Show hint
+> Identify what made the derivative equal x.
+
+> [!answer]- Show detailed answer
+> No. The recurrence uses the exact quadratic derivative. A general smooth objective needs its own gradient and additional assumptions such as a Lipschitz gradient for a descent bound.

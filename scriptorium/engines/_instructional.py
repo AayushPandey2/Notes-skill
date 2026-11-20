@@ -135,9 +135,13 @@ STAGE_ORDER = [
 ]
 
 
-@lru_cache(maxsize=1)
 def registry() -> dict[str, Any]:
-    return json.loads((REPO_ROOT / "references/workflows/notes-creation/instructional-registry.json").read_text(encoding="utf-8"))
+    return _parse_registry((REPO_ROOT / "references/workflows/notes-creation/instructional-registry.json").read_text(encoding="utf-8"))
+
+
+@lru_cache(maxsize=4)
+def _parse_registry(raw: str) -> dict[str, Any]:
+    return json.loads(raw)
 
 
 

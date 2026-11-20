@@ -24,14 +24,38 @@ def specification():
     return {"topic": "Gradient Descent", "source_policy": "strict",
             "chapters": [{"id": f"ch{i}", "title": f"Chapter {i}", "concepts": [f"c{i}"], "sections": [f"Concept {i}"]} for i in range(1, 6)],
             "concepts": [{"id": f"c{i}", "title": f"Concept {i}", "objectives": ["explain the mechanism"],
-                          "capabilities": ["S01"], "prerequisites": [f"c{i-1}"] if i > 1 else []} for i in range(1, 6)]}
+                          "capabilities": ["S01"], "prerequisites": [f"c{i-1}"] if i > 1 else []} for i in range(1, 6)],
+            "assessments": [{"id": f"q{i}.{j}", "chapter": f"ch{i}", "objectives": [f"c{i}:objective:0"],
+                              "type": kind, "question": question, "hint": "Use the stated local quadratic assumptions.",
+                              "solution": solution}
+                             for i in range(1, 6) for j, (kind, question, solution) in enumerate([
+                                 ("conceptual", "What does the update use?", "It uses the current gradient and a chosen positive step."),
+                                 ("numerical", "What is x minus one half x at x=2?", "2 - 0.5(2) = 1, using the stipulated scalar state."),
+                                 ("diagnosis", "Can a local direction guarantee a finite decrease?", "No; the higher-order remainder can dominate for a finite step."),
+                                 ("comparison", "How do alpha=1 and alpha=2 differ for x squared over two?", "The first reaches zero in one update; the second alternates without contracting.")])]}
+
+
+def reviews_for(plan, drafts):
+    """Test-only reviewer assertions; these fixtures do not certify teaching quality."""
+    def receipt(chapters):
+        return {"verifier": "pytest fixture reviewer", "method": "fixture-scoped review",
+                "result": "pass", "limitations": "Synthetic contract fixture; not an independent factual review.",
+                "evidence": [{"chapter": cid, "hash": content_hash(drafts[cid]), "excerpt": drafts[cid].splitlines()[0]}
+                             for cid in chapters]}
+    return {**{r: receipt(drafts) for r in plan["review_required"]},
+            "obligations": {o["id"]: receipt([o["owner"]]) for o in plan["obligations"]}}
 
 
 def inputs(plan):
+    from scriptorium.engines.composition.contracts import prepare_drafts
     drafts = {f"ch{i}": f"# Chapter {i}\n\n## Concept {i}\n\nAn authored explanation, reviewed separately.\n" for i in range(1, 6)}
+    drafts = {cid: text.strip()+"\n" for cid, text in prepare_drafts(plan, drafts).items()}
     evidence = {o["id"]: {"verified": True, "source": "supplied textbook", "location": "section 9.3", "origin": "supplied"}
                 for c in plan["concepts"] for o in c["research_obligations"]}
-    reviews = {r: "test fixture review; no claim of educational quality" for r in plan["review_required"]}
+    for record in evidence.values():
+        record.update(claim="The fixture uses a local update under explicit assumptions.", classification="definition",
+                      version="fixture-v1", verification_method="supplied fixture inspection", limits="fixture only")
+    reviews = reviews_for(plan, drafts)
     return drafts, evidence, reviews
 
 
@@ -138,6 +162,9 @@ def test_targeted_update_requires_reviewed_hash_and_preserves_other_chapters(tmp
     digest = content_hash((tmp_path / relative).read_text(encoding="utf-8"))
     drafts["ch1"] += "\nA localized correction with its justification."
     assert not publish_composition(tmp_path, plan, drafts, evidence=evidence, reviews=reviews)["complete"]
+    from scriptorium.engines._composition import prepare_composition
+    drafts, _ = prepare_composition(tmp_path, plan, drafts)
+    reviews = reviews_for(plan, drafts)
     result = publish_composition(tmp_path, plan, drafts, evidence=evidence, reviews=reviews, expected_hashes={relative: digest})
     assert result["complete"] and result["written_paths"] == [relative]
     for path, data in snapshots.items():

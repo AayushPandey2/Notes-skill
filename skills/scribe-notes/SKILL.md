@@ -13,6 +13,8 @@ description: Universal adaptive note-creation command. Interactively calibrates 
 
 For full-topic M1 notes, follow [the composition contract](../../references/workflows/notes-creation/composition-contract.md). After scope calibration, supply a shared concept plan and subject-specific five-chapter allocation to `notes compose`. Author and verify complete chapters before publication. This profile uses exactly `id`, `aliases`, `topic`, `tags`, `nexttopics`; internal metadata stays in manifests. The legacy grouped-file preview below is a provisional concept inventory. `notes generate --legacy-layout` is available for existing nested collections. Other masters and explicitly narrow single notes retain the workflow below.
 
+For comprehensive composition, the [KCP integrity contract](../../references/contracts/composition-integrity.md) owns obligation states, technical records, exact source evidence, renderer execution and assessment coverage. Run `notes compose --prepare` before reviewing; use its prepared chapter bodies for structured review hashes. `--context` compiles active-concept instructions, `--repair` lists affected dependents, and `--validate` rechecks published artifacts without writing. Record unavailable host checks explicitly.
+
 ## Legacy and single-note execution contract
 
 1. **Always start with the Interactive Configuration Gate (before generating final notes):**

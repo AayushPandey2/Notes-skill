@@ -1,206 +1,196 @@
-# Adaptive composition implementation report
+# Scriptorium 3.0 implementation and verification report
 
-This report describes implemented work, not completion of every acceptance
-criterion in `D:\MasterPrompt.txt`. The core comprehensive composition path is
-implemented and exercised. Full research-level collections for all requested
-subjects and live model efficiency comparisons remain outstanding.
+This change integrates the unified execution instruction, master architecture and
+25 audit-derived features into the existing `/scribe-notes` composition path.
+It delivers a locally executable integrity pipeline. Host-dependent checks remain
+explicitly limited: live Obsidian UI, independent expert/learner review, general
+proof/source entailment, external renderer adapters and model/GPU reproduction are
+not certified by this implementation.
 
-## A. Repository audit
+## Baseline and preserved architecture
 
-The repository already had six engine facades, Contract v3, KCP, ten instructional
-strategies, EIS-01–07, ARRIE, source policies, coverage and terminology registries,
-atomic writes, selective prompt compilation and layered caches. These were reused.
-The baseline passed **355 tests in 104.61 seconds**. Initial sandbox runs failed at
-pytest's existing Windows temporary directory; the approved run passed.
+The starting commit was `98d7e43` on `NewApproach`, with a clean working tree.
+The working baseline was **381 tests passing in 98.64 seconds**. Python 3.14 lacked
+pytest initially; pytest was installed in the interpreter's user environment.
+PyYAML was already available. No user vault or installed skill was changed.
 
-The main gaps were nested concept/file allocation, generic fallback prose being
-treated as finished output, incompatible frontmatter instructions, collapsed
-algorithmic depth, untyped tables and missing deterministic figure artifacts.
-See [audit](redesign-audit.md) and [file inventory](redesign-inventory.json).
-The inventory lists purpose, dependencies, textual callers, size and disposition;
-textual caller matches are an aid, not proof of dynamic runtime reachability.
+The repository already had E1 routing, E2 ARRIE research, E3 knowledge identity,
+E4 pedagogy/composition, E5 verification, E6 vault publication, KCP lifecycle,
+S01?S18 contributions, seven masters, twelve variants, six physical subtemplates,
+seventeen modules and four public commands. All remain supported. The seven A
+architectures are cooperating responsibilities within these existing engines.
+There are no new agent engines or subject-specific LLM-JEPA requirements.
 
-## B. Actual architecture
+Canonical implementation owners:
 
-Existing E1–E6 facades remain the public architecture. E4 delegates comprehensive
-planning, independent depth and shared stage ownership to `_composition.py`, and
-precise SVG generation to `_composition_visuals.py`. The existing instructional
-registry owns capability declarations and common contract defaults. KCP has an
-additive `composition` field. E2 exposes evidence sufficiency; E5 exposes chapter
-and published-collection checks; E6 exposes publication and migration inventory.
-The existing `scripts/scribe.py notes` CLI adds `compose`; no new public command
-or script was introduced.
+- [Plan and publication](../../scriptorium/engines/composition/__init__.py): shared concept ownership/depth, preparation, KCP transport, scoped context, publication, links and checkpoint validation.
+- [KCP obligations](../../scriptorium/engines/composition/contracts.py): executable educational obligations, artifact-bound reviews, assessment placement/coverage, dependency gates and repair.
+- [Scoped checks](../../scriptorium/engines/composition/checks.py): proof algebra, numerical boundaries, information flow, tensors, authenticity, execution, claims, uncertainty, diagnostics and cost contracts.
+- [Visual execution](../../scriptorium/engines/composition/visuals.py): numerical SVG, flow SVG, mask SVG, immutable asset cache, persisted attempts and embeds.
+- [E1 optimizer](../../scriptorium/engines/_token_optimizer.py): existing selective loader/compiler and MultiLevelCache, with selected-template/policy invalidation.
+- [Canonical contract](../contracts/composition-integrity.md): author-facing schema and procedures, loaded on the comprehensive path.
 
-## C. Subtemplate system
+## A1?A7 integration map
 
-These logical capabilities extend existing strategies; six physical knowledge-type
-subtemplate documents remain supported. Every capability also inherits the shared
-input, enrichment, compatibility, conflict, depth, output and repair contract.
+| Architecture | Integration and actual behavior |
+|---|---|
+| A1 Pedagogy | Owned prerequisite graph, classifications, term-before-use checks, bridge placement, claim/failure calibration and contextual objective disambiguation; authored prose remains in chapters. |
+| A2 Adaptive depth | Seven independent per-concept dimensions become deliverables; advanced math/implementation and active capabilities produce required technical contracts. |
+| A3 Composition | Existing S01?S18 strategies retain shared stage ownership; tables, technical artifacts and worked examples use the same concepts/evidence rather than parallel plans. |
+| A4 Visual intelligence | Opportunity review, renderer execution/failure, semantic inputs, actual immutable SVG assets, registration and Markdown embeds; hybrid specs retain separate part obligations. |
+| A5 Assessment | Four/five final questions, three or more task types, objective coverage, milestone placement and independent folded hints/answers. |
+| A6 Verification | Six separate outcome domains, structured artifact-bound evidence, exact/scoped computations, refusal of critical failures and dependency-aware repair. |
+| A7 Optimization | Existing context compiler/cache reused; active dependencies only, content-versioned registries/policies, scoped validation cache, immutable assets and no-op chapter reruns. |
 
-| Capability | Responsibility | Dependencies |
-|---|---|---|
-| S01 | Definitions, motivation, intuition, prerequisites | none |
-| S02 | Variables, assumptions, derivations, boundaries | S01 |
-| S03 | State, invariants, traces, complexity | S01 |
-| S04 | Complete code, environment, tests | S03 |
-| S05 | Components, interfaces, data flow, shapes | S01 |
-| S06 | Original methodology and paper contributions | S01 |
-| S07 | Hypotheses, metrics, uncertainty | S01 |
-| S08 | Fair criteria and comparable evidence | S01 |
-| S09 | Worked calculations and interpretation | S01 |
-| S10 | Causes, boundaries, diagnostics, recovery | S01 |
-| S11 | Chronology, attribution, causal transitions | S01 |
-| S12 | Educational visuals with precise labels | S01 |
-| S13 | Typed, comparable, source-aware tables | S01 |
-| S14 | Connections and qualified synthesis | S01 |
-| S15 | Objective-aligned questions and answers | S01 |
-| S16 | Data types, distributions, representations | S01 |
-| S17 | Objectives, convergence, resource bounds | S03 |
-| S18 | Requirements and operational decisions | S08 |
+## F01?F25 implementation matrix
 
-## D. Composition engine
+?Scoped? means the stated deterministic checks execute and artifact-bound review is
+required; it does not imply universal natural-language understanding. The regression
+IDs below refer to the named tests in [integrity regressions](../../tests/test_composition_integrity.py),
+[composition lifecycle tests](../../tests/test_comprehensive_composition.py), and
+[existing optimizer tests](../../tests/test_token_efficiency_optimizer.py).
 
-The shared plan validates identities, single chapter ownership, prerequisite order
-and chapter limits. Dependency resolution supplies selected capabilities in stable
-order. Shared explanation stages have one primary owner, supporting contributors
-and deduplicated technical obligations. For example, S04 activates S03 then S01;
-adding S02 and S12 contributes mathematics and visuals to the same progression.
-The author writes a continuous chapter from that plan. No concatenated template
-blocks or automatic topic-name-to-textbook claims are made.
+| Feature | Status / canonical owner | Tests and artifact evidence | Limits |
+|---|---|---|---|
+| F01 Obligations | Implemented, KCP | `valid_yaml_links_and_review_strings`, `targeted_repair_closure`; manifest records objective/depth/capability/source/artifact/assessment states | Reviewer assertions are not authenticated testimony |
+| F02 Concept graph | Implemented, Plan/KCP | Ownership/order/cycle regressions; ten meaningful concepts in generated MOC with canonical chapter links | Host chooses conceptual decomposition |
+| F03 Gaps/bridges | Scoped, KCP | `missing_prerequisite_before_equation`, `terminology_contract`; actual bridge must precede use | Host diagnoses open-ended prose gaps and authors bridges |
+| F04 Claim strength | Scoped, Checks | Exact classification/origin checks and strong-word scope review; pinned Python claim | Does not automatically extract every claim from arbitrary prose |
+| F05 Proof obligations | Scoped, Checks | Tangent/finite-step counterexample, stronger-theorem rejection, exact rational polynomial identities, numerical-samples refusal; quadratic derivation | General implications require scoped review; no general theorem prover |
+| F06 Failure taxonomy | Implemented, Checks | `diagnostics_cost_and_failure`; generated six-column diagnosis table and conditional cause record | Controlled measurement needed to establish causal claims |
+| F07 Information flow | Implemented, Checks/Visual | `isolated_branch_cannot_read_forbidden_input`, `flow_and_mask_render`; transitive provenance and query/key mask | Explicit contracts must accurately describe the real backend |
+| F08 Tensors/tokens | Scoped, Checks | `zero_predictor_tokens`; shapes, zero axes, readout, indexing, tokenizer assumptions and tensor-heavy requirement | No model tokenizer/backend is executed by the validator |
+| F09 Authentic examples | Implemented, Checks | Stipulated-state refusal, execution code/hash binding; synthetic trace separately classified from executed Python | Model execution requires host evidence |
+| F10 Implementation path | Implemented, Checks | Component/full-step refusal and all ten training stages; scalar example explicitly end-to-end within its narrow scope | Does not claim that scalar optimization is neural training |
+| F11 Numerical boundaries | Implemented, Checks | Zero tokens, near-zero stabilizer, singular arithmetic, exact vs allclose and real executed scalar boundaries | Tolerances and domains remain explicit inputs |
+| F12 Provenance | Implemented, Checks | `versioned_source_snapshot`; exact version/location/excerpt/hash and invalidation after source changes | Snapshot inclusion does not prove semantic entailment |
+| F13 Empirical uncertainty | Scoped, Checks/KCP | Benchmark-without-location/uncertainty refusal; run-count/SD/SE/CI checks and comparable chart values | No invented benchmark data; built-in SVG error bars deliberately unsupported |
+| F14 Visual review | Implemented, KCP | `visual_depth_without_artifact`; actual difficulty/representation/placement or reviewed omission | Host decides instructional usefulness |
+| F15 Persistent execution | Implemented, Visual/Plan | `renderer_selection_without_execution`, `failed_render_attempt`; actual renderer status/hash/path plus embed | Unavailable host adapters stay blocked |
+| F16 Visual semantics | Implemented, Visual/Checks | Wrong-equation series refusal; shared mask builder, flow contracts, SVG regeneration and tamper checks | Browser/theme appearance not verified |
+| F17 Representation diversity | Implemented, Plan/Visual | Scientific/architecture/mask artifacts, native MOC Mermaid, typed tables and `hybrid_representation` | External images/figures remain host-adapter paths |
+| F18 Assessment | Scoped, KCP | Diversity/coverage/hint/solution regressions; twenty authored questions with worked solutions | Correctness includes recorded author review, not independent learner trials |
+| F19 Obsidian disclosure | Format implemented; host UI untested | Separate native `[!hint]-` and `[!answer]-` in all generated questions; explicit manifest UI limitation | Reading View, Live Preview, math/code, keyboard, mobile and theme tests require Obsidian |
+| F20 Completion integrity | Implemented, KCP/Plan | Valid YAML/links with failing math refuses publication; failed/string/stale/malformed review refusal; six domain outcomes | Each outcome is limited to its actual check method |
+| F21 Targeted repair | Implemented, KCP/E1 | Repair closure prioritizes proof/flow/tensor errors, regenerates dependent assets and preserves independent chapter bytes | Host supplies the corrected prose/code; no automatic expert repair |
+| F22 Semantic objectives | Implemented, KCP/Plan | Historical-evolution tracing does not raise algorithm-state depth; explicit kind override | Context heuristic can be overridden by author intent |
+| F23 Execution evidence | Implemented, Checks | Code/hash/runtime/dependency/input/output/hardware/seed records and execution-level refusal; displayed block actually executed | No GPU, model inference or training reproduced here |
+| F24 Resource analysis | Scoped, Checks | Estimate-vs-benchmark refusal and protocol fields; generated scalar operation/storage/backward assumptions | No measured attention-kernel or equal-compute experiment |
+| F25 Representation diagnostics | Implemented small-array checks, Checks | Actual norms, centered variability, singular spectrum, effective dimension and held-out ridge probe; 2D-projection overclaim refused | Finite observations, small-matrix budget; no intrinsic-rank/causal-utility certification |
 
-## E. Adaptive depth
+## Actual generated-note and verification evidence
 
-Seven independent ordinal dimensions coexist with the legacy six-dimensional
-contract. A `trace` objective requires algorithmic depth 3 without forcing code.
-A `derive` objective requires mathematical depth 3. Conflicting evidence raises
-research effort to at least 4 without raising implementation depth. A strict
-source policy still prohibits external retrieval. Decisions record reasons.
-Changing the specification changes its identity and requires dependent checks.
+Run `python examples/adaptive-composition/run.py`. The repository-owned runner:
 
-## F. Research architecture
+1. Executes its exact displayed Python block and independent scalar closed-form,
+   zero-step, one-step, stability-boundary and finite-value assertions.
+2. Prepares the trajectory renderer, registers a content-addressed scientific SVG,
+   verifies regeneration and inserts its actual embed into the owning chapter.
+3. Publishes a MOC plus five substantial authored chapters with exactly five YAML
+   keys, ten concept owners/dependencies, twenty diverse questions, independent
+   folded hints and detailed answers, typed traces and a qualified failure table.
+4. Checks exact rational polynomial steps under stated quadratic assumptions and
+   binds the displayed Python isfinite claim to a versioned official excerpt.
+5. Reruns with no chapter writes and verifies that an intentionally failed
+   mathematical review refuses a subsequent publication attempt.
 
-Each selected capability produces concept-specific evidence obligations. Existing
-ARRIE remains responsible for actual retrieval, normalization, citation auditing,
-freshness and source evaluation. The composition adapter requires a verified
-record, source, location, compatible provenance and no open contradiction. Paper
-analysis requires primary evidence; API obligations need version/check information.
-Pending obligations block publication; contradictions request escalation. The
-adapter does not itself verify that a URL supports a statement. Evidence records
-must come from actual research or explicitly identified reproducible derivations.
+Inspect [spec](../../examples/adaptive-composition/spec.json),
+[prepared bodies](../../examples/adaptive-composition/drafts.json),
+[evidence](../../examples/adaptive-composition/evidence.json),
+[review receipts](../../examples/adaptive-composition/reviews.json),
+[measurements](../../examples/adaptive-composition/measurements.json),
+[successful manifest](../../examples/adaptive-composition/vault/.scriptorium/collections/col-gradient-descent.json),
+[refusal evidence](../../examples/adaptive-composition/vault/.scriptorium/validation/col-gradient-descent.json),
+and [persisted renderer](../../examples/adaptive-composition/vault/.scriptorium/renderers/col-gradient-descent.json).
 
-## G. Table Intelligence
+The learner-facing sample lives in `examples/adaptive-composition/vault/6 - Full Notes/Gradient Descent/`:
 
-Twelve types are implemented: definition, variable, comparison, execution,
-complexity, experimental, architecture, failure, decision, evidence, prerequisite
-and formula. Rendering requires populated columns, a learning objective and prose
-interpretation. Comparisons reject different conditions, metrics or units. Vague,
-nonfinite and unsuitable multiline values are rejected. Numerical/source truth
-still requires calculation and evidence review. The gradient-descent trace and
-failure table demonstrate prose integration; tests exercise incomparable metrics.
+- `00 - Map of Contents.md`
+- `01 - Why Local Descent Works.md`
+- `02 - Deriving the Update and Its Limits.md`
+- `03 - Tracing the Algorithm.md`
+- `04 - Implementing and Testing Descent.md`
+- `05 - Curvature and Failure Analysis.md`
 
-## H. Visual Intelligence
+The content concerns exact quadratic descent, not all optimization. Existing
+Transformer/quantization/OS selection examples remain selection demonstrations;
+their presence does not imply complete research textbooks or experiments.
+The Python excerpt was inspected at the official versioned source:
+[Python 3.14 math.isfinite](https://docs.python.org/3.14/library/math.html#math.isfinite).
+Other old entries in `sources.json` are historical inventory, not new verification.
 
-Renderer selection supports external figures, scientific curves, Mermaid, SVG,
-conceptual image generation and hybrid plans. Standard-library scientific SVG and
-architecture SVG renderers execute locally; XML checks reject malformed or active
-content. The MOC emits native Mermaid. Three generated SVGs show quadratic
-trajectories, attention interfaces and a synthetic quantization mapping.
-External/image-generation/hybrid rendering requires available host adapters;
-these were not executed. A full Mermaid parser/browser renderer was unavailable.
+## Consolidation, movement and instruction safety
 
-## I. Real multi-file output
+The canonical composition code is now organized by responsibility:
 
-The [example](../../examples/adaptive-composition/README.md) publishes:
+- `_composition.py` implementation moved into `composition/__init__.py`.
+- `_composition_visuals.py` implementation moved into `composition/visuals.py`.
+- Shared obligations and semantic checks live in `composition/contracts.py` and
+  `composition/checks.py`, with no 25-module engine proliferation.
+- The two historical modules are import aliases to the canonical modules. Existing
+  callers, facade methods and monkeypatch-based regression tests continue to work.
+- New CLI/contract references use the canonical package where appropriate; old
+  imports are compatibility paths, not duplicate policy/implementation owners.
 
-```text
-examples/adaptive-composition/vault/6 - Full Notes/Gradient Descent/
-  00 - Map of Contents.md
-  01 - Why Local Descent Works.md
-  02 - Deriving the Update and Its Limits.md
-  03 - Tracing the Algorithm.md
-  04 - Implementing and Testing Descent.md
-  05 - Curvature and Failure Analysis.md
-```
+Removed/superseded behavior was established by inspection and regression evidence:
+nonempty review strings no longer satisfy publication; renderer selection cannot
+stand for execution; nonzero depth/capability declarations cannot substitute for
+required contracts; an ambiguous failure-table cause column is replaced by separate
+latent property/candidate cause/diagnostic/evidence/remediation columns; stale
+registry/template cache reuse is invalidated by content. The corresponding tests
+exercise the before/after failure conditions. No rarely used master, research mode,
+subtemplate, utility, existing user note or conditional renderer path was deleted.
 
-All six notes use exactly the five requested Properties. The graph contains
-concept dependencies. Assets and internal manifests are outside the topic folder.
-The collection deliberately covers quadratic gradient descent, not all optimization.
-Its published Python block ran, scalar closed forms were checked, boundary behavior
-was tested, and the actual CLI publication and validation commands succeeded.
-Identical reruns wrote no chapter files.
+The existing authoring and composition contracts now link one canonical integrity
+contract instead of repeating all schemas. Root/command skills load it only for the
+comprehensive path. Legacy metadata remains profile-specific. Duplicate root/index
+list numbering and corrupt capability range punctuation were repaired.
 
-## J. Precision improvements
+The [per-file inventory](redesign-inventory.json) records every tracked/nonignored
+file's purpose, static inbound/outbound dependencies, line/byte size, estimated
+context cost and KEEP/OPTIMIZE/MOVE disposition. Static reachability alone never
+licenses deletion. [Changed files](modified-files.txt) and the
+[actual final repository tree](final-tree.txt) are generated from Git-visible paths.
+Generated caches are excluded. Repository reorganization concerns code ownership;
+existing user vault layout is not automatically migrated or deleted.
+Git attributes preserve exact evidence/asset bytes and stable renderer-code line
+endings across checkouts, so line-ending conversion cannot corrupt pinned hashes.
 
-The legacy writer could reinforce an unknown M5 topic with a generic identity
-function and invariant reminder. The comprehensive path requires authored chapters
-and blocks missing evidence/reviews instead of treating that scaffold as completion.
-The new example explains why the negative derivative is locally useful, derives
-the exact multiplier, proves its stability interval, distinguishes state from loss
-oscillation and states the SPD assumptions behind the eigenvalue extension.
-This is a concrete content example, not a measured pedagogical superiority claim.
+## Tests and measurements
 
-## K. Optimization results
+[Validation results](validation-results.json) record exact commands, exit results,
+test counts and timings for this run. Checks include full regression, all masters/
+variants/subtemplates and source-only behavior, narrow/nonmathematical/programming
+routes, composition/technical/visual/assessment failures, CLI preparation/publication/
+validation/context/repair, inventory/link/authority/registry audit and both skill
+validators. The example runner also verifies repeat publication and deliberate
+false-completion refusal. The final full suite passed **413 tests in 103.19 seconds**, including 32 new behavioral regressions.
 
-[Measurements](../../examples/adaptive-composition/measurements.json) record actual
-local runner timing, six output files, three figures and one executed published
-Python block. The narrow capability bundle serializes to 1,115 bytes versus 20,337
-bytes for all resolved capability contracts. These are JSON byte counts, not model
-tokens or measured savings against the old architecture. The existing 12-workload
-[optimizer benchmark](../../examples/adaptive-composition/optimizer-benchmark.json)
-passed compilation checks and retained 14 verification obligations. Its token
-figures use the existing estimator and synthetic eager-loading baseline; they are
-not actual model usage or an attributable improvement from this redesign.
+Measured example timing, cold/warm check counts, real context file reads and asset
+execution are in `measurements.json`. Actual provider model tokens are unavailable;
+compiler token counts are estimates. The runner makes zero model calls and zero
+retrieval calls; the separate official-document inspection is not hidden in those
+runner metrics. A baseline/final pytest timing pair is not an optimization claim.
+This run checked 82 obligations: cold validation took 0.1881s with zero reused checks; warm validation took 0.6843s with 82 reused checks. These are uncontrolled local observations; caching correctness does not establish a runtime improvement. The selected conceptual prompt used 10 actual context file reads and 8324 estimated tokens.
 
-## L. Quality verification
+No live token, learning-gain, source-retrieval, GPU or model-performance percentage
+is claimed. Canonical receipt references avoid duplicating full evidence in every
+validation result; receipts remain in their single review registry.
 
-The new suite exercises ownership and graph rejection, dependency cycles,
-independent depth, policy restrictions, sufficiency/contradictions, six-file output,
-exact YAML, KCP integration, preflight failures, protected targeted changes,
-non-destructive migration inventory, typed comparisons, finite scientific data,
-SVG XML, CLI planning, truncation, specification invalidation, dirty output folders
-and resumable simulated disk failure. Repository syntax/link, authority and
-registry audits pass. Both changed skills passed the skill-creator validator.
-Final regression results are recorded in `validation-results.json` alongside this
-report: **381 passed in 100.79 seconds**, including 26 new behavioral tests.
-Deterministic checks do not replace factual or instructional review. A single
-baseline/final timing pair is not evidence of a performance improvement.
+## Remaining limits and acceptance scope
 
-## M. File changes
+The locally testable pipeline and audit regressions are implemented. Full universal
+semantic certification is not possible from YAML, hashes or deterministic checks.
+The host author still researches, decomposes topics, diagnoses open-ended gaps,
+authors explanatory bridges and judges pedagogical correctness. Explicit records
+bind those judgments to actual artifacts; they do not replace them.
 
-New: two private composition helpers, the comprehensive behavior test suite,
-canonical composition contract, audit/inventory/report artifacts, and reproducible
-example inputs, authored notes, assets and measurements. Modified: KCP; pedagogy,
-research, quality and vault facades; the existing CLI; instructional registry;
-root and note skill guidance; architecture, metadata, master and subtemplate docs.
-No files were moved, merged away, deprecated or deleted. No installed global skill
-or real user vault was modified. The workspace Git changes remain uncommitted.
-
-## N. Compatibility
-
-All seven masters, twelve variants, six knowledge-type documents, seventeen module
-declarations and four public slash commands remain registered. Existing legacy
-APIs remain available. New M1 hierarchical CLI generation directs authors to the
-composition path; `--legacy-layout` explicitly retains nested output. Five-key
-metadata is profile-specific, so legacy validators and unrelated vault metadata
-are not weakened. Migration currently inventories and preserves originals.
-
-## O. Outstanding work and acceptance status
-
-The full master-prompt acceptance criteria are **not all met**. In particular:
-
-- Transformer, quantization, OS and shared-research scenarios demonstrate selection
-  and limited numerical/visual checks, not complete research-level chapter sets.
-- No model backend, autonomous source retriever or live token/retrieval telemetry
-  is bundled. The author/host agent supplies content and audited research records.
-- Full proof checking, tensor validation, source-entailment verification, rendered
-  Mermaid checks and measured pedagogical regression are not implemented here.
-- Migration inventories text/hashes/links/backlinks; automatic lossless consolidation
-  and backlink rewriting are not implemented. No originals are deleted.
-- Composition-specific caching uses an invalidation identity and unchanged-file
-  reuse; it does not replace or newly integrate every existing layered cache.
-- The legacy interactive preview still reflects the concept inventory before the
-  agent supplies its subject-specific chapter specification. It is not a complete
-  automated comprehensive-plan UI.
-
-These limits are explicit so a passing structural test suite is not mistaken for
-completion of the requested research and teaching system.
+General mathematical proofs and source entailment remain scoped review beyond the
+supported polynomial/numerical checks. Empirical data and experimental execution
+must come from actual sources/runners. External figure, image-generation and
+Mermaid rasterization adapters are not bundled. Native MOC Mermaid is emitted but
+not browser-tested. Scientific SVG error bars require a different capable backend.
+Large representation matrices require a scientific library. Live Obsidian display,
+independent expert/learner assessment and model/GPU experiments were not performed.
+These limitations remain visible in manifests and gates; no full-model, universal
+proof, independent review or live-UI success is claimed.

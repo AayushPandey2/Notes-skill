@@ -5,6 +5,10 @@ M1 notes. `/scribe-notes` remains the public command. M2–M7 and explicitly nar
 single-note requests retain their current products. Existing nested collections
 can retain the legacy layout; do not migrate them implicitly.
 
+The [KCP integrity contract](../../contracts/composition-integrity.md) owns the
+executable v2 obligations, structured evidence and review receipts, technical
+records, renderer execution, assessment coverage and repair/cache semantics.
+
 ## Planning and authoring
 
 Use the configuration gate to establish intent, source policy, scope and audience.
@@ -78,20 +82,24 @@ to SVG; source figures to external retrieval; intuition to image generation; and
 distinct combined objectives to hybrid composition. Declare unavailable renderers.
 Exact claims require equations or reproducible data. External figures need source,
 URL and rights. Never use illustrative generated pixels as mathematical evidence.
-The standard-library SVG renderer supports supplied numerical series and ordered
-architecture blocks, with XML checks. It does not certify tensor correctness or
-Mermaid rendering. Host image tools remain optional adapters, not bundled services.
+The standard-library SVG renderer executes numerical series, validated information
+flows and attention masks. It records attempts and failures, verifies regenerated
+assets and inserts their embeds. Standalone ordered-block helpers remain available
+for illustrations; publication uses actual flow contracts. Browser rendering and
+host image tools remain conditional checks with explicit limitations.
 
 ## Publication, checkpoints and repair
 
-Author Markdown bodies keyed by chapter ID in `drafts.json`. Collect evidence keyed
-by the plan's obligation IDs and four substantive review records: factual accuracy,
-derivation correctness, reader simulation, and cross-chapter coherence. Reviews must
-describe checks actually performed, including limits; they are not quality scores.
+Author Markdown bodies keyed by chapter ID in `drafts.json`. Run `notes compose
+--prepare` with the spec, vault and drafts to render figures and place questions
+before review. Collect ARRIE evidence plus artifact-bound review objects for every
+obligation and the four named collection reviews. The integrity contract defines
+the fields; nonempty strings cannot establish verification. Hash the exact prepared
+bodies and include actual excerpts, reviewer identity, method, result and limits.
 
 Run `python scripts/scribe.py notes compose --spec <spec.json> --vault <vault> --drafts <drafts.json> --evidence <evidence.json> --reviews <reviews.json> --publish`.
 The CLI builds the existing KCP with the shared composition field and publishes
-through E6. The entire collection is checked before writes: evidence, review records,
+through E6. The entire collection is checked before chapter writes: evidence, review records,
 planned sections, unfinished markers, fences, display-math delimiters, local links,
 assets, and exactly `id`, `aliases`, `topic`, `tags`, `nexttopics` in frontmatter.
 The MOC contains an ordered path and concept-level Mermaid prerequisite graph.
@@ -123,8 +131,9 @@ counts, links and discoverable backlinks without mutating anything. Consolidatio
 still requires chapter mapping, preserved citations/equations/assets, backup,
 coverage review and backlink repair. Originals are never automatically deleted.
 
-Resolve only requested capabilities and their dependencies. Reuse the existing
-token optimizer and ARRIE cache for source extraction, verified evidence and prompt
-components. The specification hash includes source policy, notation, depth and
-chapter allocation. It is an invalidation identity, not a new cache service.
+Resolve only requested capabilities and their dependencies. `--context` integrates
+the existing token optimizer with active concepts and obligation contracts. The
+existing cache stores scoped validation using code versions, prerequisite closure,
+chapter content, source snapshots, evidence and renderer identities. `--repair`
+computes affected sections and dependents while preserving independent files.
 Do not report model-token or retrieval savings without actual execution telemetry.

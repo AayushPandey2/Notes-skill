@@ -45,3 +45,12 @@ The adaptive instructional engine (`references/adaptive-engine.md`, `references/
 - **Public Command Consolidation (`12` → `4` active public skills):** Unified all 8 redundant note-creation public skill wrappers (`/scribe-deepnotes`, `/scribe-distill`, `/scribe-atomic-notes`, `/scribe-compare`, `/scribe-dsa`, `/scribe-practice`, `/scribe-ingest`, `/scribe-expand`) into the single universal `/scribe-notes` command while preserving the 3 non-note commands (`/scribe-doubt`, `/scribe-quiz`, `/scribe-setfolder`). All 7 internal master templates (`M1`–`M7`), 12 variants, 6 subtemplates, ARRIE, Contract v3, P01–P11, EIS-01..EIS-07, and Obsidian Properties remain intact and dynamically selectable through `/scribe-notes`.
 - **Mandatory Interactive Configuration Gate:** `/scribe-notes` analyzes requests (`OrchestrationEngine.start_notes_session`), infers provisional template, depth, scope (`S0`–`S5`), and organization (`single_note` vs. `hierarchical_collection`), asks only unanswered adaptive plain-text questions, and supports natural follow-ups without repeating `/scribe-notes` (`respond_to_session`).
 - **Hierarchical Knowledge Generation & Collection-Wide Validation:** Broad topics (`S3`–`S5`) decompose into structured Parent Maps of Content (`note_type: index`) and adaptive child notes with separated Topic Hierarchy (`parent_id`/`child_ids`), Prerequisite (`prerequisite_ids`), and Related (`related_ids`) graphs, collection manifests under `.scriptorium/collections/`, non-destructive existing-note reconciliation, and collection-wide validation (`QualityEngine.validate_collection`).
+# KCP composition integrity v2
+
+Comprehensive M1 publication now requires the [integrity contract](composition-integrity.md).
+Rebuild a v1 composition from its authored specification, prepare actual assets and
+assessments, then review the prepared chapter bodies. Nonempty review strings and
+renderer selections no longer qualify as verification. The two historical private
+composition imports alias the canonical `scriptorium/engines/composition/` package.
+Other masters, source-only modes and legacy layouts retain their established
+contracts. This migration does not rewrite or delete existing user notes.
