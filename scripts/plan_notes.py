@@ -15,11 +15,17 @@ from urllib.parse import urlsplit
 
 import yaml
 
-from note_layout import DEEP_ROUTES, ROUTES
-from scaffold_note import _slugify
+SCRIPT_DIR = Path(__file__).resolve().parent
+REPO_ROOT = SCRIPT_DIR.parent
+for _p in (str(REPO_ROOT), str(SCRIPT_DIR)):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
+
+from scriptorium.layout import DEEP_ROUTES, ROUTES
+from scriptorium.models import slugify as _slugify, normalize_stack
 from vault_index import is_within_vault, resolve_notes_folder, resolve_vault_root, set_notes_folder
-from decision_matrix import normalize_stack, requested_stack, resolve_decisions
-from note_verification import EXTENSIONS, check_evidence, check_python, required_examples, split_blocks, verify_runtimes
+from scriptorium.engines._decision import requested_stack, resolve_decisions
+from scriptorium.engines._verification import EXTENSIONS, check_evidence, check_python, required_examples, split_blocks, verify_runtimes
 
 COMMANDS = {f"scribe-{name}" for name in (
     "dsa", "practice", "deepnotes", "expand", "doubt", "distill", "ingest", "compare", "quiz", "atomic-notes", "notes", "setfolder"
@@ -47,10 +53,23 @@ DOMAIN_STACKS = {
     "math": ("python", ["Python + SymPy"]),
 }
 PROFILES = {
-    "deepstudy-master": "decision-record",
-    "api-table": "official-docs", "summary": "source-only", "dsa": "problem-and-docs",
-    "paper-breakdown": "primary-paper", "practice": "vault-notes", "atomic": "papers-and-textbooks",
-    "cheat-sheet": "vault-notes", "comparison": "docs-and-papers", "studynotes": "fast-web-fetch",
+    "deepstudy-master": "adaptive-research-engine",
+    "deep-notes": "adaptive-research-engine",
+    "api-table": "official-docs",
+    "summary": "source-only",
+    "dsa": "problem-and-docs",
+    "implementation-guide": "problem-and-docs",
+    "paper-breakdown": "primary-paper",
+    "practice": "vault-notes",
+    "assessment": "vault-notes",
+    "atomic": "papers-and-textbooks",
+    "cheat-sheet": "vault-notes",
+    "quick-reference": "vault-notes",
+    "comparison": "docs-and-papers",
+    "studynotes": "fast-web-fetch",
+    "study-notes": "fast-web-fetch",
+    "worked-solutions": "adaptive-research-engine",
+    "synthesis-revision": "vault-notes",
 }
 URL = re.compile(r"https?://[^\s<>\"]+", re.I)
 PAPER_PATHS = {
@@ -116,18 +135,39 @@ def inspect_request(request: str, *, stack: list[str] | None = None) -> dict:
         is_paper = source.path != "/" and source.path.startswith(prefixes)
         source_lock = "paper-breakdown" if is_paper else "summary"
     locked = LOCKS.get(command)
-    selected = locked or override or source_lock or {
-        "scribe-notes": "studynotes", "scribe-deepnotes": "deepstudy-master",
-    }.get(command)
+    from scriptorium.engines.orchestration import route_request, route_to_master
+
+    routed = route_request(raw, has_source=bool(sources), existing_command=command)
+    if command == "scribe-notes":
+        selected = override or source_lock or routed.get("compat_route") or "deepstudy-master"
+    else:
+        selected = locked or override or source_lock or {
+            "scribe-deepnotes": "deepstudy-master",
+        }.get(command)
     if selected in DEEP_ROUTES:
         selected = "deepstudy-master"
     implementation_stack = requested_stack(payload) if stack is None else normalize_stack(stack)
+    if selected and routed.get("master") is None:
+        m_id, v_id = route_to_master(selected)
+        routed["master"] = m_id
+        routed["variant"] = v_id
     return {
         "command": command, "payload": payload, "template": selected,
         "lock": "command" if locked else "explicit" if override else "source" if source_lock else None,
         "language": language, "sources": sources,
         "implementation_stack": implementation_stack,
         "mode": "setfolder" if command == "scribe-setfolder" else "existing-notes" if command in {"scribe-doubt", "scribe-quiz"} else "author",
+        "master": routed.get("master"),
+        "variant": routed.get("variant"),
+        "multi_artifact": routed.get("multi_artifact", False),
+        "shared_context": routed.get("shared_context", False),
+        "source_policy": routed.get("source_policy", "adaptive"),
+        "research_mode": routed.get("research_mode", "R-I"),
+        "knowledge_types": routed.get("knowledge_types", []),
+        "artifacts": routed.get("artifacts", []),
+        "routing_trace": routed.get("routing_trace", {}),
+        "retired_command": routed.get("retired_command"),
+        "migration_hint": routed.get("migration_hint"),
     }
 
 
@@ -219,10 +259,6 @@ def build_plan(
     if intent["mode"] != "author":
         raise ValueError(f"{intent['command']} uses existing notes and does not create a plan.")
     lock = intent["template"] if intent["lock"] == "command" else template or (intent["template"] if intent["lock"] else None)
-    if intent["command"] == "scribe-notes" and (
-        template in FORBIDDEN_STUDYNOTES_TEMPLATES or lock in FORBIDDEN_STUDYNOTES_TEMPLATES
-    ):
-        raise ValueError("/scribe-notes prohibits deepstudy-master.")
     language = intent["language"] or language
     topic_folder = _relative(topic_folder, folder=True)
     notes_root = resolve_notes_folder(vault)
@@ -233,12 +269,6 @@ def build_plan(
         raise ValueError(f"Topic folder is occupied by a file: {topic_folder}")
     if not isinstance(outline, list) or not outline:
         raise ValueError("Outline must be a nonempty array of subtopics.")
-    if intent["command"] == "scribe-notes" and lock in {None, "studynotes"} and not intent["sources"]:
-        for item in outline:
-            if isinstance(item, dict) and item.get("template") in FORBIDDEN_STUDYNOTES_TEMPLATES:
-                raise ValueError("/scribe-notes prohibits deepstudy-master.")
-        if len(outline) < 3:
-            raise ValueError("/scribe-notes must decompose the topic into multiple subtopic notes (at least 3).")
     if lock in {"dsa", "practice", "summary", "paper-breakdown"} and len(outline) != 1:
         raise ValueError(f"This {lock} request expects exactly one output.")
     if lock == "practice" and (topic_folder == "." or not directory.is_dir()):
@@ -254,18 +284,10 @@ def build_plan(
         if not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9_-]*", item_id) or item_id == "practice":
             raise ValueError(f"Invalid or reserved item ID: {item_id}")
         if intent["command"] == "scribe-notes":
+            # Universal /scribe-notes supports ALL seven masters (M1-M7) dynamically without prohibiting M1
             explicit_item_tpl = item.get("template")
-            if explicit_item_tpl in FORBIDDEN_STUDYNOTES_TEMPLATES:
-                raise ValueError("/scribe-notes prohibits deepstudy-master.")
-            route = lock or explicit_item_tpl
-            if not route:
-                selected = select_route(
-                    item.get("purpose", "explain"),
-                    item.get("impl_weight", "low"),
-                    item.get("density", "cohesive"),
-                )
-                route = "studynotes" if selected in DEEP_ROUTES else selected
-            level = item.get("math_level", 0)
+            route = lock or explicit_item_tpl or intent["template"] or "deepstudy-master"
+            level = item.get("math_level")
         elif intent["command"] == "scribe-deepnotes" or "instructional_plan" in item:
             # Modern adaptive deep-notes route: never call select_route() to switch subtopics
             # into api-table, atomic, cheat-sheet, or comparison based on purpose/density/impl_weight.
@@ -299,13 +321,14 @@ def build_plan(
         if tags is not None and (not isinstance(tags, list) or any(not isinstance(tag, str) for tag in tags)):
             raise ValueError(f"{title}: tags must be a list of strings.")
         if route in DEEP_ROUTES and "instructional_plan" in item:
-            from instructional_plan import resolve_instructional_contract
+            from scriptorium.engines._instructional import resolve_instructional_contract
 
             decision_contract = resolve_instructional_contract(
                 request,
                 topic,
                 item["instructional_plan"],
                 item={**item, "template": route, "language": lang, "implementation_stack": selected_stack},
+                vault=vault,
             )
         else:
             decision_contract = resolve_decisions(
@@ -530,7 +553,16 @@ def _check_export(path: Path, data: bytes) -> None:
         raise ValueError(f"Conflicting example output, preserved: {path}")
 
 
-def publish(vault: Path, plan_id: str, item_id: str, draft: Path, *, export_code: bool = False, coverage: dict | None = None) -> str:
+def publish(
+    vault: Path,
+    plan_id: str,
+    item_id: str,
+    draft: Path,
+    *,
+    export_code: bool = False,
+    coverage: dict | None = None,
+    evidence: dict | None = None,
+) -> str:
     from validate_note import read_frontmatter, validate_text
 
     saved = _read_plan(vault, plan_id)
@@ -548,18 +580,33 @@ def publish(vault: Path, plan_id: str, item_id: str, draft: Path, *, export_code
     target = targets[item_id]
     data = (target if complete else draft).read_bytes()
     content = data.decode("utf-8-sig")
-    from instructional_plan import coverage_errors
-    instructional = (item.get("decision_contract") or {}).get("instructional_plan", {})
+    from scriptorium.engines._instructional import coverage_errors
+    contract = dict(item.get("decision_contract") or {})
+    instructional = contract.get("instructional_plan", {})
     coverage_path = _under_vault(vault, (_plan_dir(vault, plan_id) / f"{item_id}.coverage.json").relative_to(vault).as_posix())
+    evidence_path = _under_vault(vault, (_plan_dir(vault, plan_id) / f"{item_id}.evidence.json").relative_to(vault).as_posix())
     if complete and coverage is None and coverage_path.is_file():
         coverage = json.loads(coverage_path.read_text(encoding="utf-8"))["report"]
+    if complete and evidence is None and evidence_path.is_file():
+        evidence = json.loads(evidence_path.read_text(encoding="utf-8"))["registry"]
     errors = coverage_errors(instructional, coverage, content)
     if errors:
         raise ValueError("\n".join(errors))
+    normalized_evidence = None
+    if evidence is not None:
+        from scriptorium.engines.research import normalize_evidence_registry
+
+        normalized_evidence = normalize_evidence_registry(
+            evidence,
+            research_plan=contract.get("research_plan"),
+            mode=contract.get("research_mode") or evidence.get("mode") or "R-I",
+        )
+        contract["evidence_registry"] = normalized_evidence
+        contract["research_mode"] = normalized_evidence["mode"]
     findings = validate_text(
         content, vault=vault, target=target, planned=targets.values(),
         route=item["template"], math_level=item["math_level"],
-        decision_contract=item.get("decision_contract"),
+        decision_contract=contract if contract else None,
     )
     if findings:
         raise ValueError("\n".join(f"{line}: {message}" for line, message in findings))
@@ -585,6 +632,10 @@ def publish(vault: Path, plan_id: str, item_id: str, draft: Path, *, export_code
         coverage_bytes = json.dumps({"draft_hash": digest.decode(), "report": coverage}, sort_keys=True, ensure_ascii=False).encode("utf-8")
         if coverage_path.exists() and coverage_path.read_bytes() != coverage_bytes:
             raise ValueError("Source coverage receipt differs from an earlier publication attempt")
+    if normalized_evidence is not None:
+        evidence_bytes = json.dumps({"draft_hash": digest.decode(), "registry": normalized_evidence}, sort_keys=True, ensure_ascii=False).encode("utf-8")
+        if evidence_path.exists() and evidence_path.read_bytes() != evidence_bytes:
+            raise ValueError("Evidence registry receipt differs from an earlier publication attempt")
     try:
         _write_once(intent, digest)
     except FileExistsError:
@@ -596,6 +647,12 @@ def publish(vault: Path, plan_id: str, item_id: str, draft: Path, *, export_code
         except FileExistsError:
             if coverage_path.read_bytes() != coverage_bytes:
                 raise ValueError("Conflicting source coverage receipt; existing report preserved")
+    if normalized_evidence is not None:
+        try:
+            _write_once(evidence_path, evidence_bytes)
+        except FileExistsError:
+            if evidence_path.read_bytes() != evidence_bytes:
+                raise ValueError("Conflicting evidence registry receipt; existing registry preserved")
     for export, example_data in exports.items():
         try:
             _write_once(export, example_data)
@@ -644,6 +701,7 @@ def main(argv: list[str] | None = None) -> int:
         if action == "publish":
             sub.add_argument("--export-code", action="store_true")
             sub.add_argument("--coverage", type=Path, help="Validated source-element coverage report JSON.")
+            sub.add_argument("--evidence", type=Path, help="Validated ARRIE source/evidence registry JSON.")
     args = parser.parse_args(argv)
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
@@ -656,7 +714,8 @@ def main(argv: list[str] | None = None) -> int:
             vault = resolve_vault_root(args.vault)
             if args.action == "publish":
                 coverage = json.loads(args.coverage.read_text(encoding="utf-8-sig")) if args.coverage else None
-                print(publish(vault, args.plan_id, args.item_id, args.draft, export_code=args.export_code, coverage=coverage))
+                evidence = json.loads(args.evidence.read_text(encoding="utf-8-sig")) if args.evidence else None
+                print(publish(vault, args.plan_id, args.item_id, args.draft, export_code=args.export_code, coverage=coverage, evidence=evidence))
                 return 0
             if args.action == "verify-runtimes":
                 saved = _read_plan(vault, args.plan_id)

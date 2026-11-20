@@ -29,6 +29,6 @@ The measurements also record active module counts and serialized selected-module
 
 ## Maintenance and remaining evaluation
 
-Change objective floors, types or module contracts in [the registry](../../references/instructional-registry.json), and add a scenario proving the intended distinction. Keep prose composition rules in [the master](../../templates/deepstudy-master.md) and operational mechanics in [the engine](../../references/adaptive-engine.md). Add a registry version/migration if changing the meaning of persisted decisions; never rewrite completed plans in place.
+Change objective floors, types or module contracts in [the registry](../../references/workflows/notes-creation/instructional-registry.json), and add a scenario proving the intended distinction. Keep prose composition rules in [the master](../../references/templates/masters/deep-notes.md) and operational mechanics in [the engine](../../references/workflows/notes-creation/adaptive-engine.md). Add a registry version/migration if changing the meaning of persisted decisions; never rewrite completed plans in place.
 
 The implementation remains an agent skill, not an autonomous prose-generation service. Future evaluation can run blinded model-generated lessons against the same source inventory and review accuracy, coherence, transfer questions and measured usage. Actual figure rendering, external source retrieval and learner outcomes are outside this offline regression run. Legacy source-study and compact routes retain their established formatting/validation contracts.

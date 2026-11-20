@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Scaffold adaptive deep-study notes, other built-in routes, and syllabus maps."""
+"""Scaffold adaptive deep-study notes, M1-M7 routed notes, and syllabus maps with Obsidian Properties."""
 
 from __future__ import annotations
 
@@ -9,36 +9,19 @@ sys.dont_write_bytecode = True
 
 import argparse
 import json
-import re
 from datetime import date
 from pathlib import Path
-import yaml
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-if str(SCRIPT_DIR) not in sys.path:
-    sys.path.insert(0, str(SCRIPT_DIR))
+REPO_ROOT = SCRIPT_DIR.parent
+for _p in (str(REPO_ROOT), str(SCRIPT_DIR)):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
 
+from scriptorium.engines.vault import build_obsidian_properties, render_note_with_properties
+from scriptorium.layout import ADAPTIVE_ROUTES, DEEP_ROUTES, ROUTES, body_skeleton, canonical_note_type
+from scriptorium.models import slugify as _slugify
 from vault_index import is_within_vault, resolve_vault_root
-from note_layout import ADAPTIVE_ROUTES, DEEP_ROUTES, ROUTES, body_skeleton
-
-
-def _slugify(text: str) -> str:
-    s = re.sub(r"[^a-zA-Z0-9]+", "-", text.strip().lower()).strip("-")
-    return s or "note"
-
-
-def _yaml_quote(value: str) -> str:
-    s = str(value)
-    needs_quotes = (
-        s == ""
-        or s.startswith(("[", "{", "*", "&", "!", "|", ">", "'", '"', "%", "@", "`", "- ", "? "))
-        or ": " in s
-        or "#" in s
-    )
-    if not needs_quotes:
-        return s
-    escaped = s.replace("\\", "\\\\").replace('"', '\\"')
-    return f'"{escaped}"'
 
 
 def _format_wikilink(value: str) -> str:
@@ -81,51 +64,44 @@ def render_syllabus_skeleton(
     excluded_topics: list[str] | None = None,
     tags: list[str] | None = None,
 ) -> str:
-    """Render a deterministic 00-MOC-<topic-slug>.md Syllabus & Learning Graph contract."""
+    """Render a deterministic 00-MOC-<topic-slug>.md Syllabus & Learning Graph with Obsidian Properties."""
     allowed = [s.strip() for s in (allowed_subtopics or []) if s.strip()] or ["01-intro.md"]
     excluded = [s.strip() for s in (excluded_topics or []) if s.strip()] or [
         "<Adjacent Topic> (separate topic — link only)"
     ]
-    tag_list = list(
-        dict.fromkeys(
-            [t.strip().lstrip("#") for t in (tags or []) if t.strip()]
-            or [_slugify(base_domain), _slugify(master_topic), _slugify(topic), "moc"]
-        )
-    )
-    if "moc" not in tag_list:
-        tag_list.append("moc")
+    user_tags = [t.strip().lstrip("#") for t in (tags or []) if t.strip()]
+    if "moc" not in user_tags:
+        user_tags.append("moc")
 
-    lines: list[str] = [
-        "---",
-        f"id: {_yaml_quote(note_id)}",
-        "aliases:",
-        f"  - {_yaml_quote(f'{topic} — Syllabus & Learning Graph')}",
-        f"  - {_yaml_quote(f'{topic} Syllabus')}",
-        f"  - {_yaml_quote(f'{topic} MOC')}",
-        f"topic: {_yaml_quote(topic)}",
-        "tags:",
+    props = build_obsidian_properties(
+        topic=topic,
+        note_type="synthesis-revision",
+        domain=base_domain,
+        master_topic=master_topic,
+        user_tags=user_tags,
+        note_id=note_id,
+        aliases=[
+            f"{topic} — Syllabus & Learning Graph",
+            f"{topic} Syllabus",
+            f"{topic} MOC",
+        ],
+        nexttopics=[],
+    )
+
+    body_lines: list[str] = [
+        f"# {topic} — Syllabus & Learning Graph",
+        "",
+        "## 1. Scope Boundary Contract",
+        f"- **Core Learning Objective:** <!-- Define the exact start-to-end boundary of {topic}. -->",
+        "- **In-Scope Subtopics (Strict Allowlist):**",
     ]
-    for t in tag_list:
-        lines.append(f"  - {_yaml_quote(t)}")
-    lines.append("nexttopics: []")
-    lines.extend(
-        [
-            "---",
-            "",
-            f"# {topic} — Syllabus & Learning Graph",
-            "",
-            "## 1. Scope Boundary Contract",
-            f"- **Core Learning Objective:** <!-- Define the exact start-to-end boundary of {topic}. -->",
-            "- **In-Scope Subtopics (Strict Allowlist):**",
-        ]
-    )
     for idx, sub in enumerate(allowed, start=1):
-        lines.append(f"  {idx}. `{sub}` — <!-- 1-line scope -->")
-    lines.append("- **Explicitly Out-of-Scope (Do-Not-Create Fence):**")
+        body_lines.append(f"  {idx}. `{sub}` — <!-- 1-line scope -->")
+    body_lines.append("- **Explicitly Out-of-Scope (Do-Not-Create Fence):**")
     for exc in excluded:
-        lines.append(f"  - **{exc}**")
+        body_lines.append(f"  - **{exc}**")
 
-    lines.extend(
+    body_lines.extend(
         [
             "",
             "## 2. Detailed Learning-Flow Graph",
@@ -136,10 +112,10 @@ def render_syllabus_skeleton(
     )
     for idx, sub in enumerate(allowed, start=1):
         stem = Path(sub).stem
-        lines.append(f'    N{idx}["{stem}"]')
+        body_lines.append(f'    N{idx}["{stem}"]')
     for idx in range(1, len(allowed)):
-        lines.append(f"    N{idx} -->|depends| N{idx + 1}")
-    lines.extend(
+        body_lines.append(f"    N{idx} -->|depends| N{idx + 1}")
+    body_lines.extend(
         [
             "```",
             "",
@@ -155,27 +131,31 @@ def render_syllabus_skeleton(
         stem = Path(sub).stem
         prev_cell = f"[[{Path(allowed[idx - 2]).stem}]]" if idx > 1 else "—"
         next_cell = f"[[{Path(allowed[idx]).stem}]]" if idx < len(allowed) else "—"
-        lines.append(f"| {idx:02d} | [[{stem}]] | L1 | {prev_cell} | {next_cell} | planned |")
-    lines.append("")
-    return "\n".join(lines)
+        body_lines.append(f"| {idx:02d} | [[{stem}]] | L1 | {prev_cell} | {next_cell} | planned |")
+    body_lines.append("")
+    return render_note_with_properties(props, "\n".join(body_lines))
 
 
 def render_routed_note(args: argparse.Namespace, note_id: str) -> str:
     topic = args.topic
     route = "deepstudy-master" if args.template in DEEP_ROUTES else args.template
-    tags = [t.strip().lstrip("#") for t in args.tags if t.strip()]
-    if not tags:
-        route_tag = "cheatsheet" if route == "cheat-sheet" else route
-        tags = [_slugify(args.base_domain), _slugify(args.master_topic), _slugify(topic), route_tag]
+    user_tags = [t.strip().lstrip("#") for t in args.tags if t.strip()]
     nexttopics = [_format_wikilink(args.next_topic)] if args.next_topic else []
-    metadata = {
-        "id": note_id,
-        "aliases": list(dict.fromkeys([args.title, *filter(None, map(str.strip, args.aliases))])),
-        "topic": topic,
-        "tags": list(dict.fromkeys(tags)),
-        "nexttopics": nexttopics,
-    }
-    frontmatter = yaml.safe_dump(metadata, allow_unicode=True, sort_keys=False)
+    aliases = list(dict.fromkeys([args.title, *filter(None, map(str.strip, args.aliases))]))
+    base_domain = getattr(args, "base_domain", None)
+    master_topic = getattr(args, "master_topic", None)
+
+    props = build_obsidian_properties(
+        topic=topic,
+        note_type=canonical_note_type(route),
+        domain=base_domain,
+        master_topic=master_topic,
+        content=f"{topic} {args.title}",
+        user_tags=user_tags,
+        note_id=note_id,
+        aliases=aliases,
+        nexttopics=nexttopics,
+    )
     body = body_skeleton(route, args.math_level, args.number, args.title, narrow=args.narrow_practice)
     extra_lines: list[str] = []
     if args.depends_on:
@@ -185,7 +165,7 @@ def render_routed_note(args: argparse.Namespace, note_id: str) -> str:
     if extra_lines:
         h1, rest = body.split("\n", 1)
         body = f"{h1}\n\n" + "\n".join(extra_lines) + "\n" + rest
-    return f"---\n{frontmatter}---\n\n{body}"
+    return render_note_with_properties(props, body)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -214,7 +194,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--next-topic", help="Next topic wikilink.")
     parser.add_argument("--overwrite", action="store_true", help="Allow overwriting an existing file.")
     parser.add_argument("--dry-run", action="store_true", help="Print rendered skeleton without writing.")
-    parser.add_argument("--contract", type=Path, help="Optional JSON Decision Contract from decision_matrix.py.")
+    parser.add_argument("--contract", type=Path, help="Optional JSON Decision Contract.")
     args = parser.parse_args(argv)
     args.contract_data = json.loads(args.contract.read_text(encoding="utf-8")) if args.contract else None
 

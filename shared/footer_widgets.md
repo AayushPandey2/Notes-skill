@@ -1,6 +1,6 @@
 # Reflection footer
 
-Compact routed scaffolds use the following reflection block. Deep-study and source-study notes select useful reflection fields and widgets through [adaptive-engine.md](../references/adaptive-engine.md). See [authoring rules](authoring_rules.md#rendering). Fill the applicable reflection fields in the final section, keeping entries within any route's word cap. Record a Confusion field only for a genuine unresolved issue where the route permits omission. Obsidian requires Dataview JavaScript queries enabled for the button to execute.
+Compact routed scaffolds use the following reflection block. Deep-study and source-study notes select useful reflection fields and widgets through [adaptive-engine.md](../references/workflows/notes-creation/adaptive-engine.md). See [authoring rules](authoring_rules.md#rendering). Fill the applicable reflection fields in the final section, keeping entries within any route's word cap. Record a Confusion field only for a genuine unresolved issue where the route permits omission. Obsidian requires Dataview JavaScript queries enabled for the button to execute.
 
 <!-- scaffold:footer -->
 ### Metacognitive Reflection & Vault Integration

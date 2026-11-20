@@ -9,9 +9,10 @@ import pytest
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
-from decision_matrix import resolve_decisions, audit_note_against_contract
-from instructional_plan import (
+from scriptorium.engines._decision import resolve_decisions, audit_note_against_contract
+from scriptorium.engines._instructional import (
     CONTRACT_VERSION,
     audit_modern_note,
     build_concept_dependency_graph,
@@ -22,10 +23,10 @@ from instructional_plan import (
     registry,
     resolve_instructional_contract,
 )
-from legacy_contract_adapter import adapt_legacy_contract, from_legacy
-import note_layout
+from scriptorium.engines._instructional import adapt_legacy_contract, from_legacy
+from scriptorium import layout as note_layout
 from plan_notes import build_plan, start_plan, publish
-from note_verification import Block, required_examples, verify_runtimes
+from scriptorium.engines._verification import Block, required_examples, verify_runtimes
 from validate_note import validate_text
 
 SCENARIOS = json.loads((ROOT / "examples/adaptive-deepnotes/scenarios.json").read_text(encoding="utf-8"))
@@ -463,24 +464,19 @@ def test_negative_8_active_skill_instructions_do_not_point_to_d01_d15_or_dm01_dm
         ROOT / "SKILL.md",
         ROOT / "router.md",
         ROOT / "README.md",
-        ROOT / "templates/deepstudy-master.md",
         ROOT / "shared/authoring_rules.md",
         ROOT / "shared/math_gates.md",
         ROOT / "shared/footer_widgets.md",
-        ROOT / "references/adaptive-engine.md",
-        ROOT / "references/command_playbooks.md",
-        ROOT / "references/pre_gen_gate.md",
-        ROOT / "references/research_protocol.md",
-        ROOT / "references/source-fidelity.md",
-        ROOT / "references/syllabus_template.md",
-        ROOT / "references/verification_checklist.md",
-        *sorted((ROOT / "templates").glob("*.md")),
+        *sorted((ROOT / "references/routing").glob("*.md")),
+        *sorted((ROOT / "references/workflows").rglob("*.md")),
+        *sorted((ROOT / "references/templates").rglob("*.md")),
         *sorted((ROOT / "skills").glob("*/SKILL.md")),
     ]
     retired_files = [
         ROOT / "shared/note_decision_matrix.md",
         ROOT / "shared/notes_decision_matrix.md",
         ROOT / "templates/notes_decision_matrix.md",
+        ROOT / "templates",
     ]
     for retired in retired_files:
         assert not retired.exists(), f"Retired legacy matrix file still exists: {retired}"

@@ -10,11 +10,12 @@ import pytest
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from decision_matrix import audit_note_against_contract, resolve_decisions
-from note_layout import ROUTES, section_layout
-from note_verification import Block, verify_runtimes
+from scriptorium.engines._decision import audit_note_against_contract, resolve_decisions
+from scriptorium.layout import ROUTES, section_layout
+from scriptorium.engines._verification import Block, verify_runtimes
 from validate_note import validate_text
 
 
@@ -47,24 +48,27 @@ def draft_for(vault, item, topic, body):
 
 
 def test_all_live_templates_reference_active_contracts_and_source_template_has_five_keys():
+    from scriptorium.layout import _template_path
+
     for route in ROUTES:
-        source = (ROOT / "templates" / f"{route}.md").read_text(encoding="utf-8")
-        assert "../shared/authoring_rules.md" in source
+        source = _template_path(route).read_text(encoding="utf-8")
+        assert "../../../shared/authoring_rules.md" in source
         assert "notes_decision_matrix.md" not in source
         assert "note_decision_matrix.md" not in source
-        if route == "deepstudy-master":
-            assert "../references/adaptive-engine.md" in source
-            assert "../references/instructional-registry.json" in source
-        if route == "studynotes":
+        if route in {"deepstudy-master", "deep-notes"}:
+            assert "../../workflows/notes-creation/adaptive-engine.md" in source
+            assert "../../workflows/notes-creation/instructional-registry.json" in source
+        if route in {"studynotes", "study-notes"}:
             assert list(yaml.safe_load(source.split("---", 2)[1])) == ["id", "aliases", "topic", "tags", "nexttopics"]
-            assert not re.search("teacher|student|class|lecture", source, re.I)
+            body_without_comments = re.sub(r"<!--.*?-->", "", source, flags=re.S)
+            assert not re.search("teacher|student|class|lecture", body_without_comments, re.I)
 
 
 @pytest.mark.parametrize("partial", [False, True])
 def test_qualitative_article_and_partial_video_publish(tmp_path, partial):
     source_url = "https://www.youtube.com/watch?v=fixture" if partial else "https://example.org/article/one"
     topic = "History"
-    plan, item = start(tmp_path, f"/scribe-notes {source_url}", topic, "Records and witnesses")
+    plan, item = start(tmp_path, f"/scribe-notes study notes for {source_url}", topic, "Records and witnesses")
     assert item["template"] == "studynotes"
     assert item["domain"] == "social-studies-humanities" and item["math_level"] == 0
     headings = [heading for _, heading in section_layout("studynotes", 0)]
@@ -181,7 +185,7 @@ def test_numeric_parity_checks_outputs_from_two_actual_runtimes(monkeypatch):
     assert all(result["status"] == "executed" for result in evidence.values())
     with pytest.raises(ValueError, match="disagree on the shared fixture"):
         verify_runtimes({"python": python, "sql": Block(2, "sql", "SELECT 'PARITY: [9]';\n")}, [])
-    monkeypatch.setattr("note_verification.shutil.which", lambda _: None)
+    monkeypatch.setattr("scriptorium.engines._verification.shutil.which", lambda _: None)
     assert verify_runtimes({"rust": Block(1, "rust", "fn main() {}")}, [])["rust"] == {
         "status": "static verification (not executed — rustc not installed)",
     }

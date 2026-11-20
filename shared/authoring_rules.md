@@ -26,4 +26,4 @@ Standardize sequential filenames and body wikilinks on `01 - <Title>.md` (never 
 
 ## Contracts
 
-Math: [math_gates.md](math_gates.md). Deep-study planning and module composition: [adaptive-engine.md](../references/adaptive-engine.md). Command routing: [router.md](../router.md). Reflection implementation: [footer_widgets.md](footer_widgets.md). Machine checks implement schema, syntax and links; authors remain responsible for source fidelity and reasoning.
+Math: [math_gates.md](math_gates.md). Deep-study planning and module composition: [adaptive-engine.md](../references/workflows/notes-creation/adaptive-engine.md). Command routing: [router.md](../router.md). Reflection implementation: [footer_widgets.md](footer_widgets.md). Machine checks implement schema, syntax and links; authors remain responsible for source fidelity and reasoning.

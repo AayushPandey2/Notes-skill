@@ -8,9 +8,10 @@ import pytest
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 
-import note_layout
+from scriptorium import layout as note_layout
 import plan_notes
 from validate_note import validate_text
 
@@ -22,10 +23,10 @@ def note(body, tags=None, topic="Template QA"):
 
 
 def test_master_gates_and_engine_links_resolve():
-    master = (ROOT / "templates/deepstudy-master.md").read_text(encoding="utf-8")
-    engine = (ROOT / "references/adaptive-engine.md").read_text(encoding="utf-8")
-    assert "../references/adaptive-engine.md" in master
-    assert "../references/instructional-registry.json" in master
+    master = (ROOT / "references/templates/masters/deep-notes.md").read_text(encoding="utf-8")
+    engine = (ROOT / "references/workflows/notes-creation/adaptive-engine.md").read_text(encoding="utf-8")
+    assert "../../workflows/notes-creation/adaptive-engine.md" in master
+    assert "../../workflows/notes-creation/instructional-registry.json" in master
     assert "Authoring gate" not in master
     assert "notes_decision_matrix.md" not in master
     assert "note_decision_matrix.md" not in master
@@ -34,7 +35,7 @@ def test_master_gates_and_engine_links_resolve():
         if target.startswith("https://"):
             continue
         name, _, anchor = target.partition("#")
-        path = (ROOT / "templates" / name).resolve()
+        path = (ROOT / "references/templates/masters" / name).resolve()
         assert path.is_file(), target
         if anchor:
             headings = re.findall(r"^#+ (.+)$", path.read_text(encoding="utf-8"), re.M)
@@ -46,7 +47,7 @@ def test_master_gates_and_engine_links_resolve():
 def test_legacy_selectors_share_adaptive_scaffold(route, level):
     scaffold = note_layout.body_skeleton(route, level, "01", "Check", narrow=False)
     assert scaffold == note_layout.body_skeleton("deepstudy-master", level, "01", "Check", narrow=False)
-    assert "references/adaptive-engine.md" in scaffold
+    assert "references/workflows/notes-creation/adaptive-engine.md" in scaffold
     assert "notes_decision_matrix.md" not in scaffold
     assert "## " not in scaffold
     assert "dataviewjs" not in scaffold
