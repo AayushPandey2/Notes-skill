@@ -171,6 +171,10 @@ def test_assessment_quality_is_more_than_question_count(tmp_path, fault):
         for q in spec["assessments"]: q["objectives"] = ["wrong-objective"]
     else:
         spec["assessments"][0][fault] = ""
+    if fault == "coverage":
+        with pytest.raises(ValueError, match="objective"):
+            build_composition(spec)
+        return
     plan = build_composition(spec)
     if fault in {"hint", "solution"}:
         with pytest.raises(ValueError, match="Assessment needs"):

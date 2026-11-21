@@ -227,7 +227,7 @@ def test_validation_detects_manual_changes_and_dirty_topic_folder(tmp_path):
     chapter.write_text(chapter.read_text(encoding="utf-8") + "\nManual edit", encoding="utf-8")
     assert any("changed since review" in e for e in validate_published_composition(tmp_path, plan)["errors"])
     (tmp_path / plan["folder"] / "temporary.json").write_text("{}")
-    assert any("only the six" in e for e in validate_published_composition(tmp_path, plan)["errors"])
+    assert any("only the 6 planned" in e for e in validate_published_composition(tmp_path, plan)["errors"])
 
 
 def test_partial_write_failure_is_reported_and_resumable(tmp_path, monkeypatch):

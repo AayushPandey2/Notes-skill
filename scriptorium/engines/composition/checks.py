@@ -281,6 +281,8 @@ def check_implementation(implementation: dict[str, Any], body: str) -> list[str]
 
 def check_claim(claim: dict[str, Any], *, source_policy: str) -> list[str]:
     errors = []
+    if claim.get("contradictions"):
+        errors.append("claim has unresolved contradictory evidence")
     classification = claim.get("classification")
     if not claim.get("text") or classification not in CLAIM_CLASSES:
         errors.append("claim needs exact text and a calibrated classification")
@@ -300,6 +302,8 @@ def check_claim(claim: dict[str, Any], *, source_policy: str) -> list[str]:
                 errors.append(f"claim provenance missing {field}")
         if source.get("status") != "verified":
             errors.append("claim source remains unverified")
+        if source.get("contradictions"):
+            errors.append("claim source has unresolved contradictory evidence")
         if source_policy == "strict" and source.get("origin") != "supplied":
             errors.append("source-only policy rejects external claim evidence")
     if classification == "empirical_observation":
@@ -313,12 +317,19 @@ def check_claim(claim: dict[str, Any], *, source_policy: str) -> list[str]:
         if empirical.get("uncertainty", {}).get("type") not in {"SD", "SE", "CI", "not_reported"}:
             errors.append("uncertainty must distinguish SD, SE, CI, and not reported")
         uncertainty = empirical.get("uncertainty", {})
+        def finite_number(value):
+            try:
+                return type(value) in {int, float} and math.isfinite(value)
+            except (OverflowError, ValueError):
+                return False
+        if not finite_number(empirical.get("value")):
+            errors.append("empirical result requires a finite measured value")
         if uncertainty.get("type") in {"SD", "SE", "CI"}:
-            if not isinstance(empirical.get("runs"), int) or empirical["runs"] < 2:
+            if type(empirical.get("runs")) is not int or empirical["runs"] < 2:
                 errors.append("reported repeated-run uncertainty requires an actual run count")
-            if not isinstance(uncertainty.get("value"), (int, float)) or uncertainty["value"] < 0:
-                errors.append("reported uncertainty requires its nonnegative measured value")
-        if uncertainty.get("type") == "CI" and not 0 < uncertainty.get("level", 0) < 1:
+            if not finite_number(uncertainty.get("value")) or uncertainty["value"] < 0:
+                errors.append("reported uncertainty requires its finite nonnegative measured value")
+        if uncertainty.get("type") == "CI" and (not finite_number(uncertainty.get("level")) or not 0 < uncertainty["level"] < 1):
             errors.append("confidence interval needs its confidence level")
         if empirical.get("comparison") and empirical.get("change_unit") not in {"percentage_points", "relative_percent", "absolute"}:
             errors.append("metric change needs an explicit percent convention")

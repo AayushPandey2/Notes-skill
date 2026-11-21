@@ -172,6 +172,13 @@ _S0_PATTERNS = re.compile(
     r"^\s*(?:what\s+is\s+(?:a|an|the)?\s*|define\s+|definition\s+of\s+)|\batomic\s+(?:note|card)\b",
     re.I,
 )
+_COMPREHENSIVE_SCOPE = re.compile(
+    r"\b(?:comprehensive|exhaustive|encyclopedic)\b|\b(?:full|complete)[\s-]+notes?\b", re.I
+)
+_NARROW_SCOPE = re.compile(
+    r"^\s*(?:please\s+)?(?:quick|brief|concise|short|narrow|focused)\b|"
+    r"\b(?:single|one)\s+concept\b|\b(?:only|just)\s+(?:one|a\s+single)\s+(?:topic|definition)\b", re.I
+)
 
 
 def classify_topic_scope(
@@ -310,13 +317,13 @@ def _detect_known_preferences(raw: str) -> dict[str, Any]:
     # Depth
     if re.search(r"\b(?:exhaustive|encyclopedic)\b", low):
         known["depth"] = "exhaustive"
-    elif re.search(r"\b(?:comprehensive|very\s+detailed|in\s+depth|deeply|deep(?:\s+(?:learning|beginner|intermediate|advanced|guide|notes?)))\b", low):
+    elif re.search(r"\b(?:comprehensive|very\s+detailed|in\s+depth|deeply|deep(?:\s+(?:learning|beginner|intermediate|advanced|guide|notes?))|(?:full|complete)[\s-]+notes?)\b", low):
         known["depth"] = "comprehensive"
     elif re.search(r"\b(?:concise|brief|compact|quick|short|one-page)\b", low):
         known["depth"] = "concise"
 
     # Organization
-    if re.search(r"\b(?:one\s+(?:complete\s+|single\s+)?note|single[\s-]+file|single[\s-]+note|all\s+in\s+one)\b", low):
+    if re.search(r"\b(?:one\s+(?:(?:complete|full|single)\s+)?note|one\s+file|single[\s-]+file|single[\s-]+note|all\s+in\s+one)\b", low):
         known["organization"] = "single_note"
     elif re.search(r"\b(?:multiple\s+(?:linked\s+)?(?:notes|files)|separate\s+(?:linked\s+)?(?:notes|files)|knowledge\s+base|hierarchical\s+collection|split\s+(?:the\s+topic\s+)?into)\b", low):
         known["organization"] = "hierarchical_collection"
@@ -460,9 +467,25 @@ def analyze_universal_request(
 
     scope = classify_topic_scope(topic, payload, has_source=has_src, source_sections=source_sections)
 
+    # A request for comprehensive/full M1 notes supplies scope even when its
+    # subject is absent from the optional breadth vocabulary. The authored
+    # inventory still decides the actual 5–10 chapters. Other masters retain
+    # their own product contracts, and an explicit single/narrow request wins.
+    narrow = bool(_NARROW_SCOPE.search(payload)) or explicit.get("depth") == "concise"
+    comprehensive_collection = (rec_master == "M1" and _COMPREHENSIVE_SCOPE.search(payload)
+                                and not narrow and explicit.get("organization") != "single_note")
+    if comprehensive_collection and scope["level"] not in {"S3", "S4", "S5"}:
+        scope = {**scope, "level": "S3", "category": "requested_comprehensive_collection",
+                 "breadth": "requested_comprehensive", "recommended_structure": "hierarchical_collection",
+                 "rationale": "The request explicitly asks for comprehensive topic notes; use a substantive prerequisite inventory to allocate chapters."}
+
     # Organization recommendation
     if explicit.get("organization"):
         rec_org = explicit["organization"]
+    elif narrow:
+        rec_org = "single_note"
+    elif comprehensive_collection:
+        rec_org = "hierarchical_collection"
     elif rec_master in {"M3", "M4", "M6"} and scope["level"] in {"S0", "S1", "S2"}:
         rec_org = "single_note"
     elif scope["recommended_structure"] == "hierarchical_collection":

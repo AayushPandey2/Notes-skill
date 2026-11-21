@@ -86,8 +86,8 @@ def main(argv: list[str] | None = None) -> int:
     p_notes = sub.add_parser("notes", help="Universal /scribe-notes interactive session, collection planning, generation, and validation.")
     notes_sub = p_notes.add_subparsers(dest="notes_action", required=True)
 
-    pn_comp = notes_sub.add_parser("compose", help="Plan or publish a comprehensive six-file collection from shared concept decisions.")
-    pn_comp.add_argument("--spec", type=Path, required=True, help="JSON topic, five chapters, concepts, notation, and obligations.")
+    pn_comp = notes_sub.add_parser("compose", help="Plan or publish a comprehensive collection with 5–10 chapters and a MOC.")
+    pn_comp.add_argument("--spec", type=Path, required=True, help="JSON topic, concepts, optional 5–10 chapters, classification, notation, and obligations.")
     pn_comp.add_argument("--vault", type=Path)
     pn_comp.add_argument("--drafts", type=Path, help="JSON mapping chapter IDs to authored Markdown bodies.")
     pn_comp.add_argument("--evidence", type=Path, help="JSON evidence records keyed by obligation ID.")
@@ -337,7 +337,7 @@ def main(argv: list[str] | None = None) -> int:
                 return 1
             if state.resolved_preferences.master == "M1" and state.collection_plan.organization == "hierarchical_collection" and not args.legacy_layout:
                 print(json.dumps({"complete": False, "status": "requires_composition_spec",
-                    "message": "Full-topic notes use five authored chapters. Use notes compose --spec with the shared concept/chapter plan; --legacy-layout retains an existing nested collection."}, indent=2))
+                    "message": "Full-topic notes use 5–10 authored chapters and a MOC. Use notes compose --spec with concepts and optional chapter allocation; --legacy-layout retains an existing nested collection."}, indent=2))
                 return 1
             if args.checkpoints:
                 kcp = orch.build_kcp(

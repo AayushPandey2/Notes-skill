@@ -683,6 +683,9 @@ def _classify_primary_intent(
         if (has_source or source_order_hit) and re.search(r"\b(?:make|take|create|write|turn|convert|give)\b.*\bnotes?\b", text, re.I):
             return "M2", "lecture_order", "source-preserving sequential study notes request"
 
+    if "M3" not in negated_masters and re.search(r"\b(?:quick|brief|short)\b[^.!?\n]{0,100}\breminder\b", text, re.I):
+        return "M3", None, "explicit brief reminder request"
+
     if "M1" not in negated_masters:
         if re.search(r"\b(?:deep(?:ly)?|first[\s-]?principles|detailed\s+explanations?|comprehensive|from\s+the\s+ground\s+up|master|understand\s+deeply|explain|teach\s+me|deep[\s-]?dive)\b", text, re.I):
             return "M1", None, "deep first-principles learning objective"

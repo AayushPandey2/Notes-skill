@@ -1801,7 +1801,12 @@ def build_knowledge_collection_plan(
     # F09 terminology registry baseline
     term_reg = CollectionTerminologyRegistry()
     hier = classify_knowledge_hierarchy(plan.title)
-    if hier["domain"] == "Artificial Intelligence":
+    composition = plan.scope_summary.get("composition", {})
+    if composition:
+        for symbol, meaning in composition.get("notation", {}).items():
+            term_reg.register_notation(concept_id=f"notation.{slugify(symbol)}.{content_hash(symbol)[:12]}", preferred_term=str(meaning),
+                                       preferred_symbol=symbol, scope=plan.title, definition=str(meaning))
+    elif hier["domain"] == "Artificial Intelligence":
         term_reg.register_notation(
             concept_id="ml.optimization.loss",
             preferred_term="loss_function",

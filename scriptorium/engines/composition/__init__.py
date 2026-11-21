@@ -11,6 +11,7 @@ import math
 from pathlib import Path
 import re
 from typing import Any
+from urllib.parse import unquote, urlsplit
 
 from scriptorium.models import REPO_ROOT, content_hash, dump_frontmatter, parse_note, slugify
 
@@ -109,13 +110,38 @@ def build_composition(spec: dict[str, Any]) -> dict[str, Any]:
         raise ValueError("Invalid source policy")
     chapters = deepcopy(spec.get("chapters", []))
     concepts = deepcopy(spec.get("concepts", []))
-    if len(chapters) != 5:
-        raise ValueError("Comprehensive output requires five chapters; revise scope before exceeding it")
+    if not isinstance(concepts, list) or any(not isinstance(c, dict) or not isinstance(c.get("id"), str) or not c["id"].strip() for c in concepts):
+        raise ValueError("Concepts must be records with nonempty string IDs")
+    for concept in concepts:
+        for field in ("title", "section"):
+            value = concept.get(field, concept.get("title"))
+            if not isinstance(value, str) or not value.strip() or "\n" in value or "\r" in value:
+                raise ValueError(f"Concept needs a nonempty single-line {field}")
+        objectives = concept.get("objectives")
+        if not isinstance(objectives, list) or not objectives or any(not isinstance(o, str) or not o.strip() for o in objectives):
+            raise ValueError("Concept objectives must be a nonempty list of nonempty strings")
+        if not isinstance(concept.get("prerequisites", []), list):
+            raise ValueError("Concept prerequisites must be a list")
+    notation = spec.get("notation", {})
+    if not isinstance(notation, dict) or any(not isinstance(symbol, str) or not symbol.strip() or not isinstance(meaning, str) or not meaning.strip() for symbol, meaning in notation.items()):
+        raise ValueError("notation must map nonempty symbols to nonempty definitions")
+    if "chapters" not in spec:
+        from .planning import plan_chapters
+        allocation = plan_chapters(concepts, known_prerequisites=spec.get("known_prerequisites", []))
+        chapters = allocation["chapters"]
+        rationale = allocation["rationale"]
+    else:
+        rationale = {"method": "explicit author allocation", "reason": spec.get("chapter_rationale", "Author-supplied grouping; review workload and continuity before publication"),
+                     "chapter_count": len(chapters) if isinstance(chapters, list) else 0}
+    if not isinstance(chapters, list) or not 5 <= len(chapters) <= 10:
+        raise ValueError("Comprehensive output requires 5–10 substantive chapters plus a separate MOC")
+    if any(not isinstance(c, dict) or not isinstance(c.get("id"), str) or not c["id"].strip() for c in chapters):
+        raise ValueError("Chapters must be records with nonempty string IDs")
     ids = [c["id"] for c in concepts]
     if not ids or len(set(ids)) != len(ids):
         raise ValueError("Concept identities must be nonempty and unique")
     chapter_ids = [c["id"] for c in chapters]
-    if len(set(chapter_ids)) != 5:
+    if len(set(chapter_ids)) != len(chapters):
         raise ValueError("Chapter identities must be unique")
     order: dict[str, int] = {}
     seen: set[str] = set()
@@ -123,7 +149,7 @@ def build_composition(spec: dict[str, Any]) -> dict[str, Any]:
     for i, chapter in enumerate(chapters, 1):
         title = safe_title(chapter["title"])
         chapter["path"] = f"{folder}/{i:02d} - {title}.md"
-        if not chapter.get("concepts"):
+        if not isinstance(chapter.get("concepts"), list) or not chapter["concepts"] or any(not isinstance(cid, str) for cid in chapter["concepts"]):
             raise ValueError("Each chapter needs owned concepts")
         for cid in chapter["concepts"]:
             if cid not in ids or cid in seen:
@@ -202,12 +228,22 @@ def build_composition(spec: dict[str, Any]) -> dict[str, Any]:
             raise ValueError("Visual requires concept ownership and a planned section")
         select_visual(visual, available=set(spec.get("available_renderers", [])))
     from .contracts import extend_plan
-    validator_files = [Path(__file__), Path(__file__).with_name("contracts.py"),
-                       Path(__file__).with_name("checks.py"), Path(__file__).with_name("visuals.py"),
+    validator_files = [*Path(__file__).parent.glob("*.py"),
                        Path(__file__).parents[1]/"quality.py", Path(__file__).parents[1]/"_instructional.py",
+                       Path(__file__).parents[1]/"vault.py",
                        REPO_ROOT/"references/workflows/notes-creation/instructional-registry.json"]
-    validator_version = content_hash("".join(content_hash(p.read_bytes()) for p in validator_files))
+    validator_version = content_hash("".join(content_hash(p.read_text(encoding="utf-8")) for p in sorted(validator_files)))
+    from ..vault import classify_knowledge_hierarchy
+    classification = spec.get("classification", {})
+    if not isinstance(classification, dict):
+        raise ValueError("classification must be an object with optional subject/domain/subdomain")
+    if any(not isinstance(value, str) or not value.strip() for value in classification.values()):
+        raise ValueError("classification values must be nonempty strings")
+    hierarchy = classify_knowledge_hierarchy(topic, content=" ".join(c["title"] for c in concepts),
+        explicit_domain=classification.get("domain"), explicit_master_topic=classification.get("subject"),
+        explicit_subdomain=classification.get("subdomain"))
     return extend_plan({"version": 2, "validator_version": validator_version, "output_profile": PROFILE, "topic": topic, "source_policy": policy,
+            "classification": hierarchy, "chapter_rationale": rationale,
             "folder": folder, "moc_path": f"{folder}/00 - Map of Contents.md",
             "chapters": chapters, "concepts": list(ordered.values()),
             "notation": deepcopy(spec.get("notation", {})),
@@ -307,18 +343,8 @@ def render_table(table: dict[str, Any]) -> str:
 
 
 def select_visual(requirement: dict[str, Any], *, available: set[str]) -> dict[str, Any]:
-    types = {"equation": "scientific", "distribution": "scientific", "workflow": "mermaid",
-             "dependency": "mermaid", "state": "mermaid", "tensor": "svg", "architecture": "svg",
-             "source_figure": "external", "intuition": "imagegen", "hybrid": "hybrid", "mask": "mask"}
-    if not requirement.get("objective") or requirement.get("kind") not in types:
-        raise ValueError("Visual needs a learning objective and supported relationship")
-    renderer = types[requirement["kind"]]
-    if renderer == "scientific" and not (requirement.get("equation") or requirement.get("data")):
-        raise ValueError("Scientific visual requires an equation or reproducible data")
-    if renderer == "external" and not all(requirement.get(k) for k in ("source", "url", "rights")):
-        raise ValueError("External figure needs source, URL, and usage rights")
-    return {**requirement, "renderer": renderer, "status": "planned" if renderer in available else "unavailable",
-            "verification_required": True}
+    from .renderers import select_representation
+    return select_representation(requirement, available=available)
 
 
 def render_moc(plan: dict[str, Any]) -> str:
@@ -342,8 +368,17 @@ def render_moc(plan: dict[str, Any]) -> str:
 
 
 def five_key_note(plan: dict[str, Any], identifier: str, title: str, body: str, next_title: str | None) -> str:
+    from ..vault import classify_knowledge_hierarchy, generate_tags
+    hierarchy = plan.get("classification") or classify_knowledge_hierarchy(plan["topic"], content=body)
+    chapter = next((c for c in plan["chapters"] if c["id"] == identifier), None)
+    concepts = [c for c in plan["concepts"] if chapter and c["id"] in chapter["concepts"]]
+    primary = concepts[0]["title"] if concepts else plan["topic"]
+    tags = generate_tags(topic=primary, domain=hierarchy["domain"], master_topic=hierarchy["master_topic"],
+                         subdomain=hierarchy.get("subdomain", ""), note_type="deep-notes",
+                         secondary_concepts=[c["title"] for c in concepts[1:]])
+    tags = [t for t in tags if not t.startswith("type/")] + ["type/full-notes"]
     return dump_frontmatter({"id": identifier, "aliases": [title], "topic": plan["topic"],
-                             "tags": ["type/full-notes"],
+                             "tags": tags,
                              "nexttopics": [f"[[{next_title}]]"] if next_title else []}) + "\n" + body.strip() + "\n"
 
 
@@ -359,6 +394,8 @@ def validate_chapter(text: str, *, required_sections: list[str] | None = None) -
         value = note.metadata.get(key)
         if not isinstance(value, list) or any(not isinstance(x, str) or not x.strip() for x in value):
             errors.append(f"invalid {key}")
+    from ..vault import validate_semantic_tags
+    errors.extend(validate_semantic_tags(note.metadata.get("tags")))
     if re.search(r"\b(?:TODO|TBD|FIXME)\b|<!--\s*(?:scaffold|temporary)|\[placeholder\]", text, re.I):
         errors.append("unfinished content")
     fence: tuple[str, int] | None = None
@@ -419,6 +456,131 @@ def wikilink_errors(vault: Path, documents: dict[str, str]) -> list[str]:
     return errors
 
 
+def markdown_image_targets(prose: str) -> list[tuple[str, str]]:
+    """Read balanced/escaped alt labels and direct or reference image targets."""
+    references = {}
+    for match in re.finditer(r"^ {0,3}\[([^\]\n]+)\]:\s*(?:<([^>\n]+)>|(\S+))", prose, re.M):
+        references[" ".join(match[1].split()).casefold()] = match[2] or match[3]
+    images, cursor = [], 0
+    while (start := prose.find("![", cursor)) >= 0:
+        if prose.startswith("![[", start):
+            cursor = start + 3  # Native wiki embeds are checked separately.
+            continue
+        if start and prose[start - 1] == "\\":
+            cursor = start + 2
+            continue
+        index, depth = start + 2, 1
+        while index < len(prose) and depth:
+            if prose[index] == "\\":
+                index += 2
+                continue
+            if prose[index] == "[": depth += 1
+            if prose[index] == "]": depth -= 1
+            index += 1
+        if depth:
+            raise ValueError("unclosed Markdown image label")
+        label, after = prose[start + 2:index - 1], index
+        if index < len(prose) and prose[index] == "(":
+            index += 1
+            begin, nesting = index, 1
+            while index < len(prose) and nesting:
+                if prose[index] == "\\":
+                    index += 2
+                    continue
+                if prose[index] == "(": nesting += 1
+                if prose[index] == ")": nesting -= 1
+                index += 1
+            if nesting:
+                raise ValueError("unclosed Markdown image target")
+            value = prose[begin:index - 1].strip()
+            target = value[1:value.index(">")] if value.startswith("<") and ">" in value else value.split(maxsplit=1)[0] if value else ""
+        else:
+            if index < len(prose) and prose[index] == "[":
+                end = prose.find("]", index + 1)
+                if end < 0:
+                    raise ValueError("unclosed Markdown image reference")
+                reference, index = prose[index + 1:end] or label, end + 1
+            else:
+                reference = label
+            target = references.get(" ".join(reference.split()).casefold(), "")
+            if not target:
+                raise ValueError("unresolved Markdown image reference")
+        images.append((prose[start:index], re.sub(r"\\([!\"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])", r"\1", target)))
+        cursor = max(index, after)
+    return images
+
+
+def inspect_assets(vault: Path, documents: dict[str, str], renderers: dict[str, Any]) -> tuple[list[str], dict[str, str]]:
+    """Check actual image targets and hash every renderer artifact and media receipt.
+
+    Remote URLs require the acquisition pipeline's verified snapshot. Validation
+    never issues an incidental network request for images found in a note.
+    """
+    errors, hashes = [], {}
+    for result in renderers.values():
+        if result.get("status") != "verified":
+            continue
+        for key in ("path", "media_receipt"):
+            relative = result.get(key)
+            if not relative:
+                continue
+            path = contained(vault, relative)
+            if not path.is_file():
+                errors.append(f"missing renderer artifact: {relative}")
+            else:
+                hashes[relative] = content_hash(path.read_bytes())
+                if key == "path" and hashes[relative] != result.get("hash"):
+                    errors.append(f"renderer artifact hash mismatch: {relative}")
+    for relative, text in documents.items():
+        note = parse_note(text)
+        lines = note.body.splitlines()
+        for block in note.code_blocks:
+            for i in range(block["start_line"], min(len(lines), block["end_line"] + 1)):
+                lines[i] = ""
+        prose = "\n".join(lines)
+        for asset in re.findall(r"!\[\[([^\]|]+)(?:\|[^\]]*)?\]\]", prose):
+            path = contained(vault, asset)
+            if not path.is_file():
+                errors.append(f"missing asset: {asset}")
+            else:
+                hashes[asset] = content_hash(path.read_bytes())
+        try:
+            image_targets = markdown_image_targets(prose)
+        except ValueError as exc:
+            errors.append(str(exc))
+            image_targets = []
+        for markup, target in image_targets:
+            parts = urlsplit(target)
+            if parts.scheme or parts.netloc:
+                accepted = parts.scheme == "https" and any(
+                    r.get("status") == "verified" and r.get("renderer") == "external"
+                    and r.get("embed") in prose and markup in r.get("embed", "")
+                    for r in renderers.values()
+                )
+                if not accepted:
+                    errors.append(f"unverified remote image: {target}")
+                continue
+            name = unquote(parts.path)
+            if not name:
+                errors.append("empty image target")
+                continue
+            candidate = (Path(relative).parent / name).as_posix()
+            path = contained(vault, candidate)
+            if not path.is_file():
+                errors.append(f"missing Markdown image asset: {target}")
+            else:
+                hashes[path.relative_to(vault.resolve()).as_posix()] = content_hash(path.read_bytes())
+        for match in re.finditer(r"(?<!!)\[[^\]\n]+\]\(\s*(<[^>\n]+>|[^\s)]+)(?:\s+[^)]*)?\)", prose):
+            target = match.group(1).strip("<>")
+            parts = urlsplit(target)
+            if parts.scheme or parts.netloc or not parts.path:
+                continue
+            path = contained(vault, (Path(relative).parent / unquote(parts.path)).as_posix())
+            if not path.is_file() and path.as_posix() not in {(vault / name).resolve().as_posix() for name in documents}:
+                errors.append(f"missing Markdown link target: {target}")
+    return errors, hashes
+
+
 def publish_composition(vault: Path, plan: dict[str, Any], drafts: dict[str, str], *,
                         evidence: dict[str, Any], reviews: dict[str, Any],
                         expected_hashes: dict[str, str] | None = None) -> dict[str, Any]:
@@ -444,7 +606,6 @@ def publish_composition(vault: Path, plan: dict[str, Any], drafts: dict[str, str
     errors = [*validation["errors"], *[f"pending evidence: {oid}" for oid in status["pending"]]]
     semantic_error_count = len(errors)
     documents = {}
-    asset_hashes = {}
     for i, chapter in enumerate(plan["chapters"]):
         body = drafts.get(chapter["id"], "")
         if not body.strip():
@@ -456,17 +617,14 @@ def publish_composition(vault: Path, plan: dict[str, Any], drafts: dict[str, str
         documents[chapter["path"]] = text
     documents[plan["moc_path"]] = five_key_note(plan, f"{slugify(plan['topic'])}.moc", "Map of Contents", render_moc(plan), Path(plan["chapters"][0]["path"]).stem)
     errors.extend(wikilink_errors(vault, documents))
+    asset_errors, asset_hashes = inspect_assets(vault, documents, visual_results)
+    errors.extend(asset_errors)
     current_hashes = {}
     for relative, text in documents.items():
         target = contained(vault, relative)
         current_hashes[relative] = content_hash(target.read_text(encoding="utf-8-sig")) if target.exists() else None
         if target.exists() and target.read_text(encoding="utf-8-sig") != text and (expected_hashes or {}).get(relative) != current_hashes[relative]:
             errors.append(f"existing chapter needs expected digest: {relative}")
-        for asset in re.findall(r"!\[\[([^\]|]+)(?:\|[^\]]*)?\]\]", text):
-            if not contained(vault, asset).is_file():
-                errors.append(f"missing asset: {asset}")
-            else:
-                asset_hashes[asset] = content_hash(contained(vault, asset).read_bytes())
     if errors:
         validation["outcomes"]["structural"] = {"status": "fail" if len(errors) > semantic_error_count else "pass",
                                                    "method": "YAML, sections, fences, links, assets and expected digests"}
@@ -550,6 +708,10 @@ def compile_context(plan: dict[str, Any], concept_ids: list[str]) -> dict[str, A
         needed.add("Mathematical and technical records")
     if any(c["depth_allocation"]["levels"]["visual"] or "S12" in c["capabilities"] for c in active) or any(v["concept"] in selected for v in plan["visuals"]):
         needed.add("Visuals")
+        representation_path = "references/workflows/notes-creation/representations.md"
+        representation = (REPO_ROOT / representation_path).read_text(encoding="utf-8")
+        bundle["loaded_docs"].append({"role": "policy:active representations", "path": representation_path,
+                                     "content": representation, "tokens": estimate_tokens(representation)})
     parts = re.split(r"(?=^## )", integrity, flags=re.M)
     selected_integrity = "\n".join(part for part in parts if not part.startswith("## ") or part.splitlines()[0][3:] in needed)
     bundle["loaded_docs"].append({"role": "policy:integrity (active sections)", "path": integrity_path,
@@ -617,9 +779,15 @@ def validate_published_composition(vault: Path, plan: dict[str, Any]) -> dict[st
             elif content_hash(contained(vault, asset).read_bytes()) != state.get("asset_hashes", {}).get(asset):
                 errors.append(f"asset changed since review: {asset}")
     errors.extend(wikilink_errors(vault, documents))
+    asset_errors, asset_hashes = inspect_assets(vault, documents, state.get("renderers", {}))
+    errors.extend(asset_errors)
+    for relative, expected in state.get("asset_hashes", {}).items():
+        path = contained(vault, relative)
+        if not path.is_file() or content_hash(path.read_bytes()) != expected:
+            errors.append(f"asset changed since review: {relative}")
     folder = contained(vault, plan["folder"])
     if folder.is_dir() and {p.name for p in folder.iterdir()} != {Path(p).name for p in paths}:
-        errors.append("topic folder must contain only the six planned Markdown files")
+        errors.append(f"topic folder must contain only the {len(paths)} planned Markdown files")
     obligations = [o for c in plan["concepts"] for o in c["research_obligations"]]
     if not evidence_status(obligations, state.get("evidence", {}))["sufficient"]:
         errors.append("evidence is no longer sufficient")

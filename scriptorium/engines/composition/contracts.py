@@ -12,12 +12,14 @@ import re
 import time
 from typing import Any
 
-from scriptorium.models import content_hash
+from scriptorium.models import content_hash, parse_note
 from . import checks
 
 STATES = frozenset({"planned", "ready", "generated", "verified", "blocked", "justifiably-omitted", "failed"})
 DOMAINS = ("structural", "computational", "mathematical", "research", "visual", "educational")
 PREREQUISITES = frozenset({"essential", "supporting", "optional", "covered", "assumed", "missing"})
+ASSESSMENT_TYPES = frozenset({"conceptual", "mathematical", "numerical", "algorithmic", "implementation",
+                              "comparison", "diagnosis", "experimental_design", "historical", "causal"})
 CHECK_FIELDS = {
     "proofs": ("mathematical", "proof"), "claims": ("research", "claim"),
     "information_flows": ("computational", "flow"), "tensors": ("computational", "tensor"),
@@ -27,7 +29,7 @@ CHECK_FIELDS = {
     "gaps": ("educational", "gap"),
 }
 DEPTH_DELIVERABLES = {
-    "conceptual": "explain the mechanism, prerequisite bridge and limits",
+    "conceptual": "motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
     "mathematical": "state assumptions and show intermediate derivation with boundary checks",
     "algorithmic": "trace actual algorithm state, invariants and termination",
     "implementation": "state backend, input/output contract, executable path and testing level",
@@ -128,6 +130,30 @@ def extend_plan(plan: dict[str, Any], spec: dict[str, Any]) -> dict[str, Any]:
         for prereq in concept.get("prerequisite_records", []):
             if prereq["classification"] == "missing":
                 add(f"{cid}:prerequisite:{prereq['id']}", cid, f"Bridge missing prerequisite {prereq['id']}", "gap", "educational", base, prereq)
+    # Resolve assessment identity and ownership against the same canonical plan.
+    # Otherwise a question assigned to an unknown chapter is silently ignored by
+    # every chapter checker, despite remaining in the publication manifest.
+    if not isinstance(plan["assessments"], list):
+        raise ValueError("Assessments must be a list of question records")
+    question_ids = set()
+    chapter_objectives = {chapter["id"]: {oid for cid in chapter["concepts"] for oid in by_id[cid]["objective_ids"]}
+                          for chapter in plan["chapters"]}
+    for question in plan["assessments"]:
+        if not isinstance(question, dict):
+            raise ValueError("Assessment must be a question record")
+        qid, owner = question.get("id"), question.get("chapter")
+        if not isinstance(qid, str) or not qid.strip() or qid in question_ids:
+            raise ValueError("Assessment IDs must be nonempty and globally unique")
+        question_ids.add(qid)
+        if not isinstance(owner, str) or owner not in chapter_objectives:
+            raise ValueError(f"Assessment refers to an unknown chapter: {owner}")
+        objectives = question.get("objectives")
+        if (not isinstance(objectives, list) or not objectives
+                or any(not isinstance(oid, str) or oid not in chapter_objectives[owner] for oid in objectives)):
+            raise ValueError("Assessment objective must belong to its owning chapter")
+        placement = question.get("placement", "chapter_end")
+        if not isinstance(placement, str) or not placement.strip():
+            raise ValueError("Assessment placement must name a milestone heading or chapter_end")
     for i, visual in enumerate(plan["visuals"]):
         visual.setdefault("id", f"{visual['concept']}:visual:{i}")
         add(visual["id"], visual["concept"], visual["objective"], "visual", "visual",
@@ -167,6 +193,9 @@ def extend_plan(plan: dict[str, Any], spec: dict[str, Any]) -> dict[str, Any]:
 def render_question(question: dict[str, Any]) -> str:
     if any(not question.get(k) for k in ("id", "question", "hint", "solution", "type", "objectives")):
         raise ValueError("Assessment needs question, hint, detailed solution, type and objectives")
+    if any(not isinstance(question[k], str) or not question[k].strip()
+           for k in ("id", "question", "hint", "solution", "type")):
+        raise ValueError("Assessment question, hint and detailed solution must be nonempty text")
     def quote(text):
         return "\n".join("> " + line if line else ">" for line in text.splitlines())
     return (f"**Question ({question['id']}):** {question['question']}\n\n"
@@ -206,12 +235,26 @@ def prepare_drafts(plan: dict[str, Any], drafts: dict[str, str]) -> dict[str, st
 
 def insert_at_section(body: str, section: str, text: str) -> str:
     # Keep a contribution inside its owning section, before the next peer/parent.
-    headings = list(re.finditer(r"^(#{1,6})\s+(.+?)\s*$", body, re.M))
-    for i, heading in enumerate(headings):
-        if heading[2] == section:
-            end = next((h.start() for h in headings[i+1:] if len(h[1]) <= len(heading[1])), len(body))
-            return body[:end].rstrip() + "\n\n" + text + "\n\n" + body[end:]
-    raise ValueError(f"missing contribution placement heading: {section}")
+    note = parse_note(body)
+    lines = body.splitlines(keepends=True)
+    fenced = {i + note.body_start_line for block in note.code_blocks
+              for i in range(block["start_line"], block["end_line"] + 1)}
+    headings, offset = [], 0
+    for index, line in enumerate(lines):
+        match = re.match(r"^(#{1,6})\s+(.+?)\s*$", line.rstrip("\r\n"))
+        if match and index not in fenced:
+            headings.append((offset, len(match[1]), match[2]))
+        offset += len(line)
+    # A document title commonly repeats its first concept heading. Prefer the
+    # substantive section; use the title itself only when no section matches.
+    matches = [i for i, (_, level, title) in enumerate(headings) if title == section and level > 1]
+    if not matches:
+        matches = [i for i, (_, _, title) in enumerate(headings) if title == section]
+    if len(matches) != 1:
+        raise ValueError(f"missing contribution placement heading or ambiguous heading: {section}")
+    owner = matches[0]
+    end = next((offset for offset, level, _ in headings[owner + 1:] if level <= headings[owner][1]), len(body))
+    return body[:end].rstrip() + "\n\n" + text + "\n\n" + body[end:]
 
 
 def receipt_errors(receipt: Any, drafts: dict[str, str]) -> list[str]:
@@ -245,8 +288,7 @@ def check_assessment(plan: dict[str, Any], chapter: dict[str, Any], body: str) -
     errors = []
     if not 4 <= len(final) <= 5:
         errors.append("comprehensive chapter needs four to five final questions")
-    allowed = {"conceptual", "mathematical", "numerical", "implementation", "comparison", "diagnosis", "experimental_design"}
-    if len({q.get("type") for q in final}) < 3 or any(q.get("type") not in allowed for q in questions):
+    if len({q.get("type") for q in final}) < 3 or any(q.get("type") not in ASSESSMENT_TYPES for q in questions):
         errors.append("assessment lacks diversity across learning tasks")
     objectives = {oid for c in plan["concepts"] if c["id"] in chapter["concepts"] for oid in c["objective_ids"]}
     covered = {oid for q in questions for oid in q.get("objectives", [])}
@@ -256,8 +298,14 @@ def check_assessment(plan: dict[str, Any], chapter: dict[str, Any], body: str) -
         errors.append("assessment IDs must be unique")
     for question in questions:
         try:
-            if render_question(question) not in body:
+            rendered = render_question(question)
+            if rendered not in body:
                 errors.append("independently folded hint/answer is absent from its chapter")
+            placement = question.get("placement", "chapter_end")
+            if placement != "chapter_end":
+                sections = [s for s in parse_note(body).sections if s.heading == placement]
+                if len(sections) != 1 or rendered not in sections[0].content:
+                    errors.append("section check is absent from its declared milestone heading")
         except ValueError as exc:
             errors.append(str(exc))
     return errors
@@ -338,7 +386,8 @@ def _verify_obligation(obligation, plan, drafts, evidence, visuals, vault):
         result = visuals.get(obligation["id"], {})
         if result.get("status") != "verified" or not result.get("attempted") or not result.get("hash"):
             return ["required visual lacks executed, persisted renderer and verified asset"]
-        if f"![[{result.get('path')}]]" not in body:
+        embed = result.get("embed", f"![[{result.get('path')}]]")
+        if not isinstance(embed, str) or not embed.strip() or embed not in body:
             return ["verified visual is not embedded in its owning chapter"]
         if record.get("empirical"):
             claims = {c["id"]: c for concept in plan["concepts"] for c in concept.get("claims", [])}

@@ -7,6 +7,8 @@ from __future__ import annotations
 
 import math
 import json
+import posixpath
+import re
 from pathlib import Path
 import time
 import xml.etree.ElementTree as ET
@@ -49,7 +51,9 @@ def scientific_svg(series: dict[str, list[tuple[float, float]]], *, title: str, 
 
 
 def architecture_svg(components: list[dict[str, str]]) -> str:
-    if not components or any(not c.get("label") or not c.get("shape") for c in components):
+    if not isinstance(components,list) or not components or len(components)>100 or any(
+            not isinstance(c,dict) or not isinstance(c.get("label"),str) or not c["label"]
+            or not isinstance(c.get("shape"),str) or not c["shape"] for c in components):
         raise ValueError("Each component requires a label and tensor shape or interface")
     width = 220 * len(components)
     svg = ET.Element("svg", xmlns=NS, viewBox=f"0 0 {width} 160", role="img")
@@ -73,9 +77,10 @@ def validate_svg(text: str) -> list[str]:
     if root.tag != f"{{{NS}}}svg" or not root.get("viewBox"):
         errors.append("SVG needs namespace and viewBox")
     for element in root.iter():
-        if element.tag.rsplit("}", 1)[-1] in {"script", "foreignObject"}:
+        if element.tag.rsplit("}", 1)[-1] not in {"svg", "title", "desc", "rect", "text", "path", "polyline", "polygon", "line", "circle", "ellipse", "g"}:
             errors.append("Unsupported active SVG content")
-        if any(k.lower().startswith("on") or k.endswith("href") for k in element.attrib):
+        if any(k.lower().startswith("on") or k.endswith("href") or re.search(r"url\s*\(|javascript:|data:", v, re.I)
+               for k,v in element.attrib.items()):
             errors.append("Unsupported SVG event or external resource")
     return errors
 
@@ -122,31 +127,52 @@ def flow_svg(flow: dict) -> str:
 
 
 def render_visuals(vault: Path, plan: dict, drafts: dict[str, str], *, execute: bool = True) -> tuple[dict, dict]:
-    """Persist every attempt, even failures. Cache immutable SVGs by specification and renderer code."""
+    """Execute shared backends; preserve failures and verify exact local artifacts.
+
+    execute=False never acquires remote media. Mermaid is native validated source,
+    and HTML is a constrained standalone viewer, not an Obsidian execution claim.
+    """
     from . import contained, select_visual
     from .contracts import insert_at_section
     from .checks import arithmetic, attention_mask, check_flow
     from ..vault import safe_write_note
+    from . import renderers, media
     bodies, results = dict(drafts), {}
-    render_version = content_hash(Path(__file__).read_bytes())
+    render_version = content_hash(b"".join(Path(module.__file__).read_bytes() for module in (renderers,media)) + Path(__file__).read_bytes())
     for visual in plan["visuals"]:
         started = time.perf_counter()
-        selected = select_visual(visual, available={"scientific", "svg", "mask"})
+        selected = select_visual(visual, available=set(renderers.BUILTIN_BACKENDS))
         renderer = selected["renderer"]
         fallback = visual.get("fallback")
         if renderer == "mermaid" and fallback == "svg" and visual.get("flow"):
             renderer = "svg"
         digest = content_hash(json.dumps({"spec": visual, "renderer": renderer, "version": render_version}, sort_keys=True))
-        relative = f"assets/scriptorium/{digest}.svg"
+        suffix = renderers.BACKENDS[renderer]["suffix"]
+        relative = f"assets/scriptorium/{digest}.{suffix}"
         path = contained(vault, relative)
-        status = {"renderer": renderer, "selected_renderer": selected["renderer"], "available": renderer in {"scientific", "svg", "mask"},
+        status = {"renderer": renderer, "selected_renderer": selected["renderer"], "family": selected.get("family"),
+                  "available": renderer in renderers.BUILTIN_BACKENDS,
                   "attempted": False, "status": "planned", "input_hash": digest, "path": relative, "hash": None,
-                  "failure_reason": None, "fallback": fallback, "renderer_version": render_version, "cached": False}
+                  "failure_reason": None, "fallback": fallback, "renderer_version": render_version, "cached": False, "embed": None}
         chapter = next(c for c in plan["chapters"] if visual["concept"] in c["concepts"])
         try:
             if not status["available"]:
                 raise ValueError("Renderer requires a host execution adapter; selection is not execution")
             status["attempted"] = True
+            embed = f"![[{relative}]]"
+            if renderer == "external":
+                if plan.get("source_policy") == "strict" and visual.get("asset_policy", "local_preferred") != "offline_only" and visual.get("origin") != "supplied":
+                    raise ValueError("Source-only policy permits remote acquisition only for explicitly supplied media")
+                status.update(media.media_artifact(vault,visual,digest,execute=execute))
+                status["status"] = "verified"
+                embed = status["embed"]
+                local_target = posixpath.relpath(status["path"],posixpath.dirname(chapter.get("path","note.md")) or ".")
+                embed = embed.replace(f"]({status['path']})",f"]({local_target})")
+                status["embed"] = embed
+                if embed not in bodies.get(chapter["id"], ""):
+                    bodies[chapter["id"]] = insert_at_section(bodies.get(chapter["id"], ""),visual["section"],
+                                                             embed+"\n\n"+visual.get("interpretation",visual["objective"]))
+                continue
             if renderer == "scientific":
                 if not all(visual.get(k) for k in ("xlabel", "ylabel", "units", "interpretation")):
                     raise ValueError("Scientific plot requires axis labels, units and interpretation")
@@ -172,11 +198,28 @@ def render_visuals(vault: Path, plan: dict, drafts: dict[str, str], *, execute: 
                     raise ValueError("Mask diagram contradicts the information-flow contract")
                 mask = flow["mask"]
                 svg = mask_svg(attention_mask(mask["segments"], mask["permissions"], causal=mask["causal"]), mask["segments"])
-            else:
-                if not visual.get("flow"):
-                    raise ValueError("Architecture SVG requires a validated information-flow contract")
+            elif renderer == "graph":
+                svg = renderers.graph_svg(visual)
+            elif renderer == "coordinates":
+                svg = renderers.coordinate_svg(visual)
+            elif renderer == "mermaid":
+                svg = renderers.mermaid_source(visual)
+                embed = "```mermaid\n" + svg.rstrip() + "\n```"
+            elif renderer == "table":
+                from . import render_table
+                svg = render_table(visual.get("table",visual))
+                embed = svg
+            elif renderer == "interactive":
+                svg = renderers.interactive_html(visual)
+                target = posixpath.relpath(relative,posixpath.dirname(chapter.get("path","note.md")) or ".")
+                embed = f"[Open interactive state sequence]({target})"
+            elif visual.get("flow"):
                 svg = flow_svg(visual["flow"])
-            issues = validate_svg(svg)
+            else:
+                if not visual.get("components"):
+                    raise ValueError("Architecture SVG requires a validated information-flow contract")
+                svg = architecture_svg(visual["components"])
+            issues = validate_svg(svg) if suffix == "svg" else []
             if issues:
                 raise ValueError("; ".join(issues))
             if execute:
@@ -188,15 +231,15 @@ def render_visuals(vault: Path, plan: dict, drafts: dict[str, str], *, execute: 
                     safe_write_note(path, svg, validate_properties=False)
             elif not path.is_file() or path.read_text(encoding="utf-8") != svg:
                 raise ValueError("Rendered asset is missing or changed")
-            status.update(status="verified", hash=content_hash(svg), validation={
-                "method": "regenerate from numerical inputs or verified flow/mask and compare exact SVG",
-                "result": "pass", "limits": "Visual semantics are checked against supplied contracts; browser/theme rendering is untested."})
-            embed = f"![[{relative}]]"
+            status.update(status="verified", hash=content_hash(svg), embed=embed, validation={
+                "method": "regenerate from bounded semantic inputs and compare exact artifact",
+                "result": "pass", "limits": "Supplied semantics are checked; browser/theme rendering is untested. Native Mermaid is validated source, not a raster. Graphs show topology, not physical simulation."})
             if embed not in bodies.get(chapter["id"], ""):
                 bodies[chapter["id"]] = insert_at_section(bodies.get(chapter["id"], ""), visual["section"],
                                                          embed + "\n\n" + visual.get("interpretation", visual["objective"]))
         except (ValueError, KeyError, TypeError, OSError, ArithmeticError) as exc:
             status.update(status="failed" if status["available"] else "unavailable", failure_reason=str(exc))
-        status["elapsed_seconds"] = time.perf_counter()-started
-        results[visual["id"]] = status
+        finally:
+            status["elapsed_seconds"] = time.perf_counter()-started
+            results[visual["id"]] = status
     return bodies, results

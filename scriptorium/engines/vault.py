@@ -65,6 +65,8 @@ TAG_SYNONYMS: dict[str, str] = {
 }
 
 MANAGED_TAG_PREFIXES: tuple[str, ...] = (
+    "topic/",
+    "subject/",
     "domain/",
     "master-topic/",
     "subdomain/",
@@ -76,6 +78,11 @@ MANAGED_TAG_PREFIXES: tuple[str, ...] = (
 
 # Ordered discipline taxonomy: (pattern, domain, master_topic, subdomain)
 HIERARCHY_RULES: tuple[tuple[re.Pattern[str], str, str, str], ...] = (
+    # Engineering classifications supplement the same shared taxonomy.
+    (re.compile(r"\b(?:circuits?|electrical\s+engineering|thevenin|thévenin|kirchhoff|impedance|electronics)\b", re.I),
+     "Engineering", "Electrical Engineering", "Circuit Analysis"),
+    (re.compile(r"\b(?:control\s+systems?|feedback\s+control|transfer\s+functions?)\b", re.I),
+     "Engineering", "Control Engineering", "Systems"),
     # Artificial Intelligence / Machine Learning
     (re.compile(r"\b(?:gradient\s+descent|stochastic\s+gradient|adam\s+optimizer|rmsprop|momentum|learning\s+rate|convex\s+optimization)\b", re.I),
      "Artificial Intelligence", "Machine Learning", "Optimization"),
@@ -159,6 +166,31 @@ def normalize_tag_segment(raw: str) -> str:
     return TAG_SYNONYMS.get(slug, TAG_SYNONYMS.get(cleaned.lower(), slug))
 
 
+def validate_semantic_tags(tags: Any) -> list[str]:
+    """Validate hierarchical classification, independent of a note's YAML profile.
+
+    Unknown classifications stay explicitly general until an author supplies a
+    parent/domain. This check validates syntax and coverage, not semantic truth.
+    """
+    if not isinstance(tags, list) or not tags:
+        return ["semantic tags must be a nonempty list"]
+    errors = []
+    normalized = []
+    for tag in tags:
+        if not isinstance(tag, str) or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*(?:/[a-z0-9]+(?:-[a-z0-9]+)*)+", tag):
+            errors.append(f"invalid normalized semantic tag: {tag!r}")
+        else:
+            normalized.append(normalize_tag(tag))
+            if tag in {"domain/general", "subject/general", "subject/general-knowledge", "topic/note"}:
+                errors.append("generic-only classification needs an explicit subject and domain")
+    if len(normalized) != len(set(normalized)):
+        errors.append("duplicate semantic tags")
+    for prefix in ("topic/", "subject/", "domain/"):
+        if not any(tag.startswith(prefix) for tag in normalized):
+            errors.append(f"missing semantic classification: {prefix}")
+    return errors
+
+
 def normalize_tag(raw: str) -> str:
     """Normalize either a hierarchical tag ('domain/AI') or flat tag ('ML') into canonical Obsidian form."""
     cleaned = str(raw or "").strip().lstrip("#")
@@ -239,6 +271,8 @@ def generate_tags(
         if norm and norm not in tags:
             tags.append(norm)
 
+    _add(f"topic/{topic}")
+    _add(f"subject/{master_topic}")
     _add(f"domain/{domain}")
     _add(f"master-topic/{master_topic}")
     if subdomain:
@@ -790,7 +824,7 @@ def render_parent_moc(
         status="active",
         created=created or date.today(),
         template_id="index",
-        coverage_status="complete",
+        coverage_status="generated",
     )
 
     lines: list[str] = [f"# {node.title}", ""]
@@ -998,7 +1032,7 @@ def _compose_child_note(
         status="active",
         created=created or date.today(),
         template_id=master,
-        coverage_status="complete",
+        coverage_status="generated",
     )
     return render_note_with_properties(props, body + "\n")
 
@@ -1110,6 +1144,9 @@ def generate_note_collection(
     completed_count = sum(1 for r in records if r["status"] in {"created", "updated", "unchanged"})
     manifest = {
         "collection_id": plan.collection_id,
+        "content_state": "generated",
+        "verified": False,
+        "completion_scope": "file generation only; authored content and semantic review remain required",
         "title": plan.title,
         "organization": plan.organization,
         "domain": root_domain,
@@ -1125,6 +1162,8 @@ def generate_note_collection(
 
     return {
         "collection_id": plan.collection_id,
+        "content_state": "generated",
+        "verified": False,
         "manifest_path": str(manifest_path),
         "planned_count": len(plan.nodes),
         "completed_count": completed_count,
