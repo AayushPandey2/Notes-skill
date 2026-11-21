@@ -8,7 +8,7 @@ The seven A1–A7 architectures cooperate within these owners.
 ## Authoring and publication
 
 1. Resolve scope and source policy through `/scribe-notes`. Comprehensive M1 output
-   uses one MOC and five chapters. Other masters and narrow products retain their
+   uses one MOC and 5–10 chapters. Other masters and narrow products retain their
    existing layouts and source modes.
 2. Supply concepts, single chapter owners, objectives, classified prerequisites,
    independent depth, selected capabilities, and applicable technical records in
@@ -166,9 +166,11 @@ input/code hashes, outcome, failure reason, asset path/hash and fallback under
 shared `assets/scriptorium/` vault directory. Exact regeneration verifies SVG
 content and the publisher checks its actual embed. Empirical charts require
 verified comparable claim IDs and matching values. The built-in renderer rejects
-error bars it cannot render. Mermaid is native in the MOC; external figures,
-image generation and other host renderers remain conditional, explicitly blocked
-when unavailable. A Mermaid-to-SVG fallback requires an explicit validated flow.
+error bars it cannot render. The [representation contract](../workflows/notes-creation/representations.md)
+defines twelve logical families sharing bounded SVG, graph, coordinate, native
+Mermaid, table, frame-viewer and remote PNG backends. Image generation and other
+host adapters remain explicitly unavailable until execution support exists.
+A Mermaid-to-SVG fallback requires an explicit validated flow.
 
 ## Assessments
 

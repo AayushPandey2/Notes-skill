@@ -4,6 +4,13 @@ aliases:
 - Implementing and Testing Descent
 topic: Gradient Descent
 tags:
+- topic/scalar-implementation-and-independent-oracle
+- subject/machine-learning
+- domain/artificial-intelligence
+- master-topic/machine-learning
+- subdomain/optimization
+- concept/scalar-implementation-and-independent-oracle
+- concept/finite-checks-and-numerical-tolerance
 - type/full-notes
 nexttopics:
 - '[[05 - Curvature and Failure Analysis]]'

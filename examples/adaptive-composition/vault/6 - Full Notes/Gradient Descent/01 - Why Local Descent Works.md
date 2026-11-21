@@ -4,6 +4,13 @@ aliases:
 - Why Local Descent Works
 topic: Gradient Descent
 tags:
+- topic/first-order-descent-model
+- subject/machine-learning
+- domain/artificial-intelligence
+- master-topic/machine-learning
+- subdomain/optimization
+- concept/first-order-descent-model
+- concept/descent-direction-and-finite-step-length
 - type/full-notes
 nexttopics:
 - '[[02 - Deriving the Update and Its Limits]]'

@@ -4,6 +4,13 @@ aliases:
 - Tracing the Algorithm
 topic: Gradient Descent
 tags:
+- topic/simultaneous-state-updates
+- subject/machine-learning
+- domain/artificial-intelligence
+- master-topic/machine-learning
+- subdomain/optimization
+- concept/simultaneous-state-updates
+- concept/trace-indexing-and-memory
 - type/full-notes
 nexttopics:
 - '[[04 - Implementing and Testing Descent]]'
@@ -50,6 +57,10 @@ Storing the full trace requires O(K) space. If only the final state is needed,
 the working state requires O(1) space. For a vector objective, gradient-evaluation
 cost and parameter dimension replace these scalar assumptions.
 
+![[assets/scriptorium/221370d9cc3106203a49f389506c88a66173b934a18dea95ca891f5d7392e5d4.svg]]
+
+These deterministic synthetic trajectories illustrate the proved recurrence; they are not training experiments.
+
 ## Check your understanding
 
 **Question (gd.q3.1):** What does trace entry k represent?
@@ -83,7 +94,3 @@ cost and parameter dimension replace these scalar assumptions.
 
 > [!answer]- Show detailed answer
 > Keep only the current scalar state and overwrite it after computing the gradient from the old value. This uses O(1) working storage while retaining O(K) arithmetic work.
-
-![[assets/scriptorium/dc77bb9061f9b8f9e757d16a9019cfe646b558687d59fa724f3e60a2e6d3c49c.svg]]
-
-These deterministic synthetic trajectories illustrate the proved recurrence; they are not training experiments.

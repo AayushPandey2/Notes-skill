@@ -1,5 +1,16 @@
 # Scriptorium
 
+Scriptorium 5 extends the existing six-engine architecture with adaptive 5–10
+chapter composition, semantic topic/subject/domain tags, a shared twelve-family
+representation registry, verified remote PNG snapshots, and stricter assessment
+and claim checks. Start with the [composition contract](references/workflows/notes-creation/composition-contract.md)
+and [architecture ownership](references/architecture/scriptorium-5-contract.md).
+The [implementation report](references/architecture/scriptorium-5-report.md) and
+[cross-domain examples](examples/scriptorium-5/README.md) include measured checks,
+actual artifacts and remaining limitations.
+Legacy scaffolding reports generated coverage; authored semantic review is still
+required before those drafts can be described as verified teaching material.
+
 Scriptorium routes every learning request across **Seven Canonical Master Output Templates (`M1–M7`)** under [references/templates/masters/](references/templates/masters/README.md) using the [Intelligent Routing Engine](scripts/scribe.py) ([routing-policy.md](references/routing/routing-policy.md), [master-registry.yaml](references/routing/master-registry.yaml)). Deep learning notes (`M1`) use [deep-notes.md](references/templates/masters/deep-notes.md) with the authoritative [adaptive instructional engine](references/workflows/notes-creation/adaptive-engine.md), [instructional registry](references/workflows/notes-creation/instructional-registry.json), [ARRIE research engine](references/workflows/research/research-engine.md), and [pedagogical intelligence layer](references/workflows/notes-creation/pedagogical-intelligence.md).
 
 A modular Obsidian study-note skill. Scriptorium routes requests to purpose-selected master output products, researches primary sources, expands existing coverage, solves worked problems, builds verified implementations, and creates assessments and revision packs.
@@ -253,7 +264,7 @@ Deep learning notes (`M1`) use the [per-concept instructional engine](references
 
 ## Comprehensive composition profile
 
-The [composition contract](references/workflows/notes-creation/composition-contract.md) defines full-topic M1 collections: one MOC, five comprehensive chapters, shared S01–S18 capabilities in the existing instructional registry, independent depth dimensions, and authored publication with exactly five YAML keys. Its profile-specific rules take precedence over legacy collection metadata and file layout above. Existing single-note and M2–M7 contracts remain supported.
+The [composition contract](references/workflows/notes-creation/composition-contract.md) defines full-topic M1 collections: one MOC, 5–10 comprehensive chapters, shared S01–S18 capabilities in the existing instructional registry, independent depth dimensions, and authored publication with exactly five YAML keys. Its profile-specific rules take precedence over legacy collection metadata and file layout above. Existing single-note and M2–M7 contracts remain supported.
 
 [KCP v2 integrity](references/contracts/composition-integrity.md) adds executable
 educational obligations, artifact-bound reviews, scoped mathematical/technical

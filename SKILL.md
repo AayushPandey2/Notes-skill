@@ -15,6 +15,13 @@ description: Create, research, organize, and query Obsidian study notes, source 
 
 ## Comprehensive topic collections
 
-For full-topic M1 output, use the [composition contract](references/workflows/notes-creation/composition-contract.md) after scope calibration. It takes precedence over the legacy hierarchy/Properties instructions above for this profile: one numbered MOC and five authored chapters, exact five-key YAML, shared capability/depth/evidence plan, and publication through `scripts/scribe.py notes compose`. Other masters and narrow single notes retain their established contracts.
+Omit `chapters` from the composition specification for adaptive allocation from
+the prerequisite DAG; inspect `chapter_rationale` before authoring. Use nested
+`topic/`, `subject/`, and `domain/` tags from the owned concepts and shared taxonomy.
+Supply `classification.subject` and `classification.domain` when inference is
+insufficient. [The renderer registry](scriptorium/engines/composition/renderers.py)
+declares available backends; load only relevant rendering guidance.
+
+For full-topic M1 output, use the [composition contract](references/workflows/notes-creation/composition-contract.md) after scope calibration. It takes precedence over the legacy hierarchy/Properties instructions above for this profile: one numbered MOC and 5–10 substantive authored chapters, exact five-key YAML, shared capability/depth/evidence plan, and publication through `scripts/scribe.py notes compose`. Other masters and narrow single notes retain their established contracts.
 
 Apply the [KCP integrity contract](references/contracts/composition-integrity.md) to this path. Prepare the actual figures, tables and independently folded assessments before reviewing chapter bodies. Submit artifact-bound review receipts and exact source evidence; critical open obligations block completion. Use the existing selective compiler and dependency-aware repair plan for active concepts.

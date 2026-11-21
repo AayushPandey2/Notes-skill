@@ -13,15 +13,19 @@ records, renderer execution, assessment coverage and repair/cache semantics.
 
 Use the configuration gate to establish intent, source policy, scope and audience.
 Treat its legacy concept/file preview as a provisional concept inventory for full
-topics. Before writing, allocate that inventory to one MOC and five subject-specific
+topics. Before writing, allocate that inventory to one MOC and 5–10 subject-specific
 chapters in `6 - Full Notes/<Topic>/`. No nested chapter directories, glossary note,
 visual note, additional index, or internal manifest belongs in that folder.
 History does not require a mathematics chapter. Keep whole derivations together.
-If five chapters cannot serve the agreed scope, resolve that constraint with the
-user before exceeding it. An explicitly narrow request can remain a single note.
+Omit `chapters` to use the prerequisite-aware adaptive planner. Inspect its
+`chapter_rationale`, workload estimates and overloads before authoring. Fewer than
+five substantive concepts need a narrower profile or a better inventory; never
+fabricate chapters to meet the minimum. Narrow requests can remain single notes.
 
-The agent supplies a JSON specification with `topic`, `source_policy`, `chapters`,
-and `concepts`. Each chapter has `id`, `title`, `concepts` (owned IDs), and optional
+The agent supplies a JSON specification with `topic`, `source_policy`, optional
+`chapters`, and `concepts`. Optional `classification` carries `subject`, `domain`,
+and `subdomain` when the shared taxonomy cannot infer an accurate hierarchy.
+Each explicit chapter has `id`, `title`, `concepts` (owned IDs), and optional
 `sections` (required heading text). Each concept has `id`, `title`, `objectives`,
 `prerequisites`, selected `capabilities` (`S01`–`S18`), optional `depth` and `signals`.
 Known external prerequisites belong in `known_prerequisites`. Shared symbols belong
@@ -40,6 +44,14 @@ headings. Do not print internal stage labels or concatenate eighteen blocks.
 Maintain the seven EIS mechanisms using this same concept plan and notation.
 At difficult transitions, explicitly review missing assumptions, symbols,
 intermediate steps, examples, and repeated explanations.
+For each major concept, use the relevant explanatory spine: problem, motivation,
+intuition, prerequisites, definition, mechanism, derivation or construction,
+worked example, interpretation, assumptions, limitations, relationships and
+assessment. This is a review guide, not thirteen mandatory headings. Show the
+intermediate operation that makes a difficult transition understandable. Label
+examples as illustrative, synthetic, executed, reproduced or source-reported;
+anticipate a likely misconception with a counterexample where useful. Use prior
+chapter summaries and forward links rather than restating whole explanations.
 
 ## Depth and research
 
@@ -86,7 +98,9 @@ The standard-library SVG renderer executes numerical series, validated informati
 flows and attention masks. It records attempts and failures, verifies regenerated
 assets and inserts their embeds. Standalone ordered-block helpers remain available
 for illustrations; publication uses actual flow contracts. Browser rendering and
-host image tools remain conditional checks with explicit limitations.
+host image tools remain conditional checks with explicit limitations. See the
+[representation and media contract](representations.md) for the twelve-family
+registry, executable backends, semantic inputs and offline acquisition policy.
 
 ## Publication, checkpoints and repair
 

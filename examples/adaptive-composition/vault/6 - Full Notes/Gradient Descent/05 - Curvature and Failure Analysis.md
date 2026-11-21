@@ -4,6 +4,13 @@ aliases:
 - Curvature and Failure Analysis
 topic: Gradient Descent
 tags:
+- topic/spd-eigenbasis-reduction
+- subject/machine-learning
+- domain/artificial-intelligence
+- master-topic/machine-learning
+- subdomain/optimization
+- concept/spd-eigenbasis-reduction
+- concept/eigenvalue-spread-and-conditional-diagnostics
 - type/full-notes
 nexttopics: []
 ---

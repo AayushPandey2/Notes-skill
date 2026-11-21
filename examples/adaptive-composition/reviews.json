@@ -17,7 +17,7 @@
       },
       {
         "chapter": "gd.ch3",
-        "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+        "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
         "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
       },
       {
@@ -50,7 +50,7 @@
       },
       {
         "chapter": "gd.ch3",
-        "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+        "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
         "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
       },
       {
@@ -83,7 +83,7 @@
       },
       {
         "chapter": "gd.ch3",
-        "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+        "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
         "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
       },
       {
@@ -116,7 +116,7 @@
       },
       {
         "chapter": "gd.ch3",
-        "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+        "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
         "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
       },
       {
@@ -147,7 +147,7 @@
     },
     "gd.c1:depth:conceptual": {
       "verifier": "authored demonstration reviewer (Codex)",
-      "method": "Review requirement: Level 2: explain the mechanism, prerequisite bridge and limits; inspect corresponding chapter and scoped verifier result.",
+      "method": "Review requirement: Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler; inspect corresponding chapter and scoped verifier result.",
       "result": "pass",
       "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
       "evidence": [
@@ -225,7 +225,7 @@
     },
     "gd.direction:depth:conceptual": {
       "verifier": "authored demonstration reviewer (Codex)",
-      "method": "Review requirement: Level 2: explain the mechanism, prerequisite bridge and limits; inspect corresponding chapter and scoped verifier result.",
+      "method": "Review requirement: Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler; inspect corresponding chapter and scoped verifier result.",
       "result": "pass",
       "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
       "evidence": [
@@ -381,7 +381,7 @@
     },
     "gd.boundary:depth:conceptual": {
       "verifier": "authored demonstration reviewer (Codex)",
-      "method": "Review requirement: Level 2: explain the mechanism, prerequisite bridge and limits; inspect corresponding chapter and scoped verifier result.",
+      "method": "Review requirement: Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler; inspect corresponding chapter and scoped verifier result.",
       "result": "pass",
       "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
       "evidence": [
@@ -426,7 +426,7 @@
       "evidence": [
         {
           "chapter": "gd.ch3",
-          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
           "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
         }
       ]
@@ -439,7 +439,7 @@
       "evidence": [
         {
           "chapter": "gd.ch3",
-          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
           "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
         }
       ]
@@ -452,7 +452,7 @@
       "evidence": [
         {
           "chapter": "gd.ch3",
-          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
           "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
         }
       ]
@@ -465,7 +465,7 @@
       "evidence": [
         {
           "chapter": "gd.ch3",
-          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
           "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
         }
       ]
@@ -478,7 +478,7 @@
       "evidence": [
         {
           "chapter": "gd.ch3",
-          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
           "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
         }
       ]
@@ -491,7 +491,7 @@
       "evidence": [
         {
           "chapter": "gd.ch3",
-          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
           "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
         }
       ]
@@ -504,7 +504,7 @@
       "evidence": [
         {
           "chapter": "gd.ch3",
-          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
           "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
         }
       ]
@@ -517,7 +517,7 @@
       "evidence": [
         {
           "chapter": "gd.ch3",
-          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
           "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
         }
       ]
@@ -530,7 +530,7 @@
       "evidence": [
         {
           "chapter": "gd.ch3",
-          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
           "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
         }
       ]
@@ -543,7 +543,7 @@
       "evidence": [
         {
           "chapter": "gd.ch3",
-          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
           "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
         }
       ]
@@ -556,7 +556,7 @@
       "evidence": [
         {
           "chapter": "gd.ch3",
-          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
           "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
         }
       ]
@@ -569,7 +569,7 @@
       "evidence": [
         {
           "chapter": "gd.ch3",
-          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
           "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
         }
       ]
@@ -582,7 +582,7 @@
       "evidence": [
         {
           "chapter": "gd.ch3",
-          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
           "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
         }
       ]
@@ -595,7 +595,7 @@
       "evidence": [
         {
           "chapter": "gd.ch3",
-          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
           "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
         }
       ]
@@ -608,20 +608,20 @@
       "evidence": [
         {
           "chapter": "gd.ch3",
-          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
           "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
         }
       ]
     },
     "gd.trace:depth:conceptual": {
       "verifier": "authored demonstration reviewer (Codex)",
-      "method": "Review requirement: Level 2: explain the mechanism, prerequisite bridge and limits; inspect corresponding chapter and scoped verifier result.",
+      "method": "Review requirement: Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler; inspect corresponding chapter and scoped verifier result.",
       "result": "pass",
       "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
       "evidence": [
         {
           "chapter": "gd.ch3",
-          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
           "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
         }
       ]
@@ -634,7 +634,7 @@
       "evidence": [
         {
           "chapter": "gd.ch3",
-          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
           "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
         }
       ]
@@ -647,7 +647,7 @@
       "evidence": [
         {
           "chapter": "gd.ch3",
-          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
           "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
         }
       ]
@@ -823,7 +823,7 @@
     },
     "gd.tolerance:depth:conceptual": {
       "verifier": "authored demonstration reviewer (Codex)",
-      "method": "Review requirement: Level 2: explain the mechanism, prerequisite bridge and limits; inspect corresponding chapter and scoped verifier result.",
+      "method": "Review requirement: Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler; inspect corresponding chapter and scoped verifier result.",
       "result": "pass",
       "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
       "evidence": [
@@ -1083,7 +1083,7 @@
     },
     "gd.spectrum:depth:conceptual": {
       "verifier": "authored demonstration reviewer (Codex)",
-      "method": "Review requirement: Level 2: explain the mechanism, prerequisite bridge and limits; inspect corresponding chapter and scoped verifier result.",
+      "method": "Review requirement: Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler; inspect corresponding chapter and scoped verifier result.",
       "result": "pass",
       "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
       "evidence": [
@@ -1128,7 +1128,7 @@
       "evidence": [
         {
           "chapter": "gd.ch3",
-          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
           "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
         }
       ]
@@ -1167,7 +1167,7 @@
       "evidence": [
         {
           "chapter": "gd.ch3",
-          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
           "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
         }
       ]

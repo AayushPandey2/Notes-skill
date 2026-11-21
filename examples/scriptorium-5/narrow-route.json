@@ -1,0 +1,56 @@
+{
+  "request": "Give me a one-sentence quick reference definition of a derivative, without diagrams or implementation",
+  "actual_route": {
+    "command": null,
+    "mode": "author",
+    "master": "M3",
+    "variant": null,
+    "compat_route": "cheat-sheet",
+    "lock": "explicit",
+    "multi_artifact": false,
+    "shared_context": false,
+    "source_policy": "strict",
+    "research_mode": "R-S0",
+    "knowledge_types": [
+      "mathematical"
+    ],
+    "artifacts": [
+      {
+        "master": "M3",
+        "master_id": "quick_reference",
+        "master_route": "quick-reference",
+        "master_name": "Quick Reference and Cheat Sheet",
+        "template_path": "references/templates/masters/quick-reference.md",
+        "master_path": "references/templates/masters/quick-reference.md",
+        "variant": null,
+        "variant_path": null,
+        "compat_route": "cheat-sheet",
+        "knowledge_types": [
+          "mathematical"
+        ],
+        "subtemplate_paths": [
+          "references/templates/subtemplates/mathematical.md"
+        ],
+        "default_modules": [
+          "representation_alignment",
+          "revision_summary"
+        ],
+        "secondary_modules": [],
+        "source_policy": "strict",
+        "research_mode": "R-S0",
+        "reason": "explicit cheat sheet / quick reference request"
+      }
+    ],
+    "routing_trace": {
+      "priority_level": 3,
+      "decision_basis": "explicit cheat sheet / quick reference request",
+      "negated_artifacts": [],
+      "secondary_modules": [],
+      "source_order_preserved": false,
+      "artifact_count": 1
+    }
+  },
+  "rendering_calls": 0,
+  "research_retrieval_calls": 0,
+  "notes_authored": 0
+}

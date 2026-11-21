@@ -4,6 +4,13 @@ aliases:
 - Deriving the Update and Its Limits
 topic: Gradient Descent
 tags:
+- topic/exact-quadratic-recurrence
+- subject/machine-learning
+- domain/artificial-intelligence
+- master-topic/machine-learning
+- subdomain/optimization
+- concept/exact-quadratic-recurrence
+- concept/stability-boundaries-and-exceptional-initialization
 - type/full-notes
 nexttopics:
 - '[[03 - Tracing the Algorithm]]'

@@ -4,6 +4,12 @@ aliases:
 - Map of Contents
 topic: Gradient Descent
 tags:
+- topic/gradient-descent
+- subject/machine-learning
+- domain/artificial-intelligence
+- master-topic/machine-learning
+- subdomain/optimization
+- concept/gradient-descent
 - type/full-notes
 nexttopics:
 - '[[01 - Why Local Descent Works]]'

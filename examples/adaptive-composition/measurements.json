@@ -1,5 +1,5 @@
 {
-  "elapsed_seconds": 1.762094899895601,
+  "elapsed_seconds": 2.0230999999912456,
   "files_in_topic": 6,
   "published_python_blocks_executed": 1,
   "numeric_assertions_executed": true,
@@ -14,20 +14,20 @@
     "seconds": 98.64
   },
   "validation": {
-    "elapsed_seconds": 0.15374069998506457,
+    "elapsed_seconds": 0.17342799995094538,
     "obligations": 82,
-    "cached_checks": 44,
+    "cached_checks": 0,
     "model_calls": 0,
     "model_tokens": null,
     "cache": {
-      "hits": 44,
-      "misses": 38,
+      "hits": 0,
+      "misses": 82,
       "invalidations": 0,
       "corrupt_evictions": 0
     }
   },
   "cold_validation": {
-    "elapsed_seconds": 0.18814770004246384,
+    "elapsed_seconds": 0.20650559989735484,
     "obligations": 82,
     "cached_checks": 0,
     "model_calls": 0,
@@ -40,7 +40,7 @@
     }
   },
   "warm_validation": {
-    "elapsed_seconds": 0.6842787000350654,
+    "elapsed_seconds": 0.740817500045523,
     "obligations": 82,
     "cached_checks": 82,
     "model_calls": 0,
@@ -54,28 +54,30 @@
   },
   "repeat_written_paths": [],
   "false_completion_refused": true,
-  "selected_context_estimated_tokens": 8324,
+  "selected_context_estimated_tokens": 8497,
   "context_file_reads": 10,
   "renderers": {
     "gd.trajectory": {
       "renderer": "scientific",
       "selected_renderer": "scientific",
+      "family": "R2",
       "available": true,
       "attempted": true,
       "status": "verified",
-      "input_hash": "dc77bb9061f9b8f9e757d16a9019cfe646b558687d59fa724f3e60a2e6d3c49c",
-      "path": "assets/scriptorium/dc77bb9061f9b8f9e757d16a9019cfe646b558687d59fa724f3e60a2e6d3c49c.svg",
+      "input_hash": "221370d9cc3106203a49f389506c88a66173b934a18dea95ca891f5d7392e5d4",
+      "path": "assets/scriptorium/221370d9cc3106203a49f389506c88a66173b934a18dea95ca891f5d7392e5d4.svg",
       "hash": "618771cdf50d229cb472024134b6d18aaf8f1c91d20332da3cb37ee0dd6f431d",
       "failure_reason": null,
       "fallback": null,
-      "renderer_version": "216bba947d7d232a55ccf89d8570567803ada77038fd81418d131bbf55fded2e",
+      "renderer_version": "9a94a1279a9d627c13eb9b8886a11286445fcd18ea7b0171489b218225f8c92d",
       "cached": true,
+      "embed": "![[assets/scriptorium/221370d9cc3106203a49f389506c88a66173b934a18dea95ca891f5d7392e5d4.svg]]",
       "validation": {
-        "method": "regenerate from numerical inputs or verified flow/mask and compare exact SVG",
+        "method": "regenerate from bounded semantic inputs and compare exact artifact",
         "result": "pass",
-        "limits": "Visual semantics are checked against supplied contracts; browser/theme rendering is untested."
+        "limits": "Supplied semantics are checked; browser/theme rendering is untested. Native Mermaid is validated source, not a raster. Graphs show topology, not physical simulation."
       },
-      "elapsed_seconds": 0.0010893000289797783
+      "elapsed_seconds": 0.001615599961951375
     }
   }
 }

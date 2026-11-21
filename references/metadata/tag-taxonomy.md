@@ -3,6 +3,8 @@
 All generated notes use one consistent hierarchical Obsidian tag taxonomy managed by `scriptorium/engines/vault.py` (`generate_tags`, `normalize_tag`):
 
 ```text
+topic/<specific-topic-slug>
+subject/<parent-subject-slug>
 domain/<domain-slug>
 master-topic/<master-topic-slug>
 subdomain/<subdomain-slug>       # when known
@@ -20,3 +22,10 @@ skill/<skill-slug>                       # optional, only when useful
 4. Never inject unrelated discipline tags (e.g., ML tags in Physics or History notes).
 5. In strict source-only mode, derive tags strictly from the source or clearly established topic context.
 6. Preserve user-defined tags during incremental note updates.
+
+Comprehensive five-key notes require `topic/`, `subject/`, `domain/` roots from the
+same generator. Topic tags describe owned concepts; collection classification
+supplies the parent subject/domain. Legacy tags remain for compatibility.
+`validate_semantic_tags` rejects generic-only, malformed and duplicate tags; it
+cannot certify an author's classification. Unknown topics retain a general
+fallback until the author supplies an explicit reviewed classification.

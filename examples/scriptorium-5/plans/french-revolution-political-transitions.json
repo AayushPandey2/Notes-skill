@@ -1,0 +1,2223 @@
+{
+  "delivery_state": "planned",
+  "teaching_collection_complete": false,
+  "input_specification": {
+    "topic": "French Revolution Political Transitions",
+    "classification": {
+      "subject": "Modern European History",
+      "domain": "History"
+    },
+    "concepts": [
+      {
+        "id": "revolution.late-bourbon-political-order",
+        "title": "Late Bourbon Political Order",
+        "section": "Late Bourbon Political Order",
+        "objectives": [
+          "Explain the institutions of the late Bourbon monarchy"
+        ],
+        "group": "Historical Context",
+        "depth": {
+          "conceptual": 2,
+          "research": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": []
+      },
+      {
+        "id": "revolution.fiscal-crisis-and-representation",
+        "title": "Fiscal Crisis and Representation",
+        "section": "Fiscal Crisis and Representation",
+        "objectives": [
+          "Explain the link between fiscal conflict and demands for representation"
+        ],
+        "group": "Historical Context",
+        "depth": {
+          "conceptual": 2,
+          "research": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "revolution.late-bourbon-political-order"
+        ]
+      },
+      {
+        "id": "revolution.the-estates-general",
+        "title": "The Estates General",
+        "section": "The Estates General",
+        "objectives": [
+          "Explain the transition from the Estates-General to the National Assembly"
+        ],
+        "group": "Constitutional Change",
+        "depth": {
+          "conceptual": 2,
+          "research": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "revolution.fiscal-crisis-and-representation"
+        ]
+      },
+      {
+        "id": "revolution.assembly-and-popular-mobilization",
+        "title": "Assembly and Popular Mobilization",
+        "section": "Assembly and Popular Mobilization",
+        "objectives": [
+          "Explain interactions between institutional change and popular mobilization"
+        ],
+        "group": "Constitutional Change",
+        "depth": {
+          "conceptual": 2,
+          "research": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "revolution.the-estates-general"
+        ]
+      },
+      {
+        "id": "revolution.constitutional-monarchy",
+        "title": "Constitutional Monarchy",
+        "section": "Constitutional Monarchy",
+        "objectives": [
+          "Explain tensions within the constitutional-monarchy settlement"
+        ],
+        "group": "Regime Change",
+        "depth": {
+          "conceptual": 2,
+          "research": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "revolution.assembly-and-popular-mobilization"
+        ]
+      },
+      {
+        "id": "revolution.the-republic",
+        "title": "The Republic",
+        "section": "The Republic",
+        "objectives": [
+          "Explain the transition to a republic without assuming historical inevitability"
+        ],
+        "group": "Regime Change",
+        "depth": {
+          "conceptual": 2,
+          "research": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "revolution.constitutional-monarchy"
+        ]
+      },
+      {
+        "id": "revolution.historical-evidence-and-causation",
+        "title": "Historical Evidence and Causation",
+        "section": "Historical Evidence and Causation",
+        "objectives": [
+          "Compare competing historical explanations using source scope and chronology"
+        ],
+        "group": "Interpretation",
+        "depth": {
+          "conceptual": 2,
+          "research": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "revolution.late-bourbon-political-order",
+          "revolution.the-republic"
+        ]
+      }
+    ],
+    "visuals": [
+      {
+        "id": "political-transition-chronology",
+        "concept": "revolution.the-republic",
+        "section": "The Republic",
+        "kind": "chronology",
+        "objective": "Separate the order of political transitions from a causal explanation",
+        "interpretation": "This selective schematic orders major political forms. An arrow records sequence, not inevitability, a single cause, or a complete account of the French Revolution. Dates and source-level historical interpretations are outside this renderer demonstration.",
+        "nodes": [
+          {
+            "id": "monarchy",
+            "label": "Late Bourbon monarchy"
+          },
+          {
+            "id": "estates",
+            "label": "Estates-General"
+          },
+          {
+            "id": "assembly",
+            "label": "National Assembly"
+          },
+          {
+            "id": "constitutional",
+            "label": "Constitutional monarchy"
+          },
+          {
+            "id": "republic",
+            "label": "Republic"
+          }
+        ],
+        "edges": [
+          {
+            "source": "monarchy",
+            "target": "estates"
+          },
+          {
+            "source": "estates",
+            "target": "assembly"
+          },
+          {
+            "source": "assembly",
+            "target": "constitutional"
+          },
+          {
+            "source": "constitutional",
+            "target": "republic"
+          }
+        ]
+      }
+    ]
+  },
+  "canonical_composition_plan": {
+    "version": 2,
+    "validator_version": "0d1bcbece3500e73c79ba0cb4ffd96a8f958c3e0cb4652fdf7a3ce9f2ce5faeb",
+    "output_profile": "comprehensive_multifile",
+    "topic": "French Revolution Political Transitions",
+    "source_policy": "adaptive",
+    "classification": {
+      "domain": "History",
+      "master_topic": "Modern European History",
+      "subdomain": "Modern History"
+    },
+    "chapter_rationale": {
+      "method": "stable prerequisite order; workload-bounded count; balanced contiguous partition with group preference",
+      "chapter_count": 5,
+      "concept_count": 7,
+      "bounds": [
+        5,
+        10
+      ],
+      "target_workload_units": 6.0,
+      "balanced_workload_units": 3.06,
+      "total_workload_units": 15.3,
+      "unbounded_recommendation": 3,
+      "concept_estimates": {
+        "revolution.late-bourbon-political-order": {
+          "units": 1.65,
+          "components": {
+            "concept": 1.0,
+            "additional_objectives": 0.0,
+            "prerequisite_depth": 0.0,
+            "depth": 0.6499999999999999,
+            "worked_examples": 0.0,
+            "assessments": 0.0
+          },
+          "depth_levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 0,
+            "implementation": 0,
+            "research": 1,
+            "visual": 0,
+            "analytical": 0
+          },
+          "prerequisite_depth": 0
+        },
+        "revolution.fiscal-crisis-and-representation": {
+          "units": 1.8,
+          "components": {
+            "concept": 1.0,
+            "additional_objectives": 0.0,
+            "prerequisite_depth": 0.15,
+            "depth": 0.6499999999999999,
+            "worked_examples": 0.0,
+            "assessments": 0.0
+          },
+          "depth_levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 0,
+            "implementation": 0,
+            "research": 1,
+            "visual": 0,
+            "analytical": 0
+          },
+          "prerequisite_depth": 1
+        },
+        "revolution.the-estates-general": {
+          "units": 1.95,
+          "components": {
+            "concept": 1.0,
+            "additional_objectives": 0.0,
+            "prerequisite_depth": 0.3,
+            "depth": 0.6499999999999999,
+            "worked_examples": 0.0,
+            "assessments": 0.0
+          },
+          "depth_levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 0,
+            "implementation": 0,
+            "research": 1,
+            "visual": 0,
+            "analytical": 0
+          },
+          "prerequisite_depth": 2
+        },
+        "revolution.assembly-and-popular-mobilization": {
+          "units": 2.1,
+          "components": {
+            "concept": 1.0,
+            "additional_objectives": 0.0,
+            "prerequisite_depth": 0.44999999999999996,
+            "depth": 0.6499999999999999,
+            "worked_examples": 0.0,
+            "assessments": 0.0
+          },
+          "depth_levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 0,
+            "implementation": 0,
+            "research": 1,
+            "visual": 0,
+            "analytical": 0
+          },
+          "prerequisite_depth": 3
+        },
+        "revolution.constitutional-monarchy": {
+          "units": 2.25,
+          "components": {
+            "concept": 1.0,
+            "additional_objectives": 0.0,
+            "prerequisite_depth": 0.6,
+            "depth": 0.6499999999999999,
+            "worked_examples": 0.0,
+            "assessments": 0.0
+          },
+          "depth_levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 0,
+            "implementation": 0,
+            "research": 1,
+            "visual": 0,
+            "analytical": 0
+          },
+          "prerequisite_depth": 4
+        },
+        "revolution.the-republic": {
+          "units": 2.4,
+          "components": {
+            "concept": 1.0,
+            "additional_objectives": 0.0,
+            "prerequisite_depth": 0.75,
+            "depth": 0.6499999999999999,
+            "worked_examples": 0.0,
+            "assessments": 0.0
+          },
+          "depth_levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 0,
+            "implementation": 0,
+            "research": 1,
+            "visual": 0,
+            "analytical": 0
+          },
+          "prerequisite_depth": 5
+        },
+        "revolution.historical-evidence-and-causation": {
+          "units": 3.15,
+          "components": {
+            "concept": 1.0,
+            "additional_objectives": 0.0,
+            "prerequisite_depth": 0.8999999999999999,
+            "depth": 1.25,
+            "worked_examples": 0.0,
+            "assessments": 0.0
+          },
+          "depth_levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 0,
+            "implementation": 0,
+            "research": 1,
+            "visual": 0,
+            "analytical": 3
+          },
+          "prerequisite_depth": 6
+        }
+      },
+      "topological_order": [
+        "revolution.late-bourbon-political-order",
+        "revolution.fiscal-crisis-and-representation",
+        "revolution.the-estates-general",
+        "revolution.assembly-and-popular-mobilization",
+        "revolution.constitutional-monarchy",
+        "revolution.the-republic",
+        "revolution.historical-evidence-and-causation"
+      ],
+      "external_prerequisites": [],
+      "split_groups": {
+        "Regime Change": [
+          "chapter-2ff2ac47f5e4",
+          "chapter-2ffbffebaae1"
+        ]
+      },
+      "merged_groups": [],
+      "overloaded_chapters": [],
+      "scope_review_required": false,
+      "limitations": "Heuristic instructional workload, not measured time or educational certification. An indivisible heavy concept needs author review; no concepts or content are fabricated."
+    },
+    "folder": "6 - Full Notes/French Revolution Political Transitions",
+    "moc_path": "6 - Full Notes/French Revolution Political Transitions/00 - Map of Contents.md",
+    "chapters": [
+      {
+        "id": "chapter-d14c2a0f73e8",
+        "title": "Historical Context",
+        "concepts": [
+          "revolution.late-bourbon-political-order",
+          "revolution.fiscal-crisis-and-representation"
+        ],
+        "sections": [
+          "Late Bourbon Political Order",
+          "Fiscal Crisis and Representation"
+        ],
+        "estimate": {
+          "units": 3.45,
+          "concept_count": 2,
+          "groups": [
+            "Historical Context"
+          ]
+        },
+        "path": "6 - Full Notes/French Revolution Political Transitions/01 - Historical Context.md"
+      },
+      {
+        "id": "chapter-3d86fc164265",
+        "title": "Constitutional Change",
+        "concepts": [
+          "revolution.the-estates-general",
+          "revolution.assembly-and-popular-mobilization"
+        ],
+        "sections": [
+          "The Estates General",
+          "Assembly and Popular Mobilization"
+        ],
+        "estimate": {
+          "units": 4.05,
+          "concept_count": 2,
+          "groups": [
+            "Constitutional Change"
+          ]
+        },
+        "path": "6 - Full Notes/French Revolution Political Transitions/02 - Constitutional Change.md"
+      },
+      {
+        "id": "chapter-2ff2ac47f5e4",
+        "title": "Regime Change",
+        "concepts": [
+          "revolution.constitutional-monarchy"
+        ],
+        "sections": [
+          "Constitutional Monarchy"
+        ],
+        "estimate": {
+          "units": 2.25,
+          "concept_count": 1,
+          "groups": [
+            "Regime Change"
+          ]
+        },
+        "path": "6 - Full Notes/French Revolution Political Transitions/03 - Regime Change.md"
+      },
+      {
+        "id": "chapter-2ffbffebaae1",
+        "title": "Regime Change - Part 2",
+        "concepts": [
+          "revolution.the-republic"
+        ],
+        "sections": [
+          "The Republic"
+        ],
+        "estimate": {
+          "units": 2.4,
+          "concept_count": 1,
+          "groups": [
+            "Regime Change"
+          ]
+        },
+        "path": "6 - Full Notes/French Revolution Political Transitions/04 - Regime Change - Part 2.md"
+      },
+      {
+        "id": "chapter-0da65c1499da",
+        "title": "Interpretation",
+        "concepts": [
+          "revolution.historical-evidence-and-causation"
+        ],
+        "sections": [
+          "Historical Evidence and Causation"
+        ],
+        "estimate": {
+          "units": 3.15,
+          "concept_count": 1,
+          "groups": [
+            "Interpretation"
+          ]
+        },
+        "path": "6 - Full Notes/French Revolution Political Transitions/05 - Interpretation.md"
+      }
+    ],
+    "concepts": [
+      {
+        "id": "revolution.late-bourbon-political-order",
+        "title": "Late Bourbon Political Order",
+        "section": "Late Bourbon Political Order",
+        "objectives": [
+          "Explain the institutions of the late Bourbon monarchy"
+        ],
+        "group": "Historical Context",
+        "depth": {
+          "conceptual": 2,
+          "research": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [],
+        "prerequisite_records": [],
+        "chapter": 1,
+        "depth_allocation": {
+          "levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 0,
+            "implementation": 0,
+            "research": 1,
+            "visual": 0,
+            "analytical": 0
+          },
+          "reasons": {
+            "conceptual": [
+              "explicit concept requirement",
+              "learning objective: Explain the institutions of the late Bourbon monarchy"
+            ],
+            "mathematical": [],
+            "algorithmic": [],
+            "implementation": [],
+            "research": [
+              "explicit concept requirement"
+            ],
+            "visual": [],
+            "analytical": []
+          },
+          "external_retrieval_permitted": true,
+          "unresolved": []
+        },
+        "sequence": [
+          {
+            "stage": "motivation_and_problem",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "intuition_and_model",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "definitions_and_setup",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          }
+        ],
+        "research_obligations": [
+          {
+            "id": "revolution.late-bourbon-political-order:S01:0",
+            "concept": "revolution.late-bourbon-political-order",
+            "capability": "S01",
+            "requirement": "authoritative definition",
+            "source_policy": "adaptive",
+            "status": "planned",
+            "exact_evidence": true,
+            "research_depth": 1,
+            "primary_required": false,
+            "freshness_required": false
+          }
+        ],
+        "objective_ids": [
+          "revolution.late-bourbon-political-order:objective:0"
+        ],
+        "objective_kinds": [
+          "conceptual"
+        ]
+      },
+      {
+        "id": "revolution.fiscal-crisis-and-representation",
+        "title": "Fiscal Crisis and Representation",
+        "section": "Fiscal Crisis and Representation",
+        "objectives": [
+          "Explain the link between fiscal conflict and demands for representation"
+        ],
+        "group": "Historical Context",
+        "depth": {
+          "conceptual": 2,
+          "research": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "revolution.late-bourbon-political-order"
+        ],
+        "prerequisite_records": [
+          {
+            "id": "revolution.late-bourbon-political-order",
+            "classification": "covered"
+          }
+        ],
+        "chapter": 1,
+        "depth_allocation": {
+          "levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 0,
+            "implementation": 0,
+            "research": 1,
+            "visual": 0,
+            "analytical": 0
+          },
+          "reasons": {
+            "conceptual": [
+              "explicit concept requirement",
+              "learning objective: Explain the link between fiscal conflict and demands for representation"
+            ],
+            "mathematical": [],
+            "algorithmic": [],
+            "implementation": [],
+            "research": [
+              "explicit concept requirement"
+            ],
+            "visual": [],
+            "analytical": []
+          },
+          "external_retrieval_permitted": true,
+          "unresolved": []
+        },
+        "sequence": [
+          {
+            "stage": "motivation_and_problem",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "intuition_and_model",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "definitions_and_setup",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          }
+        ],
+        "research_obligations": [
+          {
+            "id": "revolution.fiscal-crisis-and-representation:S01:0",
+            "concept": "revolution.fiscal-crisis-and-representation",
+            "capability": "S01",
+            "requirement": "authoritative definition",
+            "source_policy": "adaptive",
+            "status": "planned",
+            "exact_evidence": true,
+            "research_depth": 1,
+            "primary_required": false,
+            "freshness_required": false
+          }
+        ],
+        "objective_ids": [
+          "revolution.fiscal-crisis-and-representation:objective:0"
+        ],
+        "objective_kinds": [
+          "conceptual"
+        ]
+      },
+      {
+        "id": "revolution.the-estates-general",
+        "title": "The Estates General",
+        "section": "The Estates General",
+        "objectives": [
+          "Explain the transition from the Estates-General to the National Assembly"
+        ],
+        "group": "Constitutional Change",
+        "depth": {
+          "conceptual": 2,
+          "research": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "revolution.fiscal-crisis-and-representation"
+        ],
+        "prerequisite_records": [
+          {
+            "id": "revolution.fiscal-crisis-and-representation",
+            "classification": "covered"
+          }
+        ],
+        "chapter": 2,
+        "depth_allocation": {
+          "levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 0,
+            "implementation": 0,
+            "research": 1,
+            "visual": 0,
+            "analytical": 0
+          },
+          "reasons": {
+            "conceptual": [
+              "explicit concept requirement",
+              "learning objective: Explain the transition from the Estates-General to the National Assembly"
+            ],
+            "mathematical": [],
+            "algorithmic": [],
+            "implementation": [],
+            "research": [
+              "explicit concept requirement"
+            ],
+            "visual": [],
+            "analytical": []
+          },
+          "external_retrieval_permitted": true,
+          "unresolved": []
+        },
+        "sequence": [
+          {
+            "stage": "motivation_and_problem",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "intuition_and_model",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "definitions_and_setup",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          }
+        ],
+        "research_obligations": [
+          {
+            "id": "revolution.the-estates-general:S01:0",
+            "concept": "revolution.the-estates-general",
+            "capability": "S01",
+            "requirement": "authoritative definition",
+            "source_policy": "adaptive",
+            "status": "planned",
+            "exact_evidence": true,
+            "research_depth": 1,
+            "primary_required": false,
+            "freshness_required": false
+          }
+        ],
+        "objective_ids": [
+          "revolution.the-estates-general:objective:0"
+        ],
+        "objective_kinds": [
+          "conceptual"
+        ]
+      },
+      {
+        "id": "revolution.assembly-and-popular-mobilization",
+        "title": "Assembly and Popular Mobilization",
+        "section": "Assembly and Popular Mobilization",
+        "objectives": [
+          "Explain interactions between institutional change and popular mobilization"
+        ],
+        "group": "Constitutional Change",
+        "depth": {
+          "conceptual": 2,
+          "research": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "revolution.the-estates-general"
+        ],
+        "prerequisite_records": [
+          {
+            "id": "revolution.the-estates-general",
+            "classification": "covered"
+          }
+        ],
+        "chapter": 2,
+        "depth_allocation": {
+          "levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 0,
+            "implementation": 0,
+            "research": 1,
+            "visual": 0,
+            "analytical": 0
+          },
+          "reasons": {
+            "conceptual": [
+              "explicit concept requirement",
+              "learning objective: Explain interactions between institutional change and popular mobilization"
+            ],
+            "mathematical": [],
+            "algorithmic": [],
+            "implementation": [],
+            "research": [
+              "explicit concept requirement"
+            ],
+            "visual": [],
+            "analytical": []
+          },
+          "external_retrieval_permitted": true,
+          "unresolved": []
+        },
+        "sequence": [
+          {
+            "stage": "motivation_and_problem",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "intuition_and_model",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "definitions_and_setup",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          }
+        ],
+        "research_obligations": [
+          {
+            "id": "revolution.assembly-and-popular-mobilization:S01:0",
+            "concept": "revolution.assembly-and-popular-mobilization",
+            "capability": "S01",
+            "requirement": "authoritative definition",
+            "source_policy": "adaptive",
+            "status": "planned",
+            "exact_evidence": true,
+            "research_depth": 1,
+            "primary_required": false,
+            "freshness_required": false
+          }
+        ],
+        "objective_ids": [
+          "revolution.assembly-and-popular-mobilization:objective:0"
+        ],
+        "objective_kinds": [
+          "conceptual"
+        ]
+      },
+      {
+        "id": "revolution.constitutional-monarchy",
+        "title": "Constitutional Monarchy",
+        "section": "Constitutional Monarchy",
+        "objectives": [
+          "Explain tensions within the constitutional-monarchy settlement"
+        ],
+        "group": "Regime Change",
+        "depth": {
+          "conceptual": 2,
+          "research": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "revolution.assembly-and-popular-mobilization"
+        ],
+        "prerequisite_records": [
+          {
+            "id": "revolution.assembly-and-popular-mobilization",
+            "classification": "covered"
+          }
+        ],
+        "chapter": 3,
+        "depth_allocation": {
+          "levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 0,
+            "implementation": 0,
+            "research": 1,
+            "visual": 0,
+            "analytical": 0
+          },
+          "reasons": {
+            "conceptual": [
+              "explicit concept requirement",
+              "learning objective: Explain tensions within the constitutional-monarchy settlement"
+            ],
+            "mathematical": [],
+            "algorithmic": [],
+            "implementation": [],
+            "research": [
+              "explicit concept requirement"
+            ],
+            "visual": [],
+            "analytical": []
+          },
+          "external_retrieval_permitted": true,
+          "unresolved": []
+        },
+        "sequence": [
+          {
+            "stage": "motivation_and_problem",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "intuition_and_model",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "definitions_and_setup",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          }
+        ],
+        "research_obligations": [
+          {
+            "id": "revolution.constitutional-monarchy:S01:0",
+            "concept": "revolution.constitutional-monarchy",
+            "capability": "S01",
+            "requirement": "authoritative definition",
+            "source_policy": "adaptive",
+            "status": "planned",
+            "exact_evidence": true,
+            "research_depth": 1,
+            "primary_required": false,
+            "freshness_required": false
+          }
+        ],
+        "objective_ids": [
+          "revolution.constitutional-monarchy:objective:0"
+        ],
+        "objective_kinds": [
+          "conceptual"
+        ]
+      },
+      {
+        "id": "revolution.the-republic",
+        "title": "The Republic",
+        "section": "The Republic",
+        "objectives": [
+          "Explain the transition to a republic without assuming historical inevitability"
+        ],
+        "group": "Regime Change",
+        "depth": {
+          "conceptual": 2,
+          "research": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "revolution.constitutional-monarchy"
+        ],
+        "prerequisite_records": [
+          {
+            "id": "revolution.constitutional-monarchy",
+            "classification": "covered"
+          }
+        ],
+        "chapter": 4,
+        "depth_allocation": {
+          "levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 0,
+            "implementation": 0,
+            "research": 1,
+            "visual": 0,
+            "analytical": 0
+          },
+          "reasons": {
+            "conceptual": [
+              "explicit concept requirement",
+              "learning objective: Explain the transition to a republic without assuming historical inevitability",
+              "semantic objective (historical): Explain the transition to a republic without assuming historical inevitability"
+            ],
+            "mathematical": [],
+            "algorithmic": [],
+            "implementation": [],
+            "research": [
+              "explicit concept requirement"
+            ],
+            "visual": [],
+            "analytical": []
+          },
+          "external_retrieval_permitted": true,
+          "unresolved": []
+        },
+        "sequence": [
+          {
+            "stage": "motivation_and_problem",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "intuition_and_model",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "definitions_and_setup",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          }
+        ],
+        "research_obligations": [
+          {
+            "id": "revolution.the-republic:S01:0",
+            "concept": "revolution.the-republic",
+            "capability": "S01",
+            "requirement": "authoritative definition",
+            "source_policy": "adaptive",
+            "status": "planned",
+            "exact_evidence": true,
+            "research_depth": 1,
+            "primary_required": false,
+            "freshness_required": false
+          }
+        ],
+        "objective_ids": [
+          "revolution.the-republic:objective:0"
+        ],
+        "objective_kinds": [
+          "historical"
+        ]
+      },
+      {
+        "id": "revolution.historical-evidence-and-causation",
+        "title": "Historical Evidence and Causation",
+        "section": "Historical Evidence and Causation",
+        "objectives": [
+          "Compare competing historical explanations using source scope and chronology"
+        ],
+        "group": "Interpretation",
+        "depth": {
+          "conceptual": 2,
+          "research": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "revolution.late-bourbon-political-order",
+          "revolution.the-republic"
+        ],
+        "prerequisite_records": [
+          {
+            "id": "revolution.late-bourbon-political-order",
+            "classification": "covered"
+          },
+          {
+            "id": "revolution.the-republic",
+            "classification": "covered"
+          }
+        ],
+        "chapter": 5,
+        "depth_allocation": {
+          "levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 0,
+            "implementation": 0,
+            "research": 1,
+            "visual": 0,
+            "analytical": 3
+          },
+          "reasons": {
+            "conceptual": [
+              "explicit concept requirement",
+              "semantic objective (historical): Compare competing historical explanations using source scope and chronology"
+            ],
+            "mathematical": [],
+            "algorithmic": [],
+            "implementation": [],
+            "research": [
+              "explicit concept requirement"
+            ],
+            "visual": [],
+            "analytical": [
+              "learning objective: Compare competing historical explanations using source scope and chronology"
+            ]
+          },
+          "external_retrieval_permitted": true,
+          "unresolved": []
+        },
+        "sequence": [
+          {
+            "stage": "motivation_and_problem",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "intuition_and_model",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "definitions_and_setup",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          }
+        ],
+        "research_obligations": [
+          {
+            "id": "revolution.historical-evidence-and-causation:S01:0",
+            "concept": "revolution.historical-evidence-and-causation",
+            "capability": "S01",
+            "requirement": "authoritative definition",
+            "source_policy": "adaptive",
+            "status": "planned",
+            "exact_evidence": true,
+            "research_depth": 1,
+            "primary_required": false,
+            "freshness_required": false
+          }
+        ],
+        "objective_ids": [
+          "revolution.historical-evidence-and-causation:objective:0"
+        ],
+        "objective_kinds": [
+          "historical"
+        ]
+      }
+    ],
+    "notation": {},
+    "visuals": [
+      {
+        "id": "political-transition-chronology",
+        "concept": "revolution.the-republic",
+        "section": "The Republic",
+        "kind": "chronology",
+        "objective": "Separate the order of political transitions from a causal explanation",
+        "interpretation": "This selective schematic orders major political forms. An arrow records sequence, not inevitability, a single cause, or a complete account of the French Revolution. Dates and source-level historical interpretations are outside this renderer demonstration.",
+        "nodes": [
+          {
+            "id": "monarchy",
+            "label": "Late Bourbon monarchy"
+          },
+          {
+            "id": "estates",
+            "label": "Estates-General"
+          },
+          {
+            "id": "assembly",
+            "label": "National Assembly"
+          },
+          {
+            "id": "constitutional",
+            "label": "Constitutional monarchy"
+          },
+          {
+            "id": "republic",
+            "label": "Republic"
+          }
+        ],
+        "edges": [
+          {
+            "source": "monarchy",
+            "target": "estates"
+          },
+          {
+            "source": "estates",
+            "target": "assembly"
+          },
+          {
+            "source": "assembly",
+            "target": "constitutional"
+          },
+          {
+            "source": "constitutional",
+            "target": "republic"
+          }
+        ]
+      }
+    ],
+    "tables": [],
+    "spec_hash": "2c71b615df31b2009f719c544634d822b92a618c5228fb1916f5a7b862a134f4",
+    "review_required": [
+      "factual_accuracy",
+      "derivation_correctness",
+      "reader_simulation",
+      "cross_chapter_coherence"
+    ],
+    "assessments": [],
+    "validation_policy": {
+      "chapter_assessments": true
+    },
+    "obligations": [
+      {
+        "id": "revolution.late-bourbon-political-order:objective:0",
+        "concept": "revolution.late-bourbon-political-order",
+        "owner": "chapter-d14c2a0f73e8",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/01 - Historical Context.md",
+        "section": "Late Bourbon Political Order",
+        "deliverable": "Explain the institutions of the late Bourbon monarchy",
+        "dependencies": [],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.late-bourbon-political-order:depth:conceptual",
+        "concept": "revolution.late-bourbon-political-order",
+        "owner": "chapter-d14c2a0f73e8",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/01 - Historical Context.md",
+        "section": "Late Bourbon Political Order",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
+        "dependencies": [
+          "revolution.late-bourbon-political-order:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.late-bourbon-political-order:depth:research",
+        "concept": "revolution.late-bourbon-political-order",
+        "owner": "chapter-d14c2a0f73e8",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/01 - Historical Context.md",
+        "section": "Late Bourbon Political Order",
+        "deliverable": "Level 1: attach claim-level evidence with source scope, uncertainty and version",
+        "dependencies": [
+          "revolution.late-bourbon-political-order:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "research",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.late-bourbon-political-order:capability:S01",
+        "concept": "revolution.late-bourbon-political-order",
+        "owner": "chapter-d14c2a0f73e8",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/01 - Historical Context.md",
+        "section": "Late Bourbon Political Order",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "revolution.late-bourbon-political-order:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.late-bourbon-political-order:S01:0",
+        "concept": "revolution.late-bourbon-political-order",
+        "owner": "chapter-d14c2a0f73e8",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/01 - Historical Context.md",
+        "section": "Late Bourbon Political Order",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "revolution.late-bourbon-political-order:S01:0",
+          "concept": "revolution.late-bourbon-political-order",
+          "capability": "S01",
+          "requirement": "authoritative definition",
+          "source_policy": "adaptive",
+          "status": "planned",
+          "exact_evidence": true,
+          "research_depth": 1,
+          "primary_required": false,
+          "freshness_required": false
+        }
+      },
+      {
+        "id": "revolution.fiscal-crisis-and-representation:objective:0",
+        "concept": "revolution.fiscal-crisis-and-representation",
+        "owner": "chapter-d14c2a0f73e8",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/01 - Historical Context.md",
+        "section": "Fiscal Crisis and Representation",
+        "deliverable": "Explain the link between fiscal conflict and demands for representation",
+        "dependencies": [],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.fiscal-crisis-and-representation:depth:conceptual",
+        "concept": "revolution.fiscal-crisis-and-representation",
+        "owner": "chapter-d14c2a0f73e8",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/01 - Historical Context.md",
+        "section": "Fiscal Crisis and Representation",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
+        "dependencies": [
+          "revolution.fiscal-crisis-and-representation:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.fiscal-crisis-and-representation:depth:research",
+        "concept": "revolution.fiscal-crisis-and-representation",
+        "owner": "chapter-d14c2a0f73e8",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/01 - Historical Context.md",
+        "section": "Fiscal Crisis and Representation",
+        "deliverable": "Level 1: attach claim-level evidence with source scope, uncertainty and version",
+        "dependencies": [
+          "revolution.fiscal-crisis-and-representation:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "research",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.fiscal-crisis-and-representation:capability:S01",
+        "concept": "revolution.fiscal-crisis-and-representation",
+        "owner": "chapter-d14c2a0f73e8",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/01 - Historical Context.md",
+        "section": "Fiscal Crisis and Representation",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "revolution.fiscal-crisis-and-representation:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.fiscal-crisis-and-representation:S01:0",
+        "concept": "revolution.fiscal-crisis-and-representation",
+        "owner": "chapter-d14c2a0f73e8",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/01 - Historical Context.md",
+        "section": "Fiscal Crisis and Representation",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "revolution.fiscal-crisis-and-representation:S01:0",
+          "concept": "revolution.fiscal-crisis-and-representation",
+          "capability": "S01",
+          "requirement": "authoritative definition",
+          "source_policy": "adaptive",
+          "status": "planned",
+          "exact_evidence": true,
+          "research_depth": 1,
+          "primary_required": false,
+          "freshness_required": false
+        }
+      },
+      {
+        "id": "revolution.the-estates-general:objective:0",
+        "concept": "revolution.the-estates-general",
+        "owner": "chapter-3d86fc164265",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/02 - Constitutional Change.md",
+        "section": "The Estates General",
+        "deliverable": "Explain the transition from the Estates-General to the National Assembly",
+        "dependencies": [],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.the-estates-general:depth:conceptual",
+        "concept": "revolution.the-estates-general",
+        "owner": "chapter-3d86fc164265",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/02 - Constitutional Change.md",
+        "section": "The Estates General",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
+        "dependencies": [
+          "revolution.the-estates-general:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.the-estates-general:depth:research",
+        "concept": "revolution.the-estates-general",
+        "owner": "chapter-3d86fc164265",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/02 - Constitutional Change.md",
+        "section": "The Estates General",
+        "deliverable": "Level 1: attach claim-level evidence with source scope, uncertainty and version",
+        "dependencies": [
+          "revolution.the-estates-general:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "research",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.the-estates-general:capability:S01",
+        "concept": "revolution.the-estates-general",
+        "owner": "chapter-3d86fc164265",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/02 - Constitutional Change.md",
+        "section": "The Estates General",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "revolution.the-estates-general:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.the-estates-general:S01:0",
+        "concept": "revolution.the-estates-general",
+        "owner": "chapter-3d86fc164265",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/02 - Constitutional Change.md",
+        "section": "The Estates General",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "revolution.the-estates-general:S01:0",
+          "concept": "revolution.the-estates-general",
+          "capability": "S01",
+          "requirement": "authoritative definition",
+          "source_policy": "adaptive",
+          "status": "planned",
+          "exact_evidence": true,
+          "research_depth": 1,
+          "primary_required": false,
+          "freshness_required": false
+        }
+      },
+      {
+        "id": "revolution.assembly-and-popular-mobilization:objective:0",
+        "concept": "revolution.assembly-and-popular-mobilization",
+        "owner": "chapter-3d86fc164265",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/02 - Constitutional Change.md",
+        "section": "Assembly and Popular Mobilization",
+        "deliverable": "Explain interactions between institutional change and popular mobilization",
+        "dependencies": [],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.assembly-and-popular-mobilization:depth:conceptual",
+        "concept": "revolution.assembly-and-popular-mobilization",
+        "owner": "chapter-3d86fc164265",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/02 - Constitutional Change.md",
+        "section": "Assembly and Popular Mobilization",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
+        "dependencies": [
+          "revolution.assembly-and-popular-mobilization:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.assembly-and-popular-mobilization:depth:research",
+        "concept": "revolution.assembly-and-popular-mobilization",
+        "owner": "chapter-3d86fc164265",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/02 - Constitutional Change.md",
+        "section": "Assembly and Popular Mobilization",
+        "deliverable": "Level 1: attach claim-level evidence with source scope, uncertainty and version",
+        "dependencies": [
+          "revolution.assembly-and-popular-mobilization:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "research",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.assembly-and-popular-mobilization:capability:S01",
+        "concept": "revolution.assembly-and-popular-mobilization",
+        "owner": "chapter-3d86fc164265",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/02 - Constitutional Change.md",
+        "section": "Assembly and Popular Mobilization",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "revolution.assembly-and-popular-mobilization:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.assembly-and-popular-mobilization:S01:0",
+        "concept": "revolution.assembly-and-popular-mobilization",
+        "owner": "chapter-3d86fc164265",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/02 - Constitutional Change.md",
+        "section": "Assembly and Popular Mobilization",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "revolution.assembly-and-popular-mobilization:S01:0",
+          "concept": "revolution.assembly-and-popular-mobilization",
+          "capability": "S01",
+          "requirement": "authoritative definition",
+          "source_policy": "adaptive",
+          "status": "planned",
+          "exact_evidence": true,
+          "research_depth": 1,
+          "primary_required": false,
+          "freshness_required": false
+        }
+      },
+      {
+        "id": "revolution.constitutional-monarchy:objective:0",
+        "concept": "revolution.constitutional-monarchy",
+        "owner": "chapter-2ff2ac47f5e4",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/03 - Regime Change.md",
+        "section": "Constitutional Monarchy",
+        "deliverable": "Explain tensions within the constitutional-monarchy settlement",
+        "dependencies": [],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.constitutional-monarchy:depth:conceptual",
+        "concept": "revolution.constitutional-monarchy",
+        "owner": "chapter-2ff2ac47f5e4",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/03 - Regime Change.md",
+        "section": "Constitutional Monarchy",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
+        "dependencies": [
+          "revolution.constitutional-monarchy:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.constitutional-monarchy:depth:research",
+        "concept": "revolution.constitutional-monarchy",
+        "owner": "chapter-2ff2ac47f5e4",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/03 - Regime Change.md",
+        "section": "Constitutional Monarchy",
+        "deliverable": "Level 1: attach claim-level evidence with source scope, uncertainty and version",
+        "dependencies": [
+          "revolution.constitutional-monarchy:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "research",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.constitutional-monarchy:capability:S01",
+        "concept": "revolution.constitutional-monarchy",
+        "owner": "chapter-2ff2ac47f5e4",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/03 - Regime Change.md",
+        "section": "Constitutional Monarchy",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "revolution.constitutional-monarchy:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.constitutional-monarchy:S01:0",
+        "concept": "revolution.constitutional-monarchy",
+        "owner": "chapter-2ff2ac47f5e4",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/03 - Regime Change.md",
+        "section": "Constitutional Monarchy",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "revolution.constitutional-monarchy:S01:0",
+          "concept": "revolution.constitutional-monarchy",
+          "capability": "S01",
+          "requirement": "authoritative definition",
+          "source_policy": "adaptive",
+          "status": "planned",
+          "exact_evidence": true,
+          "research_depth": 1,
+          "primary_required": false,
+          "freshness_required": false
+        }
+      },
+      {
+        "id": "revolution.the-republic:objective:0",
+        "concept": "revolution.the-republic",
+        "owner": "chapter-2ffbffebaae1",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/04 - Regime Change - Part 2.md",
+        "section": "The Republic",
+        "deliverable": "Explain the transition to a republic without assuming historical inevitability",
+        "dependencies": [],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.the-republic:depth:conceptual",
+        "concept": "revolution.the-republic",
+        "owner": "chapter-2ffbffebaae1",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/04 - Regime Change - Part 2.md",
+        "section": "The Republic",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
+        "dependencies": [
+          "revolution.the-republic:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.the-republic:depth:research",
+        "concept": "revolution.the-republic",
+        "owner": "chapter-2ffbffebaae1",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/04 - Regime Change - Part 2.md",
+        "section": "The Republic",
+        "deliverable": "Level 1: attach claim-level evidence with source scope, uncertainty and version",
+        "dependencies": [
+          "revolution.the-republic:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "research",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.the-republic:capability:S01",
+        "concept": "revolution.the-republic",
+        "owner": "chapter-2ffbffebaae1",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/04 - Regime Change - Part 2.md",
+        "section": "The Republic",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "revolution.the-republic:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.the-republic:S01:0",
+        "concept": "revolution.the-republic",
+        "owner": "chapter-2ffbffebaae1",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/04 - Regime Change - Part 2.md",
+        "section": "The Republic",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "revolution.the-republic:S01:0",
+          "concept": "revolution.the-republic",
+          "capability": "S01",
+          "requirement": "authoritative definition",
+          "source_policy": "adaptive",
+          "status": "planned",
+          "exact_evidence": true,
+          "research_depth": 1,
+          "primary_required": false,
+          "freshness_required": false
+        }
+      },
+      {
+        "id": "revolution.historical-evidence-and-causation:objective:0",
+        "concept": "revolution.historical-evidence-and-causation",
+        "owner": "chapter-0da65c1499da",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/05 - Interpretation.md",
+        "section": "Historical Evidence and Causation",
+        "deliverable": "Compare competing historical explanations using source scope and chronology",
+        "dependencies": [],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.historical-evidence-and-causation:depth:conceptual",
+        "concept": "revolution.historical-evidence-and-causation",
+        "owner": "chapter-0da65c1499da",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/05 - Interpretation.md",
+        "section": "Historical Evidence and Causation",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
+        "dependencies": [
+          "revolution.historical-evidence-and-causation:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.historical-evidence-and-causation:depth:research",
+        "concept": "revolution.historical-evidence-and-causation",
+        "owner": "chapter-0da65c1499da",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/05 - Interpretation.md",
+        "section": "Historical Evidence and Causation",
+        "deliverable": "Level 1: attach claim-level evidence with source scope, uncertainty and version",
+        "dependencies": [
+          "revolution.historical-evidence-and-causation:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "research",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.historical-evidence-and-causation:depth:analytical",
+        "concept": "revolution.historical-evidence-and-causation",
+        "owner": "chapter-0da65c1499da",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/05 - Interpretation.md",
+        "section": "Historical Evidence and Causation",
+        "deliverable": "Level 3: compare assumptions, alternatives, failure diagnostics and downstream effects",
+        "dependencies": [
+          "revolution.historical-evidence-and-causation:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.historical-evidence-and-causation:capability:S01",
+        "concept": "revolution.historical-evidence-and-causation",
+        "owner": "chapter-0da65c1499da",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/05 - Interpretation.md",
+        "section": "Historical Evidence and Causation",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "revolution.historical-evidence-and-causation:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "revolution.historical-evidence-and-causation:S01:0",
+        "concept": "revolution.historical-evidence-and-causation",
+        "owner": "chapter-0da65c1499da",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/05 - Interpretation.md",
+        "section": "Historical Evidence and Causation",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "revolution.historical-evidence-and-causation:S01:0",
+          "concept": "revolution.historical-evidence-and-causation",
+          "capability": "S01",
+          "requirement": "authoritative definition",
+          "source_policy": "adaptive",
+          "status": "planned",
+          "exact_evidence": true,
+          "research_depth": 1,
+          "primary_required": false,
+          "freshness_required": false
+        }
+      },
+      {
+        "id": "political-transition-chronology",
+        "concept": "revolution.the-republic",
+        "owner": "chapter-2ffbffebaae1",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/04 - Regime Change - Part 2.md",
+        "section": "The Republic",
+        "deliverable": "Separate the order of political transitions from a causal explanation",
+        "dependencies": [],
+        "verifier": "visual",
+        "domain": "visual",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "political-transition-chronology",
+          "concept": "revolution.the-republic",
+          "section": "The Republic",
+          "kind": "chronology",
+          "objective": "Separate the order of political transitions from a causal explanation",
+          "interpretation": "This selective schematic orders major political forms. An arrow records sequence, not inevitability, a single cause, or a complete account of the French Revolution. Dates and source-level historical interpretations are outside this renderer demonstration.",
+          "nodes": [
+            {
+              "id": "monarchy",
+              "label": "Late Bourbon monarchy"
+            },
+            {
+              "id": "estates",
+              "label": "Estates-General"
+            },
+            {
+              "id": "assembly",
+              "label": "National Assembly"
+            },
+            {
+              "id": "constitutional",
+              "label": "Constitutional monarchy"
+            },
+            {
+              "id": "republic",
+              "label": "Republic"
+            }
+          ],
+          "edges": [
+            {
+              "source": "monarchy",
+              "target": "estates"
+            },
+            {
+              "source": "estates",
+              "target": "assembly"
+            },
+            {
+              "source": "assembly",
+              "target": "constitutional"
+            },
+            {
+              "source": "constitutional",
+              "target": "republic"
+            }
+          ]
+        }
+      },
+      {
+        "id": "chapter-d14c2a0f73e8:assessment",
+        "concept": "revolution.late-bourbon-political-order",
+        "owner": "chapter-d14c2a0f73e8",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/01 - Historical Context.md",
+        "section": "Late Bourbon Political Order",
+        "deliverable": "Four to five diverse final questions, hints, solutions and objective coverage",
+        "dependencies": [
+          "revolution.fiscal-crisis-and-representation:objective:0"
+        ],
+        "verifier": "assessment",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "chapter-d14c2a0f73e8",
+          "title": "Historical Context",
+          "concepts": [
+            "revolution.late-bourbon-political-order",
+            "revolution.fiscal-crisis-and-representation"
+          ],
+          "sections": [
+            "Late Bourbon Political Order",
+            "Fiscal Crisis and Representation"
+          ],
+          "estimate": {
+            "units": 3.45,
+            "concept_count": 2,
+            "groups": [
+              "Historical Context"
+            ]
+          },
+          "path": "6 - Full Notes/French Revolution Political Transitions/01 - Historical Context.md"
+        }
+      },
+      {
+        "id": "chapter-3d86fc164265:assessment",
+        "concept": "revolution.the-estates-general",
+        "owner": "chapter-3d86fc164265",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/02 - Constitutional Change.md",
+        "section": "The Estates General",
+        "deliverable": "Four to five diverse final questions, hints, solutions and objective coverage",
+        "dependencies": [
+          "revolution.assembly-and-popular-mobilization:objective:0"
+        ],
+        "verifier": "assessment",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "chapter-3d86fc164265",
+          "title": "Constitutional Change",
+          "concepts": [
+            "revolution.the-estates-general",
+            "revolution.assembly-and-popular-mobilization"
+          ],
+          "sections": [
+            "The Estates General",
+            "Assembly and Popular Mobilization"
+          ],
+          "estimate": {
+            "units": 4.05,
+            "concept_count": 2,
+            "groups": [
+              "Constitutional Change"
+            ]
+          },
+          "path": "6 - Full Notes/French Revolution Political Transitions/02 - Constitutional Change.md"
+        }
+      },
+      {
+        "id": "chapter-2ff2ac47f5e4:assessment",
+        "concept": "revolution.constitutional-monarchy",
+        "owner": "chapter-2ff2ac47f5e4",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/03 - Regime Change.md",
+        "section": "Constitutional Monarchy",
+        "deliverable": "Four to five diverse final questions, hints, solutions and objective coverage",
+        "dependencies": [],
+        "verifier": "assessment",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "chapter-2ff2ac47f5e4",
+          "title": "Regime Change",
+          "concepts": [
+            "revolution.constitutional-monarchy"
+          ],
+          "sections": [
+            "Constitutional Monarchy"
+          ],
+          "estimate": {
+            "units": 2.25,
+            "concept_count": 1,
+            "groups": [
+              "Regime Change"
+            ]
+          },
+          "path": "6 - Full Notes/French Revolution Political Transitions/03 - Regime Change.md"
+        }
+      },
+      {
+        "id": "chapter-2ffbffebaae1:assessment",
+        "concept": "revolution.the-republic",
+        "owner": "chapter-2ffbffebaae1",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/04 - Regime Change - Part 2.md",
+        "section": "The Republic",
+        "deliverable": "Four to five diverse final questions, hints, solutions and objective coverage",
+        "dependencies": [],
+        "verifier": "assessment",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "chapter-2ffbffebaae1",
+          "title": "Regime Change - Part 2",
+          "concepts": [
+            "revolution.the-republic"
+          ],
+          "sections": [
+            "The Republic"
+          ],
+          "estimate": {
+            "units": 2.4,
+            "concept_count": 1,
+            "groups": [
+              "Regime Change"
+            ]
+          },
+          "path": "6 - Full Notes/French Revolution Political Transitions/04 - Regime Change - Part 2.md"
+        }
+      },
+      {
+        "id": "chapter-0da65c1499da:assessment",
+        "concept": "revolution.historical-evidence-and-causation",
+        "owner": "chapter-0da65c1499da",
+        "chapter": "6 - Full Notes/French Revolution Political Transitions/05 - Interpretation.md",
+        "section": "Historical Evidence and Causation",
+        "deliverable": "Four to five diverse final questions, hints, solutions and objective coverage",
+        "dependencies": [],
+        "verifier": "assessment",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "chapter-0da65c1499da",
+          "title": "Interpretation",
+          "concepts": [
+            "revolution.historical-evidence-and-causation"
+          ],
+          "sections": [
+            "Historical Evidence and Causation"
+          ],
+          "estimate": {
+            "units": 3.15,
+            "concept_count": 1,
+            "groups": [
+              "Interpretation"
+            ]
+          },
+          "path": "6 - Full Notes/French Revolution Political Transitions/05 - Interpretation.md"
+        }
+      }
+    ]
+  }
+}

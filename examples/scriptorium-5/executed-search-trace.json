@@ -1,0 +1,37 @@
+{
+  "inputs": [
+    1,
+    4,
+    7,
+    10,
+    13,
+    16,
+    19
+  ],
+  "target": 13,
+  "states": [
+    {
+      "low": 0,
+      "high_exclusive": 7,
+      "midpoint": 3,
+      "candidate": 10,
+      "decision": "raise low"
+    },
+    {
+      "low": 4,
+      "high_exclusive": 7,
+      "midpoint": 5,
+      "candidate": 16,
+      "decision": "lower high"
+    },
+    {
+      "low": 4,
+      "high_exclusive": 5,
+      "midpoint": 4,
+      "candidate": 13,
+      "decision": "found"
+    }
+  ],
+  "answer_index": 4,
+  "classification": "executed deterministic algorithm trace, not model execution"
+}

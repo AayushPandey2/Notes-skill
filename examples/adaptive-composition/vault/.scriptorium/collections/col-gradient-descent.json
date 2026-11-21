@@ -1,10 +1,20 @@
 {
   "composition": {
     "version": 2,
-    "validator_version": "85050a009377ed0e2d07061e365b65cb203ccf56795f1203db6be04ef23f2791",
+    "validator_version": "0d1bcbece3500e73c79ba0cb4ffd96a8f958c3e0cb4652fdf7a3ce9f2ce5faeb",
     "output_profile": "comprehensive_multifile",
     "topic": "Gradient Descent",
     "source_policy": "adaptive",
+    "classification": {
+      "domain": "Artificial Intelligence",
+      "master_topic": "Machine Learning",
+      "subdomain": "Optimization"
+    },
+    "chapter_rationale": {
+      "method": "explicit author allocation",
+      "reason": "Author-supplied grouping; review workload and continuity before publication",
+      "chapter_count": 5
+    },
     "folder": "6 - Full Notes/Gradient Descent",
     "moc_path": "6 - Full Notes/Gradient Descent/00 - Map of Contents.md",
     "chapters": [
@@ -2103,7 +2113,7 @@
         "owner": "gd.ch1",
         "chapter": "6 - Full Notes/Gradient Descent/01 - Why Local Descent Works.md",
         "section": "Why Local Descent Works",
-        "deliverable": "Level 2: explain the mechanism, prerequisite bridge and limits",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
         "dependencies": [
           "gd.c1:objective:0"
         ],
@@ -2214,7 +2224,7 @@
         "owner": "gd.ch1",
         "chapter": "6 - Full Notes/Gradient Descent/01 - Why Local Descent Works.md",
         "section": "Why Local Descent Works",
-        "deliverable": "Level 2: explain the mechanism, prerequisite bridge and limits",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
         "dependencies": [
           "gd.direction:objective:0"
         ],
@@ -2505,7 +2515,7 @@
         "owner": "gd.ch2",
         "chapter": "6 - Full Notes/Gradient Descent/02 - Deriving the Update and Its Limits.md",
         "section": "Deriving the Update and Its Limits",
-        "deliverable": "Level 2: explain the mechanism, prerequisite bridge and limits",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
         "dependencies": [
           "gd.boundary:objective:0"
         ],
@@ -2869,7 +2879,7 @@
         "owner": "gd.ch3",
         "chapter": "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md",
         "section": "Tracing the Algorithm",
-        "deliverable": "Level 2: explain the mechanism, prerequisite bridge and limits",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
         "dependencies": [
           "gd.trace:objective:0"
         ],
@@ -3243,7 +3253,7 @@
         "owner": "gd.ch4",
         "chapter": "6 - Full Notes/Gradient Descent/04 - Implementing and Testing Descent.md",
         "section": "Implementing and Testing Descent",
-        "deliverable": "Level 2: explain the mechanism, prerequisite bridge and limits",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
         "dependencies": [
           "gd.tolerance:objective:0"
         ],
@@ -3651,7 +3661,7 @@
         "owner": "gd.ch5",
         "chapter": "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md",
         "section": "Curvature and Failure Analysis",
-        "deliverable": "Level 2: explain the mechanism, prerequisite bridge and limits",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
         "dependencies": [
           "gd.spectrum:objective:0"
         ],
@@ -4310,7 +4320,7 @@
         },
         {
           "chapter": "gd.ch3",
-          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
           "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
         },
         {
@@ -4343,7 +4353,7 @@
         },
         {
           "chapter": "gd.ch3",
-          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
           "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
         },
         {
@@ -4376,7 +4386,7 @@
         },
         {
           "chapter": "gd.ch3",
-          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
           "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
         },
         {
@@ -4409,7 +4419,7 @@
         },
         {
           "chapter": "gd.ch3",
-          "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+          "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
           "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
         },
         {
@@ -4440,7 +4450,7 @@
       },
       "gd.c1:depth:conceptual": {
         "verifier": "authored demonstration reviewer (Codex)",
-        "method": "Review requirement: Level 2: explain the mechanism, prerequisite bridge and limits; inspect corresponding chapter and scoped verifier result.",
+        "method": "Review requirement: Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler; inspect corresponding chapter and scoped verifier result.",
         "result": "pass",
         "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
         "evidence": [
@@ -4518,7 +4528,7 @@
       },
       "gd.direction:depth:conceptual": {
         "verifier": "authored demonstration reviewer (Codex)",
-        "method": "Review requirement: Level 2: explain the mechanism, prerequisite bridge and limits; inspect corresponding chapter and scoped verifier result.",
+        "method": "Review requirement: Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler; inspect corresponding chapter and scoped verifier result.",
         "result": "pass",
         "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
         "evidence": [
@@ -4674,7 +4684,7 @@
       },
       "gd.boundary:depth:conceptual": {
         "verifier": "authored demonstration reviewer (Codex)",
-        "method": "Review requirement: Level 2: explain the mechanism, prerequisite bridge and limits; inspect corresponding chapter and scoped verifier result.",
+        "method": "Review requirement: Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler; inspect corresponding chapter and scoped verifier result.",
         "result": "pass",
         "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
         "evidence": [
@@ -4719,7 +4729,7 @@
         "evidence": [
           {
             "chapter": "gd.ch3",
-            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
             "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
           }
         ]
@@ -4732,7 +4742,7 @@
         "evidence": [
           {
             "chapter": "gd.ch3",
-            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
             "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
           }
         ]
@@ -4745,7 +4755,7 @@
         "evidence": [
           {
             "chapter": "gd.ch3",
-            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
             "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
           }
         ]
@@ -4758,7 +4768,7 @@
         "evidence": [
           {
             "chapter": "gd.ch3",
-            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
             "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
           }
         ]
@@ -4771,7 +4781,7 @@
         "evidence": [
           {
             "chapter": "gd.ch3",
-            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
             "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
           }
         ]
@@ -4784,7 +4794,7 @@
         "evidence": [
           {
             "chapter": "gd.ch3",
-            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
             "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
           }
         ]
@@ -4797,7 +4807,7 @@
         "evidence": [
           {
             "chapter": "gd.ch3",
-            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
             "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
           }
         ]
@@ -4810,7 +4820,7 @@
         "evidence": [
           {
             "chapter": "gd.ch3",
-            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
             "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
           }
         ]
@@ -4823,7 +4833,7 @@
         "evidence": [
           {
             "chapter": "gd.ch3",
-            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
             "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
           }
         ]
@@ -4836,7 +4846,7 @@
         "evidence": [
           {
             "chapter": "gd.ch3",
-            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
             "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
           }
         ]
@@ -4849,7 +4859,7 @@
         "evidence": [
           {
             "chapter": "gd.ch3",
-            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
             "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
           }
         ]
@@ -4862,7 +4872,7 @@
         "evidence": [
           {
             "chapter": "gd.ch3",
-            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
             "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
           }
         ]
@@ -4875,7 +4885,7 @@
         "evidence": [
           {
             "chapter": "gd.ch3",
-            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
             "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
           }
         ]
@@ -4888,7 +4898,7 @@
         "evidence": [
           {
             "chapter": "gd.ch3",
-            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
             "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
           }
         ]
@@ -4901,20 +4911,20 @@
         "evidence": [
           {
             "chapter": "gd.ch3",
-            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
             "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
           }
         ]
       },
       "gd.trace:depth:conceptual": {
         "verifier": "authored demonstration reviewer (Codex)",
-        "method": "Review requirement: Level 2: explain the mechanism, prerequisite bridge and limits; inspect corresponding chapter and scoped verifier result.",
+        "method": "Review requirement: Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler; inspect corresponding chapter and scoped verifier result.",
         "result": "pass",
         "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
         "evidence": [
           {
             "chapter": "gd.ch3",
-            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
             "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
           }
         ]
@@ -4927,7 +4937,7 @@
         "evidence": [
           {
             "chapter": "gd.ch3",
-            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
             "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
           }
         ]
@@ -4940,7 +4950,7 @@
         "evidence": [
           {
             "chapter": "gd.ch3",
-            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
             "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
           }
         ]
@@ -5116,7 +5126,7 @@
       },
       "gd.tolerance:depth:conceptual": {
         "verifier": "authored demonstration reviewer (Codex)",
-        "method": "Review requirement: Level 2: explain the mechanism, prerequisite bridge and limits; inspect corresponding chapter and scoped verifier result.",
+        "method": "Review requirement: Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler; inspect corresponding chapter and scoped verifier result.",
         "result": "pass",
         "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
         "evidence": [
@@ -5376,7 +5386,7 @@
       },
       "gd.spectrum:depth:conceptual": {
         "verifier": "authored demonstration reviewer (Codex)",
-        "method": "Review requirement: Level 2: explain the mechanism, prerequisite bridge and limits; inspect corresponding chapter and scoped verifier result.",
+        "method": "Review requirement: Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler; inspect corresponding chapter and scoped verifier result.",
         "result": "pass",
         "limitations": "Recorded author review, not independent expert review or learner testing; Obsidian UI untested.",
         "evidence": [
@@ -5421,7 +5431,7 @@
         "evidence": [
           {
             "chapter": "gd.ch3",
-            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
             "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
           }
         ]
@@ -5460,7 +5470,7 @@
         "evidence": [
           {
             "chapter": "gd.ch3",
-            "hash": "e82c94db4219b9be1c73775a551a4f3ae566b17bf0412c7dcd3568f24a4649e4",
+            "hash": "9b3a6512e74d47be73d410a07fc688983d6b5de4938d079bbf5a000446218694",
             "excerpt": "The input is an initial real state x_0, a positive step alpha, and an iteration"
           }
         ]
@@ -5495,32 +5505,32 @@
   },
   "checkpoints": {
     "6 - Full Notes/Gradient Descent/01 - Why Local Descent Works.md": {
-      "hash": "b4258f262747250d93e7e9ecd3e49e116cbdb685423683bf7d2653e31d37e3c4",
+      "hash": "2b0e91aacb367d27164c9e41e852a3255a336b36c555d2fd6654059fc44c0bcc",
       "status": "COMMITTED"
     },
     "6 - Full Notes/Gradient Descent/02 - Deriving the Update and Its Limits.md": {
-      "hash": "27dc9abe9f9d0f5f58444fc49cd85094a82758516e707cec87757bb47aa95bd8",
+      "hash": "1c378b6d6d0d87083a649b12e67915d490830d7025c0ed0602f464573ffaa8af",
       "status": "COMMITTED"
     },
     "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md": {
-      "hash": "5b37af553af6ccb9e52eeb10b0ececd13a624db0459d51d87c8382fc5c571213",
+      "hash": "c983699de35aba63e4529964cb88b0468dca87ebf307675d3de5837e80324540",
       "status": "COMMITTED"
     },
     "6 - Full Notes/Gradient Descent/04 - Implementing and Testing Descent.md": {
-      "hash": "a7dae3e31414bf896f27ebb89f52df6c82b7ee082a1b6cd9c3e3fda617d8ee8c",
+      "hash": "232b32b062311ad7f79b9179bc679af74d47e5efda316789623f7a7504aa24e8",
       "status": "COMMITTED"
     },
     "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md": {
-      "hash": "f82860f9cf5baab50922823a923f26f2de656930b3f0154fd979079ba03ec7bb",
+      "hash": "d4493a2a5a23e950381283a83a0c96dcba65a80cf2a70632a63a9fcfa7679fc5",
       "status": "COMMITTED"
     },
     "6 - Full Notes/Gradient Descent/00 - Map of Contents.md": {
-      "hash": "f23b0931e1b34c9910095bbf3e1e771623c0f8e7d9a91b47bb3946713e015fe4",
+      "hash": "2a1702611880b4b9deafa5b6deada922f832d5fcec6cb72ebe43e299d22a7bc7",
       "status": "COMMITTED"
     }
   },
   "asset_hashes": {
-    "assets/scriptorium/dc77bb9061f9b8f9e757d16a9019cfe646b558687d59fa724f3e60a2e6d3c49c.svg": "618771cdf50d229cb472024134b6d18aaf8f1c91d20332da3cb37ee0dd6f431d"
+    "assets/scriptorium/221370d9cc3106203a49f389506c88a66173b934a18dea95ca891f5d7392e5d4.svg": "618771cdf50d229cb472024134b6d18aaf8f1c91d20332da3cb37ee0dd6f431d"
   },
   "complete": true,
   "errors": [],
@@ -5565,7 +5575,7 @@
         "owner": "gd.ch1",
         "chapter": "6 - Full Notes/Gradient Descent/01 - Why Local Descent Works.md",
         "section": "Why Local Descent Works",
-        "deliverable": "Level 2: explain the mechanism, prerequisite bridge and limits",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
         "dependencies": [
           "gd.c1:objective:0"
         ],
@@ -5757,7 +5767,7 @@
         "owner": "gd.ch1",
         "chapter": "6 - Full Notes/Gradient Descent/01 - Why Local Descent Works.md",
         "section": "Why Local Descent Works",
-        "deliverable": "Level 2: explain the mechanism, prerequisite bridge and limits",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
         "dependencies": [
           "gd.direction:objective:0"
         ],
@@ -6147,7 +6157,7 @@
         "owner": "gd.ch2",
         "chapter": "6 - Full Notes/Gradient Descent/02 - Deriving the Update and Its Limits.md",
         "section": "Deriving the Update and Its Limits",
-        "deliverable": "Level 2: explain the mechanism, prerequisite bridge and limits",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
         "dependencies": [
           "gd.boundary:objective:0"
         ],
@@ -6721,7 +6731,7 @@
         "owner": "gd.ch3",
         "chapter": "6 - Full Notes/Gradient Descent/03 - Tracing the Algorithm.md",
         "section": "Tracing the Algorithm",
-        "deliverable": "Level 2: explain the mechanism, prerequisite bridge and limits",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
         "dependencies": [
           "gd.trace:objective:0"
         ],
@@ -7238,7 +7248,7 @@
         "owner": "gd.ch4",
         "chapter": "6 - Full Notes/Gradient Descent/04 - Implementing and Testing Descent.md",
         "section": "Implementing and Testing Descent",
-        "deliverable": "Level 2: explain the mechanism, prerequisite bridge and limits",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
         "dependencies": [
           "gd.tolerance:objective:0"
         ],
@@ -7878,7 +7888,7 @@
         "owner": "gd.ch5",
         "chapter": "6 - Full Notes/Gradient Descent/05 - Curvature and Failure Analysis.md",
         "section": "Curvature and Failure Analysis",
-        "deliverable": "Level 2: explain the mechanism, prerequisite bridge and limits",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
         "dependencies": [
           "gd.spectrum:objective:0"
         ],
@@ -8285,7 +8295,7 @@
       "limitation": "Reading View, Live Preview, keyboard, mobile and themes require a live Obsidian environment."
     },
     "metrics": {
-      "elapsed_seconds": 0.13750119996257126,
+      "elapsed_seconds": 0.14217770006507635,
       "obligations": 82,
       "cached_checks": 82,
       "model_calls": 0,
@@ -8302,22 +8312,24 @@
     "gd.trajectory": {
       "renderer": "scientific",
       "selected_renderer": "scientific",
+      "family": "R2",
       "available": true,
       "attempted": true,
       "status": "verified",
-      "input_hash": "dc77bb9061f9b8f9e757d16a9019cfe646b558687d59fa724f3e60a2e6d3c49c",
-      "path": "assets/scriptorium/dc77bb9061f9b8f9e757d16a9019cfe646b558687d59fa724f3e60a2e6d3c49c.svg",
+      "input_hash": "221370d9cc3106203a49f389506c88a66173b934a18dea95ca891f5d7392e5d4",
+      "path": "assets/scriptorium/221370d9cc3106203a49f389506c88a66173b934a18dea95ca891f5d7392e5d4.svg",
       "hash": "618771cdf50d229cb472024134b6d18aaf8f1c91d20332da3cb37ee0dd6f431d",
       "failure_reason": null,
       "fallback": null,
-      "renderer_version": "216bba947d7d232a55ccf89d8570567803ada77038fd81418d131bbf55fded2e",
+      "renderer_version": "9a94a1279a9d627c13eb9b8886a11286445fcd18ea7b0171489b218225f8c92d",
       "cached": true,
+      "embed": "![[assets/scriptorium/221370d9cc3106203a49f389506c88a66173b934a18dea95ca891f5d7392e5d4.svg]]",
       "validation": {
-        "method": "regenerate from numerical inputs or verified flow/mask and compare exact SVG",
+        "method": "regenerate from bounded semantic inputs and compare exact artifact",
         "result": "pass",
-        "limits": "Visual semantics are checked against supplied contracts; browser/theme rendering is untested."
+        "limits": "Supplied semantics are checked; browser/theme rendering is untested. Native Mermaid is validated source, not a raster. Graphs show topology, not physical simulation."
       },
-      "elapsed_seconds": 0.0009645000100135803
+      "elapsed_seconds": 0.001043599913828075
     }
   }
 }

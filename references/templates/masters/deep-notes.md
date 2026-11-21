@@ -34,4 +34,4 @@ Validate Contract v3 (`validate_note.py --contract --evidence --pedagogical-plan
 
 ## Comprehensive composition profile
 
-The [composition contract](../../workflows/notes-creation/composition-contract.md) defines full-topic M1 collections: one MOC, five comprehensive chapters, shared S01?S18 capabilities in the existing instructional registry, independent depth dimensions, and authored publication with exactly five YAML keys. Its profile-specific rules take precedence over legacy collection metadata and file layout above. Existing single-note and M2?M7 contracts remain supported.
+For comprehensive M1 layout, metadata and publication, follow the [canonical composition contract](../../workflows/notes-creation/composition-contract.md).
