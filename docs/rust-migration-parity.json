@@ -1,0 +1,15 @@
+{
+  "captured_at": "2026-11-21T17:40:19.677021+00:00",
+  "binary": "D:\\All Vs Code\\developing skills\\scriptorium\\target\\release\\scribe.exe",
+  "result": "passed",
+  "checks": [
+    "Python and Rust agree on PNG dimensions and SHA-256 of unchanged asset bytes",
+    "Identical imported bytes deduplicate to the same path",
+    "Tampered stored image is rejected",
+    "Truncated image is rejected",
+    "Python and Rust plots preserve the same normalized numerical geometry",
+    "Scientific rendering is deterministic across repeated execution",
+    "Series inconsistent with declared equation is rejected"
+  ],
+  "scope": "Raster hash/dimensions/storage and scientific plot numerical geometry only; full CLI, KCP and pedagogy parity remain pending."
+}

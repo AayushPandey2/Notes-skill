@@ -58,7 +58,7 @@ def audit_repository(root: Path = REPO_ROOT) -> dict[str, Any]:
     checked = 0
     files = [
         p for p in root.rglob("*")
-        if p.is_file() and not any(x in p.parts for x in (".git", "__pycache__", ".pytest_cache", ".test-deps", ".venv"))
+        if p.is_file() and not any(x in p.parts for x in (".git", "__pycache__", ".pytest_cache", ".test-deps", ".venv", ".tools", "target"))
         and not (".scriptorium" in p.parts and "cache" in p.parts)
     ]
     for path in files:

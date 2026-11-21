@@ -1,0 +1,14 @@
+{
+  "planned_visuals": 2,
+  "verified_assets": 2,
+  "embedded_visuals": 2,
+  "fulfilled_visual_ids": [
+    "v0",
+    "v1"
+  ],
+  "missing_representations": [],
+  "errors": [],
+  "warnings": [],
+  "artifact_complete": true,
+  "educational_review_required": true
+}

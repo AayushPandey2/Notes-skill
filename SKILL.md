@@ -5,6 +5,18 @@ description: Create, research, organize, and query Obsidian study notes, source 
 
 # Pre-flight routing
 
+## Rust local visual services (5.1 migration)
+
+For local images, use the Rust `scribe assets` services and the typed visual plan,
+receipt, audit, and create-only publication interfaces documented in
+[docs/rust-runtime.md](docs/rust-runtime.md). Build with `cargo build --release --locked`.
+Research retrieval and deterministic rendering also run in Rust. All published
+image embeds must resolve to verified local files; remote URLs belong in provenance.
+License permission and scientific relevance require evidence-backed review.
+The legacy educational commands below remain available while the
+[migration ledger](docs/rust-migration-ledger.md) records their outstanding parity work.
+Do not describe the full Python-to-Rust migration as complete.
+
 1. **Universal Note-Creation Entry Point (`/scribe-notes`):** All note-creation requests enter through `/scribe-notes` (the sole public note-creation command; non-note utilities `/scribe-doubt`, `/scribe-quiz`, and `/scribe-setfolder` remain separate). Start with the interactive configuration gate (`scripts/scribe.py notes start "<request>"`) to infer provisional template, depth, scope (`S0`–`S5`), and organization (`single_note` vs. `hierarchical_collection`) before generating final notes. Never run a pre-generation diagnostic quiz.
 2. **System Architecture & Catalog:** Consult [references/architecture/system-overview.md](references/architecture/system-overview.md) and [references/architecture/template-module-catalog.md](references/architecture/template-module-catalog.md) for component ownership, master-subtemplate-module activation matrices, and Knowledge Collection Plan (`KCP`, `F02`–`F15`) lifecycle integration.
 3. Parse command, artifact intent, and source policy using [router.md](router.md), [references/routing/routing-policy.md](references/routing/routing-policy.md), and [references/routing/master-registry.yaml](references/routing/master-registry.yaml) (`scriptorium/engines/orchestration.py` via `scripts/scribe.py route` + `scripts/plan_notes.py inspect`).

@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "topic": "Ideal DC Resistance",
+  "source_policy": "adaptive",
+  "concepts": [
+    {
+      "id": "resistance",
+      "title": "Ideal resistive circuits",
+      "objectives": [
+        "Read resistance from the slope of voltage versus current",
+        "Trace conventional current around a closed ideal DC circuit"
+      ],
+      "prerequisites": [],
+      "complexity": 4,
+      "visual_needs": []
+    }
+  ],
+  "notes": [
+    "Circuits/01 - Resistance.md"
+  ],
+  "known_prerequisites": [],
+  "visuals": [
+    {
+      "concept_id": "resistance",
+      "id": "v0",
+      "objective": "Read resistance from the slope of voltage versus current",
+      "category": "numerical_plot",
+      "description": "An exact Ohm law plot",
+      "required_information": [
+        "voltage",
+        "current",
+        "ideal resistor assumption"
+      ],
+      "renderer": "scientific",
+      "family": "engineering_systems",
+      "verification_method": "Review original numerical inputs and directed flow; inspect generated SVG",
+      "placement": "Circuits/01 - Resistance.md",
+      "preferred_source": null,
+      "required": true
+    },
+    {
+      "concept_id": "resistance",
+      "id": "v1",
+      "objective": "Trace conventional current around a closed ideal DC circuit",
+      "category": "information_flow",
+      "description": "A distinct current-flow representation",
+      "required_information": [
+        "voltage",
+        "current",
+        "ideal resistor assumption"
+      ],
+      "renderer": "graph",
+      "family": "engineering_systems",
+      "verification_method": "Review original numerical inputs and directed flow; inspect generated SVG",
+      "placement": "Circuits/01 - Resistance.md",
+      "preferred_source": null,
+      "required": true
+    }
+  ],
+  "planning_warnings": []
+}

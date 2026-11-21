@@ -283,11 +283,9 @@ def media_artifact(vault: Path, visual: dict, digest: str, *, execute: bool) -> 
                    "source":source,"rights":rights,"alt":alt,"relevance":relevance,"asset_policy":policy,
                    "fallback_used":fallback_used,"rights_verification":"supplied rights statement; independently verify before redistribution"}
         _write_immutable(receipt_path,json.dumps(receipt,sort_keys=True,indent=2).encode("utf-8"))
-    # Remote embedding requires an acquired URL, never a fallback. Parentheses are
-    # rejected in URLs, and Markdown label metacharacters are escaped.
-    target = receipt.get("final_url") if policy == "remote_allowed" and not receipt.get("fallback_used") else receipt["path"]
-    if target.startswith("https:"):
-        _url(target)
+    # Compatibility policy names govern acquisition only. Publication always uses
+    # the verified snapshot, including receipts created before the 5.1 migration.
+    target = receipt["path"]
     clean_alt = re.sub(r"([\\\[\]*_`])",r"\\\1",alt).replace("\n"," ").replace("\r"," ")
     clean_rights = re.sub(r"([\\\[\]*_`])",r"\\\1",escape(rights)).replace("\n"," ").replace("\r"," ")
     embed = f"![{escape(clean_alt)}]({target})\n\n*Source: [original publication]({source}); rights: {clean_rights}*"

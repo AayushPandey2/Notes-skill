@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "collection_path": "Circuits",
+  "plan_sha256": "b425bdc11203a7fa499817118e03aaa2d0e35c705bae87e8eb892eb57acad3f9",
+  "notes": {
+    "Circuits/01 - Resistance.md": "fe5eb129ef8fcfa24b68033dd541740093502590c33d30bd058715964c817eea"
+  },
+  "visuals": [
+    {
+      "visual_id": "v0",
+      "local_path": "assets\\c1703328736ccae6d11212e3c64ffea5a2ea2cac60e1bf14f9c2dedc08c60bf2.svg",
+      "sha256": "c1703328736ccae6d11212e3c64ffea5a2ea2cac60e1bf14f9c2dedc08c60bf2",
+      "provenance": {
+        "creator": "Scriptorium",
+        "image_url": "",
+        "license": "original; input data rights remain with their owners",
+        "original_filename": "scientific.svg",
+        "permission_basis": "original SVG from caller-supplied rendering inputs",
+        "relevance": "Read resistance from the slope of voltage versus current",
+        "retrieved_at": 1795282819,
+        "source_page": "original deterministic rendering"
+      },
+      "state": "published"
+    },
+    {
+      "visual_id": "v1",
+      "local_path": "assets\\d848a2e690b24432020a5892fdc8e4bb1d02be698f364927a6d60e3a5d66e3bc.svg",
+      "sha256": "d848a2e690b24432020a5892fdc8e4bb1d02be698f364927a6d60e3a5d66e3bc",
+      "provenance": {
+        "creator": "Scriptorium",
+        "image_url": "",
+        "license": "original; input data rights remain with their owners",
+        "original_filename": "graph.svg",
+        "permission_basis": "original SVG from caller-supplied rendering inputs",
+        "relevance": "Trace conventional current around a closed ideal DC circuit",
+        "retrieved_at": 1795282819,
+        "source_page": "original deterministic rendering"
+      },
+      "state": "published"
+    }
+  ],
+  "audit": {
+    "planned_visuals": 2,
+    "verified_assets": 2,
+    "embedded_visuals": 2,
+    "fulfilled_visual_ids": [
+      "v0",
+      "v1"
+    ],
+    "missing_representations": [],
+    "errors": [],
+    "warnings": [],
+    "artifact_complete": true,
+    "educational_review_required": true
+  },
+  "publication_state": "published"
+}

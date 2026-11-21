@@ -1,0 +1,11 @@
+{
+  "captured_at": "2026-11-21T17:09:09.361068+00:00",
+  "reference_commit": "0568b16cdccfc58a4c71fe1434af932f1624c99a",
+  "command": "python -m pytest -q",
+  "result": "passed",
+  "passed": 564,
+  "duration_seconds": 111.9,
+  "scope": "Entire pre-migration pytest suite, before runtime Python changes",
+  "python_runtime": "Python 3.14.7",
+  "rust_parity": "Not established. Separate asset/planning Rust v1 interfaces do not replace all legacy execution behavior."
+}

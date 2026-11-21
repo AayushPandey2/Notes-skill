@@ -59,8 +59,9 @@ In strict source-only plans, remote acquisition additionally requires the visual
 
 `asset_policy` is `remote_allowed`, `local_preferred` (default), or `offline_only`.
 All successful acquisitions create a content-addressed local PNG snapshot and a
-specification-bound `.media.json` receipt. `remote_allowed` can emit HTTPS Markdown;
-`local_preferred` emits a relative local image link. `offline_only` requires a local
+specification-bound `.media.json` receipt. Both online policies publish a verified
+local image link; `remote_allowed` is retained as an acquisition compatibility name.
+Remote image URLs remain in provenance. `offline_only` requires a local
 PNG through `local_fallback`. For online policies, an explicit local fallback is
 used only after remote failure and records that failure; it never pretends the
 remote resource succeeded. Attribution appears beside the image; provenance stays

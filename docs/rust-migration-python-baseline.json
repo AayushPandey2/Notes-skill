@@ -1,0 +1,176 @@
+{
+  "captured_at": "2026-11-21T17:07:46.128705+00:00",
+  "runtime": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "warmups": 1,
+  "repeats": 7,
+  "scope": "Local deterministic Python baseline. Process CLI measurements include interpreter startup and imports. No model, research, network download or end-to-end authorship timing is represented. File measurement is buffered write/read, not atomic durable publication.",
+  "results": {
+    "process_startup_help": {
+      "unit": "milliseconds_per_operation",
+      "iterations_per_sample": 1,
+      "samples": [
+        327.6491,
+        326.1887,
+        314.3237,
+        310.7448,
+        345.921,
+        329.4364,
+        312.9672
+      ],
+      "median": 326.1887,
+      "minimum": 310.7448
+    },
+    "properties_cli": {
+      "unit": "milliseconds_per_operation",
+      "iterations_per_sample": 1,
+      "samples": [
+        315.2289,
+        316.2799,
+        370.4874,
+        366.0037,
+        353.7544,
+        371.9389,
+        439.8266
+      ],
+      "median": 366.0037,
+      "minimum": 315.2289
+    },
+    "routing_cli": {
+      "unit": "milliseconds_per_operation",
+      "iterations_per_sample": 1,
+      "samples": [
+        394.3368,
+        337.0334,
+        386.0038,
+        360.7698,
+        335.4131,
+        357.9505,
+        341.8594
+      ],
+      "median": 357.9505,
+      "minimum": 335.4131
+    },
+    "configuration_yaml_parse": {
+      "unit": "milliseconds_per_operation",
+      "iterations_per_sample": 10,
+      "samples": [
+        19.27692,
+        21.28703,
+        20.67661,
+        21.95361,
+        20.93993,
+        18.90519,
+        21.86132
+      ],
+      "median": 20.93993,
+      "minimum": 18.90519
+    },
+    "frontmatter_parse": {
+      "unit": "milliseconds_per_operation",
+      "iterations_per_sample": 100,
+      "samples": [
+        0.431871,
+        0.392061,
+        0.408461,
+        0.423617,
+        0.445186,
+        0.424104,
+        0.416853
+      ],
+      "median": 0.423617,
+      "minimum": 0.392061
+    },
+    "metadata_validation": {
+      "unit": "milliseconds_per_operation",
+      "iterations_per_sample": 100,
+      "samples": [
+        0.432876,
+        0.440686,
+        0.435794,
+        0.521625,
+        0.482357,
+        0.459389,
+        0.520294
+      ],
+      "median": 0.459389,
+      "minimum": 0.432876
+    },
+    "asset_sha256": {
+      "unit": "milliseconds_per_operation",
+      "iterations_per_sample": 100,
+      "samples": [
+        0.20346,
+        0.205608,
+        0.205645,
+        0.203345,
+        0.205609,
+        0.203846,
+        0.195493
+      ],
+      "median": 0.203846,
+      "minimum": 0.195493
+    },
+    "manifest_serialization": {
+      "unit": "milliseconds_per_operation",
+      "iterations_per_sample": 100,
+      "samples": [
+        0.066269,
+        0.070596,
+        0.068985,
+        0.060384,
+        0.04421,
+        0.045248,
+        0.045453
+      ],
+      "median": 0.060384,
+      "minimum": 0.04421
+    },
+    "memory_cache_lookup": {
+      "unit": "milliseconds_per_operation",
+      "iterations_per_sample": 1000,
+      "samples": [
+        0.0003445,
+        0.0003306,
+        0.0003281,
+        0.00030510000000000004,
+        0.0002906,
+        0.0002856,
+        0.0002853
+      ],
+      "median": 0.00030510000000000004,
+      "minimum": 0.0002853
+    },
+    "scientific_svg_render_verify": {
+      "unit": "milliseconds_per_operation",
+      "iterations_per_sample": 100,
+      "samples": [
+        0.280179,
+        0.235301,
+        0.408608,
+        0.258776,
+        0.367888,
+        0.365738,
+        0.354135
+      ],
+      "median": 0.354135,
+      "minimum": 0.235301
+    },
+    "filesystem_manifest_write_read": {
+      "unit": "milliseconds_per_operation",
+      "iterations_per_sample": 100,
+      "samples": [
+        7.479344,
+        7.935042,
+        7.703038,
+        8.214535,
+        7.559019,
+        6.996593,
+        7.598017
+      ],
+      "median": 7.598017,
+      "minimum": 6.996593
+    }
+  },
+  "rust_comparison": "Not yet measured; no speedup claim is supported."
+}

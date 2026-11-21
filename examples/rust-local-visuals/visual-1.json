@@ -1,0 +1,35 @@
+{
+  "renderer": "graph",
+  "objective": "Trace conventional current around a closed ideal DC circuit",
+  "nodes": [
+    {
+      "id": "supply",
+      "label": "Source positive terminal"
+    },
+    {
+      "id": "resistor",
+      "label": "2 ohm resistor"
+    },
+    {
+      "id": "return",
+      "label": "Return to source negative"
+    }
+  ],
+  "edges": [
+    {
+      "source": "supply",
+      "target": "resistor",
+      "label": "Current I"
+    },
+    {
+      "source": "resistor",
+      "target": "return",
+      "label": "Same current I"
+    },
+    {
+      "source": "return",
+      "target": "supply",
+      "label": "Source closes the loop"
+    }
+  ]
+}

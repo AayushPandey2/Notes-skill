@@ -1,5 +1,10 @@
 # Scriptorium
 
+The 5.1 migration adds a [Rust CLI and local visual services](docs/rust-runtime.md).
+Build with `cargo build --release --locked`. Published source figures now reference
+verified local snapshots. The [migration ledger](docs/rust-migration-ledger.md)
+tracks remaining educational-engine parity; Python remains required for those workflows.
+
 Scriptorium 5 extends the existing six-engine architecture with adaptive 5–10
 chapter composition, semantic topic/subject/domain tags, a shared twelve-family
 representation registry, verified remote PNG snapshots, and stricter assessment

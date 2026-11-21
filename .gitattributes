@@ -4,3 +4,8 @@
 /examples/adaptive-composition/vault/.scriptorium/evidence/** -text
 /examples/adaptive-composition/vault/assets/scriptorium/** -text
 /examples/scriptorium-5/vault/assets/scriptorium/** -text
+# Preserve byte-bound fixture manifests across Windows and Unix checkouts.
+examples/rust-local-visuals/** text eol=lf
+*.rs text eol=lf
+Cargo.toml text eol=lf
+Cargo.lock text eol=lf

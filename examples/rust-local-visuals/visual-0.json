@@ -1,0 +1,29 @@
+{
+  "renderer": "scientific",
+  "objective": "Read resistance from the slope of voltage versus current",
+  "equation": "2*x",
+  "data": {
+    "2 ohm ideal resistor": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        3,
+        6
+      ]
+    ]
+  },
+  "xlabel": "Current I (A)",
+  "ylabel": "Voltage V (V)",
+  "units": "Current in amperes; voltage in volts; slope in ohms",
+  "interpretation": "For an ideal 2 ohm resistor at fixed temperature, V = 2 I."
+}

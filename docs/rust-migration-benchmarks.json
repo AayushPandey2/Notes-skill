@@ -1,0 +1,137 @@
+{
+  "captured_at": "2026-11-21T17:39:30.994570+00:00",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "build_profile": "release",
+  "python": {
+    "startup_help": {
+      "median_ms": 303.0322000849992,
+      "samples_ms": [
+        303.0322000849992,
+        293.41150005348027,
+        284.70780001953244,
+        310.06889999844134,
+        304.40220003947616,
+        309.0766000095755,
+        294.0928000025451
+      ]
+    },
+    "scientific_svg_generation": {
+      "median_ms": 0.07626399979926646,
+      "samples_ms": [
+        0.07970299920998514,
+        0.0741850002668798,
+        0.08059400017373264,
+        0.07427699980325997,
+        0.0761239998973906,
+        0.07678700028918684,
+        0.07626399979926646
+      ]
+    },
+    "properties_validation": {
+      "median_ms": 0.1816610002424568,
+      "samples_ms": [
+        0.1921649998985231,
+        0.1816610002424568,
+        0.18159599974751472,
+        0.18104900023899972,
+        0.18608400016091764,
+        0.18534899922087789,
+        0.1783430005889386
+      ]
+    },
+    "sha256_64k": {
+      "median_ms": 0.03460969997104257,
+      "samples_ms": [
+        0.03076959995087236,
+        0.03460969997104257,
+        0.033253700006753206,
+        0.03403119998984039,
+        0.03582550003193319,
+        0.03664200007915497,
+        0.03724920004606247
+      ]
+    }
+  },
+  "rust": {
+    "asset_verify_ms": {
+      "median_ms": 0.21871300000000002,
+      "samples_ms": [
+        0.21689499999999998,
+        0.243515,
+        0.21871300000000002,
+        0.214295,
+        0.2147,
+        0.239635,
+        0.225427
+      ]
+    },
+    "cache_lookup_ms": {
+      "median_ms": 0.09234099999999999,
+      "samples_ms": [
+        0.10453099999999999,
+        0.08988100000000002,
+        0.088725,
+        0.09234099999999999,
+        0.088102,
+        0.10969100000000001,
+        0.092416
+      ]
+    },
+    "properties_validation_ms": {
+      "median_ms": 0.009399999999999999,
+      "samples_ms": [
+        0.010131000000000001,
+        0.009351,
+        0.009383,
+        0.009399999999999999,
+        0.009399999999999999,
+        0.009407,
+        0.009427
+      ]
+    },
+    "scientific_render_ms": {
+      "median_ms": 0.027656999999999998,
+      "samples_ms": [
+        0.032637,
+        0.027504,
+        0.027450000000000002,
+        0.027709,
+        0.028375000000000004,
+        0.027656999999999998,
+        0.027572
+      ]
+    },
+    "scope": "Local deterministic operations only. No network, model reasoning, scientific review or full generation latency.",
+    "sha256_64k_ms": {
+      "median_ms": 0.028874,
+      "samples_ms": [
+        0.028874,
+        0.0302789,
+        0.0286247,
+        0.0286687,
+        0.0298572,
+        0.0283863,
+        0.0304231
+      ]
+    },
+    "startup_help": {
+      "median_ms": 8.783399942331016,
+      "samples_ms": [
+        8.325999951921403,
+        10.53730002604425,
+        8.783399942331016,
+        9.002499980852008,
+        8.63329996354878,
+        7.869799970649183,
+        9.7001000540331
+      ]
+    }
+  },
+  "limits": [
+    "Help commands expose different command sets; this only measures launch/import/help overhead.",
+    "SVG layouts differ; numerical geometry parity is checked separately. Rust render also performs strict SVG inspection.",
+    "Properties validation implementations have different supported schemas; this fixture is accepted by both.",
+    "Local filesystem/cache samples include OS caching. Other development processes may affect timings.",
+    "No model, network, source discovery, full research or end-to-end educational performance claim is made."
+  ]
+}

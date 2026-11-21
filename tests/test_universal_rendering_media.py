@@ -254,7 +254,9 @@ def test_verified_remote_snapshot_supports_offline_validation_and_detects_change
     bodies,results=render_visuals(tmp_path,plan(value),{"ch1":"## Representation\n"})
     result=results["v1"]
     assert result["status"]=="verified",result
-    assert "https://example.org/figure.png" in result["embed"] and "Source:" in result["embed"]
+    assert "](assets/scriptorium/" in result["embed"] and "Source:" in result["embed"]
+    assert "](https://example.org/figure.png)" not in result["embed"]
+    assert result["provenance"]["final_url"] == "https://example.org/figure.png"
     assert (tmp_path/result["path"]).read_bytes()==png()
     monkeypatch.setattr(media,"fetch_image",lambda *a:pytest.fail("offline validation fetched network"))
     assert render_visuals(tmp_path,plan(value),bodies,execute=False)[1]["v1"]["status"]=="verified"
