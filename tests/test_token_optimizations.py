@@ -13,7 +13,8 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SCRIPTS_DIR = REPO_ROOT / "scripts"
 if str(SCRIPTS_DIR) not in sys.path:
-    sys.path.insert(0, str(SCRIPTS_DIR))
+    sys.path.insert(0, str(REPO_ROOT))
+sys.path.insert(0, str(SCRIPTS_DIR))
 
 import scaffold_note as sn
 import vault_index as vi
@@ -51,8 +52,10 @@ def test_scaffold_note_defaults_to_adaptive_deep_study(tmp_path: Path) -> None:
     assert out_file.is_file()
     text = out_file.read_text(encoding="utf-8")
     assert "# 02. Gradient Descent" in text
-    assert "deepstudy-master" in text
-    assert "templates/notes_decision_matrix.md" in text
+    assert "references/templates/masters/deep-notes.md" in text
+    assert "references/workflows/notes-creation/adaptive-engine.md" in text
+    assert "shared/notes_decision_matrix.md" not in text
+    assert "<!-- decision-contract:" not in text
     assert "Key Equations" not in text
     assert "## " not in text
 

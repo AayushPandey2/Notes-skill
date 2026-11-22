@@ -1,0 +1,95 @@
+{
+  "method": "Measured Unicode character counts (LF normalized), compared with local HEAD. Selected registry counts use JSON serialization. Output budgets are heuristics, not measured tokens.",
+  "baseline_revision": "42edc492cd140186cabfbdac0eca57777d88b722",
+  "files": [
+    {
+      "file": "templates/deepstudy-master.md",
+      "before_characters": 31285,
+      "after_characters": 3610
+    },
+    {
+      "file": "shared/notes_decision_matrix.md",
+      "before_characters": 54345,
+      "after_characters": 51341
+    },
+    {
+      "file": "router.md",
+      "before_characters": 4782,
+      "after_characters": 5142
+    },
+    {
+      "file": "skills/scribe-deepnotes/SKILL.md",
+      "before_characters": 269,
+      "after_characters": 733
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario": "A-conceptual",
+      "active_module_count": 7,
+      "selected_registry_characters": 2144,
+      "estimated_output_tokens": 810
+    },
+    {
+      "scenario": "B-mathematical",
+      "active_module_count": 11,
+      "selected_registry_characters": 3444,
+      "estimated_output_tokens": 3900
+    },
+    {
+      "scenario": "C-programming",
+      "active_module_count": 11,
+      "selected_registry_characters": 3463,
+      "estimated_output_tokens": 1710
+    },
+    {
+      "scenario": "D-architectural",
+      "active_module_count": 8,
+      "selected_registry_characters": 2429,
+      "estimated_output_tokens": 1440
+    },
+    {
+      "scenario": "E-procedural",
+      "active_module_count": 12,
+      "selected_registry_characters": 3766,
+      "estimated_output_tokens": 1710
+    },
+    {
+      "scenario": "F-historical",
+      "active_module_count": 10,
+      "selected_registry_characters": 3078,
+      "estimated_output_tokens": 1080
+    },
+    {
+      "scenario": "G-source",
+      "active_module_count": 11,
+      "selected_registry_characters": 3463,
+      "estimated_output_tokens": 1260
+    },
+    {
+      "scenario": "H-mixed",
+      "active_module_count": 12,
+      "selected_registry_characters": 3791,
+      "estimated_output_tokens": 3060
+    },
+    {
+      "scenario": "I-beginner",
+      "active_module_count": 9,
+      "selected_registry_characters": 2807,
+      "estimated_output_tokens": 1650
+    },
+    {
+      "scenario": "I-advanced",
+      "active_module_count": 8,
+      "selected_registry_characters": 2384,
+      "estimated_output_tokens": 1440
+    }
+  ],
+  "provider_usage": null,
+  "generated_note_quality_benchmark": null,
+  "new_resource_characters": {
+    "references/adaptive-engine.md": 9949,
+    "references/source-fidelity.md": 4710,
+    "references/instructional-registry.json": 7908
+  }
+}

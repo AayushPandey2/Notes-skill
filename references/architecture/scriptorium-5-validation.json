@@ -1,0 +1,142 @@
+{
+  "state": "passed",
+  "complete": true,
+  "baseline": {
+    "passed": 413,
+    "seconds": 109.3,
+    "commit": "6afa73164626cea525de423cd992199d4e9c2017"
+  },
+  "pytest": {
+    "command": ".\\.venv\\Scripts\\python.exe -m pytest -q",
+    "exit_code": 0,
+    "passed": 564,
+    "seconds": 114.14,
+    "terminal_summary": "564 passed in 114.14s (0:01:54)",
+    "execution_permissions": "escalated retry after sandbox denied pytest temporary-directory access"
+  },
+  "repository_audit": {
+    "files": 203,
+    "local_links": 391,
+    "errors": []
+  },
+  "authority": {
+    "valid": true,
+    "authorities_checked": 7,
+    "issues": []
+  },
+  "registry": {
+    "valid": true,
+    "masters_count": 7,
+    "variants_count": 12,
+    "subtemplates_count": 6,
+    "modules_count": 17,
+    "commands_count": 4,
+    "retired_commands_count": 8,
+    "errors": []
+  },
+  "golden_evaluations": {
+    "total": 13,
+    "passed": 13,
+    "failed": 0,
+    "all_passed": true,
+    "results": [
+      {
+        "id": "G01_basic_math",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "id": "G02_advanced_math",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "id": "G03_programming",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "id": "G04_machine_learning",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "id": "G05_physics",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "id": "G06_history",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "id": "G07_source_chapter",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "id": "G08_cheat_sheet",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "id": "G09_worked_solutions",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "id": "G10_quiz",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "id": "G11_revision_pack",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "id": "G12_multi_artifact",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "id": "G13_incremental_update",
+        "passed": true,
+        "failures": []
+      }
+    ]
+  },
+  "skill_validation": [
+    {
+      "path": ".",
+      "exit_code": 0,
+      "stdout": "Skill is valid!",
+      "stderr": ""
+    },
+    {
+      "path": "skills/scribe-notes",
+      "exit_code": 0,
+      "stdout": "Skill is valid!",
+      "stderr": ""
+    }
+  ],
+  "authored_publication": {
+    "valid": true,
+    "errors": []
+  },
+  "whitespace": {
+    "exit_code": 0,
+    "stdout": ""
+  },
+  "secret_scan": {
+    "candidate_files": 74,
+    "possible_secrets": 0,
+    "scope": "added/changed files; bounded private-key/token patterns, not a universal secret-detection guarantee"
+  },
+  "limitations": [
+    "No live Obsidian/browser UI test",
+    "No live remote-media acquisition",
+    "Cross-domain new examples are planned chapters and artifact demonstrations, not completed teaching collections"
+  ]
+}

@@ -25,9 +25,15 @@ from pathlib import Path
 from typing import Any
 
 import yaml
-from note_layout import ROUTES
 
-from contracts import STRICT_KEYS as MANDATORY_TOPIC_KEYS
+SCRIPT_DIR = Path(__file__).resolve().parent
+REPO_ROOT = SCRIPT_DIR.parent
+for _p in (str(REPO_ROOT), str(SCRIPT_DIR)):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
+
+from scriptorium.layout import ROUTES
+from scriptorium.models import STRICT_KEYS as MANDATORY_TOPIC_KEYS
 
 RAW_LATEX_IN_YAML_RE = re.compile(
     r"\\(?:mathbb|mathbf|mathcal|mathrm|text|operatorname|sum|prod|int|frac|dfrac|"
@@ -689,7 +695,7 @@ def validate_file(
                     )
 
     if schema == "builtin_deep" and isinstance(y_obj, dict):
-        from decision_matrix import audit_note_against_contract, check_slug_and_forward_links, resolve_decisions
+        from scriptorium.engines._decision import audit_note_against_contract, check_slug_and_forward_links, resolve_decisions
 
         body_text = "\n".join(lines[body_idx:]) if body_idx < len(lines) else ""
         topic_val = str(y_obj.get("topic") or "")
@@ -701,6 +707,8 @@ def validate_file(
             topic_val,
             tags=[str(t) for t in tags_val],
         )
+        # Legacy vault scans lack the saved editorial decision for proof depth.
+        contract["math_level"] = None
         for c_line, c_msg in audit_note_against_contract(body_text, contract):
             findings.append({
                 "file": rel_file,

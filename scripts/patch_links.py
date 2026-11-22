@@ -35,9 +35,12 @@ from typing import Any
 import yaml
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-if str(SCRIPT_DIR) not in sys.path:
-    sys.path.insert(0, str(SCRIPT_DIR))
+REPO_ROOT = SCRIPT_DIR.parent
+for _p in (str(REPO_ROOT), str(SCRIPT_DIR)):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
 
+from scriptorium.models import STRICT_KEYS
 from vault_index import _iter_vault_markdown, is_within_vault, resolve_vault_root
 
 
@@ -234,7 +237,6 @@ def patch_frontmatter_text(
     if not isinstance(meta, dict):
         raise ValueError("YAML frontmatter must be a mapping.")
 
-    from contracts import STRICT_KEYS
     if set(meta) == set(STRICT_KEYS):
         additions = []
         if add_depends_on:

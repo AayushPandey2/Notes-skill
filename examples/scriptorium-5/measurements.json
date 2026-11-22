@@ -1,0 +1,62 @@
+{
+  "measured_at_utc": "2026-11-21T15:30:07.997044+00:00",
+  "python": "3.14.7",
+  "command": "python examples/scriptorium-5/run.py",
+  "elapsed_seconds": 0.17884539999067783,
+  "actual_render_calls": 10,
+  "artifacts": 9,
+  "acquisition_or_render_cache_hits": 9,
+  "verified_artifact_bytes": 9046,
+  "gallery_utf8_bytes": 4052,
+  "allocations": [
+    {
+      "topic": "Multivariable Differential Calculus",
+      "concept_count": 13,
+      "chapter_count": 8,
+      "scope_review_required": false,
+      "workload_units": 44.75,
+      "visuals": 2,
+      "gallery": "vault/6 - Full Notes/Multivariable Differential Calculus/Visual Demo.md"
+    },
+    {
+      "topic": "Transformer Attention Mechanics",
+      "concept_count": 17,
+      "chapter_count": 10,
+      "scope_review_required": true,
+      "workload_units": 83.0,
+      "visuals": 2,
+      "gallery": "vault/6 - Full Notes/Transformer Attention Mechanics/Visual Demo.md"
+    },
+    {
+      "topic": "DC Resistive Circuit Analysis",
+      "concept_count": 12,
+      "chapter_count": 7,
+      "scope_review_required": false,
+      "workload_units": 40.95,
+      "visuals": 1,
+      "gallery": "vault/6 - Full Notes/DC Resistive Circuit Analysis/Visual Demo.md"
+    },
+    {
+      "topic": "Binary Search with Half Open Intervals",
+      "concept_count": 9,
+      "chapter_count": 5,
+      "scope_review_required": false,
+      "workload_units": 24.0,
+      "visuals": 3,
+      "gallery": "vault/6 - Full Notes/Binary Search with Half Open Intervals/Visual Demo.md"
+    },
+    {
+      "topic": "French Revolution Political Transitions",
+      "concept_count": 7,
+      "chapter_count": 5,
+      "scope_review_required": false,
+      "workload_units": 15.3,
+      "visuals": 1,
+      "gallery": "vault/6 - Full Notes/French Revolution Political Transitions/Visual Demo.md"
+    }
+  ],
+  "network_calls": 0,
+  "teaching_collections_completed": 0,
+  "comparison_baseline": null,
+  "limits": "Single local run; no model-token, speedup, browser, live media or complete-collection performance claim."
+}

@@ -13,13 +13,29 @@ from urllib.parse import parse_qs, urlsplit
 import json
 import yaml
 
-from note_layout import BEHAVIOR_TABLE, DEEP_ROUTES, HINT, NARROW_RANGES, PRACTICE_RANGES, ROUTES, SOLUTION, SYMBOL_TABLE, section_layout, matches_layout, optional_headings, heading_key
+SCRIPT_DIR = Path(__file__).resolve().parent
+REPO_ROOT = SCRIPT_DIR.parent
+for _p in (str(REPO_ROOT), str(SCRIPT_DIR)):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
+
+from scriptorium.layout import (
+    ADAPTIVE_ROUTES, BEHAVIOR_TABLE, DEEP_ROUTES, HINT, NARROW_RANGES, PRACTICE_RANGES,
+    ROUTES, SOLUTION, SYMBOL_TABLE, matches_legacy_study, matches_layout, optional_headings, heading_key,
+)
+from scriptorium.engines._verification import FENCE, check_python, quoted_line as _strip_quotes, split_blocks
+from scriptorium.models import (
+    ALL_MANAGED_PROPERTIES,
+    CANONICAL_NOTE_TYPES,
+    REQUIRED_OBSIDIAN_PROPERTIES,
+    STRICT_KEYS,
+    UniqueMappingLoader,
+    parse_frontmatter as read_frontmatter,
+)
 from vault_index import is_within_vault, resolve_vault_root
 from verify_vault_notes import RAW_LATEX_IN_YAML_RE, UNRESOLVED_TPL_RE, _extract_anchors_and_blocks, _heading_slug, build_vault_index
 
-from contracts import STRICT_KEYS as STRICT_KEYS
 REQUIRED = set(STRICT_KEYS)
-FENCE = re.compile(r"^\s*(" + chr(96) + r"{3,}|~{3,})(.*)$")
 TOKEN = re.compile(r"(" + chr(96) + r"+|\$+)")
 QUESTION = re.compile(r"^### Q(\d+)\. (\S.*)$")
 WIKILINK = re.compile(r"\[\[([^\]\n]+)\]\]")
@@ -29,40 +45,9 @@ WORD = re.compile(r"[\w]+(?:[-'’][\w]+)*", re.UNICODE)
 VIDEO_TIMESTAMP = re.compile(r"\[(\d{2,}):([0-5]\d)\]\((https?://[^\s)]+)\)")
 
 
-class UniqueMappingLoader(yaml.SafeLoader):
-    def construct_mapping(self, node, deep=False):
-        self.flatten_mapping(node)
-        mapping = super().construct_mapping(node, deep)
-        if len(mapping) != len(node.value):
-            raise yaml.YAMLError("Duplicate YAML mapping key.")
-        return mapping
-
-
-def read_frontmatter(text: str) -> tuple[dict, str, int]:
-    lines = text.splitlines()
-    if not lines or lines[0].strip() != "---":
-        raise ValueError("Expected opening YAML frontmatter fence.")
-    end = next((n for n in range(1, len(lines)) if lines[n].strip() == "---"), None)
-    if end is None:
-        raise ValueError("Expected closing YAML frontmatter fence.")
-    raw = "\n".join(lines[1:end])
-    metadata = yaml.load(raw, Loader=UniqueMappingLoader)
-    if not isinstance(metadata, dict):
-        raise ValueError("Frontmatter must be a YAML mapping.")
-    return metadata, raw, end + 1
-
-
 def _escaped(text: str, position: int) -> bool:
     prefix = text[:position]
     return (len(prefix) - len(prefix.rstrip("\\"))) % 2 == 1
-
-
-def _strip_quotes(line: str) -> tuple[int, str]:
-    depth = 0
-    while match := re.match(r"^\s*>\s?", line):
-        line = line[match.end():]
-        depth += 1
-    return depth, line
 
 
 def _inline(line: str, lineno: int, math: int, report) -> tuple[str, int, int]:
@@ -291,6 +276,8 @@ def _infer_route_and_level(clean: str, headings: list[str], route: str | None, m
             continue
         if matches_layout(cand, level, headings, narrow=(cand == "practice" and narrow)):
             return cand, level
+    if matches_legacy_study(headings):
+        return "studynotes", level
     return None, level
 
 
@@ -307,25 +294,49 @@ def validate_text(text: str, *, vault: Path | None = None, target: Path | None =
     except (ValueError, yaml.YAMLError) as exc:
         return [(1, str(exc))]
     keys = list(metadata.keys())
-    missing = [key for key in STRICT_KEYS if key not in metadata]
-    extra = [key for key in keys if key not in STRICT_KEYS]
-    for key in missing:
-        report(1, f"Missing frontmatter key: {key}")
-    for key in extra:
-        report(1, f"Unauthorized frontmatter key: {key}")
-    if not missing and not extra and keys != list(STRICT_KEYS):
-        report(1, "Frontmatter keys must be strictly ordered: id, aliases, topic, tags, nexttopics.")
-    for key in ("id", "topic"):
-        if not isinstance(metadata.get(key), str) or not metadata[key].strip():
-            report(1, f"{key} must be nonempty text.")
+    uses_obsidian_properties = any(k in metadata for k in ("master_topic", "domain", "note_type"))
+    if uses_obsidian_properties:
+        required_props = list(REQUIRED_OBSIDIAN_PROPERTIES)
+        if "id" in metadata:
+            required_props.extend(k for k in ("aliases", "nexttopics") if k not in required_props)
+        missing = [key for key in required_props if key not in metadata]
+        extra = [key for key in keys if key not in ALL_MANAGED_PROPERTIES]
+        for key in missing:
+            report(1, f"Missing frontmatter key: {key}")
+        for key in extra:
+            report(1, f"Unauthorized frontmatter key: {key}")
+        for key in ("topic", "master_topic", "domain", "note_type"):
+            if key in metadata and (not isinstance(metadata.get(key), str) or not metadata[key].strip()):
+                report(1, f"{key} must be nonempty text.")
+        nt = metadata.get("note_type")
+        if isinstance(nt, str) and nt.strip() and nt.strip() not in CANONICAL_NOTE_TYPES:
+            report(1, f"Invalid note_type: {nt}")
+        if "id" in metadata and (not isinstance(metadata.get("id"), str) or not metadata["id"].strip()):
+            report(1, "id must be nonempty text.")
+    else:
+        missing = [key for key in STRICT_KEYS if key not in metadata]
+        extra = [key for key in keys if key not in STRICT_KEYS]
+        for key in missing:
+            report(1, f"Missing frontmatter key: {key}")
+        for key in extra:
+            report(1, f"Unauthorized frontmatter key: {key}")
+        if not missing and not extra and keys != list(STRICT_KEYS):
+            report(1, "Frontmatter keys must be strictly ordered: id, aliases, topic, tags, nexttopics.")
+        for key in ("id", "topic"):
+            if not isinstance(metadata.get(key), str) or not metadata[key].strip():
+                report(1, f"{key} must be nonempty text.")
     for key in ("aliases", "tags", "nexttopics"):
-        if not isinstance(metadata.get(key), list):
+        if key in metadata and not isinstance(metadata.get(key), list):
             report(1, f"{key} must be a list.")
     aliases = metadata.get("aliases")
     if isinstance(aliases, list) and (not aliases or any(not isinstance(alias, str) or not alias.strip() for alias in aliases)):
         report(1, "Aliases must contain at least one nonempty string.")
     tags = metadata.get("tags")
-    if route is None and isinstance(tags, list) and any(tag in DEEP_ROUTES for tag in tags if isinstance(tag, str)):
+    if route is None and isinstance(tags, list) and any(
+        tag in DEEP_ROUTES or tag == "type/deep-notes" for tag in tags if isinstance(tag, str)
+    ):
+        route = "deepstudy-master"
+    if route is None and uses_obsidian_properties and metadata.get("note_type") == "deep-notes":
         route = "deepstudy-master"
     if isinstance(tags, list) and (not tags or any(not isinstance(tag, str) or
                                                  not re.fullmatch(r"[\w/-]+", tag) for tag in tags)):
@@ -342,14 +353,23 @@ def validate_text(text: str, *, vault: Path | None = None, target: Path | None =
     if math_level is not None and (type(math_level) is not int or math_level not in levels):
         report(1, f"math_level must be one of {levels} for this route.")
         return findings
+    if math_level is not None and (decision_contract or {}).get("domain") not in {None, "", "adaptive"} and math_level != decision_contract.get("math_level"):
+        report(1, "math_level differs from the saved decision contract.")
+        return findings
 
     body = "\n".join(text.splitlines()[start:])
+    for line, message in check_python(split_blocks(body)[0]):
+        report(start + line, message)
     if "[OPTIONAL]" in body:
         report(start + 1, "Remove optional authoring markers before emission.")
     if re.search(r"<!--\s*scaffold:", body) or UNRESOLVED_TPL_RE.search(body):
         report(start + 1, "Unresolved scaffold or template field.")
     if re.search(r"<!--\s*SECTION:\s*S\d+[^>]*-->", body, re.I):
         report(start + 1, "Legacy <!-- SECTION: S* --> marker is forbidden; remove all section comments and use domain-natural headings.")
+    if re.search(r"<!--\s*(?:Gate:|decision-contract:)", body, re.I):
+        report(start + 1, "Remove authoring gates and decision records from the finished note.")
+    if re.search(r"(?:shared/notes?_decision_matrix\.md|templates/notes_decision_matrix\.md)", body, re.I):
+        report(start + 1, "Remove obsolete decision-matrix file references from the finished note.")
     clean = HTML_COMMENT.sub(lambda m: "\n" * m[0].count("\n"), body)
     prose, visible, structure, wording = [], [], [], []
     math, displays, preview_displays = 0, 0, 0
@@ -381,7 +401,8 @@ def validate_text(text: str, *, vault: Path | None = None, target: Path | None =
         if marker:
             if math:
                 report(number, "Fenced code inside math.")
-            fence = (marker[1], depth, marker[2].strip().lower(), number, [])
+            info = marker[2].strip().lower().split(maxsplit=1)
+            fence = (marker[1], depth, info[0] if info else "", number, [])
             structure.append((number, original if depth else ""))
             continue
         structure.append((number, original))
@@ -401,8 +422,23 @@ def validate_text(text: str, *, vault: Path | None = None, target: Path | None =
     if math:
         report(start + 1, "Unclosed display math.")
     tables = _table_sizes([(n, _strip_quotes(row)[1]) for n, row in prose], report)
-    if route in DEEP_ROUTES:
-        # Adaptive notes keep format/link checks, without old section/math/footer quotas.
+    headings = [row for _, row in prose if row.startswith("## ")]
+    route, level = _infer_route_and_level(clean, headings, route, math_level)
+    if route in {"summary", "studynotes", "study-notes"}:
+        for number, row in visible:
+            for match in VIDEO_TIMESTAMP.finditer(row):
+                source = urlsplit(match[3])
+                if (source.hostname or "").removeprefix("www.") in {"youtube.com", "youtu.be", "m.youtube.com"}:
+                    seconds = int(match[1]) * 60 + int(match[2])
+                    if parse_qs(source.query).get("t") != [f"{seconds}s"]:
+                        report(number, "YouTube timestamp label must match the t=<seconds>s URL parameter.")
+    legacy_study = route in {"studynotes", "study-notes"} and matches_legacy_study(headings) and not (decision_contract or {}).get("domain")
+    if route in ADAPTIVE_ROUTES and not legacy_study:
+        if route in {"studynotes", "study-notes"}:
+            if not matches_layout(route, level, headings):
+                report(start + 1, "Study notes need the required sections in template order with consecutive numbering.")
+            if not any(row.strip() == "> [!info] Source & Scope Context" for _, row in prose):
+                report(start + 1, "Study notes need the Source & Scope Context callout.")
         if sum(row.startswith("# ") for _, row in prose) != 1:
             report(start + 1, "Expected exactly one H1 title.")
         if not any(row.strip() and not row.startswith("#") for _, row in prose):
@@ -416,16 +452,28 @@ def validate_text(text: str, *, vault: Path | None = None, target: Path | None =
                     report(line_no, "Empty section heading.")
         if "Authoring gate" in clean or "**Decision-matrix IDs:**" in clean:
             report(start + 1, "Remove authoring gates from the finished note.")
-        from decision_matrix import audit_note_against_contract, check_slug_and_forward_links, resolve_decisions
+        from scriptorium.engines._decision import audit_note_against_contract, check_slug_and_forward_links, resolve_decisions
         if decision_contract is not None:
             contract = {**decision_contract, "explicit_contract": True}
+            if "domain" not in contract:
+                # Saved plans keep the publishing checks that existed when they were created.
+                contract["math_level"] = None
+                contract["verify_stack"] = False
         else:
+            topic = str(metadata.get("topic") or "")
+            title = aliases[0] if isinstance(aliases, list) and aliases else ""
             contract = resolve_decisions(
-                str(metadata.get("topic") or ""),
-                {"title": (aliases or [""])[0], "math_level": math_level or 0},
-                str(metadata.get("topic") or ""),
+                "",
+                {"title": title, "template": route,
+                 "math_level": math_level},
+                topic,
                 tags=tags if isinstance(tags, list) else None,
             )
+            if math_level is None:
+                # The chosen level and any explicit override live in planning state.
+                contract["math_level"] = None
+            elif "clamped_from" in contract:
+                report(start + 1, f"Requested math_level {math_level} exceeds the effective level {contract['math_level']} for {contract['domain']}.")
         for c_line, c_msg in audit_note_against_contract(body, contract):
             report(start + c_line, c_msg)
         existing_stems = None
@@ -443,8 +491,6 @@ def validate_text(text: str, *, vault: Path | None = None, target: Path | None =
             yaml_links = [(n, row) for n, row in enumerate(raw.splitlines(), 2)]
             _link_checks(text, yaml_links + visible, metadata, vault, target, planned, index, report)
         return findings
-    headings = [row for _, row in prose if row.startswith("## ")]
-    route, level = _infer_route_and_level(clean, headings, route, math_level)
     if route is None:
         report(start + 1, "Section headings or ordering do not match any built-in template.")
         return findings
@@ -456,12 +502,23 @@ def validate_text(text: str, *, vault: Path | None = None, target: Path | None =
             for field in ("Context", "Analysis", "Check"):
                 if not re.search(rf"\*\*{field}:\*\*\s*\S", contents):
                     report(n, f"Optional module needs a nonempty {field} field.")
-    narrow = route == "practice" and any("Q1–Q3" in h for h in headings)
-    if not matches_layout(route, level, headings, narrow=narrow):
+    narrow = route in {"practice", "assessment"} and any("Q1–Q3" in h for h in headings)
+    if not legacy_study and not matches_layout(route, level, headings, narrow=narrow):
         report(start + 1, "Section headings or ordering differ from the selected template.")
     if sum(row.startswith("# ") for _, row in prose) != 1:
         report(start + 1, "Expected exactly one H1 title.")
-    if route != "practice":
+    if route in {"api-table", "cheat-sheet", "quick-reference", "summary"} and level >= 2:
+        from scriptorium.engines._decision import classify_domain
+        title = aliases[0] if isinstance(aliases, list) and aliases else ""
+        domain = (decision_contract or {}).get("domain") or classify_domain(str(metadata.get("topic") or ""), str(title))
+        if domain != "pure-mathematics":
+            report(start + 1, f"{route} accepts at most math_level 1 outside pure mathematics.")
+    if decision_contract and decision_contract.get("verify_stack"):
+        from scriptorium.engines._decision import audit_note_against_contract
+
+        for line, message in audit_note_against_contract(body, decision_contract):
+            report(start + line, message)
+    if route not in {"practice", "assessment"}:
         if level == 0:
             if displays or preview_count:
                 report(start + 1, "math_level 0 omits formal display equations and equation callouts.")
@@ -479,17 +536,9 @@ def validate_text(text: str, *, vault: Path | None = None, target: Path | None =
             if "*Why this step holds:*" not in clean:
                 report(start + 1, "Missing zero-skip derivation justification.")
 
-    if route == "practice":
+    if route in {"practice", "assessment"}:
         _practice(structure, narrow, report)
-    if route == "summary":
-        for number, row in visible:
-            for match in VIDEO_TIMESTAMP.finditer(row):
-                source = urlsplit(match[3])
-                if (source.hostname or "").removeprefix("www.") in {"youtube.com", "youtu.be", "m.youtube.com"}:
-                    seconds = int(match[1]) * 60 + int(match[2])
-                    if parse_qs(source.query).get("t") != [f"{seconds}s"]:
-                        report(number, "YouTube timestamp label must match the t=<seconds>s URL parameter.")
-    if route != "practice":
+    if route not in {"practice", "assessment"}:
         if not any(re.match(r"^\*\*Confusion\*\*\s*::\s*(?!None\s*$)\S", row, re.I) for _, row in prose):
             report(start + 1, "Missing specific **Confusion** :: field.")
         for field in ("What I learned", "Atomize", "Connection"):
@@ -497,12 +546,12 @@ def validate_text(text: str, *, vault: Path | None = None, target: Path | None =
                 report(start + 1, f"Missing reflection field: {field}")
         if widget_end is None or any(row.strip() for n, row in prose if n > widget_end):
             report(start + 1, "Missing trailing DataviewJS Mark Revisited widget.")
-    if route in {"cheat-sheet", "atomic"}:
+    if route in {"cheat-sheet", "quick-reference", "atomic"}:
         words = sum(len(WORD.findall(row)) for row in wording)
-        limit = 350 if route == "cheat-sheet" else 149
+        limit = 350 if route in {"cheat-sheet", "quick-reference"} else 149
         if words > limit:
             report(start + 1, f"Body has {words} words; maximum is {limit}.")
-        if route == "cheat-sheet":
+        if route in {"cheat-sheet", "quick-reference"}:
             bullet = None
             for n, row in prose + [(0, "")]:
                 _, row = _strip_quotes(row)
@@ -526,15 +575,35 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--vault", help="Resolve wikilinks in this vault.")
     parser.add_argument("--template", choices=ROUTES, help="Expected built-in route.")
     parser.add_argument("--math-level", type=int, choices=(0, 1, 2, 3), help="Expected math level (3 is deep-study proof-level).")
+    parser.add_argument("--contract", type=Path, help="Use the saved per-note decision contract.")
+    parser.add_argument("--evidence", type=Path, help="Optional ARRIE evidence registry JSON for citation auditing.")
+    parser.add_argument("--pedagogical-plan", type=Path, help="Optional P01-P11 pedagogical plan JSON for quality validation.")
     args = parser.parse_args(argv)
     try:
         vault = resolve_vault_root(args.vault) if args.vault else None
         target = args.note.resolve()
         if vault and not is_within_vault(vault, target):
             raise ValueError("Note is outside the specified vault.")
+        contract = json.loads(args.contract.read_text(encoding="utf-8-sig")) if args.contract else None
+        if args.evidence:
+            from scriptorium.engines.research import normalize_evidence_registry
+
+            raw_ev = json.loads(args.evidence.read_text(encoding="utf-8-sig"))
+            contract = dict(contract or {"contract_version": 3, "template": args.template or "deepstudy-master"})
+            contract["evidence_registry"] = normalize_evidence_registry(
+                raw_ev,
+                research_plan=contract.get("research_plan"),
+                mode=contract.get("research_mode") or raw_ev.get("mode") or "R-I",
+            )
+            contract.setdefault("research_mode", contract["evidence_registry"]["mode"])
+        if args.pedagogical_plan:
+            contract = dict(contract or {"contract_version": 3, "template": args.template or "deepstudy-master"})
+            contract["pedagogical_plan"] = json.loads(args.pedagogical_plan.read_text(encoding="utf-8-sig"))
         findings = validate_text(
             target.read_text(encoding="utf-8-sig"),
-            vault=vault, target=target, route=args.template, math_level=args.math_level,
+            vault=vault, target=target, route=args.template or (contract or {}).get("template"),
+            math_level=args.math_level if args.math_level is not None else (contract or {}).get("math_level"),
+            decision_contract=contract,
         )
     except (OSError, ValueError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)

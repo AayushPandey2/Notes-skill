@@ -1,0 +1,206 @@
+scriptorium/
+|-- .agents/
+|   `-- skills.json
+|-- .gitattributes
+|-- .gitignore
+|-- LICENSE
+|-- README.md
+|-- SKILL.md
+|-- examples/
+|   |-- adaptive-composition/
+|   |   |-- README.md
+|   |   |-- drafts.json
+|   |   |-- evidence.json
+|   |   |-- measurements.json
+|   |   |-- optimizer-benchmark.json
+|   |   |-- reviews.json
+|   |   |-- run.py
+|   |   |-- scenarios.json
+|   |   |-- sources.json
+|   |   |-- spec.json
+|   |   `-- vault/
+|   |       |-- .scriptorium/
+|   |       |   |-- collections/
+|   |       |   |   `-- col-gradient-descent.json
+|   |       |   |-- evidence/
+|   |       |   |   `-- python-math-3.14.txt
+|   |       |   |-- renderers/
+|   |       |   |   `-- col-gradient-descent.json
+|   |       |   `-- validation/
+|   |       |       `-- col-gradient-descent.json
+|   |       |-- 6 - Full Notes/
+|   |       |   `-- Gradient Descent/
+|   |       |       |-- 00 - Map of Contents.md
+|   |       |       |-- 01 - Why Local Descent Works.md
+|   |       |       |-- 02 - Deriving the Update and Its Limits.md
+|   |       |       |-- 03 - Tracing the Algorithm.md
+|   |       |       |-- 04 - Implementing and Testing Descent.md
+|   |       |       `-- 05 - Curvature and Failure Analysis.md
+|   |       `-- assets/
+|   |           |-- attention.svg
+|   |           |-- quadratic-iterations.svg
+|   |           |-- quantization.svg
+|   |           `-- scriptorium/
+|   |               `-- dc77bb9061f9b8f9e757d16a9019cfe646b558687d59fa724f3e60a2e6d3c49c.svg
+|   `-- adaptive-deepnotes/
+|       |-- README.md
+|       |-- binary_search.py
+|       |-- measurements.json
+|       |-- sample-notes.md
+|       |-- scenarios.json
+|       `-- source-fixture.md
+|-- references/
+|   |-- README.md
+|   |-- architecture/
+|   |   |-- final-tree.txt
+|   |   |-- modified-files.txt
+|   |   |-- redesign-audit.md
+|   |   |-- redesign-inventory.json
+|   |   |-- redesign-report.md
+|   |   |-- system-overview.md
+|   |   |-- template-module-catalog.md
+|   |   `-- validation-results.json
+|   |-- contracts/
+|   |   |-- README.md
+|   |   |-- composition-integrity.md
+|   |   |-- migration-notes.md
+|   |   `-- routing-contract.schema.json
+|   |-- metadata/
+|   |   |-- README.md
+|   |   |-- note-naming.md
+|   |   |-- properties-policy.md
+|   |   `-- tag-taxonomy.md
+|   |-- routing/
+|   |   |-- README.md
+|   |   |-- master-registry.yaml
+|   |   `-- routing-policy.md
+|   |-- templates/
+|   |   |-- README.md
+|   |   |-- masters/
+|   |   |   |-- README.md
+|   |   |   |-- assessment.md
+|   |   |   |-- deep-notes.md
+|   |   |   |-- implementation-guide.md
+|   |   |   |-- quick-reference.md
+|   |   |   |-- study-notes.md
+|   |   |   |-- synthesis-revision.md
+|   |   |   `-- worked-solutions.md
+|   |   |-- modules/
+|   |   |   |-- README.md
+|   |   |   `-- module-catalog.md
+|   |   |-- subtemplates/
+|   |   |   |-- README.md
+|   |   |   |-- computational.md
+|   |   |   |-- conceptual.md
+|   |   |   |-- empirical.md
+|   |   |   |-- historical.md
+|   |   |   |-- mathematical.md
+|   |   |   `-- scientific.md
+|   |   `-- variants/
+|   |       |-- README.md
+|   |       |-- atomic-card.md
+|   |       |-- command-reference.md
+|   |       |-- comparison-guide.md
+|   |       |-- concept-map.md
+|   |       |-- flashcards.md
+|   |       |-- formula-sheet.md
+|   |       |-- lecture-order.md
+|   |       |-- mock-exam.md
+|   |       |-- paper-breakdown.md
+|   |       |-- quick-summary.md
+|   |       |-- revision-pack.md
+|   |       `-- syntax-reference.md
+|   `-- workflows/
+|       |-- notes-creation/
+|       |   |-- README.md
+|       |   |-- adaptive-engine.md
+|       |   |-- command-playbooks.md
+|       |   |-- composition-contract.md
+|       |   |-- instructional-registry.json
+|       |   |-- pedagogical-intelligence.md
+|       |   |-- pre-gen-gate.md
+|       |   `-- syllabus-template.md
+|       |-- research/
+|       |   |-- README.md
+|       |   |-- research-engine.md
+|       |   |-- research-policy-registry.json
+|       |   |-- resource-recommendations.md
+|       |   `-- source-fidelity.md
+|       |-- revision/
+|       |   |-- README.md
+|       |   `-- revision-and-linking.md
+|       `-- validation/
+|           |-- README.md
+|           `-- verification-checklist.md
+|-- router.md
+|-- scriptorium/
+|   |-- __init__.py
+|   |-- engines/
+|   |   |-- __init__.py
+|   |   |-- _collection_intelligence.py
+|   |   |-- _composition.py
+|   |   |-- _composition_visuals.py
+|   |   |-- _decision.py
+|   |   |-- _explanation.py
+|   |   |-- _instructional.py
+|   |   |-- _interactive.py
+|   |   |-- _pedagogical_core.py
+|   |   |-- _token_optimizer.py
+|   |   |-- _verification.py
+|   |   |-- composition/
+|   |   |   |-- __init__.py
+|   |   |   |-- checks.py
+|   |   |   |-- contracts.py
+|   |   |   `-- visuals.py
+|   |   |-- knowledge.py
+|   |   |-- orchestration.py
+|   |   |-- pedagogy.py
+|   |   |-- quality.py
+|   |   |-- research.py
+|   |   `-- vault.py
+|   |-- layout.py
+|   `-- models.py
+|-- scripts/
+|   |-- patch_links.py
+|   |-- plan_notes.py
+|   |-- scaffold_note.py
+|   |-- scribe.py
+|   |-- validate_note.py
+|   |-- vault_graph.py
+|   |-- vault_index.py
+|   `-- verify_vault_notes.py
+|-- shared/
+|   |-- authoring_rules.md
+|   |-- footer_widgets.md
+|   `-- math_gates.md
+|-- skills/
+|   |-- scribe-doubt/
+|   |   `-- SKILL.md
+|   |-- scribe-notes/
+|   |   `-- SKILL.md
+|   |-- scribe-quiz/
+|   |   `-- SKILL.md
+|   `-- scribe-setfolder/
+|       `-- SKILL.md
+`-- tests/
+    |-- test_adaptive_deepstudy.py
+    |-- test_collection_intelligence_and_lifecycle.py
+    |-- test_composition_integrity.py
+    |-- test_comprehensive_composition.py
+    |-- test_decision_matrix.py
+    |-- test_explanation_intelligence.py
+    |-- test_instructional_engine.py
+    |-- test_optional_contract.py
+    |-- test_patch_and_graph.py
+    |-- test_pedagogical_engine.py
+    |-- test_repository_architecture_audit.py
+    |-- test_research_engine.py
+    |-- test_routed_workflow.py
+    |-- test_routing_and_masters.py
+    |-- test_study_decisions.py
+    |-- test_syllabus_boundary.py
+    |-- test_token_efficiency_optimizer.py
+    |-- test_token_optimizations.py
+    |-- test_unified_engines_and_properties.py
+    |-- test_universal_notes_workflow.py
+    `-- test_vault_aware.py
