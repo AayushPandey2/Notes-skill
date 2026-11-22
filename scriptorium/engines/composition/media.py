@@ -92,7 +92,7 @@ def _request_once(url: str, host: str, address: str) -> tuple[int, dict, bytes]:
     target = urlunsplit(("","",parts.path or "/",parts.query,""))
     try:
         deadline = time.monotonic()+TIMEOUT
-        connection.request("GET",target,headers={"Host":parts.netloc,"Accept":"image/svg+xml, image/png, image/jpeg, image/webp","Accept-Encoding":"identity","User-Agent":"Scriptorium-Media/5.1"})
+        connection.request("GET",target,headers={"Host":parts.netloc,"Accept":"image/svg+xml, image/png, image/jpeg, image/webp","Accept-Encoding":"identity","User-Agent":"Scriptorium-Media/5.1 (https://github.com/AayushPandey2/Notes-skill)"})
         response = connection.getresponse()
         headers = {k.lower():v for k,v in response.getheaders()}
         if response.status in {301,302,303,307,308}:
