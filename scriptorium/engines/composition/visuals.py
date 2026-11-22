@@ -137,7 +137,12 @@ def render_visuals(vault: Path, plan: dict, drafts: dict[str, str], *, execute: 
     from .checks import arithmetic, attention_mask, check_flow
     from ..vault import safe_write_note
     from . import renderers, media
+    from scriptorium.models import slugify
     bodies, results = dict(drafts), {}
+    collection_slug = plan.get("collection_slug") or (
+        slugify(plan["topic"]) if plan.get("organize_by_collection") and plan.get("topic") else None
+    )
+    embed_style = plan.get("embed_style", "wikilink" if collection_slug else None)
     render_version = content_hash(b"".join(Path(module.__file__).read_bytes() for module in (renderers,media)) + Path(__file__).read_bytes())
     for visual in plan["visuals"]:
         started = time.perf_counter()
@@ -148,7 +153,10 @@ def render_visuals(vault: Path, plan: dict, drafts: dict[str, str], *, execute: 
             renderer = "svg"
         digest = content_hash(json.dumps({"spec": visual, "renderer": renderer, "version": render_version}, sort_keys=True))
         suffix = renderers.BACKENDS[renderer]["suffix"]
-        relative = f"assets/scriptorium/{digest}.{suffix}"
+        if collection_slug:
+            relative = f"assets/scriptorium/{slugify(collection_slug)}/{slugify(visual.get('asset_name') or visual['id'])}-{digest[:12]}.{suffix}"
+        else:
+            relative = f"assets/scriptorium/{digest}.{suffix}"
         path = contained(vault, relative)
         status = {"renderer": renderer, "selected_renderer": selected["renderer"], "family": selected.get("family"),
                   "available": renderer in renderers.BUILTIN_BACKENDS,
@@ -163,11 +171,17 @@ def render_visuals(vault: Path, plan: dict, drafts: dict[str, str], *, execute: 
             if renderer == "external":
                 if plan.get("source_policy") == "strict" and visual.get("asset_policy", "local_preferred") != "offline_only" and visual.get("origin") != "supplied":
                     raise ValueError("Source-only policy permits remote acquisition only for explicitly supplied media")
-                status.update(media.media_artifact(vault,visual,digest,execute=execute))
+                media_spec = dict(visual)
+                if collection_slug and "collection_slug" not in media_spec:
+                    media_spec["collection_slug"] = collection_slug
+                if embed_style and "embed_style" not in media_spec:
+                    media_spec["embed_style"] = embed_style
+                status.update(media.media_artifact(vault,media_spec,digest,execute=execute))
                 status["status"] = "verified"
                 embed = status["embed"]
-                local_target = posixpath.relpath(status["path"],posixpath.dirname(chapter.get("path","note.md")) or ".")
-                embed = embed.replace(f"]({status['path']})",f"]({local_target})")
+                if embed_style != "wikilink":
+                    local_target = posixpath.relpath(status["path"],posixpath.dirname(chapter.get("path","note.md")) or ".")
+                    embed = embed.replace(f"]({status['path']})",f"]({local_target})")
                 status["embed"] = embed
                 if embed not in bodies.get(chapter["id"], ""):
                     bodies[chapter["id"]] = insert_at_section(bodies.get(chapter["id"], ""),visual["section"],

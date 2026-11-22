@@ -20,15 +20,39 @@ import struct
 import tempfile
 import time
 from urllib.parse import urljoin, urlsplit, urlunsplit
+import xml.etree.ElementTree as ET
 import zlib
 
-from scriptorium.models import content_hash
+from scriptorium.models import content_hash, slugify
 
 MAX_BYTES = 8 * 1024 * 1024
 MAX_PIXELS = 4_000_000
 TIMEOUT = 10
 MAX_REDIRECTS = 3
 POLICIES = frozenset({"remote_allowed", "local_preferred", "offline_only"})
+SUPPORTED_MIMES = {
+    "image/png": "png",
+    "image/svg+xml": "svg",
+    "image/jpeg": "jpg",
+    "image/webp": "webp",
+}
+PERMISSIVE_LICENSE_PATTERNS = (
+    r"\bcc0\b",
+    r"\bcc[\s-]*by(?:[\s-]*(?:sa|nc|nd))?\b",
+    r"\bpublic\s+domain\b",
+    r"\bmit\b",
+    r"\bapache[\s-]*2(?:\.0)?\b",
+    r"\bbsd\b",
+    r"\bopen[\s-]+access\b",
+    r"\bauthor[\s-]+permitted\b",
+)
+RESTRICTIVE_LICENSE_PATTERNS = (
+    r"\ball\s+rights\s+reserved\b",
+    r"\bunknown\b",
+    r"\bunclear\b",
+    r"\bunverified\b",
+    r"\bno\s+redistribution\b",
+)
 
 
 def _url(value: str):
@@ -68,7 +92,7 @@ def _request_once(url: str, host: str, address: str) -> tuple[int, dict, bytes]:
     target = urlunsplit(("","",parts.path or "/",parts.query,""))
     try:
         deadline = time.monotonic()+TIMEOUT
-        connection.request("GET",target,headers={"Host":parts.netloc,"Accept":"image/png","Accept-Encoding":"identity","User-Agent":"Scriptorium-Media/5"})
+        connection.request("GET",target,headers={"Host":parts.netloc,"Accept":"image/svg+xml, image/png, image/jpeg, image/webp","Accept-Encoding":"identity","User-Agent":"Scriptorium-Media/5.1"})
         response = connection.getresponse()
         headers = {k.lower():v for k,v in response.getheaders()}
         if response.status in {301,302,303,307,308}:
@@ -120,7 +144,7 @@ def fetch_image(url: str) -> tuple[bytes,dict]:
         if status != 200:
             raise ValueError(f"Image HTTP status {status}")
         mime = headers.get("content-type", "").split(";",1)[0].strip().lower()
-        dimensions = decode_png(raw,mime)
+        dimensions = validate_image_bytes(raw,mime)
         return raw,{"url":url,"final_url":current,"mime":mime,"bytes":len(raw),**dimensions,
                     "redirects":step,"acquired_at":datetime.now(timezone.utc).isoformat(),
                     "availability":"observed at acquisition; not a continuing availability guarantee"}
@@ -206,12 +230,129 @@ def decode_png(raw: bytes, mime: str = "image/png") -> dict:
     return {"width":width,"height":height,"decoder":"bounded PNG scanline reconstruction"}
 
 
+def decode_jpeg(raw: bytes, mime: str = "image/jpeg") -> dict:
+    """Validate bounded JPEG SOI/SOF dimensions and EOI without external codecs."""
+    if len(raw) > MAX_BYTES or mime not in {"image/jpeg", "image/jpg"} or not raw.startswith(b"\xff\xd8"):
+        raise ValueError("Only valid JPEG with matching image/jpeg MIME is supported")
+    pos = 2
+    width = height = None
+    while pos + 1 < len(raw):
+        if raw[pos] != 0xFF:
+            raise ValueError("Invalid JPEG marker stream")
+        while pos < len(raw) and raw[pos] == 0xFF:
+            pos += 1
+        if pos >= len(raw):
+            break
+        marker = raw[pos]
+        pos += 1
+        if marker == 0xD9:  # EOI
+            if width is None or height is None:
+                raise ValueError("JPEG missing frame header")
+            return {"width": width, "height": height, "decoder": "bounded JPEG SOF parser"}
+        if marker in {0x00, 0x01} or 0xD0 <= marker <= 0xD7:
+            continue
+        if pos + 2 > len(raw):
+            raise ValueError("Truncated JPEG segment")
+        seg_len = struct.unpack(">H", raw[pos:pos + 2])[0]
+        if seg_len < 2 or pos + seg_len > len(raw):
+            raise ValueError("Invalid JPEG segment length")
+        if marker in {0xC0, 0xC1, 0xC2}:
+            if seg_len < 7:
+                raise ValueError("Truncated JPEG SOF header")
+            height, width = struct.unpack(">HH", raw[pos + 3:pos + 7])
+            if not width or not height or width * height > MAX_PIXELS or max(width, height) > 10000:
+                raise ValueError("JPEG exceeds bounded pixel dimensions")
+        if marker == 0xDA:  # SOS: scan until EOI at end
+            if raw.endswith(b"\xff\xd9") and width is not None and height is not None:
+                return {"width": width, "height": height, "decoder": "bounded JPEG SOF parser"}
+            raise ValueError("JPEG missing EOI or frame header")
+        pos += seg_len
+    raise ValueError("Incomplete JPEG")
+
+
+def decode_webp(raw: bytes, mime: str = "image/webp") -> dict:
+    """Validate bounded RIFF/WEBP container and VP8/VP8L/VP8X dimensions."""
+    if len(raw) > MAX_BYTES or mime != "image/webp" or len(raw) < 25 or raw[:4] != b"RIFF" or raw[8:12] != b"WEBP":
+        raise ValueError("Only valid WebP with matching image/webp MIME is supported")
+    riff_size = struct.unpack("<I", raw[4:8])[0]
+    if riff_size + 8 > len(raw):
+        raise ValueError("Truncated WebP RIFF container")
+    chunk = raw[12:16]
+    width = height = None
+    if chunk == b"VP8X" and len(raw) >= 30:
+        width = 1 + int.from_bytes(raw[24:27], "little")
+        height = 1 + int.from_bytes(raw[27:30], "little")
+    elif chunk == b"VP8L" and len(raw) >= 25 and raw[20] == 0x2F:
+        bits = struct.unpack("<I", raw[21:25])[0]
+        width = (bits & 0x3FFF) + 1
+        height = ((bits >> 14) & 0x3FFF) + 1
+    elif chunk == b"VP8 " and len(raw) >= 30 and raw[23:26] == b"\x9d\x01\x2a":
+        width = struct.unpack("<H", raw[26:28])[0] & 0x3FFF
+        height = struct.unpack("<H", raw[28:30])[0] & 0x3FFF
+    else:
+        raise ValueError("Unsupported or malformed WebP bitstream")
+    if not width or not height or width * height > MAX_PIXELS or max(width, height) > 10000:
+        raise ValueError("WebP exceeds bounded pixel dimensions")
+    return {"width": width, "height": height, "decoder": "bounded WebP header parser"}
+
+
+def validate_svg_bytes(raw: bytes, mime: str = "image/svg+xml") -> dict:
+    """Sanitize and validate downloaded SVG against active scripts and external refs."""
+    from .visuals import validate_svg
+    if len(raw) > MAX_BYTES or mime != "image/svg+xml":
+        raise ValueError("Only bounded SVG with matching image/svg+xml MIME is supported")
+    try:
+        text = raw.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise ValueError("SVG must be valid UTF-8") from exc
+    if re.search(r"<!DOCTYPE|<!ENTITY", text, re.I):
+        raise ValueError("SVG DOCTYPE and XML entities are forbidden")
+    issues = validate_svg(text)
+    if issues:
+        raise ValueError("; ".join(issues))
+    root = ET.fromstring(text)
+    return {"width": root.get("width") or "viewBox", "height": root.get("height") or "viewBox",
+            "decoder": "bounded XML/SVG allowlist sanitizer"}
+
+
+def validate_image_bytes(raw: bytes, mime: str) -> dict:
+    """Validate downloaded or local image bytes according to declared MIME type."""
+    normalized = mime.split(";", 1)[0].strip().lower()
+    if normalized == "image/png":
+        return decode_png(raw, normalized)
+    if normalized == "image/svg+xml":
+        return validate_svg_bytes(raw, normalized)
+    if normalized in {"image/jpeg", "image/jpg"}:
+        return decode_jpeg(raw, normalized)
+    if normalized == "image/webp":
+        return decode_webp(raw, normalized)
+    raise ValueError(f"Unsupported image MIME type: {mime}")
+
+
+def verify_license_and_rights(rights: str, *, require_permissive: bool = False) -> dict:
+    """Verify supplied license metadata before local persistence or reuse."""
+    text = (rights or "").strip()
+    if not text:
+        raise ValueError("Missing license or rights statement")
+    lowered = text.casefold()
+    if any(re.search(pat, lowered) for pat in RESTRICTIVE_LICENSE_PATTERNS):
+        raise ValueError(f"License prohibits or leaves unclear local reuse: {text}")
+    permissive = any(re.search(pat, lowered) for pat in PERMISSIVE_LICENSE_PATTERNS)
+    if require_permissive and not permissive:
+        raise ValueError(f"License is not an established permissive/open-access grant: {text}")
+    return {"rights": text, "permissive": permissive, "local_copy_permitted": permissive or not require_permissive}
+
+
 def _metadata(visual: dict) -> tuple[str,str,str,str]:
     fields = tuple(visual.get(k) for k in ("source","rights","alt","relevance"))
     if any(not isinstance(value,str) or not value.strip() or len(value)>2000 for value in fields):
         raise ValueError("Remote media needs source, rights, alt text and relevance rationale")
-    _url(visual["url"])
-    _url(fields[0])
+    policy = visual.get("asset_policy", "local_preferred")
+    if policy != "offline_only":
+        _url(visual["url"])
+        _url(fields[0])
+    elif visual.get("url"):
+        _url(visual["url"])
     return fields
 
 
@@ -255,12 +396,18 @@ def media_artifact(vault: Path, visual: dict, digest: str, *, execute: bool) -> 
     else:
         if not execute:
             raise ValueError("Verified media snapshot and receipt are missing")
+        if visual.get("require_permissive_license"):
+            verify_license_and_rights(rights, require_permissive=True)
         fallback = visual.get("local_fallback")
         if policy == "offline_only":
             if not fallback:
-                raise ValueError("Offline-only media requires an explicit local_fallback PNG")
-            raw = contained(vault,fallback).read_bytes()
-            provenance = {"mime":"image/png",**decode_png(raw),"acquisition":"explicit local fallback; network disabled"}
+                raise ValueError("Offline-only media requires an explicit local_fallback image")
+            fb_path = contained(vault,fallback)
+            raw = fb_path.read_bytes()
+            fb_mime = visual.get("fallback_mime") or {
+                ".svg": "image/svg+xml", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp"
+            }.get(fb_path.suffix.lower(), "image/png")
+            provenance = {"mime":fb_mime,**validate_image_bytes(raw, fb_mime),"acquisition":"explicit local fallback; network disabled"}
             fallback_used = True
         else:
             try:
@@ -268,30 +415,44 @@ def media_artifact(vault: Path, visual: dict, digest: str, *, execute: bool) -> 
             except (OSError,ValueError,http.client.HTTPException) as exc:
                 if not fallback:
                     raise ValueError(f"Remote image acquisition failed: {exc}") from exc
-                raw = contained(vault,fallback).read_bytes()
-                provenance = {"mime":"image/png",**decode_png(raw),"acquisition":"explicit local fallback",
+                fb_path = contained(vault,fallback)
+                raw = fb_path.read_bytes()
+                fb_mime = visual.get("fallback_mime") or {
+                    ".svg": "image/svg+xml", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp"
+                }.get(fb_path.suffix.lower(), "image/png")
+                provenance = {"mime":fb_mime,**validate_image_bytes(raw, fb_mime),"acquisition":"explicit local fallback",
                               "remote_failure":str(exc)}
                 fallback_used = True
-        decode_png(raw,provenance.get("mime"))
-        relative = f"assets/scriptorium/{content_hash(raw)}.png"
+        mime = provenance.get("mime", "image/png")
+        validate_image_bytes(raw, mime)
+        ext = SUPPORTED_MIMES.get(mime, "png")
+        digest_hex = content_hash(raw)
+        collection = visual.get("collection_slug")
+        label = visual.get("asset_name") or visual.get("id")
+        if collection and label:
+            relative = f"assets/scriptorium/{slugify(collection)}/{slugify(label)}-{digest_hex[:12]}.{ext}"
+        else:
+            relative = f"assets/scriptorium/{digest_hex}.{ext}"
         path = contained(vault,relative)
         if path.exists() and path.read_bytes()!=raw:
             raise ValueError("Content-addressed image was altered")
         if not path.exists():
             _write_immutable(path,raw)
-        receipt = {**provenance,"input_hash":digest,"hash":content_hash(raw),"path":relative,
+        receipt = {**provenance,"input_hash":digest,"hash":digest_hex,"path":relative,
                    "source":source,"rights":rights,"alt":alt,"relevance":relevance,"asset_policy":policy,
                    "fallback_used":fallback_used,"rights_verification":"supplied rights statement; independently verify before redistribution"}
         _write_immutable(receipt_path,json.dumps(receipt,sort_keys=True,indent=2).encode("utf-8"))
-    # Remote embedding requires an acquired URL, never a fallback. Parentheses are
-    # rejected in URLs, and Markdown label metacharacters are escaped.
+    # Local-first embedding: local_preferred and offline_only always reference local vault assets.
     target = receipt.get("final_url") if policy == "remote_allowed" and not receipt.get("fallback_used") else receipt["path"]
     if target.startswith("https:"):
         _url(target)
     clean_alt = re.sub(r"([\\\[\]*_`])",r"\\\1",alt).replace("\n"," ").replace("\r"," ")
     clean_rights = re.sub(r"([\\\[\]*_`])",r"\\\1",escape(rights)).replace("\n"," ").replace("\r"," ")
-    embed = f"![{escape(clean_alt)}]({target})\n\n*Source: [original publication]({source}); rights: {clean_rights}*"
+    if not target.startswith("https:") and visual.get("embed_style") == "wikilink":
+        embed = f"![[{target}]]\n\n*Figure: {escape(clean_alt)}*\n\n*Source: [original publication]({source}); rights: {clean_rights}*"
+    else:
+        embed = f"![{escape(clean_alt)}]({target})\n\n*Source: [original publication]({source}); rights: {clean_rights}*"
     return {"path":receipt["path"],"hash":receipt["hash"],"embed":embed,"provenance":receipt,
             "media_receipt":receipt_relative,"cached":cached,"validation":{"result":"pass",
-              "method":"decode PNG, compare snapshot SHA-256 and specification-bound acquisition receipt",
+              "method":"validate bounded image bytes (PNG/SVG/JPEG/WebP), compare snapshot SHA-256 and specification-bound acquisition receipt",
               "limits":"Live availability established only at acquisition; image relevance and supplied rights need editorial review."}}

@@ -48,32 +48,33 @@ Obsidian themes and browser execution require separate host testing. Graphs
 communicate supplied topology; a circuit graph does not prove electrical behavior.
 Hybrid specs expand into complementary, separately obligated parts.
 
-## Remote source figures
+## Local-first source figures and LAVIA
 
 `source_figure` requires discovered `url`, original `source`, `rights`, `alt` and
-`relevance`. Do not invent URLs, permission or licensing conclusions. ARRIE and
+`relevance` (except `offline_only` with an explicit `local_fallback`). Do not invent URLs, permission or licensing conclusions. ARRIE and
 available discovery tools remain the source-discovery owners; this backend
 validates an actual direct resource supplied by that process.
 In strict source-only plans, remote acquisition additionally requires the visual's
 `origin` to be `supplied`; otherwise use a supplied local offline fallback.
 
-`asset_policy` is `remote_allowed`, `local_preferred` (default), or `offline_only`.
-All successful acquisitions create a content-addressed local PNG snapshot and a
-specification-bound `.media.json` receipt. `remote_allowed` can emit HTTPS Markdown;
-`local_preferred` emits a relative local image link. `offline_only` requires a local
-PNG through `local_fallback`. For online policies, an explicit local fallback is
-used only after remote failure and records that failure; it never pretends the
-remote resource succeeded. Attribution appears beside the image; provenance stays
-in internal receipts and the collection manifest.
+`asset_policy` is `local_preferred` (default), `offline_only`, or `remote_allowed`.
+LAVIA (`composition/lavia.py`) coordinates concept-level visual coverage planning,
+collection-organized storage (`assets/scriptorium/<collection-slug>/<name>-<hash>.<ext>`),
+canonical manifests (`assets/scriptorium/<collection-slug>/manifest.json`), SHA-256
+deduplication, offline embed validation, and targeted dependency-aware repair.
+All successful acquisitions create a content-addressed local snapshot and a
+specification-bound `.media.json` receipt. `local_preferred` and `offline_only`
+always emit local vault embeds (`![[...]]` or relative Markdown paths). Attribution
+appears beside the image; provenance stays in internal receipts and the LAVIA manifest.
 
-The dependency-free decoder supports noninterlaced 8-bit grayscale, RGB and alpha
-PNG. It verifies MIME, CRCs, bounded decompression, dimensions and reconstructed
-scanlines. JPEG, GIF, WebP and remote SVG require a decoder adapter and are rejected.
-Limits are 8 MiB, four million pixels, maximum dimension 10,000, ten seconds per
-request and three redirects. Each redirect must remain HTTPS without credentials
-or alternate ports. DNS answers must all be global public addresses; the socket
-connects to a validated IP with the original TLS hostname, avoiding a second DNS
-resolution. HTTP status alone never establishes image validity.
+The dependency-free validators support noninterlaced 8-bit grayscale, RGB and alpha
+PNG (scanline reconstruction), sanitized UTF-8 SVG (strict element/attribute allowlist,
+no `<script>`, `on*`, `href`, `DOCTYPE`, or `url()`), bounded JPEG (SOF0/SOF2/EOI),
+and bounded WebP (`VP8 `/`VP8L`/`VP8X`). Limits are 8 MiB, four million pixels,
+maximum dimension 10,000, ten seconds per request and three redirects. Each redirect
+must remain HTTPS without credentials or alternate ports. DNS answers must all be
+global public addresses; the socket connects to a validated IP with the original TLS
+hostname, avoiding a second DNS resolution. HTTP status alone never establishes image validity.
 
 `execute=False` checks saved bytes and receipts without network access or writes.
 The publisher hashes all renderer artifacts and media receipts, rejects undeclared
