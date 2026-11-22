@@ -49,6 +49,6 @@ Dispatch each active public command or `/scribe-notes` internal branch cleanly�
 - **Trigger:** Structured multi-note curriculum without single-unit lock.
 - **Execution:** Decompose into `4–10+` numbered child notes (minimum `3` + MOC index), preserve source terminology/order, label additions, and apply `shared/math_gates.md` (`M01`–`M14`) whenever quantitative material appears.
 
-### Command V — Video Lecture Ingestion (`/scribe-ytnotes`, `/scribe-ytlecture` -> `/scribe-notes`)
-- **Trigger:** Video URL, lecture recording, timestamped transcript JSON, or candidate video frames (`VIDEO-01`–`VIDEO-04`, `scripts/scribe.py ytnotes` / `ytlecture`).
+### Command V — Unified Video & Lecture Ingestion (`/scribe-ytnote` -> `/scribe-notes`)
+- **Trigger:** Video URL, lecture recording, timestamped transcript JSON, or candidate video frames (`VIDEO-01`–`VIDEO-04`, `scripts/scribe.py ytnote`; compatible aliases `ytnotes` and `ytlecture` remain supported).
 - **Execution & Validation:** Check tool availability honestly (`yt-dlp`, `ffmpeg`, captions), declare explicit `access_state` (`full_multimodal`, `transcript_plus_frames`, `transcript_only`, `media_only`, `metadata_only`), segment transcript chronologically, screen frames via `composition/video.py` to keep readable derivation/diagram stills under `assets/scriptorium/<slug>/`, explain prose + formulas via `shared/teaching_core.md` + `shared/math_gates.md`, and degrade honestly on unavailable transcripts/frames.

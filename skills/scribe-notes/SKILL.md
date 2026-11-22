@@ -1,11 +1,11 @@
 ---
 name: scribe-notes
-description: Universal adaptive Obsidian note-creation command. Use when asked to create, expand, or organize study notes, comprehensive first-principles guides, lecture/PDF/YouTube notes (/scribe-ytnotes, /scribe-ytlecture), worked solutions, implementation tutorials, comparison guides, cheat sheets, or atomic cards in Obsidian.
+description: Universal adaptive Obsidian note-creation command. Use when asked to create, expand, or organize study notes, comprehensive first-principles guides, lecture/PDF/YouTube video notes (/scribe-ytnote), worked solutions, implementation tutorials, comparison guides, cheat sheets, or atomic cards in Obsidian.
 ---
 
 # `/scribe-notes`
 
-`/scribe-notes` is Scriptorium's single public entrypoint for creating or updating learning notes (including `/scribe-ytnotes` and `/scribe-ytlecture` video aliases via `scripts/scribe.py ytnotes` / `ytlecture`). Interactive calibration runs first so template, depth, and folder layout match user intent without wasted generation passes.
+`/scribe-notes` is Scriptorium's single public entrypoint for creating or updating learning notes (including `/scribe-ytnote`—combining `/scribe-ytnotes` and `/scribe-ytlecture`—via `scripts/scribe.py ytnote`). Interactive calibration runs first so template, depth, and folder layout match user intent without wasted generation passes.
 
 ## Execution Flow
 

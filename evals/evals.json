@@ -15,7 +15,7 @@
     },
     {
       "id": 2,
-      "prompt": "/scribe-ytnotes Build structured study notes from this lecture video with timestamps, equations, and clearest whiteboard frames: https://www.youtube.com/watch?v=aircAruvnKk",
+      "prompt": "/scribe-ytnote Build structured study notes from this lecture video with timestamps, equations, and clearest whiteboard frames: https://www.youtube.com/watch?v=aircAruvnKk",
       "expected_output": "Routes through the unified /scribe-notes video adapter (composition/video.py, VIDEO-01..04), reports explicit access_state honestly, segments timestamped transcript blocks, screens candidate frames to retain clear derivation/diagram stills locally under assets/scriptorium/<slug>/ while rejecting transition/blur frames, and places collapsible formula folds directly beneath displayed math.",
       "files": [],
       "expectations": [

@@ -92,7 +92,7 @@ def test_evals_json_and_trigger_eval_schemas_and_routing():
         if not q["should_trigger"]:
             continue
         if q["expected_command"] == "scribe-notes" and q["expected_master"]:
-            if "/scribe-ytnotes" in q["query"].lower():
+            if "/scribe-ytnote" in q["query"].lower():
                 v_dispatch = dispatch_trigger("VIDEO-01")
                 assert v_dispatch["trigger"] == "VIDEO-01"
             else:

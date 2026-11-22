@@ -150,7 +150,7 @@ def _build_parser() -> argparse.ArgumentParser:
     p_audit.add_argument("--inventory", action="store_true", help="Include per-file purpose, dependencies, size, estimated context cost and preservation decisions.")
     sub.add_parser("validate-registry", help="Validate references/routing/master-registry.yaml.")
 
-    for yt_cmd in ("ytnotes", "ytlecture"):
+    for yt_cmd in ("ytnote", "ytnotes", "ytlecture"):
         p_yt = sub.add_parser(yt_cmd, help=f"Unified video transcript/frame ingestion alias (/{yt_cmd}) feeding /scribe-notes.")
         p_yt.add_argument("--title", required=True, help="Video or lecture title.")
         p_yt.add_argument("--url", default="", help="Source video URL.")
@@ -514,7 +514,7 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(res, indent=2, ensure_ascii=False))
         return 0 if res["valid"] else 1
 
-    if args.command in {"ytnotes", "ytlecture"}:
+    if args.command in {"ytnote", "ytnotes", "ytlecture"}:
         t_entries = json.loads(args.transcript_json.read_text(encoding="utf-8-sig")) if args.transcript_json else None
         f_cands = json.loads(args.frames_json.read_text(encoding="utf-8-sig")) if args.frames_json else None
         payload = orch.ingest_video(

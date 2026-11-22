@@ -1,6 +1,6 @@
 ---
 name: scriptorium
-description: Create, research, organize, and query Obsidian study notes, lecture summaries, mathematical derivations with collapsible step-by-step explanations, YouTube lecture notes (/scribe-ytnotes), worked solutions, implementation guides, practice quizzes (/scribe-quiz), cheat sheets, and read-only vault Q&A (/scribe-doubt). Use whenever the user asks to generate, expand, summarize, or verify learning notes from topics, PDFs, URLs, or videos, or run /scribe-* commands in Obsidian.
+description: Create, research, organize, and query Obsidian study notes, lecture summaries, mathematical derivations with collapsible step-by-step explanations, YouTube video & lecture notes (/scribe-ytnote), worked solutions, implementation guides, practice quizzes (/scribe-quiz), cheat sheets, and read-only vault Q&A (/scribe-doubt). Use whenever the user asks to generate, expand, summarize, or verify learning notes from topics, PDFs, URLs, or videos, or run /scribe-* commands in Obsidian.
 ---
 
 # Scriptorium
@@ -9,7 +9,7 @@ Scriptorium turns topics, PDFs, articles, and videos into beginner-clear, self-c
 
 ## Entry Commands
 
-- `/scribe-notes` ([skills/scribe-notes](skills/scribe-notes/SKILL.md)): Universal note-creation gateway covering all seven masters (`M1`–`M7`), variants, interactive scope calibration, KCP v2 topic collections, and video-source aliases (`/scribe-ytnotes`, `/scribe-ytlecture` -> `scripts/scribe.py ytnotes` / `ytlecture`).
+- `/scribe-notes` ([skills/scribe-notes](skills/scribe-notes/SKILL.md)): Universal note-creation gateway covering all seven masters (`M1`–`M7`), variants, interactive scope calibration, KCP v2 topic collections, and unified video/lecture ingestion (`/scribe-ytnote` -> `scripts/scribe.py ytnote`, with compatible `/scribe-ytnotes` and `/scribe-ytlecture` aliases).
 - `/scribe-doubt` ([skills/scribe-doubt](skills/scribe-doubt/SKILL.md)): Read-only Q&A strictly grounded in existing vault notes with `[[Note Title]]` citations.
 - `/scribe-quiz` ([skills/scribe-quiz](skills/scribe-quiz/SKILL.md)): One-question-at-a-time interactive recall over existing vault notes.
 - `/scribe-setfolder` ([skills/scribe-setfolder](skills/scribe-setfolder/SKILL.md)): Persist the default target Obsidian notes folder in `~/.scriptorium-config.json`.

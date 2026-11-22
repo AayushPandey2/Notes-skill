@@ -281,11 +281,13 @@ def test_video_adapter_capabilities_frames_timestamps_and_access_states(tmp_path
 
 def test_aliases_containment_and_protected_originals_unchanged(tmp_path):
     orch = OrchestrationEngine(ROOT)
+    r_yt = orch.route("/scribe-ytnote https://www.youtube.com/watch?v=abc123")
     r_yt1 = orch.route("/scribe-ytnotes https://www.youtube.com/watch?v=abc123")
     r_yt2 = orch.route("/scribe-ytlecture https://www.youtube.com/watch?v=abc123")
+    assert r_yt["command"] == "scribe-notes" and r_yt["video_adapter"] is True
     assert r_yt1["command"] == "scribe-notes" and r_yt1["video_adapter"] is True
     assert r_yt2["command"] == "scribe-notes" and r_yt2["video_adapter"] is True
-    assert r_yt1["master"] == r_yt2["master"] == "M2"
+    assert r_yt["master"] == r_yt1["master"] == r_yt2["master"] == "M2"
 
     r_legacy = orch.route("/scribe-deepnotes Linear Regression")
     assert r_legacy["master"] == "M1" and r_legacy["migration_hint"]

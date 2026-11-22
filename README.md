@@ -40,7 +40,7 @@ python -m pytest -q
 python scripts/scribe.py audit --inventory
 python scripts/scribe.py optimize --benchmark
 python scripts/scribe.py notes start "/scribe-notes <Topic>" --vault "<Vault>"
-python scripts/scribe.py ytnotes --title "<Lecture>" --url "<URL>" --vault "<Vault>"
+python scripts/scribe.py ytnote --title "<Video or Lecture>" --url "<URL>" --vault "<Vault>"
 python scripts/vault_index.py "<Vault>" --discover --topic "<Topic>"
 ```
 

@@ -340,18 +340,24 @@ command_mappings:
     description: Configure the target Obsidian notes folder path in ~/.scriptorium-config.json.
 
 command_aliases:
+  scribe-ytnote:
+    target_command: scribe-notes
+    adapter: video
+    default_master: M2
+    default_variant: lecture_order
+    description: Unified video & lecture note command (combining /scribe-ytnotes and /scribe-ytlecture) feeding transcript/frame ingestion into /scribe-notes.
   scribe-ytnotes:
     target_command: scribe-notes
     adapter: video
     default_master: M2
     default_variant: lecture_order
-    description: Video transcript and frame-grounded learning notes routed through the shared /scribe-notes pipeline.
+    description: Compatible alias for /scribe-ytnote feeding the shared video adapter and /scribe-notes pipeline.
   scribe-ytlecture:
     target_command: scribe-notes
     adapter: video
     default_master: M2
     default_variant: lecture_order
-    description: Compatible alias for /scribe-ytnotes feeding the same video transcript/frame adapter and /scribe-notes pipeline.
+    description: Compatible alias for /scribe-ytnote feeding the shared video adapter and /scribe-notes pipeline.
 
 retired_commands:
   scribe-deepnotes:
