@@ -124,9 +124,8 @@ class KnowledgeCollectionPlan:
 # ---------------------------------------------------------------------------
 
 _HIGH_COMPLEXITY_HINTS = re.compile(
-    r"\b(?:gradient\s+descent|backpropagation|attention|transformer|regression|regularization|"
-    r"optimization|svd|eigen|bayes|theorem|proof|dynamic\s+programming|dijkstra|binary\s+search|"
-    r"pca|loss\s+function|virtual\s+memory|scheduling|deadlock|maxwell|biot[\s–-]savart)\b",
+    r"\b(?:theorem|proof|derivation|equation|algorithm|mechanism|architecture|"
+    r"protocol|system|dynamics|analysis|inference|synthesis|model)\b",
     re.I,
 )
 _ORIENTATION_HINTS = re.compile(
@@ -406,20 +405,6 @@ def reconcile_existing_vault_notes(
 # F04 — Knowledge Graph Gap Analysis (G1-G5)
 # ---------------------------------------------------------------------------
 
-_KNOWN_PREREQ_KNOWLEDGE: dict[str, list[str]] = {
-    "backpropagation": ["Chain Rule", "Partial Derivatives", "Computational Graphs"],
-    "gradient descent": ["Derivatives", "Loss Functions"],
-    "stochastic gradient descent": ["Gradient Descent"],
-    "adam": ["Gradient Descent", "Momentum"],
-    "logistic regression": ["Linear Regression", "Probability Basics"],
-    "self-attention": ["Matrix Multiplication", "Softmax Function"],
-    "multi-head attention": ["Self-Attention"],
-    "transformers": ["Self-Attention", "Positional Encoding"],
-    "pca": ["Eigenvalues and Eigenvectors", "Covariance Matrix"],
-    "binary search": ["Sorted Arrays"],
-}
-
-
 def analyze_prerequisite_gaps(
     plan: NoteCollectionPlan,
     preferences: ResolvedNotePreferences,
@@ -427,6 +412,7 @@ def analyze_prerequisite_gaps(
     existing_reconciliation: dict[str, Any] | None = None,
     known_concepts: list[str] | None = None,
     vault_titles: list[str] | None = None,
+    prerequisite_map: dict[str, list[str]] | None = None,
 ) -> dict[str, Any]:
     """F04: Detect G1-G5 prerequisite gaps using smallest-intervention resolution (NO diagnostic quizzes!)."""
     node_map = {n.concept_id: n for n in plan.nodes}
@@ -441,13 +427,13 @@ def analyze_prerequisite_gaps(
 
     gaps: list[dict[str, Any]] = []
     user_level = str((preferences.prior_knowledge or {}).get("level") or "intermediate").lower()
+    supplied_prereqs = {k.strip().lower(): v for k, v in (prerequisite_map or {}).items()}
 
     for node in plan.nodes:
         if node.note_role in {"root_index", "group_index"}:
             continue
         declared_prereqs = list(node.prerequisite_ids)
-        # Check domain-known prerequisites if not already declared
-        inferred = _KNOWN_PREREQ_KNOWLEDGE.get(node.title.strip().lower(), [])
+        inferred = supplied_prereqs.get(node.title.strip().lower(), [])
         all_checks: list[tuple[str, str]] = [(p, "declared") for p in declared_prereqs]
         for inf in inferred:
             inf_norm = _norm_title(inf)
@@ -622,24 +608,6 @@ def negotiate_collection_scope(
 # F07 — Adaptive Note Granularity Revision (Split / Merge / Retain)
 # ---------------------------------------------------------------------------
 
-_SPLITTABLE_HINTS: dict[str, list[str]] = {
-    "gradient descent variants": [
-        "Batch Gradient Descent",
-        "Stochastic Gradient Descent",
-        "Mini-Batch Gradient Descent",
-    ],
-    "regularization techniques": [
-        "L1 Regularization (Lasso)",
-        "L2 Regularization (Ridge)",
-        "Dropout Regularization",
-    ],
-    "classification metrics": [
-        "Confusion Matrix and Precision-Recall",
-        "ROC Curve and AUC",
-    ],
-}
-
-
 def evaluate_note_granularity(
     plan: NoteCollectionPlan,
     preferences: ResolvedNotePreferences,
@@ -647,6 +615,7 @@ def evaluate_note_granularity(
     committed_paths: set[str] | None = None,
     max_revisions: int = 2,
     current_revision_count: int = 0,
+    split_hints: dict[str, list[str]] | None = None,
 ) -> dict[str, Any]:
     """F07: Evaluate planned notes for bounded split, merge, or retain decisions."""
     committed = {p.replace("\\", "/").lower() for p in (committed_paths or set())}
@@ -658,20 +627,35 @@ def evaluate_note_granularity(
             "reason": f"Bounded granularity revision limit ({max_revisions}) reached; retaining current boundaries.",
         }
 
+    supplied_splits = {k.strip().lower(): v for k, v in (split_hints or {}).items()}
+    composite_re = re.compile(r"\b(?:variants|methods|techniques|algorithms|families|mechanisms)\b", re.I)
+
     # Detect split candidates
     for node in plan.nodes:
         if node.note_role not in {"child", "single"}:
             continue
         key = node.title.strip().lower()
         is_committed = node.proposed_path.replace("\\", "/").lower() in committed
-        if key in _SPLITTABLE_HINTS and preferences.depth in {"comprehensive", "exhaustive"}:
+        if key in supplied_splits and preferences.depth in {"comprehensive", "exhaustive"}:
             decisions.append({
                 "action": "split",
                 "concept_id": node.concept_id,
                 "title": node.title,
-                "proposed_children": list(_SPLITTABLE_HINTS[key]),
+                "proposed_children": list(supplied_splits[key]),
                 "requires_approval": is_committed,
-                "reason": f"'{node.title}' encompasses multiple independently teachable methods at '{preferences.depth}' depth.",
+                "reason": f"'{node.title}' encompasses multiple independently teachable subtopics at '{preferences.depth}' depth.",
+            })
+        elif composite_re.search(node.title) and preferences.depth in {"comprehensive", "exhaustive"}:
+            decisions.append({
+                "action": "split",
+                "concept_id": node.concept_id,
+                "title": node.title,
+                "proposed_children": [
+                    f"{node.title} — Foundations",
+                    f"{node.title} — Comparative Analysis",
+                ],
+                "requires_approval": is_committed,
+                "reason": f"'{node.title}' groups multiple comparative mechanisms at '{preferences.depth}' depth.",
             })
         else:
             decisions.append({
@@ -989,96 +973,89 @@ class CollectionTerminologyRegistry:
 # F10 — Intelligent Cross-Note Synthesis (Reuses M7)
 # ---------------------------------------------------------------------------
 
-_SYNTHESIS_CLUSTERS: tuple[tuple[str, set[str], list[str]], ...] = (
-    (
-        "How Backpropagation and Optimizers Work Together",
-        {"backpropagation", "gradient descent", "sgd", "adam", "optimizers", "loss functions"},
-        [
-            "Forward pass maps inputs to predictions through parameterized layers.",
-            "Loss function quantifies prediction error as a scalar objective.",
-            "Backpropagation applies the chain rule to compute parameter gradients.",
-            "The optimizer (Gradient Descent / SGD / Adam) converts gradients into bounded parameter updates.",
-            "Iterative updates repeat across batches until validation performance stabilizes.",
-        ],
-    ),
-    (
-        "How Loss Functions, Gradient Descent, and Regularization Interact",
-        {"loss functions", "gradient descent", "regularization", "overfitting and underfitting"},
-        [
-            "The loss function defines the empirical error surface over model parameters.",
-            "Regularization adds a complexity penalty that reshapes the objective geometry.",
-            "Gradient Descent minimizes the combined objective, trading training fit against generalization.",
-        ],
-    ),
-)
-
-
 def plan_and_render_synthesis_notes(
     plan: NoteCollectionPlan,
     preferences: ResolvedNotePreferences,
     *,
-    domain: str = "Artificial Intelligence",
+    domain: str = "General",
     master_topic: str | None = None,
+    clusters: list[tuple[str, set[str], list[str]]] | None = None,
 ) -> list[dict[str, Any]]:
-    """F10: Identify high-value multi-concept interactions and render M7 synthesis notes without duplicating child bodies."""
+    """F10: Identify high-value multi-concept interactions structurally and render M7 synthesis notes."""
     from scriptorium.engines.vault import build_obsidian_properties, render_note_with_properties
 
-    title_map = {n.title.strip().lower(): n for n in plan.nodes if n.note_role in {"child", "single"}}
+    child_nodes = [n for n in plan.nodes if n.note_role in {"child", "single"}]
+    title_map = {n.title.strip().lower(): n for n in child_nodes}
     syntheses: list[dict[str, Any]] = []
     root_folder = Path(plan.planned_paths[0]).parts[0] if plan.planned_paths else plan.title
 
-    for synth_title, trigger_set, flow_steps in _SYNTHESIS_CLUSTERS:
-        matched_nodes = [node for key, node in title_map.items() if key in trigger_set]
-        if len(matched_nodes) >= 2:
-            linked_titles = [n.title for n in matched_nodes]
-            rel_path = f"{root_folder}/Synthesis/{synth_title}.md"
-            props = build_obsidian_properties(
-                topic=synth_title,
-                note_type="synthesis-revision",
-                domain=domain,
-                master_topic=master_topic or plan.title,
-                parent_topic=plan.title,
-                collection_id=plan.collection_id,
-                concept_ids=[f"{plan.collection_id}.synthesis.{slugify(synth_title).replace('-', '_')}"],
-                related=linked_titles,
-                source_mode=preferences.source_policy,
-                difficulty=preferences.depth,
-                template_id="M7",
-                status="active",
-                created=date.today(),
-            )
-            lines = [
-                f"# {synth_title}",
-                "",
-                "## Integrated Conceptual Mechanism",
-                "This synthesis note explains how the linked components operate as one unified pipeline without repeating full individual derivations.",
-                "",
+    cluster_defs: list[tuple[str, list[TopicNode], list[str]]] = []
+    if clusters:
+        for synth_title, trigger_set, flow_steps in clusters:
+            matched = [node for key, node in title_map.items() if key in trigger_set]
+            if len(matched) >= 2:
+                cluster_defs.append((synth_title, matched, flow_steps))
+    elif len(child_nodes) >= 3:
+        connected = [n for n in child_nodes if n.prerequisite_ids or n.related_ids]
+        if len(connected) >= 2:
+            cluster_nodes = connected[: min(4, len(connected))]
+            synth_title = f"How Components of {plan.title} Connect"
+            steps = [
+                f"Review how [[{n.title}]] interacts with prerequisite and downstream concepts."
+                for n in cluster_nodes
             ]
-            for idx, step in enumerate(flow_steps, 1):
-                lines.append(f"{idx}. {step}")
-            lines.extend([
-                "",
-                "## Connected Canonical Notes",
-                *[f"- [[{t}]] — canonical definition, equations, and worked examples." for t in linked_titles],
-                "",
-                "## Scope & Interpretation Note",
-                (
-                    "Strict source-only mode active: competing source interpretations remain separated rather than merged into unsupported claims."
-                    if preferences.source_policy == "strict"
-                    else "Follow each linked canonical note for full step-by-step derivations and applicability limits."
-                ),
-                "",
-            ])
-            content = render_note_with_properties(props, "\n".join(lines))
-            syntheses.append({
-                "title": synth_title,
-                "master": "M7",
-                "note_type": "synthesis-revision",
-                "proposed_path": rel_path,
-                "linked_concepts": [n.concept_id for n in matched_nodes],
-                "linked_titles": linked_titles,
-                "content": content,
-            })
+            cluster_defs.append((synth_title, cluster_nodes, steps))
+
+    for synth_title, matched_nodes, flow_steps in cluster_defs:
+        linked_titles = [n.title for n in matched_nodes]
+        rel_path = f"{root_folder}/Synthesis/{synth_title}.md"
+        props = build_obsidian_properties(
+            topic=synth_title,
+            note_type="synthesis-revision",
+            domain=domain,
+            master_topic=master_topic or plan.title,
+            parent_topic=plan.title,
+            collection_id=plan.collection_id,
+            concept_ids=[f"{plan.collection_id}.synthesis.{slugify(synth_title).replace('-', '_')}"],
+            related=linked_titles,
+            source_mode=preferences.source_policy,
+            difficulty=preferences.depth,
+            template_id="M7",
+            status="active",
+            created=date.today(),
+        )
+        lines = [
+            f"# {synth_title}",
+            "",
+            "## Integrated Conceptual Mechanism",
+            "This synthesis note explains how the linked components operate as one unified system without repeating full individual derivations.",
+            "",
+        ]
+        for idx, step in enumerate(flow_steps, 1):
+            lines.append(f"{idx}. {step}")
+        lines.extend([
+            "",
+            "## Connected Canonical Notes",
+            *[f"- [[{t}]] — canonical definition, mechanisms, and worked examples." for t in linked_titles],
+            "",
+            "## Scope & Interpretation Note",
+            (
+                "Strict source-only mode active: competing source interpretations remain separated rather than merged into unsupported claims."
+                if preferences.source_policy == "strict"
+                else "Follow each linked canonical note for full step-by-step derivations and applicability limits."
+            ),
+            "",
+        ])
+        content = render_note_with_properties(props, "\n".join(lines))
+        syntheses.append({
+            "title": synth_title,
+            "master": "M7",
+            "note_type": "synthesis-revision",
+            "proposed_path": rel_path,
+            "linked_concepts": [n.concept_id for n in matched_nodes],
+            "linked_titles": linked_titles,
+            "content": content,
+        })
 
     return syntheses
 
@@ -1806,21 +1783,6 @@ def build_knowledge_collection_plan(
         for symbol, meaning in composition.get("notation", {}).items():
             term_reg.register_notation(concept_id=f"notation.{slugify(symbol)}.{content_hash(symbol)[:12]}", preferred_term=str(meaning),
                                        preferred_symbol=symbol, scope=plan.title, definition=str(meaning))
-    elif hier["domain"] == "Artificial Intelligence":
-        term_reg.register_notation(
-            concept_id="ml.optimization.loss",
-            preferred_term="loss_function",
-            preferred_symbol="J",
-            accepted_symbols=["J", "L", "E"],
-            scope="machine_learning",
-        )
-        term_reg.register_notation(
-            concept_id="ml.optimization.learning_rate",
-            preferred_term="learning_rate",
-            preferred_symbol="α",
-            accepted_symbols=["α", "η", "alpha", "eta"],
-            scope="machine_learning",
-        )
 
     # F10 synthesis notes & F13 assessment blueprint
     composition = plan.scope_summary.get("composition", {})

@@ -9,12 +9,12 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from scriptorium.engines._composition import (
+from scriptorium.engines.composition import (
     FIVE_KEYS, allocate_depth, build_composition, capabilities, evidence_status,
     inventory_migration, publish_composition, render_table, resolve_capabilities,
     select_visual, to_collection_plan, validate_chapter,
 )
-from scriptorium.engines._composition_visuals import architecture_svg, scientific_svg, validate_svg
+from scriptorium.engines.composition.media import validate_svg_markup as validate_svg
 from scriptorium.engines._collection_intelligence import build_knowledge_collection_plan
 from scriptorium.engines._interactive import ResolvedNotePreferences
 from scriptorium.models import content_hash, parse_note
@@ -162,7 +162,7 @@ def test_targeted_update_requires_reviewed_hash_and_preserves_other_chapters(tmp
     digest = content_hash((tmp_path / relative).read_text(encoding="utf-8"))
     drafts["ch1"] += "\nA localized correction with its justification."
     assert not publish_composition(tmp_path, plan, drafts, evidence=evidence, reviews=reviews)["complete"]
-    from scriptorium.engines._composition import prepare_composition
+    from scriptorium.engines.composition import prepare_composition
     drafts, _ = prepare_composition(tmp_path, plan, drafts)
     reviews = reviews_for(plan, drafts)
     result = publish_composition(tmp_path, plan, drafts, evidence=evidence, reviews=reviews, expected_hashes={relative: digest})
@@ -183,14 +183,16 @@ def test_table_comparison_rejects_incomparable_units_and_conditions():
         render_table(table)
 
 
-def test_precise_visual_selection_svg_and_nonfinite_data():
-    visual = select_visual({"kind": "equation", "objective": "Show curvature", "equation": "x*x"}, available={"scientific"})
-    assert visual["renderer"] == "scientific"
+def test_web_image_first_visual_selection_and_svg_retirement():
+    visual = select_visual(
+        {"kind": "equation", "objective": "Show curvature", "search_queries": ["quadratic curve diagram"]},
+        available={"external"},
+    )
+    assert visual["renderer"] == "external"
     assert select_visual({"kind": "intuition", "objective": "Build intuition"}, available=set())["status"] == "unavailable"
-    assert validate_svg(scientific_svg({"quadratic": [(-1, 1), (0, 0), (1, 1)]}, title="Quadratic", xlabel="x", ylabel="f(x)")) == []
-    assert validate_svg(architecture_svg([{"label": "Attention", "shape": "B,T,D"}])) == []
-    with pytest.raises(ValueError):
-        scientific_svg({"bad": [(0, 0), (1, float("nan"))]}, title="Bad", xlabel="x", ylabel="y")
+    with pytest.raises(ValueError, match="removed"):
+        select_visual({"kind": "equation", "objective": "Plot", "renderer": "svg"}, available={"external"})
+    assert validate_svg('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><rect width="10" height="10"/></svg>') == []
 
 
 def test_cli_plans_without_writing_and_rejects_bad_spec(tmp_path):
@@ -204,7 +206,7 @@ def test_cli_plans_without_writing_and_rejects_bad_spec(tmp_path):
 
 def test_mathematical_and_code_truncation_are_detected():
     plan = build_composition(specification())
-    from scriptorium.engines._composition import five_key_note
+    from scriptorium.engines.composition import five_key_note
     text = five_key_note(plan, "c", "Chapter", "# Chapter\n\n$$x=1", None)
     assert "unclosed display mathematics" in validate_chapter(text)
     assert "unclosed code fence" in validate_chapter(text + "\n```python\nx = 1\n")
@@ -218,7 +220,7 @@ def test_spec_changes_invalidate_identity():
 
 
 def test_validation_detects_manual_changes_and_dirty_topic_folder(tmp_path):
-    from scriptorium.engines._composition import validate_published_composition
+    from scriptorium.engines.composition import validate_published_composition
     plan = build_composition(specification())
     drafts, evidence, reviews = inputs(plan)
     publish_composition(tmp_path, plan, drafts, evidence=evidence, reviews=reviews)
@@ -249,7 +251,7 @@ def test_partial_write_failure_is_reported_and_resumable(tmp_path, monkeypatch):
 
 
 def test_dependency_cycle_is_rejected(monkeypatch):
-    import scriptorium.engines._composition as module
+    import scriptorium.engines.composition as module
     specs = capabilities()
     specs["S01"]["dependencies"] = ["S04"]
     monkeypatch.setattr(module, "capabilities", lambda: specs)

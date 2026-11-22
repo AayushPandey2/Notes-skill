@@ -92,19 +92,18 @@ columns, provenance where applicable, and comparable metrics, units and conditio
 Missing values need an explanation. Table checks detect structural and comparison
 errors; they do not verify empirical values against sources.
 
-`select_visual` maps mathematical/distribution relationships to deterministic
-scientific figures; workflows/dependencies/states to Mermaid; architectures/tensors
-to SVG; source figures to external retrieval; intuition to image generation; and
-distinct combined objectives to hybrid composition. Declare unavailable renderers.
-Exact claims require equations or reproducible data. External figures need source,
-URL and rights. Never use illustrative generated pixels as mathematical evidence.
-The standard-library SVG renderer executes numerical series, validated information
-flows and attention masks. It records attempts and failures, verifies regenerated
-assets and inserts their embeds. Standalone ordered-block helpers remain available
-for illustrations; publication uses actual flow contracts. Browser rendering and
-host image tools remain conditional checks with explicit limitations. See the
-[representation and media contract](representations.md) for the twelve-family
-registry, executable backends, semantic inputs and offline acquisition policy.
+`select_visual` maps external visual/diagram/figure requirements (`architecture`,
+`equation`, `distribution`, `geometry`, `network`, `source_figure`, `intuition`,
+etc.) to web-image-first external acquisition (`external`); workflows, state
+machines, and dependencies to native `mermaid`; tabular specifications to
+`table`; supplied state sequences to `interactive`; and distinct combined
+objectives to `hybrid` composition. Programmatic SVG diagram drawing is retired.
+External figures need verified `source`, `url` (or `search_queries`), and
+permissive `rights`, are stored locally under `assets/scriptorium/<collection-slug>/`,
+inspected before prose grounding, and verified by snapshot SHA-256. Missing
+external visuals are recorded honestly as unmet visual obligations rather than
+synthesized. See the [representation and media contract](representations.md) for
+the twelve-family registry, active backends, and local acquisition policy.
 
 ## Publication, checkpoints and repair
 

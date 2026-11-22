@@ -150,17 +150,17 @@ def test_29_4_reply_formats_defaults_numbered_correction_and_cancel():
     assert r3["stage"] == "CANCELLED"
     assert r3["ready_to_generate"] is False
 
-    # 4. Mid-flow correction & outline modification on broad topic
-    s4 = orch.start_notes_session("/scribe-notes Machine Learning")
+    # 4. Mid-flow correction & outline modification on broad S4 request (domain-independent trigger)
+    s4 = orch.start_notes_session("/scribe-notes Comprehensive guide to Classical Mechanics")
     r4a = orch.respond_to_session(s4, "use your recommendations")
     assert r4a["stage"] == "AWAITING_PLAN_APPROVAL"
     assert r4a["ready_to_generate"] is False
-    assert "Machine Learning" in r4a["message"]
+    assert "Classical Mechanics" in r4a["message"]
 
     # Add a topic and remove a topic before approving
-    r4b = orch.respond_to_session(r4a["state"], "add Bayesian Inference")
+    r4b = orch.respond_to_session(r4a["state"], "add Lagrangian Formalism")
     assert r4b["stage"] == "AWAITING_PLAN_APPROVAL"
-    assert any(n.title == "Bayesian Inference" for n in r4b["state"].collection_plan.nodes)
+    assert any(n.title == "Lagrangian Formalism" for n in r4b["state"].collection_plan.nodes)
 
     r4c = orch.respond_to_session(r4b["state"], "looks good, proceed")
     assert r4c["stage"] == "COLLECTION_PLAN_READY"
@@ -172,29 +172,66 @@ def test_29_4_reply_formats_defaults_numbered_correction_and_cancel():
 # ---------------------------------------------------------------------------
 
 @pytest.mark.parametrize(
-    ("topic", "expected_tier", "expected_org"),
+    ("topic", "request_text", "source_sections", "expected_tier", "expected_org"),
     [
-        ("Atomic note on Dot Product", "S0", "single_note"),
-        ("Gradient Descent", "S1", "single_note"),
-        ("Classification Metrics", "S2", "single_or_small_collection"),
-        ("Supervised Learning", "S3", "hierarchical_collection"),
-        ("Transformers", "S3", "hierarchical_collection"),
-        ("Machine Learning", "S4", "hierarchical_collection"),
-        ("Complete Artificial Intelligence Curriculum", "S5", "hierarchical_collection"),
+        ("Atomic note on Dot Product", "/scribe-notes Atomic note on Dot Product", None, "S0", "single_note"),
+        ("Thermodynamic Entropy", "/scribe-notes Thermodynamic Entropy", None, "S1", "single_note"),
+        ("Sorting Algorithms", "/scribe-notes Sorting Algorithms and Models", None, "S2", "single_or_small_collection"),
+        (
+            "Quantum Mechanics",
+            "/scribe-notes Study notes from Quantum Mechanics lecture",
+            ["1. Wavefunctions", "2. Operators", "3. Barrier Tunneling"],
+            "S3",
+            "hierarchical_collection",
+        ),
+        ("Organic Chemistry", "/scribe-notes Comprehensive guide to Organic Chemistry", None, "S4", "hierarchical_collection"),
+        ("Complete Artificial Intelligence Curriculum", "/scribe-notes Complete Artificial Intelligence Curriculum", None, "S5", "hierarchical_collection"),
     ],
 )
-def test_29_5_scope_classification_s0_through_s5(topic, expected_tier, expected_org):
+def test_29_5_scope_classification_s0_through_s5(topic, request_text, source_sections, expected_tier, expected_org):
     orch = OrchestrationEngine(ROOT)
-    scope = orch.classify_scope(topic, request=f"/scribe-notes {topic}")
+    scope = orch.classify_scope(
+        topic,
+        request=request_text,
+        has_source=bool(source_sections),
+        source_sections=source_sections,
+    )
     assert scope["level"] == expected_tier
     assert scope["recommended_structure"] == expected_org
 
 
 def test_29_6_hierarchy_prerequisite_and_related_graphs_are_distinct():
     orch = OrchestrationEngine(ROOT)
-    state = orch.start_notes_session("/scribe-notes Machine Learning")
-    r1 = orch.respond_to_session(state, "use your recommendations")
-    plan: NoteCollectionPlan = r1["state"].collection_plan
+    state = orch.start_notes_session("/scribe-notes Comprehensive guide to Classical Mechanics")
+    r1 = orch.respond_to_session(state, "single note")
+    prefs = r1["state"].resolved_preferences
+    prefs.organization = "hierarchical_collection"
+    curriculum = {
+        "title": "Classical Mechanics",
+        "groups": [
+            (
+                "Kinematics and Forces",
+                [
+                    ("Reference Frames", "M1", [], []),
+                    ("Newtonian Dynamics", "M1", ["Reference Frames"], ["Work and Energy"]),
+                ],
+            ),
+            (
+                "Conservation Laws",
+                [
+                    ("Work and Energy", "M1", ["Newtonian Dynamics"], ["Reference Frames"]),
+                    ("Linear Momentum", "M1", ["Newtonian Dynamics"], ["Work and Energy"]),
+                ],
+            ),
+            (
+                "Oscillations and Rigid Bodies",
+                [
+                    ("Simple Harmonic Motion", "M1", ["Work and Energy"], []),
+                ],
+            ),
+        ],
+    }
+    plan: NoteCollectionPlan = orch.plan_collection("Classical Mechanics", prefs, curriculum=curriculum)
     assert plan is not None
     assert plan.organization == "hierarchical_collection"
 
@@ -244,20 +281,27 @@ def test_29_7_to_29_9_machine_learning_hierarchical_generation_and_validation(tm
     vault = VaultEngine()
     quality = QualityEngine(ROOT)
 
-    # Interactive flow for Scenario B: Machine Learning (S4 -> hierarchical collection)
+    # Interactive flow for Scenario B: broad collection via explicit structure phrase (no hardcoded domain table)
     t0 = time.perf_counter()
-    state = orch.start_notes_session("/scribe-notes Machine Learning")
+    state = orch.start_notes_session("/scribe-notes Comprehensive guide to Classical Mechanics")
     assert state.stage == "AWAITING_CONFIGURATION"
-    step_preview = orch.respond_to_session(state, "beginner, deep learning notes, hierarchical collection")
+    step_preview = orch.respond_to_session(state, "beginner, deep physics notes, hierarchical collection")
     assert step_preview["stage"] == "AWAITING_PLAN_APPROVAL"
     step_approve = orch.respond_to_session(step_preview["state"], "proceed")
     assert step_approve["ready_to_generate"] is True
 
-    plan = step_approve["state"].collection_plan
     prefs = step_approve["state"].resolved_preferences
+    mechanics_curriculum = {
+        "title": "Classical Mechanics",
+        "groups": [
+            ("Foundations", [("Reference Frames", "M1", [], []), ("Newtonian Dynamics", "M1", ["Reference Frames"], [])]),
+            ("Conservation", [("Work and Energy", "M1", ["Newtonian Dynamics"], []), ("Lagrangian Formalism", "M1", ["Work and Energy"], [])]),
+        ],
+    }
+    plan = orch.plan_collection("Classical Mechanics", prefs, curriculum=mechanics_curriculum)
 
     # Pre-seed one canonical child note with custom Properties & Personal Notes to prove non-destructive reconciliation!
-    linear_node = next(n for n in plan.nodes if "linear regression" in n.title.lower())
+    linear_node = next(n for n in plan.nodes if "newtonian dynamics" in n.title.lower())
     preexisting_path = tmp_path / linear_node.proposed_path
     preexisting_path.parent.mkdir(parents=True, exist_ok=True)
     preexisting_props = vault.build_properties(
@@ -312,7 +356,7 @@ def test_29_9_collection_validator_detects_broken_link_missing_file_and_bad_fron
     vault = VaultEngine()
     quality = QualityEngine(ROOT)
 
-    state = orch.start_notes_session("/scribe-notes Supervised Learning")
+    state = orch.start_notes_session("/scribe-notes Comprehensive guide to Thermodynamics")
     r1 = orch.respond_to_session(state, "use your recommendations")
     r2 = orch.respond_to_session(r1["state"], "proceed")
     plan = r2["state"].collection_plan

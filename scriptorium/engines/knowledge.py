@@ -422,7 +422,7 @@ def check_multi_artifact_consistency(
             })
         seen_note_types.add(item["note_type"])
 
-        # 3. Notation equivalence check (e.g., alpha vs eta for learning_rate)
+        # 3. Notation equivalence check (e.g., alpha vs eta for a shared parameter)
         for role, sym_a in ref["symbols"].items():
             sym_b = item["symbols"].get(role)
             if sym_b and sym_a != sym_b:

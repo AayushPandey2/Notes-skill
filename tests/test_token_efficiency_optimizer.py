@@ -170,10 +170,18 @@ def test_opt_e_multi_level_cache_isolation_ttl_corruption_and_secret_safety(tmp_
 
 def test_opt_f_partitioned_collection_context_saves_tokens_and_preserves_direct_links(tmp_path):
     orch = OrchestrationEngine(ROOT)
-    s = orch.start_notes_session("/scribe-notes Machine Learning")
+    s = orch.start_notes_session("/scribe-notes Comprehensive guide to Mathematical Optimization")
     r1 = orch.respond_to_session(s, "comprehensive, hierarchical collection")
     r2 = orch.respond_to_session(r1["state"], "proceed")
-    plan, prefs = r2["state"].collection_plan, r2["state"].resolved_preferences
+    prefs = r2["state"].resolved_preferences
+    curriculum = {
+        "title": "Mathematical Optimization",
+        "groups": [
+            ("Foundations", [("Loss Functions", "M1", [], []), ("Convex Sets", "M1", [], [])]),
+            ("First-Order Methods", [("Gradient Descent", "M1", ["Loss Functions"], []), ("Momentum", "M1", ["Gradient Descent"], [])]),
+        ],
+    }
+    plan = orch.plan_collection("Mathematical Optimization", prefs, curriculum=curriculum)
     kcp = orch.build_kcp(tmp_path, plan, prefs, include_synthesis=True, include_assessment=True)
 
     gd_node = next(n for n in plan.nodes if n.title == "Gradient Descent")

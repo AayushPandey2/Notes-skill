@@ -1665,6 +1665,10 @@ class OrchestrationEngine:
         from scriptorium.engines._interactive import load_session_state
         return load_session_state(vault_root, request_id)
 
+    def plan_collection(self, topic: str, preferences: Any, *, source_sections: list[dict[str, str]] | None = None, curriculum: dict[str, Any] | None = None):
+        from scriptorium.engines._interactive import plan_note_collection
+        return plan_note_collection(topic, preferences, source_sections=source_sections, curriculum=curriculum)
+
     # Collection Intelligence coordination (KCP & F05 Scope Negotiation)
     def build_kcp(self, vault_root: Path, plan: Any, preferences: Any, **kwargs: Any):
         from scriptorium.engines._collection_intelligence import build_knowledge_collection_plan
@@ -1694,3 +1698,16 @@ class OrchestrationEngine:
     def compact_working_state(self, state: Any, *, conversation_history: list[dict[str, str]] | None = None) -> dict[str, Any]:
         from scriptorium.engines._token_optimizer import compact_working_state
         return compact_working_state(state, conversation_history=conversation_history)
+
+    # Canonical Architectures & Explicit Trigger Registry (A0-A11, T01-T16)
+    def architectures(self) -> dict[str, dict[str, str]]:
+        from scriptorium.triggers import CANONICAL_ARCHITECTURES
+        return CANONICAL_ARCHITECTURES
+
+    def triggers(self) -> dict[str, dict[str, Any]]:
+        from scriptorium.triggers import TRIGGER_REGISTRY
+        return TRIGGER_REGISTRY
+
+    def execute_trigger(self, trigger_id: str, payload: dict[str, Any] | None = None) -> dict[str, Any]:
+        from scriptorium.triggers import dispatch_trigger
+        return dispatch_trigger(trigger_id, payload, root=self.root)

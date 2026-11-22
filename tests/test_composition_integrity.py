@@ -8,7 +8,7 @@ import sys
 import pytest
 
 from test_comprehensive_composition import specification, inputs, reviews_for
-from scriptorium.engines._composition import (
+from scriptorium.engines.composition import (
     build_composition, allocate_depth, prepare_composition, publish_composition, validate_published_composition,
 )
 from scriptorium.engines.composition.contracts import repair_plan
@@ -112,14 +112,37 @@ def test_zero_predictor_tokens_and_stabilized_boundary_behavior():
     assert not check_numerical({"expression": "0.1+0.2", "expected": 0.3, "comparison": "allclose"})
 
 
-def visual_spec():
+def _valid_png(width: int = 360, height: int = 200) -> bytes:
+    import binascii, struct, zlib
+    def chunk(kind: bytes, data: bytes) -> bytes:
+        return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", binascii.crc32(kind + data) & 0xFFFFFFFF)
+    header = struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0)
+    raw = (b"\x00" + b"\x10\x40\x80" * width) * height
+    return b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", header) + chunk(b"IDAT", zlib.compress(raw)) + chunk(b"IEND", b"")
+
+
+def visual_spec(vault_root: Path | None = None):
     spec = specification()
+    if vault_root is not None:
+        (vault_root / "fixture_curve.png").write_bytes(_valid_png())
     spec["concepts"][0]["depth"] = {"visual": 3}
     spec["concepts"][0]["visual_review"] = {"objective": "Understand curvature", "difficulty": "A tangent is local",
-                                           "representation": "scientific curve", "placement": "Concept 1", "validation": "equation and axes"}
-    spec["visuals"] = [{"id": "v1", "concept": "c1", "section": "Concept 1", "kind": "equation", "objective": "Quadratic curvature",
-                        "equation": "x*x/2", "x_values": [-2, -1, 0, 1, 2], "xlabel": "x", "ylabel": "f(x)",
-                        "units": "dimensionless", "interpretation": "Slope and objective value are different quantities."}]
+                                           "representation": "external retrieved figure", "placement": "Concept 1", "validation": "labels and axes"}
+    spec["visuals"] = [{
+        "id": "v1",
+        "concept": "c1",
+        "section": "Concept 1",
+        "kind": "source_figure",
+        "objective": "Quadratic curvature diagram",
+        "url": "https://example.org/quadratic.png",
+        "source": "https://example.org/article",
+        "rights": "CC-BY-4.0",
+        "alt": "Quadratic curvature diagram",
+        "relevance": "Shows convex parabolic curvature.",
+        "asset_policy": "offline_only",
+        "local_fallback": "fixture_curve.png",
+        "interpretation": "Slope and objective value are different quantities.",
+    }]
     return spec
 
 
@@ -130,11 +153,11 @@ def test_visual_depth_without_artifact_cannot_silently_complete(tmp_path):
 
 
 def test_renderer_selection_without_execution_result_is_rejected(tmp_path):
-    plan = build_composition(visual_spec())
+    plan = build_composition(visual_spec(tmp_path))
     drafts, evidence, _ = inputs(plan)
     drafts, rendered = prepare_composition(tmp_path, plan, drafts)
     assert rendered["v1"]["status"] == "verified" and rendered["v1"]["attempted"]
-    assert f"![[{rendered['v1']['path']}]]" in drafts["ch1"]
+    assert rendered["v1"]["path"] in drafts["ch1"]
     result = publish_composition(tmp_path, plan, drafts, evidence=evidence, reviews=reviews_for(plan, drafts))
     assert result["complete"], result["errors"]
     assert validate_published_composition(tmp_path, plan)["valid"]
@@ -148,11 +171,11 @@ def test_renderer_selection_without_execution_result_is_rejected(tmp_path):
 
 def test_failed_render_attempt_is_persisted_and_does_not_publish(tmp_path):
     spec = visual_spec()
-    spec["visuals"][0]["data"] = {"wrong": [[-1, 8], [1, 8]]}
+    spec["visuals"][0]["local_fallback"] = "missing_nonexistent.png"
     plan = build_composition(spec)
     result = assert_blocked(tmp_path, plan, "required visual")
     status = result["renderers"]["v1"]
-    assert status["attempted"] and status["status"] == "failed" and "equation" in status["failure_reason"]
+    assert status["attempted"] and status["status"] == "failed" and status["failure_reason"]
 
 
 def test_benchmark_without_exact_location_or_uncertainty_is_blocked(tmp_path):
@@ -277,26 +300,32 @@ def test_native_disclosure_and_cli_preparation_and_repair(tmp_path):
     assert result.returncode == 0 and json.loads(result.stdout)["chapters"]
 
 
-def test_flow_and_mask_render_from_the_same_verified_permissions(tmp_path):
+def test_flow_and_mask_verify_permissions_without_programmatic_svg(tmp_path):
     spec = specification()
     contract = flow()
     contract["mask"] = {"segments": [{"id": "context", "length": 2}, {"id": "predictor", "length": 1}],
                         "permissions": {"context": ["context"], "predictor": ["context", "predictor"]},
                         "causal": True, "readout_indices": [2],
                         "expected": [[True, False, False], [True, True, False], [True, True, True]]}
+    assert check_flow(contract) == []
     spec["concepts"][0]["information_flows"] = [contract]
-    spec["visuals"] = [{"id": name, "concept": "c1", "section": "Concept 1", "kind": kind,
-                        "objective": objective, "flow": contract}
-                       for name, kind, objective in [("architecture", "architecture", "Show isolated predictor inputs"),
-                                                      ("mask", "mask", "Show query/key permissions and readout positions")]]
+    spec["visuals"] = [{
+        "id": "architecture-flow",
+        "concept": "c1",
+        "section": "Concept 1",
+        "kind": "workflow",
+        "objective": "Show isolated predictor inputs via native Mermaid",
+        "nodes": [{"id": "ctx", "label": "Context Tokens"}, {"id": "pred", "label": "Predictor"}],
+        "edges": [{"source": "ctx", "target": "pred", "label": "allowed"}],
+    }]
     plan = build_composition(spec)
     drafts, evidence, _ = inputs(plan)
     drafts, renders = prepare_composition(tmp_path, plan, drafts)
-    assert all(r["status"] == "verified" for r in renders.values())
-    assert "rows=query, columns=key" in (tmp_path/renders["mask"]["path"]).read_text(encoding="utf-8")
+    assert renders["architecture-flow"]["status"] == "verified"
+    assert renders["architecture-flow"]["renderer"] == "mermaid"
     result = publish_composition(tmp_path, plan, drafts, evidence=evidence, reviews=reviews_for(plan, drafts))
     assert result["complete"], result["errors"]
-    assert (tmp_path/".scriptorium/renderers/col-gradient-descent.json").is_file()
+    assert (tmp_path / ".scriptorium/renderers/col-gradient-descent.json").is_file()
 
 
 def test_small_singular_spectrum_and_heldout_probe_are_operational_measurements():
@@ -369,11 +398,13 @@ def test_moc_and_authored_links_validate_actual_heading_anchors(tmp_path):
 
 
 def test_hybrid_representation_creates_individually_verified_parts(tmp_path):
-    spec = visual_spec()
-    scientific = spec["visuals"][0]
+    spec = visual_spec(tmp_path)
+    external_fig = spec["visuals"][0]
     spec["visuals"] = [{"id": "hybrid", "concept": "c1", "section": "Concept 1", "kind": "hybrid",
-                        "objective": "Connect numerical curvature to information paths", "parts": [scientific,
-                            {"id": "branch-diagram", "kind": "architecture", "objective": "Show independent input paths", "flow": flow()}]}]
+                        "objective": "Connect retrieved curve figure to causal workflow", "parts": [external_fig,
+                            {"id": "branch-diagram", "kind": "workflow", "objective": "Show independent input paths",
+                             "nodes": [{"id": "a", "label": "Input A"}, {"id": "b", "label": "Output B"}],
+                             "edges": [{"source": "a", "target": "b", "label": "flows to"}]}]}]
     plan = build_composition(spec)
     drafts, evidence, _ = inputs(plan)
     drafts, renders = prepare_composition(tmp_path, plan, drafts)

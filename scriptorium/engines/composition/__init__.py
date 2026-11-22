@@ -725,9 +725,37 @@ def _validate_local_first_visuals(
     return manifest, errors
 
 
+PUBLICATION_READINESS_STATES = (
+    "complete",
+    "complete_with_justified_omissions",
+    "draft",
+    "partial",
+    "blocked",
+    "failed",
+)
+
+
+def _derive_readiness_state(
+    *,
+    errors: list[str],
+    validation: dict[str, Any],
+    visual_results: dict[str, Any],
+    written_paths: list[str],
+) -> str:
+    obligations = validation.get("obligations", [])
+    has_omissions = any(o.get("status") == "justifiably-omitted" for o in obligations)
+    has_unmet_visual = any(v.get("unmet_visual_obligation") for v in visual_results.values())
+    if not errors:
+        return "complete_with_justified_omissions" if has_omissions else "complete"
+    if has_unmet_visual or any(o.get("status") == "blocked" for o in obligations):
+        return "partial" if written_paths else "blocked"
+    return "draft" if written_paths else "failed"
+
+
 def publish_composition(vault: Path, plan: dict[str, Any], drafts: dict[str, str], *,
                         evidence: dict[str, Any], reviews: dict[str, Any],
-                        expected_hashes: dict[str, str] | None = None) -> dict[str, Any]:
+                        expected_hashes: dict[str, str] | None = None,
+                        allow_draft: bool = False) -> dict[str, Any]:
     """Preflight whole collection; checkpoint individual atomic writes using E6.
 
     No overwrite without a matching expected digest. Human/model review is explicit
@@ -775,11 +803,23 @@ def publish_composition(vault: Path, plan: dict[str, Any], drafts: dict[str, str
     if errors:
         validation["outcomes"]["structural"] = {"status": "fail" if len(errors) > semantic_error_count else "pass",
                                                    "method": "YAML, sections, fences, links, assets and expected digests"}
-        report = {"complete": False, "errors": errors, "written_paths": [], "validation": validation, "renderers": visual_results,
+        readiness = _derive_readiness_state(errors=errors, validation=validation, visual_results=visual_results, written_paths=[])
+        report = {"complete": False, "readiness_state": readiness, "errors": errors, "written_paths": [], "validation": validation, "renderers": visual_results,
                   "manifest": visual_manifest, "reviews": reviews, "evidence": evidence}
         report_path = contained(vault, f".scriptorium/validation/col-{slugify(plan['topic'])}.json")
         report_path.parent.mkdir(parents=True, exist_ok=True)
         safe_write_note(report_path, json.dumps(report, indent=2, ensure_ascii=False), validate_properties=False)
+        if not allow_draft:
+            return report
+        # Explicit draft policy: persist authored Markdown chapters while honestly reporting non-complete readiness.
+        draft_written: list[str] = []
+        for relative, text in documents.items():
+            target = contained(vault, relative)
+            result = safe_write_note(target, text, expected_digest=current_hashes[relative], validate_properties=False)
+            if result["written"]:
+                draft_written.append(relative)
+        report["written_paths"] = draft_written
+        report["readiness_state"] = _derive_readiness_state(errors=errors, validation=validation, visual_results=visual_results, written_paths=draft_written)
         return report
     state_path = contained(vault, f".scriptorium/collections/col-{slugify(plan['topic'])}.json")
     state = {"composition": plan, "spec_hash": plan["spec_hash"], "evidence": evidence, "reviews": reviews,
@@ -803,7 +843,9 @@ def publish_composition(vault: Path, plan: dict[str, Any], drafts: dict[str, str
             return {**state, "written_paths": written}
     if plan.get("organize_by_collection") or plan.get("collection_slug"):
         lavia.save_asset_manifest(vault, visual_manifest)
+    readiness = _derive_readiness_state(errors=[], validation=validation, visual_results=visual_results, written_paths=written)
     state["complete"] = True
+    state["readiness_state"] = readiness
     checkpoint()
     return {**state, "written_paths": written}
 

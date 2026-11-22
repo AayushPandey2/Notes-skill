@@ -1,6 +1,6 @@
 # Knowledge-Type Subtemplates
 
-Subtemplates adapt **how** a subject is taught inside any selected master (`M1`–`M7`). Multiple subtemplates combine cleanly for hybrid topics (e.g., `mathematical` + `computational` for backpropagation).
+Subtemplates adapt **how** a subject is taught inside any selected master (`M1`–`M7`). Multiple subtemplates combine cleanly for interdisciplinary topics (e.g., pairing `mathematical` + `computational` when a request involves both derivations and executable algorithms).
 
 - [mathematical.md](mathematical.md) — Formal notation, hypotheses, derivations, proofs, counterexamples, and boundary regimes.
 - [computational.md](computational.md) — Algorithms, invariants, complexity, code-to-math mapping, testing, and debugging.

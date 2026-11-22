@@ -92,7 +92,7 @@ def _request_once(url: str, host: str, address: str) -> tuple[int, dict, bytes]:
     target = urlunsplit(("","",parts.path or "/",parts.query,""))
     try:
         deadline = time.monotonic()+TIMEOUT
-        connection.request("GET",target,headers={"Host":parts.netloc,"Accept":"image/svg+xml, image/png, image/jpeg, image/webp","Accept-Encoding":"identity","User-Agent":"Scriptorium-Media/5.1 (https://github.com/AayushPandey2/Notes-skill)"})
+        connection.request("GET",target,headers={"Host":parts.netloc,"Accept":"image/svg+xml, image/png, image/jpeg, image/webp","Accept-Encoding":"identity","User-Agent":"Scriptorium-Media/1.0 (https://github.com/AayushPandey2/Notes-skill)"})
         response = connection.getresponse()
         headers = {k.lower():v for k,v in response.getheaders()}
         if response.status in {301,302,303,307,308}:
@@ -319,9 +319,33 @@ def decode_webp(raw: bytes, mime: str = "image/webp") -> dict:
     return {"width": width, "height": height, "decoder": "bounded WebP header parser"}
 
 
+def validate_svg_markup(text: str) -> list[str]:
+    """Allowlist security sanitizer for externally sourced or legacy SVG markup (never generates SVGs)."""
+    svg_ns = "http://www.w3.org/2000/svg"
+    try:
+        root = ET.fromstring(text)
+    except ET.ParseError as exc:
+        return [f"Invalid XML: {exc}"]
+    errors: list[str] = []
+    if root.tag != f"{{{svg_ns}}}svg" or (not root.get("viewBox") and not (root.get("width") and root.get("height"))):
+        errors.append("SVG needs namespace and viewBox or explicit dimensions")
+    allowed_tags = {"svg", "title", "desc", "rect", "text", "tspan", "path", "polyline", "polygon", "line", "circle", "ellipse", "g", "defs", "marker"}
+    for element in root.iter():
+        tag_name = element.tag.rsplit("}", 1)[-1]
+        if tag_name not in allowed_tags:
+            errors.append("Unsupported active SVG content")
+        if any(
+            k.lower().startswith("on")
+            or k.endswith("href")
+            or re.search(r"url\s*\(|javascript:|data:", v, re.I)
+            for k, v in element.attrib.items()
+        ):
+            errors.append("Unsupported SVG event or external resource")
+    return errors
+
+
 def validate_svg_bytes(raw: bytes, mime: str = "image/svg+xml") -> dict:
-    """Sanitize and validate downloaded SVG against active scripts and external refs."""
-    from .visuals import validate_svg
+    """Sanitize and validate downloaded third-party SVG against active scripts and external refs."""
     if len(raw) > MAX_BYTES or mime != "image/svg+xml":
         raise ValueError("Only bounded SVG with matching image/svg+xml MIME is supported")
     try:
@@ -330,12 +354,101 @@ def validate_svg_bytes(raw: bytes, mime: str = "image/svg+xml") -> dict:
         raise ValueError("SVG must be valid UTF-8") from exc
     if re.search(r"<!DOCTYPE|<!ENTITY", text, re.I):
         raise ValueError("SVG DOCTYPE and XML entities are forbidden")
-    issues = validate_svg(text)
+    issues = validate_svg_markup(text)
     if issues:
         raise ValueError("; ".join(issues))
     root = ET.fromstring(text)
     return {"width": root.get("width") or "viewBox", "height": root.get("height") or "viewBox",
             "decoder": "bounded XML/SVG allowlist sanitizer"}
+
+
+def inspect_image_content(source: Path | bytes, *, mime: str | None = None) -> dict:
+    """Inspect actual local image bytes/pixels before writing image-grounded explanations.
+
+    Computes verified geometry, contrast/density indicators, and (for SVG) parsed text labels.
+    Never fabricates diagram labels that were not observed in text XML or multimodal vision.
+    """
+    raw = Path(source).read_bytes() if isinstance(source, (str, Path)) else bytes(source)
+    if mime is None and isinstance(source, (str, Path)):
+        ext_map = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp", ".svg": "image/svg+xml"}
+        mime = ext_map.get(Path(source).suffix.lower())
+    if not mime:
+        if raw.startswith(b"\x89PNG\r\n\x1a\n"):
+            mime = "image/png"
+        elif raw.startswith(b"\xff\xd8"):
+            mime = "image/jpeg"
+        elif raw.startswith(b"RIFF") and raw[8:12] == b"WEBP":
+            mime = "image/webp"
+        elif raw.lstrip().startswith((b"<svg", b"<?xml")):
+            mime = "image/svg+xml"
+        else:
+            raise ValueError("Unable to infer image MIME type for content inspection")
+
+    meta = validate_image_bytes(raw, mime)
+    report: dict = {
+        "inspection_performed": True,
+        "mime": mime,
+        "bytes": len(raw),
+        "content_hash": content_hash(raw),
+        "width": meta.get("width"),
+        "height": meta.get("height"),
+        "text_labels_extracted": [],
+        "text_ocr_available": False,
+        "readable_for_embedding": True,
+        "inspection_method": "structural_header_and_pixel_inspection",
+        "limits": "Observed file structure, dimensions, contrast, and text elements where encoded; full semantic reading of raster labels requires visual inspection.",
+    }
+    if mime == "image/svg+xml":
+        root = ET.fromstring(raw.decode("utf-8"))
+        vb = (root.get("viewBox") or "").replace(",", " ").split()
+        if len(vb) == 4 and (not isinstance(report.get("width"), int) or not isinstance(report.get("height"), int)):
+            try:
+                report["width"] = int(round(float(vb[2])))
+                report["height"] = int(round(float(vb[3])))
+                report["aspect_ratio"] = round(report["width"] / max(report["height"], 1), 3)
+            except ValueError:
+                pass
+        labels = [
+            " ".join(el.itertext()).strip()
+            for el in root.iter()
+            if el.tag.rsplit("}", 1)[-1] in {"title", "text", "tspan", "desc"}
+        ]
+        report["text_labels_extracted"] = [lbl for lbl in dict.fromkeys(labels) if lbl]
+        report["text_ocr_available"] = True
+        report["inspection_method"] = "svg_xml_text_and_geometry_inspection"
+        return report
+
+    try:
+        from io import BytesIO
+        from PIL import Image, ImageStat
+
+        with Image.open(BytesIO(raw)) as img:
+            w, h = img.size
+            rgb = img.convert("RGB")
+            stat = ImageStat.Stat(rgb)
+            mean_brightness = round(sum(stat.mean) / 3.0, 2)
+            contrast_std = round(sum(stat.stddev) / 3.0, 2)
+            report.update({
+                "width": w,
+                "height": h,
+                "aspect_ratio": round(w / max(h, 1), 3),
+                "color_mode": img.mode,
+                "mean_brightness": mean_brightness,
+                "contrast_stddev": contrast_std,
+                "low_contrast_warning": contrast_std < 8.0,
+                "low_resolution_warning": w < 320 or h < 180,
+                "recommended_embed_width_px": min(750, max(360, w)),
+                "readable_for_embedding": (w >= 320 and h >= 180 and contrast_std >= 5.0),
+                "inspection_method": "PIL_pixel_statistics_and_dimension_analysis",
+            })
+    except Exception:
+        w = report["width"] if isinstance(report["width"], int) else 0
+        h = report["height"] if isinstance(report["height"], int) else 0
+        if w and h:
+            report["aspect_ratio"] = round(w / h, 3)
+            report["low_resolution_warning"] = w < 320 or h < 180
+            report["readable_for_embedding"] = not report["low_resolution_warning"]
+    return report
 
 
 def validate_image_bytes(raw: bytes, mime: str) -> dict:
@@ -408,17 +521,23 @@ def media_artifact(vault: Path, visual: dict, digest: str, *, execute: bool) -> 
         raise ValueError("Unknown media asset policy")
     receipt_relative = f"assets/scriptorium/{digest}.media.json"
     receipt_path = contained(vault,receipt_relative)
-    cached, fallback_used = receipt_path.is_file(), False
-    if cached:
+    cached, fallback_used = False, False
+    if receipt_path.is_file():
         receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
         if not isinstance(receipt,dict) or receipt.get("input_hash") != digest:
             raise ValueError("Media receipt does not bind its specification")
         path = contained(vault,receipt["path"])
-        raw = path.read_bytes()
-        if receipt.get("hash") != content_hash(raw):
-            raise ValueError("Media snapshot changed since acquisition")
-        validate_image_bytes(raw, receipt.get("mime"))
-    else:
+        if path.is_file():
+            raw = path.read_bytes()
+            if receipt.get("hash") != content_hash(raw):
+                raise ValueError("Media snapshot changed since acquisition")
+            validate_image_bytes(raw, receipt.get("mime"))
+            inspection = inspect_image_content(raw, mime=receipt.get("mime"))
+            cached = True
+        elif execute:
+            # Snapshot file was deleted after receipt creation; clear stale receipt so asset can be re-acquired.
+            receipt_path.unlink(missing_ok=True)
+    if not cached:
         if not execute:
             raise ValueError("Verified media snapshot and receipt are missing")
         if visual.get("require_permissive_license"):
@@ -450,6 +569,7 @@ def media_artifact(vault: Path, visual: dict, digest: str, *, execute: bool) -> 
                 fallback_used = True
         mime = provenance.get("mime", "image/png")
         validate_image_bytes(raw, mime)
+        inspection = inspect_image_content(raw, mime=mime)
         ext = SUPPORTED_MIMES.get(mime, "png")
         digest_hex = content_hash(raw)
         collection = visual.get("collection_slug")
@@ -474,10 +594,13 @@ def media_artifact(vault: Path, visual: dict, digest: str, *, execute: bool) -> 
     clean_alt = re.sub(r"([\\\[\]*_`])",r"\\\1",alt).replace("\n"," ").replace("\r"," ")
     clean_rights = re.sub(r"([\\\[\]*_`])",r"\\\1",escape(rights)).replace("\n"," ").replace("\r"," ")
     if not target.startswith("https:") and visual.get("embed_style") == "wikilink":
-        embed = f"![[{target}]]\n\n*Figure: {escape(clean_alt)}*\n\n*Source: [original publication]({source}); rights: {clean_rights}*"
+        width_px = visual.get("embed_width_px") or inspection.get("recommended_embed_width_px")
+        target_embed = f"![[{target}|{int(width_px)}]]" if isinstance(width_px, (int, float)) and int(width_px) > 0 and visual.get("embed_width_px") else f"![[{target}]]"
+        embed = f"{target_embed}\n\n*Figure: {escape(clean_alt)}*\n\n*Source: [original publication]({source}); rights: {clean_rights}*"
     else:
         embed = f"![{escape(clean_alt)}]({target})\n\n*Source: [original publication]({source}); rights: {clean_rights}*"
     return {"path":receipt["path"],"hash":receipt["hash"],"embed":embed,"provenance":receipt,
+            "inspection":inspection,
             "media_receipt":receipt_relative,"cached":cached,"validation":{"result":"pass",
-              "method":"validate bounded image bytes (PNG/SVG/JPEG/WebP), compare snapshot SHA-256 and specification-bound acquisition receipt",
+              "method":"validate bounded image bytes (PNG/SVG/JPEG/WebP), inspect pixels/metadata, compare snapshot SHA-256 and specification-bound acquisition receipt",
               "limits":"Live availability established only at acquisition; image relevance and supplied rights need editorial review."}}

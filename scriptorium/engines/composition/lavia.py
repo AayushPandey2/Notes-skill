@@ -1,17 +1,24 @@
-"""LAVIA — Local Asset and Visual Intelligence Architecture inside UMRIA.
+"""LAVIA — Local Asset and Visual Intelligence Architecture (A7 Assets).
 
-Coordinates concept-level visual coverage planning, acquisition strategy selection,
-canonical asset manifests, SHA-256 deduplication, offline/Obsidian validation,
-and targeted dependency-aware visual repair.
+Coordinates web-image-first visual research, candidate discovery (including live
+open-educational API adapters), rights verification, canonical asset manifests,
+SHA-256 deduplication, offline/Obsidian validation, and targeted visual repair.
+
+Programmatic SVG diagram generation has been retired. When no suitable,
+permitted external web image can be acquired, LAVIA records an explicit unmet
+visual obligation instead of generating synthetic diagrams.
 """
 from __future__ import annotations
 
 from copy import deepcopy
+from html import unescape
 import json
 from pathlib import Path
 import posixpath
 import re
-from typing import Any
+from typing import Any, Callable
+from urllib.parse import quote_plus, urlencode
+import urllib.request
 
 from scriptorium.models import content_hash, slugify
 
@@ -21,11 +28,13 @@ LIFECYCLE_STATES = (
     "source_verified",
     "acquired",
     "file_validated",
+    "inspected",
     "semantically_verified",
     "embedded",
     "publication_verified",
     "failed",
     "blocked",
+    "unmet_obligation",
 )
 
 COVERAGE_CATEGORIES = (
@@ -39,12 +48,22 @@ COVERAGE_CATEGORIES = (
     "failure_conditions",
 )
 
-SEARCH_STATUSES = ("FOUND", "NO_IMAGE_EXISTS", "SEARCH_UNAVAILABLE")
+SEARCH_STATUSES = ("FOUND", "NO_IMAGE_EXISTS", "SEARCH_UNAVAILABLE", "RIGHTS_REJECTED")
 
 STRATEGY_MAP = {
     "external": "retrieve_figure",
-    "imagegen": "conceptual_illustration",
+    "mermaid": "native_mermaid",
+    "table": "markdown_table",
+    "interactive": "interactive_sequence",
 }
+
+_HTML_TAG_RE = re.compile(r"<[^>]+>")
+
+
+def _clean_html_text(value: Any) -> str:
+    if not value:
+        return ""
+    return re.sub(r"\s+", " ", unescape(_HTML_TAG_RE.sub(" ", str(value)))).strip()
 
 
 def build_image_research_request(
@@ -63,12 +82,12 @@ def build_image_research_request(
     desired_count: int = 1,
     exclude_urls: list[str] | None = None,
 ) -> dict[str, Any]:
-    """Create a structured ResearchFlow image-discovery request (Scriptorium 9.2)."""
+    """Create a structured image-discovery request (Scriptorium)."""
     clean_queries = [q.strip() for q in queries if isinstance(q, str) and q.strip()]
     if not clean_queries:
         raise ValueError("Image research request requires at least one search query")
     return {
-        "schema_version": "image-research-request/v1",
+        "schema_version": "image-research-request/v2",
         "job_id": job_id,
         "chapter_id": chapter_id,
         "concept_id": concept_id,
@@ -84,7 +103,187 @@ def build_image_research_request(
     }
 
 
-def evaluate_svg_fallback_gate(
+def generate_visual_search_queries(
+    concept_title: str,
+    objective: str = "",
+    *,
+    synonyms: list[str] | None = None,
+    relationships: list[str] | None = None,
+    learner_level: str = "beginner",
+    diagram_type: str = "diagram",
+    domain_context: str = "",
+    max_queries: int = 5,
+) -> list[str]:
+    """Generate escalated, domain-neutral web image search queries cleanly bounded by budget."""
+    clean_title = re.sub(r"\s+", " ", concept_title).strip()
+    if not clean_title:
+        raise ValueError("concept_title must be nonempty")
+    level_hint = "simple overview" if learner_level == "beginner" else "technical"
+    dtype = (diagram_type or "diagram").replace("_", " ").strip()
+    candidates: list[str] = [
+        f"{clean_title} {dtype}".strip(),
+        f"{clean_title} {level_hint} {dtype}".strip(),
+    ]
+    if domain_context:
+        candidates.append(f"{clean_title} {domain_context.strip()} {dtype}".strip())
+    for syn in synonyms or []:
+        if syn and syn.strip():
+            candidates.append(f"{syn.strip()} {dtype}".strip())
+    for rel in relationships or []:
+        if rel and rel.strip():
+            candidates.append(f"{clean_title} {rel.strip()}".strip())
+    if objective:
+        obj_words = [w for w in re.findall(r"[A-Za-z0-9-]+", objective) if len(w) > 3][:4]
+        if obj_words:
+            candidates.append(f"{clean_title} {' '.join(obj_words)}".strip())
+
+    deduped: list[str] = []
+    seen: set[str] = set()
+    for q in candidates:
+        key = q.casefold()
+        if key not in seen:
+            seen.add(key)
+            deduped.append(q)
+    return deduped[: max(1, max_queries)]
+
+
+def _default_http_get_json(url: str, timeout: int = 8) -> dict[str, Any]:
+    req = urllib.request.Request(
+        url,
+        headers={"User-Agent": "Scriptorium-Media/1.0 (https://github.com/AayushPandey2/Notes-skill)"},
+    )
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        if getattr(resp, "status", 200) != 200:
+            raise ValueError(f"Search endpoint returned HTTP {getattr(resp, 'status', 'unknown')}")
+        return json.loads(resp.read().decode("utf-8"))
+
+
+def search_web_images(
+    queries: list[str] | dict[str, Any],
+    *,
+    sources: tuple[str, ...] = ("wikimedia_commons",),
+    max_results_per_query: int = 5,
+    min_width: int = 320,
+    min_height: int = 180,
+    timeout: int = 8,
+    require_permissive_license: bool = True,
+    http_get: Callable[[str, int], dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    """Discover real candidate educational images via open web APIs (e.g., Wikimedia Commons).
+
+    Evaluates resolution, MIME type, attribution, and licensing before returning ranked candidates.
+    Supports dependency-injected ``http_get(url, timeout) -> dict`` for offline tests.
+    """
+    from .media import SUPPORTED_MIMES, verify_license_and_rights
+
+    if isinstance(queries, dict):
+        q_list = list(queries.get("search_queries") or [])
+        min_res = queries.get("min_resolution") or {}
+        min_width = int(min_res.get("width", min_width))
+        min_height = int(min_res.get("height", min_height))
+        exclude_urls = set(queries.get("exclude_urls") or [])
+    else:
+        q_list = [q.strip() for q in queries if isinstance(q, str) and q.strip()]
+        exclude_urls = set()
+
+    if not q_list:
+        raise ValueError("Web image search requires at least one query")
+
+    fetcher = http_get or _default_http_get_json
+    candidates: list[dict[str, Any]] = []
+    rejected: list[dict[str, str]] = []
+    seen_urls: set[str] = set(exclude_urls)
+    queries_attempted: list[str] = []
+    search_errors: list[str] = []
+
+    for query in q_list:
+        queries_attempted.append(query)
+        if "wikimedia_commons" in sources:
+            params = urlencode({
+                "action": "query",
+                "generator": "search",
+                "gsrnamespace": "6",
+                "gsrsearch": query,
+                "gsrlimit": str(max(1, min(20, max_results_per_query))),
+                "prop": "imageinfo",
+                "iiprop": "url|size|mime|extmetadata",
+                "format": "json",
+            })
+            api_url = f"https://commons.wikimedia.org/w/api.php?{params}"
+            try:
+                payload = fetcher(api_url, timeout)
+            except Exception as exc:
+                search_errors.append(f"wikimedia_commons ({query}): {exc}")
+                continue
+            pages = (payload.get("query") or {}).get("pages") or {}
+            for page in pages.values():
+                infos = page.get("imageinfo") or []
+                if not infos:
+                    continue
+                info = infos[0]
+                img_url = str(info.get("url") or "").strip()
+                if not img_url or not img_url.startswith("https://") or img_url in seen_urls:
+                    continue
+                mime = str(info.get("mime") or "").split(";", 1)[0].strip().lower()
+                if mime not in SUPPORTED_MIMES:
+                    rejected.append({"url": img_url, "reason": f"unsupported MIME {mime}"})
+                    continue
+                w = int(info.get("width") or 0)
+                h = int(info.get("height") or 0)
+                if w < min_width or h < min_height:
+                    rejected.append({"url": img_url, "reason": f"insufficient resolution {w}x{h} (< {min_width}x{min_height})"})
+                    continue
+                ext = info.get("extmetadata") or {}
+                rights = _clean_html_text(
+                    (ext.get("LicenseShortName") or {}).get("value")
+                    or (ext.get("License") or {}).get("value")
+                    or ""
+                )
+                try:
+                    verify_license_and_rights(rights, require_permissive=require_permissive_license)
+                except ValueError as exc:
+                    rejected.append({"url": img_url, "reason": f"rights check failed: {exc}"})
+                    continue
+                author = _clean_html_text((ext.get("Artist") or {}).get("value") or "Wikimedia Commons contributor")
+                desc = _clean_html_text((ext.get("ImageDescription") or {}).get("value") or page.get("title", ""))
+                source_url = str(info.get("descriptionurl") or f"https://commons.wikimedia.org/wiki/{quote_plus(page.get('title', 'Main_Page'))}")
+                seen_urls.add(img_url)
+                candidates.append({
+                    "url": img_url,
+                    "source": source_url,
+                    "author": author,
+                    "rights": rights,
+                    "mime": mime,
+                    "width": w,
+                    "height": h,
+                    "title": page.get("title", ""),
+                    "alt": desc[:240] or page.get("title", "").replace("File:", ""),
+                    "relevance_score": 15,
+                    "query": query,
+                    "discovery_source": "wikimedia_commons",
+                })
+        if len(candidates) >= max(3, max_results_per_query):
+            break
+
+    if candidates:
+        status = "FOUND"
+    elif search_errors and len(search_errors) == len(queries_attempted):
+        status = "SEARCH_UNAVAILABLE"
+    elif rejected and not search_errors:
+        status = "RIGHTS_REJECTED"
+    else:
+        status = "NO_IMAGE_EXISTS"
+
+    return {
+        "search_status": status,
+        "queries_attempted": queries_attempted,
+        "candidates": candidates,
+        "rejected": rejected,
+        "errors": search_errors,
+    }
+
+
+def record_unmet_visual_obligation(
     visual: dict[str, Any],
     *,
     search_status: str,
@@ -93,34 +292,24 @@ def evaluate_svg_fallback_gate(
     rejection_reasons: list[str] | None = None,
     justification: str = "",
 ) -> dict[str, Any]:
-    """Enforce the SVG fallback gate before allowing native SVG generation."""
+    """Record an explicit unmet visual obligation when no permitted web image can be acquired.
+
+    Programmatic SVG diagram generation is retired and NEVER permitted as a hidden fallback.
+    """
     if search_status not in SEARCH_STATUSES:
         raise ValueError(f"Invalid search_status: {search_status}")
     if search_status == "FOUND":
-        raise ValueError("SVG fallback forbidden when a suitable external image was found")
-    # Custom numeric plots derived from chapter equations/data are an explicit justified exception.
-    if visual.get("kind") in {"equation", "distribution", "timeseries", "signal"} and (
-        visual.get("equation") or visual.get("data")
-    ):
-        return {
-            "permitted": True,
-            "reason": "custom_numeric_plot",
-            "search_status": search_status,
-            "justification": justification or "Deterministic plot matching chapter numerical equations/data",
-        }
-    if not justification.strip():
-        raise ValueError("SVG fallback requires an explicit educational justification")
-    if search_status == "NO_IMAGE_EXISTS" and not queries_attempted:
-        raise ValueError("NO_IMAGE_EXISTS requires recorded search queries attempted")
+        raise ValueError("Cannot record unmet visual obligation when search_status is FOUND")
     return {
-        "permitted": True,
-        "reason": "documented_fallback",
+        "permitted": False,
+        "fallback_generation": "prohibited",
+        "unmet_obligation": True,
         "requested_concept": visual.get("concept", ""),
         "search_status": search_status,
         "queries_attempted": list(queries_attempted or []),
         "sources_considered": list(sources_considered or []),
         "rejection_reasons": list(rejection_reasons or []),
-        "justification": justification.strip(),
+        "reason": justification.strip() or f"Web image acquisition unresolved ({search_status}); programmatic SVG generation retired.",
     }
 
 
@@ -130,43 +319,101 @@ def resolve_visual_route(
     asset_registry: dict[str, dict[str, Any]] | None = None,
     host_candidates: list[dict[str, Any]] | None = None,
     search_available: bool = True,
+    auto_search: bool = False,
+    http_get: Callable[[str, int], dict[str, Any]] | None = None,
+    learner_level: str = "beginner",
     fallback_decision: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Strict Web-Image-First routing: Reuse -> Discover/Download -> Documented Fallback."""
+    """Strict Web-Image-First routing: Reuse -> Discover/Evaluate -> Download -> Unmet Obligation.
+
+    Never falls back to programmatic SVG generation.
+    """
+    from .bvia import rank_image_candidates
+
     concept = visual.get("concept", "")
     # Route 1: Reuse verified local asset
     if asset_registry:
         reusable = asset_registry.get(visual.get("id", "")) or asset_registry.get(concept)
         if reusable and reusable.get("relative_path"):
-            return {"route": "reuse_local_asset", "visual": {**visual, "local_fallback": reusable["relative_path"], "asset_policy": "offline_only"}, "search_status": "FOUND"}
+            return {
+                "route": "reuse_local_asset",
+                "visual": {**visual, "local_fallback": reusable["relative_path"], "asset_policy": "offline_only"},
+                "search_status": "FOUND",
+            }
 
-    # Route 2 & 3: Select permitted external candidate discovered by host
-    for cand in host_candidates or []:
+    # Route 2: Rank supplied host candidates or execute real web image discovery
+    candidates = list(host_candidates or [])
+    attempted = list((fallback_decision or {}).get("queries_attempted") or visual.get("search_queries") or [])
+    rejection_reasons: list[str] = list((fallback_decision or {}).get("rejection_reasons") or [])
+    derived_status = "NO_IMAGE_EXISTS" if search_available else "SEARCH_UNAVAILABLE"
+
+    if not candidates and auto_search and search_available:
+        queries = attempted or generate_visual_search_queries(
+            visual.get("concept_title") or visual.get("objective") or concept or "diagram",
+            visual.get("objective", ""),
+            learner_level=learner_level,
+            diagram_type=visual.get("kind", "diagram"),
+        )
+        search_res = search_web_images(queries, http_get=http_get)
+        attempted = search_res["queries_attempted"]
+        candidates = search_res["candidates"]
+        rejection_reasons.extend(r["reason"] for r in search_res["rejected"])
+        derived_status = search_res["search_status"]
+
+    ranked = rank_image_candidates(candidates, learner_level=learner_level) if candidates else []
+    for cand in ranked:
         if cand.get("url") and cand.get("source") and cand.get("rights"):
             resolved = {
                 **visual,
-                "kind": "source_figure",
+                "kind": visual.get("kind") or "source_figure",
+                "url": cand["url"],
+                "source": cand["source"],
+                "rights": cand["rights"],
+                "alt": cand.get("alt") or visual.get("objective", ""),
+                "relevance": cand.get("relevance") or visual.get("objective", ""),
+                "accessibility": cand.get("accessibility"),
+                "require_permissive_license": True,
+                "candidate_count_evaluated": len(candidates),
+            }
+            return {"route": "external_image_download", "visual": resolved, "search_status": "FOUND"}
+
+    # Fallback if host_candidates lacked accessibility fields for strict ranker but still had permissive url/source/rights
+    for cand in candidates:
+        if cand.get("url") and cand.get("source") and cand.get("rights") and cand.get("technical_accuracy") is not False:
+            from .media import verify_license_and_rights
+            try:
+                verify_license_and_rights(cand["rights"], require_permissive=True)
+            except ValueError as exc:
+                rejection_reasons.append(str(exc))
+                continue
+            resolved = {
+                **visual,
+                "kind": visual.get("kind") or "source_figure",
                 "url": cand["url"],
                 "source": cand["source"],
                 "rights": cand["rights"],
                 "alt": cand.get("alt") or visual.get("objective", ""),
                 "relevance": cand.get("relevance") or visual.get("objective", ""),
                 "require_permissive_license": True,
+                "candidate_count_evaluated": len(candidates),
             }
             return {"route": "external_image_download", "visual": resolved, "search_status": "FOUND"}
 
-    # Route 4: Documented fallback only
-    status = "NO_IMAGE_EXISTS" if search_available else "SEARCH_UNAVAILABLE"
+    # Route 3: Honest unmet visual obligation (NO SVG fallback!)
     dec = fallback_decision or {}
-    gate = evaluate_svg_fallback_gate(
+    unmet = record_unmet_visual_obligation(
         visual,
-        search_status=dec.get("search_status", status),
-        queries_attempted=dec.get("queries_attempted"),
-        sources_considered=dec.get("sources_considered"),
-        rejection_reasons=dec.get("rejection_reasons"),
+        search_status=dec.get("search_status", derived_status if derived_status != "FOUND" else "NO_IMAGE_EXISTS"),
+        queries_attempted=attempted,
+        sources_considered=dec.get("sources_considered", ["wikimedia_commons"]),
+        rejection_reasons=rejection_reasons,
         justification=dec.get("justification", visual.get("fallback_justification", "")),
     )
-    return {"route": "documented_fallback", "visual": {**visual, "fallback_gate": gate}, "search_status": gate["search_status"]}
+    return {
+        "route": "unmet_visual_obligation",
+        "visual": {**visual, "unmet_obligation": unmet},
+        "search_status": unmet["search_status"],
+    }
 
 
 def verify_visual_obligations(
@@ -174,12 +421,15 @@ def verify_visual_obligations(
     bodies: dict[str, str],
     vault: Path,
 ) -> dict[str, Any]:
-    """ReviewEngine check: verify embeds, provenance, explanation density, and fallback gates."""
+    """Checker verification: verify local embeds, provenance, explanation density, and unmet obligations."""
     from . import contained
     errors: list[str] = []
     for ob in obligations:
         oid = ob.get("obligation_id", "<unknown>")
         chid = ob.get("chapter_id", "")
+        if ob.get("status") in {"unavailable", "unmet_obligation", "blocked"}:
+            errors.append(f"{oid}: unmet visual obligation ({ob.get('failure_reason', 'no permitted image acquired')})")
+            continue
         rel = ob.get("local_asset_path")
         if not rel or not contained(vault, rel).is_file():
             errors.append(f"{oid}: missing local asset {rel}")
@@ -188,7 +438,6 @@ def verify_visual_obligations(
         if rel not in body:
             errors.append(f"{oid}: asset {rel} is not embedded in chapter {chid}")
             continue
-        # Reject image-only chapters/sections with no accompanying explanatory prose
         non_embed_words = [
             w for line in body.splitlines()
             if not line.strip().startswith(("![", "#"))
@@ -201,20 +450,16 @@ def verify_visual_obligations(
     return {"passed": not errors, "errors": errors, "checked": len(obligations)}
 
 
-def select_acquisition_strategy(visual: dict[str, Any], *, host_imagegen_available: bool = False) -> str:
-    """Choose Strategy A (retrieve), Strategy B (deterministic), or Strategy C (illustration)."""
+def select_acquisition_strategy(visual: dict[str, Any]) -> str:
+    """Choose retrieve_figure (external), native_mermaid, markdown_table, or interactive_sequence."""
     renderer = visual.get("renderer")
     if not renderer:
         from .renderers import KINDS
         kind = visual.get("kind", "")
-        renderer = KINDS.get(kind, ("svg",))[0]
-    strategy = STRATEGY_MAP.get(renderer, "deterministic_render")
-    if strategy == "conceptual_illustration":
-        if visual.get("empirical") or visual.get("equation") or visual.get("data"):
-            raise ValueError("Artistic illustration cannot represent exact numerical evidence")
-        if not (host_imagegen_available or visual.get("generated_image") or visual.get("local_fallback")):
-            return "deterministic_render"
-    return strategy
+        renderer = KINDS.get(kind, ("external",))[0]
+    if renderer not in STRATEGY_MAP:
+        raise ValueError(f"Unsupported visual strategy renderer '{renderer}'; programmatic SVG creation is retired.")
+    return STRATEGY_MAP[renderer]
 
 
 def _concept_categories(concept: dict[str, Any]) -> list[str]:
@@ -289,9 +534,11 @@ def plan_visual_coverage(plan: dict[str, Any]) -> dict[str, Any]:
 def _lifecycle_from_result(result: dict[str, Any]) -> str:
     status = result.get("status", "planned")
     if status == "verified":
-        return "embedded" if result.get("embed") else "file_validated"
+        if result.get("embed"):
+            return "embedded"
+        return "inspected" if (result.get("inspection") or {}).get("inspection_performed") else "file_validated"
     if status == "unavailable":
-        return "blocked"
+        return "unmet_obligation" if result.get("unmet_visual_obligation") else "blocked"
     if status == "failed":
         return "failed"
     return "planned"
@@ -303,7 +550,7 @@ def build_asset_manifest(
     *,
     collection_slug: str | None = None,
 ) -> dict[str, Any]:
-    """Build a canonical LAVIA asset manifest with deduplication and provenance."""
+    """Build a canonical LAVIA asset manifest with deduplication, inspection, and provenance."""
     slug = slugify(collection_slug or plan.get("collection_slug") or plan.get("topic") or "collection")
     chapter_for_concept = {
         cid: ch["id"]
@@ -329,14 +576,16 @@ def build_asset_manifest(
                 seen_hashes[digest] = vid
 
         provenance = result.get("provenance") or {}
-        renderer = result.get("renderer", "svg")
-        method = "external_download" if renderer == "external" else "deterministic_render"
+        renderer = result.get("renderer", "external")
+        method = "external_download" if renderer == "external" else f"native_{renderer}"
         lifecycle = _lifecycle_from_result(result)
         suffix = Path(canonical_path).suffix.lstrip(".") if canonical_path else ""
         try:
-            strategy = select_acquisition_strategy(visual) if visual else "deterministic_render"
+            strategy = select_acquisition_strategy({"renderer": renderer, **visual})
         except ValueError:
-            strategy = "blocked_invalid_strategy"
+            strategy = "retired_svg_prohibited"
+
+        inspection = result.get("inspection") or {}
         entries.append({
             "asset_id": vid,
             "concept_id": cid,
@@ -359,6 +608,13 @@ def build_asset_manifest(
                 "content_hash": digest,
                 "cached": bool(result.get("cached")),
             },
+            "inspection": {
+                "performed": bool(inspection.get("inspection_performed")),
+                "readable_for_embedding": inspection.get("readable_for_embedding"),
+                "width": inspection.get("width"),
+                "height": inspection.get("height"),
+                "text_labels_extracted": inspection.get("text_labels_extracted", []),
+            },
             "verification": {
                 "image_integrity": "passed" if result.get("status") == "verified" else "failed",
                 "semantic_accuracy": "pending_editorial_review" if result.get("status") == "verified" else "unverified",
@@ -371,18 +627,20 @@ def build_asset_manifest(
                 "alt_text": visual.get("alt") or visual.get("objective", ""),
                 "embed": result.get("embed"),
                 "failure_reason": result.get("failure_reason"),
+                "unmet_obligation": bool(result.get("unmet_visual_obligation")),
             },
         })
 
     return {
-        "schema_version": "lavia-manifest/v1",
+        "schema_version": "lavia-manifest/v2",
         "collection_slug": slug,
         "assets": entries,
         "summary": {
             "total": len(entries),
             "verified": sum(1 for e in entries if e["publication"]["status"] == "verified"),
             "failed": sum(1 for e in entries if e["lifecycle_state"] == "failed"),
-            "blocked": sum(1 for e in entries if e["lifecycle_state"] == "blocked"),
+            "blocked": sum(1 for e in entries if e["lifecycle_state"] in {"blocked", "unmet_obligation"}),
+            "unmet_obligations": sum(1 for e in entries if e["publication"]["unmet_obligation"]),
             "deduplicated": deduplicated_count,
         },
     }
@@ -436,7 +694,6 @@ def validate_collection_visuals(
     chapters_by_id = {c["id"]: c for c in plan.get("chapters", [])}
     mime_by_ext = {f".{ext}": mime for mime, ext in SUPPORTED_MIMES.items()}
 
-    # Always scan all chapter bodies for leaked remote image URLs in local-first mode.
     for key, body in bodies.items():
         for target in _extract_local_embeds(body):
             if target.startswith(("http://", "https://")):

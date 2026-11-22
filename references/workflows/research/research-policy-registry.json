@@ -262,7 +262,7 @@
     "software_architecture": {
       "default_depth": 2,
       "freshness_days": 180,
-      "source_preferences": ["design_document", "official_standard", "official_documentation", "maintained_repository", "scholarly_paper"],
+      "source_preferences": ["design_document", "original_paper", "official_standard", "official_documentation", "maintained_repository", "scholarly_paper"],
       "evidence_requirements": ["component_contract", "tradeoffs", "observed_vs_recommended"],
       "verification": {"implementation_alignment": "when_available"},
       "primary_required": true

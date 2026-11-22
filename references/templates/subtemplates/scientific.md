@@ -8,7 +8,7 @@
   - **Optional:** `mathematics`, `experiment`, `worked_examples` (`P04`), `visual_reasoning` (`P05` geometric schematics), `F11` progressive disclosure.
   - **Excluded:** Forced software code unless computational simulation is an explicit user objective.
 - **Core Adaptations:**
-  - Ground laws in physical intuition, dimensional/unit consistency, coordinate conventions, and explicit approximation regimes (e.g., steady current, ideal gas, small-angle limit).
-  - Use clean `.png`/`.svg` geometric schematics (`assets/<topic>/`) rather than Mermaid box chains for spatial geometry (`P05`).
+  - Ground laws in physical intuition, dimensional/unit consistency, coordinate conventions, and explicit approximation regimes.
+  - Use verified locally stored external schematics (`assets/scriptorium/<collection-slug>/`) discovered via web image research rather than Mermaid box chains or programmatic SVG drawing (`T06`–`T09`).
   - Distinguish experimental measurements and error bounds from idealized theoretical models; preserve exact source scope under `strict` mode.
 - **Validation:** `QualityEngine.check_representations()` (units/consistency), `F09` unit consistency, `KnowledgeEngine.verify_claim_links()`.

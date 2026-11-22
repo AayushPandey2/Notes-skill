@@ -384,8 +384,12 @@ def _verify_obligation(obligation, plan, drafts, evidence, visuals, vault):
         return []
     if verifier == "visual":
         result = visuals.get(obligation["id"], {})
+        if result.get("status") == "unavailable" and result.get("unmet_visual_obligation"):
+            return [f"unmet visual obligation: {result.get('failure_reason') or 'no permitted web image found'}"]
         if result.get("status") != "verified" or not result.get("attempted") or not result.get("hash"):
-            return ["required visual lacks executed, persisted renderer and verified asset"]
+            reason = result.get("failure_reason")
+            detail = f" ({reason})" if reason else ""
+            return [f"required visual lacks executed renderer/acquisition and verified asset{detail}"]
         embed = result.get("embed", f"![[{result.get('path')}]]")
         if not isinstance(embed, str) or not embed.strip() or embed not in body:
             return ["verified visual is not embedded in its owning chapter"]
@@ -514,6 +518,65 @@ def validate_obligations(plan: dict[str, Any], drafts: dict[str, str], *, eviden
             "metrics": {"elapsed_seconds": time.perf_counter()-started, "obligations": len(obligations),
                         "cached_checks": sum(o["validation"]["cached"] for o in obligations), "model_calls": 0,
                         "model_tokens": None, "cache": dict(cache.stats) if cache else {}}}
+
+
+DEPTH_COMPLETENESS_CHECKLIST = (
+    ("problem_statement", "What problem does this solve?"),
+    ("necessity", "Why is it necessary?"),
+    ("prerequisites", "What prerequisites are required?"),
+    ("intuition", "What is the intuition?"),
+    ("formal_definition", "What is the formal definition?"),
+    ("mechanism", "How does the mechanism work?"),
+    ("intermediate_steps", "What happens at each intermediate step?"),
+    ("mathematics", "What mathematics is involved, when relevant?"),
+    ("symbol_definitions", "What do the symbols represent?"),
+    ("demonstration", "How can the concept be demonstrated?"),
+    ("worked_example", "What is a complete worked example?"),
+    ("visuals", "What visual representations help explain it?"),
+    ("visual_interpretation", "How should those visuals be interpreted?"),
+    ("assumptions", "What assumptions are involved?"),
+    ("failure_modes", "When does the approach fail?"),
+    ("misconceptions", "What common misconceptions arise?"),
+    ("adjacent_connections", "How does it relate to adjacent concepts?"),
+    ("advanced_details", "What advanced details are necessary?"),
+    ("assessment", "How can understanding be assessed?"),
+)
+
+
+def evaluate_chapter_depth_contract(
+    plan: dict[str, Any],
+    chapter: dict[str, Any],
+    body: str,
+) -> dict[str, Any]:
+    """Evaluate applicable educational obligations without imposing mechanical word quotas."""
+    concepts = [c for c in plan.get("concepts", []) if c["id"] in chapter.get("concepts", [])]
+    applicable: list[str] = ["problem_statement", "intuition", "mechanism", "worked_example", "assumptions", "assessment"]
+    if any(c.get("prerequisite_records") for c in concepts):
+        applicable.append("prerequisites")
+    if any(c.get("depth_allocation", {}).get("levels", {}).get("mathematical", 0) >= 2 for c in concepts):
+        applicable.extend(["formal_definition", "intermediate_steps", "mathematics", "symbol_definitions"])
+    if any(c.get("depth_allocation", {}).get("levels", {}).get("visual", 0) >= 1 for c in concepts) or any(
+        v.get("concept") in chapter.get("concepts", []) for v in plan.get("visuals", [])
+    ):
+        applicable.extend(["visuals", "visual_interpretation"])
+    if any(c.get("depth_allocation", {}).get("levels", {}).get("analytical", 0) >= 2 or c.get("failures") for c in concepts):
+        applicable.extend(["failure_modes", "misconceptions", "adjacent_connections"])
+    if any(c.get("depth_allocation", {}).get("levels", {}).get("research", 0) >= 3 for c in concepts):
+        applicable.append("advanced_details")
+    applicable = list(dict.fromkeys(applicable))
+
+    note = parse_note(body)
+    nonempty_paragraphs = [p for p in re.split(r"\n\s*\n", note.body) if p.strip() and not p.strip().startswith("#")]
+    h2_count = sum(1 for s in note.sections if s.level == 2)
+    shallow = len(nonempty_paragraphs) < 2 and h2_count < 2
+    return {
+        "chapter_id": chapter.get("id"),
+        "applicable_obligations": applicable,
+        "section_count": h2_count,
+        "paragraph_count": len(nonempty_paragraphs),
+        "structurally_shallow": shallow,
+        "checklist_size": len(DEPTH_COMPLETENESS_CHECKLIST),
+    }
 
 
 def repair_plan(plan: dict[str, Any], failed: list[str]) -> dict[str, Any]:

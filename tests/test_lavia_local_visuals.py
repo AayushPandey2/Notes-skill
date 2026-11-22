@@ -1,22 +1,15 @@
-"""End-to-end tests for Scriptorium 5.1 LAVIA local-first visual architecture."""
+"""End-to-end tests for Scriptorium LAVIA Web-Image-First local-first visual architecture."""
 from __future__ import annotations
 
 import binascii
 import os
 import struct
-import xml.etree.ElementTree as ET
 import zlib
 
 import pytest
 
-from scriptorium.engines.composition import lavia, media
-from scriptorium.engines.composition.visuals import (
-    NS,
-    architecture_svg,
-    render_visuals,
-    scientific_svg,
-    validate_svg,
-)
+from scriptorium.engines.composition import bvia, lavia, media, renderers, visuals
+from scriptorium.engines.composition.visuals import render_visuals
 
 
 def _png(width: int = 2, height: int = 2) -> bytes:
@@ -66,15 +59,66 @@ def test_license_verification_and_strategy_selection():
         media.verify_license_and_rights("All Rights Reserved", require_permissive=True)
 
     assert lavia.select_acquisition_strategy({"kind": "source_figure"}) == "retrieve_figure"
-    assert lavia.select_acquisition_strategy({"kind": "equation"}) == "deterministic_render"
-    assert lavia.select_acquisition_strategy({"kind": "intuition"}, host_imagegen_available=True) == "conceptual_illustration"
-    with pytest.raises(ValueError, match="exact numerical evidence"):
-        lavia.select_acquisition_strategy({"kind": "intuition", "equation": "x*2"}, host_imagegen_available=True)
+    assert lavia.select_acquisition_strategy({"kind": "equation"}) == "retrieve_figure"
+    assert lavia.select_acquisition_strategy({"kind": "workflow"}) == "native_mermaid"
+    assert lavia.select_acquisition_strategy({"renderer": "table", "kind": "comparison"}) == "markdown_table"
 
 
-def test_imagegen_host_artifact_and_deterministic_fallback(tmp_path):
+def test_web_image_research_discovery_download_and_pil_inspection(tmp_path, monkeypatch):
+    # Verify query escalation + search_web_images permissive rights filtering + PIL inspection + local embed
     host_png = tmp_path / "host_generated.png"
-    host_png.write_bytes(_png(12, 12))
+    host_png.write_bytes(_png(360, 220))
+    retrieved_png = _png(640, 400)
+
+    queries = lavia.generate_visual_search_queries(
+        "Attention Mechanism",
+        objective="Illustrate self-attention weight matrix",
+        synonyms=["Scaled dot-product attention"],
+    )
+    assert len(queries) >= 3
+
+    def fake_commons_get(url, timeout=8):
+        return {
+            "query": {
+                "pages": {
+                    "101": {
+                        "title": "File:Restricted_Diagram.png",
+                        "imageinfo": [{
+                            "url": "https://upload.wikimedia.org/restricted.png",
+                            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Restricted_Diagram.png",
+                            "mime": "image/png",
+                            "width": 800,
+                            "height": 600,
+                            "extmetadata": {"LicenseShortName": {"value": "All Rights Reserved"}},
+                        }],
+                    },
+                    "102": {
+                        "title": "File:Permissive_Attention_Diagram.png",
+                        "imageinfo": [{
+                            "url": "https://upload.wikimedia.org/attention_ok.png",
+                            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Permissive_Attention_Diagram.png",
+                            "mime": "image/png",
+                            "width": 640,
+                            "height": 400,
+                            "extmetadata": {"LicenseShortName": {"value": "CC-BY-SA-4.0"}},
+                        }],
+                    },
+                }
+            }
+        }
+
+    search_out = lavia.search_web_images(
+        queries,
+        http_get=fake_commons_get,
+    )
+    assert search_out["search_status"] == "FOUND"
+    assert search_out["candidates"][0]["url"] == "https://upload.wikimedia.org/attention_ok.png"
+    assert search_out["candidates"][0]["rights"] == "CC-BY-SA-4.0"
+    assert search_out["rejected"]
+    assert all(r["url"] == "https://upload.wikimedia.org/restricted.png" for r in search_out["rejected"])
+
+    monkeypatch.setattr(media, "_resolve_public", lambda host: ["93.184.216.34"])
+    monkeypatch.setattr(media, "_request_once", lambda url, host, address: (200, {"content-type": "image/png"}, retrieved_png))
 
     plan = {
         "topic": "Conceptual Intuition",
@@ -82,7 +126,7 @@ def test_imagegen_host_artifact_and_deterministic_fallback(tmp_path):
         "organize_by_collection": True,
         "embed_style": "wikilink",
         "concepts": [{"id": "c1", "depth": {"conceptual": 3, "visual": 3}}],
-        "chapters": [{"id": "ch1", "title": "Intuition", "path": "6 - Full Notes/Intuition/01 - Intuition.md", "concepts": ["c1"]}],
+        "chapters": [{"id": "ch1", "title": "Intuition", "path": "Conceptual Intuition/01 - Intuition.md", "concepts": ["c1"]}],
         "visuals": [
             {
                 "id": "host-illustration",
@@ -94,38 +138,58 @@ def test_imagegen_host_artifact_and_deterministic_fallback(tmp_path):
                 "alt": "Host conceptual illustration",
             },
             {
-                "id": "fallback-illustration",
+                "id": "discovered-attention-diagram",
                 "concept": "c1",
-                "section": "Fallback Schematic",
-                "objective": "Show conceptual fallback schematic",
-                "kind": "intuition",
-                "labels": ["Query", "Key", "Value"],
+                "section": "Discovered Schematic",
+                "objective": "Illustrate attention connections using permissive web figure",
+                "kind": "source_figure",
+                "search_queries": ["attention diagram"],
+                "alt": "Attention connection diagram from Wikimedia Commons",
             },
         ],
     }
-    drafts = {"ch1": "## Host Illustration\n\nText.\n\n## Fallback Schematic\n\nMore text.\n"}
-    bodies, results = render_visuals(tmp_path, plan, drafts, execute=True)
+    drafts = {"ch1": "## Host Illustration\n\nText.\n\n## Discovered Schematic\n\nMore text.\n"}
+    bodies, results = render_visuals(tmp_path, plan, drafts, execute=True, http_get=fake_commons_get)
     assert results["host-illustration"]["status"] == "verified"
-    assert results["host-illustration"]["path"].endswith(".png")
-    assert results["fallback-illustration"]["status"] == "verified"
-    assert results["fallback-illustration"]["path"].endswith(".svg")
-    assert results["fallback-illustration"]["fallback_used"] is True
+    assert results["discovered-attention-diagram"]["status"] == "verified"
+    assert results["discovered-attention-diagram"]["path"].endswith(".png")
+    assert results["discovered-attention-diagram"]["inspection"]["width"] == 640
+    assert results["discovered-attention-diagram"]["inspection"]["text_ocr_available"] is False
     manifest = lavia.build_asset_manifest(plan, results)
+    assert manifest["schema_version"] == "lavia-manifest/v2"
     assert lavia.validate_collection_visuals(tmp_path, plan, bodies, manifest)["passed"] is True
 
 
 def test_transformer_regression_local_first_pipeline_and_targeted_repair(tmp_path, monkeypatch):
-    # Deterministic local socket mock by default; set SCRIPTORIUM_LIVE_NET=1 to hit live HTTPS.
+    # Web-Image-First local-first pipeline across 4 chapter visuals + targeted broken-asset repair.
     fallback_png = tmp_path / "reference_fallback.png"
-    fallback_png.write_bytes(_png(16, 12))
+    fallback_png.write_bytes(_png(420, 260))
     if not os.environ.get("SCRIPTORIUM_LIVE_NET"):
-        live_png = _png(16, 12)
+        live_png = _png(640, 380)
         monkeypatch.setattr(media, "_resolve_public", lambda host: ["93.184.216.34"])
         monkeypatch.setattr(
             media,
             "_request_once",
             lambda url, host, address: (200, {"content-type": "image/png"}, live_png),
         )
+    def fake_search(url, timeout=8):
+        return {
+            "query": {
+                "pages": {
+                    "201": {
+                        "title": "File:Transformer_Diagram.png",
+                        "imageinfo": [{
+                            "url": "https://upload.wikimedia.org/wikipedia/commons/transformer_diagram.png",
+                            "descriptionurl": "https://commons.wikimedia.org/wiki/File:Transformer_Diagram.png",
+                            "mime": "image/png",
+                            "width": 640,
+                            "height": 380,
+                            "extmetadata": {"LicenseShortName": {"value": "CC-BY-4.0"}},
+                        }],
+                    }
+                }
+            }
+        }
     plan = {
         "topic": "Transformer Architecture",
         "collection_slug": "transformer-architecture",
@@ -139,53 +203,53 @@ def test_transformer_regression_local_first_pipeline_and_targeted_repair(tmp_pat
             {"id": "t.mha", "depth": {"conceptual": 3, "mathematical": 3, "visual": 3}},
         ],
         "chapters": [
-            {"id": "ch1", "title": "Foundations", "path": "6 - Full Notes/Transformer Architecture/01 - Foundations.md", "concepts": ["t.overview"]},
-            {"id": "ch2", "title": "Positional Encoding", "path": "6 - Full Notes/Transformer Architecture/02 - Positional Encoding.md", "concepts": ["t.pos"]},
-            {"id": "ch3", "title": "Causal Masking", "path": "6 - Full Notes/Transformer Architecture/03 - Causal Masking.md", "concepts": ["t.mask"]},
-            {"id": "ch4", "title": "Multi-Head Attention", "path": "6 - Full Notes/Transformer Architecture/04 - Multi-Head Attention.md", "concepts": ["t.mha"]},
+            {"id": "ch1", "title": "Foundations", "path": "Transformer Architecture/01 - Foundations.md", "concepts": ["t.overview"]},
+            {"id": "ch2", "title": "Positional Encoding", "path": "Transformer Architecture/02 - Positional Encoding.md", "concepts": ["t.pos"]},
+            {"id": "ch3", "title": "Causal Masking", "path": "Transformer Architecture/03 - Causal Masking.md", "concepts": ["t.mask"]},
+            {"id": "ch4", "title": "Multi-Head Attention", "path": "Transformer Architecture/04 - Multi-Head Attention.md", "concepts": ["t.mha"]},
         ],
         "visuals": [
             {
                 "id": "transformer-overview",
                 "concept": "t.overview",
                 "section": "Architecture",
-                "objective": "Show end-to-end encoder-decoder blocks and tensor shapes",
+                "objective": "Show end-to-end encoder-decoder blocks from vetted web reference figure",
                 "kind": "architecture",
                 "coverage_category": "overall_structure",
-                "components": [
-                    {"label": "Embeddings", "shape": "B, T, d_model"},
-                    {"label": "Encoder Stack", "shape": "B, T, d_model"},
-                    {"label": "Decoder Stack", "shape": "B, T, d_model"},
-                ],
+                "search_queries": ["Transformer model architecture Vaswani diagram"],
+                "local_fallback": "reference_fallback.png",
+                "alt": "Transformer encoder-decoder architecture overview",
             },
             {
                 "id": "positional-encoding-plot",
                 "concept": "t.pos",
                 "section": "Sinusoidal Encoding",
-                "objective": "Plot positional scaling curve x / (1 + x * x)",
-                "kind": "equation",
+                "objective": "Show retrieved sinusoidal encoding pattern figure",
+                "kind": "source_figure",
                 "coverage_category": "mathematical_behavior",
-                "equation": "x / (1 + x * x)",
-                "x_values": [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0],
-                "xlabel": "position",
-                "ylabel": "encoding",
-                "units": "dimensionless",
-                "interpretation": "Bounded smooth curve across token positions.",
+                "search_queries": ["positional encoding transformer heatmap"],
+                "url": "https://upload.wikimedia.org/wikipedia/commons/pos_enc.png",
+                "source": "https://commons.wikimedia.org/wiki/File:Positional_Encoding.png",
+                "rights": "CC-BY-4.0",
+                "require_permissive_license": True,
+                "local_fallback": "reference_fallback.png",
+                "alt": "Sinusoidal positional encoding heatmap across dimensions",
+                "relevance": "Shows periodicity across token positions.",
             },
             {
                 "id": "encoder-decoder-flow",
                 "concept": "t.mask",
                 "section": "Causal Mask",
-                "objective": "Show encoder-decoder cross-attention information flow",
-                "kind": "network",
+                "objective": "Show encoder-decoder cross-attention flow natively in Mermaid",
+                "kind": "workflow",
                 "coverage_category": "information_flow",
                 "nodes": [
-                    {"id": "enc", "label": "Encoder Keys/Values"},
+                    {"id": "enc", "label": "Encoder Keys and Values"},
                     {"id": "dec", "label": "Decoder Masked Query"},
                     {"id": "cross", "label": "Cross-Attention"},
                 ],
                 "edges": [
-                    {"source": "enc", "target": "cross", "label": "K, V"},
+                    {"source": "enc", "target": "cross", "label": "K and V"},
                     {"source": "dec", "target": "cross", "label": "Q"},
                 ],
             },
@@ -218,12 +282,12 @@ def test_transformer_regression_local_first_pipeline_and_targeted_repair(tmp_pat
         "ch4": "## Multi-Head Attention\n\nProjection details.\n",
     }
 
-    bodies, results = render_visuals(tmp_path, plan, drafts, execute=True)
+    bodies, results = render_visuals(tmp_path, plan, drafts, execute=True, http_get=fake_search)
     assert all(r["status"] == "verified" for r in results.values()), {k: (v["status"], v["failure_reason"]) for k, v in results.items()}
     assert all(r["path"].startswith("assets/scriptorium/transformer-architecture/") for r in results.values())
     assert "![[assets/scriptorium/transformer-architecture/" in bodies["ch1"]
     assert "![[assets/scriptorium/transformer-architecture/" in bodies["ch4"]
-    assert "https://www.python.org/static/community_logos/python-logo.png" not in bodies["ch4"]  # Local-first embed, not remote image URL
+    assert "https://www.python.org/static/community_logos/python-logo.png" not in bodies["ch4"]
 
     manifest = lavia.build_asset_manifest(plan, results)
     manifest_path = lavia.save_asset_manifest(tmp_path, manifest)
@@ -235,7 +299,7 @@ def test_transformer_regression_local_first_pipeline_and_targeted_repair(tmp_pat
     assert validation["offline_ready"] is True
     assert validation["verified_assets"] == 4
 
-    # Simulate deleting one generated SVG asset and verify targeted repair restores only that asset
+    # Simulate deleting one local PNG asset and verify targeted repair restores only that asset
     broken_rel = results["positional-encoding-plot"]["path"]
     (tmp_path / broken_rel).unlink()
     broken_check = lavia.validate_collection_visuals(tmp_path, plan, bodies, manifest)
@@ -248,7 +312,7 @@ def test_transformer_regression_local_first_pipeline_and_targeted_repair(tmp_pat
     assert recheck["passed"] is True, recheck
 
 
-def test_web_image_first_policy_and_svg_fallback_gate(tmp_path):
+def test_web_image_first_request_and_svg_generation_prohibited(tmp_path):
     req = lavia.build_image_research_request(
         job_id="job-1",
         chapter_id="ch5",
@@ -257,41 +321,50 @@ def test_web_image_first_policy_and_svg_fallback_gate(tmp_path):
         subject="Transformer encoder block",
         queries=["Transformer encoder self-attention diagram", "Transformer encoder layer Creative Commons"],
     )
-    assert req["schema_version"] == "image-research-request/v1"
-    assert len(req["search_queries"]) == 2
+    assert req["schema_version"] == "image-research-request/v2"
+    assert len(req["search_queries"]) >= 2
 
-    # Gate blocks undocumented SVG generation when web_image_first=True
-    undocumented_plan = {
-        "topic": "Gate Test",
+    # Programmatic SVG generators must remain completely absent from codebase
+    for retired in ("architecture_svg", "scientific_svg", "mask_svg", "flow_svg"):
+        assert not hasattr(visuals, retired)
+    for retired_r in ("graph_svg", "coordinate_svg"):
+        assert not hasattr(renderers, retired_r)
+    assert not hasattr(lavia, "evaluate_svg_fallback_gate")
+
+    # Unresolved web search reports an honest unmet visual obligation instead of drawing fake SVG
+    unresolved_plan = {
+        "topic": "Honesty Test",
         "web_image_first": True,
         "chapters": [{"id": "ch1", "concepts": ["c1"]}],
-        "visuals": [{"id": "v1", "concept": "c1", "section": "Arch", "objective": "Show blocks", "kind": "architecture", "components": [{"label": "A", "shape": "B"}]}],
+        "visuals": [{
+            "id": "v1",
+            "concept": "c1",
+            "section": "Arch",
+            "objective": "Show schematic",
+            "kind": "architecture",
+            "search_queries": ["obscure synthetic diagram xyz"],
+        }],
     }
-    _, res = render_visuals(tmp_path, undocumented_plan, {"ch1": "## Arch\n\nSome text.\n"}, execute=True)
-    assert res["v1"]["status"] == "failed"
-    assert "fallback_gate" in res["v1"]["failure_reason"]
-
-    # Route 4 with documented NO_IMAGE_EXISTS permits fallback cleanly
-    routed = lavia.resolve_visual_route(
-        undocumented_plan["visuals"][0],
-        search_available=True,
-        fallback_decision={
-            "search_status": "NO_IMAGE_EXISTS",
-            "queries_attempted": ["custom block diagram"],
-            "justification": "No openly licensed diagram matches this exact toy block interface.",
-        },
-    )
-    assert routed["route"] == "documented_fallback"
-    documented_plan = {**undocumented_plan, "visuals": [routed["visual"]]}
-    bodies, res2 = render_visuals(tmp_path, documented_plan, {"ch1": "## Arch\n\n" + ("Detailed explanation of blocks and tensor flow. " * 4) + "\n"}, execute=True)
-    assert res2["v1"]["status"] == "verified"
-
-    ob_check = lavia.verify_visual_obligations(
-        [{"obligation_id": "ob1", "chapter_id": "ch1", "local_asset_path": res2["v1"]["path"], "acquisition_status": "documented_fallback"}],
-        bodies,
+    bodies, res = render_visuals(
         tmp_path,
+        unresolved_plan,
+        {"ch1": "## Arch\n\nSome text.\n"},
+        execute=True,
+        http_get=lambda url, timeout=8: {"query": {"pages": {}}},
     )
-    assert ob_check["passed"] is True, ob_check
+    assert res["v1"]["status"] == "unavailable"
+    assert res["v1"]["unmet_visual_obligation"] is True
+    assert "NO_IMAGE_EXISTS" in res["v1"]["failure_reason"]
+    assert "<svg" not in bodies["ch1"].lower()
+
+    routed = lavia.resolve_visual_route(
+        unresolved_plan["visuals"][0],
+        search_available=True,
+        http_get=lambda url, timeout=8: {"query": {"pages": {}}},
+    )
+    assert routed["route"] == "unmet_visual_obligation"
+    assert routed["search_status"] == "NO_IMAGE_EXISTS"
+    assert routed["visual"]["unmet_obligation"]["unmet_obligation"] is True
 
 
 @pytest.mark.parametrize(
@@ -350,64 +423,45 @@ def test_media_cache_hit_non_png(tmp_path, monkeypatch, mime, ext, payload):
         media.media_artifact(tmp_path, visual, digest, execute=False)
 
 
-def test_architecture_svg_dynamic_box_widths_and_connectors():
-    components = [
-        {"label": "Input Embeddings", "shape": "B, T, d_model"},
-        {"label": "Scaled Dot-Product + Mask", "shape": "B, h, T, T"},
-        {"label": "Output", "shape": "B, T, d_model (projected)"},
-    ]
-    svg = architecture_svg(components)
-    assert validate_svg(svg) == []
-    root = ET.fromstring(svg)
-    _, _, vb_w, _ = map(float, root.get("viewBox").split())
-    rects = root.findall(f"{{{NS}}}rect")
-    paths = root.findall(f"{{{NS}}}path")
-    assert len(rects) == len(components)
-    assert len(paths) == len(components) - 1
+def test_pil_image_content_inspection_and_grounding_gate():
+    # SVG metadata extraction & grounded visual walkthrough verification (no fabricated label assertions)
+    svg_bytes = (
+        b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">'
+        b'<rect width="800" height="400" fill="#ffffff"/>'
+        b'<text x="40" y="60">Input Tokens</text>'
+        b'<text x="320" y="60">Multi-Head Attention</text>'
+        b'</svg>'
+    )
+    svg_info = media.inspect_image_content(svg_bytes, mime="image/svg+xml")
+    assert svg_info["width"] == 800
+    assert svg_info["text_ocr_available"] is True
+    assert {"Input Tokens", "Multi-Head Attention"} <= set(svg_info["text_labels_extracted"])
 
-    expected_widths = [max(180, len(c["label"]) * 9 + 24, len(c["shape"]) * 9 + 24) for c in components]
-    prev_right = 0.0
-    for idx, (rect, exp_w) in enumerate(zip(rects, expected_widths)):
-        rx = float(rect.get("x"))
-        rw = float(rect.get("width"))
-        assert rw == exp_w
-        if idx == 1:
-            assert rw >= len("Scaled Dot-Product + Mask") * 9 + 24 > 180
-        if idx > 0:
-            assert rx > prev_right
-        prev_right = rx + rw
-        if idx < len(paths):
-            d_attr = paths[idx].get("d", "")
-            assert d_attr.startswith(f"M{int(rx + rw)} ")
-    assert prev_right < vb_w
+    vis = {"objective": "Inspect attention pipeline", "alt": "Attention schematic"}
+    walkthrough_md = bvia.compose_visual_walkthrough(
+        vis,
+        embed="![[assets/scriptorium/attention-diagram.png|640]]",
+        inspection=svg_info,
+    )
+    assert "Input Tokens" in walkthrough_md and "Multi-Head Attention" in walkthrough_md
 
+    ok_check = bvia.validate_image_grounded_explanation(
+        walkthrough_md,
+        vis,
+        inspection=svg_info,
+    )
+    assert ok_check["passed"] is True
+    assert ok_check["image_inspected"] is True
 
-def test_scientific_svg_ylabel_separation_and_colored_legend_swatches():
-    series = {
-        "Scaled Attention": [(0.0, 0.0), (1.0, 0.5), (2.0, 1.0)],
-        "Unscaled Attention": [(0.0, 1.0), (1.0, 0.4), (2.0, 0.0)],
-    }
-    svg = scientific_svg(series, title="Attention Scaling", xlabel="position", ylabel="weight")
-    assert validate_svg(svg) == []
-    root = ET.fromstring(svg)
+    low_res_info = {**svg_info, "readable_for_embedding": False}
+    bad_check = bvia.validate_image_grounded_explanation(
+        walkthrough_md,
+        vis,
+        inspection=low_res_info,
+    )
+    assert bad_check["passed"] is False
 
-    texts = root.findall(f"{{{NS}}}text")
-    ylabel_el = next(t for t in texts if t.text == "weight")
-    top_tick_el = next(t for t in texts if t.text == "1")
-    ylabel_x, ylabel_y = float(ylabel_el.get("x")), float(ylabel_el.get("y"))
-    tick_x, tick_y = float(top_tick_el.get("x")), float(top_tick_el.get("y"))
-    # ylabel must be well-separated from the top y-tick (no collision).
-    assert abs(ylabel_x - tick_x) >= 30
-    assert abs(ylabel_y - tick_y) >= 30
-
-    polylines = root.findall(f"{{{NS}}}polyline")
-    series_colors = [p.get("stroke") for p in polylines]
-    assert len(series_colors) == 2 and len(set(series_colors)) == 2
-
-    swatches = [ln for ln in root.findall(f"{{{NS}}}line") if ln.get("stroke") in series_colors]
-    assert [ln.get("stroke") for ln in swatches] == series_colors
-
-    for name, swatch in zip(series, swatches):
-        legend_el = next(t for t in texts if t.text == name)
-        assert float(swatch.get("x2")) < float(legend_el.get("x"))
-        assert abs(float(swatch.get("y1")) - float(legend_el.get("y"))) <= 10
+    # Raster PIL pixel inspection check
+    png_info = media.inspect_image_content(_png(640, 400), mime="image/png")
+    assert png_info["width"] == 640 and png_info["height"] == 400
+    assert png_info["inspection_method"] == "PIL_pixel_statistics_and_dimension_analysis"

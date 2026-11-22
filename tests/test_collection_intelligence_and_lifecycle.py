@@ -36,14 +36,40 @@ from scriptorium import (
 PYTHON = sys.executable
 
 
+_ML_TEST_CURRICULUM = {
+    "title": "Machine Learning",
+    "groups": [
+        (
+            "Foundations",
+            [
+                ("What is Machine Learning", "M1", [], []),
+                ("Loss Functions", "M1", ["What is Machine Learning"], []),
+                ("Feature Scaling", "M1", ["What is Machine Learning"], []),
+            ],
+        ),
+        (
+            "Optimization and Models",
+            [
+                ("Gradient Descent", "M1", ["Loss Functions"], ["Feature Scaling"]),
+                ("Linear Regression", "M1", ["Loss Functions", "Gradient Descent"], []),
+                ("Regularization", "M1", ["Linear Regression", "Gradient Descent"], []),
+                ("Optimization Methods", "M1", ["Gradient Descent"], []),
+            ],
+        ),
+    ],
+    "external_prerequisites": [],
+}
+
+
 def _make_ml_plan_and_prefs(depth: str = "comprehensive", source_policy: str = "adaptive"):
     orch = OrchestrationEngine(ROOT)
     s = orch.start_notes_session("/scribe-notes Machine Learning")
-    r1 = orch.respond_to_session(s, f"{depth}, hierarchical collection")
-    r2 = orch.respond_to_session(r1["state"], "proceed")
-    prefs = r2["state"].resolved_preferences
+    r1 = orch.respond_to_session(s, f"{depth}, single note")
+    prefs = r1["state"].resolved_preferences
+    prefs.organization = "hierarchical_collection"
     prefs.source_policy = source_policy
-    return r2["state"].collection_plan, prefs
+    plan = orch.plan_collection("Machine Learning", prefs, curriculum=_ML_TEST_CURRICULUM)
+    return plan, prefs
 
 
 # ---------------------------------------------------------------------------
@@ -270,7 +296,18 @@ def test_f07_granularity_split_preserves_canonical_id_and_bounds_revisions():
         generation_order=[node.concept_id],
     )
 
-    ev = ped.evaluate_granularity(plan, prefs, committed_paths={"Optimization/Gradient Descent Variants.md"})
+    ev = ped.evaluate_granularity(
+        plan,
+        prefs,
+        committed_paths={"Optimization/Gradient Descent Variants.md"},
+        split_hints={
+            "Gradient Descent Variants": [
+                "Batch Gradient Descent",
+                "Stochastic Gradient Descent",
+                "Mini-Batch Gradient Descent",
+            ]
+        },
+    )
     assert len(ev["proposed_changes"]) == 1
     assert ev["proposed_changes"][0]["action"] == "split"
     assert ev["proposed_changes"][0]["requires_approval"] is True

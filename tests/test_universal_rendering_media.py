@@ -10,7 +10,8 @@ import zlib
 import pytest
 
 from scriptorium.engines.composition import media, renderers
-from scriptorium.engines.composition.visuals import render_visuals, validate_svg
+from scriptorium.engines.composition.visuals import render_visuals
+from scriptorium.engines.composition.media import validate_svg_markup as validate_svg
 
 
 def png(width=2,height=2, *, scanline_filter=0):
@@ -38,9 +39,11 @@ def remote(**values):
 
 def test_twelve_families_share_real_backends_and_reject_mismatch():
     assert set(renderers.FAMILIES)=={f"R{i}" for i in range(1,13)}
-    assert renderers.select_representation(visual(),available={"graph"})["renderer"]=="graph"
+    assert "svg" in renderers.RETIRED_SVG_BACKENDS
+    assert renderers.select_representation(visual(),available={"external"})["renderer"]=="external"
+    assert renderers.select_representation(visual(kind="workflow"),available={"mermaid"})["renderer"]=="mermaid"
     with pytest.raises(ValueError,match="family"):
-        renderers.select_representation(visual(family="R10"),available={"graph"})
+        renderers.select_representation(visual(family="R10"),available={"external"})
     assert renderers.select_representation(visual(kind="intuition"),available=set())["status"]=="unavailable"
 
 
@@ -55,49 +58,40 @@ def test_source_only_policy_blocks_unsupplied_remote_media_before_network(tmp_pa
     assert result['status'] == 'failed' and 'Source-only' in result['failure_reason']
 
 
-@pytest.mark.parametrize("kind",["network","circuit","algorithm","chronology","research"])
-def test_graph_artifacts_preserve_nodes_and_edges_and_detect_tampering(tmp_path,kind):
-    value=visual(kind=kind)
-    bodies,results=render_visuals(tmp_path,plan(value),{"ch1":"## Representation\n"})
-    result=results["v1"]
-    assert result["status"]=="verified",result
-    path=tmp_path/result["path"]
-    root=ET.fromstring(path.read_text())
-    assert len(root.findall("{http://www.w3.org/2000/svg}line"))==1
-    assert "Input" in path.read_text() and "Output" in path.read_text()
+@pytest.mark.parametrize("kind",["network","circuit","algorithm","chronology","research","geometry"])
+def test_web_first_kinds_avoid_svg_generation_and_verify_acquired_assets(tmp_path, monkeypatch, kind):
+    # Without web search or supplied figure, must honestly mark unavailable instead of synthesizing SVG.
+    unresolved = visual(kind=kind)
+    _, unres_results = render_visuals(
+        tmp_path,
+        plan(unresolved),
+        {"ch1": "## Representation\n"},
+        http_get=lambda url, timeout=8: {"query": {"pages": {}}},
+    )
+    assert unres_results["v1"]["status"] == "unavailable"
+    assert unres_results["v1"]["unmet_visual_obligation"] is True
+
+    # With permitted web/fallback asset, persists locally, embeds, and detects tampering.
+    fig = png(160, 120)
+    monkeypatch.setattr(media, "fetch_image", lambda u: (fig, {"url": u, "final_url": u, "mime": "image/png", "bytes": len(fig)}))
+    acquired_spec = remote(kind=kind)
+    bodies, results = render_visuals(tmp_path, plan(acquired_spec), {"ch1": "## Representation\n"})
+    result = results["v1"]
+    assert result["status"] == "verified", result
+    assert result["renderer"] == "external"
+    assert not result["path"].endswith(".svg")
     assert result["embed"] in bodies["ch1"]
-    assert render_visuals(tmp_path,plan(value),bodies,execute=False)[1]["v1"]["status"]=="verified"
-    path.write_text("altered")
-    assert render_visuals(tmp_path,plan(value),bodies,execute=False)[1]["v1"]["status"]=="failed"
+    assert render_visuals(tmp_path, plan(acquired_spec), bodies, execute=False)[1]["v1"]["status"] == "verified"
+    (tmp_path / result["path"]).write_bytes(b"corrupted")
+    assert render_visuals(tmp_path, plan(acquired_spec), bodies, execute=False)[1]["v1"]["status"] == "failed"
 
 
-def test_arrow_tip_is_outside_opaque_target_and_self_loops_are_explicitly_unsupported():
-    root=ET.fromstring(renderers.graph_svg(visual()))
-    tip=root.find("{http://www.w3.org/2000/svg}polygon").get("points").split()[0]
-    tip_x,tip_y=map(float,tip.split(","))
-    target=root.findall("{http://www.w3.org/2000/svg}rect")[1]
-    # A horizontal edge must finish to the left of the target, not behind it.
-    assert tip_x < float(target.get("x"))
-    assert float(target.get("y")) < tip_y < float(target.get("y"))+float(target.get("height"))
-    with pytest.raises(ValueError,match="Self-loop"):
-        renderers.graph_svg(visual(edges=[{"source":"a","target":"a"}]))
-
-
-def test_coordinates_preserve_scale_and_reject_nonfinite_points(tmp_path):
-    value=visual(kind="geometry",units="metres",nodes=[{"id":"a","label":"Origin","x":0,"y":0},{"id":"b","label":"Point","x":3,"y":4}])
-    result=render_visuals(tmp_path,plan(value),{"ch1":"## Representation\n"})[1]["v1"]
-    assert result["status"]=="verified",result
-    assert "Equal axis scale" in (tmp_path/result["path"]).read_text()
-    value["nodes"][0]["x"]=float("nan")
-    with pytest.raises(ValueError,match="finite"):
-        renderers.coordinate_svg(value)
-
-
-@pytest.mark.parametrize("values",[{"nodes":[42]},{"nodes":[{"id":[],"label":"Invalid"}]},
-                                  {"edges":[42]},{"nodes":{}},{"edges":None}])
-def test_malformed_semantics_persist_failed_render_results(tmp_path,values):
-    result=render_visuals(tmp_path,plan(visual(**values)),{"ch1":"## Representation\n"})[1]["v1"]
-    assert result["status"]=="failed" and result["attempted"] and result["failure_reason"]
+def test_retired_svg_generators_cannot_be_invoked_directly():
+    for retired in ("graph_svg", "coordinate_svg"):
+        assert not hasattr(renderers, retired)
+    with pytest.raises(ValueError, match="removed"):
+        renderers.select_representation(visual(renderer="svg"), available={"external"})
+    assert renderers.select_representation(visual(), available={"svg"})["status"] == "unavailable"
 
 
 def test_native_mermaid_is_persisted_source_with_inert_labels(tmp_path):

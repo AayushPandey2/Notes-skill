@@ -35,12 +35,12 @@ STACK_PATTERNS = {
     "pytorch": (
         r"(?:import|from)\s+torch\b",
         r"\btensor\s*\(",
-        r"\.backward\s*\(|\b(?:model|layer|network|net|mlp|linear|forward|relu|sigmoid|softmax|matmul|tanh)\s*\(\s*\w+\s*[,)]",
+        r"\.backward\s*\(|\b(?:nn\.Module|forward|linear|relu|sigmoid|matmul|tanh)\s*\(\s*\w+\s*[,)]",
     ),
     "tensorflow-keras": (
         r"(?:import|from)\s+(?:tensorflow|keras)\b",
         r"\b(?:constant|convert_to_tensor|tensor|array)\s*\(",
-        r"\.(?:fit|predict|evaluate|train_on_batch|gradient)\s*\(|\b(?:model|layer|network|net|dense|relu|sigmoid|softmax|matmul|tanh)\s*\(\s*\w+\s*[,)]",
+        r"\.(?:fit|predict|evaluate|train_on_batch|gradient)\s*\(|\b(?:keras\.layers|dense|relu|sigmoid|matmul|tanh)\s*\(\s*\w+\s*[,)]",
     ),
     "c": (r"\b(?:int|void)\s+main\s*\([^)]*\)\s*\{", r"\b(?:printf|puts|assert)\s*\("),
     "cpp": (r"\bint\s+main\s*\([^)]*\)\s*\{", r"\b(?:cout|printf|assert)\b"),

@@ -135,49 +135,40 @@ def _transformer_spec(
             "id": "tf-pos-curve",
             "concept": "tf.c2",
             "section": "Sinusoidal Encoding",
-            "kind": "equation",
+            "kind": "source_figure",
             "coverage_category": "mathematical_behavior",
             "progression_level": 2,
-            "objective": "Plot bounded positional decay curve x / (1 + x * x)",
-            "equation": "x / (1 + x * x)",
-            "x_values": [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0],
-            "xlabel": "position",
-            "ylabel": "amplitude",
-            "units": "dimensionless",
-            "interpretation": (
-                "How to read this figure: trace position from 0 to 3 along the horizontal axis; "
-                "the amplitude rises smoothly to a peak at x=1 and decays gently thereafter, "
-                "connecting local positional magnitude to downstream attention dot products."
-            ),
-            "fallback_gate": {
-                "search_status": "NO_IMAGE_EXISTS",
-                "queries_attempted": ["bounded sinusoidal positional decay curve equation plot"],
-                "justification": "Deterministic numeric curve matching the chapter equation.",
-            },
+            "objective": "Show sinusoidal positional encoding curve",
+            "url": "https://commons.wikimedia.org/wiki/File:Sinusoidal_positional_encoding.png",
+            "source": "https://commons.wikimedia.org/",
+            "rights": "CC-BY-4.0",
+            "alt": "Sinusoidal positional encoding curve",
+            "relevance": "Illustrates smooth positional frequencies.",
+            "asset_policy": "offline_only",
+            "local_fallback": "fixture_pos.png",
+            "explain": "Examine how frequency varies across dimensions in the sinusoidal positional curve.",
+            "decode_components": ["Horizontal axis traces position index while curve height shows periodic scaling."],
+            "connect": "These continuous position signals feed directly into downstream attention dot products.",
         },
         {
             "id": "tf-arch-blocks",
             "concept": "tf.c5",
             "section": "Full Architecture",
-            "kind": "architecture",
+            "kind": "source_figure",
             "coverage_category": "overall_structure",
             "progression_level": 1,
             "objective": "Show end-to-end Transformer encoder-decoder block interfaces",
-            "components": [
-                {"label": "Token + Pos Embed", "shape": "B, T, d_model"},
-                {"label": "Encoder Stack", "shape": "B, T, d_model"},
-                {"label": "Decoder Stack", "shape": "B, T, d_model"},
-            ],
-            "interpretation": (
-                "How to read this figure: read left to right from embeddings through the encoder stack "
-                "into the decoder stack, noting that every block preserves the (B, T, d_model) tensor shape "
-                "to enable residual connections across the Transformer architecture."
-            ),
+            "url": "https://commons.wikimedia.org/wiki/File:Transformer_architecture.png",
+            "source": "https://commons.wikimedia.org/",
+            "rights": "CC-BY-4.0",
+            "alt": "Transformer encoder-decoder architecture block diagram",
+            "relevance": "Maps encoder and decoder stacks using external architecture figure.",
+            "asset_policy": "offline_only",
+            "local_fallback": "fixture_arch.png",
+            "explain": "Examine the full Transformer encoder-decoder block pipeline before inspecting individual layers.",
+            "decode_components": ["Left column represents encoder self-attention blocks and right column represents masked decoder blocks."],
+            "connect": "Notice how queries Q, keys K, and values V cross from encoder output into decoder cross-attention.",
             "abbreviations": ["Q", "K", "V"],
-            "fallback_gate": {
-                "search_status": "SEARCH_UNAVAILABLE",
-                "justification": "Offline test environment; deterministic architecture diagram matches exact tensor shapes.",
-            },
         },
     ]
     return {
@@ -274,7 +265,18 @@ def _transformer_drafts() -> dict[str, str]:
     }
 
 
+def _write_png_fixture(path: Path, width: int = 400, height: int = 220) -> None:
+    import binascii, struct, zlib
+    def chunk(kind: bytes, data: bytes) -> bytes:
+        return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", binascii.crc32(kind + data) & 0xFFFFFFFF)
+    header = struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0)
+    raw = (b"\x00" + b"\x10\x40\x80" * width) * height
+    path.write_bytes(b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", header) + chunk(b"IDAT", zlib.compress(raw)) + chunk(b"IEND", b""))
+
+
 def test_full_transformer_pipeline_lavia_bvia_and_vault_native_layout(tmp_path: Path):
+    _write_png_fixture(tmp_path / "fixture_pos.png")
+    _write_png_fixture(tmp_path / "fixture_arch.png")
     spec = _transformer_spec(enforce_bvia_walkthrough=True)
     plan = build_composition(spec)
 
@@ -487,10 +489,10 @@ def test_research_engine_and_pedagogy_engine_facade_smoke(tmp_path: Path):
     )
     assert "| Attention | Weighted value aggregation |" in tbl
     vis_sel = ped.select_visual(
-        {"kind": "equation", "objective": "Plot curve", "equation": "x*x", "concept": "c1", "section": "Core"},
-        available={"scientific", "svg"},
+        {"kind": "equation", "objective": "Plot curve", "search_queries": ["quadratic curve diagram"], "concept": "c1", "section": "Core"},
+        available={"external"},
     )
-    assert vis_sel["renderer"] == "scientific"
+    assert vis_sel["renderer"] == "external"
 
     raw_inst_plan = {
         "topic": "Gradient Descent",
@@ -529,8 +531,9 @@ def test_research_engine_and_pedagogy_engine_facade_smoke(tmp_path: Path):
     assert isinstance(ped.validate_explanation(ex_note, bp), list)
     trace_check = ped.verify_trace(
         [{"step": 0, "theta": 2.0, "gradient": 4.0, "loss": 4.0, "next_theta": 1.6}],
-        rule="quadratic_gd",
-        alpha=0.1,
+        value_checks={"gradient": "2.0 * theta", "loss": "theta ** 2"},
+        recurrence_checks={"next_theta": "theta - alpha * gradient"},
+        constants={"alpha": 0.1},
     )
     assert isinstance(trace_check, dict)
 

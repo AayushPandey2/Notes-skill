@@ -492,7 +492,7 @@
       ],
       "preferred_visuals": [
         "mermaid",
-        "svg"
+        "external"
       ],
       "evidence_requirements": [
         "algorithm specification"
@@ -551,7 +551,7 @@
       ],
       "preferred_visuals": [
         "mermaid",
-        "svg"
+        "external"
       ],
       "evidence_requirements": [
         "component relationships"
@@ -745,7 +745,7 @@
       ],
       "preferred_visuals": [
         "mermaid",
-        "svg"
+        "external"
       ],
       "evidence_requirements": [
         "equation, data, or verified structure"

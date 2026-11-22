@@ -307,7 +307,7 @@ def main(argv: list[str] | None = None) -> int:
                     vault_dir = _resolve_compose_vault(args.vault)
                     if not vault_dir or not args.drafts:
                         raise ValueError("Preparation requires --vault and --drafts")
-                    from scriptorium.engines._composition import prepare_composition
+                    from scriptorium.engines.composition import prepare_composition
                     from scriptorium.engines.composition import lavia
                     bodies, renderers = prepare_composition(vault_dir, composition, json.loads(args.drafts.read_text(encoding="utf-8-sig")))
                     manifest = lavia.build_asset_manifest(composition, renderers, collection_slug=composition.get("collection_slug"))
@@ -317,7 +317,7 @@ def main(argv: list[str] | None = None) -> int:
                     vault_dir = _resolve_compose_vault(args.vault)
                     if not vault_dir:
                         raise ValueError("Validation requires --vault")
-                    from scriptorium.engines._composition import validate_published_composition
+                    from scriptorium.engines.composition import validate_published_composition
                     result = validate_published_composition(vault_dir, composition)
                     print(json.dumps(result, indent=2, ensure_ascii=False))
                     return 0 if result["valid"] else 1
@@ -329,7 +329,7 @@ def main(argv: list[str] | None = None) -> int:
                     raise ValueError("Publication requires --vault, --drafts, --evidence, and --reviews")
                 def read_json(path):
                     return json.loads(path.read_text(encoding="utf-8-sig"))
-                from scriptorium.engines._composition import to_collection_plan
+                from scriptorium.engines.composition import to_collection_plan
                 plan = to_collection_plan(composition)
                 kcp = orch.build_kcp(vault_dir, plan, _composition_preferences(spec), include_synthesis=False)
                 result = vault.publish_composition(vault_dir, kcp.composition, read_json(args.drafts),

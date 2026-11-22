@@ -3,34 +3,32 @@ name: scriptorium
 description: Create, research, organize, and query Obsidian study notes, source summaries, worked solutions, implementation guides, practice assessments, and revision packs.
 ---
 
-# Scriptorium 6.0 — Pre-flight routing
+# Scriptorium — Pre-flight routing
 
-## Logical Architecture (12 Roles)
+## Logical Architecture (12 Roles: A0–A11)
 
-Scriptorium coordinates 12 logical responsibilities over its six Python engines (`E1`–`E6`) and `composition/` package without spawning redundant LLM calls:
+Scriptorium coordinates 12 canonical logical responsibilities over its six Python engines (`E1`–`E6`) and `composition/` package without spawning redundant LLM calls:
 
-| Role | Backing Owner | Responsibility |
+| Architecture | Backing Owner | Responsibility |
 |---|---|---|
-| **Director** | `E1` (`orchestration.py`) | Request intake, negation/precedence routing (`M1`–`M7` + variants), interactive configuration gate (no pre-gen quiz) |
-| **Map** | `E3` (`knowledge.py`) | Concept identity, prerequisite DAG, existing-note reuse (`F03`), gap analysis (`F04`), notation governance (`F09`), impact (`F14`) |
-| **Tutor** | `E4` (`pedagogy.py`) | Adaptive instructional engine (`P01`–`P11`), `EIS-01`–`EIS-07` clarity, independent `0–5` depths, progressive disclosure (`F11`) |
-| **Planner** | `E1` + `E4` (`composition/`) | Scope tiers (`S0`–`S5`), KCP v2 adaptive 5–10 chapter allocation (`build_composition`), learning paths (`F08`) |
-| **Researcher** | `E2` (`research.py`) | ARRIE modes (`R-S0`–`R-R`), per-concept evidence (`R0`–`R5`), provenance, contradiction escalation, separate further-learning curation |
-| **Writer** | Agent + `E4`/`E6` | Continuous domain-natural prose from compiled selective context (`--context`), shared notation, and profile-governed frontmatter |
-| **Visuals** | `E4` (`renderers.py`, `visuals.py`, `bvia.py`) | `R1`–`R12` adapters, BVIA cognitive accessibility ranking (Levels 0–6), mandatory `Explain -> Show -> Decode -> Connect` walkthroughs |
-| **Assets** | `E4` (`lavia.py`, `media.py`) | LAVIA web-image-first routing (Reuse → Discover → Download/Validate → Documented SVG Fallback), `assets/scriptorium/<collection-slug>/`, `manifest.json` |
-| **Quiz** | `E4` + `E6` (`/scribe-quiz`) | Objective-bound folded assessments (`M6` / chapter-end & milestone checks) and interactive vault recall |
-| **Checker** | `E5` (`quality.py`, `contracts.py`) | KCP v2 executable obligations, artifact-bound reviews, `EIS-07` friction, runtime checks, dependency-aware targeted repair |
-| **Vault** | `E6` (`vault.py`) | Vault-native `<Topic>/` placement (`resolve_collection_layout`, `/scribe-setfolder`, `create_category_folders=false`), atomic writes, checkpoints |
-| **Speed** | `E1` (`_token_optimizer.py`) | Selective prompt compilation (`optimize --compile`, `--context`), single-pass source segmentation, `L1`–`L10` cache, minimal-span repair |
+| **A0 Director** | `E1` (`orchestration.py`) | Request intake, negation/precedence routing (`M1`–`M7` + variants), interactive configuration gate (no pre-gen quiz) |
+| **A1 Map** | `E3` (`knowledge.py`) | Concept identity, prerequisite DAG, existing-note reuse (`F03`), gap analysis (`F04`), notation governance (`F09`), impact (`F14`) |
+| **A2 Tutor** | `E4` (`pedagogy.py`) | Adaptive instructional engine (`P01`–`P11`), `EIS-01`–`EIS-07` clarity, independent `0–5` depths, progressive disclosure (`F11`) |
+| **A3 Planner** | `E1` + `E4` (`composition/`) | Scope tiers (`S0`–`S5`), KCP v2 adaptive 5–10 chapter allocation (`build_composition`), learning paths (`F08`) |
+| **A4 Researcher** | `E2` (`research.py`) | ARRIE modes (`R-S0`–`R-R`), per-concept evidence (`R0`–`R5`), provenance, contradiction escalation, separate further-learning curation |
+| **A5 Writer** | Agent + `E4`/`E6` | Continuous domain-natural prose from compiled selective context (`--context`), shared notation, and profile-governed frontmatter |
+| **A6 Visuals** | `E4` (`renderers.py`, `visuals.py`, `bvia.py`) | Visual opportunity detection, `R1`–`R12` adapters, BVIA cognitive accessibility ranking (Levels 0–6), image inspection, `Explain -> Show -> Decode -> Connect` (programmatic SVG creation retired) |
+| **A7 Assets** | `E4` (`lavia.py`, `media.py`) | LAVIA web-image-first routing (Reuse → Web Search & Evaluate → Rights/Byte Validation → Local Store & Inspect → Unmet Obligation Record), `assets/scriptorium/<collection-slug>/`, `manifest.json` |
+| **A8 Quiz** | `E4` + `E6` (`/scribe-quiz`) | Objective-bound folded assessments (`M6` / chapter-end & milestone checks) and interactive vault recall |
+| **A9 Checker** | `E5` (`quality.py`, `contracts.py`) | KCP v2 executable obligations, 19-point depth checks, artifact-bound reviews, `EIS-07` friction, runtime checks, dependency-aware targeted repair |
+| **A10 Vault** | `E6` (`vault.py`) | Vault-native `<Topic>/` placement (`resolve_collection_layout`, `/scribe-setfolder`, `create_category_folders=false`), atomic writes, checkpoints |
+| **A11 Speed** | `E1` (`_token_optimizer.py`) | Selective prompt compilation (`optimize --compile`, `--context`), single-pass source segmentation, `L1`–`L10` cache, minimal-span repair |
 
-## Execution Triggers (`Tier 0`–`Tier 4`, `T01`–`T16`)
+## Execution Triggers (`T01`–`T16`)
 
-- **Tier 0 — Entry & Safety:** `T01` Entry & Intent Intake · `T02` Interactive Configuration Gate · `T03` Source Policy & Untrusted-Content Lock.
-- **Tier 1 — Planning & Discovery:** `T04` Vault Discovery & `<Topic>/` Layout Resolution · `T05` KCP Concept & Chapter Allocation · `T06` ARRIE Research & Evidence Planning.
-- **Tier 2 — Authoring & Visuals:** `T07` Selective Context Compilation · `T08` Prose & Pedagogical Composition · `T09` Web-Image-First BVIA/LAVIA Visual Preparation · `T10` Folded Assessment Binding.
-- **Tier 3 — Verification & Publication:** `T11` Deterministic, Visual & Runtime Checks · `T12` Artifact-Bound Semantic Review · `T13` Checkpointed Atomic Publication.
-- **Tier 4 — Lifecycle & Query:** `T14` Post-Publish Validation · `T15` Targeted Dependency-Aware Repair · `T16` Read-Only Vault Query & Recall (`/scribe-doubt`, `/scribe-quiz`).
+- **Core Orchestration & Mapping:** `T01` Note Generation (`A0 Director`) · `T02` Knowledge Mapping (`A1 Map`) · `T03` Beginner Foundations (`A2 Tutor`) · `T04` Depth Planning (`A3 Planner`) · `T05` Research (`A4 Researcher`).
+- **Web-Image-First Visual Pipeline (no SVG generation trigger):** `T06` Visual Research (`A4 Researcher` + `A6 Visuals`) · `T07` Image Acquisition (`A7 Assets`) · `T08` Image Inspection (`A6 Visuals` + `A7 Assets`) · `T09` Image-Grounded Composition (`A5 Writer` + `A6 Visuals`).
+- **Verification, Publishing & Lifecycle:** `T10` Mathematical Reasoning (`A2 Tutor` + `A9 Checker`) · `T11` Worked Examples (`A5 Writer` + `A9 Checker`) · `T12` Assessment (`A8 Quiz`) · `T13` Quality Verification (`A9 Checker`) · `T14` Publication (`A10 Vault`) · `T15` Targeted Repair (`A0 Director` + `A9 Checker`) · `T16` Optimization (`A11 Speed`).
 
 See [router.md](router.md) for full trigger-to-command dispatch.
 

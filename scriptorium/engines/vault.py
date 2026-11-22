@@ -727,11 +727,11 @@ def safe_write_note(
 
 class VaultEngine:
     def publish_composition(self, vault_root: Path, composition: dict[str, Any], drafts: dict[str, str], **kwargs: Any) -> dict[str, Any]:
-        from ._composition import publish_composition
+        from .composition import publish_composition
         return publish_composition(vault_root, composition, drafts, **kwargs)
 
     def inventory_migration(self, vault_root: Path, paths: list[str]) -> dict[str, Any]:
-        from ._composition import inventory_migration
+        from .composition import inventory_migration
         return inventory_migration(vault_root, paths)
 
     """Cohesive Engine E6 facade for Properties, Tag Taxonomy, Incremental Updates, and Safe Writes."""

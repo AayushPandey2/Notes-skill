@@ -110,17 +110,17 @@ def detect_explanation_gaps(
                 "repair_hint": f"Add a brief 2-3 sentence prerequisite bridge for '{prereq}' immediately before use.",
             })
 
-    # 3. Sudden nested/composite-function derivative leap without mentioning chain rule or intermediate step
+    # 3. Sudden nested/composite-function derivative leap without showing intermediate substitution step
     has_nested_deriv = bool(re.search(
         r"(?:d/dx|\\frac\{d\}\{dx\}|\\frac\{\\partial).*?(?:\([^\n)]*\([^\n)]*\)|(?:sin|cos|tan|exp|log|ln)\([^)]*(?:\^|\*|/|\+|-)[^)]*\))",
         body,
         re.I,
     ))
-    has_chain_step = bool(re.search(r"\bchain\s+rule\b|inner\s+derivative|outer\s+derivative|du/dx|\\frac\{du\}\{dx\}", body, re.I))
+    has_chain_step = bool(re.search(r"inner\s+derivative|outer\s+derivative|intermediate\s+substitution|du/dx|\\frac\{du\}\{dx\}", body, re.I))
     if has_nested_deriv and not has_chain_step and reader_level != "advanced":
         gaps.append({
             "type": "skipped_derivation_step",
-            "description": "Derivation jumps directly from a composite/nested function to its derivative without showing the chain rule intermediate step.",
+            "description": "Derivation jumps directly from a composite/nested function to its derivative without showing the intermediate substitution step.",
             "repair_strategy": "intermediate_equation",
             "repair_hint": "Insert the intermediate substitution u = g(x) and apply df/dx = (df/du)(du/dx).",
         })
@@ -405,15 +405,15 @@ def validate_compression(
 
 class PedagogyEngine:
     def plan_composition(self, specification: dict[str, Any]) -> dict[str, Any]:
-        from ._composition import build_composition
+        from .composition import build_composition
         return build_composition(specification)
 
     def render_table(self, specification: dict[str, Any]) -> str:
-        from ._composition import render_table
+        from .composition import render_table
         return render_table(specification)
 
     def select_visual(self, requirement: dict[str, Any], *, available: set[str]) -> dict[str, Any]:
-        from ._composition import select_visual
+        from .composition import select_visual
         return select_visual(requirement, available=available)
 
     """Cohesive Engine E4 facade integrating Contract v3, P01-P11, gaps, density, examples, and compression."""
@@ -452,8 +452,8 @@ class PedagogyEngine:
     def validate_explanation(self, note_text: str, blueprint: ExplanationBlueprint) -> list[dict[str, Any]]:
         return validate_explanation_structure(note_text, blueprint)
 
-    def verify_trace(self, trace: list[dict[str, Any]], *, rule: str = "quadratic_gd", alpha: float = 0.1) -> dict[str, Any]:
-        return verify_numerical_trace(trace, rule=rule, alpha=alpha)
+    def verify_trace(self, trace: list[dict[str, Any]], **kwargs: Any) -> dict[str, Any]:
+        return verify_numerical_trace(trace, **kwargs)
 
     # Hierarchical Topic Decomposition & Collection Planning
     def plan_collection(

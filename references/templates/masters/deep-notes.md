@@ -29,8 +29,8 @@ Provide Layer B structured concept review and concise retrieval cues (`P11`) pre
 
 Validate Contract v3 (`validate_note.py --contract --evidence --pedagogical-plan`), ARRIE source coverage/citations, `PED-xxx` pedagogical quality, and runtime execution (`plan_notes.py verify-runtimes`) before publication. Repair the smallest affected region rather than regenerating the entire note.
 
-**Positive examples:** *"Explain backpropagation from scratch with derivation, graph, example, and Python code."* / *"Teach me PCA from geometric intuition through eigenvalues."*  
-**Negative examples:** *"Pandas cheat sheet"* -> `M3`; *"Solve these 10 integrals step by step"* -> `M4`; *"Compare Adam vs SGD"* -> `M7`.
+**Activation examples:** Domain-independent comprehensive learning requests (e.g., first-principles derivations with code, visual analysis, or systematic conceptual foundations).  
+**Non-M1 examples:** Compact cheat sheets -> `M3`; solved problem sets -> `M4`; pure implementation guides -> `M5`; comparisons/revision packs -> `M7`.
 
 ## Comprehensive composition profile
 

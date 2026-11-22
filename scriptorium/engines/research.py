@@ -318,8 +318,8 @@ def _infer_concept_evidence_needs(
     # Architectural / original formulation evidence
     if "architectural" in types:
         add_need(
-            "software_architecture" if not re.search(r"\b(?:transformer|attention|resnet|cnn|rnn|mlp|neural)\b", context, re.I) else "empirical_result",
-            f"Verify original architecture specification, component interfaces, and tensor/data-flow contracts for '{title}'.",
+            "empirical_result" if re.search(r"\b(?:benchmark|ablation|empirical|experiment|evaluation|accuracy|latency|throughput)\b", context, re.I) else "software_architecture",
+            f"Verify original architecture specification, component interfaces, and data-flow contracts for '{title}'.",
             r_depth=2,
             priority="high",
         )
@@ -1547,9 +1547,14 @@ class ResearchEngine:
         self.cache = ResearchCache(cache_dir=cache_dir)
 
     def composition_evidence_status(self, composition: dict[str, Any], evidence: dict[str, Any]) -> dict[str, Any]:
-        from ._composition import evidence_status
+        from .composition import evidence_status
         obligations = [o for c in composition["concepts"] for o in c["research_obligations"]]
         return evidence_status(obligations, evidence)
+
+    def discover_web_images(self, concept_title: str, objective: str = "", **kwargs: Any) -> dict[str, Any]:
+        from .composition import lavia
+        queries = kwargs.pop("queries", None) or lavia.generate_visual_search_queries(concept_title, objective)
+        return lavia.search_web_images(queries, **kwargs)
 
     def plan(self, topic: str, instructional_plan: dict[str, Any], **kwargs: Any) -> dict[str, Any]:
         return plan_research(topic, instructional_plan, **kwargs)

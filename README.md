@@ -1,13 +1,6 @@
 # Scriptorium
 
-Scriptorium 5 extends the existing six-engine architecture with adaptive 5–10
-chapter composition, semantic topic/subject/domain tags, a shared twelve-family
-representation registry, verified remote PNG snapshots, and stricter assessment
-and claim checks. Start with the [composition contract](references/workflows/notes-creation/composition-contract.md)
-and [architecture ownership](references/architecture/scriptorium-5-contract.md).
-The [implementation report](references/architecture/scriptorium-5-report.md) and
-[cross-domain examples](examples/scriptorium-5/README.md) include measured checks,
-actual artifacts and remaining limitations.
+Scriptorium builds comprehensive, domain-independent Obsidian study notes using adaptive 5–10 chapter composition, semantic topic/subject/domain tags, a web-image-first visual research and local asset pipeline, image-grounded educational composition, and strict quality/readiness gates. Start with [SKILL.md](SKILL.md), [router.md](router.md), and the [composition contract](references/workflows/notes-creation/composition-contract.md).
 Legacy scaffolding reports generated coverage; authored semantic review is still
 required before those drafts can be described as verified teaching material.
 
@@ -161,30 +154,30 @@ Core runtime logic is consolidated into six cohesive engines under `scriptorium/
 ### Common CLI Examples
 ```bash
 # 1. Discover templates, tags, and placement conventions for a topic
-python3 scripts/vault_index.py "<vault_path>" --discover --topic "Machine Learning"
+python scripts/vault_index.py "<vault_path>" --discover --topic "<Topic Name>"
 
 # 2. Extract only > [!abstract] and Sections 1, 3, 7 from a note
-python3 scripts/vault_index.py "<vault_path>" --extract "ml/01-gd.md" --sections abstract,1,3,7
+python scripts/vault_index.py "<vault_path>" --extract "<topic>/01-overview.md" --sections abstract,1,3,7
 
 # 3. Preview a routed scaffold to populate as a draft
-python3 scripts/scaffold_note.py "<vault_path>" \
-  --template deepstudy-master --math-level 2 --number "02" --title "Stochastic Gradient Descent" \
-  --base-domain "Computer Science" --master-topic "Machine Learning" --topic "Optimization" \
-  --depends-on "[[01-gd|Gradient Descent]]"
+python scripts/scaffold_note.py "<vault_path>" \
+  --template deepstudy-master --math-level 2 --number "02" --title "<Concept Title>" \
+  --base-domain "<Domain>" --master-topic "<Subject>" --topic "<Topic>" \
+  --depends-on "[[01-overview|<Prerequisite Title>]]"
 
 # 4. Preview a frontmatter link/review_log patch without writing to disk
-python3 scripts/patch_links.py "<vault_path>" --file "ml/02-sgd.md" \
-  --append-review-log "2026-11-18 | Score: 4/5 | Weak: variance bound" --dry-run
+python scripts/patch_links.py "<vault_path>" --file "<topic>/02-concept.md" \
+  --append-review-log "2026-11-18 | Score: 4/5 | Weak: boundary condition" --dry-run
 
 # 5. Safely rename a wikilink across the vault (skips code blocks & HTML comments)
-python3 scripts/patch_links.py "<vault_path>" --rename-link "Old Note" "New Note" --dry-run
+python scripts/patch_links.py "<vault_path>" --rename-link "Old Note" "New Note" --dry-run
 
 # 6. Check for dependency cycles and render a Mermaid graph
-python3 scripts/vault_graph.py "<vault_path>" --topic "Optimization" --check-cycles
-python3 scripts/vault_graph.py "<vault_path>" --topic "Optimization" --format mermaid
+python scripts/vault_graph.py "<vault_path>" --topic "<Topic>" --check-cycles
+python scripts/vault_graph.py "<vault_path>" --topic "<Topic>" --format mermaid
 
 # 7. Validate & auto-fix only specific generated/edited files
-python3 scripts/verify_vault_notes.py "<vault_path>" --files "ml/02-sgd.md" --fix
+python scripts/verify_vault_notes.py "<vault_path>" --files "<topic>/02-concept.md" --fix
 ```
 
 For a full write, follow the [plan and publish workflow](router.md#plan-and-publish). Plans live under `.scriptorium/plans/` in the vault. Reuse the request and topic folder to resume. Exclusive publication uses same-directory hard links, supported by NTFS and common Linux/macOS filesystems. Obsidian requires Dataview JavaScript queries enabled for **Mark Revisited**.
@@ -226,6 +219,7 @@ scriptorium/
 │   ├── __init__.py                                    # Public facade exports
 │   ├── models.py                                      # Shared YAML/ParsedNote cache, errors, Properties schema
 │   ├── layout.py                                      # Shared per-route structural contract
+│   ├── triggers.py                                    # Canonical A0-A11 architectures & T01-T16 triggers
 │   └── engines/
 │       ├── orchestration.py                           # E1: M1–M7 routing, intent normalization, constraints, authority, tracing
 │       ├── research.py                                # E2: ARRIE research, verification, curation, freshness cache
@@ -268,11 +262,11 @@ The [composition contract](references/workflows/notes-creation/composition-contr
 
 [KCP v2 integrity](references/contracts/composition-integrity.md) adds executable
 educational obligations, artifact-bound reviews, scoped mathematical/technical
-checks, versioned claim evidence, persisted renderer execution, and objective-aligned
-assessment. Open critical obligations block publication even when YAML and links pass.
-Composition code lives under `scriptorium/engines/composition/`; historical imports
-remain compatible. See the [implementation report](references/architecture/redesign-report.md)
-for the A1–A7/F01–F25 map, exact validation evidence, changes and limitations.
+checks, versioned claim evidence, web-image-first local visual acquisition, and
+objective-aligned assessment. Open critical obligations block complete publication
+even when YAML and links pass. Composition code lives under
+`scriptorium/engines/composition/`. See [system-overview.md](references/architecture/system-overview.md)
+for the canonical architecture map and current contracts.
 
 ```bash
 # Inspect obligations, prepare actual assets/questions, then review the returned bodies.

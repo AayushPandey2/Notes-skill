@@ -830,16 +830,16 @@ def filter_tool_output(tool_name: str, payload: Any, *, max_items: int = 8) -> d
 
 BENCHMARK_WORKLOADS: list[dict[str, Any]] = [
     {"id": "B01_basic_definition", "request": "/scribe-notes Atomic note on Dot Product", "has_source": False},
-    {"id": "B02_deep_math", "request": "/scribe-notes Explain Gradient Descent from first principles with derivations", "has_source": False},
-    {"id": "B03_programming_tutorial", "request": "/scribe-notes Explain binary search in C with code and execution traces", "has_source": False},
+    {"id": "B02_deep_math", "request": "/scribe-notes Explain Noether's Theorem from first principles with derivations", "has_source": False},
+    {"id": "B03_programming_tutorial", "request": "/scribe-notes Explain hash table probing in C with code and execution traces", "has_source": False},
     {"id": "B04_source_only_pdf", "request": "/scribe-notes Study notes from this textbook chapter using only its formulas in exact order", "has_source": True},
-    {"id": "B05_research_expanded", "request": "/scribe-notes Comprehensive notes on Attention Mechanism with empirical citations", "has_source": False},
-    {"id": "B06_technical_comparison", "request": "/scribe-notes Compare SGD, Momentum, RMSProp, and Adam", "has_source": False},
+    {"id": "B05_research_expanded", "request": "/scribe-notes Comprehensive notes on CRISPR-Cas9 Gene Editing with empirical citations", "has_source": False},
+    {"id": "B06_technical_comparison", "request": "/scribe-notes Compare Keynesian, Monetarist, and Austrian monetary frameworks", "has_source": False},
     {"id": "B07_cheat_sheet", "request": "/scribe-notes Create a cheat sheet for integration formulas", "has_source": False},
-    {"id": "B08_ml_collection", "request": "/scribe-notes Create comprehensive notes on Machine Learning", "has_source": False, "collection": True},
-    {"id": "B09_existing_extension", "request": "/scribe-notes Expand Gradient Descent", "has_source": False},
-    {"id": "B10_validation_repair", "request": "/scribe-notes Repair numerical table in Gradient Descent", "has_source": False, "repair": True},
-    {"id": "B11_cross_note_synthesis", "request": "/scribe-notes Explain how backpropagation and optimizers work together", "has_source": False},
+    {"id": "B08_broad_collection", "request": "/scribe-notes Create comprehensive notes on Thermodynamics", "has_source": False, "collection": True},
+    {"id": "B09_existing_extension", "request": "/scribe-notes Expand Wave Optics", "has_source": False},
+    {"id": "B10_validation_repair", "request": "/scribe-notes Repair numerical table in Chemical Equilibrium", "has_source": False, "repair": True},
+    {"id": "B11_cross_note_synthesis", "request": "/scribe-notes Explain how monetary policy and exchange rates interact", "has_source": False},
     {"id": "B12_collection_assessment", "request": "/scribe-notes Create practice assessment for Data Structures", "has_source": False},
 ]
 
@@ -938,29 +938,29 @@ class TokenEfficiencyController:
 
         # Measure targeted repair savings on a realistic ~4,000-word note
         long_note = (
-            "---\ntopic: Gradient Descent\ntags: [domain/artificial-intelligence]\n"
-            "master_topic: Machine Learning\ndomain: Artificial Intelligence\nnote_type: deep-notes\n---\n\n"
-            "# Gradient Descent\n\n"
+            "---\ntopic: Thermodynamic Equilibrium\ntags: [domain/physics]\n"
+            "master_topic: Thermodynamics\ndomain: Physics\nnote_type: deep-notes\n---\n\n"
+            "# Thermodynamic Equilibrium\n\n"
             + "\n\n".join(
-                f"## Section {i}\n" + ("Detailed mathematical reasoning and explanation of parameter updates. " * 60)
+                f"## Section {i}\n" + ("Detailed physical reasoning and explanation of state variables and transitions. " * 60)
                 for i in range(1, 11)
             )
-            + "\n\n## Numerical Table\n| iter | theta | loss |\n|---|---|---|\n| 1 | 3.2 | 99.0 |\n"
+            + "\n\n## Numerical Table\n| step | state | value |\n|---|---|---|\n| 1 | T_eq | 99.0 |\n"
         )
         repair_bench = build_targeted_repair_context(
             long_note,
             target_section="Numerical Table",
-            issue_description="Row 1 loss value should be 10.24, not 99.0.",
+            issue_description="Row 1 value should be 10.24, not 99.0.",
         )
 
         # Measure source segmentation retrieval savings on a 10-section chapter
         chapter = "\n\n".join(
-            f"## Chapter Section {i}: {'Gradient Descent' if i == 4 else f'Topic {i}'}\n"
+            f"## Chapter Section {i}: {'Equilibrium Criteria' if i == 4 else f'Topic {i}'}\n"
             + (f"Authoritative textbook exposition for section {i} with formulas and examples. " * 45)
             for i in range(1, 11)
         )
         self.sources.ingest_source("textbook_ch3", chapter)
-        src_ret = self.sources.retrieve_passages("textbook_ch3", ["Gradient Descent"], include_adjacent_context=True)
+        src_ret = self.sources.retrieve_passages("textbook_ch3", ["Equilibrium Criteria"], include_adjacent_context=True)
 
         return {
             "workloads_count": len(rows),

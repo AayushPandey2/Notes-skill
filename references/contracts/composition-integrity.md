@@ -154,23 +154,24 @@ verification method and limits in addition to source/location/verified status.
 A nonzero visual allocation or S12 requires `visual_review`: objective, learning
 difficulty, representation, placement, validation, and a planned visual or a
 reasoned omission. Each visual declares ID, owner concept, section, kind and
-objective. Scientific plots supply named numerical series or a safe equation/grid,
-axis labels, units and interpretation. Architecture and mask SVGs consume validated
-flow contracts. Query rows, key columns, causal permissions, boundaries and readouts
-come from the same mask builder. `hybrid` specs expand complementary `parts` into
-individually obligated representations within the same section.
+objective. Programmatic SVG diagram creation has been retired; all external
+illustrations/diagrams use web image research (`external`), local download,
+permissive rights verification, byte decoding/content inspection
+(`media.inspect_image_content`), and `Explain -> Show -> Decode -> Connect` prose.
+`hybrid` specs expand complementary `parts` into individually obligated
+representations within the same section.
 
-Every render persists selected/actual renderer, availability, attempted status,
-input/code hashes, outcome, failure reason, asset path/hash and fallback under
-`.scriptorium/renderers/`. Assets use immutable content-addressed names in the
-shared `assets/scriptorium/` vault directory. Exact regeneration verifies SVG
-content and the publisher checks its actual embed. Empirical charts require
-verified comparable claim IDs and matching values. The built-in renderer rejects
-error bars it cannot render. The [representation contract](../workflows/notes-creation/representations.md)
-defines twelve logical families sharing bounded SVG, graph, coordinate, native
-Mermaid, table, frame-viewer and remote PNG backends. Image generation and other
-host adapters remain explicitly unavailable until execution support exists.
-A Mermaid-to-SVG fallback requires an explicit validated flow.
+Every visual execution persists selected/actual backend, availability,
+attempted status, input/code hashes, outcome, inspection summary, failure
+reason, and asset path/hash under `.scriptorium/renderers/`. Assets use immutable
+content-addressed names in `assets/scriptorium/<collection-slug>/`. The
+publisher verifies local asset hashes and chapter embeds and blocks complete
+publication status when critical visual obligations remain unmet (honestly
+reporting readiness states: `complete`, `complete_with_justified_omissions`,
+`partial`, `draft`, `blocked`, or `failed`). The
+[representation contract](../workflows/notes-creation/representations.md)
+defines twelve logical families sharing `external`, native `mermaid`, `table`,
+and constrained textual `interactive` viewer backends.
 
 ## Assessments
 

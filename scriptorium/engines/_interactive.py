@@ -145,27 +145,18 @@ class NoteInteractionState:
 # ---------------------------------------------------------------------------
 
 _S5_PATTERNS = re.compile(
-    r"\b(?:complete\s+artificial\s+intelligence|full\s+computer\s+science\s+curriculum|"
-    r"comprehensive\s+mathematics\s+knowledge\s+base|entire\s+computer\s+science|"
-    r"complete\s+ai\s+curriculum)\b",
+    r"\b(?:complete|entire|full)\b.{0,40}\b(?:field|discipline|curriculum)\b|"
+    r"\b(?:complete|entire|full)\s+knowledge\s+base\b|"
+    r"\beverything\s+about\b",
     re.I,
 )
-_S4_TOPICS = {
-    "machine learning", "deep learning", "calculus", "linear algebra",
-    "data structures and algorithms", "operating systems", "computer networks",
-    "electromagnetism", "organic chemistry", "world history", "quantum mechanics",
-    "databases", "compilers", "statistics", "probability and statistics",
-}
-_S3_TOPICS = {
-    "supervised learning", "unsupervised learning", "reinforcement learning",
-    "neural networks", "transformers", "transformer architecture", "data preprocessing",
-    "computer vision", "natural language processing", "graph algorithms",
-    "dynamic programming", "sorting algorithms", "thermodynamics", "wave optics",
-}
+_S4_BROAD_RE = re.compile(
+    r"\b(?:complete\s+obsidian\s+knowledge\s+base|from\s+beginner\s+to\s+advanced|from\s+scratch|"
+    r"comprehensive\s+guide\s+to|mastery\s+curriculum)\b",
+    re.I,
+)
 _S2_PATTERNS = re.compile(
-    r"\b(?:variants|algorithms|methods|metrics|techniques|models|architectures|optimizers|"
-    r"adam,\s*sgd|sgd,\s*adam|feature\s+scaling\s+methods|classification\s+metrics|"
-    r"normalization\s+methods|loss\s+functions)\b",
+    r"\b(?:variants|algorithms|methods|metrics|techniques|models|architectures|mechanisms|comparison)\b",
     re.I,
 )
 _S0_PATTERNS = re.compile(
@@ -188,7 +179,7 @@ def classify_topic_scope(
     has_source: bool = False,
     source_sections: list[str] | None = None,
 ) -> dict[str, Any]:
-    """Classify request scope across S0 (atomic) to S5 (extensive domain)."""
+    """Classify request scope across S0 (atomic) to S5 (extensive domain) structurally."""
     if not topic or not topic.strip():
         return {
             "level": "unknown",
@@ -212,30 +203,6 @@ def classify_topic_scope(
             "rationale": "Extensive multi-course domain requiring explicit scope boundaries and staged hierarchical generation.",
         }
 
-    if t_low in _S4_TOPICS or re.search(r"\b(?:complete\s+obsidian\s+knowledge\s+base|from\s+beginner\s+to\s+advanced|from\s+scratch)\b", r_low) and any(k in t_low for k in _S4_TOPICS | _S3_TOPICS):
-        lvl = "S4" if t_low in _S4_TOPICS else "S3"
-        cat = "broad_domain" if lvl == "S4" else "major_subject_area"
-        return {
-            "level": lvl,
-            "category": cat,
-            "breadth": "high",
-            "dependency_complexity": "high",
-            "recommended_structure": "hierarchical_collection",
-            "requires_scope_boundary": lvl == "S4",
-            "rationale": f"'{topic}' spans multiple independently teachable subtopics better organized as a linked hierarchy.",
-        }
-
-    if t_low in _S3_TOPICS or any(t_low == s or t_low.endswith(f" {s}") for s in _S3_TOPICS):
-        return {
-            "level": "S3",
-            "category": "major_subject_area",
-            "breadth": "high",
-            "dependency_complexity": "medium_high",
-            "recommended_structure": "hierarchical_collection",
-            "requires_scope_boundary": False,
-            "rationale": f"'{topic}' is a major subject area with a parent index and distinct child concepts.",
-        }
-
     if source_sections and len(source_sections) >= 3:
         return {
             "level": "S3",
@@ -247,18 +214,7 @@ def classify_topic_scope(
             "rationale": f"Supplied source spans {len(source_sections)} distinct sections.",
         }
 
-    if _S2_PATTERNS.search(t_low) or _S2_PATTERNS.search(r_low) or len(re.findall(r"\b(?:adam|sgd|momentum|rmsprop|adagrad)\b", r_low)) >= 3:
-        return {
-            "level": "S2",
-            "category": "multi_concept_topic",
-            "breadth": "medium",
-            "dependency_complexity": "medium",
-            "recommended_structure": "single_or_small_collection",
-            "requires_scope_boundary": False,
-            "rationale": f"'{topic}' groups several closely related methods that can live in one detailed note or a small linked set.",
-        }
-
-    if _S0_PATTERNS.search(r_low) or len(t_low.split()) <= 2 and t_low in {"label", "capacitance", "learning rate", "scalar", "epoch", "bias"}:
+    if _S0_PATTERNS.search(r_low):
         return {
             "level": "S0",
             "category": "atomic_concept",
@@ -267,6 +223,28 @@ def classify_topic_scope(
             "recommended_structure": "single_note",
             "requires_scope_boundary": False,
             "rationale": f"'{topic}' is an atomic concept best captured in one focused note.",
+        }
+
+    if not _NARROW_SCOPE.search(r_low) and (_S4_BROAD_RE.search(r_low) or _S4_BROAD_RE.search(t_low)):
+        return {
+            "level": "S4",
+            "category": "broad_domain",
+            "breadth": "high",
+            "dependency_complexity": "high",
+            "recommended_structure": "hierarchical_collection",
+            "requires_scope_boundary": True,
+            "rationale": f"'{topic}' spans multiple independently teachable subtopics better organized as a linked hierarchy.",
+        }
+
+    if _S2_PATTERNS.search(t_low) or _S2_PATTERNS.search(r_low) or "," in topic or " vs " in t_low:
+        return {
+            "level": "S2",
+            "category": "multi_concept_topic",
+            "breadth": "medium",
+            "dependency_complexity": "medium",
+            "recommended_structure": "single_or_small_collection",
+            "requires_scope_boundary": False,
+            "rationale": f"'{topic}' groups related mechanisms suited to connected structured coverage.",
         }
 
     return {
@@ -486,7 +464,7 @@ def analyze_universal_request(
         rec_org = "single_note"
     elif comprehensive_collection:
         rec_org = "hierarchical_collection"
-    elif rec_master in {"M3", "M4", "M6"} and scope["level"] in {"S0", "S1", "S2"}:
+    elif rec_master != "M1" and scope["level"] in {"S0", "S1", "S2"}:
         rec_org = "single_note"
     elif scope["recommended_structure"] == "hierarchical_collection":
         rec_org = "hierarchical_collection"
@@ -813,92 +791,6 @@ def _parse_user_preferences(
 # Parts 13-18 & 22 — Hierarchical Topic Decomposition & Collection Preview
 # ---------------------------------------------------------------------------
 
-# Domain-grounded hierarchical blueprints (separate topic hierarchy, prerequisites, and related links!)
-COLLECTION_CURRICULA: dict[str, dict[str, Any]] = {
-    "machine_learning": {
-        "title": "Machine Learning",
-        "groups": [
-            ("Foundations", [
-                ("What is Machine Learning", "M1", [], ["Types of Machine Learning"]),
-                ("Types of Machine Learning", "M1", ["What is Machine Learning"], ["Supervised Learning"]),
-                ("Features and Labels", "M1", ["What is Machine Learning"], ["Data Preparation"]),
-            ]),
-            ("Supervised Learning", [
-                ("Linear Regression", "M1", ["Features and Labels"], ["Loss Functions", "Gradient Descent"]),
-                ("Logistic Regression", "M1", ["Linear Regression"], ["Classification Metrics"]),
-            ]),
-            ("Data Preparation", [
-                ("Missing Values", "M2", ["Features and Labels"], ["Feature Scaling"]),
-                ("Feature Scaling", "M1", ["Features and Labels"], ["Gradient Descent"]),
-            ]),
-            ("Optimization", [
-                ("Loss Functions", "M1", ["Linear Regression"], ["Gradient Descent"]),
-                ("Gradient Descent", "M1", ["Loss Functions"], ["Feature Scaling", "Regularization"]),
-                ("Regularization", "M1", ["Loss Functions", "Gradient Descent"], ["Overfitting and Underfitting"]),
-            ]),
-            ("Evaluation", [
-                ("Overfitting and Underfitting", "M1", ["Linear Regression"], ["Regularization"]),
-                ("Classification Metrics", "M7", ["Logistic Regression"], ["Overfitting and Underfitting"]),
-            ]),
-        ],
-        "external_prerequisites": ["Derivatives", "Linear Algebra Basics", "Introductory Probability"],
-    },
-    "supervised_learning": {
-        "title": "Supervised Learning",
-        "groups": [
-            ("Core Formulation", [
-                ("Features, Targets, and Hypothesis Spaces", "M1", [], ["Loss Functions"]),
-                ("Loss Functions", "M1", ["Features, Targets, and Hypothesis Spaces"], ["Gradient Descent"]),
-            ]),
-            ("Models", [
-                ("Linear Regression", "M1", ["Loss Functions"], ["Gradient Descent"]),
-                ("Logistic Regression", "M1", ["Linear Regression"], ["Decision Trees"]),
-                ("Decision Trees", "M1", ["Features, Targets, and Hypothesis Spaces"], ["Logistic Regression"]),
-            ]),
-            ("Generalization", [
-                ("Bias-Variance Tradeoff", "M1", ["Linear Regression"], ["Regularization"]),
-                ("Regularization", "M1", ["Loss Functions", "Bias-Variance Tradeoff"], ["Linear Regression"]),
-            ]),
-        ],
-        "external_prerequisites": ["Basic Calculus", "Probability Distributions"],
-    },
-    "transformers": {
-        "title": "Transformers",
-        "groups": [
-            ("Representations", [
-                ("Tokenization and Embeddings", "M1", [], ["Positional Encoding"]),
-                ("Positional Encoding", "M1", ["Tokenization and Embeddings"], ["Scaled Dot-Product Attention"]),
-            ]),
-            ("Attention Mechanisms", [
-                ("Scaled Dot-Product Attention", "M1", ["Positional Encoding"], ["Multi-Head Attention"]),
-                ("Multi-Head Attention", "M1", ["Scaled Dot-Product Attention"], ["Encoder and Decoder Blocks"]),
-            ]),
-            ("Architecture and Training", [
-                ("Encoder and Decoder Blocks", "M1", ["Multi-Head Attention"], ["Backpropagation"]),
-                ("Training and Autoregressive Inference", "M5", ["Encoder and Decoder Blocks"], ["Scaled Dot-Product Attention"]),
-            ]),
-        ],
-        "external_prerequisites": ["Matrix Multiplication", "Softmax", "Backpropagation"],
-    },
-    "optimization_algorithms": {
-        "title": "Optimization Algorithms",
-        "groups": [
-            ("First-Order Foundations", [
-                ("Gradient Descent", "M1", [], ["Stochastic Gradient Descent", "Momentum"]),
-                ("Stochastic Gradient Descent", "M1", ["Gradient Descent"], ["Momentum"]),
-                ("Momentum", "M1", ["Gradient Descent"], ["RMSProp", "Adam"]),
-            ]),
-            ("Adaptive Methods", [
-                ("RMSProp", "M1", ["Gradient Descent"], ["Adam"]),
-                ("Adam", "M1", ["Momentum", "RMSProp"], ["Optimizer Comparison"]),
-                ("Optimizer Comparison", "M7", ["Gradient Descent", "Momentum", "RMSProp", "Adam"], []),
-            ]),
-        ],
-        "external_prerequisites": ["Multivariable Derivatives", "Gradients"],
-    },
-}
-
-
 def _safe_filename(name: str) -> str:
     cleaned = re.sub(r'[<>:"/\\|?*\x00-\x1f]', "-", name.strip()).strip(" .")
     return cleaned or "Untitled"
@@ -910,6 +802,7 @@ def plan_note_collection(
     *,
     scope: dict[str, Any] | None = None,
     source_sections: list[dict[str, str]] | None = None,
+    curriculum: dict[str, Any] | None = None,
 ) -> NoteCollectionPlan:
     """Plan either a single note or a hierarchical multi-note collection with separate hierarchy & prerequisite graphs."""
     clean_topic = topic.strip()
@@ -1010,38 +903,25 @@ def plan_note_collection(
             },
         )
 
-    # Case 2: Hierarchical domain decomposition (preset curricula or adaptive generic decomposition)
-    key = slugify(clean_topic).replace("-", "_")
-    curriculum = COLLECTION_CURRICULA.get(key)
+    # Case 2: Hierarchical domain decomposition (caller-supplied curriculum or domain-neutral multi-group decomposition)
     if curriculum is None:
-        # Check partial match (e.g., "optimization algorithms used in machine learning")
-        if "optimization" in key and "algorithm" in key:
-            curriculum = COLLECTION_CURRICULA["optimization_algorithms"]
-        elif "transformer" in key:
-            curriculum = COLLECTION_CURRICULA["transformers"]
-        elif "supervised" in key and "learning" in key:
-            curriculum = COLLECTION_CURRICULA["supervised_learning"]
-        elif "machine_learning" in key:
-            curriculum = COLLECTION_CURRICULA["machine_learning"]
-        else:
-            # Adaptive non-fragmented 3-group decomposition for any broad topic
-            curriculum = {
-                "title": clean_topic,
-                "groups": [
-                    ("Foundations", [
-                        (f"{clean_topic} Fundamentals", preferences.master, [], []),
-                        (f"Core Principles of {clean_topic}", preferences.master, [f"{clean_topic} Fundamentals"], []),
-                    ]),
-                    ("Core Mechanisms", [
-                        (f"Methods and Techniques in {clean_topic}", preferences.master, [f"Core Principles of {clean_topic}"], []),
-                        (f"Worked Examples in {clean_topic}", "M4", [f"Methods and Techniques in {clean_topic}"], []),
-                    ]),
-                    ("Synthesis and Practice", [
-                        (f"{clean_topic} Summary and Comparisons", "M7", [f"Methods and Techniques in {clean_topic}"], []),
-                    ]),
-                ],
-                "external_prerequisites": [],
-            }
+        curriculum = {
+            "title": clean_topic,
+            "groups": [
+                ("Foundations", [
+                    (f"{clean_topic} Fundamentals", preferences.master, [], []),
+                    (f"Core Principles of {clean_topic}", preferences.master, [f"{clean_topic} Fundamentals"], []),
+                ]),
+                ("Core Mechanisms", [
+                    (f"Methods and Techniques in {clean_topic}", preferences.master, [f"Core Principles of {clean_topic}"], []),
+                    (f"Worked Examples in {clean_topic}", "M4", [f"Methods and Techniques in {clean_topic}"], []),
+                ]),
+                ("Synthesis and Practice", [
+                    (f"{clean_topic} Summary and Comparisons", "M7", [f"Methods and Techniques in {clean_topic}"], []),
+                ]),
+            ],
+            "external_prerequisites": [],
+        }
 
     # Pre-assign canonical concept_ids for every child title (zero duplicate canonical concepts!)
     title_to_cid: dict[str, str] = {}

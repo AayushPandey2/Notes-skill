@@ -32,7 +32,16 @@ def test_a1_disconnected_facts_become_coherent_prose_without_blueprint_leakage()
     qual = QualityEngine(ROOT)
     vault = VaultEngine()
 
-    bp = ped.build_explanation_blueprint("Gradient Descent", master="M1", audience="intermediate")
+    ctx = {
+        "spine": {
+            "starting_problem": "Iterative minimization reduces an objective loss function over continuous parameters.",
+            "mechanism": "Each update computes the gradient and scales it by the learning rate alpha.",
+        },
+        "variables": [
+            {"symbol": "\\alpha", "meaning": "learning rate", "role": "step_size", "effect": "controls step scale"},
+        ],
+    }
+    bp = ped.build_explanation_blueprint("Gradient Descent", master="M1", audience="intermediate", context=ctx)
     note = ped.compose_explanation(bp)
 
     assert note.startswith("---\n")
@@ -107,7 +116,17 @@ def test_b1_b2_central_question_and_backprop_anticipation():
     bp_nn = ped.build_explanation_blueprint("Neural Networks", master="M1")
     assert bp_nn.central_question["question"].endswith("?")
 
-    bp_bp = ped.build_explanation_blueprint("Backpropagation", master="M1")
+    bp_bp = ped.build_explanation_blueprint(
+        "Backpropagation",
+        master="M1",
+        context={
+            "central_question": "How can a network compute parameter gradients efficiently across nested layers?",
+            "anticipated_questions": [
+                {"question_id": "why_chain_rule", "question": "Why is the chain rule required across layers?", "concept": "chain_rule", "priority": 1, "stage": "core", "render": "implicit"},
+                {"question_id": "why_reverse_mode", "question": "Why does reverse-mode reuse intermediate sensitivities?", "concept": "reverse_mode", "priority": 2, "stage": "mechanism", "render": "implicit"},
+            ],
+        },
+    )
     assert "efficiently" in bp_bp.central_question["question"].lower()
     q_ids = [q["question_id"] for q in bp_bp.anticipated_questions]
     assert "why_chain_rule" in q_ids and "why_reverse_mode" in q_ids
@@ -180,8 +199,21 @@ def test_d1_d2_d3_d4_boundaries_contrasts_and_no_caveat_bloat():
     bad_bs = "# Binary Search\n\n## Complexity\nBinary search always finds an element in O(log n) time.\n"
     assert any(i["code"] == "EIS-BOUND-001" for i in ped.validate_explanation(bad_bs, bp_bs))
 
-    # D3: Parameter vs hyperparameter contrast
-    bp_gd = ped.build_explanation_blueprint("Gradient Descent", master="M1")
+    # D3: Caller-supplied contrast separation (Parameter vs Hyperparameter)
+    bp_gd = ped.build_explanation_blueprint(
+        "Gradient Descent",
+        master="M1",
+        context={
+            "contrasts": [
+                {
+                    "concept_a": "Parameter",
+                    "concept_b": "Hyperparameter",
+                    "distinction": "Parameters are updated during optimization whereas hyperparameters govern the update rule.",
+                    "discriminating_example": "Weights theta change per step while learning rate alpha is chosen before training.",
+                }
+            ]
+        },
+    )
     pairs = {(c["concept_a"], c["concept_b"]) for c in bp_gd.contrasts}
     assert ("Parameter", "Hyperparameter") in pairs
 
@@ -199,21 +231,58 @@ def test_d1_d2_d3_d4_boundaries_contrasts_and_no_caveat_bloat():
 def test_e1_e2_e3_e4_e5_state_traces_invariants_and_nonprocedural_guard():
     ped = PedagogyEngine()
 
-    # E1: Binary search verified trace & invariant
-    bp_bs = ped.build_explanation_blueprint("Binary Search", master="M5")
+    # E1: Binary search verified trace & invariant from supplied domain model
+    bp_bs = ped.build_explanation_blueprint(
+        "Binary Search",
+        master="M5",
+        context={
+            "state_model": {
+                "applicable": True,
+                "invariant": {"applicable": True, "statement": "If target exists in sorted array A, index lies in [lo, hi]."},
+                "example_trace": [
+                    {"step": 0, "lo": 0, "hi": 7, "mid": 3},
+                    {"step": 1, "lo": 4, "hi": 7, "mid": 5},
+                    {"step": 2, "lo": 4, "hi": 4, "mid": 4},
+                ],
+            }
+        },
+    )
     assert bp_bs.execution_state["applicable"] is True
     assert bp_bs.execution_state["invariant"]["applicable"] is True
-    assert ped.verify_trace(bp_bs.execution_state["example_trace"], rule="binary_search")["valid"] is True
+    assert ped.verify_trace(bp_bs.execution_state["example_trace"], shrinking_bounds=("lo", "hi"), monotonic_field="step", monotonic_direction="nondecreasing")["valid"] is True
 
-    # E2: Gradient descent exact numerical trace (4.0 -> 3.2 -> 2.56 -> 2.048)
-    bp_gd = ped.build_explanation_blueprint("Gradient Descent", master="M1")
-    trace = bp_gd.execution_state["example_trace"]
-    assert [row["theta"] for row in trace] == [4.0, 3.2, 2.56, 2.048]
-    assert [row["loss"] for row in trace] == [16.0, 10.24, 6.5536, 4.1943]
-    assert ped.verify_trace(trace, rule="quadratic_gd", alpha=0.1)["valid"] is True
+    # E2: Generic numerical recurrence trace verified by AST equations (theta_{t+1} = theta_t - 0.1 * 2*theta_t)
+    trace = [
+        {"iteration": 0, "theta": 4.0, "loss": 16.0},
+        {"iteration": 1, "theta": 3.2, "loss": 10.24},
+        {"iteration": 2, "theta": 2.56, "loss": 6.5536},
+        {"iteration": 3, "theta": 2.048, "loss": 4.1943},
+    ]
+    assert ped.verify_trace(
+        trace,
+        value_checks={"loss": "theta ** 2"},
+        recurrence_checks={"theta": "prev_theta - alpha * (2 * prev_theta)"},
+        monotonic_field="loss",
+        monotonic_direction="nonincreasing",
+        constants={"alpha": 0.1},
+    )["valid"] is True
 
-    # E3: Recursion trace
-    bp_rec = ped.build_explanation_blueprint("Recursion", master="M5")
+    # E3: Recursion trace supplied cleanly without hardcoded subject dict
+    bp_rec = ped.build_explanation_blueprint(
+        "Recursion",
+        master="M5",
+        context={
+            "state_model": {
+                "applicable": True,
+                "invariant": {"applicable": False},
+                "example_trace": [
+                    {"depth": 0, "call": "fact(3)", "returns": 6},
+                    {"depth": 1, "call": "fact(2)", "returns": 2},
+                    {"depth": 2, "call": "fact(1)", "returns": 1},
+                ],
+            }
+        },
+    )
     assert bp_rec.execution_state["applicable"] is True
     assert any(r.get("returns") == 6 for r in bp_rec.execution_state["example_trace"])
 
@@ -226,7 +295,13 @@ def test_e1_e2_e3_e4_e5_state_traces_invariants_and_nonprocedural_guard():
 
     # E5: Invalid trace / violated descent invariant rejected
     bad_trace = [{"iteration": 0, "theta": 4.0, "loss": 16.0}, {"iteration": 1, "theta": 5.0, "loss": 25.0}]
-    res_bad = ped.verify_trace(bad_trace, rule="quadratic_gd", alpha=0.1)
+    res_bad = ped.verify_trace(
+        bad_trace,
+        value_checks={"loss": "theta ** 2"},
+        monotonic_field="loss",
+        monotonic_direction="nonincreasing",
+        constants={"alpha": 0.1},
+    )
     assert res_bad["valid"] is False
     assert any("invariant violated" in e for e in res_bad["errors"])
 
@@ -238,8 +313,18 @@ def test_e1_e2_e3_e4_e5_state_traces_invariants_and_nonprocedural_guard():
 def test_f1_f2_f3_f4_retrieval_cues_assumptions_master_modes_and_inflation():
     ped = PedagogyEngine()
 
-    # F1 & F2: Cues & preserved assumptions, never claiming measured human retention
-    bp_gd = ped.build_explanation_blueprint("Gradient Descent", master="M1")
+    # F1 & F2: Cues & preserved assumptions from supplied context, never claiming measured human retention
+    bp_gd = ped.build_explanation_blueprint(
+        "Gradient Descent",
+        master="M1",
+        context={
+            "retrieval": {
+                "cues": ["objective", "direction", "magnitude", "iteration"],
+                "critical_conditions": ["0 < α < 2/L for L-smooth convex functions"],
+                "summary": "Valid step sizes satisfy 0 < α < 2/L.",
+            }
+        },
+    )
     ret = bp_gd.retrieval
     assert ret["cues"] == ["objective", "direction", "magnitude", "iteration"]
     assert "0 < α < 2/L" in ret["summary"]

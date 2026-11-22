@@ -94,6 +94,52 @@ def audit_repository(root: Path = REPO_ROOT) -> dict[str, Any]:
     return {"files": len(files), "local_links": checked, "errors": errors}
 
 
+def audit_reconstruction_compliance(root: Path = REPO_ROOT) -> dict[str, Any]:
+    """Static CI check detecting retired SVG creation paths, versioned branding, or hardcoded lessons in production."""
+    versioned_re = re.compile(r"\bScriptorium\s+\d+(?:\.\d+)?\b")
+    svg_gen_re = re.compile(r"\b(?:scientific_svg|architecture_svg|mask_svg|flow_svg|graph_svg|coordinate_svg|evaluate_svg_fallback_gate)\b")
+    preset_re = re.compile(r"\b(?:CONCEPT_PRESETS|TOPIC_PRESETS|LESSON_PRESETS|KNOWN_CONTRASTS|COLLECTION_CURRICULA)\b")
+
+    branding_hits: list[str] = []
+    svg_hits: list[str] = []
+    preset_hits: list[str] = []
+
+    for py_root in (root / "scriptorium", root / "scripts"):
+        if not py_root.is_dir():
+            continue
+        for py_file in sorted(py_root.rglob("*.py")):
+            rel = py_file.relative_to(root).as_posix()
+            text = py_file.read_text(encoding="utf-8-sig")
+            for lineno, line in enumerate(text.splitlines(), 1):
+                if rel != "scriptorium/engines/quality.py":
+                    if versioned_re.search(line):
+                        branding_hits.append(f"{rel}:{lineno}")
+                    if svg_gen_re.search(line):
+                        svg_hits.append(f"{rel}:{lineno}")
+                    if preset_re.search(line):
+                        preset_hits.append(f"{rel}:{lineno}")
+
+    active_docs = [root / "SKILL.md", root / "router.md", root / "README.md"]
+    active_docs.extend(sorted((root / "skills").rglob("*.md")) if (root / "skills").is_dir() else [])
+    active_docs.extend(sorted((root / "shared").rglob("*.md")) if (root / "shared").is_dir() else [])
+    for doc in active_docs:
+        if not doc.is_file():
+            continue
+        rel = doc.relative_to(root).as_posix()
+        for lineno, line in enumerate(doc.read_text(encoding="utf-8-sig").splitlines(), 1):
+            if versioned_re.search(line):
+                branding_hits.append(f"{rel}:{lineno}")
+            if svg_gen_re.search(line):
+                svg_hits.append(f"{rel}:{lineno}")
+
+    return {
+        "passed": not (branding_hits or svg_hits or preset_hits),
+        "versioned_branding_hits": branding_hits,
+        "retired_svg_generator_hits": svg_hits,
+        "hardcoded_preset_hits": preset_hits,
+    }
+
+
 def repository_inventory(root: Path = REPO_ROOT) -> dict[str, Any]:
     """Read-only dependency/size evidence. Textual reachability never authorizes deletion."""
     listed = subprocess.run(["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"],
@@ -137,7 +183,7 @@ def repository_inventory(root: Path = REPO_ROOT) -> dict[str, Any]:
         dependencies.update(target for target in re.findall(r"(?:references|shared|skills|scripts|scriptorium)/[\w./-]+\.(?:md|py|json|yaml)", raw)
                             if target in paths)
         outgoing[name] = sorted(dependencies-{name})
-        action = "MOVE" if name in {"scriptorium/engines/_composition.py", "scriptorium/engines/_composition_visuals.py"} else "OPTIMIZE" if name in changed else "KEEP"
+        action = "OPTIMIZE" if name in changed else "KEEP"
         entries.append({"path": name, "purpose": purpose, "action": action, "lines": len(raw.splitlines()), "bytes": path.stat().st_size,
                         "estimated_context_tokens": (len(raw)+3)//4, "outbound": outgoing[name], "inbound": [],
                         "execution_path": "CLI/test import or selectively loaded reference; inspect inbound edges",
@@ -374,8 +420,8 @@ GOLDEN_CASES: list[dict[str, Any]] = [
     {"id": "G09_worked_solutions", "request": "Show worked examples of Bayes theorem", "expected_master": "M4", "expected_domain": "Mathematics", "expected_note_type": "worked-solutions"},
     {"id": "G10_quiz", "request": "Create flashcards for cellular respiration", "expected_master": "M6", "expected_domain": "Biology", "expected_note_type": "assessment"},
     {"id": "G11_revision_pack", "request": "Compare Keynesian vs Monetarist economics", "expected_master": "M7", "expected_domain": "Economics", "expected_note_type": "synthesis-revision"},
-    {"id": "G12_multi_artifact", "request": "Create deep notes on Gradient Descent and a separate formula sheet", "expected_master": "M1", "expected_multi_artifact": True, "expected_artifact_masters": ["M1", "M3"]},
-    {"id": "G13_incremental_update", "mode": "incremental_update", "topic": "Gradient Descent"},
+    {"id": "G12_multi_artifact", "request": "Create deep notes on Signal Sampling and a separate formula sheet", "expected_master": "M1", "expected_multi_artifact": True, "expected_artifact_masters": ["M1", "M3"]},
+    {"id": "G13_incremental_update", "mode": "incremental_update", "topic": "Thermodynamic Equilibrium"},
 ]
 
 
@@ -404,7 +450,7 @@ class EvaluationHarness:
                 )
                 initial = render_note_with_properties(
                     initial_props,
-                    "# Gradient Descent\n\n## Intuition\nInitial intuition.\n\n## Personal Notes\nKeep this annotation.\n",
+                    f"# {case['topic']}\n\n## Intuition\nInitial intuition.\n\n## Personal Notes\nKeep this annotation.\n",
                 )
                 upd = incremental_update_note(
                     initial,
@@ -702,12 +748,16 @@ def repair_explanatory_friction(
 
 class QualityEngine:
     def validate_composition(self, vault_root: Path, composition: dict[str, Any]) -> dict[str, Any]:
-        from ._composition import validate_published_composition
+        from .composition import validate_published_composition
         return validate_published_composition(vault_root, composition)
 
     def validate_composition_chapter(self, text: str, **kwargs: Any) -> list[str]:
-        from ._composition import validate_chapter
+        from .composition import validate_chapter
         return validate_chapter(text, **kwargs)
+
+    def evaluate_chapter_depth(self, plan: dict[str, Any], chapter: dict[str, Any], body: str) -> dict[str, Any]:
+        from .composition.contracts import evaluate_chapter_depth_contract
+        return evaluate_chapter_depth_contract(plan, chapter, body)
 
     """Cohesive Engine E5 facade for verification, representation checks, EIS-07 clarity review, targeted repair, auditing, and golden evals."""
 
@@ -744,6 +794,9 @@ class QualityEngine:
         if include_inventory:
             result["inventory"] = repository_inventory(self.root)
         return result
+
+    def audit_compliance(self) -> dict[str, Any]:
+        return audit_reconstruction_compliance(self.root)
 
     def lint_authority(self) -> dict[str, Any]:
         return lint_instruction_authority(self.root)

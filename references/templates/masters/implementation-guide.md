@@ -96,7 +96,7 @@ Contextual Activation Guide
 -->
 
 - **Context:** Name the spatial structure (pointers, window, stack, tree, DP grid) and tricky input being traced.
-- **Analysis:** Show the aligned ASCII or Mermaid state transitions across the key inflection steps (if saving an image/SVG figure, persist it under `assets/scriptorium/<collection-slug>/` following [representations.md](../../workflows/notes-creation/representations.md)).
+- **Analysis:** Show the state transitions across the key inflection steps (if saving an externally acquired diagram, persist it under `assets/scriptorium/<collection-slug>/` following [representations.md](../../workflows/notes-creation/representations.md); never generate programmatic SVG diagrams).
 - **Check:** State the invariant visible at every transition and the edge state that would violate it.
 
 See [authoring rules](../../../shared/authoring_rules.md), [math gates](../../../shared/math_gates.md), and [footer contract](../../../shared/footer_widgets.md).

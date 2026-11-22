@@ -5,12 +5,12 @@ This document is the authoritative architectural reference connecting Scriptoriu
 ## 1. End-to-End Logical Architecture
 
 Comprehensive M1 collections also use [KCP v2 integrity](../contracts/composition-integrity.md).
-Its audit-derived F01–F25 identifiers are separate from the legacy collection
-F02–F15 identifiers below. The implementation is organized under
-`scriptorium/engines/composition/`: planning/publication, shared obligations,
-scoped semantic checks and deterministic visuals. E1–E6 remain the public facades;
-A1–A7 are cooperative responsibilities, not new agents or engines. See the
-[current implementation report](redesign-report.md) for evidence and limitations.
+The runtime implementation coordinates 12 canonical logical responsibilities
+(**A0 Director, A1 Map, A2 Tutor, A3 Planner, A4 Researcher, A5 Writer, A6
+Visuals, A7 Assets, A8 Quiz, A9 Checker, A10 Vault, A11 Speed**) and 16
+explicit triggers (`T01`–`T16` in `scriptorium/triggers.py`) across the package
+and `scriptorium/engines/composition/`: planning/publication, shared
+obligations, web-image discovery/inspection, and scoped semantic checks.
 
 The stages below represent **logical responsibilities** coordinated in Python and on-demand reference loading—not separate LLM calls for every box:
 

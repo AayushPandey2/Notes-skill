@@ -144,16 +144,23 @@ def compose_visual_walkthrough(
     *,
     embed: str,
     terminology_registry: dict[str, str] | None = None,
+    inspection: dict[str, Any] | None = None,
 ) -> str:
-    """Assemble Explain -> Show -> Decode -> Connect prose around a verified local embed."""
+    """Assemble Explain -> Show -> Decode -> Connect prose grounded in inspected image content."""
     registry = terminology_registry or {}
-    explain = visual.get("explain") or f"To understand {visual.get('objective', 'this mechanism')}, examine how inputs flow through each component."
-    decode_items = visual.get("decode_components") or [
-        "Trace the primary inputs entering the first stage, follow each intermediate transformation, and inspect the resulting output."
-    ]
+    explain = visual.get("explain") or f"To understand {visual.get('objective', 'this mechanism')}, examine how the key parts interact in the figure below."
+    verified_labels = list((inspection or {}).get("text_labels_extracted") or [])
+    decode_items = list(visual.get("decode_components") or [])
+    if not decode_items:
+        if verified_labels:
+            decode_items = [f"Inspect the verified figure labels visible in the diagram: {', '.join(verified_labels[:6])}."]
+        else:
+            decode_items = [
+                f"Focus on the relationship described in the caption: {visual.get('alt') or visual.get('objective', 'core structural arrangement')}."
+            ]
     abbrs = [a for a in visual.get("abbreviations", []) if a in registry]
     abbr_lines = [f"- **{a}:** {registry[a]}" for a in abbrs]
-    connect = visual.get("connect") or "This mechanism establishes the structural basis for the next concept in the chapter."
+    connect = visual.get("connect") or "This visual structure connects directly to the analytical mechanism developed next."
 
     parts = [
         explain.strip(),
@@ -169,6 +176,32 @@ def compose_visual_walkthrough(
         parts.extend(["", "**Symbols and abbreviations:**", *abbr_lines])
     parts.extend(["", connect.strip()])
     return "\n".join(parts)
+
+
+def validate_image_grounded_explanation(
+    markdown: str,
+    visual: dict[str, Any],
+    *,
+    inspection: dict[str, Any] | None = None,
+    terminology_registry: dict[str, str] | None = None,
+) -> dict[str, Any]:
+    """Verify Explain -> Show -> Decode -> Connect and image-inspection grounding."""
+    result = validate_explain_show_decode_connect(
+        markdown, visual, terminology_registry=terminology_registry
+    )
+    errors = list(result["errors"])
+    warnings: list[str] = []
+    inspected = bool(inspection and inspection.get("inspection_performed"))
+    if inspection and inspection.get("readable_for_embedding") is False:
+        errors.append("Inspected image failed minimum resolution/contrast readability check")
+    if not inspected and visual.get("decode_components"):
+        warnings.append("Image decode components supplied without recorded local image inspection")
+    return {
+        "passed": not errors,
+        "errors": errors,
+        "warnings": warnings,
+        "image_inspected": inspected,
+    }
 
 
 def validate_explain_show_decode_connect(
