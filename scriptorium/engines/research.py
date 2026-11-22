@@ -1565,6 +1565,9 @@ class ResearchEngine:
     def audit_citations(self, note_text: str, evidence_registry: dict[str, Any], **kwargs: Any) -> list[tuple[int, str]]:
         return validate_note_citations(note_text, evidence_registry, **kwargs)
 
+    def render_bibliography(self, evidence_registry: dict[str, Any]) -> list[str]:
+        return render_bibliography(evidence_registry)
+
     def package(self, research_plan: dict[str, Any], evidence_registry: dict[str, Any], **kwargs: Any) -> dict[str, Any]:
         return build_research_package(research_plan, evidence_registry, **kwargs)
 

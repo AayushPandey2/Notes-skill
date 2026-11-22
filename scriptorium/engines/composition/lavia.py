@@ -416,40 +416,6 @@ def resolve_visual_route(
     }
 
 
-def verify_visual_obligations(
-    obligations: list[dict[str, Any]],
-    bodies: dict[str, str],
-    vault: Path,
-) -> dict[str, Any]:
-    """Checker verification: verify local embeds, provenance, explanation density, and unmet obligations."""
-    from . import contained
-    errors: list[str] = []
-    for ob in obligations:
-        oid = ob.get("obligation_id", "<unknown>")
-        chid = ob.get("chapter_id", "")
-        if ob.get("status") in {"unavailable", "unmet_obligation", "blocked"}:
-            errors.append(f"{oid}: unmet visual obligation ({ob.get('failure_reason', 'no permitted image acquired')})")
-            continue
-        rel = ob.get("local_asset_path")
-        if not rel or not contained(vault, rel).is_file():
-            errors.append(f"{oid}: missing local asset {rel}")
-            continue
-        body = bodies.get(chid, "")
-        if rel not in body:
-            errors.append(f"{oid}: asset {rel} is not embedded in chapter {chid}")
-            continue
-        non_embed_words = [
-            w for line in body.splitlines()
-            if not line.strip().startswith(("![", "#"))
-            for w in line.split()
-        ]
-        if len(non_embed_words) < 15:
-            errors.append(f"{oid}: chapter {chid} lacks sufficient explanatory prose around visual")
-        if ob.get("acquisition_status") == "external_download" and not ob.get("provenance_record"):
-            errors.append(f"{oid}: external image missing provenance/attribution record")
-    return {"passed": not errors, "errors": errors, "checked": len(obligations)}
-
-
 def select_acquisition_strategy(visual: dict[str, Any]) -> str:
     """Choose retrieve_figure (external), native_mermaid, markdown_table, or interactive_sequence."""
     renderer = visual.get("renderer")

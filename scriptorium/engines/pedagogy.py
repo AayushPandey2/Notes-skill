@@ -14,20 +14,12 @@ from __future__ import annotations
 import re
 from typing import Any
 
-from scriptorium.engines import _decision as decision_core
-from scriptorium.engines import _instructional as instructional_core
-from scriptorium.engines import _pedagogical_core as pedagogical_core
 from scriptorium.models import parse_note
 
 # Re-export core Contract v3 & P01-P11 helpers cleanly
 from scriptorium.engines._instructional import (
-    CONTRACT_VERSION,
-    LEGACY_WARNING,
     adapt_legacy_contract,
     audit_modern_note,
-    build_concept_dependency_graph,
-    compose_concept_sequence,
-    compose_document_outline,
     coverage_errors,
     from_legacy,
     normalize_plan,
@@ -39,18 +31,9 @@ from scriptorium.engines._pedagogical_core import (
     validate_pedagogical_quality,
 )
 from scriptorium.engines._explanation import (
-    BLUEPRINT_SCHEMA_VERSION,
-    MASTER_EIS_ACTIVATION,
     ExplanationBlueprint,
     build_explanation_blueprint,
-    build_retrieval_cues,
     compose_explanation_note,
-    construct_explanatory_spine,
-    plan_boundaries_and_contrasts,
-    plan_central_question_and_anticipation,
-    plan_mechanism_and_motivation,
-    plan_variable_and_state_reasoning,
-    resolve_eis_activation,
     validate_explanation_structure,
     verify_numerical_trace,
 )

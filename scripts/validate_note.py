@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import argparse
-from datetime import date
 from pathlib import Path
 import re
 import sys
@@ -20,7 +19,7 @@ for _p in (str(REPO_ROOT), str(SCRIPT_DIR)):
         sys.path.insert(0, _p)
 
 from scriptorium.layout import (
-    ADAPTIVE_ROUTES, BEHAVIOR_TABLE, DEEP_ROUTES, HINT, NARROW_RANGES, PRACTICE_RANGES,
+    ADAPTIVE_ROUTES, BEHAVIOR_TABLE, DEEP_ROUTES, HINT,
     ROUTES, SOLUTION, SYMBOL_TABLE, matches_legacy_study, matches_layout, optional_headings, heading_key,
 )
 from scriptorium.engines._verification import FENCE, check_python, quoted_line as _strip_quotes, split_blocks
@@ -29,11 +28,12 @@ from scriptorium.models import (
     CANONICAL_NOTE_TYPES,
     REQUIRED_OBSIDIAN_PROPERTIES,
     STRICT_KEYS,
-    UniqueMappingLoader,
+    heading_slug as _heading_slug,
+    is_within_vault,
     parse_frontmatter as read_frontmatter,
 )
-from vault_index import is_within_vault, resolve_vault_root
-from verify_vault_notes import RAW_LATEX_IN_YAML_RE, UNRESOLVED_TPL_RE, _extract_anchors_and_blocks, _heading_slug, build_vault_index
+from vault_index import resolve_vault_root
+from verify_vault_notes import RAW_LATEX_IN_YAML_RE, UNRESOLVED_TPL_RE, _extract_anchors_and_blocks, build_vault_index
 
 REQUIRED = set(STRICT_KEYS)
 TOKEN = re.compile(r"(" + chr(96) + r"+|\$+)")

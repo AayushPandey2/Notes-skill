@@ -1,12 +1,16 @@
 """Shared data models, error taxonomy, YAML/frontmatter parsing, and caching for Scriptorium."""
 from __future__ import annotations
 
+import ast
 from dataclasses import dataclass, field
 from functools import lru_cache
 import hashlib
+import math
+import operator
+import os
 from pathlib import Path
 import re
-from typing import Any
+from typing import Any, Callable
 
 import yaml
 
@@ -327,3 +331,115 @@ def _parse_note_cached(digest: str, text: str) -> ParsedNote:
 def parse_note(text: str) -> ParsedNote:
     """Parse a Markdown note once (cached by SHA-256 content digest)."""
     return _parse_note_cached(content_hash(text), text)
+
+
+def is_within_vault(vault_root: Path, target: Path) -> bool:
+    """Verify target resolves strictly inside vault_root (no symlink or traversal escape)."""
+    try:
+        real_root = os.path.realpath(vault_root)
+        real_target = os.path.realpath(target)
+        return os.path.commonpath([real_root, real_target]) == real_root
+    except ValueError:
+        return False
+
+
+def contained_path(root: Path, relative: str | Path) -> Path:
+    """Resolve ``relative`` inside ``root`` and reject path traversal outside ``root``."""
+    path = (root / relative).resolve()
+    if not path.is_relative_to(root.resolve()) or not is_within_vault(root, path):
+        raise ValueError(f"Path escapes vault: {relative}")
+    return path
+
+
+def split_frontmatter_lines(lines: list[str]) -> tuple[list[str], int] | tuple[None, int]:
+    """Return ``(yaml_lines, body_start_idx)`` if ``lines`` starts with YAML frontmatter."""
+    if not lines or lines[0].strip() != "---":
+        return None, 0
+    for idx in range(1, len(lines)):
+        if lines[idx].strip() == "---":
+            return lines[1:idx], idx + 1
+    return None, 0
+
+
+def heading_slug(heading: str) -> str:
+    """Normalize a Markdown heading string into a GitHub/Obsidian anchor slug."""
+    cleaned = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", heading.strip())
+    cleaned = cleaned.replace("`", "").replace("*", "").replace("~", "").lower()
+    cleaned = re.sub(r"[^\w\s-]", "", cleaned, flags=re.UNICODE)
+    return re.sub(r"\s+", "-", cleaned.strip())
+
+
+def format_wikilink(value: str) -> str:
+    """Wrap a note name as ``[[value]]`` unless it is already bracketed."""
+    s = value.strip()
+    if s.startswith("[[") and s.endswith("]]"):
+        return s
+    return f"[[{s}]]"
+
+
+_SAFE_BINOPS: dict[type[ast.operator], Callable[[float, float], float]] = {
+    ast.Add: operator.add,
+    ast.Sub: operator.sub,
+    ast.Mult: operator.mul,
+    ast.Div: operator.truediv,
+    ast.Pow: operator.pow,
+    ast.FloorDiv: operator.floordiv,
+    ast.Mod: operator.mod,
+}
+_SAFE_UNARYOPS: dict[type[ast.unaryop], Callable[[float], float]] = {
+    ast.UAdd: operator.pos,
+    ast.USub: operator.neg,
+}
+_SAFE_MATH_FUNCS: dict[str, Callable[..., float]] = {
+    "abs": abs,
+    "sqrt": math.sqrt,
+    "exp": math.exp,
+    "log": math.log,
+    "sin": math.sin,
+    "cos": math.cos,
+    "tan": math.tan,
+    "max": max,
+    "min": min,
+}
+
+
+def safe_eval_expr(
+    expression: str,
+    variables: dict[str, float] | None = None,
+    *,
+    allow_functions: bool = False,
+    allow_constants: bool = False,
+    normalize_equation: bool = False,
+) -> float:
+    """Safely evaluate a pure mathematical expression via Python AST (never raw eval())."""
+    env = variables or {}
+    cleaned = expression.strip()
+    if normalize_equation:
+        cleaned = cleaned.replace("^", "**")
+        if "=" in cleaned:
+            _, cleaned = cleaned.split("=", 1)
+            cleaned = cleaned.strip()
+    tree = ast.parse(cleaned, mode="eval")
+
+    def _eval(node: ast.AST) -> float:
+        if isinstance(node, ast.Expression):
+            return _eval(node.body)
+        if isinstance(node, ast.Constant) and isinstance(node.value, (int, float)):
+            return float(node.value)
+        if isinstance(node, ast.Name):
+            if node.id in env:
+                return float(env[node.id])
+            if allow_constants and node.id == "pi":
+                return math.pi
+            if allow_constants and node.id == "e":
+                return math.e
+            raise ValueError(f"Unknown variable '{node.id}' in expression '{expression}'.")
+        if isinstance(node, ast.BinOp) and type(node.op) in _SAFE_BINOPS:
+            return float(_SAFE_BINOPS[type(node.op)](_eval(node.left), _eval(node.right)))
+        if isinstance(node, ast.UnaryOp) and type(node.op) in _SAFE_UNARYOPS:
+            return float(_SAFE_UNARYOPS[type(node.op)](_eval(node.operand)))
+        if allow_functions and isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id in _SAFE_MATH_FUNCS:
+            return float(_SAFE_MATH_FUNCS[node.func.id](*[_eval(a) for a in node.args]))
+        raise ValueError(f"Unsupported arithmetic construct in expression: {expression!r}")
+
+    return _eval(tree)

@@ -18,39 +18,9 @@ for _p in (str(REPO_ROOT), str(SCRIPT_DIR)):
         sys.path.insert(0, _p)
 
 from scriptorium.engines.vault import build_obsidian_properties, render_note_with_properties
-from scriptorium.layout import ADAPTIVE_ROUTES, DEEP_ROUTES, ROUTES, body_skeleton, canonical_note_type
-from scriptorium.models import slugify as _slugify
+from scriptorium.layout import DEEP_ROUTES, ROUTES, body_skeleton, canonical_note_type
+from scriptorium.models import format_wikilink as _format_wikilink, slugify as _slugify
 from vault_index import is_within_vault, resolve_vault_root
-
-
-def _format_wikilink(value: str) -> str:
-    s = value.strip()
-    if s.startswith("[[") and s.endswith("]]"):
-        return s
-    return f"[[{s}]]"
-
-
-def render_deep_note_skeleton(
-    *,
-    note_id: str,
-    number: str,
-    title: str,
-    base_domain: str,
-    master_topic: str,
-    topic: str,
-    aliases: list[str] | None = None,
-    tags: list[str] | None = None,
-    depends_on: list[str] | None = None,
-    next_topic: str | None = None,
-) -> str:
-    """Compatibility entry point for the canonical adaptive deep-study scaffold."""
-    args = argparse.Namespace(
-        template="deepstudy-master", topic=topic, title=title, number=number,
-        base_domain=base_domain, master_topic=master_topic, aliases=aliases or [],
-        tags=tags or [], next_topic=next_topic, depends_on=depends_on or [],
-        math_level=0, narrow_practice=False, compared_notes=[],
-    )
-    return render_routed_note(args, note_id)
 
 
 def render_syllabus_skeleton(

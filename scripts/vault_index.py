@@ -38,6 +38,7 @@ if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
 from scriptorium.layout import ROUTES
+from scriptorium.models import is_within_vault, split_frontmatter_lines
 
 INDEX_VERSION = 5
 
@@ -157,16 +158,6 @@ def resolve_vault_root(explicit_path: str | Path | None = None) -> Path:
     return resolved
 
 
-def is_within_vault(vault_root: Path, target: Path) -> bool:
-    """Verify target resolves strictly inside vault_root (no symlink escape)."""
-    try:
-        real_root = os.path.realpath(vault_root)
-        real_target = os.path.realpath(target)
-        return os.path.commonpath([real_root, real_target]) == real_root
-    except ValueError:
-        return False
-
-
 def _iter_vault_markdown(vault_root: Path) -> tuple[list[Path], list[str]]:
     """Walk vault_root safely without following escaping symlinks or excluded dirs."""
     md_files: list[Path] = []
@@ -201,13 +192,10 @@ def _iter_vault_markdown(vault_root: Path) -> tuple[list[Path], list[str]]:
 # ---------------------------------------------------------------------------
 
 def _split_frontmatter(text: str) -> tuple[str | None, int]:
-    lines = text.splitlines()
-    if not lines or lines[0].strip() != "---":
+    yaml_lines, body_start = split_frontmatter_lines(text.splitlines())
+    if yaml_lines is None:
         return None, 0
-    for idx in range(1, len(lines)):
-        if lines[idx].strip() == "---":
-            return "\n".join(lines[1:idx]), idx + 1
-    return None, 0
+    return "\n".join(yaml_lines), body_start
 
 
 def _as_str_or_none(val: Any) -> str | None:
@@ -860,13 +848,6 @@ def extract_note_sections(
             out_chunks.append("\n".join(lines[start:end]).rstrip())
 
     return "\n\n".join(chunk for chunk in out_chunks if chunk).strip() + "\n"
-
-
-def index_vault(vault_path: Path, topic_filter: str | None = None, *, use_cache: bool = True) -> list[dict[str, Any]]:
-    """Legacy API returning compact note metadata records."""
-    full = build_or_load_index(vault_path, use_cache=use_cache)
-    filtered = _filter_notes_by_topic(full["notes"], topic_filter)
-    return [_legacy_record(r) for r in filtered]
 
 
 def format_compact_json(records: list[dict[str, Any]]) -> str:

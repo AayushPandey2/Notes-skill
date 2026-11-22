@@ -24,7 +24,6 @@ from scriptorium.models import (
     RoutingError,
     SourcePolicyConflictError,
     TemplateResolutionError,
-    slugify,
 )
 
 ROOT = REPO_ROOT

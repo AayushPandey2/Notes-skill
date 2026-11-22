@@ -23,7 +23,6 @@ sys.dont_write_bytecode = True
 
 import argparse
 import json
-import re
 from collections import defaultdict, deque
 from pathlib import Path
 from typing import Any

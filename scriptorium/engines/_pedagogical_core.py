@@ -18,11 +18,12 @@ from collections import deque
 from copy import deepcopy
 import json
 import math
-import operator
 from pathlib import Path
 import re
 import sys
 from typing import Any
+
+from scriptorium.models import safe_eval_expr
 
 PEDAGOGICAL_CONTRACT_VERSION = 1
 
@@ -135,31 +136,6 @@ VERIFICATION_TIERS = (
     "mathematically_verified",
 )
 
-SAFE_BINOPS = {
-    ast.Add: operator.add,
-    ast.Sub: operator.sub,
-    ast.Mult: operator.mul,
-    ast.Div: operator.truediv,
-    ast.Pow: operator.pow,
-    ast.FloorDiv: operator.floordiv,
-    ast.Mod: operator.mod,
-}
-SAFE_UNARYOPS = {
-    ast.UAdd: operator.pos,
-    ast.USub: operator.neg,
-}
-SAFE_FUNCS = {
-    "abs": abs,
-    "sqrt": math.sqrt,
-    "exp": math.exp,
-    "log": math.log,
-    "sin": math.sin,
-    "cos": math.cos,
-    "tan": math.tan,
-    "max": max,
-    "min": min,
-}
-
 UNSUPPORTED_HTML_RE = re.compile(r"<\s*(?:script|iframe|object|embed|canvas)\b", re.I)
 INVENTED_FREQ_RE = re.compile(
     r"\b(?:over\s+)?\d{1,3}%\s+of\s+(?:students|learners|beginners|developers|people)\s+(?:make\s+this|confuse|misunderstand|fail)\b",
@@ -194,36 +170,14 @@ def _issue(
 
 
 def safe_eval_math(expression: str, variables: dict[str, float]) -> float:
-    """Safely evaluate a basic algebraic expression using Python's AST (no eval)."""
-    cleaned = expression.strip().replace("^", "**")
-    if "=" in cleaned:
-        _, cleaned = cleaned.split("=", 1)
-        cleaned = cleaned.strip()
-    tree = ast.parse(cleaned, mode="eval")
-
-    def _eval(node: ast.AST) -> float:
-        if isinstance(node, ast.Expression):
-            return _eval(node.body)
-        if isinstance(node, ast.Constant) and isinstance(node.value, (int, float)):
-            return float(node.value)
-        if isinstance(node, ast.Name):
-            if node.id in variables:
-                return float(variables[node.id])
-            if node.id == "pi":
-                return math.pi
-            if node.id == "e":
-                return math.e
-            raise ValueError(f"Undefined symbol '{node.id}' in expression '{expression}'")
-        if isinstance(node, ast.BinOp) and type(node.op) in SAFE_BINOPS:
-            return float(SAFE_BINOPS[type(node.op)](_eval(node.left), _eval(node.right)))
-        if isinstance(node, ast.UnaryOp) and type(node.op) in SAFE_UNARYOPS:
-            return float(SAFE_UNARYOPS[type(node.op)](_eval(node.operand)))
-        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id in SAFE_FUNCS:
-            args = [_eval(a) for a in node.args]
-            return float(SAFE_FUNCS[node.func.id](*args))
-        raise ValueError(f"Unsupported expression construct in '{expression}'")
-
-    return _eval(tree)
+    """Safely evaluate an algebraic expression via the canonical AST evaluator."""
+    return safe_eval_expr(
+        expression,
+        variables,
+        allow_functions=True,
+        allow_constants=True,
+        normalize_equation=True,
+    )
 
 
 # ===========================================================================

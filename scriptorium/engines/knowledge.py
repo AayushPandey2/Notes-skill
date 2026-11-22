@@ -17,7 +17,6 @@ from typing import Any
 
 from scriptorium.models import (
     ConceptIdentityError,
-    MissingEvidenceError,
     parse_note,
     slugify,
 )

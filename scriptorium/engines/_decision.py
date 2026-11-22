@@ -17,7 +17,7 @@ if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 from typing import Any
 from urllib.parse import urlsplit
-from scriptorium.models import STACK_NAMES, STACK_ALIASES, normalize_stack
+from scriptorium.models import STACK_ALIASES, normalize_stack
 from scriptorium.layout import ADAPTIVE_ROUTES, DEEP_ROUTES
 from scriptorium.engines._verification import required_examples, split_blocks
 

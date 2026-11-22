@@ -9,7 +9,7 @@ import re
 from typing import Any
 from urllib.parse import urlsplit
 
-from scriptorium.models import REPO_ROOT, STACK_NAMES, STACK_ALIASES, normalize_stack
+from scriptorium.models import REPO_ROOT, normalize_stack
 
 CONTRACT_VERSION = 3
 

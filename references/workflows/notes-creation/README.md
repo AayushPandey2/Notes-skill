@@ -6,7 +6,7 @@ All instructional planning, pedagogical intelligence, pre-generation gating, com
 - [instructional-registry.json](instructional-registry.json) — Subtemplate step sequences, 16 learning objectives, and 18 reusable modules.
 - [pedagogical-intelligence.md](pedagogical-intelligence.md) — Eleven integrated cognitive/pedagogical mechanisms (`P01–P11`).
 - [pre-gen-gate.md](pre-gen-gate.md) — Mandatory 7-step pre-generation vault discovery and placement gate.
-- [command-playbooks.md](command-playbooks.md) — Command-specific operations for `/scribe-*` commands.
-- [syllabus-template.md](syllabus-template.md) — Multi-note curriculum scope boundary (`00-MOC-<topic>.md`).
+- [command-playbooks.md](command-playbooks.md) — Command-specific operations and trigger routes for `/scribe-*` workflows.
+- [syllabus-template.md](syllabus-template.md) — Multi-note curriculum scope boundary (`<Topic> Index.md` / legacy `00-MOC-<topic>.md`).
 
-Deterministic runtime: [scriptorium/engines/pedagogy.py](../../../scriptorium/engines/pedagogy.py), [scriptorium/engines/pedagogy.py (`scripts/scribe.py pedagogy`)](../../../scriptorium/engines/pedagogy.py), and [scripts/plan_notes.py](../../../scripts/plan_notes.py).
+Deterministic runtime: [scriptorium/engines/pedagogy.py (`scripts/scribe.py pedagogy`)](../../../scriptorium/engines/pedagogy.py) and [scripts/plan_notes.py](../../../scripts/plan_notes.py).

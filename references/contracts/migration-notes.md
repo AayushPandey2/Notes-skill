@@ -50,7 +50,8 @@ The adaptive instructional engine (`references/workflows/notes-creation/adaptive
 Comprehensive M1 publication now requires the [integrity contract](composition-integrity.md).
 Rebuild a v1 composition from its authored specification, prepare actual assets and
 assessments, then review the prepared chapter bodies. Nonempty review strings and
-renderer selections no longer qualify as verification. The two historical private
-composition imports alias the canonical `scriptorium/engines/composition/` package.
+renderer selections no longer qualify as verification. Programmatic SVG diagram
+generation is retired in favor of web-image-first local acquisition, and the superseded
+private `_composition*.py` shims have been removed in favor of `scriptorium/engines/composition/`.
 Other masters, source-only modes and legacy layouts retain their established
 contracts. This migration does not rewrite or delete existing user notes.

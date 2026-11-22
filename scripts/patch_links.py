@@ -40,7 +40,7 @@ for _p in (str(REPO_ROOT), str(SCRIPT_DIR)):
     if _p not in sys.path:
         sys.path.insert(0, _p)
 
-from scriptorium.models import STRICT_KEYS
+from scriptorium.models import STRICT_KEYS, format_wikilink as _format_wikilink, split_frontmatter_lines
 from vault_index import _iter_vault_markdown, is_within_vault, resolve_vault_root
 
 
@@ -67,14 +67,6 @@ def _resolve_note_path(vault_root: Path, raw_path: str) -> Path:
     if not resolved.is_file():
         raise ValueError(f"Target is not a file: {raw_path}")
     return resolved
-
-
-def _format_wikilink(value: str) -> str:
-    """Ensure a relationship target is formatted as a [[wikilink]] unless already one."""
-    s = value.strip()
-    if s.startswith("[[") and s.endswith("]]"):
-        return s
-    return f"[[{s}]]"
 
 
 def _strip_wikilink_brackets(value: str) -> str:
@@ -107,18 +99,12 @@ def _split_frontmatter_and_body(text: str) -> tuple[list[str], str, str]:
     lines = text.splitlines(keepends=False)
     if not lines or lines[0].strip() != "---":
         raise ValueError("Note does not have YAML frontmatter starting with '---'.")
-    end_idx = None
-    for idx in range(1, len(lines)):
-        if lines[idx].strip() == "---":
-            end_idx = idx
-            break
-    if end_idx is None:
+    yaml_lines, body_start = split_frontmatter_lines(lines)
+    if yaml_lines is None:
         raise ValueError("Unterminated YAML frontmatter (missing closing '---').")
-
-    yaml_lines = lines[1:end_idx]
-    body_lines = lines[end_idx + 1 :]
+    body_lines = lines[body_start:]
     body = newline.join(body_lines)
-    if text.endswith(("\n", "\r\n")) and (body_lines or end_idx + 1 < len(lines)):
+    if text.endswith(("\n", "\r\n")) and (body_lines or body_start < len(lines)):
         body += newline
     elif text.endswith(("\n", "\r\n")) and not body_lines:
         body = newline

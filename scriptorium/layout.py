@@ -1,7 +1,6 @@
 """Shared structural layout contract for M1-M7 masters and compatibility routes."""
 from __future__ import annotations
 
-from functools import lru_cache
 from pathlib import Path
 import re
 

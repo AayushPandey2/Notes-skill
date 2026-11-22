@@ -33,7 +33,12 @@ for _p in (str(REPO_ROOT), str(SCRIPT_DIR)):
         sys.path.insert(0, _p)
 
 from scriptorium.layout import ROUTES
-from scriptorium.models import STRICT_KEYS as MANDATORY_TOPIC_KEYS
+from scriptorium.models import (
+    STRICT_KEYS as MANDATORY_TOPIC_KEYS,
+    heading_slug as _heading_slug,
+    is_within_vault as _is_within_vault,
+    split_frontmatter_lines as _split_frontmatter_lines,
+)
 
 RAW_LATEX_IN_YAML_RE = re.compile(
     r"\\(?:mathbb|mathbf|mathcal|mathrm|text|operatorname|sum|prod|int|frac|dfrac|"
@@ -52,36 +57,10 @@ BANNED_S6_LABELS_RE = re.compile(
 EXCLUDED_DIRS = {".git", ".trash", ".obsidian", "scratchpad", "node_modules", "__pycache__"}
 
 
-def _is_within_vault(vault_root: Path, target: Path) -> bool:
-    try:
-        real_root = os.path.realpath(vault_root)
-        real_target = os.path.realpath(target)
-        return os.path.commonpath([real_root, real_target]) == real_root
-    except ValueError:
-        return False
-
-
-def _split_frontmatter_lines(lines: list[str]) -> tuple[list[str], int] | tuple[None, int]:
-    if not lines or lines[0].strip() != "---":
-        return None, 0
-    for idx in range(1, len(lines)):
-        if lines[idx].strip() == "---":
-            return lines[1:idx], idx + 1
-    return None, 0
-
-
 def _clean_title_for_alias(title: str) -> str:
     cleaned = title.strip()
     cleaned = re.sub(r"^\d{1,3}\s*(?:[-–—.]\s*|\s+-\s+)", "", cleaned).strip()
     return cleaned
-
-
-def _heading_slug(heading: str) -> str:
-    s = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", heading.strip())
-    s = s.replace("`", "").replace("*", "").replace("~", "").lower()
-    s = re.sub(r"[^\w\s-]", "", s, flags=re.UNICODE)
-    s = re.sub(r"\s+", "-", s.strip())
-    return s
 
 
 def _normalize_tag_key(tag: str) -> str:

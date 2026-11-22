@@ -13,7 +13,7 @@ import re
 from typing import Any
 from urllib.parse import unquote, urlsplit
 
-from scriptorium.models import REPO_ROOT, content_hash, dump_frontmatter, parse_note, slugify
+from scriptorium.models import REPO_ROOT, contained_path, content_hash, dump_frontmatter, parse_note, slugify
 
 DIMENSIONS = ("conceptual", "mathematical", "algorithmic", "implementation", "research", "visual", "analytical")
 LEVELS = {"omitted": 0, "orientation": 1, "working": 2, "advanced": 3, "comprehensive": 4, "research": 5}
@@ -513,10 +513,8 @@ def validate_chapter(text: str, *, required_sections: list[str] | None = None) -
 
 
 def contained(root: Path, relative: str) -> Path:
-    path = (root / relative).resolve()
-    if not path.is_relative_to(root.resolve()):
-        raise ValueError("Path escapes vault")
-    return path
+    """Resolve a vault-relative path safely within ``root``."""
+    return contained_path(root, relative)
 
 
 def wikilink_errors(vault: Path, documents: dict[str, str]) -> list[str]:
