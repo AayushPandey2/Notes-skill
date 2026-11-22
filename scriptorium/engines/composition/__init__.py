@@ -145,10 +145,20 @@ def build_composition(spec: dict[str, Any]) -> dict[str, Any]:
         raise ValueError("Chapter identities must be unique")
     order: dict[str, int] = {}
     seen: set[str] = set()
-    folder = f"6 - Full Notes/{safe_title(topic)}"
+    publishing = spec.get("publishing") or {}
+    folder, moc_path, chapter_prefix = resolve_collection_layout(
+        topic,
+        collection_layout=publishing.get("collection_layout", "topic_folder_under_vault"),
+        create_category_folders=bool(publishing.get("create_category_folders", False)),
+        category_folder=publishing.get("category_folder"),
+        vault_root=spec.get("vault_root"),
+    )
     for i, chapter in enumerate(chapters, 1):
         title = safe_title(chapter["title"])
-        chapter["path"] = f"{folder}/{i:02d} - {title}.md"
+        if chapter_prefix:
+            chapter["path"] = f"{chapter_prefix} - {i:02d} - {title}.md"
+        else:
+            chapter["path"] = f"{folder}/{i:02d} - {title}.md"
         if not isinstance(chapter.get("concepts"), list) or not chapter["concepts"] or any(not isinstance(cid, str) for cid in chapter["concepts"]):
             raise ValueError("Each chapter needs owned concepts")
         for cid in chapter["concepts"]:
@@ -244,12 +254,41 @@ def build_composition(spec: dict[str, Any]) -> dict[str, Any]:
         explicit_subdomain=classification.get("subdomain"))
     return extend_plan({"version": 2, "validator_version": validator_version, "output_profile": PROFILE, "topic": topic, "source_policy": policy,
             "classification": hierarchy, "chapter_rationale": rationale,
-            "folder": folder, "moc_path": f"{folder}/00 - Map of Contents.md",
+            "folder": folder, "moc_path": moc_path,
             "chapters": chapters, "concepts": list(ordered.values()),
             "notation": deepcopy(spec.get("notation", {})),
             "visuals": visuals, "tables": deepcopy(spec.get("tables", [])),
             "spec_hash": content_hash(json.dumps(spec, sort_keys=True)),
             "review_required": ["factual_accuracy", "derivation_correctness", "reader_simulation", "cross_chapter_coherence"]}, spec)
+
+
+def resolve_collection_layout(
+    topic: str,
+    *,
+    collection_layout: str = "topic_folder_under_vault",
+    create_category_folders: bool = False,
+    category_folder: str | None = None,
+    vault_root: str | Path | None = None,
+) -> tuple[str, str, str | None]:
+    """Resolve vault-relative collection folder and MOC path without automatic category dirs.
+
+    Returns `(folder, moc_path, flat_prefix)`.
+    """
+    topic_name = safe_title(topic)
+    if collection_layout == "flat_root":
+        return "", f"{topic_name} - 00 - Map of Contents.md", topic_name
+    if collection_layout != "topic_folder_under_vault":
+        raise ValueError(f"Unsupported collection_layout: {collection_layout}")
+
+    if create_category_folders and category_folder:
+        cat_name = safe_title(category_folder)
+        if vault_root and Path(vault_root).name.casefold() == cat_name.casefold():
+            folder = topic_name
+        else:
+            folder = f"{cat_name}/{topic_name}"
+    else:
+        folder = topic_name
+    return folder, f"{folder}/00 - Map of Contents.md", None
 
 
 def safe_title(title: str) -> str:

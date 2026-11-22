@@ -173,7 +173,7 @@ def test_title_placement_remains_supported_without_fenced_or_duplicate_headings(
 
 def test_standard_local_images_are_checked_and_fenced_examples_ignored(tmp_path):
     plan = build_composition(specification())
-    text = five_key_note(plan, 'ch1', 'Chapter 1', '# Chapter\n\n![figure](../../assets/missing.png)\n', None)
+    text = five_key_note(plan, 'ch1', 'Chapter 1', '# Chapter\n\n![figure](../assets/missing.png)\n', None)
     errors, _ = inspect_assets(tmp_path, {plan['chapters'][0]['path']: text}, {})
     assert any('missing Markdown image' in error for error in errors)
     code = five_key_note(plan, 'ch1', 'Chapter 1', '# Chapter\n\n```markdown\n![example](https://example.test/a.png)\n```\n', None)
