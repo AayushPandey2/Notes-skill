@@ -37,7 +37,7 @@ KINDS = {
     "chronology": ("graph", "R7"), "research": ("graph", "R9"),
     "interactive": ("interactive", "R10"), "table": ("table", "R12"),
 }
-BUILTIN_BACKENDS = frozenset({"scientific", "svg", "mask", "coordinates", "graph", "mermaid", "table", "interactive", "external"})
+BUILTIN_BACKENDS = frozenset({"scientific", "svg", "mask", "coordinates", "graph", "mermaid", "table", "interactive", "external", "imagegen"})
 BACKENDS = {
     "scientific": {"inputs": ["named numeric series or safe equation/grid", "axis labels", "units"], "suffix": "svg", "verification": "finite data, equation agreement and exact SVG regeneration", "fallbacks": ["table"]},
     "svg": {"inputs": ["validated information flow or illustrative components"], "suffix": "svg", "verification": "flow contract or labeled interfaces; safe SVG regeneration", "fallbacks": ["table"]},

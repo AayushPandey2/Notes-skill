@@ -56,7 +56,7 @@ def select_acquisition_strategy(visual: dict[str, Any], *, host_imagegen_availab
     if strategy == "conceptual_illustration":
         if visual.get("empirical") or visual.get("equation") or visual.get("data"):
             raise ValueError("Artistic illustration cannot represent exact numerical evidence")
-        if not host_imagegen_available:
+        if not (host_imagegen_available or visual.get("generated_image") or visual.get("local_fallback")):
             return "deterministic_render"
     return strategy
 

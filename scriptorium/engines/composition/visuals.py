@@ -227,6 +227,55 @@ def render_visuals(vault: Path, plan: dict, drafts: dict[str, str], *, execute: 
                 svg = renderers.interactive_html(visual)
                 target = posixpath.relpath(relative,posixpath.dirname(chapter.get("path","note.md")) or ".")
                 embed = f"[Open interactive state sequence]({target})"
+            elif renderer == "imagegen":
+                if visual.get("empirical") or visual.get("equation") or visual.get("data"):
+                    raise ValueError("Artistic illustration cannot represent exact numerical evidence")
+                supplied = visual.get("generated_image") or visual.get("local_fallback")
+                if supplied:
+                    src_path = contained(vault, supplied)
+                    raw = src_path.read_bytes()
+                    img_mime = visual.get("mime") or {
+                        ".svg": "image/svg+xml", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp"
+                    }.get(src_path.suffix.lower(), "image/png")
+                    media.validate_image_bytes(raw, img_mime)
+                    img_ext = media.SUPPORTED_MIMES.get(img_mime, "png")
+                    img_hash = content_hash(raw)
+                    if collection_slug:
+                        relative = f"assets/scriptorium/{slugify(collection_slug)}/{slugify(visual.get('asset_name') or visual['id'])}-{img_hash[:12]}.{img_ext}"
+                    else:
+                        relative = f"assets/scriptorium/{img_hash}.{img_ext}"
+                    path = contained(vault, relative)
+                    if execute and not path.exists():
+                        media._write_immutable(path, raw)
+                    embed = f"![[{relative}]]" if embed_style == "wikilink" else f"![{visual.get('alt', visual['objective'])}]({posixpath.relpath(relative, posixpath.dirname(chapter.get('path', 'note.md')) or '.')})"
+                    status.update(status="verified", path=relative, hash=img_hash, embed=embed, validation={
+                        "method": "validate host-generated conceptual illustration bytes and SHA-256",
+                        "result": "pass", "limits": "Host-supplied illustration; editorial relevance requires review."})
+                    if embed not in bodies.get(chapter["id"], ""):
+                        bodies[chapter["id"]] = insert_at_section(bodies.get(chapter["id"], ""), visual["section"],
+                                                                 embed + "\n\n" + visual.get("interpretation", visual["objective"]))
+                    continue
+                # Deterministic conceptual SVG fallback when no host imagegen artifact is supplied.
+                suffix = "svg"
+                if collection_slug:
+                    relative = f"assets/scriptorium/{slugify(collection_slug)}/{slugify(visual.get('asset_name') or visual['id'])}-{digest[:12]}.svg"
+                else:
+                    relative = f"assets/scriptorium/{digest}.svg"
+                path = contained(vault, relative)
+                embed = f"![[{relative}]]"
+                status["path"] = relative
+                status["fallback"] = "svg"
+                status["fallback_used"] = True
+                if visual.get("components"):
+                    svg = architecture_svg(visual["components"])
+                elif visual.get("nodes"):
+                    svg = renderers.graph_svg(visual)
+                else:
+                    labels = visual.get("labels") or ["Conceptual Intuition"]
+                    svg = architecture_svg([
+                        {"label": visual["objective"][:48], "shape": visual.get("concept", "concept")},
+                        {"label": ", ".join(str(x) for x in labels)[:48], "shape": "schematic"},
+                    ])
             elif visual.get("flow"):
                 svg = flow_svg(visual["flow"])
             else:

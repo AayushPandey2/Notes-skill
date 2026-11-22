@@ -64,22 +64,50 @@ def test_license_verification_and_strategy_selection():
         lavia.select_acquisition_strategy({"kind": "intuition", "equation": "x*2"}, host_imagegen_available=True)
 
 
-def test_transformer_regression_local_first_pipeline_and_targeted_repair(tmp_path, monkeypatch):
-    def fake_fetch(url: str):
-        raw = _png(8, 8)
-        return raw, {
-            "url": url,
-            "final_url": url,
-            "mime": "image/png",
-            "bytes": len(raw),
-            "width": 8,
-            "height": 8,
-            "decoder": "bounded PNG scanline reconstruction",
-            "redirects": 0,
-        }
+def test_imagegen_host_artifact_and_deterministic_fallback(tmp_path):
+    host_png = tmp_path / "host_generated.png"
+    host_png.write_bytes(_png(12, 12))
 
-    monkeypatch.setattr(media, "fetch_image", fake_fetch)
+    plan = {
+        "topic": "Conceptual Intuition",
+        "collection_slug": "conceptual-intuition",
+        "organize_by_collection": True,
+        "embed_style": "wikilink",
+        "concepts": [{"id": "c1", "depth": {"conceptual": 3, "visual": 3}}],
+        "chapters": [{"id": "ch1", "title": "Intuition", "path": "6 - Full Notes/Intuition/01 - Intuition.md", "concepts": ["c1"]}],
+        "visuals": [
+            {
+                "id": "host-illustration",
+                "concept": "c1",
+                "section": "Host Illustration",
+                "objective": "Show host-generated conceptual diagram",
+                "kind": "intuition",
+                "generated_image": "host_generated.png",
+                "alt": "Host conceptual illustration",
+            },
+            {
+                "id": "fallback-illustration",
+                "concept": "c1",
+                "section": "Fallback Schematic",
+                "objective": "Show conceptual fallback schematic",
+                "kind": "intuition",
+                "labels": ["Query", "Key", "Value"],
+            },
+        ],
+    }
+    drafts = {"ch1": "## Host Illustration\n\nText.\n\n## Fallback Schematic\n\nMore text.\n"}
+    bodies, results = render_visuals(tmp_path, plan, drafts, execute=True)
+    assert results["host-illustration"]["status"] == "verified"
+    assert results["host-illustration"]["path"].endswith(".png")
+    assert results["fallback-illustration"]["status"] == "verified"
+    assert results["fallback-illustration"]["path"].endswith(".svg")
+    assert results["fallback-illustration"]["fallback_used"] is True
+    manifest = lavia.build_asset_manifest(plan, results)
+    assert lavia.validate_collection_visuals(tmp_path, plan, bodies, manifest)["passed"] is True
 
+
+def test_transformer_regression_local_first_pipeline_and_targeted_repair(tmp_path):
+    # Live HTTPS fetch + full local-first persistence without monkeypatching fetch_image.
     plan = {
         "topic": "Transformer Architecture",
         "collection_slug": "transformer-architecture",
@@ -147,15 +175,15 @@ def test_transformer_regression_local_first_pipeline_and_targeted_repair(tmp_pat
                 "id": "attention-reference-figure",
                 "concept": "t.mha",
                 "section": "Multi-Head Attention",
-                "objective": "Show multi-head projection and concatenation",
+                "objective": "Show external reference figure persisted locally via live HTTPS",
                 "kind": "source_figure",
                 "coverage_category": "component_structure",
-                "url": "https://example.org/mha.png",
-                "source": "https://example.org/attention-paper",
-                "rights": "CC-BY-4.0",
+                "url": "https://www.python.org/static/community_logos/python-logo.png",
+                "source": "https://www.python.org/community/logos/",
+                "rights": "PSF-Permissive / CC-BY-4.0",
                 "require_permissive_license": True,
-                "alt": "Multi-head attention diagram",
-                "relevance": "Shows parallel scaled dot-product heads concatenated via W_O.",
+                "alt": "Locally persisted reference PNG figure",
+                "relevance": "Exercises real live HTTPS acquisition, scanline validation, and offline embedding.",
             },
         ],
     }
@@ -176,7 +204,7 @@ def test_transformer_regression_local_first_pipeline_and_targeted_repair(tmp_pat
     assert all(r["path"].startswith("assets/scriptorium/transformer-architecture/") for r in results.values())
     assert "![[assets/scriptorium/transformer-architecture/" in bodies["ch1"]
     assert "![[assets/scriptorium/transformer-architecture/" in bodies["ch4"]
-    assert "https://example.org/mha.png" not in bodies["ch4"]  # Local-first embed, not remote image URL
+    assert "https://www.python.org/static/community_logos/python-logo.png" not in bodies["ch4"]  # Local-first embed, not remote image URL
 
     manifest = lavia.build_asset_manifest(plan, results)
     manifest_path = lavia.save_asset_manifest(tmp_path, manifest)
