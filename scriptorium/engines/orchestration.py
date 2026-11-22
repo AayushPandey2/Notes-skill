@@ -1708,6 +1708,18 @@ class OrchestrationEngine:
         from scriptorium.triggers import TRIGGER_REGISTRY
         return TRIGGER_REGISTRY
 
+    def math_triggers(self) -> dict[str, dict[str, Any]]:
+        from scriptorium.triggers import MATH_TRIGGERS
+        return MATH_TRIGGERS
+
+    def teach_triggers(self) -> dict[str, dict[str, Any]]:
+        from scriptorium.triggers import TEACH_TRIGGERS
+        return TEACH_TRIGGERS
+
+    def detect_triggers(self, note_or_spec: str | dict[str, Any], *, learner_level: str = "beginner") -> dict[str, Any]:
+        from scriptorium.triggers import detect_active_triggers
+        return detect_active_triggers(note_or_spec, learner_level=learner_level)
+
     def execute_trigger(self, trigger_id: str, payload: dict[str, Any] | None = None) -> dict[str, Any]:
         from scriptorium.triggers import dispatch_trigger
         return dispatch_trigger(trigger_id, payload, root=self.root)

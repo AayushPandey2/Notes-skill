@@ -21,6 +21,53 @@ from scriptorium.models import parse_note, slugify
 
 BLUEPRINT_SCHEMA_VERSION = "1.0"
 
+PROGRESSIVE_UNDERSTANDING_SEQUENCE: tuple[str, ...] = (
+    "establish_problem",
+    "explain_why_it_matters",
+    "connect_to_familiar",
+    "introduce_intuition",
+    "identify_components",
+    "explain_interactions",
+    "introduce_terminology",
+    "introduce_notation",
+    "decompose_mathematics",
+    "worked_example",
+    "interpret_result",
+    "advance_formulation",
+    "discuss_assumptions",
+    "compare_alternatives",
+    "explain_limitations",
+    "reinforce_understanding",
+)
+
+PROGRESSIVE_LAYERS: dict[str, str] = {
+    "Layer A": "Orientation — What are we learning, and why does the problem matter?",
+    "Layer B": "Intuitive Explanation — What is the simplest honest mental model?",
+    "Layer C": "Components — What are the individual parts or terms?",
+    "Layer D": "Mechanism — What happens, in what order, and why?",
+    "Layer E": "Formalization — How is the idea written mathematically or algorithmically?",
+    "Layer F": "Worked Application — How does the mechanism behave step by step on concrete inputs?",
+    "Layer G": "Analysis — What assumptions, limitations, and alternatives govern when to use or avoid it?",
+    "Layer H": "Advanced Understanding — How does the concept extend to deeper formulations?",
+}
+
+UNIVERSAL_TEACHING_STAGES: tuple[tuple[str, str], ...] = (
+    ("A", "Concept Orientation"),
+    ("B", "Starting Intuition"),
+    ("C", "Foundation Bridge"),
+    ("D", "Mechanism Breakdown"),
+    ("E", "Formal Representation"),
+    ("F", "Mathematical Deconstruction"),
+    ("G", "Complete Worked Example"),
+    ("H", "Visual Explanation"),
+    ("I", "Deeper Interpretation"),
+    ("J", "Comparisons and Selection"),
+    ("K", "Limitations and Misconceptions"),
+    ("L", "Practical Application"),
+    ("M", "Knowledge Check"),
+    ("N", "Transition"),
+)
+
 MASTER_EIS_ACTIVATION: dict[str, dict[str, str]] = {
     "M1": {
         "eis_01_spine": "deep",
@@ -453,7 +500,10 @@ def build_retrieval_cues(
     chain = list(ctx_ret.get("reconstruction_chain") or ["identify_problem", "apply_insight", "execute_mechanism", "verify_conditions"])
     summary = str(
         ctx_ret.get("summary")
-        or f"{spine.get('starting_problem', '')} {spine.get('necessary_insight', '')} {spine.get('mechanism', '')} {spine.get('result', '')}"
+        or (
+            f"Reconstruct {topic} along four anchors ({', '.join(cues[:4])}): start from the motivating problem, "
+            "trace the governing mechanism step by step, and apply stated validity bounds."
+        )
     ).strip()
 
     leak_protected = master == "M6"
@@ -554,6 +604,23 @@ def build_explanation_blueprint(
             "preserve_source_order": preserve_source_order,
             "audience_depth": audience,
             "complexity": complexity,
+            "teaching_extensions": {
+                k: (context or {}).get(k)
+                for k in (
+                    "familiar_anchor",
+                    "starting_intuition",
+                    "analogy_limit",
+                    "prerequisite_bridges",
+                    "equations",
+                    "worked_problems",
+                    "visual_walkthroughs",
+                    "comparisons",
+                    "misconceptions",
+                    "practical_application",
+                    "transition",
+                )
+                if (context or {}).get(k)
+            },
         },
         activation_levels=activations,
         provenance_policy={
@@ -660,12 +727,34 @@ def compose_explanation_note(
             lines.append("")
         return render_note_with_properties(props, "\n".join(lines))
 
+    ext = blueprint.context.get("teaching_extensions") or {}
+    audience = str(blueprint.context.get("audience_depth") or "beginner").lower()
+
     lines.append("## Motivation and Core Idea")
     opening = f"{spine.get('starting_problem', '')} {spine.get('obstacle', '')}".strip()
+    if ext.get("familiar_anchor"):
+        opening += f" {str(ext['familiar_anchor']).strip()}"
     if blueprint.central_question.get("explicit_in_prose") and blueprint.central_question.get("question"):
-        opening += f" This leads naturally to a guiding question: *{blueprint.central_question['question']}*"
+        opening += f" This raises the central question: *{blueprint.central_question['question']}*"
     lines.append(opening)
     lines.append("")
+    if ext.get("starting_intuition"):
+        lines.append("## Core Intuition and Mental Model")
+        intuition_line = str(ext["starting_intuition"]).strip()
+        if ext.get("analogy_limit"):
+            intuition_line += f" *(Where this intuition stops: {str(ext['analogy_limit']).strip()})*"
+        lines.append(intuition_line)
+        lines.append("")
+
+    if ext.get("prerequisite_bridges"):
+        lines.append("## Building the Needed Foundations")
+        for br in ext["prerequisite_bridges"]:
+            if isinstance(br, dict):
+                lines.append(f"- **{br.get('term', 'Prerequisite')}:** {br.get('explanation', '')}")
+            else:
+                lines.append(f"- {br}")
+        lines.append("")
+
     lines.append(f"{spine.get('necessary_insight', '')} {spine.get('mechanism', '')} {spine.get('result', '')}".strip())
     lines.append("")
 
@@ -683,6 +772,14 @@ def compose_explanation_note(
             lines.append(blueprint.mathematical_motivation["local_vs_global_note"])
             lines.append("")
 
+    if ext.get("equations"):
+        from scriptorium.engines.mathematics import deconstruct_equation
+        lines.append("## Formal Formulation and Mathematical Breakdown")
+        for eq_spec in ext["equations"]:
+            decon = deconstruct_equation(eq_spec, learner_level=audience)
+            lines.append(decon["markdown"].strip())
+            lines.append("")
+
     if blueprint.variable_roles:
         lines.append("## Roles of Key Quantities")
         lines.append("| Symbol | Meaning | Operational Role | Effect of Change |")
@@ -690,6 +787,19 @@ def compose_explanation_note(
         for vr in blueprint.variable_roles:
             lines.append(f"| `{vr['symbol']}` | {vr['meaning']} | {vr['role']} | {vr['effect']} |")
         lines.append("")
+
+    if ext.get("worked_problems"):
+        from scriptorium.engines.mathematics import build_worked_solution
+        lines.append("## Worked Examples")
+        for prob in ext["worked_problems"]:
+            wk = build_worked_solution(prob, learner_level=audience)
+            lines.append(wk["markdown"].strip())
+            lines.append("")
+
+    if ext.get("visual_walkthroughs"):
+        for vw in ext["visual_walkthroughs"]:
+            lines.append(str(vw).strip())
+            lines.append("")
 
     exec_st = blueprint.execution_state
     if exec_st.get("applicable") and exec_st.get("example_trace"):
@@ -704,19 +814,42 @@ def compose_explanation_note(
             lines.append("| " + " | ".join(str(row[c]) for c in cols) + " |")
         lines.append("")
 
+    if ext.get("comparisons"):
+        lines.append("## Comparing Alternatives and Selecting a Method")
+        for cmp_item in ext["comparisons"]:
+            if isinstance(cmp_item, dict):
+                lines.append(f"### {cmp_item.get('title', 'Comparison')}")
+                if cmp_item.get("causal_explanation"):
+                    lines.append(str(cmp_item["causal_explanation"]).strip())
+                    lines.append("")
+                if cmp_item.get("table"):
+                    lines.append(str(cmp_item["table"]).strip())
+                    lines.append("")
+            else:
+                lines.append(str(cmp_item).strip())
+                lines.append("")
+
     req_conds = blueprint.boundaries.get("required_conditions") or []
     lims = blueprint.boundaries.get("known_limitations") or []
-    if (req_conds or lims or blueprint.contrasts) and not blueprint.boundaries.get("minimal_caveats_only"):
-        lines.append("## Applicability Conditions and Distinctions")
+    miscs = ext.get("misconceptions") or []
+    if (req_conds or lims or blueprint.contrasts or miscs) and not blueprint.boundaries.get("minimal_caveats_only"):
+        lines.append("## Applicability Conditions, Misconceptions, and Distinctions")
         for c in req_conds:
             lines.append(f"- **Required condition:** {c}")
         for lim in lims:
-            lines.append(f"- **Limitation:** {lim}")
+            lines.append(f"- **Limitation (when not to use):** {lim}")
         for con in blueprint.contrasts:
             lines.append(
                 f"- **{con['concept_a']} vs. {con['concept_b']}:** {con['distinction']} "
                 f"*(Example: {con['discriminating_example']})*"
             )
+        for mc in miscs:
+            lines.append(f"- **Common misconception:** {mc}")
+        lines.append("")
+
+    if ext.get("practical_application"):
+        lines.append("## Practical Application")
+        lines.append(str(ext["practical_application"]).strip())
         lines.append("")
 
     if blueprint.retrieval.get("enabled") and blueprint.retrieval.get("summary") and not blueprint.retrieval.get("internal_only"):
@@ -724,6 +857,10 @@ def compose_explanation_note(
         lines.append("**Key cues:** " + " → ".join(blueprint.retrieval["cues"]))
         lines.append("")
         lines.append(blueprint.retrieval["summary"])
+        lines.append("")
+
+    if ext.get("transition"):
+        lines.append(str(ext["transition"]).strip())
         lines.append("")
 
     return render_note_with_properties(props, "\n".join(lines))

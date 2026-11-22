@@ -1,8 +1,8 @@
 # Math gates
 
-Use [per-concept mathematical depth](../references/workflows/notes-creation/adaptive-engine.md#selection-and-depth) (`M0–M5`) for deep-study notes, and route-level `math_level` (`0–2`) for source-study and compact routes. Rendering follows [authoring rules](authoring_rules.md#rendering).
+Use [per-concept mathematical depth](../references/workflows/notes-creation/adaptive-engine.md#selection-and-depth) (`M0–M5`) for deep-study notes, [the canonical teaching core](teaching_core.md) (`M01–M14` deconstruction & `Step 1–12` worked solving), and route-level `math_level` (`0–2`) for source-study and compact routes. Rendering follows [authoring rules](authoring_rules.md#rendering).
 
-Good: state the formula's question, define symbols/shape/units and assumptions at first use, show a useful calculation or justified transformation, interpret, then check a meaningful condition (dimensions/units for physical laws, compatible shapes for arrays, normalization/support for probabilities, or sign/boundary behavior). Bad: repeat the same equation in an abstract, body and footer, or force irrelevant zero/tie/infinity tables outside its domain.
+Good: prepare the reader with purpose before showing the formula, explain pronunciation, define symbols/object types/shape compatibility (e.g., `(1×3)(3×1)` vs invalid `(3×1)(3×1)`), expand compact dot products/sums, work concrete declared numbers through intermediate arithmetic, interpret, then run a deterministic check (`scriptorium/engines/mathematics.py` + `MATH-01..MATH-10`). Bad: dump back-to-back unexplained display equations, repeat the same formula across abstract/body/footer, or force irrelevant zero/tie/infinity tables outside its domain.
 
 Good: use unequal dimensions (e.g., asymmetric non-square matrices/tensors) and distinct numerical values to reveal axis, transpose, or broadcast errors. Bad: a symmetric fixture that accidentally passes after transposition. Good: name the chain rule, identity, or invariant at a non-obvious transition; bad: expand every trivial addition while skipping the nonzero or domain condition required for division, logarithm, or limit interchange.
 

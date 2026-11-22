@@ -7,10 +7,13 @@ This document is the authoritative architectural reference connecting Scriptoriu
 Comprehensive M1 collections also use [KCP v2 integrity](../contracts/composition-integrity.md).
 The runtime implementation coordinates 12 canonical logical responsibilities
 (**A0 Director, A1 Map, A2 Tutor, A3 Planner, A4 Researcher, A5 Writer, A6
-Visuals, A7 Assets, A8 Quiz, A9 Checker, A10 Vault, A11 Speed**) and 16
-explicit triggers (`T01`–`T16` in `scriptorium/triggers.py`) across the package
-and `scriptorium/engines/composition/`: planning/publication, shared
-obligations, web-image discovery/inspection, and scoped semantic checks.
+Visuals, A7 Assets, A8 Quiz, A9 Checker, A10 Vault, A11 Speed**), 16 workflow
+triggers (`T01`–`T16`), and 20 executable pedagogical/math triggers (`MATH-01`–`MATH-10`,
+`TEACH-01`–`TEACH-10` in `scriptorium/triggers.py`) across the package,
+`scriptorium/engines/mathematics.py`, `shared/teaching_core.md`, and
+`scriptorium/engines/composition/`: progressive understanding progression, `M01`–`M14`
+equation deconstruction, `Step 1`–`12` worked numerical solving, web-image discovery/inspection,
+and 12-dimension teaching-quality verification (`QualityEngine.evaluate_teaching()`).
 
 The stages below represent **logical responsibilities** coordinated in Python and on-demand reference loading—not separate LLM calls for every box:
 

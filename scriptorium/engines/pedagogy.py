@@ -521,3 +521,36 @@ class PedagogyEngine:
     def build_collection_assessment(self, plan: Any, preferences: Any, competencies: dict[str, Any], **kwargs: Any) -> dict[str, Any]:
         from scriptorium.engines._collection_intelligence import build_collection_assessment
         return build_collection_assessment(plan, preferences, competencies, **kwargs)
+
+    # Mathematical Deconstruction (M01-M14) & 12-Step Worked Numerical Solving
+    def deconstruct_math(self, equation_spec: dict[str, Any], *, learner_level: str = "beginner") -> dict[str, Any]:
+        from scriptorium.engines.mathematics import deconstruct_equation
+        return deconstruct_equation(equation_spec, learner_level=learner_level)
+
+    def check_matrix_dimensions(self, operands: list[dict[str, Any]], *, operation: str = "matmul") -> dict[str, Any]:
+        from scriptorium.engines.mathematics import check_dimension_compatibility
+        return check_dimension_compatibility(operands, operation=operation)
+
+    def verify_math_teaching(
+        self,
+        note_text: str,
+        *,
+        equations: list[dict[str, Any]] | None = None,
+        learner_level: str = "beginner",
+    ) -> dict[str, Any]:
+        from scriptorium.engines.mathematics import verify_math_deconstruction
+        return verify_math_deconstruction(note_text, equations=equations, learner_level=learner_level)
+
+    def build_worked_problem(self, problem_spec: dict[str, Any], *, learner_level: str = "beginner") -> dict[str, Any]:
+        from scriptorium.engines.mathematics import build_worked_solution
+        return build_worked_solution(problem_spec, learner_level=learner_level)
+
+    def validate_worked_problem(
+        self,
+        markdown: str,
+        problem_spec: dict[str, Any] | None = None,
+        *,
+        learner_level: str = "beginner",
+    ) -> dict[str, Any]:
+        from scriptorium.engines.mathematics import validate_worked_solution
+        return validate_worked_solution(markdown, problem_spec, learner_level=learner_level)

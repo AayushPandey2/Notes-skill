@@ -14,8 +14,8 @@ Primary intent: structured_study — systematic source-aligned or syllabus-align
 Activation signals: /scribe-notes, "notes from this PDF/slides/transcript", "preserve chapter/lecture order", "cover syllabus systematically".
 Non-activation: Do not select M2 when user asks for deep first-principles curriculum without source sequence (M1), cheat sheet (M3), pure problem solutions (M4), build tutorial (M5), quiz (M6), or revision pack (M7).
 Variants: lecture-order.md.
-Contracts: ../../workflows/notes-creation/adaptive-engine.md, ../../workflows/research/source-fidelity.md, ../../../shared/authoring_rules.md, ../../../shared/math_gates.md.
-Preserve verified source order and terminology; label educational additions clearly. Start at M0 and raise notation depth only when required by the source/outcome. Remove authoring comments and unused blocks before publishing.
+Contracts: ../../../shared/teaching_core.md, ../../workflows/notes-creation/adaptive-engine.md, ../../workflows/research/source-fidelity.md, ../../../shared/authoring_rules.md, ../../../shared/math_gates.md.
+Preserve verified source order and terminology; insert local Foundation Bridges and M01-M14 equation deconstruction cleanly before dependent symbols/equations rather than dumping raw notation. Start at M0 and raise notation depth only when required by the source/outcome. Remove authoring comments and unused blocks before publishing.
 -->
 
 ## 1. What am I studying, and what should I be able to do? (Source Context & Learning Goals)

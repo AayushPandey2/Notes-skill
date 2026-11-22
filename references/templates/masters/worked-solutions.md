@@ -3,14 +3,14 @@ Master ID: M4 (worked_solutions / route: worked-solutions).
 Primary intent: worked_problem_solving — problem-centered step-by-step solutions with method selection, intermediate calculations, and verification.
 Activation signals: "solve these problems", "worked solutions", "show every step/calculation", "solved examples", "explain how to solve".
 Non-activation: "Teach me concept X with examples" -> M1 or M2; "Quiz me without answers" -> M6; "Implement a codebase" -> M5.
-Contracts: [router](../../../router.md), [authoring rules](../../../shared/authoring_rules.md), [math gates](../../../shared/math_gates.md), [pedagogical-intelligence](../../workflows/notes-creation/pedagogical-intelligence.md).
+Contracts: [teaching core](../../../shared/teaching_core.md), [router](../../../router.md), [authoring rules](../../../shared/authoring_rules.md), [math gates](../../../shared/math_gates.md), [pedagogical-intelligence](../../workflows/notes-creation/pedagogical-intelligence.md).
 Strip this block before emission.
 -->
 
 # M4 — Worked Problems & Step-by-Step Solutions
 
 - **Header Block**: 5-key YAML frontmatter + `# <nn>. <Topic> — Worked Problems & Solutions`.
-- **Core Rule**: Organize around **problems and their solution procedures**, never long textbook chapter prose. Every intermediate algebraic, algorithmic, or logical step must be justified and verified.
+- **Core Rule**: Organize around **problems and their Step 1–12 solution procedures** (`scriptorium/engines/mathematics.py`: Question -> Method & Assumptions -> Symbols & Dimensions -> Formula -> Substitute Inputs -> Intermediate Arithmetic -> Final Answer -> Contextual Interpretation -> Sanity Check -> Common Mistakes -> Generalization), never long textbook chapter prose or bare final numbers. Every intermediate step is justified and deterministically checked (`MATH-05`, `MATH-10`).
 
 ## 1. Problem Set Scope, Governing Tools & Method Selection Map
 

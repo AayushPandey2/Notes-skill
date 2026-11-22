@@ -3,7 +3,7 @@ Master ID: M5 (implementation_guide / compatibility route: dsa).
 Primary intent: practical_implementation — build, implement from scratch, trace, test, and debug technical solutions with verified executable evidence.
 Activation signals: /scribe-notes implementation requests, "implement from scratch", "build this project", "write and test the code", "debug this program", "code walkthrough", "solve <problem> in <language>".
 Non-activation: Deep conceptual theory with a small code example -> M1; API lookup table -> M3/syntax_reference.
-Pre-Flight: [router](../../../router.md) and [authoring rules](../../../shared/authoring_rules.md).
+Pre-Flight: [router](../../../router.md), [teaching core](../../../shared/teaching_core.md), and [authoring rules](../../../shared/authoring_rules.md).
 Strip this block before emission.
 -->
 

@@ -76,4 +76,4 @@ Contextual Activation Guide
 - **Check:** State the expected vs. refuting signal and any remaining diagnostic blind spot.
 
 See [authoring rules](../../../shared/authoring_rules.md) and [math gates](../../../shared/math_gates.md).
-- **Template Contract (`M6` / `practice`):** Emit pure tiered questions without theory summaries; enforce two independently collapsed callouts separated by an unquoted blank line with `>` on interior blank lines; ban trivial true/false or rote copy-paste prompts.
+- **Template Contract (`M6` / `practice`):** Emit pure tiered questions without theory summaries; enforce two independently collapsed callouts separated by an unquoted blank line with `>` on interior blank lines; apply `M01–M14` / `Step 1–12` step-by-step reasoning inside every detailed quantitative answer rather than answer-only values; ban trivial true/false or rote copy-paste prompts.

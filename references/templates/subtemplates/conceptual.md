@@ -1,13 +1,15 @@
 # Subtemplate: Conceptual
 
-- **ID:** `conceptual` | **Registry alignment:** `conceptual`, `comparative` (philosophy, economics, law, literature, social sciences, foundational theory).
-- **Entry & Scope:** Selected internally through `/scribe-notes` for standalone notes or hierarchical collection children; consumes resolved interactive preferences, source policy, and F02 depth allocation.
-- **Compatible Masters:** `M1`, `M2`, `M3` (`atomic_card`), `M6`, `M7` (`comparison_guide`, `concept_map`, `revision_pack`).
-- **Modules:**
-  - **Required (depth-gated):** `motivation`, `definitions`, `intuition`, `limitations` (`EIS-04` conceptual contrasts & applicability boundaries).
-  - **Optional:** `comparison`, `worked_examples` (real-world cases), `cross_topic_connections` (`P08`), `F10` cross-note synthesis, `F11` progressive disclosure, `F12` explanation/discrimination outcomes.
-  - **Excluded:** Artificial formulas, decorative diagrams, and CS/software jargon on non-software subjects.
-- **Core Adaptations:**
-  - Build precision through motivating questions (`EIS-02`), crisp definitions, discriminating distinctions, near-miss counterexamples, and textual/real-world cases.
-  - Explain where any analogy breaks down (`P03`, `CF-08`); keep arguments logically traceable from premises to conclusions and surface competing perspectives without false consensus.
-- **Validation:** `QualityEngine.review_explanatory_clarity()` (`CF-01..CF-12`), `KnowledgeEngine.verify_claim_links()`.
+- **ID:** `conceptual` | **Registry alignment:** `conceptual`, `comparative` via [teaching_core.md](../../../shared/teaching_core.md).
+- **Purpose:** Teach definitions, mental models, causal distinctions, and policy/design trade-offs clearly without forcing artificial equations or CS jargon.
+- **Trigger:** Conceptual mastery, taxonomy, comparison, or decision-selection objectives (`TEACH-01`, `TEACH-02`, `TEACH-04`, `TEACH-08`).
+- **Preconditions:** Unfamiliar foundational terms are bridged before relying on them (`TEACH-01`); analogies disclose breakdown boundaries (`CF-08`).
+- **Inputs:** Target concept, prerequisite concepts, contrasting near-misses, concrete scenario examples, and domain context.
+- **Output Contract:** Motivating problem, concrete scenario intuition, precise definitions, causal explanation of differences **before** summary tables, near-miss counterexamples, and explicit When-to-Use / When-Not-to-Use criteria.
+- **Execution Procedure:**
+  1. Open with why the concept matters and an accessible real-world scenario.
+  2. Distinguish near-miss concepts causally in prose before compact comparison tables.
+  3. Place misconception corrections at the exact point of ambiguity without assuming unverified formulas or code.
+- **Dependencies:** `scriptorium/engines/pedagogy.py`, `scriptorium/engines/quality.py`, [teaching_core.md](../../../shared/teaching_core.md).
+- **Validation:** `QualityEngine.evaluate_teaching()`, `QualityEngine.review_explanatory_clarity()` (`CF-01`..`CF-12`), `KnowledgeEngine.verify_claim_links()`.
+- **Failure Behavior:** Reject table-only comparisons lacking causal explanation, unexplained jargon on beginner profiles, or fabricated formalism.

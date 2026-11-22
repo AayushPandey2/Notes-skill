@@ -4,7 +4,7 @@ Primary intent: synthesis_and_revision — consolidate related notes, compare me
 Activation signals: "revision pack", "combine these notes", "summarize everything", "compare X vs Y", "concept map", "final exam revision guide", F10 cross-note synthesis, and standalone paper/article/video URLs via `/scribe-notes`.
 Non-activation: Deep first-principles lesson on one topic -> M1; ultra-compact ≤350-word cheat sheet -> M3; pure question quiz -> M6.
 Variants: comparison-guide.md, paper-breakdown.md, quick-summary.md, revision-pack.md, concept-map.md.
-Pre-Flight: [router](../../../router.md), [revision-and-linking](../../workflows/revision/revision-and-linking.md), [authoring rules](../../../shared/authoring_rules.md).
+Pre-Flight: [router](../../../router.md), [teaching core](../../../shared/teaching_core.md), [revision-and-linking](../../workflows/revision/revision-and-linking.md), [authoring rules](../../../shared/authoring_rules.md).
 Strip this block before emission.
 -->
 
@@ -20,8 +20,8 @@ Strip this block before emission.
 
 ## 2. Core Comparisons, Distinctions & Key Formulas
 
-- Multi-axis comparison table under equivalent assumptions/conditions (`Feature | Candidate A | Candidate B | Governing Trade-Off`).
-- **Key Formulas & Applicability Conditions** *(when quantitative)*: Formula, symbol definitions, assumptions, and wikilink back to full Layer A derivations (`validate_revision_integrity`).
+- Explain causal trade-offs and conditions *before* summarizing in the multi-axis comparison table under equivalent assumptions (`Feature | Candidate A | Candidate B | Governing Trade-Off`).
+- **Key Formulas & Applicability Conditions** *(when quantitative)*: Formula, brief symbol meanings, assumptions, and wikilink back to full Layer E/F derivations (`validate_revision_integrity`).
 
 ## 3. Critical Pitfalls, Misconceptions & Revision Checklist
 

@@ -568,13 +568,26 @@ def evaluate_chapter_depth_contract(
     note = parse_note(body)
     nonempty_paragraphs = [p for p in re.split(r"\n\s*\n", note.body) if p.strip() and not p.strip().startswith("#")]
     h2_count = sum(1 for s in note.sections if s.level == 2)
-    shallow = len(nonempty_paragraphs) < 2 and h2_count < 2
+    word_count = len(re.findall(r"\b\w+\b", note.body))
+    concept_count = max(1, len(concepts))
+    overcompressed = concept_count >= 3 and word_count < concept_count * 90
+    shallow = (len(nonempty_paragraphs) < 2 and h2_count < 2) or overcompressed
+    recommendation = (
+        f"Split or expand overcompressed concepts ({concept_count} concepts in {word_count} words); "
+        "ensure intuition, math deconstruction, and worked examples per major concept."
+        if overcompressed
+        else ""
+    )
     return {
         "chapter_id": chapter.get("id"),
         "applicable_obligations": applicable,
         "section_count": h2_count,
         "paragraph_count": len(nonempty_paragraphs),
+        "word_count": word_count,
+        "concept_count": concept_count,
+        "overcompressed": overcompressed,
         "structurally_shallow": shallow,
+        "recommendation": recommendation,
         "checklist_size": len(DEPTH_COMPLETENESS_CHECKLIST),
     }
 

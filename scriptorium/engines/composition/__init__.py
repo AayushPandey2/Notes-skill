@@ -504,6 +504,8 @@ def validate_chapter(text: str, *, required_sections: list[str] | None = None) -
         re.I,
     ):
         errors.append("leaked internal concept/prerequisite ID")
+    if re.search(r"^\s*\*Key mathematical claim:\*", prose_no_inline, re.M):
+        errors.append("leaked internal claim stub '*Key mathematical claim:*'")
     for section in required_sections or []:
         if section not in [s.heading.lstrip("# ") for s in note.sections]:
             errors.append(f"missing planned section: {section}")

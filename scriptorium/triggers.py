@@ -5,6 +5,7 @@ Web-Image-First visual pipeline: discovery -> download -> inspection -> grounded
 """
 from __future__ import annotations
 
+import re
 from pathlib import Path
 from typing import Any
 
@@ -205,18 +206,254 @@ TRIGGER_REGISTRY: dict[str, dict[str, Any]] = {
 }
 
 
+MATH_TRIGGERS: dict[str, dict[str, Any]] = {
+    "MATH-01": {
+        "name": "New Symbol",
+        "architectures": ["A2", "A5"],
+        "activation_condition": "A significant new mathematical symbol, subscript, or operator appears.",
+        "semantic_intent": "Require explicit symbol definition, object type, and role before or at first use.",
+        "verification": "detect_explanation_gaps + verify_math_deconstruction symbol inventory",
+    },
+    "MATH-02": {
+        "name": "Compact Equation",
+        "architectures": ["A2", "A5"],
+        "activation_condition": "Compact vector, dot-product, or summation notation compresses elementwise arithmetic.",
+        "semantic_intent": "Expand compact expressions into explicit elementary terms.",
+        "verification": "M07 expanded_form obligation in deconstruct_equation",
+    },
+    "MATH-03": {
+        "name": "Matrix or Tensor",
+        "architectures": ["A2", "A9"],
+        "activation_condition": "Matrix multiplication, transpose, or tensor shape expressions appear.",
+        "semantic_intent": "Verify operand shapes, transpose orientation, and output dimensionality deterministically.",
+        "verification": "check_dimension_compatibility inner-dimension match",
+    },
+    "MATH-04": {
+        "name": "Derivation",
+        "architectures": ["A2", "A5", "A9"],
+        "activation_condition": "Multi-step algebraic or calculus derivation appears.",
+        "semantic_intent": "Require stated purpose and justified intermediate transformation steps.",
+        "verification": "MATH-04 intermediate derivation continuity & proof-step check",
+    },
+    "MATH-05": {
+        "name": "Numerical Example",
+        "architectures": ["A2", "A5", "A9"],
+        "activation_condition": "Quantitative formula benefits from concrete declared substitution for target learner level.",
+        "semantic_intent": "Provide declared synthetic inputs, intermediate arithmetic, and context interpretation.",
+        "verification": "build_worked_solution & verify_worked_calculation",
+    },
+    "MATH-06": {
+        "name": "Optimization Objective",
+        "architectures": ["A2", "A5"],
+        "activation_condition": "Loss, objective, penalty, or constrained min/max formulation is introduced.",
+        "semantic_intent": "Explain what is minimized or maximized, why each term exists, and parameter scaling assumptions.",
+        "verification": "Objective purpose + assumption pairing in verify_math_deconstruction",
+    },
+    "MATH-07": {
+        "name": "Derivative or Gradient",
+        "architectures": ["A2", "A5", "A9"],
+        "activation_condition": "Derivatives, gradients, or partial differentiation govern the mechanism.",
+        "semantic_intent": "Explain directional meaning, intermediate chain-rule steps, and local vs global scope.",
+        "verification": "Skipped composite derivative detector in detect_explanation_gaps",
+    },
+    "MATH-08": {
+        "name": "Probability",
+        "architectures": ["A2", "A9"],
+        "activation_condition": "Probability distributions, expectations, variances, or conditioning notation appear.",
+        "semantic_intent": "Define random variables, conditioning sets, independence, and distributional assumptions.",
+        "verification": "Assumption & random-variable definition check",
+    },
+    "MATH-09": {
+        "name": "Notation Ambiguity",
+        "architectures": ["A1", "A2"],
+        "activation_condition": "Symbols collide across conventions (e.g., transpose shapes, norm scaling, regularizer strength).",
+        "semantic_intent": "Disambiguate the active convention and explain how it maps to alternate notations.",
+        "verification": "CollectionTerminologyRegistry / misconception note check",
+    },
+    "MATH-10": {
+        "name": "Numerical Verification",
+        "architectures": ["A9"],
+        "activation_condition": "Worked arithmetic, identities, shapes, or step traces can be checked deterministically.",
+        "semantic_intent": "Run safe AST arithmetic, polynomial, or shape compatibility verifiers before emission.",
+        "verification": "verify_worked_calculation / check_dimension_compatibility / arithmetic",
+    },
+}
+
+TEACH_TRIGGERS: dict[str, dict[str, Any]] = {
+    "TEACH-01": {
+        "name": "Missing Prerequisite",
+        "architectures": ["A1", "A2"],
+        "activation_condition": "Reader lacks an essential foundation term or operation.",
+        "semantic_intent": "Insert a concise local Foundation Bridge immediately before dependent notation.",
+        "verification": "TEACH-01 / P01 prerequisite bridge verification",
+    },
+    "TEACH-02": {
+        "name": "High Abstraction",
+        "architectures": ["A2", "A5"],
+        "activation_condition": "Abstract formalisms appear without an intuitive concrete anchor.",
+        "semantic_intent": "Introduce a simpler concrete mental model and disclose where analogies break.",
+        "verification": "CF-08 / intuition-before-formalism check",
+    },
+    "TEACH-03": {
+        "name": "Multi-Stage Mechanism",
+        "architectures": ["A2", "A5"],
+        "activation_condition": "Process has sequential stages or interacting components.",
+        "semantic_intent": "Decompose inputs, intermediate states, operations, and outputs step by step.",
+        "verification": "Mechanism stage continuity check",
+    },
+    "TEACH-04": {
+        "name": "Concept Comparison",
+        "architectures": ["A2", "A5", "A9"],
+        "activation_condition": "Alternative methods, models, or parameters are contrasted.",
+        "semantic_intent": "Explain causal trade-offs and selection conditions before summarizing in a table.",
+        "verification": "Causal comparison check before summary tables",
+    },
+    "TEACH-05": {
+        "name": "Complex Visual",
+        "architectures": ["A6", "A5"],
+        "activation_condition": "External figure or diagram contains dense components, curves, or axes.",
+        "semantic_intent": "Write a structured reading guide (what it represents, where to start, labels, interaction, takeaway).",
+        "verification": "bvia.validate_image_grounded_explanation",
+    },
+    "TEACH-06": {
+        "name": "Short Explanation",
+        "architectures": ["A3", "A9"],
+        "activation_condition": "Chapter or section covers multiple concepts superficially.",
+        "semantic_intent": "Diagnose missing educational obligations rather than inflating prose via repetition.",
+        "verification": "evaluate_chapter_depth_contract + anti-overcompression check",
+    },
+    "TEACH-07": {
+        "name": "Abrupt Transition",
+        "architectures": ["A5", "A9"],
+        "activation_condition": "New topic, heading, or equation starts without connecting why it follows.",
+        "semantic_intent": "Create an explanatory bridge motivating the next concept or limitation.",
+        "verification": "CF-04 / MATH-DECON-01 abrupt drop detector",
+    },
+    "TEACH-08": {
+        "name": "Common Misconception",
+        "architectures": ["A2", "A5"],
+        "activation_condition": "Beginner-prone confusion or invalid generalization arises around an operation.",
+        "semantic_intent": "Place targeted misconception clarification beside the step where confusion occurs.",
+        "verification": "EIS-04 / misconception placement audit",
+    },
+    "TEACH-09": {
+        "name": "Practical Application",
+        "architectures": ["A5", "A2"],
+        "activation_condition": "Concept applies directly to real problem-solving or executable modeling tasks.",
+        "semantic_intent": "Connect theory to a realistic applied scenario with When-to-Use / When-Not-to-Use boundaries.",
+        "verification": "Application & boundary completeness check",
+    },
+    "TEACH-10": {
+        "name": "Chapter Completion",
+        "architectures": ["A3", "A9"],
+        "activation_condition": "Chapter draft is evaluated before publication.",
+        "semantic_intent": "Verify all 12 teaching quality dimensions and applicable 19-point depth obligations.",
+        "verification": "evaluate_teaching_quality + evaluate_chapter_depth_contract",
+    },
+}
+
+
+def detect_active_triggers(
+    note_or_spec: str | dict[str, Any],
+    *,
+    learner_level: str = "beginner",
+) -> dict[str, Any]:
+    """Semantically detect which MATH-01..MATH-10 and TEACH-01..TEACH-10 triggers activate."""
+    from scriptorium.engines.mathematics import detect_equation_features
+
+    text = note_or_spec if isinstance(note_or_spec, str) else " ".join(
+        str(v) for v in note_or_spec.values() if isinstance(v, (str, list, dict))
+    )
+    active_math: list[str] = []
+    active_teach: list[str] = ["TEACH-10"]
+
+    equations = re.findall(r"\$\$(.*?)\$\$", text, re.S) + re.findall(r"(?<!\$)\$(?!\$)([^$\n]+?)(?<!\$)\$(?!\$)", text)
+    if equations:
+        active_math.extend(["MATH-01", "MATH-05", "MATH-10"])
+    for eq in equations:
+        feat = detect_equation_features(eq, learner_level=learner_level)["features"]
+        if feat["has_matrix_or_vector"] or feat["has_transpose"]:
+            active_math.extend(["MATH-02", "MATH-03", "MATH-09"])
+        if feat["has_summation"]:
+            active_math.append("MATH-02")
+        if feat["has_optimization"]:
+            active_math.append("MATH-06")
+        if feat["has_derivative"]:
+            active_math.extend(["MATH-04", "MATH-07"])
+        if feat["has_probability"]:
+            active_math.append("MATH-08")
+
+    low = text.lower()
+    if isinstance(note_or_spec, dict) and note_or_spec.get("prerequisites"):
+        active_teach.append("TEACH-01")
+    if equations or len(text.split()) > 150:
+        active_teach.extend(["TEACH-02", "TEACH-03"])
+    if re.search(r"\b(?:vs\.?|versus|compare|comparison|alternative|ridge|lasso|trade-?off)\b", low) or "|" in text:
+        active_teach.append("TEACH-04")
+    if "![[" in text or (isinstance(note_or_spec, dict) and note_or_spec.get("visuals")):
+        active_teach.append("TEACH-05")
+    if len(text.split()) < 180:
+        active_teach.append("TEACH-06")
+    if re.search(r"(?:^|\n)#{1,6}\s+[^\n]+\n+\s*\$\$", text):
+        active_teach.append("TEACH-07")
+    if re.search(r"\b(?:mistake|trap|confusion|unlike|avoid|never|misconception)\b", low) or equations:
+        active_teach.append("TEACH-08")
+    if re.search(r"\b(?:use\s+when|avoid\s+when|application|practice|real-?world|workflow|when\s+not\s+to\s+use)\b", low):
+        active_teach.append("TEACH-09")
+
+    ordered_math = [k for k in MATH_TRIGGERS if k in set(active_math)]
+    ordered_teach = [k for k in TEACH_TRIGGERS if k in set(active_teach)]
+    return {"learner_level": learner_level, "math_triggers": ordered_math, "teach_triggers": ordered_teach}
+
+
 def dispatch_trigger(
     trigger_id: str,
     payload: dict[str, Any] | None = None,
     *,
     root: Path = REPO_ROOT,
 ) -> dict[str, Any]:
-    """Execute one explicit trigger contract (T01-T16) against real backing Scriptorium engines."""
+    """Execute one explicit trigger contract (T01-T16, MATH-01..10, TEACH-01..10)."""
     tid = trigger_id.strip().upper()
-    if tid not in TRIGGER_REGISTRY:
+    all_registries = {**TRIGGER_REGISTRY, **MATH_TRIGGERS, **TEACH_TRIGGERS}
+    if tid not in all_registries:
         raise ValueError(f"Unknown trigger ID: {trigger_id}")
     data = dict(payload or {})
-    meta = TRIGGER_REGISTRY[tid]
+    meta = all_registries[tid]
+
+    if tid in MATH_TRIGGERS:
+        from scriptorium.engines import mathematics as math_eng
+        level = str(data.get("learner_level", "beginner"))
+        if tid == "MATH-03" and data.get("operands"):
+            result = math_eng.check_dimension_compatibility(data["operands"], operation=str(data.get("operation", "matmul")))
+        elif tid in {"MATH-05", "MATH-10"} and data.get("problem_spec"):
+            result = math_eng.build_worked_solution(data["problem_spec"], learner_level=level)
+        elif tid == "MATH-10" and data.get("steps"):
+            result = math_eng.verify_worked_calculation(data["steps"], variables=data.get("variables"), expected_result=data.get("expected_result"))
+        elif data.get("equation_spec"):
+            result = math_eng.deconstruct_equation(data["equation_spec"], learner_level=level)
+        elif data.get("note_text"):
+            result = math_eng.verify_math_deconstruction(data["note_text"], equations=data.get("equations"), learner_level=level)
+        elif data.get("equation"):
+            result = math_eng.detect_equation_features(data["equation"], learner_level=level)
+        else:
+            result = {"trigger": tid, "contract": meta, "status": "ready_for_inputs"}
+        return {"trigger": tid, "name": meta["name"], "architectures": meta["architectures"], "result": result}
+
+    if tid in TEACH_TRIGGERS:
+        from scriptorium.engines.quality import QualityEngine
+        level = str(data.get("learner_level", "beginner"))
+        note_text = str(data.get("note_text") or "")
+        if tid == "TEACH-05" and data.get("visual"):
+            from scriptorium.engines.composition.bvia import validate_image_grounded_explanation
+            result = validate_image_grounded_explanation(note_text, data["visual"], inspection=data.get("inspection"))
+        elif tid in {"TEACH-06", "TEACH-10"} and note_text:
+            result = QualityEngine(root).evaluate_teaching(note_text, learner_level=level, concept_spec=data.get("concept_spec"), worked_examples=data.get("worked_examples"), visuals=data.get("visuals"))
+        elif note_text:
+            qe = QualityEngine(root)
+            result = qe.review_explanatory_clarity(note_text, learner_profile=level)
+        else:
+            result = {"trigger": tid, "contract": meta, "detected": detect_active_triggers(data, learner_level=level)}
+        return {"trigger": tid, "name": meta["name"], "architectures": meta["architectures"], "result": result}
 
     if tid == "T01":
         from scriptorium.engines.orchestration import OrchestrationEngine

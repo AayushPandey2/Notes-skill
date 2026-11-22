@@ -947,6 +947,14 @@ def _compose_child_note(
         source_mode=preferences.source_policy,
         preserve_source_order=preferences.preserve_source_order,
         source_facts=source_facts,
+        prerequisites=prereq_titles,
+        context={
+            "transition": (
+                f"With this foundation on {node.title} established, connect these assumptions to related topics"
+                + (f" such as [[{related_titles[0]}]]" if related_titles else "")
+                + "."
+            )
+        },
     )
     composed = compose_explanation_note(
         bp,
@@ -987,7 +995,8 @@ def _compose_child_note(
             )
     elif master == "M7" and variant == "comparison_guide" and "|" not in body:
         body += (
-            "\n\n## Comparison Matrix\n\n"
+            "\n\n## Why Options Differ & Comparison Matrix\n\n"
+            f"Choosing between candidate mechanisms for {node.title} depends on their underlying constraints and failure boundaries, not surface syntax alone.\n\n"
             "| Dimension | Option A | Option B | Decision Rule |\n"
             "|---|---|---|---|\n"
             f"| Core Mechanism ({node.title}) | Primary formulation | Alternative formulation | Choose based on domain assumptions and compute budget |\n"

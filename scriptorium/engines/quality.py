@@ -759,6 +759,25 @@ class QualityEngine:
         from .composition.contracts import evaluate_chapter_depth_contract
         return evaluate_chapter_depth_contract(plan, chapter, body)
 
+    def evaluate_teaching(
+        self,
+        note_text: str,
+        *,
+        concept_spec: dict[str, Any] | None = None,
+        equations: list[dict[str, Any]] | None = None,
+        worked_examples: list[dict[str, Any]] | None = None,
+        visuals: list[dict[str, Any]] | None = None,
+        learner_level: str = "beginner",
+    ) -> dict[str, Any]:
+        return evaluate_teaching_quality(
+            note_text,
+            concept_spec=concept_spec,
+            equations=equations,
+            worked_examples=worked_examples,
+            visuals=visuals,
+            learner_level=learner_level,
+        )
+
     """Cohesive Engine E5 facade for verification, representation checks, EIS-07 clarity review, targeted repair, auditing, and golden evals."""
 
     def __init__(self, root: Path = REPO_ROOT):
@@ -1000,3 +1019,308 @@ def validate_note_collection(
         "issues": issues,
         "warnings": warnings,
     }
+
+
+# ---------------------------------------------------------------------------
+# Part 16 — Evidence-Based Teaching-Quality Verification & Beginner Reader Simulation
+# ---------------------------------------------------------------------------
+
+TEACHING_QUALITY_DIMENSIONS: tuple[str, ...] = (
+    "conceptual_completeness",
+    "prerequisite_sufficiency",
+    "intuitive_clarity",
+    "mathematical_explanation",
+    "worked_example_quality",
+    "intermediate_reasoning",
+    "narrative_continuity",
+    "visual_integration",
+    "beginner_accessibility",
+    "technical_accuracy",
+    "appropriate_depth",
+    "assessment_quality",
+)
+
+BEGINNER_READER_SIMULATION_QUESTIONS: tuple[tuple[str, str], ...] = (
+    ("first_concept_defined", "Is the first unfamiliar technical concept defined before relying on it?"),
+    ("motivation_clear", "Does the reader understand why this problem or concept matters?"),
+    ("mechanism_followable", "Can a beginner follow how each step or component produces the result?"),
+    ("math_understandable", "Are equations prepared, symbolized, dimensioned, and decomposed clearly?"),
+    ("example_reconstructible", "Can the reader reconstruct a worked example from declared inputs alone?"),
+    ("images_explained", "Are embedded figures accompanied by clear reading guides and observations?"),
+    ("assumptions_clear", "Are applicability conditions, failure cases, and limits explicitly stated?"),
+    ("continuity_smooth", "Can the reader transition cleanly to adjacent/next concepts?"),
+)
+
+
+def evaluate_teaching_quality(
+    note_text: str,
+    *,
+    concept_spec: dict[str, Any] | None = None,
+    equations: list[dict[str, Any]] | None = None,
+    worked_examples: list[dict[str, Any]] | None = None,
+    visuals: list[dict[str, Any]] | None = None,
+    learner_level: str = "beginner",
+) -> dict[str, Any]:
+    """Evaluate 12 teaching quality dimensions (0-4 scale) with passage evidence and non-averaging critical gates."""
+    from scriptorium.engines.mathematics import validate_worked_solution, verify_math_deconstruction
+
+    parsed = parse_note(note_text)
+    body = parsed.body
+    lowered = body.lower()
+    level = (learner_level or "beginner").strip().lower()
+
+    has_math = bool(re.search(r"\$\$.*?\$\$|(?<!\$)\$(?!\$)[^$\n]+\$", body, re.S)) or bool(equations)
+    has_visuals = ("![[" in body or "```mermaid" in body) or bool(visuals)
+    has_worked = bool(worked_examples) or bool(re.search(r"\b(?:worked\s+example|numerical|substitution|step\s+1)\b", lowered))
+
+    clarity = review_explanatory_clarity(note_text, learner_profile=level)
+    math_check = verify_math_deconstruction(note_text, equations=equations, learner_level=level) if has_math else {"passed": True, "issues": []}
+
+    worked_errors: list[str] = []
+    if worked_examples:
+        for ex in worked_examples:
+            wk = validate_worked_solution(note_text, ex, learner_level=level)
+            if not wk["valid"]:
+                worked_errors.extend(wk["errors"])
+    elif has_math and level in {"beginner", "intermediate"}:
+        wk = validate_worked_solution(note_text, learner_level=level)
+        worked_errors.extend(wk["errors"])
+
+    visual_errors: list[str] = []
+    if has_visuals:
+        from scriptorium.engines.composition.bvia import validate_image_grounded_explanation
+        for idx, vis in enumerate(visuals or [{"id": "embedded_visual", "objective": "visual explanation"}]):
+            vr = validate_image_grounded_explanation(body, vis)
+            if not vr["passed"]:
+                visual_errors.extend(f"visual[{idx}]: {e}" for e in vr["errors"])
+
+    # Evidence snippets
+    def _excerpt(pattern: str) -> str | None:
+        m = re.search(pattern, body, re.I | re.S)
+        return body[max(0, m.start() - 20):min(len(body), m.end() + 90)].replace("\n", " ").strip() if m else None
+
+    dimensions: dict[str, dict[str, Any]] = {}
+    critical_defects: list[str] = []
+    repairs: list[dict[str, str]] = []
+
+    def _record(name: str, applicable: bool, score: int | None, evidence: str, justification: str, repair_action: str | None = None) -> None:
+        dimensions[name] = {
+            "applicable": applicable,
+            "score": score,
+            "evidence": evidence,
+            "justification": justification,
+        }
+        if applicable and score is not None and score <= 1 and repair_action:
+            repairs.append({"dimension": name, "action": repair_action, "reason": justification})
+
+    # 1. Conceptual completeness & motivation
+    intro_prose = parsed.sections[0].content if parsed.sections else body[:300]
+    has_problem = bool(_excerpt(r"\b(?:problem|why|need|motivat|solve|predict|imagine|suppose|consider)\b"))
+    words = len(re.findall(r"\b\w+\b", body))
+    _record(
+        "conceptual_completeness",
+        True,
+        4 if (has_problem and len(parsed.sections) >= 3 and words >= 200) else 3 if (has_problem and words >= 100) else 2 if words >= 60 else 1,
+        intro_prose[:160].replace("\n", " ").strip(),
+        "Checks whether motivating problem, structure, and substantive explanation depth are present.",
+        None if words >= 100 else "expand_motivating_problem_and_core_mechanism",
+    )
+
+    # 2. Prerequisite sufficiency
+    missing_prereqs = []
+    for pr in (concept_spec or {}).get("prerequisites", []):
+        p_label = pr.get("title") or pr.get("concept") or str(pr) if isinstance(pr, dict) else str(pr)
+        if p_label and p_label.lower() not in lowered:
+            missing_prereqs.append(p_label)
+    prereq_ev = _excerpt(r"\b(?:prerequisite|recall|before|foundation|straight line|vector|first)\b") or "No explicit prerequisite bridge found."
+    prereq_score = 1 if missing_prereqs else (4 if "recall" in lowered or "foundation" in lowered or not (concept_spec or {}).get("prerequisites") else 3)
+    if missing_prereqs:
+        critical_defects.append(f"Missing required prerequisite grounding: {', '.join(missing_prereqs)}")
+    _record(
+        "prerequisite_sufficiency",
+        True,
+        prereq_score,
+        prereq_ev,
+        "Checks declared prerequisite coverage and foundation preparation before dependent notation.",
+        f"add_foundation_bridge:{','.join(missing_prereqs)}" if missing_prereqs else None,
+    )
+
+    # 3. Intuitive clarity
+    intuition_ev = _excerpt(r"\b(?:intuit\w*|mental model|in simple words|meaning|simply|think of|concrete|picture|imagine|just like)\b") or ""
+    _record(
+        "intuitive_clarity",
+        True,
+        4 if (intuition_ev and not any(i["type"] == "CF-08" for i in clarity["friction_issues"])) else 3 if intuition_ev else 1,
+        intuition_ev or "No intuitive explanation passage found.",
+        "Checks intuitive mental model before abstract notation and analogy boundary disclosure.",
+        None if intuition_ev else "add_starting_intuition_before_formal_equation",
+    )
+
+    # 4. Mathematical explanation
+    if has_math:
+        m_issues = math_check["issues"]
+        crit_m = [i for i in m_issues if i["severity"] == "critical"]
+        maj_m = [i for i in m_issues if i["severity"] == "major"]
+        if crit_m:
+            critical_defects.extend(i["description"] for i in crit_m)
+        m_score = 0 if len(maj_m) >= 3 else 1 if (crit_m or len(maj_m) >= 2) else 2 if maj_m else (3 if m_issues else 4)
+        _record(
+            "mathematical_explanation",
+            True,
+            m_score,
+            m_issues[0]["description"] if m_issues else (_excerpt(r"\$\$") or "Equations prepared cleanly."),
+            "Evaluates equation preparation, symbol definitions, dimension checks, and anti-equation-dumping.",
+            "apply_m01_m14_equation_deconstruction" if m_score <= 2 else None,
+        )
+    else:
+        _record("mathematical_explanation", False, None, "N/A (non-mathematical)", "Mathematical deconstruction not required on pure non-math topics.")
+
+    # 5. Worked example quality
+    if has_worked or has_math:
+        w_score = 1 if worked_errors else 4 if (worked_examples or re.search(r"\b(?:sanity|verify|check)\b", lowered)) else 3
+        if worked_errors and has_math and level == "beginner":
+            critical_defects.append(f"Worked solution incomplete: {worked_errors[0]}")
+        _record(
+            "worked_example_quality",
+            True,
+            w_score,
+            worked_errors[0] if worked_errors else (_excerpt(r"\b(?:example|suppose|given|substitute)\b") or "Worked calculation checked."),
+            "Checks declared inputs, intermediate operations, interpretation, and sanity verification.",
+            "complete_12_step_worked_example" if worked_errors else None,
+        )
+    else:
+        _record("worked_example_quality", False, None, "N/A", "Quantitative worked example not triggered.")
+
+    # 6. Intermediate reasoning
+    cf_03 = [i for i in clarity["friction_issues"] if i["type"] == "CF-03"]
+    inter_score = 1 if cf_03 else (4 if re.search(r"(?:^|\n)\s*\d+\.|step\s+1|expanding|substituting", lowered) else 3)
+    _record(
+        "intermediate_reasoning",
+        True,
+        inter_score,
+        cf_03[0]["description"] if cf_03 else (_excerpt(r"(?:step|therefore|because|implies|expanding)") or "Continuous reasoning."),
+        "Checks for skipped derivation/mechanism steps or unmotivated operation jumps.",
+        "expand_intermediate_transitions" if cf_03 else None,
+    )
+
+    # 7. Narrative continuity
+    cf_04 = [i for i in clarity["friction_issues"] if i["type"] in {"CF-04", "CF-06", "CF-09"}]
+    has_leaked_stub = bool(re.search(r"\*Key mathematical claim:\*|<!--", body))
+    if has_leaked_stub:
+        critical_defects.append("Internal authoring stub or comment leaked into finished prose.")
+    nav_score = 1 if (has_leaked_stub or len(cf_04) >= 2) else 2 if cf_04 else 4
+    _record(
+        "narrative_continuity",
+        True,
+        nav_score,
+        cf_04[0]["description"] if cf_04 else "Section openings and transitions maintain continuous prose.",
+        "Checks natural problem-to-concept bridges, avoids heading-into-equation drops and stub leaks.",
+        "add_natural_transitions_and_strip_stubs" if nav_score <= 2 else None,
+    )
+
+    # 8. Visual integration
+    if has_visuals:
+        v_score = 1 if visual_errors else 4
+        _record(
+            "visual_integration",
+            True,
+            v_score,
+            visual_errors[0] if visual_errors else (_excerpt(r"!\[\[|```mermaid") or "Visual integrated cleanly."),
+            "Checks local embed + Explain -> Show -> Decode -> Connect reading walkthrough.",
+            "add_visual_reading_walkthrough" if visual_errors else None,
+        )
+    else:
+        _record("visual_integration", False, None, "N/A", "No embedded visual in this note.")
+
+    # 9. Beginner accessibility
+    from scriptorium.engines.pedagogy import analyze_information_density
+    density_rep = analyze_information_density(note_text, reader_level=level)
+    heavy_density = [
+        sec for sec in density_rep.get("overloaded_sections", [])
+        if sec.get("unique_symbols", 0) > 5 or sec.get("display_equations", 0) >= 4
+    ]
+    jargon_issues = [i for i in clarity["friction_issues"] if i["type"] in {"CF-01", "CF-02", "CF-11"}]
+    if heavy_density and level == "beginner":
+        jargon_issues.append({
+            "type": "CF-05",
+            "severity": "major",
+            "description": f"Section '{heavy_density[0]['heading']}' packs excessive symbols/equations without intermediate anchoring.",
+        })
+    acc_score = 1 if len(jargon_issues) >= 2 else 2 if jargon_issues else 4
+    if level == "beginner" and any(i["type"] == "CF-11" for i in jargon_issues):
+        critical_defects.append("Premature unexplained advanced jargon appears in beginner introduction.")
+    _record(
+        "beginner_accessibility",
+        True,
+        acc_score,
+        jargon_issues[0]["description"] if jargon_issues else "Technical vocabulary and density match learner level.",
+        "Checks undefined jargon, high symbol density, and cognitive load in introductory prose.",
+        "define_terms_before_first_use" if jargon_issues else None,
+    )
+
+    # 10. Technical accuracy
+    spec_errors = [i["description"] for i in math_check["issues"] if i["severity"] == "critical"]
+    acc_tech = 0 if (spec_errors or worked_errors) else 4
+    _record(
+        "technical_accuracy",
+        True,
+        acc_tech,
+        spec_errors[0] if spec_errors else (worked_errors[0] if worked_errors else "Deterministic shape/arithmetic checks clear."),
+        "Verifies arithmetic/dimensional consistency and absence of unsupported overclaims.",
+        "fix_arithmetic_or_dimension_error" if acc_tech == 0 else None,
+    )
+
+    # 11. Appropriate depth
+    concepts_claimed = len((concept_spec or {}).get("subconcepts", [])) or 1
+    overcompressed = concepts_claimed >= 3 and words < concepts_claimed * 90
+    if overcompressed:
+        critical_defects.append(f"Overcompressed chapter: {concepts_claimed} subconcepts packed into {words} words.")
+    _record(
+        "appropriate_depth",
+        True,
+        1 if overcompressed else (4 if words >= 250 else 3 if words >= 120 else 2),
+        f"{words} words across {len(parsed.sections)} sections ({concepts_claimed} subconcept scope).",
+        "Detects superficial compression where major concepts are reduced to sparse bullets.",
+        "split_or_deepen_overcompressed_concepts" if overcompressed else None,
+    )
+
+    # 12. Assessment quality
+    has_q = bool(re.search(r"(?:###\s+Q\d|\*\*Question\s*\(|> \[!(?:hint|answer|tip)\]-)", body, re.I))
+    has_detailed_ans = bool(re.search(r"> \[!(?:answer|tip)\]-[\s\S]{40,}", body, re.I))
+    _record(
+        "assessment_quality",
+        has_q,
+        (4 if has_detailed_ans else 2) if has_q else None,
+        _excerpt(r"> \[!(?:answer|tip)\]-") or "No assessment section included.",
+        "Checks collapsible hints and step-by-step detailed solutions rather than bare final values.",
+        "expand_answer_reasoning" if (has_q and not has_detailed_ans) else None,
+    )
+
+    simulation = {
+        "first_concept_defined": dimensions["beginner_accessibility"]["score"] >= 3,
+        "motivation_clear": bool(has_problem),
+        "mechanism_followable": dimensions["intermediate_reasoning"]["score"] >= 3,
+        "math_understandable": (not has_math) or (dimensions["mathematical_explanation"]["score"] >= 3),
+        "example_reconstructible": (not dimensions["worked_example_quality"]["applicable"]) or (dimensions["worked_example_quality"]["score"] >= 3),
+        "images_explained": (not has_visuals) or (dimensions["visual_integration"]["score"] >= 3),
+        "assumptions_clear": bool(re.search(r"\b(?:assum|condition|limit|avoid|when\s+not|invalid|fail)\b", lowered)),
+        "continuity_smooth": dimensions["narrative_continuity"]["score"] >= 3,
+    }
+
+    failing_dims = [
+        k for k, d in dimensions.items()
+        if d["applicable"] and d["score"] is not None and d["score"] < 2
+    ]
+    passed = (not critical_defects) and (not failing_dims)
+    return {
+        "passed": passed,
+        "learner_level": level,
+        "critical_defects": critical_defects,
+        "failing_dimensions": failing_dims,
+        "dimensions": dimensions,
+        "beginner_reader_simulation": simulation,
+        "targeted_repairs": repairs,
+        "evidence_based": True,
+        "non_averaging_gate": True,
+    }
+

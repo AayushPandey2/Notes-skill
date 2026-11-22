@@ -160,6 +160,7 @@ def compose_visual_walkthrough(
             ]
     abbrs = [a for a in visual.get("abbreviations", []) if a in registry]
     abbr_lines = [f"- **{a}:** {registry[a]}" for a in abbrs]
+    entry = visual.get("reading_entry") or "Start at the primary input/labeled entry and follow the arrows, axes, or labeled stages across the diagram."
     connect = visual.get("connect") or "This visual structure connects directly to the analytical mechanism developed next."
 
     parts = [
@@ -170,6 +171,7 @@ def compose_visual_walkthrough(
         f"*Figure: {visual.get('alt') or visual.get('objective', 'Visual explanation')}.*",
         "",
         "**How to read this figure:**",
+        f"- *Where to begin:* {entry}",
         *[f"- {item}" for item in decode_items],
     ]
     if abbr_lines:
@@ -216,8 +218,16 @@ def validate_explain_show_decode_connect(
     if not embed_match:
         return {"passed": False, "errors": ["Missing visual embed"]}
 
-    before = markdown[:embed_match.start()].strip()
-    after = markdown[embed_match.end():].strip()
+    before_raw = markdown[:embed_match.start()].strip()
+    before = re.split(r"(?:^|\n)#{1,6}\s+[^\n]*", before_raw)[-1].strip()
+    after_raw = markdown[embed_match.end():].strip()
+    after_section = re.split(r"(?:^|\n)#{1,6}\s+", after_raw, maxsplit=1)[0].strip()
+    # Strip caption/attribution metadata lines so a bare figure caption cannot pass as a visual walkthrough.
+    after_prose_lines = [
+        ln for ln in after_section.splitlines()
+        if ln.strip() and not re.match(r"^\*(?:Figure|Source|Attribution|Rights)\s*:", ln.strip(), re.I)
+    ]
+    after = "\n".join(after_prose_lines).strip()
     if len(before.split()) < 6:
         errors.append("Missing Explain introduction before figure")
     if len(after.split()) < 10:

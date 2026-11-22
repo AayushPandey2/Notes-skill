@@ -265,6 +265,8 @@ def select_context_bundle(
         _add_mod(m)
 
     # Conditional shared/policy contracts (load ONLY when actually required!)
+    if master in {"M1", "M2", "M4", "M5", "M7"}:
+        selected_files.append(("policy:teaching_core", "shared/teaching_core.md"))
     if math_depth > 0 or "mathematical" in ktypes or "scientific" in ktypes or master == "M4":
         selected_files.append(("policy:math_gates", "shared/math_gates.md"))
     if has_source or source_policy in {"strict", "source_first"}:
