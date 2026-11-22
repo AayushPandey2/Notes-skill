@@ -2,13 +2,21 @@
 from __future__ import annotations
 
 import binascii
+import os
 import struct
+import xml.etree.ElementTree as ET
 import zlib
 
 import pytest
 
 from scriptorium.engines.composition import lavia, media
-from scriptorium.engines.composition.visuals import render_visuals
+from scriptorium.engines.composition.visuals import (
+    NS,
+    architecture_svg,
+    render_visuals,
+    scientific_svg,
+    validate_svg,
+)
 
 
 def _png(width: int = 2, height: int = 2) -> bytes:
@@ -106,8 +114,18 @@ def test_imagegen_host_artifact_and_deterministic_fallback(tmp_path):
     assert lavia.validate_collection_visuals(tmp_path, plan, bodies, manifest)["passed"] is True
 
 
-def test_transformer_regression_local_first_pipeline_and_targeted_repair(tmp_path):
-    # Live HTTPS fetch + full local-first persistence without monkeypatching fetch_image.
+def test_transformer_regression_local_first_pipeline_and_targeted_repair(tmp_path, monkeypatch):
+    # Deterministic local socket mock by default; set SCRIPTORIUM_LIVE_NET=1 to hit live HTTPS.
+    fallback_png = tmp_path / "reference_fallback.png"
+    fallback_png.write_bytes(_png(16, 12))
+    if not os.environ.get("SCRIPTORIUM_LIVE_NET"):
+        live_png = _png(16, 12)
+        monkeypatch.setattr(media, "_resolve_public", lambda host: ["93.184.216.34"])
+        monkeypatch.setattr(
+            media,
+            "_request_once",
+            lambda url, host, address: (200, {"content-type": "image/png"}, live_png),
+        )
     plan = {
         "topic": "Transformer Architecture",
         "collection_slug": "transformer-architecture",
@@ -175,15 +193,16 @@ def test_transformer_regression_local_first_pipeline_and_targeted_repair(tmp_pat
                 "id": "attention-reference-figure",
                 "concept": "t.mha",
                 "section": "Multi-Head Attention",
-                "objective": "Show external reference figure persisted locally via live HTTPS",
+                "objective": "Show external reference figure persisted locally via HTTPS",
                 "kind": "source_figure",
                 "coverage_category": "component_structure",
                 "url": "https://www.python.org/static/community_logos/python-logo.png",
                 "source": "https://www.python.org/community/logos/",
                 "rights": "PSF-Permissive / CC-BY-4.0",
                 "require_permissive_license": True,
+                "local_fallback": "reference_fallback.png",
                 "alt": "Locally persisted reference PNG figure",
-                "relevance": "Exercises real live HTTPS acquisition, scanline validation, and offline embedding.",
+                "relevance": "Exercises HTTPS acquisition, scanline validation, and offline embedding.",
             },
         ],
     }
@@ -273,3 +292,122 @@ def test_web_image_first_policy_and_svg_fallback_gate(tmp_path):
         tmp_path,
     )
     assert ob_check["passed"] is True, ob_check
+
+
+@pytest.mark.parametrize(
+    ("mime", "ext", "payload"),
+    [
+        (
+            "image/svg+xml",
+            "svg",
+            b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60"><rect width="120" height="60" fill="white"/></svg>',
+        ),
+        ("image/jpeg", "jpg", _jpeg(64, 48)),
+        ("image/webp", "webp", _webp_vp8l(40, 20)),
+    ],
+)
+def test_media_cache_hit_non_png(tmp_path, monkeypatch, mime, ext, payload):
+    url = f"https://example.org/assets/diagram.{ext}"
+    visual = {
+        "id": f"fig-{ext}",
+        "collection_slug": "cache-regression",
+        "asset_name": f"diagram-{ext}",
+        "url": url,
+        "source": "https://example.org/paper",
+        "rights": "CC-BY-4.0",
+        "require_permissive_license": True,
+        "alt": f"Cached {ext} figure",
+        "relevance": f"Verifies cached {mime} round-trip without PNG decoder crash.",
+        "asset_policy": "local_preferred",
+        "embed_style": "wikilink",
+    }
+    digest = f"digest-{ext}-001"
+    monkeypatch.setattr(
+        media,
+        "fetch_image",
+        lambda u: (payload, {"url": u, "final_url": u, "mime": mime, "bytes": len(payload)}),
+    )
+    first = media.media_artifact(tmp_path, visual, digest, execute=True)
+    assert first["cached"] is False
+    assert first["path"].endswith(f".{ext}")
+    assert (tmp_path / first["path"]).read_bytes() == payload
+
+    # Cache hit on execute=False and rerun execute=True must validate without network calls.
+    monkeypatch.setattr(media, "fetch_image", lambda *a, **k: pytest.fail("cache hit must not fetch network"))
+    verified_offline = media.media_artifact(tmp_path, visual, digest, execute=False)
+    assert verified_offline["cached"] is True
+    assert verified_offline["path"] == first["path"]
+    assert verified_offline["hash"] == first["hash"]
+    assert verified_offline["validation"]["result"] == "pass"
+
+    verified_rerun = media.media_artifact(tmp_path, visual, digest, execute=True)
+    assert verified_rerun["cached"] is True
+    assert verified_rerun["hash"] == first["hash"]
+
+    # Tampering with the cached non-PNG snapshot must still be rejected.
+    (tmp_path / first["path"]).write_bytes(b"corrupted-bytes")
+    with pytest.raises(ValueError, match="changed since acquisition"):
+        media.media_artifact(tmp_path, visual, digest, execute=False)
+
+
+def test_architecture_svg_dynamic_box_widths_and_connectors():
+    components = [
+        {"label": "Input Embeddings", "shape": "B, T, d_model"},
+        {"label": "Scaled Dot-Product + Mask", "shape": "B, h, T, T"},
+        {"label": "Output", "shape": "B, T, d_model (projected)"},
+    ]
+    svg = architecture_svg(components)
+    assert validate_svg(svg) == []
+    root = ET.fromstring(svg)
+    _, _, vb_w, _ = map(float, root.get("viewBox").split())
+    rects = root.findall(f"{{{NS}}}rect")
+    paths = root.findall(f"{{{NS}}}path")
+    assert len(rects) == len(components)
+    assert len(paths) == len(components) - 1
+
+    expected_widths = [max(180, len(c["label"]) * 9 + 24, len(c["shape"]) * 9 + 24) for c in components]
+    prev_right = 0.0
+    for idx, (rect, exp_w) in enumerate(zip(rects, expected_widths)):
+        rx = float(rect.get("x"))
+        rw = float(rect.get("width"))
+        assert rw == exp_w
+        if idx == 1:
+            assert rw >= len("Scaled Dot-Product + Mask") * 9 + 24 > 180
+        if idx > 0:
+            assert rx > prev_right
+        prev_right = rx + rw
+        if idx < len(paths):
+            d_attr = paths[idx].get("d", "")
+            assert d_attr.startswith(f"M{int(rx + rw)} ")
+    assert prev_right < vb_w
+
+
+def test_scientific_svg_ylabel_separation_and_colored_legend_swatches():
+    series = {
+        "Scaled Attention": [(0.0, 0.0), (1.0, 0.5), (2.0, 1.0)],
+        "Unscaled Attention": [(0.0, 1.0), (1.0, 0.4), (2.0, 0.0)],
+    }
+    svg = scientific_svg(series, title="Attention Scaling", xlabel="position", ylabel="weight")
+    assert validate_svg(svg) == []
+    root = ET.fromstring(svg)
+
+    texts = root.findall(f"{{{NS}}}text")
+    ylabel_el = next(t for t in texts if t.text == "weight")
+    top_tick_el = next(t for t in texts if t.text == "1")
+    ylabel_x, ylabel_y = float(ylabel_el.get("x")), float(ylabel_el.get("y"))
+    tick_x, tick_y = float(top_tick_el.get("x")), float(top_tick_el.get("y"))
+    # ylabel must be well-separated from the top y-tick (no collision).
+    assert abs(ylabel_x - tick_x) >= 30
+    assert abs(ylabel_y - tick_y) >= 30
+
+    polylines = root.findall(f"{{{NS}}}polyline")
+    series_colors = [p.get("stroke") for p in polylines]
+    assert len(series_colors) == 2 and len(set(series_colors)) == 2
+
+    swatches = [ln for ln in root.findall(f"{{{NS}}}line") if ln.get("stroke") in series_colors]
+    assert [ln.get("stroke") for ln in swatches] == series_colors
+
+    for name, swatch in zip(series, swatches):
+        legend_el = next(t for t in texts if t.text == name)
+        assert float(swatch.get("x2")) < float(legend_el.get("x"))
+        assert abs(float(swatch.get("y1")) - float(legend_el.get("y"))) <= 10

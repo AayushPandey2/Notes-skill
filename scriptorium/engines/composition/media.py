@@ -340,6 +340,8 @@ def validate_svg_bytes(raw: bytes, mime: str = "image/svg+xml") -> dict:
 
 def validate_image_bytes(raw: bytes, mime: str) -> dict:
     """Validate downloaded or local image bytes according to declared MIME type."""
+    if not isinstance(mime, str):
+        raise ValueError(f"Unsupported image MIME type: {mime}")
     normalized = mime.split(";", 1)[0].strip().lower()
     if normalized == "image/png":
         return decode_png(raw, normalized)
@@ -415,7 +417,7 @@ def media_artifact(vault: Path, visual: dict, digest: str, *, execute: bool) -> 
         raw = path.read_bytes()
         if receipt.get("hash") != content_hash(raw):
             raise ValueError("Media snapshot changed since acquisition")
-        decode_png(raw,receipt.get("mime"))
+        validate_image_bytes(raw, receipt.get("mime"))
     else:
         if not execute:
             raise ValueError("Verified media snapshot and receipt are missing")

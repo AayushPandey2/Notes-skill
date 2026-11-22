@@ -652,10 +652,21 @@ def _classify_primary_intent(
                 return "M4", None, "explicit worked problem-solving request"
 
     if "M5" not in negated_masters:
-        # "Make notes from scratch" is M1/M2 (deep/study notes), NOT M5!
-        is_notes_from_scratch = bool(re.search(r"\b(?:make|write|create)\s+(?:deep\s+|study\s+)?notes\s+from\s+scratch\b", text, re.I))
-        if not is_notes_from_scratch and re.search(
-            r"\b(?:implement(?:ation)?(?:\s+guide)?|from\s+scratch|build\s+(?:a|an|the)\b|"
+        # "Make notes from scratch" and "teach/explain <X> from scratch" are M1/M2, NOT M5!
+        is_notes_or_teach_from_scratch = bool(
+            re.search(
+                r"\b(?:make|write|create)\s+(?:deep\s+|study\s+)?notes\s+from\s+scratch\b"
+                r"|\b(?:teach(?:\s+me)?|explain|learn|understand)\b[^.!?\n]*\bfrom\s+scratch\b",
+                text,
+                re.I,
+            )
+        ) and not bool(
+            re.search(r"\b(?:implement|build|code|program|develop)\b", text, re.I)
+        )
+        if not is_notes_or_teach_from_scratch and re.search(
+            r"\b(?:implement(?:ation)?(?:\s+guide)?|build\s+(?:a|an|the)\b|"
+            r"(?:implement|build|code|program|develop|engineer)\b[^.!?\n]*\bfrom\s+scratch\b|"
+            r"from\s+scratch\s+in\s+(?:c\+\+(?:20)?|cpp|python(?:3)?|numpy|pytorch|tensorflow|rust|java|go|typescript|javascript|c)\b|"
             r"debug(?:ging)?|troubleshoot(?:ing)?|deploy(?:ment)?\s+guide|code\s+walkthrough|"
             r"write\s+(?:a|an|the)?\s*(?:[\w-]+\s+){0,2}(?:script|service|api|pipeline|parser|classifier|solver|module)|"
             r"solve\b.*\bin\s+(?:c\+\+(?:20)?|cpp|python(?:3)?|rust|java|go|typescript|javascript)\b)\b",
@@ -1322,6 +1333,19 @@ RETIRED_SCRIPT_NAMES = (
     "scripts/audit_repository.py",
 )
 
+BARE_RETIRED_SCRIPT_NAMES = (
+    "decision_matrix.py",
+    "instructional_plan.py",
+    "legacy_contract_adapter.py",
+    "note_layout.py",
+    "note_verification.py",
+    "pedagogical_engine.py",
+    "research_cache.py",
+    "research_engine.py",
+    "routing_engine.py",
+    "audit_repository.py",
+)
+
 
 def lint_instruction_authority(root: Path = ROOT) -> dict[str, Any]:
     """Mechanism 4: Verify single-owner authority, no retired references, and consistent master registry."""
@@ -1354,18 +1378,37 @@ def lint_instruction_authority(root: Path = ROOT) -> dict[str, Any]:
         *sorted((root / "references" / "templates").rglob("*.md")),
         *(sorted((root / "references" / "architecture").glob("*.md")) if (root / "references" / "architecture").is_dir() else []),
         *(sorted((root / "references" / "metadata").glob("*.md")) if (root / "references" / "metadata").is_dir() else []),
+        *(sorted((root / "references" / "contracts").glob("*.md")) if (root / "references" / "contracts").is_dir() else []),
     ]
     retired_tpl_re = re.compile(r"(?<![a-z/])templates/[a-z][a-z0-9_-]+\.md")
+    bare_script_res = [
+        (name, re.compile(rf"(?<![a-zA-Z0-9_/]){re.escape(name)}\b"))
+        for name in BARE_RETIRED_SCRIPT_NAMES
+    ]
     for path in active_md_roots:
         if not path.is_file():
             continue
         text = path.read_text(encoding="utf-8-sig")
         rel = path.relative_to(root).as_posix()
-        if m := retired_tpl_re.search(text):
+        if rel == "references/contracts/migration-notes.md":
+            # In the historical migration log, ignore explicit retirement arrows (`templates/... -> references/templates/...`)
+            # and "Removed ..." ledger lines while still catching active stale paths.
+            for line in text.splitlines():
+                if "->" in line or re.match(r"^\s*-\s*Removed\b", line):
+                    continue
+                if m := retired_tpl_re.search(line):
+                    issues.append({"type": "retired_template_reference", "file": rel, "detail": m.group(0)})
+                    break
+        elif m := retired_tpl_re.search(text):
             issues.append({"type": "retired_template_reference", "file": rel, "detail": m.group(0)})
+        flagged_scripts: set[str] = set()
         for retired_script in RETIRED_SCRIPT_NAMES:
             if retired_script in text:
                 issues.append({"type": "retired_script_reference", "file": rel, "detail": retired_script})
+                flagged_scripts.add(Path(retired_script).name)
+        for bare_name, bare_re in bare_script_res:
+            if bare_name not in flagged_scripts and bare_re.search(text):
+                issues.append({"type": "retired_script_reference", "file": rel, "detail": bare_name})
 
     return {
         "valid": not issues,

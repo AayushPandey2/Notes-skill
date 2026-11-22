@@ -28,25 +28,54 @@ def scientific_svg(series: dict[str, list[tuple[float, float]]], *, title: str, 
     ymin, ymax = min(y for _, y in points), max(y for _, y in points)
     if xmin == xmax or ymin == ymax:
         raise ValueError("Plot needs nonzero axis ranges")
-    svg = ET.Element("svg", xmlns=NS, viewBox="0 0 720 440", role="img")
+    colors = ["#245ac6", "#b93b26", "#08795c", "#7434aa"]
+    # Pre-compute legend layout so long series names wrap cleanly without overlap.
+    legend_items: list[tuple[int, int, str, str]] = []
+    lx, ly, max_lx = 90, 418, 690
+    for i, name in enumerate(series):
+        item_w = max(120, 26 + len(name) * 8 + 20)
+        if lx > 90 and lx + item_w > max_lx:
+            lx = 90
+            ly += 22
+        legend_items.append((lx, ly, colors[i % len(colors)], name))
+        lx += item_w
+    height = max(440, ly + 22)
+    svg = ET.Element("svg", xmlns=NS, viewBox=f"0 0 720 {height}", role="img")
     ET.SubElement(svg, "title").text = title
-    ET.SubElement(svg, "rect", x="0", y="0", width="720", height="440", fill="white")
-    def label(x, y, text):
-        ET.SubElement(svg, "text", x=str(x), y=str(y), fill="#172033", **{"font-size": "14"}).text = text
-    label(70, 24, title)
-    ET.SubElement(svg, "path", d="M70 50 V360 H680", fill="none", stroke="#172033")
-    label(300, 428, xlabel)
-    label(5, 44, ylabel)
+    ET.SubElement(svg, "rect", x="0", y="0", width="720", height=str(height), fill="white")
+
+    def label(x, y, text, *, size: int = 14, anchor: str | None = None, transform: str | None = None):
+        attrs = {"x": str(x), "y": str(y), "fill": "#172033", "font-size": str(size)}
+        if anchor:
+            attrs["text-anchor"] = anchor
+        if transform:
+            attrs["transform"] = transform
+        ET.SubElement(svg, "text", **attrs).text = text
+
+    label(90, 24, title)
+    ET.SubElement(svg, "path", d="M90 55 V345 H680", fill="none", stroke="#172033")
+    label(385, 392, xlabel, anchor="middle")
+    # Place ylabel rotated along the left margin so it never collides with top y-ticks.
+    label(18, 200, ylabel, anchor="middle", transform="rotate(-90 18 200)")
     for i in range(6):
         x = xmin + (xmax - xmin) * i / 5
         y = ymin + (ymax - ymin) * i / 5
-        label(70 + i * 122, 385, f"{x:.3g}")
-        label(5, 360 - i * 62, f"{y:.3g}")
-    colors = ["#245ac6", "#b93b26", "#08795c", "#7434aa"]
-    for i, (name, values) in enumerate(series.items()):
-        coords = " ".join(f"{70+(x-xmin)/(xmax-xmin)*610:.4f},{360-(y-ymin)/(ymax-ymin)*310:.4f}" for x, y in values)
-        ET.SubElement(svg, "polyline", points=coords, fill="none", stroke=colors[i % len(colors)], **{"stroke-width": "2"})
-        label(90 + i * 150, 405, name)
+        label(90 + i * 118, 368, f"{x:.3g}", size=12, anchor="middle")
+        label(82, 349 - i * 58, f"{y:.3g}", size=12, anchor="end")
+    for (name, values), (item_x, item_y, color, _) in zip(series.items(), legend_items):
+        coords = " ".join(f"{90+(x-xmin)/(xmax-xmin)*590:.4f},{345-(y-ymin)/(ymax-ymin)*290:.4f}" for x, y in values)
+        ET.SubElement(svg, "polyline", points=coords, fill="none", stroke=color, **{"stroke-width": "2"})
+        ET.SubElement(
+            svg,
+            "line",
+            x1=str(item_x),
+            y1=str(item_y - 4),
+            x2=str(item_x + 20),
+            y2=str(item_y - 4),
+            stroke=color,
+            **{"stroke-width": "3"},
+        )
+        label(item_x + 26, item_y, name, size=13)
     return ET.tostring(svg, encoding="unicode")
 
 
@@ -55,16 +84,19 @@ def architecture_svg(components: list[dict[str, str]]) -> str:
             not isinstance(c,dict) or not isinstance(c.get("label"),str) or not c["label"]
             or not isinstance(c.get("shape"),str) or not c["shape"] for c in components):
         raise ValueError("Each component requires a label and tensor shape or interface")
-    width = 220 * len(components)
+    gap = 40
+    widths = [max(180, len(c["label"]) * 9 + 24, len(c["shape"]) * 9 + 24) for c in components]
+    width = 20 + sum(widths) + gap * (len(components) - 1)
     svg = ET.Element("svg", xmlns=NS, viewBox=f"0 0 {width} 160", role="img")
     ET.SubElement(svg, "title").text = "Ordered architecture and interfaces"
-    for i, component in enumerate(components):
-        x = i * 220 + 10
-        ET.SubElement(svg, "rect", x=str(x), y="30", width="180", height="90", rx="8", fill="#eef3ff", stroke="#245ac6")
+    x = 10
+    for i, (component, box_w) in enumerate(zip(components, widths)):
+        ET.SubElement(svg, "rect", x=str(x), y="30", width=str(box_w), height="90", rx="8", fill="#eef3ff", stroke="#245ac6")
         for y, field in ((60, "label"), (90, "shape")):
-            ET.SubElement(svg, "text", x=str(x + 8), y=str(y), **{"font-size": "13"}).text = component[field]
+            ET.SubElement(svg, "text", x=str(x + 12), y=str(y), **{"font-size": "13"}).text = component[field]
         if i + 1 < len(components):
-            ET.SubElement(svg, "path", d=f"M{x+180} 75 h35 l-6 -5 m6 5 l-6 5", fill="none", stroke="#172033")
+            ET.SubElement(svg, "path", d=f"M{x + box_w} 75 h35 l-6 -5 m6 5 l-6 5", fill="none", stroke="#172033")
+        x += box_w + gap
     return ET.tostring(svg, encoding="unicode")
 
 

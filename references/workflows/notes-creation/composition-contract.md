@@ -14,8 +14,12 @@ records, renderer execution, assessment coverage and repair/cache semantics.
 Use the configuration gate to establish intent, source policy, scope and audience.
 Treat its legacy concept/file preview as a provisional concept inventory for full
 topics. Before writing, allocate that inventory to one MOC and 5–10 subject-specific
-chapters in `6 - Full Notes/<Topic>/`. No nested chapter directories, glossary note,
-visual note, additional index, or internal manifest belongs in that folder.
+chapters in the vault-native `<Topic>/` layout resolved by `resolve_collection_layout`
+(honoring the user's configured `/scribe-setfolder` target folder, with
+`collection_layout="topic_folder_under_vault"` and `create_category_folders=false` by
+default so no category directory is auto-created unless explicitly opted in). No nested
+chapter directories, glossary note, visual note, additional index, or internal manifest
+belongs in that folder.
 History does not require a mathematics chapter. Keep whole derivations together.
 Omit `chapters` to use the prerequisite-aware adaptive planner. Inspect its
 `chapter_rationale`, workload estimates and overloads before authoring. Fewer than

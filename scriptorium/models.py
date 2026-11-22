@@ -145,6 +145,15 @@ def slugify(text: str) -> str:
     return s or "note"
 
 
+def heading_slug(text: str) -> str:
+    """Convert a Markdown heading to a GitHub/Obsidian-style anchor slug."""
+    s = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", str(text or "").strip())
+    s = s.replace("`", "").replace("*", "").replace("~", "").lower()
+    s = re.sub(r"[^\w\s-]", "", s, flags=re.UNICODE)
+    s = re.sub(r"\s+", "-", s.strip())
+    return s
+
+
 def content_hash(text: str | bytes) -> str:
     data = text.encode("utf-8") if isinstance(text, str) else text
     return hashlib.sha256(data).hexdigest()

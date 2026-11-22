@@ -56,6 +56,24 @@ For educational illustrations, external image discovery must occur **before** na
 3. **Route 3 — Download & validate:** Acquire, verify license (`CC0`, `CC BY`, `CC BY-SA`, etc.), validate image bytes, store under `assets/scriptorium/<collection-slug>/...`, and embed locally with caption and attribution.
 4. **Route 4 — Documented fallback:** Native SVG (`svg`, `graph`, `mask`, `coordinates`) is permitted only with an explicit `fallback_gate` (`lavia.evaluate_svg_fallback_gate`) recording `SEARCH_UNAVAILABLE` (when search tools are absent) or `NO_IMAGE_EXISTS` (with attempted queries and rejection reasons). Custom numeric plots matching chapter equations/data (`scientific`) are an explicit justified exception.
 
+## Beginner-first visual intelligence (BVIA)
+
+`composition/bvia.py` evaluates candidate cognitive accessibility
+(`evaluate_visual_accessibility`: `beginner_friendly`, `guided_intermediate`,
+`advanced_technical`, `unsuitable`), ranks external candidates with technical accuracy
+and permissive licensing as hard constraints (`rank_image_candidates`), orders
+multi-figure sequences along a progressive visual ladder (`plan_progressive_visuals`,
+Levels 0–6: orientation → simple conceptual → component identification → step-by-step
+mechanism → technical representation → advanced integrated view → analysis), and emits
+canonical visual teaching contracts (`build_visual_teaching_contract`).
+
+Every embedded figure must follow the **`Explain -> Show -> Decode -> Connect`**
+walkthrough (`compose_visual_walkthrough` / `validate_explain_show_decode_connect`):
+1. **Explain:** Introduce the concept and what to inspect before the embed.
+2. **Show:** Embed the verified local asset with a concise, descriptive caption.
+3. **Decode:** Walk through labeled components and define every diagram abbreviation or symbol in prose.
+4. **Connect:** Link the visual takeaway directly into the chapter's next mechanism or equation.
+
 ## Local-first source figures and LAVIA
 
 `source_figure` requires discovered `url`, original `source`, `rights`, `alt` and
@@ -75,11 +93,12 @@ specification-bound `.media.json` receipt. `local_preferred` and `offline_only`
 always emit local vault embeds (`![[...]]` or relative Markdown paths). Attribution
 appears beside the image; provenance stays in internal receipts and the LAVIA manifest.
 
-The dependency-free validators support noninterlaced 8-bit grayscale, RGB and alpha
-PNG (scanline reconstruction), sanitized UTF-8 SVG (strict element/attribute allowlist,
-no `<script>`, `on*`, `href`, `DOCTYPE`, or `url()`), bounded JPEG (SOF0/SOF2/EOI),
-and bounded WebP (`VP8 `/`VP8L`/`VP8X`). Limits are 8 MiB, four million pixels,
-maximum dimension 10,000, ten seconds per request and three redirects. Each redirect
+The dependency-free validators support 8-bit grayscale, RGB, indexed (`PLTE`), and alpha
+PNG—both noninterlaced and Adam7 interlaced (scanline reconstruction)—sanitized UTF-8 SVG
+(strict element/attribute allowlist, no `<script>`, `on*`, `href`, `DOCTYPE`, or `url()`),
+bounded JPEG (SOF0/SOF2/EOI), and bounded WebP (`VP8 `/`VP8L`/`VP8X`). Limits are 8 MiB,
+8 million pixels (`MAX_PIXELS = 8_000_000`), maximum dimension 10,000, ten seconds per
+request, and three redirects. Each redirect
 must remain HTTPS without credentials or alternate ports. DNS answers must all be
 global public addresses; the socket connects to a validated IP with the original TLS
 hostname, avoiding a second DNS resolution. HTTP status alone never establishes image validity.

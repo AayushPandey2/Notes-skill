@@ -127,3 +127,37 @@ def test_bvia_progressive_ladder_and_explain_show_decode_connect():
         host_candidates=[{"url": "https://example.org/enc.png", "source": "https://example.org/page", "rights": "CC BY 4.0"}],
     )
     assert routed["route"] == "external_image_download"
+
+
+def test_lavia_manifest_and_validation_handle_mermaid_and_block_remote_leaks(tmp_path):
+    from scriptorium.engines.composition.visuals import render_visuals
+
+    plan = {
+        "topic": "Attention Flow",
+        "collection_slug": "attention-flow",
+        "organize_by_collection": True,
+        "embed_style": "wikilink",
+        "concepts": [{"id": "c1", "depth": {"conceptual": 2, "algorithmic": 2}}],
+        "chapters": [{"id": "ch1", "title": "Flow", "path": "Attention Flow/01 - Flow.md", "concepts": ["c1"]}],
+        "visuals": [
+            {
+                "id": "flow-mmd",
+                "concept": "c1",
+                "section": "Flow",
+                "objective": "Show query-key-value flow",
+                "kind": "workflow",
+                "nodes": [{"id": "q", "label": "Query"}, {"id": "a", "label": "Attention"}],
+                "edges": [{"source": "q", "target": "a", "label": "dot"}],
+            }
+        ],
+    }
+    bodies, results = render_visuals(tmp_path, plan, {"ch1": "## Flow\n\nDetailed walkthrough.\n"}, execute=True)
+    assert results["flow-mmd"]["status"] == "verified"
+    manifest = lavia.build_asset_manifest(plan, results)
+    check = lavia.validate_collection_visuals(tmp_path, plan, bodies, manifest)
+    assert check["passed"] is True, check
+
+    leaked = {"ch1": bodies["ch1"] + "\n![leaked](https://cdn.example.org/hotlink.png)\n"}
+    leaked_check = lavia.validate_collection_visuals(tmp_path, plan, leaked, manifest)
+    assert leaked_check["passed"] is False
+    assert any("remote image URL embed forbidden" in err for err in leaked_check["errors"])

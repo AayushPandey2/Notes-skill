@@ -333,6 +333,10 @@ def build_asset_manifest(
         method = "external_download" if renderer == "external" else "deterministic_render"
         lifecycle = _lifecycle_from_result(result)
         suffix = Path(canonical_path).suffix.lstrip(".") if canonical_path else ""
+        try:
+            strategy = select_acquisition_strategy(visual) if visual else "deterministic_render"
+        except ValueError:
+            strategy = "blocked_invalid_strategy"
         entries.append({
             "asset_id": vid,
             "concept_id": cid,
@@ -342,7 +346,7 @@ def build_asset_manifest(
             "dependencies": list(visual.get("dependencies", [cid] if cid else [])),
             "acquisition": {
                 "method": method,
-                "strategy": select_acquisition_strategy(visual) if visual else "deterministic_render",
+                "strategy": strategy,
                 "original_source": provenance.get("source") or visual.get("source"),
                 "downloaded_from": provenance.get("final_url") or provenance.get("url") or visual.get("url"),
                 "license": provenance.get("rights") or visual.get("rights"),
@@ -395,9 +399,26 @@ def save_asset_manifest(vault: Path, manifest: dict[str, Any]) -> Path:
     return path
 
 
+def _strip_fenced_code(markdown: str) -> str:
+    lines: list[str] = []
+    fence: tuple[str, int] | None = None
+    for line in markdown.splitlines():
+        match = re.match(r"^\s*(`{3,}|~{3,})(.*)$", line)
+        if match:
+            token, suffix = match.groups()
+            if fence is None:
+                fence = (token[0], len(token))
+            elif token[0] == fence[0] and len(token) >= fence[1] and not suffix.strip():
+                fence = None
+        elif fence is None:
+            lines.append(line)
+    return "\n".join(lines)
+
+
 def _extract_local_embeds(markdown: str) -> list[str]:
-    wiki = re.findall(r"!\[\[([^\]|#]+)", markdown)
-    md = re.findall(r"!\[[^\]]*\]\(([^)]+)\)", markdown)
+    prose = _strip_fenced_code(markdown)
+    wiki = re.findall(r"!\[\[([^\]|#]+)", prose)
+    md = re.findall(r"!\[[^\]]*\]\(([^)]+)\)", prose)
     return wiki + md
 
 
@@ -414,6 +435,12 @@ def validate_collection_visuals(
     errors: list[str] = []
     chapters_by_id = {c["id"]: c for c in plan.get("chapters", [])}
     mime_by_ext = {f".{ext}": mime for mime, ext in SUPPORTED_MIMES.items()}
+
+    # Always scan all chapter bodies for leaked remote image URLs in local-first mode.
+    for key, body in bodies.items():
+        for target in _extract_local_embeds(body):
+            if target.startswith(("http://", "https://")):
+                errors.append(f"{key}: remote image URL embed forbidden ({target})")
 
     for entry in manifest.get("assets", []):
         aid = entry["asset_id"]
@@ -442,16 +469,20 @@ def validate_collection_visuals(
                 continue
 
         chid = entry.get("chapter_id")
-        body = bodies.get(chid, "")
-        embeds = _extract_local_embeds(body)
         chapter_path = chapters_by_id.get(chid, {}).get("path", "note.md")
-        rel_from_note = posixpath.relpath(rel, posixpath.dirname(chapter_path) or ".")
-        if rel not in embeds and rel_from_note not in embeds:
-            errors.append(f"{aid}: missing local embed in chapter {chid}")
-            continue
-        for target in embeds:
-            if target.startswith(("http://", "https://")):
-                errors.append(f"{chid}: remote image URL embed forbidden ({target})")
+        body = bodies.get(chid) if chid in bodies else bodies.get(chapter_path, "")
+        renderer = entry.get("acquisition", {}).get("renderer", "")
+        expected_embed = (entry.get("publication", {}).get("embed") or "").strip()
+        if renderer in {"mermaid", "table", "interactive"}:
+            if not expected_embed or expected_embed not in body:
+                errors.append(f"{aid}: missing embedded {renderer} visual in chapter {chid}")
+                continue
+        else:
+            embeds = _extract_local_embeds(body)
+            rel_from_note = posixpath.relpath(rel, posixpath.dirname(chapter_path) or ".")
+            if rel not in embeds and rel_from_note not in embeds:
+                errors.append(f"{aid}: missing local embed in chapter {chid}")
+                continue
         entry["verification"]["embed_resolution"] = "passed"
         entry["lifecycle_state"] = "publication_verified"
 

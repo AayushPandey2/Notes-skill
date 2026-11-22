@@ -9,8 +9,8 @@ Strip this block before emission.
 
 # M5 — Implementation, Algorithmic Design & Technical Verification Guide
 
-Invoked internally through `/scribe-notes` (locking code generation to the requested language when specified) for algorithm solutions, from-scratch implementations, framework walkthroughs, debugging guides, and build tutorials. Integrates `EIS-05` state narration, F11 implementation-staged progressive disclosure, F12 implementation/debugging outcomes, and mandatory Obsidian Properties.
-- **Header Block**: 5-key YAML frontmatter + `# DSA: <Problem Title>` (or `# <nn>. <Implementation Title>`) + `> [!abstract] Complexity Target & Core Invariant`.
+Invoked internally through `/scribe-notes` (locking code generation to the requested language when specified) for algorithm solutions, from-scratch implementations, framework walkthroughs, debugging guides, and build tutorials. Integrates `EIS-05` state narration, F11 implementation-staged progressive disclosure, F12 implementation/debugging outcomes, and mandatory line-1 Obsidian Properties ([properties-policy.md](../../metadata/properties-policy.md)).
+- **Header Block**: Line-1 Obsidian Properties YAML frontmatter (`topic`, `tags`, `master_topic`, `domain`, `note_type: implementation-guide`, plus optional `id`, `aliases`, `nexttopics`; strict 5-key YAML applies only to comprehensive M1 KCP v2 collections) + `# DSA: <Problem Title>` (or `# <nn>. <Implementation Title>`) + `> [!abstract] Complexity Target & Core Invariant`.
 
 ## 1. What is the exact problem, what are the constraints & what complexity target do they force? (Problem Specification & Envelope)
 
@@ -96,7 +96,7 @@ Contextual Activation Guide
 -->
 
 - **Context:** Name the spatial structure (pointers, window, stack, tree, DP grid) and tricky input being traced.
-- **Analysis:** Show the aligned ASCII or Mermaid state transitions across the key inflection steps.
+- **Analysis:** Show the aligned ASCII or Mermaid state transitions across the key inflection steps (if saving an image/SVG figure, persist it under `assets/scriptorium/<collection-slug>/` following [representations.md](../../workflows/notes-creation/representations.md)).
 - **Check:** State the invariant visible at every transition and the edge state that would violate it.
 
 See [authoring rules](../../../shared/authoring_rules.md), [math gates](../../../shared/math_gates.md), and [footer contract](../../../shared/footer_widgets.md).

@@ -105,11 +105,14 @@ def inspect_request(request: str, *, stack: list[str] | None = None) -> dict:
         raise ValueError(f"Usage: /{command} <{arg_hint}>")
 
     sources = [match.group().rstrip(".,;") for match in URL.finditer(payload)]
+    from scriptorium.engines.orchestration import _strip_negations, route_request, route_to_master
+
+    cleaned_payload, _, _ = _strip_negations(payload)
     route_names = "|".join(sorted(ROUTES, key=len, reverse=True))
     quote = "[" + chr(96) + "\"']?"
     explicit = re.search(
         rf"\btemplate\s*[:=]\s*{quote}({route_names}){quote}(?![\w-])"
-        rf"|\buse (?:the )?{quote}({route_names}){quote}\s+template\b", payload, re.I,
+        rf"|\buse (?:the )?{quote}({route_names}){quote}\s+template\b", cleaned_payload, re.I,
     )
     intent = next((route for pattern, route in (
         (r"^\s*(?:please\s+)?summari[sz]e\b", "summary"),
@@ -120,7 +123,7 @@ def inspect_request(request: str, *, stack: list[str] | None = None) -> dict:
         (r"\b(?:make|create|write|give me|generate)\b.*\bpaper breakdown\b", "paper-breakdown"),
         (r"\b(?:make|create|write|give me|generate)\b.*\bstudy\s?notes\b", "studynotes"),
         (r"^\s*(?:please\s+)?solve\b.*\bin\s+(?:c\+\+(?:20)?|cpp|python(?:3)?|rust|java|go)(?=\W|$)", "dsa"),
-    ) if re.search(pattern, payload, re.I)), None)
+    ) if re.search(pattern, cleaned_payload, re.I)), None)
     override = (explicit[1] or explicit[2]).lower() if explicit else intent
     if not language and override == "dsa":
         requested = re.search(r"\bin\s+(c\+\+(?:20)?|cpp|python(?:3)?|rust|java|go)(?=\W|$)", payload, re.I)
@@ -135,7 +138,6 @@ def inspect_request(request: str, *, stack: list[str] | None = None) -> dict:
         is_paper = source.path != "/" and source.path.startswith(prefixes)
         source_lock = "paper-breakdown" if is_paper else "summary"
     locked = LOCKS.get(command)
-    from scriptorium.engines.orchestration import route_request, route_to_master
 
     routed = route_request(raw, has_source=bool(sources), existing_command=command)
     if command == "scribe-notes":

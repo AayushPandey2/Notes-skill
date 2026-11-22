@@ -8,7 +8,6 @@ import sys
 sys.dont_write_bytecode = True
 
 import argparse
-import json
 from datetime import date
 from pathlib import Path
 
@@ -63,6 +62,7 @@ def render_syllabus_skeleton(
     allowed_subtopics: list[str] | None = None,
     excluded_topics: list[str] | None = None,
     tags: list[str] | None = None,
+    created: date | str | None = None,
 ) -> str:
     """Render a deterministic 00-MOC-<topic-slug>.md Syllabus & Learning Graph with Obsidian Properties."""
     allowed = [s.strip() for s in (allowed_subtopics or []) if s.strip()] or ["01-intro.md"]
@@ -86,6 +86,7 @@ def render_syllabus_skeleton(
             f"{topic} MOC",
         ],
         nexttopics=[],
+        created=created,
     )
 
     body_lines: list[str] = [
@@ -155,6 +156,7 @@ def render_routed_note(args: argparse.Namespace, note_id: str) -> str:
         note_id=note_id,
         aliases=aliases,
         nexttopics=nexttopics,
+        created=getattr(args, "created", None),
     )
     body = body_skeleton(route, args.math_level, args.number, args.title, narrow=args.narrow_practice)
     extra_lines: list[str] = []
@@ -176,8 +178,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--template", choices=ROUTES, help="Built-in route; defaults to adaptive deep study.")
     parser.add_argument("--math-level", type=int, choices=(0, 1, 2, 3), default=0)
     parser.add_argument("--language", help="Verification language, required for routed DSA notes.")
-    parser.add_argument("--area", help="Area (defaults to base domain).")
-    parser.add_argument("--created", type=date.fromisoformat, default=date.today())
+    parser.add_argument("--created", type=date.fromisoformat, default=None, help="Optional ISO creation date property.")
     parser.add_argument("--compared-notes", nargs="*", default=[])
     parser.add_argument("--narrow-practice", action="store_true", help="Use the shorter practice tier ranges.")
     parser.add_argument("--allowed-subtopics", nargs="*", default=[], help="Allowlisted subtopic filenames for --syllabus.")
@@ -194,9 +195,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--next-topic", help="Next topic wikilink.")
     parser.add_argument("--overwrite", action="store_true", help="Allow overwriting an existing file.")
     parser.add_argument("--dry-run", action="store_true", help="Print rendered skeleton without writing.")
-    parser.add_argument("--contract", type=Path, help="Optional JSON Decision Contract.")
     args = parser.parse_args(argv)
-    args.contract_data = json.loads(args.contract.read_text(encoding="utf-8")) if args.contract else None
 
     if args.template and (args.syllabus or args.overwrite):
         parser.error("--template cannot be used with --syllabus or --overwrite")
@@ -215,6 +214,7 @@ def main(argv: list[str] | None = None) -> int:
             allowed_subtopics=args.allowed_subtopics,
             excluded_topics=args.excluded_topics,
             tags=args.tags,
+            created=args.created,
         )
     elif args.template:
         if not args.title or "\n" in args.title or "\r" in args.title:

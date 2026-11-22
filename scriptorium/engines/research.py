@@ -1541,30 +1541,39 @@ class ResearchCache:
 # ---------------------------------------------------------------------------
 
 class ResearchEngine:
-    def composition_evidence_status(self, composition: dict[str, Any], evidence: dict[str, Any]) -> dict[str, Any]:
-        from ._composition import evidence_status
-        obligations = [o for c in composition["concepts"] for o in c["research_obligations"]]
-        return evidence_status(obligations, evidence)
-
     """Cohesive Engine E2 facade for ARRIE research planning, evidence verification, curation, caching, and citation audit."""
 
     def __init__(self, cache_dir: Path | None = None):
         self.cache = ResearchCache(cache_dir=cache_dir)
 
+    def composition_evidence_status(self, composition: dict[str, Any], evidence: dict[str, Any]) -> dict[str, Any]:
+        from ._composition import evidence_status
+        obligations = [o for c in composition["concepts"] for o in c["research_obligations"]]
+        return evidence_status(obligations, evidence)
+
     def plan(self, topic: str, instructional_plan: dict[str, Any], **kwargs: Any) -> dict[str, Any]:
-        return build_research_plan(topic, instructional_plan, **kwargs)
+        return plan_research(topic, instructional_plan, **kwargs)
 
     def normalize_registry(self, registry: dict[str, Any], **kwargs: Any) -> dict[str, Any]:
         return normalize_evidence_registry(registry, **kwargs)
 
-    def audit_citations(self, note_text: str, evidence_registry: dict[str, Any], **kwargs: Any) -> list[dict[str, Any]]:
-        return audit_note_citations(note_text, evidence_registry, **kwargs)
+    def audit_citations(self, note_text: str, evidence_registry: dict[str, Any], **kwargs: Any) -> list[tuple[int, str]]:
+        return validate_note_citations(note_text, evidence_registry, **kwargs)
 
     def package(self, research_plan: dict[str, Any], evidence_registry: dict[str, Any], **kwargs: Any) -> dict[str, Any]:
         return build_research_package(research_plan, evidence_registry, **kwargs)
 
-    def curate_resources(self, topic: str, resources: list[dict[str, Any]], **kwargs: Any) -> dict[str, Any]:
-        return curate_learning_resources(topic, resources, **kwargs)
+    def curate_resources(
+        self,
+        topic_or_resources: str | list[dict[str, Any]],
+        resources: list[dict[str, Any]] | None = None,
+        **kwargs: Any,
+    ) -> dict[str, Any]:
+        if isinstance(topic_or_resources, list) and resources is None:
+            candidates = topic_or_resources
+        else:
+            candidates = list(resources or [])
+        return curate_learning_resources(candidates, **kwargs)
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)

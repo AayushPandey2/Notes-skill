@@ -14,7 +14,6 @@ if str(REPO_ROOT) not in sys.path:
 if str(REPO_ROOT / "scripts") not in sys.path:
     sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
-from scriptorium.engines.knowledge import KnowledgeEngine
 from scriptorium.engines.orchestration import OrchestrationEngine
 from scriptorium.engines.pedagogy import PedagogyEngine
 from scriptorium.engines.quality import QualityEngine
@@ -22,6 +21,23 @@ from scriptorium.engines import research as research_mod
 from scriptorium.engines import _pedagogical_core as ped_core_mod
 from scriptorium.engines.vault import VaultEngine
 from scriptorium.models import dump_frontmatter
+
+
+def _resolve_compose_vault(explicit_vault: Path | None) -> Path | None:
+    """Resolve explicit --vault, or honor configured vault + resolve_notes_folder()."""
+    if explicit_vault is not None:
+        return explicit_vault
+    try:
+        from vault_index import resolve_notes_folder, resolve_vault_root
+        vault_root = resolve_vault_root(None)
+        notes_folder = resolve_notes_folder(vault_root)
+        if notes_folder:
+            candidate = vault_root / notes_folder
+            if candidate.is_dir():
+                return candidate
+        return vault_root
+    except (ValueError, OSError):
+        return None
 
 
 def _composition_preferences(spec):
@@ -96,6 +112,7 @@ def main(argv: list[str] | None = None) -> int:
     pn_comp.add_argument("--publish", action="store_true")
     pn_comp.add_argument("--prepare", action="store_true", help="Render assets and insert planned tables/questions; output chapter bodies to review.")
     pn_comp.add_argument("--repair", action="append", default=[], help="Failed obligation ID for a dependency-aware repair plan; repeat as needed.")
+    pn_comp.add_argument("--repair-visuals", action="store_true", help="Repair only missing, corrupted, or dependency-impacted LAVIA visual assets.")
     pn_comp.add_argument("--context", action="append", default=[], help="Compile selective authoring context for a concept ID; repeat as needed.")
     pn_comp.add_argument("--validate", action="store_true", help="Validate a previously published composition without writing.")
 
@@ -245,8 +262,8 @@ def main(argv: list[str] | None = None) -> int:
                 ped = PedagogyEngine()
                 spec = json.loads(args.spec.read_text(encoding="utf-8-sig"))
                 composition = ped.plan_composition(spec)
-                if sum(bool(x) for x in (args.prepare, args.publish, args.validate, args.repair, args.context)) > 1:
-                    raise ValueError("Choose one of --prepare, --publish, --validate, --context or --repair")
+                if sum(bool(x) for x in (args.prepare, args.publish, args.validate, args.repair, args.repair_visuals, args.context)) > 1:
+                    raise ValueError("Choose one of --prepare, --publish, --validate, --context, --repair or --repair-visuals")
                 if args.context:
                     from scriptorium.engines.composition import compile_context
                     print(json.dumps(compile_context(composition, args.context), indent=2, ensure_ascii=False))
@@ -255,31 +272,67 @@ def main(argv: list[str] | None = None) -> int:
                     from scriptorium.engines.composition.contracts import repair_plan
                     print(json.dumps(repair_plan(composition, args.repair), indent=2, ensure_ascii=False))
                     return 0
+                if args.repair_visuals:
+                    vault_dir = _resolve_compose_vault(args.vault)
+                    if not vault_dir:
+                        raise ValueError("Visual repair requires --vault")
+                    from scriptorium.engines.composition import contained, lavia
+                    from scriptorium.models import parse_note, slugify
+                    slug = slugify(composition.get("collection_slug") or composition["topic"])
+                    manifest_path = contained(vault_dir, f"assets/scriptorium/{slug}/manifest.json")
+                    if manifest_path.is_file():
+                        manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
+                    else:
+                        state_path = contained(vault_dir, f".scriptorium/collections/col-{slugify(composition['topic'])}.json")
+                        if not state_path.is_file():
+                            raise ValueError(f"No LAVIA manifest or collection state found for '{composition['topic']}'")
+                        state = json.loads(state_path.read_text(encoding="utf-8-sig"))
+                        manifest = state.get("manifest") or lavia.build_asset_manifest(
+                            composition, state.get("renderers", {}), collection_slug=composition.get("collection_slug")
+                        )
+                    if args.drafts:
+                        bodies = json.loads(args.drafts.read_text(encoding="utf-8-sig"))
+                    else:
+                        bodies = {
+                            c["id"]: parse_note(contained(vault_dir, c["path"]).read_text(encoding="utf-8-sig")).body.strip() + "\n"
+                            for c in composition["chapters"]
+                            if contained(vault_dir, c["path"]).is_file()
+                        }
+                    repaired = lavia.repair_visual_assets(vault_dir, composition, bodies, manifest, execute=True)
+                    if composition.get("organize_by_collection") or composition.get("collection_slug") or manifest_path.is_file():
+                        lavia.save_asset_manifest(vault_dir, repaired["manifest"])
+                    print(json.dumps({"repaired_ids": repaired["repaired_ids"], "manifest": repaired["manifest"]}, indent=2, ensure_ascii=False))
+                    return 0
                 if args.prepare:
-                    if not args.vault or not args.drafts:
+                    vault_dir = _resolve_compose_vault(args.vault)
+                    if not vault_dir or not args.drafts:
                         raise ValueError("Preparation requires --vault and --drafts")
                     from scriptorium.engines._composition import prepare_composition
-                    bodies, renderers = prepare_composition(args.vault, composition, json.loads(args.drafts.read_text(encoding="utf-8-sig")))
-                    print(json.dumps({"drafts": bodies, "renderers": renderers, "obligations": composition["obligations"]}, indent=2, ensure_ascii=False))
+                    from scriptorium.engines.composition import lavia
+                    bodies, renderers = prepare_composition(vault_dir, composition, json.loads(args.drafts.read_text(encoding="utf-8-sig")))
+                    manifest = lavia.build_asset_manifest(composition, renderers, collection_slug=composition.get("collection_slug"))
+                    print(json.dumps({"drafts": bodies, "renderers": renderers, "manifest": manifest, "obligations": composition["obligations"]}, indent=2, ensure_ascii=False))
                     return 0 if all(r["status"] == "verified" for r in renderers.values()) else 1
                 if args.validate and not args.publish:
-                    if not args.vault:
+                    vault_dir = _resolve_compose_vault(args.vault)
+                    if not vault_dir:
                         raise ValueError("Validation requires --vault")
                     from scriptorium.engines._composition import validate_published_composition
-                    result = validate_published_composition(args.vault, composition)
+                    result = validate_published_composition(vault_dir, composition)
                     print(json.dumps(result, indent=2, ensure_ascii=False))
                     return 0 if result["valid"] else 1
                 if not args.publish:
                     print(json.dumps(composition, indent=2, ensure_ascii=False))
                     return 0
-                if not all((args.vault, args.drafts, args.evidence, args.reviews)):
+                vault_dir = _resolve_compose_vault(args.vault)
+                if not all((vault_dir, args.drafts, args.evidence, args.reviews)):
                     raise ValueError("Publication requires --vault, --drafts, --evidence, and --reviews")
                 def read_json(path):
                     return json.loads(path.read_text(encoding="utf-8-sig"))
                 from scriptorium.engines._composition import to_collection_plan
                 plan = to_collection_plan(composition)
-                kcp = orch.build_kcp(args.vault, plan, _composition_preferences(spec), include_synthesis=False)
-                result = vault.publish_composition(args.vault, kcp.composition, read_json(args.drafts),
+                kcp = orch.build_kcp(vault_dir, plan, _composition_preferences(spec), include_synthesis=False)
+                result = vault.publish_composition(vault_dir, kcp.composition, read_json(args.drafts),
                     evidence=read_json(args.evidence), reviews=read_json(args.reviews),
                     expected_hashes=read_json(args.expected_hashes) if args.expected_hashes else None)
                 print(json.dumps(result, indent=2, ensure_ascii=False))

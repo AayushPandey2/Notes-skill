@@ -967,12 +967,6 @@ def audit_modern_note(note_text: str, contract: dict[str, Any]) -> list[tuple[in
     return findings
 
 
-def from_legacy(item: dict[str, Any], contract: dict[str, Any] | None = None) -> dict[str, Any]:
-    """Deprecated forwarding wrapper to legacy_contract_adapter.from_legacy for isolated compatibility."""
-    from scriptorium.engines._instructional import from_legacy as _adapter_from_legacy
-    return _adapter_from_legacy(item, contract)
-
-
 def coverage_errors(plan: dict[str, Any], report: dict[str, Any] | None, draft: str) -> list[str]:
     """Check inventory receipts structurally; the author still verifies evidence."""
     sources = {s["id"]: s for s in plan.get("sources", [])}
@@ -984,8 +978,8 @@ def coverage_errors(plan: dict[str, Any], report: dict[str, Any] | None, draft: 
     # Mask fenced code so a heading inside an example cannot pass as coverage.
     from scriptorium.engines._verification import split_blocks
     _, prose = split_blocks(draft)
-    from verify_vault_notes import _heading_slug
-    anchors = {_heading_slug(m[1]) for line in prose if (m := re.match(r"^#{1,6}\s+(.+)$", line))}
+    from scriptorium.models import heading_slug
+    anchors = {heading_slug(m[1]) for line in prose if (m := re.match(r"^#{1,6}\s+(.+)$", line))}
     receipts = {}
     errors = []
     for receipt in elements:
@@ -1002,7 +996,7 @@ def coverage_errors(plan: dict[str, Any], report: dict[str, Any] | None, draft: 
         if source["required"] and (source["access"] != "full" or sid not in receipts):
             errors.append(f"{sid}: required source element is inaccessible or not validated")
     if plan.get("source_policy") in {"strict", "expanded"}:
-        positions = {_heading_slug(m[1]): i for i, line in enumerate(prose) if (m := re.match(r"^#{1,6}\s+(.+)$", line))}
+        positions = {heading_slug(m[1]): i for i, line in enumerate(prose) if (m := re.match(r"^#{1,6}\s+(.+)$", line))}
         order = [positions[receipts[sid]["anchor"]] for sid, source in sources.items()
                  if source["required"] and sid in receipts and receipts[sid].get("anchor") in positions]
         if order != sorted(order):

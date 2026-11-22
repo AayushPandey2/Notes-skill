@@ -252,14 +252,35 @@ def build_composition(spec: dict[str, Any]) -> dict[str, Any]:
     hierarchy = classify_knowledge_hierarchy(topic, content=" ".join(c["title"] for c in concepts),
         explicit_domain=classification.get("domain"), explicit_master_topic=classification.get("subject"),
         explicit_subdomain=classification.get("subdomain"))
-    return extend_plan({"version": 2, "validator_version": validator_version, "output_profile": PROFILE, "topic": topic, "source_policy": policy,
-            "classification": hierarchy, "chapter_rationale": rationale,
-            "folder": folder, "moc_path": moc_path,
-            "chapters": chapters, "concepts": list(ordered.values()),
-            "notation": deepcopy(spec.get("notation", {})),
-            "visuals": visuals, "tables": deepcopy(spec.get("tables", [])),
-            "spec_hash": content_hash(json.dumps(spec, sort_keys=True)),
-            "review_required": ["factual_accuracy", "derivation_correctness", "reader_simulation", "cross_chapter_coherence"]}, spec)
+    plan_payload: dict[str, Any] = {
+        "version": 2,
+        "validator_version": validator_version,
+        "output_profile": PROFILE,
+        "topic": topic,
+        "source_policy": policy,
+        "classification": hierarchy,
+        "chapter_rationale": rationale,
+        "folder": folder,
+        "moc_path": moc_path,
+        "chapters": chapters,
+        "concepts": list(ordered.values()),
+        "notation": deepcopy(spec.get("notation", {})),
+        "visuals": visuals,
+        "tables": deepcopy(spec.get("tables", [])),
+        "spec_hash": content_hash(json.dumps(spec, sort_keys=True)),
+        "review_required": ["factual_accuracy", "derivation_correctness", "reader_simulation", "cross_chapter_coherence"],
+    }
+    for key in ("web_image_first", "collection_slug", "organize_by_collection", "embed_style", "learner_level", "enforce_bvia_walkthrough"):
+        if key in spec and spec[key] is not None:
+            plan_payload[key] = spec[key]
+    if plan_payload.get("organize_by_collection") and not plan_payload.get("collection_slug"):
+        plan_payload["collection_slug"] = slugify(topic)
+    plan = extend_plan(plan_payload, spec)
+    from . import bvia, lavia
+    plan["visual_coverage"] = lavia.plan_visual_coverage(plan)
+    if plan.get("learner_level") and plan.get("visuals"):
+        plan["progressive_visual_order"] = [v["id"] for v in bvia.plan_progressive_visuals(plan["visuals"])]
+    return plan
 
 
 def resolve_collection_layout(
@@ -399,9 +420,14 @@ def render_moc(plan: dict[str, Any]) -> str:
                 lines.append(f'    {ids[dep]} --> {ids[concept["id"]]}')
     lines += ["```", "", "| Concept | Canonical chapter | Prerequisites |", "|---|---|---|"]
     owners = {cid: chapter for chapter in plan["chapters"] for cid in chapter["concepts"]}
+    titles_by_id = {c["id"]: c["title"] for c in plan["concepts"]}
     for concept in plan["concepts"]:
         chapter = owners[concept["id"]]
-        prerequisites = ", ".join(f"{r['id']} ({r['classification']})" for r in concept.get("prerequisite_records", [])) or "none"
+        prereq_labels = [
+            titles_by_id[r["id"]] if r["id"] in titles_by_id else r["id"].replace("_", " ")
+            for r in concept.get("prerequisite_records", [])
+        ]
+        prerequisites = ", ".join(prereq_labels) or "none"
         lines.append(f"| {concept['title']} | [[{Path(chapter['path']).stem}#{concept.get('section', chapter['title'])}|{chapter['title']}]] | {prerequisites} |")
     return "\n".join([*lines, ""])
 
@@ -454,6 +480,30 @@ def validate_chapter(text: str, *, required_sections: list[str] | None = None) -
     prose = "\n".join(prose_lines)
     if prose.count("$$") % 2:
         errors.append("unclosed display mathematics")
+    prose_no_inline = re.sub(r"`[^`\n]*`", "", prose)
+    has_tab_in_math = any("\t" in m.group(1) for m in re.finditer(r"\$\$(.*?)\$\$", prose_no_inline, re.S))
+    if not has_tab_in_math:
+        prose_no_display = re.sub(r"\$\$.*?\$\$", "", prose_no_inline, flags=re.S)
+        has_tab_in_math = any(
+            "\t" in m.group(1)
+            for m in re.finditer(r"(?<!\\)\$(?!\$)([^$\n]+?)(?<!\\)\$", prose_no_display)
+        )
+    if has_tab_in_math:
+        errors.append("raw TAB character inside LaTeX math span")
+    nonempty_prose = [line.strip() for line in prose_lines if line.strip()]
+    for prev_line, next_line in zip(nonempty_prose, nonempty_prose[1:]):
+        m1 = re.match(r"^#\s+(.+?)\s*$", prev_line)
+        m2 = re.match(r"^##\s+(.+?)\s*$", next_line)
+        if m1 and m2 and m1.group(1).strip().casefold() == m2.group(1).strip().casefold():
+            errors.append(f"duplicate immediate H1/H2 heading: {m1.group(1).strip()}")
+            break
+    if re.search(
+        r"\b[a-z][a-z0-9_-]*(?:\.[a-z0-9_-]+)+\s*\((?:covered|assumed|missing|essential|supporting|optional)\)"
+        r"|\b[a-z]+\d+\s*\((?:covered|assumed|missing|essential|supporting|optional)\)",
+        prose_no_inline,
+        re.I,
+    ):
+        errors.append("leaked internal concept/prerequisite ID")
     for section in required_sections or []:
         if section not in [s.heading.lstrip("# ") for s in note.sections]:
             errors.append(f"missing planned section: {section}")
@@ -620,6 +670,61 @@ def inspect_assets(vault: Path, documents: dict[str, str], renderers: dict[str, 
     return errors, hashes
 
 
+def _validate_local_first_visuals(
+    vault: Path,
+    plan: dict[str, Any],
+    drafts: dict[str, str],
+    renderers: dict[str, Any],
+    *,
+    require_manifest_file: bool = False,
+) -> tuple[dict[str, Any], list[str]]:
+    from . import bvia, lavia
+    manifest = lavia.build_asset_manifest(plan, renderers, collection_slug=plan.get("collection_slug"))
+    errors: list[str] = []
+    if plan.get("web_image_first") or plan.get("organize_by_collection"):
+        lavia_check = lavia.validate_collection_visuals(vault, plan, drafts, manifest)
+        errors.extend(lavia_check["errors"])
+        for cid, body in drafts.items():
+            note = parse_note(body)
+            lines = note.body.splitlines()
+            for block in note.code_blocks:
+                for idx in range(block["start_line"], min(len(lines), block["end_line"] + 1)):
+                    lines[idx] = ""
+            prose = "\n".join(lines)
+            for target in re.findall(r"!\[\[([^\]|#]+)", prose):
+                if target.strip().startswith(("http://", "https://")):
+                    msg = f"{cid}: remote image URL embed forbidden ({target.strip()})"
+                    if msg not in errors:
+                        errors.append(msg)
+            try:
+                for _, target in markdown_image_targets(prose):
+                    if target.strip().startswith(("http://", "https://")):
+                        msg = f"{cid}: remote image URL embed forbidden ({target.strip()})"
+                        if msg not in errors:
+                            errors.append(msg)
+            except ValueError:
+                pass
+        if require_manifest_file and (plan.get("organize_by_collection") or plan.get("collection_slug")):
+            slug = slugify(plan.get("collection_slug") or plan["topic"])
+            rel = f"assets/scriptorium/{slug}/manifest.json"
+            if not contained(vault, rel).is_file():
+                errors.append(f"missing LAVIA asset manifest: {rel}")
+    if plan.get("enforce_bvia_walkthrough") or any(v.get("require_walkthrough") for v in plan.get("visuals", [])):
+        owners = {cid: ch["id"] for ch in plan.get("chapters", []) for cid in ch.get("concepts", [])}
+        for visual in plan.get("visuals", []):
+            if not (plan.get("enforce_bvia_walkthrough") or visual.get("require_walkthrough")):
+                continue
+            chid = owners.get(visual.get("concept", ""), "")
+            check = bvia.validate_explain_show_decode_connect(
+                drafts.get(chid, ""),
+                visual,
+                terminology_registry=plan.get("notation"),
+            )
+            if not check["passed"]:
+                errors.extend(f"{visual['id']}: {e}" for e in check["errors"])
+    return manifest, errors
+
+
 def publish_composition(vault: Path, plan: dict[str, Any], drafts: dict[str, str], *,
                         evidence: dict[str, Any], reviews: dict[str, Any],
                         expected_hashes: dict[str, str] | None = None) -> dict[str, Any]:
@@ -631,6 +736,7 @@ def publish_composition(vault: Path, plan: dict[str, Any], drafts: dict[str, str
     from ..vault import safe_write_note
     from .contracts import validate_obligations
     from .._token_optimizer import MultiLevelCache
+    from . import lavia
     if not all(isinstance(value, dict) for value in (plan, drafts, evidence, reviews)) or any(not isinstance(body, str) for body in drafts.values()):
         raise ValueError("Plan, drafts, evidence and reviews must be JSON objects; draft bodies must be strings")
     plan = deepcopy(plan)
@@ -658,6 +764,8 @@ def publish_composition(vault: Path, plan: dict[str, Any], drafts: dict[str, str
     errors.extend(wikilink_errors(vault, documents))
     asset_errors, asset_hashes = inspect_assets(vault, documents, visual_results)
     errors.extend(asset_errors)
+    visual_manifest, lavia_errors = _validate_local_first_visuals(vault, plan, drafts, visual_results)
+    errors.extend(lavia_errors)
     current_hashes = {}
     for relative, text in documents.items():
         target = contained(vault, relative)
@@ -668,7 +776,7 @@ def publish_composition(vault: Path, plan: dict[str, Any], drafts: dict[str, str
         validation["outcomes"]["structural"] = {"status": "fail" if len(errors) > semantic_error_count else "pass",
                                                    "method": "YAML, sections, fences, links, assets and expected digests"}
         report = {"complete": False, "errors": errors, "written_paths": [], "validation": validation, "renderers": visual_results,
-                  "reviews": reviews, "evidence": evidence}
+                  "manifest": visual_manifest, "reviews": reviews, "evidence": evidence}
         report_path = contained(vault, f".scriptorium/validation/col-{slugify(plan['topic'])}.json")
         report_path.parent.mkdir(parents=True, exist_ok=True)
         safe_write_note(report_path, json.dumps(report, indent=2, ensure_ascii=False), validate_properties=False)
@@ -676,7 +784,7 @@ def publish_composition(vault: Path, plan: dict[str, Any], drafts: dict[str, str
     state_path = contained(vault, f".scriptorium/collections/col-{slugify(plan['topic'])}.json")
     state = {"composition": plan, "spec_hash": plan["spec_hash"], "evidence": evidence, "reviews": reviews,
              "checkpoints": {}, "asset_hashes": asset_hashes, "complete": False, "errors": [],
-             "validation": validation, "renderers": visual_results}
+             "validation": validation, "renderers": visual_results, "manifest": visual_manifest}
     state["validation"]["outcomes"]["structural"] = {"status": "pass", "method": "YAML, sections, fences, links, assets and expected digests"}
     state_path.parent.mkdir(parents=True, exist_ok=True)
     written = []
@@ -693,6 +801,8 @@ def publish_composition(vault: Path, plan: dict[str, Any], drafts: dict[str, str
             state["errors"].append(f"{relative}: {exc}")
             checkpoint()
             return {**state, "written_paths": written}
+    if plan.get("organize_by_collection") or plan.get("collection_slug"):
+        lavia.save_asset_manifest(vault, visual_manifest)
     state["complete"] = True
     checkpoint()
     return {**state, "written_paths": written}
@@ -702,13 +812,21 @@ def prepare_composition(vault: Path, plan: dict[str, Any], drafts: dict[str, str
     """Prepare the actual artifact before review; returned bodies are the receipt subjects."""
     from .contracts import prepare_drafts
     from .visuals import render_visuals
+    from . import lavia
     bodies = prepare_drafts(plan, drafts)
     bodies, results = render_visuals(vault, plan, bodies, execute=execute)
+    manifest = lavia.build_asset_manifest(plan, results, collection_slug=plan.get("collection_slug"))
     if execute:
         from ..vault import safe_write_note
         path = contained(vault, f".scriptorium/renderers/col-{slugify(plan['topic'])}.json")
         path.parent.mkdir(parents=True, exist_ok=True)
-        safe_write_note(path, json.dumps({"spec_hash": plan["spec_hash"], "renderers": results}, indent=2), validate_properties=False)
+        safe_write_note(
+            path,
+            json.dumps({"spec_hash": plan["spec_hash"], "renderers": results, "manifest": manifest}, indent=2),
+            validate_properties=False,
+        )
+        if plan.get("organize_by_collection") or plan.get("collection_slug"):
+            lavia.save_asset_manifest(vault, manifest)
     return {cid: body.strip() + "\n" for cid, body in bodies.items()}, results
 
 
@@ -730,7 +848,16 @@ def compile_context(plan: dict[str, Any], concept_ids: list[str]) -> dict[str, A
     types = {"conceptual"}
     for concept in active:
         for cap in concept["capabilities"]:
-            types.add({"S02": "mathematical", "S03": "computational", "S04": "computational", "S07": "empirical", "S11": "historical"}.get(cap, "conceptual"))
+            types.add({
+                "S02": "mathematical",
+                "S03": "computational",
+                "S04": "computational",
+                "S05": "computational",
+                "S06": "empirical",
+                "S07": "scientific",
+                "S11": "historical",
+                "S16": "scientific",
+            }.get(cap, "conceptual"))
     bundle = select_context_bundle(master="M1", knowledge_types=sorted(types), source_policy=plan["source_policy"],
                                    has_source=any(c.get("claims") for c in active),
                                    math_depth=max(c["depth_allocation"]["levels"]["mathematical"] for c in active),
@@ -825,7 +952,7 @@ def validate_published_composition(vault: Path, plan: dict[str, Any]) -> dict[st
         if not path.is_file() or content_hash(path.read_bytes()) != expected:
             errors.append(f"asset changed since review: {relative}")
     folder = contained(vault, plan["folder"])
-    if folder.is_dir() and {p.name for p in folder.iterdir()} != {Path(p).name for p in paths}:
+    if plan["folder"] and folder.is_dir() and {p.name for p in folder.iterdir()} != {Path(p).name for p in paths}:
         errors.append(f"topic folder must contain only the {len(paths)} planned Markdown files")
     obligations = [o for c in plan["concepts"] for o in c["research_obligations"]]
     if not evidence_status(obligations, state.get("evidence", {}))["sufficient"]:
@@ -844,10 +971,14 @@ def validate_published_composition(vault: Path, plan: dict[str, Any]) -> dict[st
         if not recorded.get("attempted") or recorded.get("status") != "verified" or recorded.get("hash") != result.get("hash"):
             result["status"] = "failed"
             result["failure_reason"] = "missing persisted renderer execution result"
+    visual_manifest, lavia_errors = _validate_local_first_visuals(
+        vault, plan, drafts, renderers, require_manifest_file=True,
+    )
+    errors.extend(lavia_errors)
     validation = validate_obligations(plan, drafts, evidence=state.get("evidence", {}), reviews=state.get("reviews", {}),
                                       visuals=renderers, vault=vault)
     structural_valid = not errors
     errors.extend(validation["errors"])
     validation["outcomes"]["structural"] = {"status": "pass" if structural_valid else "fail", "method": "published file, link and hash checks"}
-    return {"valid": not errors, "errors": errors, "validation": validation,
+    return {"valid": not errors, "errors": errors, "validation": validation, "manifest": visual_manifest,
             "review_scope": "scoped computations and artifact-bound recorded semantic review; no universal proof or source-entailment certification"}

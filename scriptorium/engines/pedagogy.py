@@ -456,13 +456,34 @@ class PedagogyEngine:
         return verify_numerical_trace(trace, rule=rule, alpha=alpha)
 
     # Hierarchical Topic Decomposition & Collection Planning
-    def plan_collection(self, preferences: Any, *, source_sections: list[str] | None = None, existing_notes: list[str] | None = None):
+    def plan_collection(
+        self,
+        topic: str,
+        preferences: Any,
+        *,
+        scope: dict[str, Any] | None = None,
+        source_sections: list[dict[str, str]] | list[str] | None = None,
+        existing_notes: list[str] | None = None,
+    ):
         from scriptorium.engines._interactive import plan_note_collection
-        return plan_note_collection(preferences, source_sections=source_sections, existing_notes=existing_notes)
+        normalized_sections: list[dict[str, str]] | None = None
+        if source_sections is not None:
+            normalized_sections = [
+                {"title": s} if isinstance(s, str) else s for s in source_sections
+            ]
+        return plan_note_collection(
+            topic,
+            preferences,
+            scope=scope,
+            source_sections=normalized_sections,
+        )
 
-    def format_collection_preview(self, plan: Any) -> str:
-        from scriptorium.engines._interactive import format_collection_preview
-        return format_collection_preview(plan)
+    def format_collection_preview(self, plan: Any, preferences: Any | None = None) -> str:
+        from scriptorium.engines._interactive import ResolvedNotePreferences, format_collection_preview
+        prefs = preferences or ResolvedNotePreferences(
+            "Structured understanding", "M1", None, "standard", {}, plan.organization, [], "adaptive"
+        )
+        return format_collection_preview(plan, prefs)
 
     def modify_collection_plan(self, plan: Any, instruction: str):
         from scriptorium.engines._interactive import modify_collection_plan
