@@ -227,3 +227,49 @@ def test_transformer_regression_local_first_pipeline_and_targeted_repair(tmp_pat
     assert (tmp_path / broken_rel).is_file()
     recheck = lavia.validate_collection_visuals(tmp_path, plan, repaired["bodies"], repaired["manifest"])
     assert recheck["passed"] is True, recheck
+
+
+def test_web_image_first_policy_and_svg_fallback_gate(tmp_path):
+    req = lavia.build_image_research_request(
+        job_id="job-1",
+        chapter_id="ch5",
+        concept_id="t.encoder",
+        objective="Illustrate encoder self-attention and residual FFN",
+        subject="Transformer encoder block",
+        queries=["Transformer encoder self-attention diagram", "Transformer encoder layer Creative Commons"],
+    )
+    assert req["schema_version"] == "image-research-request/v1"
+    assert len(req["search_queries"]) == 2
+
+    # Gate blocks undocumented SVG generation when web_image_first=True
+    undocumented_plan = {
+        "topic": "Gate Test",
+        "web_image_first": True,
+        "chapters": [{"id": "ch1", "concepts": ["c1"]}],
+        "visuals": [{"id": "v1", "concept": "c1", "section": "Arch", "objective": "Show blocks", "kind": "architecture", "components": [{"label": "A", "shape": "B"}]}],
+    }
+    _, res = render_visuals(tmp_path, undocumented_plan, {"ch1": "## Arch\n\nSome text.\n"}, execute=True)
+    assert res["v1"]["status"] == "failed"
+    assert "fallback_gate" in res["v1"]["failure_reason"]
+
+    # Route 4 with documented NO_IMAGE_EXISTS permits fallback cleanly
+    routed = lavia.resolve_visual_route(
+        undocumented_plan["visuals"][0],
+        search_available=True,
+        fallback_decision={
+            "search_status": "NO_IMAGE_EXISTS",
+            "queries_attempted": ["custom block diagram"],
+            "justification": "No openly licensed diagram matches this exact toy block interface.",
+        },
+    )
+    assert routed["route"] == "documented_fallback"
+    documented_plan = {**undocumented_plan, "visuals": [routed["visual"]]}
+    bodies, res2 = render_visuals(tmp_path, documented_plan, {"ch1": "## Arch\n\n" + ("Detailed explanation of blocks and tensor flow. " * 4) + "\n"}, execute=True)
+    assert res2["v1"]["status"] == "verified"
+
+    ob_check = lavia.verify_visual_obligations(
+        [{"obligation_id": "ob1", "chapter_id": "ch1", "local_asset_path": res2["v1"]["path"], "acquisition_status": "documented_fallback"}],
+        bodies,
+        tmp_path,
+    )
+    assert ob_check["passed"] is True, ob_check

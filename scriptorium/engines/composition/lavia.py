@@ -39,10 +39,166 @@ COVERAGE_CATEGORIES = (
     "failure_conditions",
 )
 
+SEARCH_STATUSES = ("FOUND", "NO_IMAGE_EXISTS", "SEARCH_UNAVAILABLE")
+
 STRATEGY_MAP = {
     "external": "retrieve_figure",
     "imagegen": "conceptual_illustration",
 }
+
+
+def build_image_research_request(
+    *,
+    job_id: str,
+    chapter_id: str,
+    concept_id: str,
+    objective: str,
+    subject: str,
+    queries: list[str],
+    structural_relationships: list[str] | None = None,
+    min_width: int = 400,
+    min_height: int = 250,
+    preferred_type: str = "diagram",
+    license_policy: str = "permissive_required",
+    desired_count: int = 1,
+    exclude_urls: list[str] | None = None,
+) -> dict[str, Any]:
+    """Create a structured ResearchFlow image-discovery request (Scriptorium 9.2)."""
+    clean_queries = [q.strip() for q in queries if isinstance(q, str) and q.strip()]
+    if not clean_queries:
+        raise ValueError("Image research request requires at least one search query")
+    return {
+        "schema_version": "image-research-request/v1",
+        "job_id": job_id,
+        "chapter_id": chapter_id,
+        "concept_id": concept_id,
+        "educational_objective": objective,
+        "image_subject": subject,
+        "structural_relationships": list(structural_relationships or []),
+        "search_queries": clean_queries,
+        "min_resolution": {"width": min_width, "height": min_height},
+        "preferred_visual_type": preferred_type,
+        "license_policy": license_policy,
+        "desired_count": max(1, desired_count),
+        "exclude_urls": list(exclude_urls or []),
+    }
+
+
+def evaluate_svg_fallback_gate(
+    visual: dict[str, Any],
+    *,
+    search_status: str,
+    queries_attempted: list[str] | None = None,
+    sources_considered: list[str] | None = None,
+    rejection_reasons: list[str] | None = None,
+    justification: str = "",
+) -> dict[str, Any]:
+    """Enforce the SVG fallback gate before allowing native SVG generation."""
+    if search_status not in SEARCH_STATUSES:
+        raise ValueError(f"Invalid search_status: {search_status}")
+    if search_status == "FOUND":
+        raise ValueError("SVG fallback forbidden when a suitable external image was found")
+    # Custom numeric plots derived from chapter equations/data are an explicit justified exception.
+    if visual.get("kind") in {"equation", "distribution", "timeseries", "signal"} and (
+        visual.get("equation") or visual.get("data")
+    ):
+        return {
+            "permitted": True,
+            "reason": "custom_numeric_plot",
+            "search_status": search_status,
+            "justification": justification or "Deterministic plot matching chapter numerical equations/data",
+        }
+    if not justification.strip():
+        raise ValueError("SVG fallback requires an explicit educational justification")
+    if search_status == "NO_IMAGE_EXISTS" and not queries_attempted:
+        raise ValueError("NO_IMAGE_EXISTS requires recorded search queries attempted")
+    return {
+        "permitted": True,
+        "reason": "documented_fallback",
+        "requested_concept": visual.get("concept", ""),
+        "search_status": search_status,
+        "queries_attempted": list(queries_attempted or []),
+        "sources_considered": list(sources_considered or []),
+        "rejection_reasons": list(rejection_reasons or []),
+        "justification": justification.strip(),
+    }
+
+
+def resolve_visual_route(
+    visual: dict[str, Any],
+    *,
+    asset_registry: dict[str, dict[str, Any]] | None = None,
+    host_candidates: list[dict[str, Any]] | None = None,
+    search_available: bool = True,
+    fallback_decision: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Strict Web-Image-First routing: Reuse -> Discover/Download -> Documented Fallback."""
+    concept = visual.get("concept", "")
+    # Route 1: Reuse verified local asset
+    if asset_registry:
+        reusable = asset_registry.get(visual.get("id", "")) or asset_registry.get(concept)
+        if reusable and reusable.get("relative_path"):
+            return {"route": "reuse_local_asset", "visual": {**visual, "local_fallback": reusable["relative_path"], "asset_policy": "offline_only"}, "search_status": "FOUND"}
+
+    # Route 2 & 3: Select permitted external candidate discovered by host
+    for cand in host_candidates or []:
+        if cand.get("url") and cand.get("source") and cand.get("rights"):
+            resolved = {
+                **visual,
+                "kind": "source_figure",
+                "url": cand["url"],
+                "source": cand["source"],
+                "rights": cand["rights"],
+                "alt": cand.get("alt") or visual.get("objective", ""),
+                "relevance": cand.get("relevance") or visual.get("objective", ""),
+                "require_permissive_license": True,
+            }
+            return {"route": "external_image_download", "visual": resolved, "search_status": "FOUND"}
+
+    # Route 4: Documented fallback only
+    status = "NO_IMAGE_EXISTS" if search_available else "SEARCH_UNAVAILABLE"
+    dec = fallback_decision or {}
+    gate = evaluate_svg_fallback_gate(
+        visual,
+        search_status=dec.get("search_status", status),
+        queries_attempted=dec.get("queries_attempted"),
+        sources_considered=dec.get("sources_considered"),
+        rejection_reasons=dec.get("rejection_reasons"),
+        justification=dec.get("justification", visual.get("fallback_justification", "")),
+    )
+    return {"route": "documented_fallback", "visual": {**visual, "fallback_gate": gate}, "search_status": gate["search_status"]}
+
+
+def verify_visual_obligations(
+    obligations: list[dict[str, Any]],
+    bodies: dict[str, str],
+    vault: Path,
+) -> dict[str, Any]:
+    """ReviewEngine check: verify embeds, provenance, explanation density, and fallback gates."""
+    from . import contained
+    errors: list[str] = []
+    for ob in obligations:
+        oid = ob.get("obligation_id", "<unknown>")
+        chid = ob.get("chapter_id", "")
+        rel = ob.get("local_asset_path")
+        if not rel or not contained(vault, rel).is_file():
+            errors.append(f"{oid}: missing local asset {rel}")
+            continue
+        body = bodies.get(chid, "")
+        if rel not in body:
+            errors.append(f"{oid}: asset {rel} is not embedded in chapter {chid}")
+            continue
+        # Reject image-only chapters/sections with no accompanying explanatory prose
+        non_embed_words = [
+            w for line in body.splitlines()
+            if not line.strip().startswith(("![", "#"))
+            for w in line.split()
+        ]
+        if len(non_embed_words) < 15:
+            errors.append(f"{oid}: chapter {chid} lacks sufficient explanatory prose around visual")
+        if ob.get("acquisition_status") == "external_download" and not ob.get("provenance_record"):
+            errors.append(f"{oid}: external image missing provenance/attribution record")
+    return {"passed": not errors, "errors": errors, "checked": len(obligations)}
 
 
 def select_acquisition_strategy(visual: dict[str, Any], *, host_imagegen_available: bool = False) -> str:

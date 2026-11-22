@@ -166,6 +166,20 @@ def render_visuals(vault: Path, plan: dict, drafts: dict[str, str], *, execute: 
         try:
             if not status["available"]:
                 raise ValueError("Renderer requires a host execution adapter; selection is not execution")
+            if plan.get("web_image_first") and renderer in {"svg", "graph", "mask", "coordinates"}:
+                from . import lavia
+                gate = visual.get("fallback_gate")
+                if not gate:
+                    raise ValueError("Web-image-first policy requires a documented SVG fallback_gate decision")
+                lavia.evaluate_svg_fallback_gate(
+                    visual,
+                    search_status=gate.get("search_status", "SEARCH_UNAVAILABLE"),
+                    queries_attempted=gate.get("queries_attempted"),
+                    sources_considered=gate.get("sources_considered"),
+                    rejection_reasons=gate.get("rejection_reasons"),
+                    justification=gate.get("justification", ""),
+                )
+                status["fallback_gate"] = gate
             status["attempted"] = True
             embed = f"![[{relative}]]"
             if renderer == "external":

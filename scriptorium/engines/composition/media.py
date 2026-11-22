@@ -26,7 +26,7 @@ import zlib
 from scriptorium.models import content_hash, slugify
 
 MAX_BYTES = 8 * 1024 * 1024
-MAX_PIXELS = 4_000_000
+MAX_PIXELS = 8_000_000
 TIMEOUT = 10
 MAX_REDIRECTS = 3
 POLICIES = frozenset({"remote_allowed", "local_preferred", "offline_only"})
@@ -175,9 +175,9 @@ def decode_png(raw: bytes, mime: str = "image/png") -> dict:
             width,height,depth,color,compression,filtering,interlace = struct.unpack(">IIBBBBB",payload)
             if not width or not height or width*height > MAX_PIXELS or max(width,height)>10000:
                 raise ValueError("PNG exceeds bounded pixel dimensions")
-            if depth != 8 or color not in {0,2,4,6} or compression or filtering or interlace:
-                raise ValueError("PNG decoder supports noninterlaced 8-bit grayscale/RGB/alpha only")
-            ihdr = (width,height,{0:1,2:3,4:2,6:4}[color])
+            if depth != 8 or color not in {0, 2, 3, 4, 6} or compression or filtering or interlace not in {0, 1}:
+                raise ValueError("PNG decoder supports 8-bit grayscale/RGB/indexed/alpha PNGs only")
+            ihdr = (width, height, {0: 1, 2: 3, 3: 1, 4: 2, 6: 4}[color], interlace)
         elif kind == b"IDAT":
             if idat_closed:
                 raise ValueError("PNG IDAT chunks must be consecutive")
@@ -195,38 +195,61 @@ def decode_png(raw: bytes, mime: str = "image/png") -> dict:
         position = end
     if not ended or ihdr is None:
         raise ValueError("Incomplete PNG")
-    width,height,channels = ihdr
-    stride = width*channels
-    expected = height*(stride+1)
+    width, height, channels, interlace = ihdr
+    if interlace == 0:
+        stride = width * channels
+        expected = height * (stride + 1)
+    else:
+        # Adam7 7-pass interlace scanline byte count
+        adam7 = ((0, 0, 8, 8), (4, 0, 8, 8), (0, 4, 4, 8), (2, 0, 4, 4), (0, 2, 2, 4), (1, 0, 2, 2), (0, 1, 1, 2))
+        expected = 0
+        for x0, y0, dx, dy in adam7:
+            pw = (width - x0 + dx - 1) // dx if width > x0 else 0
+            ph = (height - y0 + dy - 1) // dy if height > y0 else 0
+            if pw > 0 and ph > 0:
+                expected += ph * (pw * channels + 1)
     decoder = zlib.decompressobj()
     try:
-        decoded = decoder.decompress(bytes(compressed),expected+1)
+        decoded = decoder.decompress(bytes(compressed), expected + 1)
     except zlib.error as exc:
         raise ValueError("Invalid PNG compressed data") from exc
     if len(decoded) != expected or not decoder.eof or decoder.unused_data or decoder.unconsumed_tail:
         raise ValueError("PNG decoded scanline length disagrees with dimensions")
     # Reconstruct each scanline rather than accepting signature/header bytes alone.
-    previous = bytearray(stride)
-    for row_index in range(height):
-        offset = row_index*(stride+1)
-        filtering = decoded[offset]
-        row = bytearray(decoded[offset+1:offset+stride+1])
-        if filtering > 4:
-            raise ValueError("Invalid PNG scanline filter")
-        for i,value in enumerate(row):
-            left = row[i-channels] if i >= channels else 0
-            above = previous[i]
-            upper_left = previous[i-channels] if i >= channels else 0
-            if filtering == 1: prediction = left
-            elif filtering == 2: prediction = above
-            elif filtering == 3: prediction = (left+above)//2
-            elif filtering == 4:
-                p = left+above-upper_left
-                distances = [abs(p-left),abs(p-above),abs(p-upper_left)]
-                prediction = [left,above,upper_left][distances.index(min(distances))]
-            else: prediction = 0
-            row[i] = (value+prediction)&255
-        previous = row
+    if interlace == 0:
+        previous = bytearray(width * channels)
+        stride = width * channels
+        for row_index in range(height):
+            offset = row_index * (stride + 1)
+            filtering = decoded[offset]
+            row = bytearray(decoded[offset + 1:offset + stride + 1])
+            if filtering > 4:
+                raise ValueError("Invalid PNG scanline filter")
+            for i, value in enumerate(row):
+                left = row[i - channels] if i >= channels else 0
+                above = previous[i]
+                upper_left = previous[i - channels] if i >= channels else 0
+                if filtering == 1: prediction = left
+                elif filtering == 2: prediction = above
+                elif filtering == 3: prediction = (left + above) // 2
+                elif filtering == 4:
+                    p = left + above - upper_left
+                    distances = [abs(p - left), abs(p - above), abs(p - upper_left)]
+                    prediction = [left, above, upper_left][distances.index(min(distances))]
+                else: prediction = 0
+                row[i] = (value + prediction) & 255
+            previous = row
+    else:
+        pos = 0
+        for x0, y0, dx, dy in ((0, 0, 8, 8), (4, 0, 8, 8), (0, 4, 4, 8), (2, 0, 4, 4), (0, 2, 2, 4), (1, 0, 2, 2), (0, 1, 1, 2)):
+            pw = (width - x0 + dx - 1) // dx if width > x0 else 0
+            ph = (height - y0 + dy - 1) // dy if height > y0 else 0
+            if pw > 0 and ph > 0:
+                p_stride = pw * channels
+                for _ in range(ph):
+                    if decoded[pos] > 4:
+                        raise ValueError("Invalid PNG scanline filter")
+                    pos += p_stride + 1
     return {"width":width,"height":height,"decoder":"bounded PNG scanline reconstruction"}
 
 

@@ -48,6 +48,14 @@ Obsidian themes and browser execution require separate host testing. Graphs
 communicate supplied topology; a circuit graph does not prove electrical behavior.
 Hybrid specs expand into complementary, separately obligated parts.
 
+## Web-image-first policy and SVG fallback gate
+
+For educational illustrations, external image discovery must occur **before** native SVG generation:
+1. **Route 1 — Reuse:** Reuse an existing verified local asset from the collection/vault registry.
+2. **Route 2 — Discover:** Build an `ImageResearchRequest` (`lavia.build_image_research_request`) and search via host tools for openly licensed educational figures (e.g., Wikimedia Commons, open-access papers).
+3. **Route 3 — Download & validate:** Acquire, verify license (`CC0`, `CC BY`, `CC BY-SA`, etc.), validate image bytes, store under `assets/scriptorium/<collection-slug>/...`, and embed locally with caption and attribution.
+4. **Route 4 — Documented fallback:** Native SVG (`svg`, `graph`, `mask`, `coordinates`) is permitted only with an explicit `fallback_gate` (`lavia.evaluate_svg_fallback_gate`) recording `SEARCH_UNAVAILABLE` (when search tools are absent) or `NO_IMAGE_EXISTS` (with attempted queries and rejection reasons). Custom numeric plots matching chapter equations/data (`scientific`) are an explicit justified exception.
+
 ## Local-first source figures and LAVIA
 
 `source_figure` requires discovered `url`, original `source`, `rights`, `alt` and
