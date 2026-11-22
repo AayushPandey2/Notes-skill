@@ -1,0 +1,22 @@
+{
+  "acquired_at": "2026-11-22T21:40:54.750454+00:00",
+  "alt": "Smooth S-shaped sigmoidal curves saturating asymptotically without reaching endpoints at finite inputs.",
+  "asset_policy": "local_preferred",
+  "availability": "observed at acquisition; not a continuing availability guarantee",
+  "bytes": 96949,
+  "decoder": "bounded JPEG SOF parser",
+  "fallback_used": false,
+  "final_url": "https://upload.wikimedia.org/wikipedia/commons/3/37/Quatre_fonctions_sigmo%C3%AFdes_%E2%80%94_four_sigmoidal_functions.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "hash": "2ad05db99108e7a81aee8912b3af8a16ffc64b11799500e6e0c9afb1d840201d",
+  "height": 509,
+  "input_hash": "preview-sigmoid",
+  "mime": "image/jpeg",
+  "path": "assets/scriptorium/supervised-learning-preview/sigmoidal-curves-2ad05db99108.jpg",
+  "redirects": 0,
+  "relevance": "Shows smooth S-curve squashing of real logits and why finite weights cannot reach exact 0 or 1.",
+  "rights": "CC BY 4.0",
+  "rights_verification": "supplied rights statement; independently verify before redistribution",
+  "source": "https://commons.wikimedia.org/wiki/File:Quatre_fonctions_sigmo%C3%AFdes_%E2%80%94_four_sigmoidal_functions.jpg",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/3/37/Quatre_fonctions_sigmo%C3%AFdes_%E2%80%94_four_sigmoidal_functions.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "width": 826
+}

@@ -1220,21 +1220,28 @@ def _score_continuity_accessibility_depth(
     has_leaked_stub = bool(re.search(r"\*Key mathematical claim:\*|<!--", body))
     if has_leaked_stub:
         critical_defects.append("Internal authoring stub or comment leaked into finished prose.")
-    nav_score = 1 if (has_leaked_stub or len(cf_04) >= 2) else 2 if cf_04 else 4
+    dup_h1_h2 = bool(re.search(r"^#\s+(.+)\n+^##\s+\1\s*$", body, re.M | re.I))
+    if dup_h1_h2:
+        critical_defects.append("Duplicate consecutive H1 and H2 chapter-title headings detected.")
+    nav_score = 1 if (has_leaked_stub or dup_h1_h2 or len(cf_04) >= 2) else 2 if cf_04 else 4
     _record_dimension(
         dimensions, repairs, "narrative_continuity", True, nav_score,
-        cf_04[0]["description"] if cf_04 else "Section openings and transitions maintain continuous prose.",
-        "Checks natural problem-to-concept bridges, avoids heading-into-equation drops and stub leaks.",
+        "Duplicate consecutive H1/H2 heading." if dup_h1_h2 else (cf_04[0]["description"] if cf_04 else "Section openings and transitions maintain continuous prose."),
+        "Checks natural problem-to-concept bridges, avoids heading-into-equation drops, duplicate H1/H2 headers, and stub leaks.",
         "add_natural_transitions_and_strip_stubs" if nav_score <= 2 else None,
     )
 
     if has_visuals:
-        v_score = 1 if visual_errors else 4
+        post_code_fig = bool(re.search(r"```\s*\n+!\[\[", body))
+        all_vis_errors = list(visual_errors)
+        if post_code_fig:
+            all_vis_errors.append("Figure appears immediately after a code fence instead of where the learner first needs the visual concept.")
+        v_score = 1 if all_vis_errors else 4
         _record_dimension(
             dimensions, repairs, "visual_integration", True, v_score,
-            visual_errors[0] if visual_errors else (_body_excerpt(body, r"!\[\[|```mermaid") or "Visual integrated cleanly."),
-            "Checks local embed + Explain -> Show -> Decode -> Connect reading walkthrough.",
-            "add_visual_reading_walkthrough" if visual_errors else None,
+            all_vis_errors[0] if all_vis_errors else (_body_excerpt(body, r"!\[\[|```mermaid") or "Visual integrated cleanly."),
+            "Checks local embed + Explain -> Show -> Decode -> Connect reading walkthrough and conceptual visual placement.",
+            "place_visuals_at_conceptual_need_with_walkthrough" if all_vis_errors else None,
         )
     else:
         _record_dimension(dimensions, repairs, "visual_integration", False, None, "N/A", "No embedded visual in this note.")
@@ -1354,6 +1361,7 @@ def evaluate_teaching_quality(
         "failing_dimensions": failing_dims,
         "dimensions": dimensions,
         "beginner_reader_simulation": simulation,
+        "formula_folds": checks["math_check"].get("formula_folds"),
         "targeted_repairs": repairs,
         "evidence_based": True,
         "non_averaging_gate": True,

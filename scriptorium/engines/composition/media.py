@@ -32,7 +32,6 @@ MAX_REDIRECTS = 3
 POLICIES = frozenset({"remote_allowed", "local_preferred", "offline_only"})
 SUPPORTED_MIMES = {
     "image/png": "png",
-    "image/svg+xml": "svg",
     "image/jpeg": "jpg",
     "image/webp": "webp",
 }
@@ -92,7 +91,7 @@ def _request_once(url: str, host: str, address: str) -> tuple[int, dict, bytes]:
     target = urlunsplit(("","",parts.path or "/",parts.query,""))
     try:
         deadline = time.monotonic()+TIMEOUT
-        connection.request("GET",target,headers={"Host":parts.netloc,"Accept":"image/svg+xml, image/png, image/jpeg, image/webp","Accept-Encoding":"identity","User-Agent":"Scriptorium-Media/1.0 (https://github.com/AayushPandey2/Notes-skill)"})
+        connection.request("GET",target,headers={"Host":parts.netloc,"Accept":"image/png, image/jpeg, image/webp","Accept-Encoding":"identity","User-Agent":"Scriptorium-Media/1.0 (https://github.com/AayushPandey2/Notes-skill)"})
         response = connection.getresponse()
         headers = {k.lower():v for k,v in response.getheaders()}
         if response.status in {301,302,303,307,308}:
@@ -363,15 +362,18 @@ def validate_svg_bytes(raw: bytes, mime: str = "image/svg+xml") -> dict:
 
 
 def inspect_image_content(source: Path | bytes, *, mime: str | None = None) -> dict:
-    """Inspect actual local image bytes/pixels before writing image-grounded explanations.
+    """Inspect actual local raster image bytes/pixels before writing image-grounded explanations.
 
-    Computes verified geometry, contrast/density indicators, and (for SVG) parsed text labels.
-    Never fabricates diagram labels that were not observed in text XML or multimodal vision.
+    Computes verified geometry and pixel contrast/brightness indicators via Pillow/headers.
+    Rejects SVG XML downloads under the raster-only web-image workflow and never fabricates labels.
     """
     raw = Path(source).read_bytes() if isinstance(source, (str, Path)) else bytes(source)
     if mime is None and isinstance(source, (str, Path)):
-        ext_map = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp", ".svg": "image/svg+xml"}
-        mime = ext_map.get(Path(source).suffix.lower())
+        ext = Path(source).suffix.lower()
+        if ext == ".svg":
+            raise ValueError("SVG assets are rejected by the raster-only web-image workflow; use PNG, JPEG, or WebP.")
+        ext_map = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp"}
+        mime = ext_map.get(ext)
     if not mime:
         if raw.startswith(b"\x89PNG\r\n\x1a\n"):
             mime = "image/png"
@@ -380,9 +382,9 @@ def inspect_image_content(source: Path | bytes, *, mime: str | None = None) -> d
         elif raw.startswith(b"RIFF") and raw[8:12] == b"WEBP":
             mime = "image/webp"
         elif raw.lstrip().startswith((b"<svg", b"<?xml")):
-            mime = "image/svg+xml"
+            raise ValueError("SVG payloads are rejected by the raster-only web-image workflow; use PNG, JPEG, or WebP.")
         else:
-            raise ValueError("Unable to infer image MIME type for content inspection")
+            raise ValueError("Unable to infer raster image MIME type for content inspection")
 
     meta = validate_image_bytes(raw, mime)
     report: dict = {
@@ -396,27 +398,8 @@ def inspect_image_content(source: Path | bytes, *, mime: str | None = None) -> d
         "text_ocr_available": False,
         "readable_for_embedding": True,
         "inspection_method": "structural_header_and_pixel_inspection",
-        "limits": "Observed file structure, dimensions, contrast, and text elements where encoded; full semantic reading of raster labels requires visual inspection.",
+        "limits": "Observed file structure, dimensions, and contrast; full semantic reading of raster labels requires visual inspection.",
     }
-    if mime == "image/svg+xml":
-        root = ET.fromstring(raw.decode("utf-8"))
-        vb = (root.get("viewBox") or "").replace(",", " ").split()
-        if len(vb) == 4 and (not isinstance(report.get("width"), int) or not isinstance(report.get("height"), int)):
-            try:
-                report["width"] = int(round(float(vb[2])))
-                report["height"] = int(round(float(vb[3])))
-                report["aspect_ratio"] = round(report["width"] / max(report["height"], 1), 3)
-            except ValueError:
-                pass
-        labels = [
-            " ".join(el.itertext()).strip()
-            for el in root.iter()
-            if el.tag.rsplit("}", 1)[-1] in {"title", "text", "tspan", "desc"}
-        ]
-        report["text_labels_extracted"] = [lbl for lbl in dict.fromkeys(labels) if lbl]
-        report["text_ocr_available"] = True
-        report["inspection_method"] = "svg_xml_text_and_geometry_inspection"
-        return report
 
     try:
         from io import BytesIO
@@ -452,14 +435,14 @@ def inspect_image_content(source: Path | bytes, *, mime: str | None = None) -> d
 
 
 def validate_image_bytes(raw: bytes, mime: str) -> dict:
-    """Validate downloaded or local image bytes according to declared MIME type."""
+    """Validate downloaded or local raster image bytes according to declared MIME type."""
     if not isinstance(mime, str):
         raise ValueError(f"Unsupported image MIME type: {mime}")
     normalized = mime.split(";", 1)[0].strip().lower()
+    if normalized == "image/svg+xml":
+        raise ValueError("SVG downloads are rejected by the raster-only image workflow; acquire PNG, JPEG, or WebP instead.")
     if normalized == "image/png":
         return decode_png(raw, normalized)
-    if normalized == "image/svg+xml":
-        return validate_svg_bytes(raw, normalized)
     if normalized in {"image/jpeg", "image/jpg"}:
         return decode_jpeg(raw, normalized)
     if normalized == "image/webp":
@@ -549,8 +532,10 @@ def media_artifact(vault: Path, visual: dict, digest: str, *, execute: bool) -> 
             fb_path = contained(vault,fallback)
             raw = fb_path.read_bytes()
             fb_mime = visual.get("fallback_mime") or {
-                ".svg": "image/svg+xml", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp"
-            }.get(fb_path.suffix.lower(), "image/png")
+                ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp", ".png": "image/png"
+            }.get(fb_path.suffix.lower())
+            if not fb_mime:
+                raise ValueError(f"Unsupported fallback image extension '{fb_path.suffix}'; use PNG, JPEG, or WebP.")
             provenance = {"mime":fb_mime,**validate_image_bytes(raw, fb_mime),"acquisition":"explicit local fallback; network disabled"}
             fallback_used = True
         else:
@@ -562,8 +547,10 @@ def media_artifact(vault: Path, visual: dict, digest: str, *, execute: bool) -> 
                 fb_path = contained(vault,fallback)
                 raw = fb_path.read_bytes()
                 fb_mime = visual.get("fallback_mime") or {
-                    ".svg": "image/svg+xml", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp"
-                }.get(fb_path.suffix.lower(), "image/png")
+                    ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp", ".png": "image/png"
+                }.get(fb_path.suffix.lower())
+                if not fb_mime:
+                    raise ValueError(f"Unsupported fallback image extension '{fb_path.suffix}'; use PNG, JPEG, or WebP.") from exc
                 provenance = {"mime":fb_mime,**validate_image_bytes(raw, fb_mime),"acquisition":"explicit local fallback",
                               "remote_failure":str(exc)}
                 fallback_used = True
@@ -602,5 +589,5 @@ def media_artifact(vault: Path, visual: dict, digest: str, *, execute: bool) -> 
     return {"path":receipt["path"],"hash":receipt["hash"],"embed":embed,"provenance":receipt,
             "inspection":inspection,
             "media_receipt":receipt_relative,"cached":cached,"validation":{"result":"pass",
-              "method":"validate bounded image bytes (PNG/SVG/JPEG/WebP), inspect pixels/metadata, compare snapshot SHA-256 and specification-bound acquisition receipt",
+              "method":"validate bounded raster image bytes (PNG/JPEG/WebP), inspect pixels/metadata, compare snapshot SHA-256 and specification-bound acquisition receipt",
               "limits":"Live availability established only at acquisition; image relevance and supplied rights need editorial review."}}

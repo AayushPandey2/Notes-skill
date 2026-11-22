@@ -753,13 +753,17 @@ def route_request(
 
     reg = load_master_registry(root)
     cmd_map = reg.get("command_mappings") or {}
+    alias_map = reg.get("command_aliases") or {}
     retired_map = reg.get("retired_commands") or {}
 
     first, *rest = raw.split(maxsplit=1)
     parsed_cmd = first.lower().lstrip("/")
+    alias_spec = alias_map.get(parsed_cmd)
     is_retired_cmd = parsed_cmd in retired_map
     if existing_command:
         command = existing_command
+    elif alias_spec:
+        command = str(alias_spec.get("target_command") or "scribe-notes")
     elif parsed_cmd in cmd_map:
         command = parsed_cmd
     elif is_retired_cmd:
@@ -767,8 +771,50 @@ def route_request(
     else:
         command = None
 
-    has_cmd_prefix = parsed_cmd in cmd_map or is_retired_cmd
+    has_cmd_prefix = parsed_cmd in cmd_map or bool(alias_spec) or is_retired_cmd
     payload = rest[0] if (has_cmd_prefix and rest) else ("" if has_cmd_prefix else raw)
+
+    if alias_spec:
+        explicit_master_alias, explicit_variant_alias, _ = _detect_explicit_template_override(payload, root=root)
+        primary_master = explicit_master_alias or alias_spec.get("default_master") or "M2"
+        primary_variant = explicit_variant_alias or alias_spec.get("default_variant")
+        k_types = detect_knowledge_types(payload or raw)
+        s_policy, r_mode, _ = _detect_source_policy(payload or raw, source_policy or "source_first", True)
+        artifacts = [
+            _build_artifact_entry(
+                primary_master,
+                primary_variant,
+                secondary_modules=[],
+                knowledge_types=k_types,
+                source_policy=s_policy,
+                research_mode=r_mode,
+                reason=f"video alias /{parsed_cmd} unified via /scribe-notes pipeline",
+                root=root,
+            )
+        ]
+        return {
+            "command": command,
+            "adapter_alias": parsed_cmd,
+            "video_adapter": True,
+            "mode": "author",
+            "master": primary_master,
+            "variant": primary_variant,
+            "compat_route": artifacts[0]["compat_route"],
+            "lock": "command",
+            "multi_artifact": False,
+            "shared_context": False,
+            "source_policy": s_policy,
+            "research_mode": r_mode,
+            "knowledge_types": k_types,
+            "artifacts": artifacts,
+            "routing_trace": {
+                "priority_level": 1,
+                "decision_basis": f"compatible video alias /{parsed_cmd} -> /{command}",
+                "negated_artifacts": [],
+                "secondary_modules": [],
+                "source_order_preserved": True,
+            },
+        }
 
     migration_hint: str | None = None
     if command and command in retired_map:
@@ -1615,6 +1661,31 @@ class OrchestrationEngine:
 
     def trace(self, **kwargs: Any) -> dict[str, Any]:
         return build_execution_trace(**kwargs)
+
+    def ingest_video(
+        self,
+        *,
+        title: str,
+        source_url: str = "",
+        transcript_entries: list[dict[str, Any]] | None = None,
+        frame_candidates: list[dict[str, Any]] | None = None,
+        vault: Path | None = None,
+        collection_slug: str | None = None,
+        video_duration_seconds: int | None = None,
+        has_video_media: bool = False,
+    ) -> dict[str, Any]:
+        """Run unified /scribe-ytnotes / /scribe-ytlecture video ingestion feeding /scribe-notes."""
+        from scriptorium.engines.composition.video import compose_video_study_payload
+        return compose_video_study_payload(
+            title=title,
+            source_url=source_url,
+            transcript_entries=transcript_entries,
+            frame_candidates=frame_candidates,
+            vault=vault,
+            collection_slug=collection_slug,
+            video_duration_seconds=video_duration_seconds,
+            has_video_media=has_video_media,
+        )
 
     # Universal /scribe-notes interactive intelligence methods
     def classify_scope(self, topic: str | None, *, request: str = "", has_source: bool = False, source_sections: list[str] | None = None) -> dict[str, Any]:

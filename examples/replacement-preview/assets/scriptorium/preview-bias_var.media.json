@@ -1,0 +1,22 @@
+{
+  "acquired_at": "2026-11-22T21:40:56.603138+00:00",
+  "alt": "Plot of descending squared bias, rising variance, and U-shaped total expected error across complexity.",
+  "asset_policy": "local_preferred",
+  "availability": "observed at acquisition; not a continuing availability guarantee",
+  "bytes": 144005,
+  "decoder": "bounded PNG scanline reconstruction",
+  "fallback_used": false,
+  "final_url": "https://upload.wikimedia.org/wikipedia/commons/2/29/Bias-variance_decomposition.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "hash": "78e1dbbf12de00ab21065817a13f39c7190c3f36fe9b6648109d019ea1a7e9ef",
+  "height": 600,
+  "input_hash": "preview-bias_var",
+  "mime": "image/png",
+  "path": "assets/scriptorium/supervised-learning-preview/bias-variance-decomposition-78e1dbbf12de.png",
+  "redirects": 0,
+  "relevance": "Illustrates how bias and sample-to-sample variance trade off above the irreducible noise floor.",
+  "rights": "CC BY-SA 4.0",
+  "rights_verification": "supplied rights statement; independently verify before redistribution",
+  "source": "https://commons.wikimedia.org/wiki/File:Bias-variance_decomposition.png",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/2/29/Bias-variance_decomposition.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "width": 1000
+}

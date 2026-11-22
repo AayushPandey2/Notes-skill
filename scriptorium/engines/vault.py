@@ -689,8 +689,16 @@ def safe_write_note(
     *,
     expected_digest: str | None = None,
     validate_properties: bool = True,
+    vault_root: Path | None = None,
 ) -> dict[str, Any]:
-    """Validate Properties, detect concurrent manual-edit conflicts, and write atomically with rollback safety."""
+    """Validate containment & Properties, detect concurrent manual-edit conflicts, and write atomically."""
+    raw_path = Path(path)
+    if ".." in raw_path.parts:
+        raise ValueError(f"Path traversal ('..') is not allowed when writing notes: {path}")
+    if vault_root is not None:
+        from scriptorium.models import is_within_vault
+        if not is_within_vault(vault_root, raw_path):
+            raise ValueError(f"Destination path '{path}' escapes vault root '{vault_root}'.")
     if validate_properties:
         errs = validate_obsidian_properties(content, allow_custom_properties=True)
         if errs:
@@ -761,8 +769,22 @@ class VaultEngine:
     def update_note(self, existing_text: str, **kwargs: Any) -> dict[str, Any]:
         return incremental_update_note(existing_text, **kwargs)
 
-    def write_note(self, path: Path, content: str, *, expected_digest: str | None = None, validate_properties: bool = True) -> dict[str, Any]:
-        return safe_write_note(path, content, expected_digest=expected_digest, validate_properties=validate_properties)
+    def write_note(
+        self,
+        path: Path,
+        content: str,
+        *,
+        expected_digest: str | None = None,
+        validate_properties: bool = True,
+        vault_root: Path | None = None,
+    ) -> dict[str, Any]:
+        return safe_write_note(
+            path,
+            content,
+            expected_digest=expected_digest,
+            validate_properties=validate_properties,
+            vault_root=vault_root,
+        )
 
     def render_parent_moc(self, node: Any, plan: Any, node_map: dict[str, Any], preferences: Any, **kwargs: Any) -> str:
         return render_parent_moc(node, plan, node_map, preferences, **kwargs)

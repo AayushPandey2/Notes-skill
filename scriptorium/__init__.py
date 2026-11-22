@@ -35,9 +35,16 @@ from scriptorium.models import (
     OPTIONAL_OBSIDIAN_PROPERTIES,
     REQUIRED_OBSIDIAN_PROPERTIES,
     STRICT_KEYS,
+    AssetRecord,
+    ConceptPlanRecord,
+    DisplayMathBlock,
+    FormulaTeachingRecord,
     ParsedNote,
+    PublicationQualityStatus,
     ScriptoriumError,
+    VideoEvidenceRecord,
     parse_note,
+    scan_display_math_blocks,
 )
 
 __all__ = [
@@ -64,6 +71,12 @@ __all__ = [
     "VALIDATION_PRESERVATION_MATRIX",
     "estimate_tokens",
     "ParsedNote",
+    "ConceptPlanRecord",
+    "FormulaTeachingRecord",
+    "AssetRecord",
+    "VideoEvidenceRecord",
+    "PublicationQualityStatus",
+    "DisplayMathBlock",
     "ScriptoriumError",
     "REQUIRED_OBSIDIAN_PROPERTIES",
     "OPTIONAL_OBSIDIAN_PROPERTIES",
@@ -71,4 +84,5 @@ __all__ = [
     "CANONICAL_NOTE_TYPES",
     "STRICT_KEYS",
     "parse_note",
+    "scan_display_math_blocks",
 ]

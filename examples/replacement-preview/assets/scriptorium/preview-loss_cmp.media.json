@@ -1,0 +1,22 @@
+{
+  "acquired_at": "2026-11-22T21:40:51.673022+00:00",
+  "alt": "Comparison curves of squared error, Huber, Log-Cosh, and absolute error losses as residual magnitude grows.",
+  "asset_policy": "local_preferred",
+  "availability": "observed at acquisition; not a continuing availability guarantee",
+  "bytes": 42212,
+  "decoder": "bounded PNG scanline reconstruction",
+  "fallback_used": false,
+  "final_url": "https://upload.wikimedia.org/wikipedia/commons/e/e3/Comparison_of_loss_functions.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "hash": "8e57447d079cea07de72efa3d9ca996e709516d82bc0a4446e487f566cda3ac3",
+  "height": 811,
+  "input_hash": "preview-loss_cmp",
+  "mime": "image/png",
+  "path": "assets/scriptorium/supervised-learning-preview/comparison-of-loss-functions-8e57447d079c.png",
+  "redirects": 0,
+  "relevance": "Shows quadratic growth of MSE versus linear tails of Huber and MAE when residuals are large.",
+  "rights": "CC BY-SA 4.0",
+  "rights_verification": "supplied rights statement; independently verify before redistribution",
+  "source": "https://commons.wikimedia.org/wiki/File:Comparison_of_loss_functions.png",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/e/e3/Comparison_of_loss_functions.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+  "width": 1545
+}

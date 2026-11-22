@@ -17,7 +17,10 @@ def _png(width: int = 2, height: int = 2) -> bytes:
         return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", binascii.crc32(kind + data) & 0xFFFFFFFF)
 
     header = struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0)
-    raw = (b"\x00" + b"\x10\x40\x80" * width) * height
+    raw = b"".join(
+        b"\x00" + (b"\x10\x40\x80" if (y % 16) < 8 else b"\xe8\xf0\xf8") * width
+        for y in range(height)
+    )
     return b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", header) + chunk(b"IDAT", zlib.compress(raw)) + chunk(b"IEND", b"")
 
 
@@ -37,17 +40,16 @@ def _webp_vp8l(width: int = 40, height: int = 20) -> bytes:
 
 def test_multiformat_validation_and_svg_security():
     svg_ok = b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 50"><rect width="100" height="50" fill="white"/></svg>'
-    assert media.validate_image_bytes(svg_ok, "image/svg+xml")["decoder"].startswith("bounded XML/SVG")
+    with pytest.raises(ValueError, match="SVG downloads are rejected"):
+        media.validate_image_bytes(svg_ok, "image/svg+xml")
     assert media.validate_image_bytes(_png(), "image/png")["width"] == 2
     assert media.validate_image_bytes(_jpeg(64, 48), "image/jpeg")["width"] == 64
     assert media.validate_image_bytes(_webp_vp8l(40, 20), "image/webp")["width"] == 40
 
-    bad_svg = b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><script>alert(1)</script></svg>'
-    with pytest.raises(ValueError, match="Unsupported active SVG"):
-        media.validate_image_bytes(bad_svg, "image/svg+xml")
-
-    with pytest.raises(ValueError, match="DOCTYPE"):
-        media.validate_image_bytes(b'<!DOCTYPE svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"/>', "image/svg+xml")
+    bad_svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><script>alert(1)</script></svg>'
+    assert media.validate_svg_markup(bad_svg)
+    with pytest.raises(ValueError, match="SVG downloads are rejected"):
+        media.validate_image_bytes(bad_svg.encode("utf-8"), "image/svg+xml")
 
     with pytest.raises(ValueError, match="Unsupported image MIME"):
         media.validate_image_bytes(b"GIF89a", "image/gif")
@@ -370,11 +372,6 @@ def test_web_image_first_request_and_svg_generation_prohibited(tmp_path):
 @pytest.mark.parametrize(
     ("mime", "ext", "payload"),
     [
-        (
-            "image/svg+xml",
-            "svg",
-            b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60"><rect width="120" height="60" fill="white"/></svg>',
-        ),
         ("image/jpeg", "jpg", _jpeg(64, 48)),
         ("image/webp", "webp", _webp_vp8l(40, 20)),
     ],
@@ -424,44 +421,40 @@ def test_media_cache_hit_non_png(tmp_path, monkeypatch, mime, ext, payload):
 
 
 def test_pil_image_content_inspection_and_grounding_gate():
-    # SVG metadata extraction & grounded visual walkthrough verification (no fabricated label assertions)
-    svg_bytes = (
-        b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">'
-        b'<rect width="800" height="400" fill="#ffffff"/>'
-        b'<text x="40" y="60">Input Tokens</text>'
-        b'<text x="320" y="60">Multi-Head Attention</text>'
-        b'</svg>'
-    )
-    svg_info = media.inspect_image_content(svg_bytes, mime="image/svg+xml")
-    assert svg_info["width"] == 800
-    assert svg_info["text_ocr_available"] is True
-    assert {"Input Tokens", "Multi-Head Attention"} <= set(svg_info["text_labels_extracted"])
+    # SVG downloads/inspections must be rejected under raster-only acquisition policy.
+    svg_bytes = b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400"><rect width="800" height="400" fill="#ffffff"/></svg>'
+    with pytest.raises(ValueError, match="SVG"):
+        media.inspect_image_content(svg_bytes, mime="image/svg+xml")
 
-    vis = {"objective": "Inspect attention pipeline", "alt": "Attention schematic"}
+    # Raster PIL pixel inspection + grounded visual walkthrough verification
+    png_info = media.inspect_image_content(_png(640, 400), mime="image/png")
+    assert png_info["width"] == 640 and png_info["height"] == 400
+    assert png_info["inspection_method"] == "PIL_pixel_statistics_and_dimension_analysis"
+
+    vis = {
+        "objective": "Inspect attention pipeline",
+        "alt": "Attention schematic",
+        "decode_components": ["**Input Tokens**: tokenized sequence fed to embedding layer.", "**Multi-Head Attention**: parallel scaled dot-product heads."],
+    }
     walkthrough_md = bvia.compose_visual_walkthrough(
         vis,
         embed="![[assets/scriptorium/attention-diagram.png|640]]",
-        inspection=svg_info,
+        inspection=png_info,
     )
     assert "Input Tokens" in walkthrough_md and "Multi-Head Attention" in walkthrough_md
 
     ok_check = bvia.validate_image_grounded_explanation(
         walkthrough_md,
         vis,
-        inspection=svg_info,
+        inspection=png_info,
     )
     assert ok_check["passed"] is True
     assert ok_check["image_inspected"] is True
 
-    low_res_info = {**svg_info, "readable_for_embedding": False}
+    low_res_info = {**png_info, "readable_for_embedding": False}
     bad_check = bvia.validate_image_grounded_explanation(
         walkthrough_md,
         vis,
         inspection=low_res_info,
     )
     assert bad_check["passed"] is False
-
-    # Raster PIL pixel inspection check
-    png_info = media.inspect_image_content(_png(640, 400), mime="image/png")
-    assert png_info["width"] == 640 and png_info["height"] == 400
-    assert png_info["inspection_method"] == "PIL_pixel_statistics_and_dimension_analysis"

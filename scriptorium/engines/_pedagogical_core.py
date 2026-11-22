@@ -662,7 +662,7 @@ def validate_visuals(
             location="visual_rendering",
             issue_type="unsupported_obsidian_html",
             description="Arbitrary interactive HTML (<script>/<iframe>/<canvas>) is incompatible with portable Obsidian Markdown.",
-            suggested_repair="Replace with Mermaid, Markdown tables, LaTeX, or a static .png/.svg image asset.",
+            suggested_repair="Replace with Mermaid, Markdown tables, LaTeX, or a static raster (.png/.jpg/.webp) image asset.",
         ))
         idx += 1
 

@@ -39,7 +39,8 @@ REQUIRED = set(STRICT_KEYS)
 TOKEN = re.compile(r"(" + chr(96) + r"+|\$+)")
 QUESTION = re.compile(r"^### Q(\d+)\. (\S.*)$")
 WIKILINK = re.compile(r"\[\[([^\]\n]+)\]\]")
-ASSET_EXTS = {".png", ".jpg", ".jpeg", ".svg", ".gif", ".webp", ".pdf"}
+ASSET_EXTS = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".pdf"}
+LEGACY_ONLY_ASSET_EXTS = {".svg"}
 HTML_COMMENT = re.compile(r"<!--.*?-->", re.S)
 WORD = re.compile(r"[\w]+(?:[-'’][\w]+)*", re.UNICODE)
 VIDEO_TIMESTAMP = re.compile(r"\[(\d{2,}):([0-5]\d)\]\((https?://[^\s)]+)\)")
@@ -229,7 +230,11 @@ def _link_checks(text: str, visible: list[tuple[int, str]], metadata: dict, vaul
         for match in WIKILINK.finditer(line):
             ref = re.split(r"\\?\|", match[1], maxsplit=1)[0]
             name, _, anchor = ref.partition("#")
-            if Path(name.strip()).suffix.lower() in ASSET_EXTS:
+            suf = Path(name.strip()).suffix.lower()
+            if suf in LEGACY_ONLY_ASSET_EXTS:
+                report(number, f"SVG embeds ({name}) are retired for replacement notes; use verified raster PNG/JPEG/WebP images instead.")
+                continue
+            if suf in ASSET_EXTS:
                 asset = name.strip().lstrip("/")
                 if not ((vault / asset).is_file() or any(vault.rglob(Path(asset).name))):
                     report(number, f"Unresolved asset embed: {name}")
@@ -283,7 +288,8 @@ def _infer_route_and_level(clean: str, headings: list[str], route: str | None, m
 
 def validate_text(text: str, *, vault: Path | None = None, target: Path | None = None,
                   planned=(), index=None, route: str | None = None, math_level: int | None = None,
-                  decision_contract: dict | None = None) -> list[tuple[int, str]]:
+                  decision_contract: dict | None = None,
+                  strict_formula_folds: bool = False) -> list[tuple[int, str]]:
     findings = []
 
     def report(number, message):
@@ -487,6 +493,17 @@ def validate_text(text: str, *, vault: Path | None = None, target: Path | None =
             existing_stems=existing_stems,
         ):
             report(start + s_line, s_msg)
+        for v_line, v_row in visible:
+            if ".svg" in v_row.lower() and "![[" in v_row:
+                report(v_line, "New replacement notes must embed raster PNG/JPEG/WebP images, not .svg assets.")
+        if strict_formula_folds and displays > 0:
+            from scriptorium.engines.mathematics import validate_formula_folds
+            ff = validate_formula_folds(text)
+            if not ff["passed"]:
+                for iss in ff["issues"]:
+                    if iss["severity"] == "critical":
+                        ln_num = int(str(iss["location"]).split("_")[1]) if str(iss["location"]).startswith("line_") else start + 1
+                        report(ln_num, iss["description"])
         if vault is not None and target is not None:
             yaml_links = [(n, row) for n, row in enumerate(raw.splitlines(), 2)]
             _link_checks(text, yaml_links + visible, metadata, vault, target, planned, index, report)
@@ -578,6 +595,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--contract", type=Path, help="Use the saved per-note decision contract.")
     parser.add_argument("--evidence", type=Path, help="Optional ARRIE evidence registry JSON for citation auditing.")
     parser.add_argument("--pedagogical-plan", type=Path, help="Optional P01-P11 pedagogical plan JSON for quality validation.")
+    parser.add_argument("--strict-teaching", action="store_true", help="Enforce mandatory folded explanations under every displayed formula.")
     args = parser.parse_args(argv)
     try:
         vault = resolve_vault_root(args.vault) if args.vault else None
@@ -604,6 +622,7 @@ def main(argv: list[str] | None = None) -> int:
             vault=vault, target=target, route=args.template or (contract or {}).get("template"),
             math_level=args.math_level if args.math_level is not None else (contract or {}).get("math_level"),
             decision_contract=contract,
+            strict_formula_folds=args.strict_teaching,
         )
     except (OSError, ValueError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)

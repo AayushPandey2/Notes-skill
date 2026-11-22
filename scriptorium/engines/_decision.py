@@ -490,7 +490,7 @@ def audit_note_against_contract(note_text: str, contract: dict[str, Any]) -> lis
             findings.append((block.line, f"DM-14 violation: '{block.lang}' code block is forbidden when code_depth is 'none' ({subject_family})."))
         if (block.lang == "mermaid" and visual_modality in {"ascii-geometry", "diagram-image"}
                 and re.search(r"^\s*(?:flowchart|graph)\b", block.code, re.M)):
-            findings.append((block.line, "DM-13 violation: use an embedded .png/.svg diagram instead of mermaid flowchart for spatial geometry."))
+            findings.append((block.line, "DM-13 violation: use an embedded raster (.png/.jpg/.webp) diagram instead of mermaid flowchart for spatial geometry."))
 
     if contract.get("template", "deepstudy-master") in ADAPTIVE_ROUTES:
         findings.extend(audit_math(lines, contract))

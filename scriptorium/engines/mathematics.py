@@ -10,7 +10,12 @@ import math
 import re
 from typing import Any
 
-from scriptorium.models import parse_note
+from scriptorium.models import (
+    FormulaTeachingRecord,
+    content_hash,
+    parse_note,
+    scan_display_math_blocks,
+)
 
 MATH_EXPLANATION_OBLIGATIONS: dict[str, tuple[str, str]] = {
     "M01": ("Purpose", "Why does this equation exist and what quantity does it compute?"),
@@ -297,16 +302,64 @@ def verify_worked_calculation(
     return {"valid": not errors, "errors": errors, "evaluated_steps": evaluated, "final_value": round(last_val, 6) if last_val is not None else None}
 
 
-def deconstruct_equation(spec: dict[str, Any], *, learner_level: str = "beginner") -> dict[str, Any]:
-    """Produce a domain-independent M01-M14 structured breakdown + beginner-readable prose."""
-    if not isinstance(spec, dict) or not str(spec.get("equation") or "").strip():
-        raise ValueError("Equation specification requires a non-empty 'equation' string")
+GENERIC_FOLD_PHRASES: tuple[str, ...] = (
+    "substitute the values",
+    "this computes the result",
+    "plug in the numbers",
+    "plug in the values",
+    "compute the final value",
+    "this formula gives the result",
+)
 
-    eq = str(spec["equation"]).strip()
+
+def _format_callout_block(lines: list[str], *, title: str = "Understand this formula step by step", quote_prefix: str = "") -> list[str]:
+    """Wrap explanatory lines inside an Obsidian-native folded callout block."""
+    out = [f"{quote_prefix}> [!example]- {title}"]
+    for ln in lines:
+        if not ln.strip():
+            out.append(f"{quote_prefix}>")
+        else:
+            # Guard against recursive display $$ inside the formula fold itself.
+            cleaned_ln = ln.replace("$$", "$") if "$$" in ln else ln
+            out.append(f"{quote_prefix}> {cleaned_ln}")
+    return out
+
+
+def render_formula_component(
+    spec: dict[str, Any] | FormulaTeachingRecord,
+    *,
+    learner_level: str = "beginner",
+    quote_prefix: str = "",
+) -> dict[str, Any]:
+    """Single owned renderer binding one display formula with its immediate folded explanation."""
+    if isinstance(spec, FormulaTeachingRecord):
+        data: dict[str, Any] = {
+            "formula_id": spec.formula_id,
+            "equation": spec.expression,
+            "concept_owner": spec.concept_owner,
+            "purpose": spec.purpose,
+            "pronunciation": spec.plain_reading,
+            "symbols": spec.symbols,
+            "shapes_units_domains": spec.shapes_units_domains,
+            "operation_breakdown": spec.operation_sequence,
+            "derivation_reasoning": spec.derivation_reasoning,
+            "numerical_example": spec.numerical_example,
+            "interpretation": spec.interpretation,
+            "assumptions": spec.assumptions,
+            "misconceptions": spec.misconceptions,
+            "placement": spec.placement,
+        }
+    else:
+        data = dict(spec)
+
+    eq = str(data.get("equation") or "").strip()
+    if not eq:
+        raise ValueError("Formula component requires a non-empty 'equation' string")
+
     features = detect_equation_features(eq, learner_level=learner_level)
     active = features["active_obligations"]
 
-    symbols = list(spec.get("symbols") or [])
+    symbols = list(data.get("symbols") or [])
     for sym in symbols:
         if not sym.get("symbol") or not sym.get("meaning"):
             raise ValueError("Each symbol entry requires non-empty 'symbol' and 'meaning'")
@@ -315,16 +368,16 @@ def deconstruct_equation(spec: dict[str, Any], *, learner_level: str = "beginner
             raise ValueError(f"Unknown mathematical object type: {otype}")
 
     dim_check: dict[str, Any] | None = None
-    if spec.get("dimension_operands"):
+    if data.get("dimension_operands"):
         dim_check = check_dimension_compatibility(
-            spec["dimension_operands"],
-            operation=str(spec.get("dimension_operation") or "matmul"),
+            data["dimension_operands"],
+            operation=str(data.get("dimension_operation") or "matmul"),
         )
         if not dim_check["valid"]:
             raise ValueError(dim_check["error"])
 
     calc_check: dict[str, Any] | None = None
-    num_ex = spec.get("numerical_example")
+    num_ex = data.get("numerical_example")
     if isinstance(num_ex, dict) and num_ex.get("steps"):
         calc_check = verify_worked_calculation(
             num_ex["steps"],
@@ -334,62 +387,218 @@ def deconstruct_equation(spec: dict[str, Any], *, learner_level: str = "beginner
         if not calc_check["valid"]:
             raise ValueError(f"Worked numerical substitution failed verification: {calc_check['errors']}")
 
-    lines: list[str] = []
-    if spec.get("purpose"):
-        lines.append(str(spec["purpose"]).strip())
-        lines.append("")
-    lines.extend(["$$", eq, "$$", ""])
-    if spec.get("pronunciation"):
-        lines.append(f"*Read aloud:* {spec['pronunciation'].strip()}")
-        lines.append("")
+    purpose_text = str(data.get("purpose") or "").strip()
+    pron_text = str(data.get("pronunciation") or "").strip()
+
+    fold_inner: list[str] = []
+    if purpose_text:
+        fold_inner.extend(["**What question does it answer?**", purpose_text, ""])
+    if pron_text:
+        fold_inner.extend([f"**How to read it aloud:** {pron_text}", ""])
     if symbols:
-        lines.extend(["| Symbol | Name / Meaning | Type | Shape / Units | Role |", "|---|---|---|---|---|"])
+        fold_inner.extend(["| Symbol | Name / Meaning | Type | Shape / Units | Role |", "|---|---|---|---|---|"])
         for s in symbols:
-            lines.append(
+            fold_inner.append(
                 f"| ${s['symbol']}$ | {s['meaning']} | {s.get('type', 'quantity')} | "
                 f"{s.get('shape') or s.get('units') or 'scalar'} | {s.get('role', s['meaning'])} |"
             )
-        lines.append("")
+        fold_inner.append("")
+    if data.get("shapes_units_domains"):
+        fold_inner.append("**Shapes, units, and domains:** " + "; ".join(str(x) for x in data["shapes_units_domains"]))
+        fold_inner.append("")
     if dim_check:
-        lines.append(f"**Shape compatibility:** `{dim_check.get('compatibility_summary') or dim_check.get('output_shape')}`.")
-        lines.append("")
-    if spec.get("expanded_form"):
-        lines.extend(["**Expanded elementary form:**", "", "$$", str(spec["expanded_form"]).strip(), "$$", ""])
-    if spec.get("operation_breakdown"):
-        lines.append("**Step-by-step operations:**")
-        for idx, step_text in enumerate(spec["operation_breakdown"], 1):
-            lines.append(f"{idx}. {step_text}")
-        lines.append("")
+        fold_inner.append(f"**Shape compatibility:** `{dim_check.get('compatibility_summary') or dim_check.get('output_shape')}`.")
+        fold_inner.append("")
+    if data.get("expanded_form"):
+        # Keep expanded form inline inside the fold to avoid recursive display folding.
+        exp_clean = str(data["expanded_form"]).strip().replace("\n", " ")
+        fold_inner.append(f"**Expanded elementary form:** ${exp_clean}$")
+        fold_inner.append("")
+    if data.get("operation_breakdown"):
+        fold_inner.append("**Step-by-step operations:**")
+        for idx, step_text in enumerate(data["operation_breakdown"], 1):
+            fold_inner.append(f"{idx}. {step_text}")
+        fold_inner.append("")
+    if data.get("derivation_reasoning"):
+        fold_inner.append(f"**Derivation reasoning:** {str(data['derivation_reasoning']).strip()}")
+        fold_inner.append("")
     if isinstance(num_ex, dict) and (calc_check or num_ex.get("summary")):
-        lines.append("**Concrete numerical substitution (synthetic example):**")
+        fold_inner.append("**Worked numerical example:**")
         if num_ex.get("inputs"):
             formatted_inputs = ", ".join(f"`{k} = {v}`" for k, v in num_ex["inputs"].items())
-            lines.append(f"- **Declared inputs:** {formatted_inputs}")
+            fold_inner.append(f"- **Declared inputs:** {formatted_inputs}")
         if calc_check:
             for st in calc_check["evaluated_steps"]:
                 expl = f" — {st['explanation']}" if st.get("explanation") else ""
-                lines.append(f"- **{st['label']}:** `{st['expr']}` = `{st['computed']}`{expl}")
+                fold_inner.append(f"- **{st['label']}:** `{st['expr']}` = `{st['computed']}`{expl}")
+        elif num_ex.get("summary"):
+            fold_inner.append(f"- **Trace:** {num_ex['summary']}")
         if num_ex.get("interpretation"):
-            lines.append(f"- **Interpretation:** {num_ex['interpretation']}")
+            fold_inner.append(f"- **Interpretation:** {num_ex['interpretation']}")
         if num_ex.get("sanity_check"):
-            lines.append(f"- **Sanity check:** {num_ex['sanity_check']}")
-        lines.append("")
-    if spec.get("misconceptions"):
-        lines.append("**Common misunderstandings to avoid:**")
-        for mc in spec["misconceptions"]:
-            lines.append(f"- {mc}")
-        lines.append("")
-    if spec.get("generalization"):
-        lines.append(f"**Generalizing beyond the example:** {spec['generalization']}")
-        lines.append("")
+            fold_inner.append(f"- **Sanity check:** {num_ex['sanity_check']}")
+        fold_inner.append("")
+    elif data.get("interpretation"):
+        fold_inner.append(f"**Interpretation:** {str(data['interpretation']).strip()}")
+        fold_inner.append("")
+    if data.get("assumptions"):
+        fold_inner.append("**Assumptions & conditions:** " + "; ".join(str(x) for x in data["assumptions"]))
+        fold_inner.append("")
+    if data.get("misconceptions"):
+        fold_inner.append("**Common misunderstandings to avoid:**")
+        for mc in data["misconceptions"]:
+            fold_inner.append(f"- {mc}")
+        fold_inner.append("")
+    if data.get("generalization"):
+        fold_inner.append(f"**Generalizing beyond the example:** {data['generalization']}")
+        fold_inner.append("")
+
+    while fold_inner and not fold_inner[-1].strip():
+        fold_inner.pop()
+    if not fold_inner:
+        raise ValueError("Formula teaching component cannot render an empty explanation fold")
+
+    fold_lines = _format_callout_block(fold_inner, quote_prefix=quote_prefix)
+    display_lines = [f"{quote_prefix}$$", f"{quote_prefix}{eq}", f"{quote_prefix}$$"]
+    pre_prose = ([f"{quote_prefix}{purpose_text}", quote_prefix.rstrip() if quote_prefix else ""] if purpose_text and not quote_prefix else [])
+    if purpose_text and quote_prefix:
+        pre_prose = [f"{quote_prefix}{purpose_text}", quote_prefix.rstrip()]
+
+    all_lines = [*pre_prose, *display_lines, quote_prefix.rstrip() if quote_prefix else "", *fold_lines]
+    formula_id = str(data.get("formula_id") or f"eq-{content_hash(eq)[:10]}")
+    record = FormulaTeachingRecord(
+        formula_id=formula_id,
+        expression=eq,
+        concept_owner=str(data.get("concept_owner") or ""),
+        purpose=purpose_text,
+        plain_reading=pron_text,
+        symbols=symbols,
+        shapes_units_domains=list(data.get("shapes_units_domains") or ([dim_check.get("compatibility_summary")] if dim_check else [])),
+        operation_sequence=list(data.get("operation_breakdown") or []),
+        derivation_reasoning=str(data.get("derivation_reasoning") or ""),
+        numerical_example=dict(num_ex) if isinstance(num_ex, dict) else {},
+        interpretation=str((num_ex or {}).get("interpretation") or data.get("interpretation") or ""),
+        assumptions=list(data.get("assumptions") or []),
+        misconceptions=list(data.get("misconceptions") or []),
+        validation_status="verified",
+        placement=str(data.get("placement") or "prose"),
+    )
 
     return {
+        "formula_id": formula_id,
         "equation": eq,
         "complexity": features["complexity"],
         "active_obligations": active,
         "dimension_check": dim_check,
         "calculation_check": calc_check,
-        "markdown": "\n".join(lines).strip() + "\n",
+        "record": record,
+        "display_block": "\n".join(display_lines),
+        "folded_callout": "\n".join(fold_lines),
+        "markdown": "\n".join(all_lines).strip() + "\n",
+    }
+
+
+def deconstruct_equation(spec: dict[str, Any], *, learner_level: str = "beginner") -> dict[str, Any]:
+    """Produce a domain-independent M01-M14 structured breakdown with bound Obsidian formula fold."""
+    if not isinstance(spec, dict) or not str(spec.get("equation") or "").strip():
+        raise ValueError("Equation specification requires a non-empty 'equation' string")
+
+    component = render_formula_component(spec, learner_level=learner_level)
+    return {
+        "formula_id": component["formula_id"],
+        "equation": component["equation"],
+        "complexity": component["complexity"],
+        "active_obligations": component["active_obligations"],
+        "dimension_check": component["dimension_check"],
+        "calculation_check": component["calculation_check"],
+        "record": component["record"],
+        "folded_callout": component["folded_callout"],
+        "markdown": component["markdown"],
+    }
+
+
+def validate_formula_folds(
+    note_text: str,
+    *,
+    learner_level: str = "beginner",
+) -> dict[str, Any]:
+    """Validate that every displayed $$...$$ block owns an adequate non-nested folded explanation."""
+    blocks = scan_display_math_blocks(note_text)
+    issues: list[dict[str, Any]] = []
+    block_reports: list[dict[str, Any]] = []
+
+    def _add(code: str, severity: str, description: str, line: int) -> None:
+        issues.append({"code": code, "severity": severity, "description": description, "location": f"line_{line}"})
+
+    for blk in blocks:
+        blk_errors: list[str] = []
+        if blk.nested_inside_formula_fold:
+            msg = f"Display formula on line {blk.start_line} is recursively nested inside a formula explanation fold; keep fold arithmetic inline or use a sibling formula block."
+            _add("FORMULA-FOLD-NESTED", "critical", msg, blk.start_line)
+            blk_errors.append(msg)
+
+        # Guard against bundling unrelated equations inside a single display block
+        expr_clean = re.sub(r"\\begin\{(?:bmatrix|pmatrix|vmatrix|cases)\}[\s\S]*?\\end\{(?:bmatrix|pmatrix|vmatrix|cases)\}", " ", blk.expression)
+        non_empty_rows = [r.strip() for r in re.split(r"\\\\|\n", expr_clean) if r.strip() and r.strip() not in {r"\begin{aligned}", r"\end{aligned}"}]
+        if len(non_empty_rows) >= 3 and "=" in expr_clean:
+            unlinked = [r for r in non_empty_rows[1:] if not r.lstrip("& ").startswith(("=", r"\approx", r"\implies", r"\iff", r"\le", r"\ge", "<", ">"))]
+            if len(unlinked) >= 2 and "cases" not in blk.expression:
+                msg = f"Display block on line {blk.start_line} bundles {len(unlinked) + 1} separate equations; split them so each formula receives its own folded explanation."
+                _add("FORMULA-BUNDLED", "major", msg, blk.start_line)
+                blk_errors.append(msg)
+
+        if not blk.nested_inside_formula_fold:
+            if not blk.has_following_fold:
+                msg = f"Display formula on line {blk.start_line} lacks an immediately following collapsed '> [!example]-' explanation callout."
+                _add("FORMULA-FOLD-MISSING", "critical", msg, blk.start_line)
+                blk_errors.append(msg)
+            else:
+                fold_low = blk.fold_body.lower()
+                fold_words = re.findall(r"\b\w+\b", blk.fold_body)
+                # Detect generic boilerplate folds
+                hit_generic = [p for p in GENERIC_FOLD_PHRASES if p in fold_low]
+                if len(fold_words) < 20 or (hit_generic and len(fold_words) < 45):
+                    msg = f"Formula explanation fold on line {blk.fold_start_line} uses sparse/generic filler ({hit_generic or f'{len(fold_words)} words'}) instead of real symbol and operation teaching."
+                    _add("FORMULA-FOLD-GENERIC", "critical", msg, blk.fold_start_line or blk.start_line)
+                    blk_errors.append(msg)
+
+                # Verify that actual symbols from the equation appear explained in the fold or surrounding prose
+                feat = detect_equation_features(blk.expression, learner_level=learner_level)
+                req_syms = [s for s in feat["detected_symbols"] if len(s) >= 1 and s not in {"i", "j", "k", "n"}]
+                if req_syms:
+                    fold_norm = re.sub(r"\\(?:mathbf|boldsymbol|hat|bar|tilde|vec|text)\{([^}]+)\}", r"\1", blk.fold_body)
+                    covered = sum(
+                        1 for sym in req_syms
+                        if sym in blk.fold_body
+                        or re.sub(r"\\|\{|\}", "", sym) in fold_norm
+                    )
+                    if covered == 0 and len(req_syms) >= 2:
+                        msg = f"Formula fold on line {blk.fold_start_line} does not resolve the equation's actual symbols ({', '.join(req_syms[:5])})."
+                        _add("FORMULA-FOLD-SYMBOLS", "major", msg, blk.fold_start_line or blk.start_line)
+                        blk_errors.append(msg)
+
+                if "$$" in blk.fold_body:
+                    msg = f"Formula fold on line {blk.fold_start_line} contains nested display math delimiters; use inline arithmetic instead."
+                    _add("FORMULA-FOLD-NESTED-MATH", "critical", msg, blk.fold_start_line or blk.start_line)
+                    blk_errors.append(msg)
+
+        block_reports.append({
+            "index": blk.index,
+            "start_line": blk.start_line,
+            "end_line": blk.end_line,
+            "in_list": blk.in_list,
+            "in_callout": blk.in_callout,
+            "has_following_fold": blk.has_following_fold,
+            "errors": blk_errors,
+        })
+
+    crit_or_major = [i for i in issues if i["severity"] in {"critical", "major"}]
+    return {
+        "passed": not crit_or_major,
+        "display_count": len(blocks),
+        "folded_count": sum(1 for b in blocks if b.has_following_fold),
+        "issues": issues,
+        "blocks": block_reports,
     }
 
 
@@ -418,19 +627,22 @@ def verify_math_deconstruction(
             if j < len(lines) and lines[j].strip().startswith("$$"):
                 _issue("MATH-DECON-01", "major", f"Display equation on line {j + 1} immediately follows heading '{line.strip()}' without preparing purpose or context.", f"line_{j + 1}")
 
-    # 2. Check consecutive equation dumping (two $$ blocks separated by < 12 prose words)
-    display_spans = [(m.start(), m.end(), m.group(1).strip()) for m in _DISPLAY_MATH_RE.finditer(body)]
-    for i in range(len(display_spans) - 1):
-        between = body[display_spans[i][1]:display_spans[i + 1][0]].strip()
-        prose_words = [w for w in between.split() if not w.startswith(("#", "|", "$", "`"))]
-        if len(prose_words) < 6 and not between.startswith("="):
+    # 2. Check consecutive equation dumping (ignoring code blocks & currency via scan_display_math_blocks)
+    blocks = scan_display_math_blocks(note_text)
+    body_lines = body.splitlines()
+    for i in range(len(blocks) - 1):
+        between_start = blocks[i].end_line
+        between_end = blocks[i + 1].start_line - 1
+        between_txt = "\n".join(note_text.splitlines()[between_start:between_end]).strip()
+        prose_words = [w for w in between_txt.split() if not w.startswith(("#", "|", "$", "`", ">"))]
+        if len(prose_words) < 6 and not between_txt.startswith("="):
             _issue("MATH-DECON-02", "major", "Back-to-back display equations appear without bridging interpretation or explanation between them.", "display_equations")
             break
 
     # 3. Inspect matrix/transpose/sum equations for beginner/intermediate scaffolding
     lowered = body.lower()
-    for _, _, eq in display_spans:
-        feat = detect_equation_features(eq, learner_level=level)
+    for blk in blocks:
+        feat = detect_equation_features(blk.expression, learner_level=level)
         if feat["features"]["has_transpose"] and level in {"beginner", "intermediate"}:
             if not re.search(r"\b(?:transpose|row\s+vector|column\s+vector|rows?\s+and\s+columns?|inner\s+dimensions?|\\times)\b", lowered):
                 _issue("MATH-DECON-03", "major", "Transpose notation appears without explaining row/column orientation or dimension compatibility.", "matrix_dimensions")
@@ -449,10 +661,14 @@ def verify_math_deconstruction(
         for m in re.finditer(r"^\|\s*\$(?:\\hat\{|\\mathbf\{|\\tilde\{)?(\\?[A-Za-z]+)", prose_outside_display, re.M)
     }
     defined = defined_markers | table_defined
-    if display_spans and not defined and len(display_spans) >= 2:
+    if blocks and not defined and len(blocks) >= 2:
         _issue("MATH-DECON-05", "major", "Display equations appear with no identifiable symbol definitions or variable table in surrounding prose.", "symbol_inventory")
 
-    # 5. Deterministically verify supplied structured equation specs
+    # 5. Enforce immediate folded formula explanation contract across all display math blocks
+    fold_audit = validate_formula_folds(note_text, learner_level=level)
+    issues.extend(fold_audit["issues"])
+
+    # 6. Deterministically verify supplied structured equation specs
     verified_specs: list[dict[str, Any]] = []
     for spec in equations or []:
         try:
@@ -466,7 +682,9 @@ def verify_math_deconstruction(
     return {
         "passed": not major_or_crit,
         "issues": issues,
-        "display_equation_count": len(display_spans),
+        "display_equation_count": len(blocks),
+        "folded_equation_count": fold_audit["folded_count"],
+        "formula_folds": fold_audit,
         "verified_specs": verified_specs,
     }
 
@@ -491,14 +709,47 @@ def build_worked_solution(problem_spec: dict[str, Any], *, learner_level: str = 
         if isinstance(problem_spec["given"], dict)
         else str(problem_spec["given"])
     )
+    sym_defs = list(problem_spec.get("symbols") or [])
+    if not sym_defs:
+        # Derive honest minimal symbol entries from declared inputs + formula symbols
+        given_dict = problem_spec.get("given") if isinstance(problem_spec.get("given"), dict) else {}
+        sym_defs = [{"symbol": k, "meaning": f"input variable (example value {v})", "type": "scalar"} for k, v in given_dict.items()]
+        if not sym_defs:
+            sym_defs = [{"symbol": problem_spec.get("find", "result"), "meaning": "target quantity computed by the formula", "type": "scalar"}]
+
+    assump_list = list(problem_spec["assumptions"]) if isinstance(problem_spec["assumptions"], list) else [str(problem_spec["assumptions"])]
+    formula_component = render_formula_component(
+        {
+            "equation": str(problem_spec["formula"]).strip(),
+            "purpose": f"Computes {problem_spec['find']} for {problem_spec['problem']}",
+            "pronunciation": str(problem_spec.get("pronunciation") or f"Formula computing {problem_spec['find']}."),
+            "symbols": sym_defs,
+            "operation_breakdown": [
+                f"{st['label']}: evaluate `{st['expr']}` -> `{st['computed']}`"
+                + (f" ({st['explanation']})" if st.get("explanation") else "")
+                for st in calc["evaluated_steps"]
+            ],
+            "interpretation": str(problem_spec.get("interpretation") or f"Evaluates to `{calc['final_value']}` under {given_str}."),
+            "assumptions": assump_list,
+            "misconceptions": list(problem_spec.get("common_mistakes") or ["Check variable signs, denominator constraints, and units before computing."])
+            if not isinstance(problem_spec.get("common_mistakes"), str)
+            else [problem_spec["common_mistakes"]],
+            "placement": "worked_example",
+        },
+        learner_level=learner_level,
+    )
+
     lines = [
         f"### Worked Problem: {problem_spec.get('title') or 'Step-by-Step Solution'}",
         "",
         f"- **Question & Objective:** {problem_spec['problem']} Find: {problem_spec['find']}",
         f"- **Given Inputs:** {given_str}",
         f"- **Method & Why It Applies:** {problem_spec.get('method_rationale') or problem_spec['formula']}",
-        f"- **Required Assumptions:** {'; '.join(problem_spec['assumptions']) if isinstance(problem_spec['assumptions'], list) else problem_spec['assumptions']}",
-        f"- **Governing Formula:** $${problem_spec['formula']}$$",
+        f"- **Required Assumptions:** {'; '.join(assump_list)}",
+        "",
+        formula_component["display_block"],
+        "",
+        formula_component["folded_callout"],
         "",
         "**Step-by-Step Substitution & Intermediate Operations:**",
     ]

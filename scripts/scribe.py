@@ -160,6 +160,15 @@ def main(argv: list[str] | None = None) -> int:
     p_audit.add_argument("--inventory", action="store_true", help="Include per-file purpose, dependencies, size, estimated context cost and preservation decisions.")
     sub.add_parser("validate-registry", help="Validate references/routing/master-registry.yaml.")
 
+    for yt_cmd in ("ytnotes", "ytlecture"):
+        p_yt = sub.add_parser(yt_cmd, help=f"Unified video transcript/frame ingestion alias (/{yt_cmd}) feeding /scribe-notes.")
+        p_yt.add_argument("--title", required=True, help="Video or lecture title.")
+        p_yt.add_argument("--url", default="", help="Source video URL.")
+        p_yt.add_argument("--transcript-json", type=Path, default=None, help="Optional JSON file of timestamped transcript entries.")
+        p_yt.add_argument("--frames-json", type=Path, default=None, help="Optional JSON file of candidate frame records.")
+        p_yt.add_argument("--vault", type=Path, default=None, help="Optional vault root for frame asset storage.")
+        p_yt.add_argument("--duration", type=int, default=None, help="Optional video duration in seconds.")
+
     args = parser.parse_args(args_list)
     orch = OrchestrationEngine(REPO_ROOT)
     vault = VaultEngine()
@@ -481,6 +490,28 @@ def main(argv: list[str] | None = None) -> int:
         res = orch.validate_registry()
         print(json.dumps(res, indent=2, ensure_ascii=False))
         return 0 if res["valid"] else 1
+
+    if args.command in {"ytnotes", "ytlecture"}:
+        t_entries = json.loads(args.transcript_json.read_text(encoding="utf-8-sig")) if args.transcript_json else None
+        f_cands = json.loads(args.frames_json.read_text(encoding="utf-8-sig")) if args.frames_json else None
+        payload = orch.ingest_video(
+            title=args.title,
+            source_url=args.url,
+            transcript_entries=t_entries,
+            frame_candidates=f_cands,
+            vault=args.vault,
+            video_duration_seconds=args.duration,
+        )
+        print(json.dumps({
+            "alias": f"/{args.command}",
+            "video_id": payload["video_id"],
+            "access_state": payload["access_state"],
+            "capabilities": payload.get("capabilities"),
+            "selected_frames": len(payload["screened_frames"]["selected"]),
+            "rejected_frames": len(payload["screened_frames"]["rejected"]),
+            "markdown": payload["markdown"],
+        }, indent=2, ensure_ascii=False))
+        return 0
 
     return 2
 

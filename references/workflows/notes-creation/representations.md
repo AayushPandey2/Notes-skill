@@ -28,7 +28,7 @@ or `interactive` textual sequences:
 | R8 spatial/structural | coordinates, connectivity | external web figure, typed table |
 | R9 research/evidence | comparisons, provenance | external web figure, typed table |
 | R10 interactive | supplied textual states | standalone constrained HTML frame slider |
-| R11 external media | source figures & diagrams | verified downloaded web figure (`png`/`jpg`/`webp`/sanitized `svg`) |
+| R11 external media | source figures & diagrams | verified downloaded raster web figure (`png`/`jpg`/`webp`) |
 | R12 structured tables | definitions,traces, comparisons | existing typed Markdown table renderer |
 
 External image candidates supply discovered `url`, original `source`, `rights`,
@@ -92,9 +92,9 @@ always emit local vault embeds (`![[...]]` or relative Markdown paths). Attribut
 appears beside the image; provenance stays in internal receipts and the LAVIA manifest.
 
 The dependency-free validators support 8-bit grayscale, RGB, indexed (`PLTE`), and alpha
-PNG—both noninterlaced and Adam7 interlaced (scanline reconstruction)—sanitized UTF-8 SVG
-(strict element/attribute allowlist, no `<script>`, `on*`, `href`, `DOCTYPE`, or `url()`),
-bounded JPEG (SOF0/SOF2/EOI), and bounded WebP (`VP8 `/`VP8L`/`VP8X`). Limits are 8 MiB,
+PNG—both noninterlaced and Adam7 interlaced (scanline reconstruction)—bounded
+JPEG (`SOF0`/`SOF2`/`EOI`), and bounded WebP (`VP8 `/`VP8L`/`VP8X`). SVG downloads
+are rejected (`image/svg+xml` / `.svg`) for newly acquired assets. Limits are 8 MiB,
 8 million pixels (`MAX_PIXELS = 8_000_000`), maximum dimension 10,000, ten seconds per
 request, and three redirects. Each redirect
 must remain HTTPS without credentials or alternate ports. DNS answers must all be

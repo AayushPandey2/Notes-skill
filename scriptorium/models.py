@@ -443,3 +443,296 @@ def safe_eval_expr(
         raise ValueError(f"Unsupported arithmetic construct in expression: {expression!r}")
 
     return _eval(tree)
+
+
+# ---------------------------------------------------------------------------
+# Replacement Architecture Typed Content Records (Shared Pipeline Contracts)
+# ---------------------------------------------------------------------------
+
+@dataclass
+class ConceptPlanRecord:
+    """Typed concept specification shared across intake, planning, authoring, and validation."""
+    concept_id: str
+    canonical_name: str
+    learning_objective: str
+    prerequisites: list[str] = field(default_factory=list)
+    selected_depth: int = 3
+    definitions: dict[str, str] = field(default_factory=dict)
+    notation: dict[str, dict[str, Any]] = field(default_factory=dict)
+    evidence_refs: list[str] = field(default_factory=list)
+    formula_requirements: list[str] = field(default_factory=list)
+    visual_requirements: list[str] = field(default_factory=list)
+    assessment_requirements: list[str] = field(default_factory=list)
+
+
+@dataclass
+class FormulaTeachingRecord:
+    """Owned atomic formula + folded walkthrough contract."""
+    formula_id: str
+    expression: str
+    concept_owner: str
+    purpose: str
+    plain_reading: str
+    symbols: list[dict[str, Any]] = field(default_factory=list)
+    shapes_units_domains: list[str] = field(default_factory=list)
+    operation_sequence: list[str] = field(default_factory=list)
+    derivation_reasoning: str = ""
+    numerical_example: dict[str, Any] = field(default_factory=dict)
+    interpretation: str = ""
+    assumptions: list[str] = field(default_factory=list)
+    misconceptions: list[str] = field(default_factory=list)
+    validation_status: str = "pending"
+    placement: str = "prose"  # prose | worked_example | assessment | appendix | table | source
+
+
+@dataclass
+class AssetRecord:
+    """Verified external raster image or local media asset record."""
+    asset_id: str
+    asset_type: str  # raster_web | video_frame | mermaid | table | interactive
+    concept_owner: str
+    instructional_role: str
+    source_page_url: str = ""
+    acquisition_url: str = ""
+    local_path: str = ""
+    sha256: str = ""
+    width: int | None = None
+    height: int | None = None
+    detected_format: str = ""
+    attribution: str = ""
+    rights: str = ""
+    inspection_status: str = "uninspected"
+    verification_status: str = "pending"  # verified | failed | unmet_visual_obligation | pending
+    failure_reason: str = ""
+
+
+@dataclass
+class VideoEvidenceRecord:
+    """Video transcript, frame sequence, and explicit access-mode contract."""
+    video_id: str
+    source_access_mode: str  # full_multimodal | transcript_plus_frames | transcript_only | media_only | metadata_only
+    source_url: str = ""
+    transcript_intervals: list[dict[str, Any]] = field(default_factory=list)
+    acquisition_method: str = ""
+    frame_records: list[dict[str, Any]] = field(default_factory=list)
+    concept_alignment: list[dict[str, Any]] = field(default_factory=list)
+    confidence: str = "medium"
+    uncertainty_notes: list[str] = field(default_factory=list)
+    provenance_separation: dict[str, list[str]] = field(default_factory=dict)
+
+
+@dataclass
+class PublicationQualityStatus:
+    """Unified structural + semantic + safety verification summary."""
+    passed: bool
+    structural_checks: dict[str, Any] = field(default_factory=dict)
+    semantic_checks: dict[str, Any] = field(default_factory=dict)
+    partial_visual_coverage: bool = False
+    partial_video_coverage: bool = False
+    protected_hashes_verified: bool = True
+    warnings: list[str] = field(default_factory=list)
+
+
+@dataclass
+class DisplayMathBlock:
+    """Parsed Markdown display-math block and its immediately attached folded explanation."""
+    index: int
+    expression: str
+    start_line: int
+    end_line: int
+    quote_depth: int = 0
+    in_list: bool = False
+    in_callout: bool = False
+    callout_type: str | None = None
+    has_following_fold: bool = False
+    fold_header: str = ""
+    fold_start_line: int | None = None
+    fold_end_line: int | None = None
+    fold_body: str = ""
+    nested_inside_formula_fold: bool = False
+
+
+_FENCE_LINE_RE = re.compile(r"^\s*(```+|~~~+)(.*)$")
+_CALLOUT_HEADER_RE = re.compile(r"^\[!([A-Za-z0-9_-]+)\]([+-])?\s*(.*)$")
+
+
+def _strip_quote_prefix(line: str) -> tuple[int, str]:
+    depth = 0
+    rest = line.lstrip()
+    while rest.startswith(">"):
+        depth += 1
+        rest = rest[1:]
+        if rest.startswith(" "):
+            rest = rest[1:]
+        rest = rest.lstrip() if rest.startswith(">") else rest
+    return depth, rest
+
+
+def _unescaped_dd_positions(line: str) -> list[int]:
+    """Return column offsets of unescaped '$$' outside inline backtick code spans."""
+    positions: list[int] = []
+    i = 0
+    n = len(line)
+    in_tick = 0
+    while i < n:
+        ch = line[i]
+        if ch == "\\" and in_tick == 0:
+            i += 2
+            continue
+        if ch == "`":
+            run = 1
+            while i + run < n and line[i + run] == "`":
+                run += 1
+            if in_tick == 0:
+                in_tick = run
+            elif run == in_tick:
+                in_tick = 0
+            i += run
+            continue
+        if in_tick == 0 and ch == "$" and i + 1 < n and line[i + 1] == "$":
+            positions.append(i)
+            i += 2
+            continue
+        i += 1
+    return positions
+
+
+def scan_display_math_blocks(text: str) -> list[DisplayMathBlock]:
+    """Scan Markdown note text for display $$...$$ blocks and attached folded explanations.
+
+    Ignores YAML frontmatter, fenced code blocks, inline code spans, HTML comments,
+    and escaped \\$ / currency symbols; handles blockquotes, callouts, and list items.
+    """
+    raw_lines = text.splitlines()
+    fm_lines, start_idx = split_frontmatter_lines(raw_lines)
+    if fm_lines is None:
+        start_idx = 0
+
+    blocks: list[DisplayMathBlock] = []
+    fence_marker: str | None = None
+    in_html_comment = False
+    open_math: dict[str, Any] | None = None
+    callout_stack: list[tuple[int, str, bool]] = []  # (depth, ctype, is_formula_fold)
+
+    idx = start_idx
+    while idx < len(raw_lines):
+        lineno = idx + 1
+        raw_line = raw_lines[idx]
+        qdepth, stripped = _strip_quote_prefix(raw_line)
+        while callout_stack and (qdepth < callout_stack[-1][0] or (qdepth == 0 and not raw_line.strip().startswith(">"))):
+            callout_stack.pop()
+
+        if in_html_comment:
+            if "-->" in stripped:
+                in_html_comment = False
+            idx += 1
+            continue
+        if stripped.lstrip().startswith("<!--") and "-->" not in stripped:
+            in_html_comment = True
+            idx += 1
+            continue
+        stripped_no_comment = re.sub(r"<!--.*?-->", "", stripped)
+
+        fm = _FENCE_LINE_RE.match(stripped_no_comment)
+        if fence_marker is not None:
+            if fm and fm.group(1)[0] == fence_marker[0] and len(fm.group(1)) >= len(fence_marker) and not fm.group(2).strip():
+                fence_marker = None
+            idx += 1
+            continue
+        if fm:
+            fence_marker = fm.group(1)
+            idx += 1
+            continue
+
+        cm = _CALLOUT_HEADER_RE.match(stripped_no_comment.strip()) if qdepth > 0 else None
+        if cm:
+            ctype = cm.group(1).lower()
+            title_low = cm.group(3).strip().lower()
+            is_formula_fold = (ctype == "example" and (
+                "understand this formula" in title_low or "formula step by step" in title_low or "step-by-step" in title_low or "equation walkthrough" in title_low
+            ))
+            callout_stack.append((qdepth, ctype, is_formula_fold))
+            idx += 1
+            continue
+
+        dd_pos = _unescaped_dd_positions(stripped_no_comment)
+        if open_math is not None:
+            if dd_pos:
+                tail = stripped_no_comment[:dd_pos[0]]
+                open_math["parts"].append(tail)
+                blocks.append(DisplayMathBlock(
+                    index=len(blocks) + 1,
+                    expression="\n".join(open_math["parts"]).strip(),
+                    start_line=open_math["start_line"],
+                    end_line=lineno,
+                    quote_depth=open_math["qdepth"],
+                    in_list=open_math["in_list"],
+                    in_callout=open_math["in_callout"],
+                    callout_type=open_math["callout_type"],
+                    nested_inside_formula_fold=open_math["nested_fold"],
+                ))
+                open_math = None
+            else:
+                open_math["parts"].append(stripped_no_comment)
+        elif dd_pos:
+            in_list = bool(re.match(r"^\s*(?:[-*+]|\d+\.)\s+", stripped_no_comment))
+            active_ctype = callout_stack[-1][1] if callout_stack else None
+            nested_fold = any(item[2] for item in callout_stack)
+            if len(dd_pos) >= 2:
+                expr = stripped_no_comment[dd_pos[0] + 2:dd_pos[1]].strip()
+                blocks.append(DisplayMathBlock(
+                    index=len(blocks) + 1,
+                    expression=expr,
+                    start_line=lineno,
+                    end_line=lineno,
+                    quote_depth=qdepth,
+                    in_list=in_list,
+                    in_callout=bool(callout_stack),
+                    callout_type=active_ctype,
+                    nested_inside_formula_fold=nested_fold,
+                ))
+            else:
+                head = stripped_no_comment[dd_pos[0] + 2:]
+                open_math = {
+                    "parts": [head],
+                    "start_line": lineno,
+                    "qdepth": qdepth,
+                    "in_list": in_list,
+                    "in_callout": bool(callout_stack),
+                    "callout_type": active_ctype,
+                    "nested_fold": nested_fold,
+                }
+        idx += 1
+
+    # Attach immediately following collapsed formula explanation callouts
+    for blk in blocks:
+        scan_i = blk.end_line  # 0-based index of line immediately after end_line
+        while scan_i < len(raw_lines):
+            q, s = _strip_quote_prefix(raw_lines[scan_i])
+            if s.strip() == "" and q <= blk.quote_depth:
+                scan_i += 1
+                continue
+            break
+        if scan_i < len(raw_lines):
+            q, s = _strip_quote_prefix(raw_lines[scan_i])
+            cm = _CALLOUT_HEADER_RE.match(s.strip())
+            if q > 0 and cm and cm.group(2) == "-" and cm.group(1).lower() in {"example", "note", "tip"}:
+                fold_lines: list[str] = []
+                f_end = scan_i + 1
+                j = scan_i + 1
+                while j < len(raw_lines):
+                    fq, fs = _strip_quote_prefix(raw_lines[j])
+                    if fq < q or (fq == 0 and raw_lines[j].strip() != ""):
+                        break
+                    if fq == 0 and raw_lines[j].strip() == "":
+                        break
+                    fold_lines.append(fs)
+                    f_end = j + 1
+                    j += 1
+                blk.has_following_fold = True
+                blk.fold_header = s.strip()
+                blk.fold_start_line = scan_i + 1
+                blk.fold_end_line = f_end
+                blk.fold_body = "\n".join(fold_lines).strip()
+
+    return blocks

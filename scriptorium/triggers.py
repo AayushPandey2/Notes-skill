@@ -206,6 +206,38 @@ TRIGGER_REGISTRY: dict[str, dict[str, Any]] = {
 }
 
 
+VIDEO_TRIGGERS: dict[str, dict[str, Any]] = {
+    "VIDEO-01": {
+        "name": "Video Access & Capability Probe",
+        "architectures": ["A0", "A4"],
+        "activation_condition": "Video URL, local media, transcript, or frame candidates supplied via /scribe-ytnotes or /scribe-ytlecture.",
+        "semantic_intent": "Discover actual host media/transcription tool availability and classify explicit access_state.",
+        "verification": "discover_video_capabilities + classify_access_state",
+    },
+    "VIDEO-02": {
+        "name": "Meaning-Based Transcript Segmentation",
+        "architectures": ["A1", "A4"],
+        "activation_condition": "Timestamped transcript or subtitles available for video notes.",
+        "semantic_intent": "Preserve equations/variables/Hinglish/uncertainty while segmenting on conceptual/demonstration shifts.",
+        "verification": "segment_transcript bounds & timestamp alignment check",
+    },
+    "VIDEO-03": {
+        "name": "Educational Frame Screening",
+        "architectures": ["A6", "A7"],
+        "activation_condition": "Candidate video frames provided or extracted from accessible video media.",
+        "semantic_intent": "Reject blank/blur/duplicate shots while preserving intermediate derivation step frames and SHA-256 receipts.",
+        "verification": "screen_frame_candidates pixel/delta/duration verification",
+    },
+    "VIDEO-04": {
+        "name": "Source-Faithful Video Note Composition",
+        "architectures": ["A5", "A9"],
+        "activation_condition": "Video payload assembled for /scribe-notes unified pipeline.",
+        "semantic_intent": "Align transcript segments, screened frames, and formula folds; emit access report if metadata_only.",
+        "verification": "compose_video_study_payload access-state enforcement",
+    },
+}
+
+
 MATH_TRIGGERS: dict[str, dict[str, Any]] = {
     "MATH-01": {
         "name": "New Symbol",
@@ -414,11 +446,44 @@ def dispatch_trigger(
 ) -> dict[str, Any]:
     """Execute one explicit trigger contract (T01-T16, MATH-01..10, TEACH-01..10)."""
     tid = trigger_id.strip().upper()
-    all_registries = {**TRIGGER_REGISTRY, **MATH_TRIGGERS, **TEACH_TRIGGERS}
+    all_registries = {**TRIGGER_REGISTRY, **MATH_TRIGGERS, **TEACH_TRIGGERS, **VIDEO_TRIGGERS}
     if tid not in all_registries:
         raise ValueError(f"Unknown trigger ID: {trigger_id}")
     data = dict(payload or {})
     meta = all_registries[tid]
+
+    if tid in VIDEO_TRIGGERS:
+        from scriptorium.engines.composition import video as video_eng
+        if tid == "VIDEO-01":
+            result = {
+                "capabilities": video_eng.discover_video_capabilities(),
+                "access_state": video_eng.classify_access_state(
+                    has_video_media=bool(data.get("has_video_media")),
+                    has_frames=bool(data.get("frame_candidates")),
+                    has_transcript=bool(data.get("transcript_entries")),
+                    has_audio_track=bool(data.get("transcript_entries")),
+                ),
+            }
+        elif tid == "VIDEO-02":
+            result = {"segments": video_eng.segment_transcript(data.get("transcript_entries") or [], video_duration_seconds=data.get("video_duration_seconds"))}
+        elif tid == "VIDEO-03":
+            result = video_eng.screen_frame_candidates(
+                data.get("frame_candidates") or [],
+                vault=Path(data["vault"]) if data.get("vault") else None,
+                video_duration_seconds=data.get("video_duration_seconds"),
+            )
+        else:
+            result = video_eng.compose_video_study_payload(
+                title=str(data["title"]),
+                source_url=str(data.get("source_url") or ""),
+                transcript_entries=data.get("transcript_entries"),
+                frame_candidates=data.get("frame_candidates"),
+                vault=Path(data["vault"]) if data.get("vault") else None,
+                collection_slug=data.get("collection_slug"),
+                video_duration_seconds=data.get("video_duration_seconds"),
+                has_video_media=bool(data.get("has_video_media")),
+            )
+        return {"trigger": tid, "name": meta["name"], "architectures": meta["architectures"], "result": result}
 
     if tid in MATH_TRIGGERS:
         from scriptorium.engines import mathematics as math_eng
