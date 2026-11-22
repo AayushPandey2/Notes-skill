@@ -1,0 +1,949 @@
+{
+  "version": 1,
+  "dimensions": [
+    "math",
+    "code",
+    "visual",
+    "theory",
+    "practice",
+    "assessment"
+  ],
+  "subtemplates": {
+    "conceptual": [
+      "need",
+      "intuition",
+      "definition",
+      "distinctions",
+      "examples",
+      "limits"
+    ],
+    "mathematical": [
+      "intuition",
+      "notation",
+      "assumptions",
+      "relation",
+      "justification",
+      "calculation",
+      "validity"
+    ],
+    "programming": [
+      "behavior",
+      "inputs_outputs",
+      "algorithm",
+      "environment",
+      "implementation",
+      "trace",
+      "tests",
+      "debugging"
+    ],
+    "algorithmic": [
+      "problem",
+      "state",
+      "invariant",
+      "steps",
+      "trace",
+      "correctness",
+      "cost",
+      "edge_cases"
+    ],
+    "architectural": [
+      "purpose",
+      "components",
+      "interfaces",
+      "data_flow",
+      "shapes",
+      "interactions",
+      "bottlenecks",
+      "tradeoffs"
+    ],
+    "scientific": [
+      "phenomenon",
+      "principles",
+      "mechanism",
+      "experiment",
+      "measurement",
+      "interpretation",
+      "error"
+    ],
+    "historical": [
+      "context",
+      "chronology",
+      "developments",
+      "causes",
+      "consequences",
+      "evidence",
+      "interpretations"
+    ],
+    "comparative": [
+      "decision",
+      "criteria",
+      "shared_properties",
+      "differences",
+      "tradeoffs",
+      "conditional_choice"
+    ],
+    "procedural": [
+      "goal",
+      "requirements",
+      "preparation",
+      "steps",
+      "intermediate_states",
+      "verification",
+      "troubleshooting"
+    ],
+    "research": [
+      "question",
+      "background",
+      "hypothesis",
+      "method",
+      "evidence",
+      "results",
+      "interpretation",
+      "limitations",
+      "open_questions"
+    ]
+  },
+  "objectives": {
+    "recognize": {
+      "theory": 1,
+      "assessment": 1
+    },
+    "define": {
+      "theory": 2,
+      "assessment": 1
+    },
+    "explain": {
+      "theory": 3,
+      "assessment": 2
+    },
+    "apply": {
+      "practice": 3,
+      "assessment": 3
+    },
+    "calculate": {
+      "math": 3,
+      "practice": 3,
+      "assessment": 3
+    },
+    "derive": {
+      "math": 4,
+      "theory": 4,
+      "assessment": 4
+    },
+    "prove": {
+      "math": 5,
+      "theory": 5,
+      "assessment": 4
+    },
+    "trace": {
+      "code": 1,
+      "theory": 3,
+      "practice": 3,
+      "assessment": 3
+    },
+    "implement": {
+      "code": 3,
+      "practice": 3,
+      "assessment": 3
+    },
+    "debug": {
+      "code": 4,
+      "practice": 4,
+      "assessment": 4
+    },
+    "analyze": {
+      "theory": 4,
+      "assessment": 3
+    },
+    "compare": {
+      "theory": 3,
+      "assessment": 3
+    },
+    "evaluate": {
+      "theory": 4,
+      "assessment": 4
+    },
+    "verify": {
+      "theory": 3,
+      "assessment": 3
+    },
+    "solve": {
+      "practice": 4,
+      "assessment": 4
+    },
+    "design": {
+      "theory": 4,
+      "practice": 5,
+      "assessment": 5
+    }
+  },
+  "modules": {
+    "motivation": {
+      "dimension": "theory",
+      "required_for": [],
+      "types": [],
+      "supporting": true,
+      "inputs": "objective and motivating need",
+      "outputs": "problem and why the concept helps",
+      "check": "need is real; no invented origin story",
+      "depends": []
+    },
+    "intuition": {
+      "dimension": "theory",
+      "required_for": [
+        "explain"
+      ],
+      "types": [],
+      "supporting": true,
+      "inputs": "reader baseline and mechanism",
+      "outputs": "mental model; optional analogy with mapped limits",
+      "check": "analogy makes no invalid predictions",
+      "depends": []
+    },
+    "definitions": {
+      "dimension": "theory",
+      "required_for": [
+        "define",
+        "explain",
+        "derive",
+        "prove"
+      ],
+      "types": [],
+      "supporting": true,
+      "inputs": "terms and source definitions",
+      "outputs": "definitions and terminology at first use",
+      "check": "scope and terminology match evidence",
+      "depends": []
+    },
+    "mathematics": {
+      "dimension": "math",
+      "required_for": [
+        "calculate",
+        "derive",
+        "prove"
+      ],
+      "types": [],
+      "supporting": true,
+      "inputs": "relation, symbols, conditions",
+      "outputs": "notation, formula, interpretation and applicable calculation",
+      "check": "algebra, units, shapes, domains and substitution",
+      "depends": [
+        "definitions"
+      ]
+    },
+    "derivation": {
+      "dimension": "math",
+      "required_for": [
+        "derive"
+      ],
+      "types": [],
+      "supporting": false,
+      "inputs": "target and assumptions",
+      "outputs": "justified transformations and interpretation",
+      "check": "every non-obvious step follows; no missing conditions",
+      "depends": [
+        "mathematics"
+      ]
+    },
+    "proof": {
+      "dimension": "math",
+      "required_for": [
+        "prove"
+      ],
+      "types": [],
+      "supporting": false,
+      "inputs": "quantified claim and hypotheses",
+      "outputs": "proof, validity boundaries and relevant counterexample",
+      "check": "logic establishes exactly the stated claim",
+      "depends": [
+        "mathematics"
+      ]
+    },
+    "visualization": {
+      "dimension": "visual",
+      "required_for": [],
+      "types": [],
+      "supporting": true,
+      "inputs": "spatial, temporal, component or quantitative relationship",
+      "outputs": "geometry, graph, architecture, data flow, timeline or table beside explanation",
+      "check": "labels, units, shapes, edges and data provenance",
+      "depends": []
+    },
+    "algorithm": {
+      "dimension": "theory",
+      "required_for": [
+        "trace"
+      ],
+      "types": [
+        "algorithmic"
+      ],
+      "supporting": false,
+      "inputs": "input/output, state and stopping conditions",
+      "outputs": "reasoned steps, pseudocode, invariant, correctness and cost where relevant",
+      "check": "trace, termination and edge cases",
+      "depends": [
+        "definitions"
+      ]
+    },
+    "coding": {
+      "dimension": "code",
+      "required_for": [
+        "implement",
+        "debug"
+      ],
+      "types": [
+        "programming"
+      ],
+      "supporting": true,
+      "inputs": "behavior, selected stack, dependencies and fixture",
+      "outputs": "implementation with explanation and honest execution status",
+      "check": "syntax, representative and boundary tests; no invented execution",
+      "depends": []
+    },
+    "tracing": {
+      "dimension": "practice",
+      "required_for": [
+        "trace",
+        "debug"
+      ],
+      "types": [],
+      "supporting": false,
+      "inputs": "fixture and expected behavior",
+      "outputs": "consequential states, execution trace and diagnostic correction",
+      "check": "states agree with algorithm and implementation",
+      "depends": []
+    },
+    "examples": {
+      "dimension": "practice",
+      "required_for": [
+        "apply",
+        "calculate",
+        "solve"
+      ],
+      "types": [],
+      "supporting": true,
+      "inputs": "novelty, error risk, source examples and intended transfer",
+      "outputs": "minimal, worked, contrastive, counterexample or edge case as needed",
+      "check": "problem, method, intermediate work, answer, interpretation and verification",
+      "depends": []
+    },
+    "applications": {
+      "dimension": "practice",
+      "required_for": [
+        "apply",
+        "design"
+      ],
+      "types": [
+        "procedural"
+      ],
+      "supporting": false,
+      "inputs": "task constraints and expected intermediate states",
+      "outputs": "use case, complete procedure or project at selected depth",
+      "check": "steps are feasible and outcomes verifiable",
+      "depends": []
+    },
+    "comparison": {
+      "dimension": "theory",
+      "required_for": [
+        "compare",
+        "evaluate"
+      ],
+      "types": [
+        "comparative"
+      ],
+      "supporting": false,
+      "inputs": "alternatives and common criteria",
+      "outputs": "matched tradeoffs and conditional decision",
+      "check": "same task and conditions; no universal ranking",
+      "depends": []
+    },
+    "limitations": {
+      "dimension": "theory",
+      "required_for": [
+        "analyze",
+        "evaluate",
+        "prove",
+        "debug"
+      ],
+      "types": [],
+      "supporting": true,
+      "inputs": "assumptions, likely misconceptions and failures",
+      "outputs": "boundaries, why mistaken reasoning fails and correction",
+      "check": "cases are consequential and supported",
+      "depends": []
+    },
+    "history": {
+      "dimension": "theory",
+      "required_for": [],
+      "types": [
+        "historical"
+      ],
+      "supporting": false,
+      "inputs": "dated evidence and context",
+      "outputs": "chronology, causes, consequences and competing interpretations",
+      "check": "chronology distinguished from causal attribution",
+      "depends": []
+    },
+    "experiment": {
+      "dimension": "practice",
+      "required_for": [],
+      "types": [
+        "scientific",
+        "research"
+      ],
+      "supporting": false,
+      "inputs": "question, method, measurements and evidence limits",
+      "outputs": "experiment, uncertainty, interpretation and alternatives",
+      "check": "illustrative data never called observed data",
+      "depends": []
+    },
+    "assessment": {
+      "dimension": "assessment",
+      "required_for": [],
+      "types": [],
+      "supporting": true,
+      "inputs": "observable objectives and taught material",
+      "outputs": "active recall, progressive practice, worked solutions and mastery checks",
+      "check": "answers supported; difficulty matches objectives",
+      "depends": []
+    },
+    "revision": {
+      "dimension": "theory",
+      "required_for": [],
+      "types": [],
+      "supporting": true,
+      "inputs": "completed concepts and their relationships",
+      "outputs": "integration and concise retrieval cues; formulas/procedures only if taught",
+      "check": "no repeated chapter; connections explain transfer",
+      "depends": []
+    }
+  },
+  "capabilities": {
+    "S01": {
+      "purpose": "Conceptual Foundations",
+      "strategy": "conceptual",
+      "activation": "Request objectives require conceptual foundations",
+      "dependencies": [],
+      "stages": [
+        "motivation_and_problem",
+        "intuition_and_model",
+        "definitions_and_setup"
+      ],
+      "technical_obligations": [
+        "definitions",
+        "motivation",
+        "prerequisites"
+      ],
+      "preferred_visuals": [],
+      "evidence_requirements": [
+        "authoritative definition"
+      ],
+      "validation": [
+        "definitions",
+        "motivation",
+        "prerequisites"
+      ]
+    },
+    "S02": {
+      "purpose": "Mathematical Derivations",
+      "strategy": "mathematical",
+      "activation": "Request objectives require mathematical derivations",
+      "dependencies": [
+        "S01"
+      ],
+      "stages": [
+        "mathematical_formulation",
+        "derivation_and_proof"
+      ],
+      "technical_obligations": [
+        "variables and domains",
+        "assumptions",
+        "intermediate justified steps",
+        "boundary cases"
+      ],
+      "preferred_visuals": [],
+      "evidence_requirements": [
+        "formulation and assumptions"
+      ],
+      "validation": [
+        "variables and domains",
+        "assumptions",
+        "intermediate justified steps",
+        "boundary cases"
+      ]
+    },
+    "S03": {
+      "purpose": "Algorithmic Mechanics",
+      "strategy": "algorithmic",
+      "activation": "Request objectives require algorithmic mechanics",
+      "dependencies": [
+        "S01"
+      ],
+      "stages": [
+        "algorithmic_procedure",
+        "worked_application"
+      ],
+      "technical_obligations": [
+        "inputs and outputs",
+        "initial state",
+        "invariant",
+        "execution trace",
+        "time and space complexity"
+      ],
+      "preferred_visuals": [
+        "mermaid",
+        "svg"
+      ],
+      "evidence_requirements": [
+        "algorithm specification"
+      ],
+      "validation": [
+        "inputs and outputs",
+        "initial state",
+        "invariant",
+        "execution trace",
+        "time and space complexity"
+      ]
+    },
+    "S04": {
+      "purpose": "Implementation and Code",
+      "strategy": "programming",
+      "activation": "Request objectives require implementation and code",
+      "dependencies": [
+        "S03"
+      ],
+      "stages": [
+        "implementation_and_code",
+        "interpretation_and_verification"
+      ],
+      "technical_obligations": [
+        "runtime and dependency versions",
+        "complete code",
+        "test inputs and expected outputs",
+        "edge cases"
+      ],
+      "preferred_visuals": [],
+      "evidence_requirements": [
+        "versioned official API or algorithm"
+      ],
+      "validation": [
+        "runtime and dependency versions",
+        "complete code",
+        "test inputs and expected outputs",
+        "edge cases"
+      ]
+    },
+    "S05": {
+      "purpose": "Architecture and Systems",
+      "strategy": "architectural",
+      "activation": "Request objectives require architecture and systems",
+      "dependencies": [
+        "S01"
+      ],
+      "stages": [
+        "mechanism_and_structure"
+      ],
+      "technical_obligations": [
+        "components",
+        "interfaces",
+        "data flow",
+        "shapes and memory"
+      ],
+      "preferred_visuals": [
+        "mermaid",
+        "svg"
+      ],
+      "evidence_requirements": [
+        "component relationships"
+      ],
+      "validation": [
+        "components",
+        "interfaces",
+        "data flow",
+        "shapes and memory"
+      ]
+    },
+    "S06": {
+      "purpose": "Research-Paper Analysis",
+      "strategy": "research",
+      "activation": "Request objectives require research-paper analysis",
+      "dependencies": [
+        "S01"
+      ],
+      "stages": [
+        "motivation_and_problem",
+        "experiment_and_evidence",
+        "limitations_and_boundaries"
+      ],
+      "technical_obligations": [
+        "actual contributions",
+        "methodology",
+        "experimental conditions",
+        "limitations"
+      ],
+      "preferred_visuals": [],
+      "evidence_requirements": [
+        "original primary paper"
+      ],
+      "validation": [
+        "actual contributions",
+        "methodology",
+        "experimental conditions",
+        "limitations"
+      ]
+    },
+    "S07": {
+      "purpose": "Experimental and Statistical Analysis",
+      "strategy": "scientific",
+      "activation": "Request objectives require experimental and statistical analysis",
+      "dependencies": [
+        "S01"
+      ],
+      "stages": [
+        "experiment_and_evidence",
+        "interpretation_and_verification"
+      ],
+      "technical_obligations": [
+        "hypothesis",
+        "metrics",
+        "data provenance",
+        "uncertainty",
+        "reproducibility"
+      ],
+      "preferred_visuals": [],
+      "evidence_requirements": [
+        "experimental methodology"
+      ],
+      "validation": [
+        "hypothesis",
+        "metrics",
+        "data provenance",
+        "uncertainty",
+        "reproducibility"
+      ]
+    },
+    "S08": {
+      "purpose": "Comparative Analysis",
+      "strategy": "comparative",
+      "activation": "Request objectives require comparative analysis",
+      "dependencies": [
+        "S01"
+      ],
+      "stages": [
+        "comparison_and_distinctions"
+      ],
+      "technical_obligations": [
+        "shared assumptions",
+        "fair criteria",
+        "conditional tradeoffs"
+      ],
+      "preferred_visuals": [],
+      "evidence_requirements": [
+        "comparable evidence"
+      ],
+      "validation": [
+        "shared assumptions",
+        "fair criteria",
+        "conditional tradeoffs"
+      ]
+    },
+    "S09": {
+      "purpose": "Worked Examples",
+      "strategy": "procedural",
+      "activation": "Request objectives require worked examples",
+      "dependencies": [
+        "S01"
+      ],
+      "stages": [
+        "worked_application"
+      ],
+      "technical_obligations": [
+        "knowns and unknowns",
+        "method selection",
+        "intermediate calculations",
+        "interpretation"
+      ],
+      "preferred_visuals": [],
+      "evidence_requirements": [
+        "reproducible calculation"
+      ],
+      "validation": [
+        "knowns and unknowns",
+        "method selection",
+        "intermediate calculations",
+        "interpretation"
+      ]
+    },
+    "S10": {
+      "purpose": "Failure and Edge Cases",
+      "strategy": "conceptual",
+      "activation": "Request objectives require failure and edge cases",
+      "dependencies": [
+        "S01"
+      ],
+      "stages": [
+        "limitations_and_boundaries"
+      ],
+      "technical_obligations": [
+        "root causes",
+        "symptoms",
+        "boundary conditions",
+        "diagnosis and recovery"
+      ],
+      "preferred_visuals": [],
+      "evidence_requirements": [
+        "failure mechanism"
+      ],
+      "validation": [
+        "root causes",
+        "symptoms",
+        "boundary conditions",
+        "diagnosis and recovery"
+      ]
+    },
+    "S11": {
+      "purpose": "Historical Evolution",
+      "strategy": "historical",
+      "activation": "Request objectives require historical evolution",
+      "dependencies": [
+        "S01"
+      ],
+      "stages": [
+        "historical_context",
+        "chronology_and_developments"
+      ],
+      "technical_obligations": [
+        "chronology",
+        "attribution",
+        "causal transitions"
+      ],
+      "preferred_visuals": [],
+      "evidence_requirements": [
+        "primary historical evidence"
+      ],
+      "validation": [
+        "chronology",
+        "attribution",
+        "causal transitions"
+      ]
+    },
+    "S12": {
+      "purpose": "Visual Explanation",
+      "strategy": "conceptual",
+      "activation": "Request objectives require visual explanation",
+      "dependencies": [
+        "S01"
+      ],
+      "stages": [
+        "worked_application"
+      ],
+      "technical_obligations": [
+        "learning objective",
+        "accurate labels",
+        "renderer verification",
+        "shared asset path"
+      ],
+      "preferred_visuals": [
+        "mermaid",
+        "svg"
+      ],
+      "evidence_requirements": [
+        "equation, data, or verified structure"
+      ],
+      "validation": [
+        "learning objective",
+        "accurate labels",
+        "renderer verification",
+        "shared asset path"
+      ]
+    },
+    "S13": {
+      "purpose": "Tables and Structured Knowledge",
+      "strategy": "comparative",
+      "activation": "Request objectives require tables and structured knowledge",
+      "dependencies": [
+        "S01"
+      ],
+      "stages": [
+        "comparison_and_distinctions"
+      ],
+      "technical_obligations": [
+        "typed columns",
+        "units and conditions",
+        "cell provenance",
+        "prose interpretation"
+      ],
+      "preferred_visuals": [],
+      "evidence_requirements": [
+        "row evidence"
+      ],
+      "validation": [
+        "typed columns",
+        "units and conditions",
+        "cell provenance",
+        "prose interpretation"
+      ]
+    },
+    "S14": {
+      "purpose": "Synthesis and Integration",
+      "strategy": "conceptual",
+      "activation": "Request objectives require synthesis and integration",
+      "dependencies": [
+        "S01"
+      ],
+      "stages": [
+        "revision_and_consolidation"
+      ],
+      "technical_obligations": [
+        "shared principles",
+        "connections",
+        "qualified implications"
+      ],
+      "preferred_visuals": [],
+      "evidence_requirements": [
+        "cross-source consistency"
+      ],
+      "validation": [
+        "shared principles",
+        "connections",
+        "qualified implications"
+      ]
+    },
+    "S15": {
+      "purpose": "Assessment",
+      "strategy": "procedural",
+      "activation": "Request objectives require assessment",
+      "dependencies": [
+        "S01"
+      ],
+      "stages": [
+        "assessment_and_practice"
+      ],
+      "technical_obligations": [
+        "alignment to taught objectives",
+        "rigorous answers",
+        "diagnostic distractors"
+      ],
+      "preferred_visuals": [],
+      "evidence_requirements": [
+        "answer correctness"
+      ],
+      "validation": [
+        "alignment to taught objectives",
+        "rigorous answers",
+        "diagnostic distractors"
+      ]
+    },
+    "S16": {
+      "purpose": "Data and Representation",
+      "strategy": "scientific",
+      "activation": "Request objectives require data and representation",
+      "dependencies": [
+        "S01"
+      ],
+      "stages": [
+        "definitions_and_setup",
+        "mechanism_and_structure"
+      ],
+      "technical_obligations": [
+        "data types",
+        "distribution",
+        "preprocessing",
+        "measurement assumptions"
+      ],
+      "preferred_visuals": [],
+      "evidence_requirements": [
+        "representation definition"
+      ],
+      "validation": [
+        "data types",
+        "distribution",
+        "preprocessing",
+        "measurement assumptions"
+      ]
+    },
+    "S17": {
+      "purpose": "Optimization and Complexity",
+      "strategy": "algorithmic",
+      "activation": "Request objectives require optimization and complexity",
+      "dependencies": [
+        "S03"
+      ],
+      "stages": [
+        "interpretation_and_verification",
+        "limitations_and_boundaries"
+      ],
+      "technical_obligations": [
+        "objective and constraints",
+        "convergence assumptions",
+        "resource bounds"
+      ],
+      "preferred_visuals": [],
+      "evidence_requirements": [
+        "complexity and convergence conditions"
+      ],
+      "validation": [
+        "objective and constraints",
+        "convergence assumptions",
+        "resource bounds"
+      ]
+    },
+    "S18": {
+      "purpose": "Engineering Decisions",
+      "strategy": "comparative",
+      "activation": "Request objectives require engineering decisions",
+      "dependencies": [
+        "S08"
+      ],
+      "stages": [
+        "comparison_and_distinctions",
+        "limitations_and_boundaries"
+      ],
+      "technical_obligations": [
+        "requirements",
+        "alternatives",
+        "operational consequences",
+        "failure risks"
+      ],
+      "preferred_visuals": [],
+      "evidence_requirements": [
+        "decision conditions"
+      ],
+      "validation": [
+        "requirements",
+        "alternatives",
+        "operational consequences",
+        "failure risks"
+      ]
+    }
+  },
+  "capability_contract": {
+    "required_inputs": [
+      "concept identity",
+      "learning objectives",
+      "shared notation",
+      "source policy",
+      "chapter owner"
+    ],
+    "optional_enrichment": [
+      "additional example when reader review finds a gap"
+    ],
+    "compatible_masters": [
+      "M1",
+      "M2",
+      "M3",
+      "M4",
+      "M5",
+      "M6",
+      "M7"
+    ],
+    "conflicts": [
+      "duplicate definitions use the shared primary owner"
+    ],
+    "depth_rules": "Use independent concept-level 0-5 obligations, never word quotas",
+    "expected_outputs": [
+      "contributions to shared explanation sequence"
+    ],
+    "repair": "Repair the failed obligation and dependent references only"
+  }
+}

@@ -8,9 +8,11 @@ from pathlib import Path
 import pytest
 
 SCRIPTS_DIR = Path(__file__).resolve().parents[1] / "scripts"
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(SCRIPTS_DIR))
 
-import decision_matrix as dm
+from scriptorium.engines import _decision as dm
 import plan_notes
 from validate_note import validate_text
 
@@ -98,7 +100,7 @@ def test_validate_text_rejects_unrequested_physics_code_jargon_legacy_comments_a
         "#### Question 3\nC\n"
         "#### Question 4\nD\n"
     )
-    assert any("DM-20 violation" in msg for _, msg in validate_text(bad_qa))
+    assert not any("DM-20 violation" in msg for _, msg in validate_text(bad_qa))  # No deep question quota.
 
     clean_physics = _physics_note(
         "## Core Model\nEvery point on a wavefront emits secondary wavelets.\n\n"
@@ -110,7 +112,7 @@ def test_validate_text_rejects_unrequested_physics_code_jargon_legacy_comments_a
 
 def test_decision_matrix_cli_resolve_and_audit(tmp_path: Path) -> None:
     p_res = subprocess.run(
-        [sys.executable, "-B", str(SCRIPTS_DIR / "decision_matrix.py"), "resolve",
+        [sys.executable, "-B", str(REPO_ROOT / "scriptorium" / "engines" / "_decision.py"), "resolve",
          "--request", "/scribe-deepnotes Wave Optics", "--topic", "Wave Optics", "--title", "Huygens Principle"],
         capture_output=True, text=True, check=True,
     )
@@ -123,12 +125,12 @@ def test_decision_matrix_cli_resolve_and_audit(tmp_path: Path) -> None:
         {"title": "Implementations", "purpose": "implement", "impl_weight": "high", "math_level": 1, "language": "python"},
         "Perceptron",
     )
-    assert ml_contract["implementation_stack"] == ["python-numpy", "scikit-learn", "pytorch"]
+    assert ml_contract["implementation_stack"] == ["python-numpy"]
 
     note_file = tmp_path / "01 - Huygens.md"
     note_file.write_text(_physics_note("## Mechanism\n```python\nx = 1\n```\n"), encoding="utf-8")
     p_aud = subprocess.run(
-        [sys.executable, "-B", str(SCRIPTS_DIR / "decision_matrix.py"), "audit", str(note_file), "--topic", "Wave Optics", "--format", "json"],
+        [sys.executable, "-B", str(REPO_ROOT / "scriptorium" / "engines" / "_decision.py"), "audit", str(note_file), "--topic", "Wave Optics", "--format", "json"],
         capture_output=True, text=True, check=False,
     )
     assert p_aud.returncode == 1

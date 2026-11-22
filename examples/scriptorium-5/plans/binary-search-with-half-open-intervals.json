@@ -1,0 +1,3164 @@
+{
+  "delivery_state": "planned",
+  "teaching_collection_complete": false,
+  "input_specification": {
+    "topic": "Binary Search with Half Open Intervals",
+    "classification": {
+      "subject": "Algorithms",
+      "domain": "Computer Science"
+    },
+    "concepts": [
+      {
+        "id": "binary.sorted-search-contract",
+        "title": "Sorted Search Contract",
+        "section": "Sorted Search Contract",
+        "objectives": [
+          "Explain ordering and the required search result"
+        ],
+        "group": "Search Contract",
+        "depth": {
+          "conceptual": 2,
+          "algorithmic": 2,
+          "implementation": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": []
+      },
+      {
+        "id": "binary.half-open-intervals",
+        "title": "Half Open Intervals",
+        "section": "Half Open Intervals",
+        "objectives": [
+          "Explain a half-open search interval"
+        ],
+        "group": "Search Contract",
+        "depth": {
+          "conceptual": 2,
+          "algorithmic": 2,
+          "implementation": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "binary.sorted-search-contract"
+        ]
+      },
+      {
+        "id": "binary.loop-invariant",
+        "title": "Loop Invariant",
+        "section": "Loop Invariant",
+        "objectives": [
+          "Explain how the active interval retains every candidate"
+        ],
+        "group": "Correctness",
+        "depth": {
+          "conceptual": 2,
+          "algorithmic": 2,
+          "implementation": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "binary.half-open-intervals"
+        ]
+      },
+      {
+        "id": "binary.choosing-the-midpoint",
+        "title": "Choosing the Midpoint",
+        "section": "Choosing the Midpoint",
+        "objectives": [
+          "Explain overflow-safe midpoint selection"
+        ],
+        "group": "State Transitions",
+        "depth": {
+          "conceptual": 2,
+          "algorithmic": 2,
+          "implementation": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "binary.half-open-intervals"
+        ]
+      },
+      {
+        "id": "binary.moving-the-lower-bound",
+        "title": "Moving the Lower Bound",
+        "section": "Moving the Lower Bound",
+        "objectives": [
+          "Trace lower-bound changes after a small midpoint value"
+        ],
+        "group": "State Transitions",
+        "depth": {
+          "conceptual": 2,
+          "algorithmic": 2,
+          "implementation": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "binary.loop-invariant",
+          "binary.choosing-the-midpoint"
+        ]
+      },
+      {
+        "id": "binary.moving-the-upper-bound",
+        "title": "Moving the Upper Bound",
+        "section": "Moving the Upper Bound",
+        "objectives": [
+          "Trace upper-bound changes after a large midpoint value"
+        ],
+        "group": "State Transitions",
+        "depth": {
+          "conceptual": 2,
+          "algorithmic": 2,
+          "implementation": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "binary.loop-invariant",
+          "binary.choosing-the-midpoint"
+        ]
+      },
+      {
+        "id": "binary.finding-a-match",
+        "title": "Finding a Match",
+        "section": "Finding a Match",
+        "objectives": [
+          "Trace successful termination on an equal midpoint value"
+        ],
+        "group": "Termination",
+        "depth": {
+          "conceptual": 2,
+          "algorithmic": 2,
+          "implementation": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "binary.moving-the-lower-bound",
+          "binary.moving-the-upper-bound"
+        ]
+      },
+      {
+        "id": "binary.empty-search-intervals",
+        "title": "Empty Search Intervals",
+        "section": "Empty Search Intervals",
+        "objectives": [
+          "Explain unsuccessful termination and empty input"
+        ],
+        "group": "Termination",
+        "depth": {
+          "conceptual": 2,
+          "algorithmic": 2,
+          "implementation": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "binary.loop-invariant",
+          "binary.moving-the-lower-bound",
+          "binary.moving-the-upper-bound"
+        ]
+      },
+      {
+        "id": "binary.cost-and-boundary-tests",
+        "title": "Cost and Boundary Tests",
+        "section": "Cost and Boundary Tests",
+        "objectives": [
+          "Analyze comparison count and boundary cases"
+        ],
+        "group": "Verification",
+        "depth": {
+          "conceptual": 2,
+          "algorithmic": 2,
+          "implementation": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "binary.finding-a-match",
+          "binary.empty-search-intervals"
+        ]
+      }
+    ],
+    "visuals": [
+      {
+        "id": "executed-search-states",
+        "concept": "binary.finding-a-match",
+        "section": "Finding a Match",
+        "kind": "algorithm",
+        "objective": "Trace an executed search for 13",
+        "interpretation": "The states below were produced by the binary-search implementation in this reproduction script, with high always exclusive.",
+        "nodes": [
+          {
+            "id": "s0",
+            "label": "[0,7) mid=3: raise low"
+          },
+          {
+            "id": "s1",
+            "label": "[4,7) mid=5: lower high"
+          },
+          {
+            "id": "s2",
+            "label": "[4,5) mid=4: found"
+          }
+        ],
+        "edges": [
+          {
+            "source": "s0",
+            "target": "s1"
+          },
+          {
+            "source": "s1",
+            "target": "s2"
+          }
+        ]
+      },
+      {
+        "id": "search-step-viewer",
+        "concept": "binary.finding-a-match",
+        "section": "Finding a Match",
+        "kind": "interactive",
+        "objective": "Step through the executed binary-search trace",
+        "interpretation": "This HTML slider displays observed algorithm states. It executes no user-provided code and is opened as a standalone file.",
+        "frames": [
+          {
+            "label": "Step 1: raise low",
+            "state": "{\n  \"values\": [\n    1,\n    4,\n    7,\n    10,\n    13,\n    16,\n    19\n  ],\n  \"target\": 13,\n  \"low\": 0,\n  \"high_exclusive\": 7,\n  \"midpoint\": 3,\n  \"candidate\": 10,\n  \"decision\": \"raise low\"\n}"
+          },
+          {
+            "label": "Step 2: lower high",
+            "state": "{\n  \"values\": [\n    1,\n    4,\n    7,\n    10,\n    13,\n    16,\n    19\n  ],\n  \"target\": 13,\n  \"low\": 4,\n  \"high_exclusive\": 7,\n  \"midpoint\": 5,\n  \"candidate\": 16,\n  \"decision\": \"lower high\"\n}"
+          },
+          {
+            "label": "Step 3: found",
+            "state": "{\n  \"values\": [\n    1,\n    4,\n    7,\n    10,\n    13,\n    16,\n    19\n  ],\n  \"target\": 13,\n  \"low\": 4,\n  \"high_exclusive\": 5,\n  \"midpoint\": 4,\n  \"candidate\": 13,\n  \"decision\": \"found\"\n}"
+          }
+        ]
+      },
+      {
+        "id": "search-control-flow",
+        "concept": "binary.loop-invariant",
+        "section": "Loop Invariant",
+        "kind": "workflow",
+        "objective": "Inspect control flow for half-open binary search",
+        "interpretation": "Native Mermaid source is generated and checked against bounded semantic nodes and edges; browser rendering is not asserted.",
+        "nodes": [
+          {
+            "id": "interval",
+            "label": "Check low < high"
+          },
+          {
+            "id": "mid",
+            "label": "Inspect midpoint"
+          },
+          {
+            "id": "found",
+            "label": "Return matching index"
+          },
+          {
+            "id": "bounds",
+            "label": "Update a bound"
+          },
+          {
+            "id": "missing",
+            "label": "Return not found"
+          }
+        ],
+        "edges": [
+          {
+            "source": "interval",
+            "target": "mid",
+            "label": "nonempty"
+          },
+          {
+            "source": "interval",
+            "target": "missing",
+            "label": "empty"
+          },
+          {
+            "source": "mid",
+            "target": "found",
+            "label": "equal"
+          },
+          {
+            "source": "mid",
+            "target": "bounds",
+            "label": "unequal"
+          },
+          {
+            "source": "bounds",
+            "target": "interval",
+            "label": "repeat"
+          }
+        ]
+      }
+    ]
+  },
+  "canonical_composition_plan": {
+    "version": 2,
+    "validator_version": "0d1bcbece3500e73c79ba0cb4ffd96a8f958c3e0cb4652fdf7a3ce9f2ce5faeb",
+    "output_profile": "comprehensive_multifile",
+    "topic": "Binary Search with Half Open Intervals",
+    "source_policy": "adaptive",
+    "classification": {
+      "domain": "Computer Science",
+      "master_topic": "Algorithms",
+      "subdomain": "Searching"
+    },
+    "chapter_rationale": {
+      "method": "stable prerequisite order; workload-bounded count; balanced contiguous partition with group preference",
+      "chapter_count": 5,
+      "concept_count": 9,
+      "bounds": [
+        5,
+        10
+      ],
+      "target_workload_units": 6.0,
+      "balanced_workload_units": 4.8,
+      "total_workload_units": 24.0,
+      "unbounded_recommendation": 4,
+      "concept_estimates": {
+        "binary.sorted-search-contract": {
+          "units": 2.2,
+          "components": {
+            "concept": 1.0,
+            "additional_objectives": 0.0,
+            "prerequisite_depth": 0.0,
+            "depth": 1.2,
+            "worked_examples": 0.0,
+            "assessments": 0.0
+          },
+          "depth_levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 2,
+            "implementation": 1,
+            "research": 0,
+            "visual": 0,
+            "analytical": 0
+          },
+          "prerequisite_depth": 0
+        },
+        "binary.half-open-intervals": {
+          "units": 2.35,
+          "components": {
+            "concept": 1.0,
+            "additional_objectives": 0.0,
+            "prerequisite_depth": 0.15,
+            "depth": 1.2,
+            "worked_examples": 0.0,
+            "assessments": 0.0
+          },
+          "depth_levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 2,
+            "implementation": 1,
+            "research": 0,
+            "visual": 0,
+            "analytical": 0
+          },
+          "prerequisite_depth": 1
+        },
+        "binary.loop-invariant": {
+          "units": 2.5,
+          "components": {
+            "concept": 1.0,
+            "additional_objectives": 0.0,
+            "prerequisite_depth": 0.3,
+            "depth": 1.2,
+            "worked_examples": 0.0,
+            "assessments": 0.0
+          },
+          "depth_levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 2,
+            "implementation": 1,
+            "research": 0,
+            "visual": 0,
+            "analytical": 0
+          },
+          "prerequisite_depth": 2
+        },
+        "binary.choosing-the-midpoint": {
+          "units": 2.5,
+          "components": {
+            "concept": 1.0,
+            "additional_objectives": 0.0,
+            "prerequisite_depth": 0.3,
+            "depth": 1.2,
+            "worked_examples": 0.0,
+            "assessments": 0.0
+          },
+          "depth_levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 2,
+            "implementation": 1,
+            "research": 0,
+            "visual": 0,
+            "analytical": 0
+          },
+          "prerequisite_depth": 2
+        },
+        "binary.moving-the-lower-bound": {
+          "units": 2.65,
+          "components": {
+            "concept": 1.0,
+            "additional_objectives": 0.0,
+            "prerequisite_depth": 0.44999999999999996,
+            "depth": 1.2,
+            "worked_examples": 0.0,
+            "assessments": 0.0
+          },
+          "depth_levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 2,
+            "implementation": 1,
+            "research": 0,
+            "visual": 0,
+            "analytical": 0
+          },
+          "prerequisite_depth": 3
+        },
+        "binary.moving-the-upper-bound": {
+          "units": 2.65,
+          "components": {
+            "concept": 1.0,
+            "additional_objectives": 0.0,
+            "prerequisite_depth": 0.44999999999999996,
+            "depth": 1.2,
+            "worked_examples": 0.0,
+            "assessments": 0.0
+          },
+          "depth_levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 2,
+            "implementation": 1,
+            "research": 0,
+            "visual": 0,
+            "analytical": 0
+          },
+          "prerequisite_depth": 3
+        },
+        "binary.finding-a-match": {
+          "units": 2.8,
+          "components": {
+            "concept": 1.0,
+            "additional_objectives": 0.0,
+            "prerequisite_depth": 0.6,
+            "depth": 1.2,
+            "worked_examples": 0.0,
+            "assessments": 0.0
+          },
+          "depth_levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 2,
+            "implementation": 1,
+            "research": 0,
+            "visual": 0,
+            "analytical": 0
+          },
+          "prerequisite_depth": 4
+        },
+        "binary.empty-search-intervals": {
+          "units": 2.8,
+          "components": {
+            "concept": 1.0,
+            "additional_objectives": 0.0,
+            "prerequisite_depth": 0.6,
+            "depth": 1.2,
+            "worked_examples": 0.0,
+            "assessments": 0.0
+          },
+          "depth_levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 2,
+            "implementation": 1,
+            "research": 0,
+            "visual": 0,
+            "analytical": 0
+          },
+          "prerequisite_depth": 4
+        },
+        "binary.cost-and-boundary-tests": {
+          "units": 3.55,
+          "components": {
+            "concept": 1.0,
+            "additional_objectives": 0.0,
+            "prerequisite_depth": 0.75,
+            "depth": 1.8,
+            "worked_examples": 0.0,
+            "assessments": 0.0
+          },
+          "depth_levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 2,
+            "implementation": 1,
+            "research": 0,
+            "visual": 0,
+            "analytical": 3
+          },
+          "prerequisite_depth": 5
+        }
+      },
+      "topological_order": [
+        "binary.sorted-search-contract",
+        "binary.half-open-intervals",
+        "binary.loop-invariant",
+        "binary.choosing-the-midpoint",
+        "binary.moving-the-lower-bound",
+        "binary.moving-the-upper-bound",
+        "binary.finding-a-match",
+        "binary.empty-search-intervals",
+        "binary.cost-and-boundary-tests"
+      ],
+      "external_prerequisites": [],
+      "split_groups": {
+        "State Transitions": [
+          "chapter-8d346acd6a48",
+          "chapter-a9bf9ee4b23d"
+        ]
+      },
+      "merged_groups": [
+        {
+          "chapter": "chapter-8d346acd6a48",
+          "groups": [
+            "Correctness",
+            "State Transitions"
+          ]
+        }
+      ],
+      "overloaded_chapters": [],
+      "scope_review_required": false,
+      "limitations": "Heuristic instructional workload, not measured time or educational certification. An indivisible heavy concept needs author review; no concepts or content are fabricated."
+    },
+    "folder": "6 - Full Notes/Binary Search with Half Open Intervals",
+    "moc_path": "6 - Full Notes/Binary Search with Half Open Intervals/00 - Map of Contents.md",
+    "chapters": [
+      {
+        "id": "chapter-3be629e1425d",
+        "title": "Search Contract",
+        "concepts": [
+          "binary.sorted-search-contract",
+          "binary.half-open-intervals"
+        ],
+        "sections": [
+          "Sorted Search Contract",
+          "Half Open Intervals"
+        ],
+        "estimate": {
+          "units": 4.55,
+          "concept_count": 2,
+          "groups": [
+            "Search Contract"
+          ]
+        },
+        "path": "6 - Full Notes/Binary Search with Half Open Intervals/01 - Search Contract.md"
+      },
+      {
+        "id": "chapter-8d346acd6a48",
+        "title": "Loop Invariant",
+        "concepts": [
+          "binary.loop-invariant",
+          "binary.choosing-the-midpoint"
+        ],
+        "sections": [
+          "Loop Invariant",
+          "Choosing the Midpoint"
+        ],
+        "estimate": {
+          "units": 5.0,
+          "concept_count": 2,
+          "groups": [
+            "Correctness",
+            "State Transitions"
+          ]
+        },
+        "path": "6 - Full Notes/Binary Search with Half Open Intervals/02 - Loop Invariant.md"
+      },
+      {
+        "id": "chapter-a9bf9ee4b23d",
+        "title": "State Transitions",
+        "concepts": [
+          "binary.moving-the-lower-bound",
+          "binary.moving-the-upper-bound"
+        ],
+        "sections": [
+          "Moving the Lower Bound",
+          "Moving the Upper Bound"
+        ],
+        "estimate": {
+          "units": 5.3,
+          "concept_count": 2,
+          "groups": [
+            "State Transitions"
+          ]
+        },
+        "path": "6 - Full Notes/Binary Search with Half Open Intervals/03 - State Transitions.md"
+      },
+      {
+        "id": "chapter-d061feac9b99",
+        "title": "Termination",
+        "concepts": [
+          "binary.finding-a-match",
+          "binary.empty-search-intervals"
+        ],
+        "sections": [
+          "Finding a Match",
+          "Empty Search Intervals"
+        ],
+        "estimate": {
+          "units": 5.6,
+          "concept_count": 2,
+          "groups": [
+            "Termination"
+          ]
+        },
+        "path": "6 - Full Notes/Binary Search with Half Open Intervals/04 - Termination.md"
+      },
+      {
+        "id": "chapter-6d3a315c9040",
+        "title": "Verification",
+        "concepts": [
+          "binary.cost-and-boundary-tests"
+        ],
+        "sections": [
+          "Cost and Boundary Tests"
+        ],
+        "estimate": {
+          "units": 3.55,
+          "concept_count": 1,
+          "groups": [
+            "Verification"
+          ]
+        },
+        "path": "6 - Full Notes/Binary Search with Half Open Intervals/05 - Verification.md"
+      }
+    ],
+    "concepts": [
+      {
+        "id": "binary.sorted-search-contract",
+        "title": "Sorted Search Contract",
+        "section": "Sorted Search Contract",
+        "objectives": [
+          "Explain ordering and the required search result"
+        ],
+        "group": "Search Contract",
+        "depth": {
+          "conceptual": 2,
+          "algorithmic": 2,
+          "implementation": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [],
+        "prerequisite_records": [],
+        "chapter": 1,
+        "depth_allocation": {
+          "levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 2,
+            "implementation": 1,
+            "research": 0,
+            "visual": 0,
+            "analytical": 0
+          },
+          "reasons": {
+            "conceptual": [
+              "explicit concept requirement",
+              "learning objective: Explain ordering and the required search result"
+            ],
+            "mathematical": [],
+            "algorithmic": [
+              "explicit concept requirement"
+            ],
+            "implementation": [
+              "explicit concept requirement"
+            ],
+            "research": [],
+            "visual": [],
+            "analytical": []
+          },
+          "external_retrieval_permitted": true,
+          "unresolved": []
+        },
+        "sequence": [
+          {
+            "stage": "motivation_and_problem",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "intuition_and_model",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "definitions_and_setup",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          }
+        ],
+        "research_obligations": [
+          {
+            "id": "binary.sorted-search-contract:S01:0",
+            "concept": "binary.sorted-search-contract",
+            "capability": "S01",
+            "requirement": "authoritative definition",
+            "source_policy": "adaptive",
+            "status": "planned",
+            "exact_evidence": true,
+            "research_depth": 0,
+            "primary_required": false,
+            "freshness_required": false
+          }
+        ],
+        "objective_ids": [
+          "binary.sorted-search-contract:objective:0"
+        ],
+        "objective_kinds": [
+          "conceptual"
+        ]
+      },
+      {
+        "id": "binary.half-open-intervals",
+        "title": "Half Open Intervals",
+        "section": "Half Open Intervals",
+        "objectives": [
+          "Explain a half-open search interval"
+        ],
+        "group": "Search Contract",
+        "depth": {
+          "conceptual": 2,
+          "algorithmic": 2,
+          "implementation": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "binary.sorted-search-contract"
+        ],
+        "prerequisite_records": [
+          {
+            "id": "binary.sorted-search-contract",
+            "classification": "covered"
+          }
+        ],
+        "chapter": 1,
+        "depth_allocation": {
+          "levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 2,
+            "implementation": 1,
+            "research": 0,
+            "visual": 0,
+            "analytical": 0
+          },
+          "reasons": {
+            "conceptual": [
+              "explicit concept requirement",
+              "learning objective: Explain a half-open search interval"
+            ],
+            "mathematical": [],
+            "algorithmic": [
+              "explicit concept requirement"
+            ],
+            "implementation": [
+              "explicit concept requirement"
+            ],
+            "research": [],
+            "visual": [],
+            "analytical": []
+          },
+          "external_retrieval_permitted": true,
+          "unresolved": []
+        },
+        "sequence": [
+          {
+            "stage": "motivation_and_problem",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "intuition_and_model",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "definitions_and_setup",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          }
+        ],
+        "research_obligations": [
+          {
+            "id": "binary.half-open-intervals:S01:0",
+            "concept": "binary.half-open-intervals",
+            "capability": "S01",
+            "requirement": "authoritative definition",
+            "source_policy": "adaptive",
+            "status": "planned",
+            "exact_evidence": true,
+            "research_depth": 0,
+            "primary_required": false,
+            "freshness_required": false
+          }
+        ],
+        "objective_ids": [
+          "binary.half-open-intervals:objective:0"
+        ],
+        "objective_kinds": [
+          "conceptual"
+        ]
+      },
+      {
+        "id": "binary.loop-invariant",
+        "title": "Loop Invariant",
+        "section": "Loop Invariant",
+        "objectives": [
+          "Explain how the active interval retains every candidate"
+        ],
+        "group": "Correctness",
+        "depth": {
+          "conceptual": 2,
+          "algorithmic": 2,
+          "implementation": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "binary.half-open-intervals"
+        ],
+        "prerequisite_records": [
+          {
+            "id": "binary.half-open-intervals",
+            "classification": "covered"
+          }
+        ],
+        "chapter": 2,
+        "depth_allocation": {
+          "levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 2,
+            "implementation": 1,
+            "research": 0,
+            "visual": 0,
+            "analytical": 0
+          },
+          "reasons": {
+            "conceptual": [
+              "explicit concept requirement",
+              "learning objective: Explain how the active interval retains every candidate"
+            ],
+            "mathematical": [],
+            "algorithmic": [
+              "explicit concept requirement"
+            ],
+            "implementation": [
+              "explicit concept requirement"
+            ],
+            "research": [],
+            "visual": [],
+            "analytical": []
+          },
+          "external_retrieval_permitted": true,
+          "unresolved": []
+        },
+        "sequence": [
+          {
+            "stage": "motivation_and_problem",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "intuition_and_model",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "definitions_and_setup",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          }
+        ],
+        "research_obligations": [
+          {
+            "id": "binary.loop-invariant:S01:0",
+            "concept": "binary.loop-invariant",
+            "capability": "S01",
+            "requirement": "authoritative definition",
+            "source_policy": "adaptive",
+            "status": "planned",
+            "exact_evidence": true,
+            "research_depth": 0,
+            "primary_required": false,
+            "freshness_required": false
+          }
+        ],
+        "objective_ids": [
+          "binary.loop-invariant:objective:0"
+        ],
+        "objective_kinds": [
+          "conceptual"
+        ]
+      },
+      {
+        "id": "binary.choosing-the-midpoint",
+        "title": "Choosing the Midpoint",
+        "section": "Choosing the Midpoint",
+        "objectives": [
+          "Explain overflow-safe midpoint selection"
+        ],
+        "group": "State Transitions",
+        "depth": {
+          "conceptual": 2,
+          "algorithmic": 2,
+          "implementation": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "binary.half-open-intervals"
+        ],
+        "prerequisite_records": [
+          {
+            "id": "binary.half-open-intervals",
+            "classification": "covered"
+          }
+        ],
+        "chapter": 2,
+        "depth_allocation": {
+          "levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 2,
+            "implementation": 1,
+            "research": 0,
+            "visual": 0,
+            "analytical": 0
+          },
+          "reasons": {
+            "conceptual": [
+              "explicit concept requirement",
+              "learning objective: Explain overflow-safe midpoint selection"
+            ],
+            "mathematical": [],
+            "algorithmic": [
+              "explicit concept requirement"
+            ],
+            "implementation": [
+              "explicit concept requirement"
+            ],
+            "research": [],
+            "visual": [],
+            "analytical": []
+          },
+          "external_retrieval_permitted": true,
+          "unresolved": []
+        },
+        "sequence": [
+          {
+            "stage": "motivation_and_problem",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "intuition_and_model",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "definitions_and_setup",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          }
+        ],
+        "research_obligations": [
+          {
+            "id": "binary.choosing-the-midpoint:S01:0",
+            "concept": "binary.choosing-the-midpoint",
+            "capability": "S01",
+            "requirement": "authoritative definition",
+            "source_policy": "adaptive",
+            "status": "planned",
+            "exact_evidence": true,
+            "research_depth": 0,
+            "primary_required": false,
+            "freshness_required": false
+          }
+        ],
+        "objective_ids": [
+          "binary.choosing-the-midpoint:objective:0"
+        ],
+        "objective_kinds": [
+          "conceptual"
+        ]
+      },
+      {
+        "id": "binary.moving-the-lower-bound",
+        "title": "Moving the Lower Bound",
+        "section": "Moving the Lower Bound",
+        "objectives": [
+          "Trace lower-bound changes after a small midpoint value"
+        ],
+        "group": "State Transitions",
+        "depth": {
+          "conceptual": 2,
+          "algorithmic": 2,
+          "implementation": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "binary.loop-invariant",
+          "binary.choosing-the-midpoint"
+        ],
+        "prerequisite_records": [
+          {
+            "id": "binary.loop-invariant",
+            "classification": "covered"
+          },
+          {
+            "id": "binary.choosing-the-midpoint",
+            "classification": "covered"
+          }
+        ],
+        "chapter": 3,
+        "depth_allocation": {
+          "levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 2,
+            "implementation": 1,
+            "research": 0,
+            "visual": 0,
+            "analytical": 0
+          },
+          "reasons": {
+            "conceptual": [
+              "explicit concept requirement"
+            ],
+            "mathematical": [],
+            "algorithmic": [
+              "explicit concept requirement"
+            ],
+            "implementation": [
+              "explicit concept requirement"
+            ],
+            "research": [],
+            "visual": [],
+            "analytical": []
+          },
+          "external_retrieval_permitted": true,
+          "unresolved": []
+        },
+        "sequence": [
+          {
+            "stage": "motivation_and_problem",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "intuition_and_model",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "definitions_and_setup",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          }
+        ],
+        "research_obligations": [
+          {
+            "id": "binary.moving-the-lower-bound:S01:0",
+            "concept": "binary.moving-the-lower-bound",
+            "capability": "S01",
+            "requirement": "authoritative definition",
+            "source_policy": "adaptive",
+            "status": "planned",
+            "exact_evidence": true,
+            "research_depth": 0,
+            "primary_required": false,
+            "freshness_required": false
+          }
+        ],
+        "objective_ids": [
+          "binary.moving-the-lower-bound:objective:0"
+        ],
+        "objective_kinds": [
+          "conceptual"
+        ]
+      },
+      {
+        "id": "binary.moving-the-upper-bound",
+        "title": "Moving the Upper Bound",
+        "section": "Moving the Upper Bound",
+        "objectives": [
+          "Trace upper-bound changes after a large midpoint value"
+        ],
+        "group": "State Transitions",
+        "depth": {
+          "conceptual": 2,
+          "algorithmic": 2,
+          "implementation": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "binary.loop-invariant",
+          "binary.choosing-the-midpoint"
+        ],
+        "prerequisite_records": [
+          {
+            "id": "binary.loop-invariant",
+            "classification": "covered"
+          },
+          {
+            "id": "binary.choosing-the-midpoint",
+            "classification": "covered"
+          }
+        ],
+        "chapter": 3,
+        "depth_allocation": {
+          "levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 2,
+            "implementation": 1,
+            "research": 0,
+            "visual": 0,
+            "analytical": 0
+          },
+          "reasons": {
+            "conceptual": [
+              "explicit concept requirement"
+            ],
+            "mathematical": [],
+            "algorithmic": [
+              "explicit concept requirement"
+            ],
+            "implementation": [
+              "explicit concept requirement"
+            ],
+            "research": [],
+            "visual": [],
+            "analytical": []
+          },
+          "external_retrieval_permitted": true,
+          "unresolved": []
+        },
+        "sequence": [
+          {
+            "stage": "motivation_and_problem",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "intuition_and_model",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "definitions_and_setup",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          }
+        ],
+        "research_obligations": [
+          {
+            "id": "binary.moving-the-upper-bound:S01:0",
+            "concept": "binary.moving-the-upper-bound",
+            "capability": "S01",
+            "requirement": "authoritative definition",
+            "source_policy": "adaptive",
+            "status": "planned",
+            "exact_evidence": true,
+            "research_depth": 0,
+            "primary_required": false,
+            "freshness_required": false
+          }
+        ],
+        "objective_ids": [
+          "binary.moving-the-upper-bound:objective:0"
+        ],
+        "objective_kinds": [
+          "conceptual"
+        ]
+      },
+      {
+        "id": "binary.finding-a-match",
+        "title": "Finding a Match",
+        "section": "Finding a Match",
+        "objectives": [
+          "Trace successful termination on an equal midpoint value"
+        ],
+        "group": "Termination",
+        "depth": {
+          "conceptual": 2,
+          "algorithmic": 2,
+          "implementation": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "binary.moving-the-lower-bound",
+          "binary.moving-the-upper-bound"
+        ],
+        "prerequisite_records": [
+          {
+            "id": "binary.moving-the-lower-bound",
+            "classification": "covered"
+          },
+          {
+            "id": "binary.moving-the-upper-bound",
+            "classification": "covered"
+          }
+        ],
+        "chapter": 4,
+        "depth_allocation": {
+          "levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 2,
+            "implementation": 1,
+            "research": 0,
+            "visual": 0,
+            "analytical": 0
+          },
+          "reasons": {
+            "conceptual": [
+              "explicit concept requirement"
+            ],
+            "mathematical": [],
+            "algorithmic": [
+              "explicit concept requirement"
+            ],
+            "implementation": [
+              "explicit concept requirement"
+            ],
+            "research": [],
+            "visual": [],
+            "analytical": []
+          },
+          "external_retrieval_permitted": true,
+          "unresolved": []
+        },
+        "sequence": [
+          {
+            "stage": "motivation_and_problem",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "intuition_and_model",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "definitions_and_setup",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          }
+        ],
+        "research_obligations": [
+          {
+            "id": "binary.finding-a-match:S01:0",
+            "concept": "binary.finding-a-match",
+            "capability": "S01",
+            "requirement": "authoritative definition",
+            "source_policy": "adaptive",
+            "status": "planned",
+            "exact_evidence": true,
+            "research_depth": 0,
+            "primary_required": false,
+            "freshness_required": false
+          }
+        ],
+        "objective_ids": [
+          "binary.finding-a-match:objective:0"
+        ],
+        "objective_kinds": [
+          "conceptual"
+        ]
+      },
+      {
+        "id": "binary.empty-search-intervals",
+        "title": "Empty Search Intervals",
+        "section": "Empty Search Intervals",
+        "objectives": [
+          "Explain unsuccessful termination and empty input"
+        ],
+        "group": "Termination",
+        "depth": {
+          "conceptual": 2,
+          "algorithmic": 2,
+          "implementation": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "binary.loop-invariant",
+          "binary.moving-the-lower-bound",
+          "binary.moving-the-upper-bound"
+        ],
+        "prerequisite_records": [
+          {
+            "id": "binary.loop-invariant",
+            "classification": "covered"
+          },
+          {
+            "id": "binary.moving-the-lower-bound",
+            "classification": "covered"
+          },
+          {
+            "id": "binary.moving-the-upper-bound",
+            "classification": "covered"
+          }
+        ],
+        "chapter": 4,
+        "depth_allocation": {
+          "levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 2,
+            "implementation": 1,
+            "research": 0,
+            "visual": 0,
+            "analytical": 0
+          },
+          "reasons": {
+            "conceptual": [
+              "explicit concept requirement",
+              "learning objective: Explain unsuccessful termination and empty input"
+            ],
+            "mathematical": [],
+            "algorithmic": [
+              "explicit concept requirement"
+            ],
+            "implementation": [
+              "explicit concept requirement"
+            ],
+            "research": [],
+            "visual": [],
+            "analytical": []
+          },
+          "external_retrieval_permitted": true,
+          "unresolved": []
+        },
+        "sequence": [
+          {
+            "stage": "motivation_and_problem",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "intuition_and_model",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "definitions_and_setup",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          }
+        ],
+        "research_obligations": [
+          {
+            "id": "binary.empty-search-intervals:S01:0",
+            "concept": "binary.empty-search-intervals",
+            "capability": "S01",
+            "requirement": "authoritative definition",
+            "source_policy": "adaptive",
+            "status": "planned",
+            "exact_evidence": true,
+            "research_depth": 0,
+            "primary_required": false,
+            "freshness_required": false
+          }
+        ],
+        "objective_ids": [
+          "binary.empty-search-intervals:objective:0"
+        ],
+        "objective_kinds": [
+          "conceptual"
+        ]
+      },
+      {
+        "id": "binary.cost-and-boundary-tests",
+        "title": "Cost and Boundary Tests",
+        "section": "Cost and Boundary Tests",
+        "objectives": [
+          "Analyze comparison count and boundary cases"
+        ],
+        "group": "Verification",
+        "depth": {
+          "conceptual": 2,
+          "algorithmic": 2,
+          "implementation": 1
+        },
+        "capabilities": [
+          "S01"
+        ],
+        "prerequisites": [
+          "binary.finding-a-match",
+          "binary.empty-search-intervals"
+        ],
+        "prerequisite_records": [
+          {
+            "id": "binary.finding-a-match",
+            "classification": "covered"
+          },
+          {
+            "id": "binary.empty-search-intervals",
+            "classification": "covered"
+          }
+        ],
+        "chapter": 5,
+        "depth_allocation": {
+          "levels": {
+            "conceptual": 2,
+            "mathematical": 0,
+            "algorithmic": 2,
+            "implementation": 1,
+            "research": 0,
+            "visual": 0,
+            "analytical": 3
+          },
+          "reasons": {
+            "conceptual": [
+              "explicit concept requirement"
+            ],
+            "mathematical": [],
+            "algorithmic": [
+              "explicit concept requirement"
+            ],
+            "implementation": [
+              "explicit concept requirement"
+            ],
+            "research": [],
+            "visual": [],
+            "analytical": [
+              "learning objective: Analyze comparison count and boundary cases"
+            ]
+          },
+          "external_retrieval_permitted": true,
+          "unresolved": []
+        },
+        "sequence": [
+          {
+            "stage": "motivation_and_problem",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "intuition_and_model",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          },
+          {
+            "stage": "definitions_and_setup",
+            "owner": "S01",
+            "contributors": [
+              "S01"
+            ],
+            "obligations": [
+              "definitions",
+              "motivation",
+              "prerequisites"
+            ]
+          }
+        ],
+        "research_obligations": [
+          {
+            "id": "binary.cost-and-boundary-tests:S01:0",
+            "concept": "binary.cost-and-boundary-tests",
+            "capability": "S01",
+            "requirement": "authoritative definition",
+            "source_policy": "adaptive",
+            "status": "planned",
+            "exact_evidence": true,
+            "research_depth": 0,
+            "primary_required": false,
+            "freshness_required": false
+          }
+        ],
+        "objective_ids": [
+          "binary.cost-and-boundary-tests:objective:0"
+        ],
+        "objective_kinds": [
+          "synthesis"
+        ]
+      }
+    ],
+    "notation": {},
+    "visuals": [
+      {
+        "id": "executed-search-states",
+        "concept": "binary.finding-a-match",
+        "section": "Finding a Match",
+        "kind": "algorithm",
+        "objective": "Trace an executed search for 13",
+        "interpretation": "The states below were produced by the binary-search implementation in this reproduction script, with high always exclusive.",
+        "nodes": [
+          {
+            "id": "s0",
+            "label": "[0,7) mid=3: raise low"
+          },
+          {
+            "id": "s1",
+            "label": "[4,7) mid=5: lower high"
+          },
+          {
+            "id": "s2",
+            "label": "[4,5) mid=4: found"
+          }
+        ],
+        "edges": [
+          {
+            "source": "s0",
+            "target": "s1"
+          },
+          {
+            "source": "s1",
+            "target": "s2"
+          }
+        ]
+      },
+      {
+        "id": "search-step-viewer",
+        "concept": "binary.finding-a-match",
+        "section": "Finding a Match",
+        "kind": "interactive",
+        "objective": "Step through the executed binary-search trace",
+        "interpretation": "This HTML slider displays observed algorithm states. It executes no user-provided code and is opened as a standalone file.",
+        "frames": [
+          {
+            "label": "Step 1: raise low",
+            "state": "{\n  \"values\": [\n    1,\n    4,\n    7,\n    10,\n    13,\n    16,\n    19\n  ],\n  \"target\": 13,\n  \"low\": 0,\n  \"high_exclusive\": 7,\n  \"midpoint\": 3,\n  \"candidate\": 10,\n  \"decision\": \"raise low\"\n}"
+          },
+          {
+            "label": "Step 2: lower high",
+            "state": "{\n  \"values\": [\n    1,\n    4,\n    7,\n    10,\n    13,\n    16,\n    19\n  ],\n  \"target\": 13,\n  \"low\": 4,\n  \"high_exclusive\": 7,\n  \"midpoint\": 5,\n  \"candidate\": 16,\n  \"decision\": \"lower high\"\n}"
+          },
+          {
+            "label": "Step 3: found",
+            "state": "{\n  \"values\": [\n    1,\n    4,\n    7,\n    10,\n    13,\n    16,\n    19\n  ],\n  \"target\": 13,\n  \"low\": 4,\n  \"high_exclusive\": 5,\n  \"midpoint\": 4,\n  \"candidate\": 13,\n  \"decision\": \"found\"\n}"
+          }
+        ]
+      },
+      {
+        "id": "search-control-flow",
+        "concept": "binary.loop-invariant",
+        "section": "Loop Invariant",
+        "kind": "workflow",
+        "objective": "Inspect control flow for half-open binary search",
+        "interpretation": "Native Mermaid source is generated and checked against bounded semantic nodes and edges; browser rendering is not asserted.",
+        "nodes": [
+          {
+            "id": "interval",
+            "label": "Check low < high"
+          },
+          {
+            "id": "mid",
+            "label": "Inspect midpoint"
+          },
+          {
+            "id": "found",
+            "label": "Return matching index"
+          },
+          {
+            "id": "bounds",
+            "label": "Update a bound"
+          },
+          {
+            "id": "missing",
+            "label": "Return not found"
+          }
+        ],
+        "edges": [
+          {
+            "source": "interval",
+            "target": "mid",
+            "label": "nonempty"
+          },
+          {
+            "source": "interval",
+            "target": "missing",
+            "label": "empty"
+          },
+          {
+            "source": "mid",
+            "target": "found",
+            "label": "equal"
+          },
+          {
+            "source": "mid",
+            "target": "bounds",
+            "label": "unequal"
+          },
+          {
+            "source": "bounds",
+            "target": "interval",
+            "label": "repeat"
+          }
+        ]
+      }
+    ],
+    "tables": [],
+    "spec_hash": "b25a6d0d303fb08b1ca5caf981a1e4eaa8c9070f4513aee1c1ba7dd9ece10bb8",
+    "review_required": [
+      "factual_accuracy",
+      "derivation_correctness",
+      "reader_simulation",
+      "cross_chapter_coherence"
+    ],
+    "assessments": [],
+    "validation_policy": {
+      "chapter_assessments": true
+    },
+    "obligations": [
+      {
+        "id": "binary.sorted-search-contract:objective:0",
+        "concept": "binary.sorted-search-contract",
+        "owner": "chapter-3be629e1425d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/01 - Search Contract.md",
+        "section": "Sorted Search Contract",
+        "deliverable": "Explain ordering and the required search result",
+        "dependencies": [],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.sorted-search-contract:depth:conceptual",
+        "concept": "binary.sorted-search-contract",
+        "owner": "chapter-3be629e1425d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/01 - Search Contract.md",
+        "section": "Sorted Search Contract",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
+        "dependencies": [
+          "binary.sorted-search-contract:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.sorted-search-contract:depth:algorithmic",
+        "concept": "binary.sorted-search-contract",
+        "owner": "chapter-3be629e1425d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/01 - Search Contract.md",
+        "section": "Sorted Search Contract",
+        "deliverable": "Level 2: trace actual algorithm state, invariants and termination",
+        "dependencies": [
+          "binary.sorted-search-contract:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.sorted-search-contract:depth:implementation",
+        "concept": "binary.sorted-search-contract",
+        "owner": "chapter-3be629e1425d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/01 - Search Contract.md",
+        "section": "Sorted Search Contract",
+        "deliverable": "Level 1: state backend, input/output contract, executable path and testing level",
+        "dependencies": [
+          "binary.sorted-search-contract:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.sorted-search-contract:capability:S01",
+        "concept": "binary.sorted-search-contract",
+        "owner": "chapter-3be629e1425d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/01 - Search Contract.md",
+        "section": "Sorted Search Contract",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "binary.sorted-search-contract:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.sorted-search-contract:S01:0",
+        "concept": "binary.sorted-search-contract",
+        "owner": "chapter-3be629e1425d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/01 - Search Contract.md",
+        "section": "Sorted Search Contract",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "binary.sorted-search-contract:S01:0",
+          "concept": "binary.sorted-search-contract",
+          "capability": "S01",
+          "requirement": "authoritative definition",
+          "source_policy": "adaptive",
+          "status": "planned",
+          "exact_evidence": true,
+          "research_depth": 0,
+          "primary_required": false,
+          "freshness_required": false
+        }
+      },
+      {
+        "id": "binary.half-open-intervals:objective:0",
+        "concept": "binary.half-open-intervals",
+        "owner": "chapter-3be629e1425d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/01 - Search Contract.md",
+        "section": "Half Open Intervals",
+        "deliverable": "Explain a half-open search interval",
+        "dependencies": [],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.half-open-intervals:depth:conceptual",
+        "concept": "binary.half-open-intervals",
+        "owner": "chapter-3be629e1425d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/01 - Search Contract.md",
+        "section": "Half Open Intervals",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
+        "dependencies": [
+          "binary.half-open-intervals:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.half-open-intervals:depth:algorithmic",
+        "concept": "binary.half-open-intervals",
+        "owner": "chapter-3be629e1425d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/01 - Search Contract.md",
+        "section": "Half Open Intervals",
+        "deliverable": "Level 2: trace actual algorithm state, invariants and termination",
+        "dependencies": [
+          "binary.half-open-intervals:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.half-open-intervals:depth:implementation",
+        "concept": "binary.half-open-intervals",
+        "owner": "chapter-3be629e1425d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/01 - Search Contract.md",
+        "section": "Half Open Intervals",
+        "deliverable": "Level 1: state backend, input/output contract, executable path and testing level",
+        "dependencies": [
+          "binary.half-open-intervals:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.half-open-intervals:capability:S01",
+        "concept": "binary.half-open-intervals",
+        "owner": "chapter-3be629e1425d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/01 - Search Contract.md",
+        "section": "Half Open Intervals",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "binary.half-open-intervals:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.half-open-intervals:S01:0",
+        "concept": "binary.half-open-intervals",
+        "owner": "chapter-3be629e1425d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/01 - Search Contract.md",
+        "section": "Half Open Intervals",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "binary.half-open-intervals:S01:0",
+          "concept": "binary.half-open-intervals",
+          "capability": "S01",
+          "requirement": "authoritative definition",
+          "source_policy": "adaptive",
+          "status": "planned",
+          "exact_evidence": true,
+          "research_depth": 0,
+          "primary_required": false,
+          "freshness_required": false
+        }
+      },
+      {
+        "id": "binary.loop-invariant:objective:0",
+        "concept": "binary.loop-invariant",
+        "owner": "chapter-8d346acd6a48",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/02 - Loop Invariant.md",
+        "section": "Loop Invariant",
+        "deliverable": "Explain how the active interval retains every candidate",
+        "dependencies": [],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.loop-invariant:depth:conceptual",
+        "concept": "binary.loop-invariant",
+        "owner": "chapter-8d346acd6a48",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/02 - Loop Invariant.md",
+        "section": "Loop Invariant",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
+        "dependencies": [
+          "binary.loop-invariant:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.loop-invariant:depth:algorithmic",
+        "concept": "binary.loop-invariant",
+        "owner": "chapter-8d346acd6a48",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/02 - Loop Invariant.md",
+        "section": "Loop Invariant",
+        "deliverable": "Level 2: trace actual algorithm state, invariants and termination",
+        "dependencies": [
+          "binary.loop-invariant:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.loop-invariant:depth:implementation",
+        "concept": "binary.loop-invariant",
+        "owner": "chapter-8d346acd6a48",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/02 - Loop Invariant.md",
+        "section": "Loop Invariant",
+        "deliverable": "Level 1: state backend, input/output contract, executable path and testing level",
+        "dependencies": [
+          "binary.loop-invariant:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.loop-invariant:capability:S01",
+        "concept": "binary.loop-invariant",
+        "owner": "chapter-8d346acd6a48",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/02 - Loop Invariant.md",
+        "section": "Loop Invariant",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "binary.loop-invariant:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.loop-invariant:S01:0",
+        "concept": "binary.loop-invariant",
+        "owner": "chapter-8d346acd6a48",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/02 - Loop Invariant.md",
+        "section": "Loop Invariant",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "binary.loop-invariant:S01:0",
+          "concept": "binary.loop-invariant",
+          "capability": "S01",
+          "requirement": "authoritative definition",
+          "source_policy": "adaptive",
+          "status": "planned",
+          "exact_evidence": true,
+          "research_depth": 0,
+          "primary_required": false,
+          "freshness_required": false
+        }
+      },
+      {
+        "id": "binary.choosing-the-midpoint:objective:0",
+        "concept": "binary.choosing-the-midpoint",
+        "owner": "chapter-8d346acd6a48",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/02 - Loop Invariant.md",
+        "section": "Choosing the Midpoint",
+        "deliverable": "Explain overflow-safe midpoint selection",
+        "dependencies": [],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.choosing-the-midpoint:depth:conceptual",
+        "concept": "binary.choosing-the-midpoint",
+        "owner": "chapter-8d346acd6a48",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/02 - Loop Invariant.md",
+        "section": "Choosing the Midpoint",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
+        "dependencies": [
+          "binary.choosing-the-midpoint:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.choosing-the-midpoint:depth:algorithmic",
+        "concept": "binary.choosing-the-midpoint",
+        "owner": "chapter-8d346acd6a48",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/02 - Loop Invariant.md",
+        "section": "Choosing the Midpoint",
+        "deliverable": "Level 2: trace actual algorithm state, invariants and termination",
+        "dependencies": [
+          "binary.choosing-the-midpoint:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.choosing-the-midpoint:depth:implementation",
+        "concept": "binary.choosing-the-midpoint",
+        "owner": "chapter-8d346acd6a48",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/02 - Loop Invariant.md",
+        "section": "Choosing the Midpoint",
+        "deliverable": "Level 1: state backend, input/output contract, executable path and testing level",
+        "dependencies": [
+          "binary.choosing-the-midpoint:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.choosing-the-midpoint:capability:S01",
+        "concept": "binary.choosing-the-midpoint",
+        "owner": "chapter-8d346acd6a48",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/02 - Loop Invariant.md",
+        "section": "Choosing the Midpoint",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "binary.choosing-the-midpoint:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.choosing-the-midpoint:S01:0",
+        "concept": "binary.choosing-the-midpoint",
+        "owner": "chapter-8d346acd6a48",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/02 - Loop Invariant.md",
+        "section": "Choosing the Midpoint",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "binary.choosing-the-midpoint:S01:0",
+          "concept": "binary.choosing-the-midpoint",
+          "capability": "S01",
+          "requirement": "authoritative definition",
+          "source_policy": "adaptive",
+          "status": "planned",
+          "exact_evidence": true,
+          "research_depth": 0,
+          "primary_required": false,
+          "freshness_required": false
+        }
+      },
+      {
+        "id": "binary.moving-the-lower-bound:objective:0",
+        "concept": "binary.moving-the-lower-bound",
+        "owner": "chapter-a9bf9ee4b23d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/03 - State Transitions.md",
+        "section": "Moving the Lower Bound",
+        "deliverable": "Trace lower-bound changes after a small midpoint value",
+        "dependencies": [],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.moving-the-lower-bound:depth:conceptual",
+        "concept": "binary.moving-the-lower-bound",
+        "owner": "chapter-a9bf9ee4b23d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/03 - State Transitions.md",
+        "section": "Moving the Lower Bound",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
+        "dependencies": [
+          "binary.moving-the-lower-bound:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.moving-the-lower-bound:depth:algorithmic",
+        "concept": "binary.moving-the-lower-bound",
+        "owner": "chapter-a9bf9ee4b23d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/03 - State Transitions.md",
+        "section": "Moving the Lower Bound",
+        "deliverable": "Level 2: trace actual algorithm state, invariants and termination",
+        "dependencies": [
+          "binary.moving-the-lower-bound:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.moving-the-lower-bound:depth:implementation",
+        "concept": "binary.moving-the-lower-bound",
+        "owner": "chapter-a9bf9ee4b23d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/03 - State Transitions.md",
+        "section": "Moving the Lower Bound",
+        "deliverable": "Level 1: state backend, input/output contract, executable path and testing level",
+        "dependencies": [
+          "binary.moving-the-lower-bound:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.moving-the-lower-bound:capability:S01",
+        "concept": "binary.moving-the-lower-bound",
+        "owner": "chapter-a9bf9ee4b23d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/03 - State Transitions.md",
+        "section": "Moving the Lower Bound",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "binary.moving-the-lower-bound:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.moving-the-lower-bound:S01:0",
+        "concept": "binary.moving-the-lower-bound",
+        "owner": "chapter-a9bf9ee4b23d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/03 - State Transitions.md",
+        "section": "Moving the Lower Bound",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "binary.moving-the-lower-bound:S01:0",
+          "concept": "binary.moving-the-lower-bound",
+          "capability": "S01",
+          "requirement": "authoritative definition",
+          "source_policy": "adaptive",
+          "status": "planned",
+          "exact_evidence": true,
+          "research_depth": 0,
+          "primary_required": false,
+          "freshness_required": false
+        }
+      },
+      {
+        "id": "binary.moving-the-upper-bound:objective:0",
+        "concept": "binary.moving-the-upper-bound",
+        "owner": "chapter-a9bf9ee4b23d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/03 - State Transitions.md",
+        "section": "Moving the Upper Bound",
+        "deliverable": "Trace upper-bound changes after a large midpoint value",
+        "dependencies": [],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.moving-the-upper-bound:depth:conceptual",
+        "concept": "binary.moving-the-upper-bound",
+        "owner": "chapter-a9bf9ee4b23d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/03 - State Transitions.md",
+        "section": "Moving the Upper Bound",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
+        "dependencies": [
+          "binary.moving-the-upper-bound:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.moving-the-upper-bound:depth:algorithmic",
+        "concept": "binary.moving-the-upper-bound",
+        "owner": "chapter-a9bf9ee4b23d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/03 - State Transitions.md",
+        "section": "Moving the Upper Bound",
+        "deliverable": "Level 2: trace actual algorithm state, invariants and termination",
+        "dependencies": [
+          "binary.moving-the-upper-bound:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.moving-the-upper-bound:depth:implementation",
+        "concept": "binary.moving-the-upper-bound",
+        "owner": "chapter-a9bf9ee4b23d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/03 - State Transitions.md",
+        "section": "Moving the Upper Bound",
+        "deliverable": "Level 1: state backend, input/output contract, executable path and testing level",
+        "dependencies": [
+          "binary.moving-the-upper-bound:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.moving-the-upper-bound:capability:S01",
+        "concept": "binary.moving-the-upper-bound",
+        "owner": "chapter-a9bf9ee4b23d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/03 - State Transitions.md",
+        "section": "Moving the Upper Bound",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "binary.moving-the-upper-bound:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.moving-the-upper-bound:S01:0",
+        "concept": "binary.moving-the-upper-bound",
+        "owner": "chapter-a9bf9ee4b23d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/03 - State Transitions.md",
+        "section": "Moving the Upper Bound",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "binary.moving-the-upper-bound:S01:0",
+          "concept": "binary.moving-the-upper-bound",
+          "capability": "S01",
+          "requirement": "authoritative definition",
+          "source_policy": "adaptive",
+          "status": "planned",
+          "exact_evidence": true,
+          "research_depth": 0,
+          "primary_required": false,
+          "freshness_required": false
+        }
+      },
+      {
+        "id": "binary.finding-a-match:objective:0",
+        "concept": "binary.finding-a-match",
+        "owner": "chapter-d061feac9b99",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/04 - Termination.md",
+        "section": "Finding a Match",
+        "deliverable": "Trace successful termination on an equal midpoint value",
+        "dependencies": [],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.finding-a-match:depth:conceptual",
+        "concept": "binary.finding-a-match",
+        "owner": "chapter-d061feac9b99",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/04 - Termination.md",
+        "section": "Finding a Match",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
+        "dependencies": [
+          "binary.finding-a-match:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.finding-a-match:depth:algorithmic",
+        "concept": "binary.finding-a-match",
+        "owner": "chapter-d061feac9b99",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/04 - Termination.md",
+        "section": "Finding a Match",
+        "deliverable": "Level 2: trace actual algorithm state, invariants and termination",
+        "dependencies": [
+          "binary.finding-a-match:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.finding-a-match:depth:implementation",
+        "concept": "binary.finding-a-match",
+        "owner": "chapter-d061feac9b99",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/04 - Termination.md",
+        "section": "Finding a Match",
+        "deliverable": "Level 1: state backend, input/output contract, executable path and testing level",
+        "dependencies": [
+          "binary.finding-a-match:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.finding-a-match:capability:S01",
+        "concept": "binary.finding-a-match",
+        "owner": "chapter-d061feac9b99",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/04 - Termination.md",
+        "section": "Finding a Match",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "binary.finding-a-match:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.finding-a-match:S01:0",
+        "concept": "binary.finding-a-match",
+        "owner": "chapter-d061feac9b99",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/04 - Termination.md",
+        "section": "Finding a Match",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "binary.finding-a-match:S01:0",
+          "concept": "binary.finding-a-match",
+          "capability": "S01",
+          "requirement": "authoritative definition",
+          "source_policy": "adaptive",
+          "status": "planned",
+          "exact_evidence": true,
+          "research_depth": 0,
+          "primary_required": false,
+          "freshness_required": false
+        }
+      },
+      {
+        "id": "binary.empty-search-intervals:objective:0",
+        "concept": "binary.empty-search-intervals",
+        "owner": "chapter-d061feac9b99",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/04 - Termination.md",
+        "section": "Empty Search Intervals",
+        "deliverable": "Explain unsuccessful termination and empty input",
+        "dependencies": [],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.empty-search-intervals:depth:conceptual",
+        "concept": "binary.empty-search-intervals",
+        "owner": "chapter-d061feac9b99",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/04 - Termination.md",
+        "section": "Empty Search Intervals",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
+        "dependencies": [
+          "binary.empty-search-intervals:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.empty-search-intervals:depth:algorithmic",
+        "concept": "binary.empty-search-intervals",
+        "owner": "chapter-d061feac9b99",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/04 - Termination.md",
+        "section": "Empty Search Intervals",
+        "deliverable": "Level 2: trace actual algorithm state, invariants and termination",
+        "dependencies": [
+          "binary.empty-search-intervals:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.empty-search-intervals:depth:implementation",
+        "concept": "binary.empty-search-intervals",
+        "owner": "chapter-d061feac9b99",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/04 - Termination.md",
+        "section": "Empty Search Intervals",
+        "deliverable": "Level 1: state backend, input/output contract, executable path and testing level",
+        "dependencies": [
+          "binary.empty-search-intervals:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.empty-search-intervals:capability:S01",
+        "concept": "binary.empty-search-intervals",
+        "owner": "chapter-d061feac9b99",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/04 - Termination.md",
+        "section": "Empty Search Intervals",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "binary.empty-search-intervals:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.empty-search-intervals:S01:0",
+        "concept": "binary.empty-search-intervals",
+        "owner": "chapter-d061feac9b99",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/04 - Termination.md",
+        "section": "Empty Search Intervals",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "binary.empty-search-intervals:S01:0",
+          "concept": "binary.empty-search-intervals",
+          "capability": "S01",
+          "requirement": "authoritative definition",
+          "source_policy": "adaptive",
+          "status": "planned",
+          "exact_evidence": true,
+          "research_depth": 0,
+          "primary_required": false,
+          "freshness_required": false
+        }
+      },
+      {
+        "id": "binary.cost-and-boundary-tests:objective:0",
+        "concept": "binary.cost-and-boundary-tests",
+        "owner": "chapter-6d3a315c9040",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/05 - Verification.md",
+        "section": "Cost and Boundary Tests",
+        "deliverable": "Analyze comparison count and boundary cases",
+        "dependencies": [],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.cost-and-boundary-tests:depth:conceptual",
+        "concept": "binary.cost-and-boundary-tests",
+        "owner": "chapter-6d3a315c9040",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/05 - Verification.md",
+        "section": "Cost and Boundary Tests",
+        "deliverable": "Level 2: motivate the problem; connect intuition, definitions and mechanism; bridge prerequisites before use; work an appropriate example with intermediate reasoning; interpret the result, assumptions, limits, relationships and likely misconception without repeated filler",
+        "dependencies": [
+          "binary.cost-and-boundary-tests:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.cost-and-boundary-tests:depth:algorithmic",
+        "concept": "binary.cost-and-boundary-tests",
+        "owner": "chapter-6d3a315c9040",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/05 - Verification.md",
+        "section": "Cost and Boundary Tests",
+        "deliverable": "Level 2: trace actual algorithm state, invariants and termination",
+        "dependencies": [
+          "binary.cost-and-boundary-tests:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.cost-and-boundary-tests:depth:implementation",
+        "concept": "binary.cost-and-boundary-tests",
+        "owner": "chapter-6d3a315c9040",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/05 - Verification.md",
+        "section": "Cost and Boundary Tests",
+        "deliverable": "Level 1: state backend, input/output contract, executable path and testing level",
+        "dependencies": [
+          "binary.cost-and-boundary-tests:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.cost-and-boundary-tests:depth:analytical",
+        "concept": "binary.cost-and-boundary-tests",
+        "owner": "chapter-6d3a315c9040",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/05 - Verification.md",
+        "section": "Cost and Boundary Tests",
+        "deliverable": "Level 3: compare assumptions, alternatives, failure diagnostics and downstream effects",
+        "dependencies": [
+          "binary.cost-and-boundary-tests:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.cost-and-boundary-tests:capability:S01",
+        "concept": "binary.cost-and-boundary-tests",
+        "owner": "chapter-6d3a315c9040",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/05 - Verification.md",
+        "section": "Cost and Boundary Tests",
+        "deliverable": "Deliver the active S01 technical contributions",
+        "dependencies": [
+          "binary.cost-and-boundary-tests:objective:0"
+        ],
+        "verifier": "review",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": null
+      },
+      {
+        "id": "binary.cost-and-boundary-tests:S01:0",
+        "concept": "binary.cost-and-boundary-tests",
+        "owner": "chapter-6d3a315c9040",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/05 - Verification.md",
+        "section": "Cost and Boundary Tests",
+        "deliverable": "authoritative definition",
+        "dependencies": [],
+        "verifier": "research_record",
+        "domain": "research",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "binary.cost-and-boundary-tests:S01:0",
+          "concept": "binary.cost-and-boundary-tests",
+          "capability": "S01",
+          "requirement": "authoritative definition",
+          "source_policy": "adaptive",
+          "status": "planned",
+          "exact_evidence": true,
+          "research_depth": 0,
+          "primary_required": false,
+          "freshness_required": false
+        }
+      },
+      {
+        "id": "executed-search-states",
+        "concept": "binary.finding-a-match",
+        "owner": "chapter-d061feac9b99",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/04 - Termination.md",
+        "section": "Finding a Match",
+        "deliverable": "Trace an executed search for 13",
+        "dependencies": [],
+        "verifier": "visual",
+        "domain": "visual",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "executed-search-states",
+          "concept": "binary.finding-a-match",
+          "section": "Finding a Match",
+          "kind": "algorithm",
+          "objective": "Trace an executed search for 13",
+          "interpretation": "The states below were produced by the binary-search implementation in this reproduction script, with high always exclusive.",
+          "nodes": [
+            {
+              "id": "s0",
+              "label": "[0,7) mid=3: raise low"
+            },
+            {
+              "id": "s1",
+              "label": "[4,7) mid=5: lower high"
+            },
+            {
+              "id": "s2",
+              "label": "[4,5) mid=4: found"
+            }
+          ],
+          "edges": [
+            {
+              "source": "s0",
+              "target": "s1"
+            },
+            {
+              "source": "s1",
+              "target": "s2"
+            }
+          ]
+        }
+      },
+      {
+        "id": "search-step-viewer",
+        "concept": "binary.finding-a-match",
+        "owner": "chapter-d061feac9b99",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/04 - Termination.md",
+        "section": "Finding a Match",
+        "deliverable": "Step through the executed binary-search trace",
+        "dependencies": [],
+        "verifier": "visual",
+        "domain": "visual",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "search-step-viewer",
+          "concept": "binary.finding-a-match",
+          "section": "Finding a Match",
+          "kind": "interactive",
+          "objective": "Step through the executed binary-search trace",
+          "interpretation": "This HTML slider displays observed algorithm states. It executes no user-provided code and is opened as a standalone file.",
+          "frames": [
+            {
+              "label": "Step 1: raise low",
+              "state": "{\n  \"values\": [\n    1,\n    4,\n    7,\n    10,\n    13,\n    16,\n    19\n  ],\n  \"target\": 13,\n  \"low\": 0,\n  \"high_exclusive\": 7,\n  \"midpoint\": 3,\n  \"candidate\": 10,\n  \"decision\": \"raise low\"\n}"
+            },
+            {
+              "label": "Step 2: lower high",
+              "state": "{\n  \"values\": [\n    1,\n    4,\n    7,\n    10,\n    13,\n    16,\n    19\n  ],\n  \"target\": 13,\n  \"low\": 4,\n  \"high_exclusive\": 7,\n  \"midpoint\": 5,\n  \"candidate\": 16,\n  \"decision\": \"lower high\"\n}"
+            },
+            {
+              "label": "Step 3: found",
+              "state": "{\n  \"values\": [\n    1,\n    4,\n    7,\n    10,\n    13,\n    16,\n    19\n  ],\n  \"target\": 13,\n  \"low\": 4,\n  \"high_exclusive\": 5,\n  \"midpoint\": 4,\n  \"candidate\": 13,\n  \"decision\": \"found\"\n}"
+            }
+          ]
+        }
+      },
+      {
+        "id": "search-control-flow",
+        "concept": "binary.loop-invariant",
+        "owner": "chapter-8d346acd6a48",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/02 - Loop Invariant.md",
+        "section": "Loop Invariant",
+        "deliverable": "Inspect control flow for half-open binary search",
+        "dependencies": [],
+        "verifier": "visual",
+        "domain": "visual",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "search-control-flow",
+          "concept": "binary.loop-invariant",
+          "section": "Loop Invariant",
+          "kind": "workflow",
+          "objective": "Inspect control flow for half-open binary search",
+          "interpretation": "Native Mermaid source is generated and checked against bounded semantic nodes and edges; browser rendering is not asserted.",
+          "nodes": [
+            {
+              "id": "interval",
+              "label": "Check low < high"
+            },
+            {
+              "id": "mid",
+              "label": "Inspect midpoint"
+            },
+            {
+              "id": "found",
+              "label": "Return matching index"
+            },
+            {
+              "id": "bounds",
+              "label": "Update a bound"
+            },
+            {
+              "id": "missing",
+              "label": "Return not found"
+            }
+          ],
+          "edges": [
+            {
+              "source": "interval",
+              "target": "mid",
+              "label": "nonempty"
+            },
+            {
+              "source": "interval",
+              "target": "missing",
+              "label": "empty"
+            },
+            {
+              "source": "mid",
+              "target": "found",
+              "label": "equal"
+            },
+            {
+              "source": "mid",
+              "target": "bounds",
+              "label": "unequal"
+            },
+            {
+              "source": "bounds",
+              "target": "interval",
+              "label": "repeat"
+            }
+          ]
+        }
+      },
+      {
+        "id": "chapter-3be629e1425d:assessment",
+        "concept": "binary.sorted-search-contract",
+        "owner": "chapter-3be629e1425d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/01 - Search Contract.md",
+        "section": "Sorted Search Contract",
+        "deliverable": "Four to five diverse final questions, hints, solutions and objective coverage",
+        "dependencies": [
+          "binary.half-open-intervals:objective:0"
+        ],
+        "verifier": "assessment",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "chapter-3be629e1425d",
+          "title": "Search Contract",
+          "concepts": [
+            "binary.sorted-search-contract",
+            "binary.half-open-intervals"
+          ],
+          "sections": [
+            "Sorted Search Contract",
+            "Half Open Intervals"
+          ],
+          "estimate": {
+            "units": 4.55,
+            "concept_count": 2,
+            "groups": [
+              "Search Contract"
+            ]
+          },
+          "path": "6 - Full Notes/Binary Search with Half Open Intervals/01 - Search Contract.md"
+        }
+      },
+      {
+        "id": "chapter-8d346acd6a48:assessment",
+        "concept": "binary.loop-invariant",
+        "owner": "chapter-8d346acd6a48",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/02 - Loop Invariant.md",
+        "section": "Loop Invariant",
+        "deliverable": "Four to five diverse final questions, hints, solutions and objective coverage",
+        "dependencies": [
+          "binary.choosing-the-midpoint:objective:0"
+        ],
+        "verifier": "assessment",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "chapter-8d346acd6a48",
+          "title": "Loop Invariant",
+          "concepts": [
+            "binary.loop-invariant",
+            "binary.choosing-the-midpoint"
+          ],
+          "sections": [
+            "Loop Invariant",
+            "Choosing the Midpoint"
+          ],
+          "estimate": {
+            "units": 5.0,
+            "concept_count": 2,
+            "groups": [
+              "Correctness",
+              "State Transitions"
+            ]
+          },
+          "path": "6 - Full Notes/Binary Search with Half Open Intervals/02 - Loop Invariant.md"
+        }
+      },
+      {
+        "id": "chapter-a9bf9ee4b23d:assessment",
+        "concept": "binary.moving-the-lower-bound",
+        "owner": "chapter-a9bf9ee4b23d",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/03 - State Transitions.md",
+        "section": "Moving the Lower Bound",
+        "deliverable": "Four to five diverse final questions, hints, solutions and objective coverage",
+        "dependencies": [
+          "binary.moving-the-upper-bound:objective:0"
+        ],
+        "verifier": "assessment",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "chapter-a9bf9ee4b23d",
+          "title": "State Transitions",
+          "concepts": [
+            "binary.moving-the-lower-bound",
+            "binary.moving-the-upper-bound"
+          ],
+          "sections": [
+            "Moving the Lower Bound",
+            "Moving the Upper Bound"
+          ],
+          "estimate": {
+            "units": 5.3,
+            "concept_count": 2,
+            "groups": [
+              "State Transitions"
+            ]
+          },
+          "path": "6 - Full Notes/Binary Search with Half Open Intervals/03 - State Transitions.md"
+        }
+      },
+      {
+        "id": "chapter-d061feac9b99:assessment",
+        "concept": "binary.finding-a-match",
+        "owner": "chapter-d061feac9b99",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/04 - Termination.md",
+        "section": "Finding a Match",
+        "deliverable": "Four to five diverse final questions, hints, solutions and objective coverage",
+        "dependencies": [
+          "binary.empty-search-intervals:objective:0"
+        ],
+        "verifier": "assessment",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "chapter-d061feac9b99",
+          "title": "Termination",
+          "concepts": [
+            "binary.finding-a-match",
+            "binary.empty-search-intervals"
+          ],
+          "sections": [
+            "Finding a Match",
+            "Empty Search Intervals"
+          ],
+          "estimate": {
+            "units": 5.6,
+            "concept_count": 2,
+            "groups": [
+              "Termination"
+            ]
+          },
+          "path": "6 - Full Notes/Binary Search with Half Open Intervals/04 - Termination.md"
+        }
+      },
+      {
+        "id": "chapter-6d3a315c9040:assessment",
+        "concept": "binary.cost-and-boundary-tests",
+        "owner": "chapter-6d3a315c9040",
+        "chapter": "6 - Full Notes/Binary Search with Half Open Intervals/05 - Verification.md",
+        "section": "Cost and Boundary Tests",
+        "deliverable": "Four to five diverse final questions, hints, solutions and objective coverage",
+        "dependencies": [],
+        "verifier": "assessment",
+        "domain": "educational",
+        "severity": "critical",
+        "status": "planned",
+        "evidence": [],
+        "record": {
+          "id": "chapter-6d3a315c9040",
+          "title": "Verification",
+          "concepts": [
+            "binary.cost-and-boundary-tests"
+          ],
+          "sections": [
+            "Cost and Boundary Tests"
+          ],
+          "estimate": {
+            "units": 3.55,
+            "concept_count": 1,
+            "groups": [
+              "Verification"
+            ]
+          },
+          "path": "6 - Full Notes/Binary Search with Half Open Intervals/05 - Verification.md"
+        }
+      }
+    ]
+  }
+}

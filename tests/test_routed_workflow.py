@@ -10,9 +10,10 @@ import pytest
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 
-import note_layout as layout
+from scriptorium import layout as layout
 import plan_notes as planner
 from validate_note import validate_text
 
@@ -34,7 +35,8 @@ def cli(script, *args, code=0):
     ("Create a practice set for my CNN notes", "practice", None),
     ("/scribe-atomic-notes Residual Connection", "atomic", None),
     ("scribe-atomic-notes Residual Connection", "atomic", None),
-    ("/scribe-notes Operating Systems", "studynotes", None),
+    ("/scribe-notes Operating Systems", "deepstudy-master", None),
+    ("/scribe-notes structured study notes on Operating Systems", "studynotes", None),
     ("Use studynotes template for Operating Systems", "studynotes", None),
     ("https://www.youtube.com/watch?v=example", "summary", None),
     ("Summarize this paper https://arxiv.org/abs/1706.03762", "summary", None),
@@ -47,7 +49,6 @@ def cli(script, *args, code=0):
     ("/scribe-distill CNN", "cheat-sheet", None),
     ("/scribe-compare Adam vs SGD", "comparison", None),
     ("/scribe-deepnotes CNN", "deepstudy-master", None),
-    ("Use deepstudy-coding template for CNN", "deepstudy-master", None),
     ("/scribe-deepnotes https://arxiv.org/abs/1706.03762", "paper-breakdown", None),
     ("/scribe-expand CNN", None, None),
     ("/scribe-ingest CNN https://example.test/docs", None, None),
@@ -142,12 +143,12 @@ def test_scaffold_and_lint_all_layouts(tmp_path, route, level):
             "math_level": level, "language": "python" if route == "dsa" else "none"}
     raw = scaffold(tmp_path, item)
     assert raw == scaffold(tmp_path, item)
-    assert ("Key Equations" in raw) == (level > 0 and route not in layout.ADAPTIVE_ROUTES and route != "practice")
+    assert ("Key Equations" in raw) == (level > 0 and route not in layout.ADAPTIVE_ROUTES and route not in {"practice", "assessment"})
     fm = yaml.safe_load(raw.split("---\n", 2)[1])
-    assert list(fm.keys()) == ["id", "aliases", "topic", "tags", "nexttopics"]
+    assert {"topic", "tags", "master_topic", "domain", "note_type", "id", "aliases", "nexttopics"} <= set(fm.keys())
     note = tmp_path / "note.md"
     note.write_text(finish_fixture(raw), encoding="utf-8")
-    if level == 2 and route in {"api-table", "cheat-sheet", "summary"}:
+    if level == 2 and route in {"api-table", "cheat-sheet", "quick-reference", "summary"}:
         assert "accepts at most math_level 1" in cli("validate_note", note, code=1)
     else:
         assert "Errors: 0" in cli("validate_note", note)
@@ -170,7 +171,7 @@ def test_cnn_publication_and_interrupted_retry(tmp_path):
     vault = tmp_path / "vault"
     vault.mkdir()
     entries = [
-        _outline("Convolution Operation & Kernels", level=2,
+        _outline("Convolution Operation & Kernels", level=1,
                  routing_reason="Trace the discrete cross-correlation on a small kernel."),
         _outline("History of LeNet to ResNet",
                  routing_reason="Trace architectural changes and their motivation through historical evidence."),
@@ -254,14 +255,14 @@ def test_destinations_and_collision_preflight(tmp_path):
     assert planner._targets(tmp_path, nested)["01"] == tmp_path / "ML" / "Cheatsheets" / "cnn-CHEAT-SHEET.md"
     cn_plan = planner.build_plan(
         tmp_path,
-        "/scribe-notes Operating Systems",
+        "/scribe-notes structured study notes on Operating Systems",
         "Operating Systems",
         [
-            {"title": "Process Scheduling", "purpose": "explain", "impl_weight": "low", "density": "cohesive",
+            {"title": "Process Scheduling", "template": "studynotes", "math_level": 0,
              "routing_reason": "Explain process scheduling in studynotes format."},
-            {"title": "CPU Queues Code", "purpose": "implement", "impl_weight": "high", "density": "cohesive",
+            {"title": "CPU Queues Code", "template": "studynotes", "math_level": 0,
              "routing_reason": "Trace CPU queue scheduling in studynotes format."},
-            {"title": "Scheduling Cheat Sheet", "purpose": "revise", "impl_weight": "low", "density": "cohesive",
+            {"title": "Scheduling Cheat Sheet", "template": "cheat-sheet", "math_level": 0,
              "routing_reason": "Allow auxiliary cheat-sheet."},
         ],
     )
@@ -271,15 +272,9 @@ def test_destinations_and_collision_preflight(tmp_path):
         ("cheat-sheet", 0, "vault-notes", "Cheatsheets/operating-systems-scheduling-CHEAT-SHEET.md"),
         ("practice", 0, "planned-notes", "Practice Sets/Operating Systems - Practice Test.md"),
     ]
-    for forbidden in layout.DEEP_ROUTES:
-        with pytest.raises(ValueError, match="prohibits"):
-            planner.build_plan(tmp_path, "/scribe-notes OS", "OS", [_outline("Paging", template=forbidden)])
-        with pytest.raises(ValueError, match="prohibits"):
-            planner.build_plan(tmp_path, "/scribe-notes OS", "OS", [_outline("Paging")], template=forbidden)
-    with pytest.raises(ValueError, match="multiple subtopic notes"):
-        planner.build_plan(tmp_path, "/scribe-notes OS", "OS", [_outline("Paging")])
-    with pytest.raises(ValueError, match="multiple subtopic notes"):
-        planner.build_plan(tmp_path, "/scribe-notes OS", "OS", [_outline("Paging"), _outline("Segmentation")])
+    # Universal /scribe-notes allows deepstudy-master (M1) and single-note plans without prohibition
+    deep_single = planner.build_plan(tmp_path, "/scribe-notes OS", "OS", [_outline("Paging", template="deepstudy-master")])
+    assert deep_single["plan"][0]["template"] == "deepstudy-master"
     with pytest.raises(ValueError, match="Duplicate"):
         planner.build_plan(tmp_path, "CNN", "CNN", [
             _outline("One", output_path="same.md"), _outline("Two", output_path="SAME.md"),
@@ -427,6 +422,7 @@ def test_scaffold_loads_one_template(monkeypatch):
 
     monkeypatch.setattr(Path, "read_text", track)
     assert planner.inspect_request("Create a cheat sheet on CNN")["template"] == "cheat-sheet"
-    assert seen == []
+    assert [name for name in seen if name.endswith(".md")] == []
+    seen.clear()
     layout.body_skeleton("cheat-sheet", 0, "01", "CNN", narrow=False)
-    assert seen == ["cheat-sheet.md", "footer_widgets.md"]
+    assert seen == ["quick-reference.md", "footer_widgets.md"]

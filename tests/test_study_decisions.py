@@ -10,11 +10,12 @@ import pytest
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from decision_matrix import audit_note_against_contract, resolve_decisions
-from note_layout import ROUTES, section_layout
-from note_verification import Block, verify_runtimes
+from scriptorium.engines._decision import audit_note_against_contract, resolve_decisions
+from scriptorium.layout import ROUTES, section_layout
+from scriptorium.engines._verification import Block, verify_runtimes
 from validate_note import validate_text
 
 
@@ -46,25 +47,28 @@ def draft_for(vault, item, topic, body):
     return draft
 
 
-def test_all_live_template_gates_use_shared_ids_and_source_template_has_five_keys():
-    matrix = (ROOT / "shared" / "notes_decision_matrix.md").read_text(encoding="utf-8")
-    ids = set(re.findall(r"^## (DM-\d\d)$", matrix, re.M))
-    for route in set(ROUTES) - {"deepstudy-coding", "deepstudy-general"}:
-        source = (ROOT / "templates" / f"{route}.md").read_text(encoding="utf-8")
-        assert "../shared/notes_decision_matrix.md" in source
-        for section in re.split(r"^#{2,6} .+\n", source, flags=re.M)[1:]:
-            assert ("Gate:" in section or "Decision-matrix IDs:" in section)
-            assert set(re.findall(r"\bDM-\d\d\b", section)) <= ids
-        if route == "studynotes":
+def test_all_live_templates_reference_active_contracts_and_source_template_has_five_keys():
+    from scriptorium.layout import _template_path
+
+    for route in ROUTES:
+        source = _template_path(route).read_text(encoding="utf-8")
+        assert "../../../shared/authoring_rules.md" in source
+        assert "notes_decision_matrix.md" not in source
+        assert "note_decision_matrix.md" not in source
+        if route in {"deepstudy-master", "deep-notes"}:
+            assert "../../workflows/notes-creation/adaptive-engine.md" in source
+            assert "../../workflows/notes-creation/instructional-registry.json" in source
+        if route in {"studynotes", "study-notes"}:
             assert list(yaml.safe_load(source.split("---", 2)[1])) == ["id", "aliases", "topic", "tags", "nexttopics"]
-            assert not re.search("teacher|student|class|lecture", source, re.I)
+            body_without_comments = re.sub(r"<!--.*?-->", "", source, flags=re.S)
+            assert not re.search("teacher|student|class|lecture", body_without_comments, re.I)
 
 
 @pytest.mark.parametrize("partial", [False, True])
 def test_qualitative_article_and_partial_video_publish(tmp_path, partial):
     source_url = "https://www.youtube.com/watch?v=fixture" if partial else "https://example.org/article/one"
     topic = "History"
-    plan, item = start(tmp_path, f"/scribe-notes {source_url}", topic, "Records and witnesses")
+    plan, item = start(tmp_path, f"/scribe-notes study notes for {source_url}", topic, "Records and witnesses")
     assert item["template"] == "studynotes"
     assert item["domain"] == "social-studies-humanities" and item["math_level"] == 0
     headings = [heading for _, heading in section_layout("studynotes", 0)]
@@ -82,14 +86,17 @@ def test_qualitative_article_and_partial_video_publish(tmp_path, partial):
     assert "published" in cli("plan_notes", "publish", tmp_path, plan, item["id"], draft)
 
 
-def test_forward_pass_caps_math_and_omits_code(tmp_path):
+def test_forward_pass_honors_explicit_math_and_omits_code(tmp_path):
     topic = "Neural Networks"
     plan, item = start(tmp_path, "/scribe-deepnotes Neural Networks", topic, "Forward pass", math_level=2)
-    assert (item["math_level"], item["clamped_from"], item["verification_stack"]) == (1, 2, [])
+    assert (item["math_level"], item["verification_stack"]) == (2, [])
+    assert "clamped_from" not in item
     body = (
         "## Worked prediction\nLet $W$ denote a 1 by 2 row of weights, $x$ a 2 by 1 input, and $b$ a scalar bias.\n\n"
         "$$z = Wx + b$$\n\n"
-        "For example, a row of weights (2, 1), input (3, 5), and bias 4 yield 15, a single output value.\n"
+        "For example, a row of weights (2, 1), input (3, 5), and bias 4 yield 15, a single output value.\n\n"
+        "## Deriving the affine output\nThe dot product sums each input multiplied by its weight.\n"
+        "Expanding the two coordinates gives $z = w_1 x_1 + w_2 x_2 + b$ by distributivity.\n"
     )
     draft = draft_for(tmp_path, item, topic, body)
     assert "published" in cli("plan_notes", "publish", tmp_path, plan, item["id"], draft)
@@ -147,13 +154,13 @@ def test_domain_stacks_downgrades_and_detached_implementations():
     }
     for topic, stack in stacks.items():
         contract = resolve_decisions(topic, {"title": "Implementations", "math_level": 3}, topic)
-        assert contract["implementation_stack"] == stack and contract["math_level"] == 0
+        assert contract["implementation_stack"] == stack[:1] and contract["math_level"] == 3
         assert resolve_decisions(topic, {"title": "Mechanism", "math_level": 0}, topic)["implementation_stack"] == []
     assert resolve_decisions("Implement arrays in Rust and Python", {"title": "Implementations"}, "Arrays")[
         "implementation_stack"] == ["rust", "python"]
-    for topic, expected in (("Physics", 2), ("Pure Mathematics", 3), ("Arrays", 1), ("Sociology", 0)):
+    for topic, expected in (("Physics", 3), ("Pure Mathematics", 3), ("Arrays", 3), ("Sociology", 3)):
         assert resolve_decisions("", {"title": "Core ideas", "math_level": 3}, topic)["math_level"] == expected
-    assert resolve_decisions("", {"title": "Historical Overview", "math_level": 2}, "Physics")["math_level"] == 0
+    assert resolve_decisions("", {"title": "Historical Overview", "math_level": 2}, "Physics")["math_level"] == 2
     with pytest.raises(ValueError, match="at most math_level 1"):
         resolve_decisions("", {"template": "summary", "math_level": 2}, "Physics")
     assert resolve_decisions("", {"math_level": 2}, "Arrays", allow_math_override=True)["math_level"] == 2
@@ -163,9 +170,9 @@ def test_audit_rejects_stub_math_bloat_and_invalid_python():
     contract = resolve_decisions("", {"title": "Implementations", "math_level": 2}, "MLP")
     draft = "## Implementation\n\n$$z = Wx + b$$\n\n```python\nimport torch\nmodel = torch.nn.Sequential()\n```\n"
     messages = [message for _, message in audit_note_against_contract(draft, contract)]
-    assert any("math_level 0 forbids" in message for message in messages)
-    assert any("pytorch requires" in message for message in messages)
-    assert any("Shared fixture" in message for message in messages)
+    assert not any("math_level 0 forbids" in message for message in messages)
+    assert any("python-numpy requires" in message for message in messages)
+    assert not any("Shared fixture" in message for message in messages)
     metadata = "---\nid: invalid\naliases: [Invalid]\ntopic: MLP\ntags: [mlp]\nnexttopics: []\n---\n"
     invalid = metadata + "# Invalid\n\nBroken Python.\n\n~~~py\ndef missing:\n~~~\n"
     assert any("Invalid Python syntax" in message for _, message in validate_text(invalid, route="deepstudy-master"))
@@ -178,7 +185,7 @@ def test_numeric_parity_checks_outputs_from_two_actual_runtimes(monkeypatch):
     assert all(result["status"] == "executed" for result in evidence.values())
     with pytest.raises(ValueError, match="disagree on the shared fixture"):
         verify_runtimes({"python": python, "sql": Block(2, "sql", "SELECT 'PARITY: [9]';\n")}, [])
-    monkeypatch.setattr("note_verification.shutil.which", lambda _: None)
+    monkeypatch.setattr("scriptorium.engines._verification.shutil.which", lambda _: None)
     assert verify_runtimes({"rust": Block(1, "rust", "fn main() {}")}, [])["rust"] == {
         "status": "static verification (not executed — rustc not installed)",
     }

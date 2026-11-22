@@ -1,9 +1,0 @@
-# Research protocol
-
-Select effort via [D05](../shared/note_decision_matrix.md); evidence integrity follows [authoring rules](../shared/authoring_rules.md#evidence).
-
-1. Inspect vault coverage and supplied sources. Preserve source scope for structured study notes; label any supplementation.
-2. Plan dependencies and missing claims. Deep research compares primary evidence where needed; it does not require a historical digression or fixed subtopic count.
-3. Fetch full supporting passages. Cache source URL, inspected location, access status and claim support in a run-local dossier. Current APIs require documentation for the relevant version.
-4. Resolve conflicting definitions/conditions explicitly. Inaccessible sources remain gaps; do not substitute a search snippet for the requested full source.
-5. Carry only pertinent evidence into the note. Deep-study depth follows selected matrices; atomic notes use one direct fetch; compare/distill/practice start with existing notes.

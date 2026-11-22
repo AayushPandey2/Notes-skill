@@ -32,7 +32,12 @@ from pathlib import Path
 from typing import Any
 
 import yaml
-from note_layout import ROUTES
+
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+
+from scriptorium.layout import ROUTES
 
 INDEX_VERSION = 5
 

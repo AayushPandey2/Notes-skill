@@ -8,9 +8,10 @@ import pytest
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 
-import note_layout
+from scriptorium import layout as note_layout
 import plan_notes
 from validate_note import validate_text
 
@@ -21,31 +22,24 @@ def note(body, tags=None, topic="Template QA"):
     return "---\n" + yaml.safe_dump(metadata, sort_keys=False) + "---\n\n# Adaptive check\n\n" + body
 
 
-def test_master_gates_and_matrix_links_resolve():
-    master = (ROOT / "templates/deepstudy-master.md").read_text(encoding="utf-8")
-    guide = (ROOT / "shared/notes_decision_matrix.md").read_text(encoding="utf-8")
-    matrix_ids = re.findall(r"^## (DM-\d{2})$", guide, re.M)
-    assert len(matrix_ids) == len(set(matrix_ids))
-    assert set(matrix_ids) == {f"DM-{i:02}" for i in range(1, 21)}
-    assert set(re.findall(r"DM-\d{2}", master)) == set(matrix_ids)
-    for section in re.split(r"^#{2,6} .+\n", master, flags=re.M)[1:]:
-        for field in ("Decision-matrix IDs", "Include when", "Adapt when", "Omit or link when",
-                      "Quality check", "Duplication check"):
-            assert section.count(f"**{field}:**") == 1
-    for block in re.split(r"^## DM-\d{2}\n", guide, flags=re.M)[1:]:
-        for field in ("**Title:**", "**Purpose:**", "**Decision question:**", "**Example of change:**"):
-            assert field in block
-    for file in ("deepstudy-master.md", "notes_decision_matrix.md"):
-        content = (ROOT / "templates" / file).read_text(encoding="utf-8")
-        for target in re.findall(r"\]\(([^)]+)\)", content):
-            if target.startswith("https://"):
-                continue
-            name, _, anchor = target.partition("#")
-            path = ROOT / "templates" / name
-            assert path.is_file(), target
-            if anchor:
-                headings = re.findall(r"^#+ (.+)$", path.read_text(encoding="utf-8"), re.M)
-                assert anchor in {re.sub(r"[^\w -]", "", h).lower().replace(" ", "-") for h in headings}
+def test_master_gates_and_engine_links_resolve():
+    master = (ROOT / "references/templates/masters/deep-notes.md").read_text(encoding="utf-8")
+    engine = (ROOT / "references/workflows/notes-creation/adaptive-engine.md").read_text(encoding="utf-8")
+    assert "../../workflows/notes-creation/adaptive-engine.md" in master
+    assert "../../workflows/notes-creation/instructional-registry.json" in master
+    assert "Authoring gate" not in master
+    assert "notes_decision_matrix.md" not in master
+    assert "note_decision_matrix.md" not in master
+    assert "instructional-registry.json" in engine
+    for target in re.findall(r"\]\(([^)]+)\)", master):
+        if target.startswith("https://"):
+            continue
+        name, _, anchor = target.partition("#")
+        path = (ROOT / "references/templates/masters" / name).resolve()
+        assert path.is_file(), target
+        if anchor:
+            headings = re.findall(r"^#+ (.+)$", path.read_text(encoding="utf-8"), re.M)
+            assert anchor in {re.sub(r"[^\w -]", "", h).lower().replace(" ", "-") for h in headings}
 
 
 @pytest.mark.parametrize("route", sorted(note_layout.DEEP_ROUTES))
@@ -53,7 +47,8 @@ def test_master_gates_and_matrix_links_resolve():
 def test_legacy_selectors_share_adaptive_scaffold(route, level):
     scaffold = note_layout.body_skeleton(route, level, "01", "Check", narrow=False)
     assert scaffold == note_layout.body_skeleton("deepstudy-master", level, "01", "Check", narrow=False)
-    assert "notes_decision_matrix.md" in scaffold
+    assert "references/workflows/notes-creation/adaptive-engine.md" in scaffold
+    assert "notes_decision_matrix.md" not in scaffold
     assert "## " not in scaffold
     assert "dataviewjs" not in scaffold
 
@@ -105,8 +100,9 @@ def test_planner_preserves_independent_record_and_does_not_invent_frameworks(tmp
     assert entry["template"] == "deepstudy-master"
     assert entry["decision_record"] == record
     assert entry["verification_stack"] == ["python"]
-    assert entry["math_level"] == 0
-    assert entry["clamped_from"] == 3
+    assert entry["math_level"] == 3
+    assert "clamped_from" not in entry
+    assert entry["decision_contract"]["contract_version"] == 2
     for alias in note_layout.DEEP_ROUTES:
         routed = plan_notes.build_plan(tmp_path, "Study Check", ".", [{**item, "template": alias}])
         assert routed["plan"][0]["template"] == "deepstudy-master"

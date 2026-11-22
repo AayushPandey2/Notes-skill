@@ -1,0 +1,126 @@
+{
+  "date": "2026-11-21",
+  "baseline": {
+    "command": "python -m pytest -q",
+    "passed": 381,
+    "seconds": 98.64
+  },
+  "cli_checks": [
+    {
+      "action": "prepare",
+      "command": "C:\\Python314\\python.exe scripts/scribe.py notes compose --spec examples\\adaptive-composition\\spec.json --vault examples\\adaptive-composition\\vault --drafts examples\\adaptive-composition\\drafts.json --prepare",
+      "exit_code": 0,
+      "seconds": 0.37500960007309914,
+      "result": "passed"
+    },
+    {
+      "action": "publish",
+      "command": "C:\\Python314\\python.exe scripts/scribe.py notes compose --spec examples\\adaptive-composition\\spec.json --vault examples\\adaptive-composition\\vault --drafts examples\\adaptive-composition\\drafts.json --evidence examples\\adaptive-composition\\evidence.json --reviews examples\\adaptive-composition\\reviews.json --publish",
+      "exit_code": 0,
+      "seconds": 0.580675300094299,
+      "result": "passed"
+    },
+    {
+      "action": "validate",
+      "command": "C:\\Python314\\python.exe scripts/scribe.py notes compose --spec examples\\adaptive-composition\\spec.json --vault examples\\adaptive-composition\\vault --validate",
+      "exit_code": 0,
+      "seconds": 0.3871485000709072,
+      "result": "passed"
+    },
+    {
+      "action": "context",
+      "command": "C:\\Python314\\python.exe scripts/scribe.py notes compose --spec examples\\adaptive-composition\\spec.json --vault examples\\adaptive-composition\\vault --context gd.c1",
+      "exit_code": 0,
+      "seconds": 0.3575861999997869,
+      "result": "passed"
+    },
+    {
+      "action": "repair",
+      "command": "C:\\Python314\\python.exe scripts/scribe.py notes compose --spec examples\\adaptive-composition\\spec.json --vault examples\\adaptive-composition\\vault --repair gd.quadratic-proof",
+      "exit_code": 0,
+      "seconds": 0.3391630999976769,
+      "result": "passed"
+    }
+  ],
+  "final": {
+    "command": "python -m pytest -q",
+    "exit_code": 0,
+    "passed": 413,
+    "pytest_seconds": 103.19,
+    "wall_seconds": 103.80708930001128,
+    "stdout_summary": "413 passed in 103.19s (0:01:43)"
+  },
+  "new_behavior_tests": 32,
+  "skills": {
+    "root": "Skill is valid!",
+    "scribe_notes": "Skill is valid!"
+  },
+  "example": {
+    "command": "python examples/adaptive-composition/run.py",
+    "chapters": 5,
+    "moc_files": 1,
+    "owned_concepts": 10,
+    "questions": 20,
+    "published_python_blocks_executed": 1,
+    "false_completion_refused": true,
+    "repeat_written_paths": [],
+    "cold_validation": {
+      "elapsed_seconds": 0.18814770004246384,
+      "obligations": 82,
+      "cached_checks": 0,
+      "model_calls": 0,
+      "model_tokens": null,
+      "cache": {
+        "hits": 0,
+        "misses": 82,
+        "invalidations": 0,
+        "corrupt_evictions": 0
+      }
+    },
+    "warm_validation": {
+      "elapsed_seconds": 0.6842787000350654,
+      "obligations": 82,
+      "cached_checks": 82,
+      "model_calls": 0,
+      "model_tokens": null,
+      "cache": {
+        "hits": 82,
+        "misses": 0,
+        "invalidations": 0,
+        "corrupt_evictions": 0
+      }
+    }
+  },
+  "repository_audit": {
+    "valid": true,
+    "repository_audit": {
+      "files": 165,
+      "local_links": 368,
+      "errors": []
+    },
+    "authority_audit": {
+      "valid": true,
+      "authorities_checked": 7,
+      "issues": []
+    },
+    "registry_audit": {
+      "valid": true,
+      "masters_count": 7,
+      "variants_count": 12,
+      "subtemplates_count": 6,
+      "modules_count": 17,
+      "commands_count": 4,
+      "retired_commands_count": 8,
+      "errors": []
+    }
+  },
+  "diff_whitespace_check": {
+    "command": "git diff --check",
+    "exit_code": 0
+  },
+  "limitations": [
+    "Scoped verifier and recorded author review are not universal mathematical or source-entailment proofs.",
+    "Live Obsidian display, independent learner/expert trials, model/GPU training and host renderer adapters were not exercised.",
+    "Token figures are estimates; no live model efficiency or learning-gain percentage is claimed."
+  ]
+}

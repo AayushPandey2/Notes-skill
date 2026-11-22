@@ -2,7 +2,7 @@
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-import note_layout
+from scriptorium import layout as note_layout
 from validate_note import validate_text
 from test_routed_workflow import finish_fixture
 from scaffold_note import main
