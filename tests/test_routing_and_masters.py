@@ -52,7 +52,7 @@ def test_reorganized_references_hierarchy_and_zero_audit_errors():
     ]
     for directory in required_dirs:
         assert directory.is_dir(), f"Missing reorganized directory: {directory}"
-        assert (directory / "README.md").is_file(), f"Missing README.md in {directory}"
+    assert (ROOT / "references" / "README.md").is_file()
 
     audit = audit_repository.audit_repository(ROOT)
     assert audit["errors"] == [], f"Broken local links or CLI flags: {audit['errors']}"

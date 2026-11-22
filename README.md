@@ -1,64 +1,47 @@
 # Scriptorium
 
-Scriptorium builds structured, domain-independent Obsidian study notes around progressive beginner-to-advanced explanations, `M01`–`M14` mathematical deconstruction, `Step 1`–`12` worked numerical solutions, web-image-first local assets (`assets/scriptorium/<slug>/`), image-grounded visual reading guides, and deterministic quality verification.
+Scriptorium is an educational Obsidian note-generation and vault-learning system centered on progressive beginner-first explanations, atomic folded formula walkthroughs (`M01`–`M14`), worked numerical solving (`Step 1`–`12`), web-image-first local visual acquisition (`assets/scriptorium/<slug>/`), video transcript/frame grounding (`/scribe-ytnotes`), and deterministic validation.
 
-Start with [SKILL.md](SKILL.md), [router.md](router.md), [shared/teaching_core.md](shared/teaching_core.md), [the system overview](references/architecture/system-overview.md), and [the composition contract](references/workflows/notes-creation/composition-contract.md).
+Start with [SKILL.md](SKILL.md), [router.md](router.md), [shared/teaching_core.md](shared/teaching_core.md), and [references/README.md](references/README.md).
 
----
+## Public Slash Commands (`skills/`)
 
-## Active Public Commands (`skills/`)
-
-| Command | Role | Primary Authority |
+| Command | Purpose | Specification |
 |---|---|---|
-| `/scribe-notes` | Universal note creation across masters `M1`–`M7`, variants, `S0`–`S5` scopes, and interactive configuration | [skills/scribe-notes/SKILL.md](skills/scribe-notes/SKILL.md) |
-| `/scribe-doubt` | Read-only vault Q&A with exact `[[Note Title]]` citations (no edits/research) | [skills/scribe-doubt/SKILL.md](skills/scribe-doubt/SKILL.md) |
-| `/scribe-quiz` | Interactive one-question-at-a-time recall quiz grounded in existing vault notes | [skills/scribe-quiz/SKILL.md](skills/scribe-quiz/SKILL.md) |
-| `/scribe-setfolder` | Configure default vault root/folder in `~/.scriptorium-config.json` | [skills/scribe-setfolder/SKILL.md](skills/scribe-setfolder/SKILL.md) |
+| `/scribe-notes` | Universal note creation across masters `M1`–`M7`, variants, `S0`–`S5` scopes, and video sources (`/scribe-ytnotes`, `/scribe-ytlecture`) | [skills/scribe-notes/SKILL.md](skills/scribe-notes/SKILL.md) |
+| `/scribe-doubt` | Read-only Q&A strictly from existing vault notes with `[[Note Title]]` citations | [skills/scribe-doubt/SKILL.md](skills/scribe-doubt/SKILL.md) |
+| `/scribe-quiz` | Interactive one-question-at-a-time recall quiz over existing vault notes | [skills/scribe-quiz/SKILL.md](skills/scribe-quiz/SKILL.md) |
+| `/scribe-setfolder` | Persist default Obsidian vault and target subfolder in `~/.scriptorium-config.json` | [skills/scribe-setfolder/SKILL.md](skills/scribe-setfolder/SKILL.md) |
 
----
-
-## Logical Architecture (`A0`–`A11`) & Code Layout
-
-Runtime logic maps 12 canonical responsibilities (`A0 Director`–`A11 Speed`, defined in [triggers.py](scriptorium/triggers.py)) across cohesive Python engines and 8 CLI tools:
+## Repository Layout
 
 ```text
 scriptorium/
-├── SKILL.md, router.md            # Entry routing, triggers (T01-T16, MATH-01..10, TEACH-01..10)
-├── shared/                        # teaching_core.md, authoring_rules.md, math_gates.md, footer_widgets.md
+├── SKILL.md, router.md            # Entry routing, triggers (T01–T16, VIDEO-01..04, MATH-01..10, TEACH-01..10)
 ├── skills/                        # Public slash-command skills (/scribe-notes, doubt, quiz, setfolder)
+├── shared/                        # Canonical teaching core, math gates, authoring rules, footer widgets
 ├── references/                    # Selective-loaded templates (masters/variants/subtemplates/modules),
-│                                  #   routing registry, metadata policy, workflows & contracts
-├── scriptorium/
-│   ├── models.py, layout.py       # Shared ParsedNote cache, path/frontmatter/slug helpers, schemas
-│   ├── triggers.py                # Executable A0-A11, T01-T16, MATH-01..10, TEACH-01..10 dispatch
-│   └── engines/
-│       ├── orchestration.py       # A0 Director (plus _interactive.py, _decision.py, _token_optimizer.py)
-│       ├── knowledge.py           # A1 Map (plus _collection_intelligence.py)
-│       ├── pedagogy.py            # A2 Tutor / A5 Writer (_instructional.py, _pedagogical_core.py, _explanation.py)
-│       ├── mathematics.py         # M01-M14 equation deconstruction, shape checks & 12-step solving
-│       ├── research.py            # A4 Researcher (ARRIE evidence & web-image discovery)
-│       ├── quality.py             # A9 Checker (12-dim teaching quality, Beginner Simulation, audit)
-│       ├── vault.py               # A10 Vault (Obsidian Properties, atomic writes, checkpoints)
-│       └── composition/           # A3 Planner / A6 Visuals / A7 Assets / A8 Quiz (BVIA, LAVIA, media)
-├── scripts/                       # 8 CLI entry points (scribe.py, plan_notes.py, scaffold_note.py,
-│                                  #   validate_note.py, vault_index.py, vault_graph.py, patch_links.py, verify_vault_notes.py)
-├── examples/                      # Read-only reference plans & runner fixtures
-└── tests/                         # Unit, integration, visual, topic-independence & teaching suites
+│                                  #   routing registry, metadata policy, workflows & integrity contracts
+├── evals/                         # Skill-creator evaluation & trigger query suites
+├── scriptorium/                   # Runtime Python package (models, layout, triggers, 6 engines, composition)
+├── scripts/                       # 8 CLI entry points (scribe, plan_notes, scaffold_note, validate_note,
+│                                  #   vault_index, vault_graph, patch_links, verify_vault_notes)
+├── examples/                      # Read-only reference fixtures and preview demonstrations
+└── tests/                         # Automated verification, skill-creator, and architecture suites
 ```
 
----
+## Setup & Common Commands
 
-## Setup & Verification
-
-1. **Prerequisites:** Python 3.10+, `PyYAML`, `Pillow`, and `pytest`.
-2. **Vault Config:** Resolve target vault via CLI `--vault`, `SCRIPTORIUM_VAULT_PATH`, or `~/.scriptorium-config.json` (`/scribe-setfolder`). Comprehensive `M1` collections write directly under `<Vault>/<Topic>/` (`resolve_collection_layout`, `create_category_folders=false` default) with downloaded media under `assets/scriptorium/<slug>/`.
-3. **Common Commands:**
+1. **Dependencies:** Python 3.10+, `PyYAML`, `Pillow`, and `pytest`.
+2. **Vault Resolution:** Explicit `--vault`, `SCRIPTORIUM_VAULT_PATH`, or `~/.scriptorium-config.json` (`/scribe-setfolder`). New `M1` collections write directly under `<Vault>/<Topic>/` (`resolve_collection_layout`, `create_category_folders=false` default) with downloaded raster visuals under `assets/scriptorium/<slug>/`.
+3. **CLI Commands:**
 ```bash
 python -m pytest -q
 python scripts/scribe.py audit --inventory
+python scripts/scribe.py optimize --benchmark
 python scripts/scribe.py notes start "/scribe-notes <Topic>" --vault "<Vault>"
-python scripts/scribe.py notes compose --spec spec.json --vault "<Vault>" --drafts drafts.json --prepare
+python scripts/scribe.py ytnotes --title "<Lecture>" --url "<URL>" --vault "<Vault>"
 python scripts/vault_index.py "<Vault>" --discover --topic "<Topic>"
 ```
 
-See [LICENSE](LICENSE), [system-overview.md](references/architecture/system-overview.md), [migration-notes.md](references/contracts/migration-notes.md), and [examples/adaptive-deepnotes/README.md](examples/adaptive-deepnotes/README.md).
+See [LICENSE](LICENSE), [system-overview.md](references/architecture/system-overview.md), and [migration-notes.md](references/contracts/migration-notes.md).

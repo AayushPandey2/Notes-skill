@@ -1,68 +1,46 @@
 <!-- scaffold:preflight
-Parent Master: M7 (../masters/synthesis-revision.md).
-Pre-Flight: [router](../../../router.md) and [authoring rules](../../../shared/authoring_rules.md).
-Route: `summary` (single-source scope, timestamp/anchor breakdown, independent fact-check audit, optional `conflict` module).
-Strip this block before emission.
+Purpose: Produce source-faithful, locator-anchored summaries of articles, documentation, or videos while auditing claims independently.
+Parent Master: M7 (../masters/synthesis-revision.md) | Route: summary (variant: quick_summary).
+Activation Trigger: "summarize <source/URL/video>", standalone article/docs/video URL, or /scribe-ytnotes single-video summary.
+Inputs: Accessed article text, docs page, or video transcript/frames; source URL, author, date, and verified access scope.
+Dependencies: router.md, shared/authoring_rules.md, shared/math_gates.md, workflows/research/source-fidelity.md.
+Decision Rules: Separate source claims from independent verification; link video entries via verified `` `[MM:SS](https://www.youtube.com/watch?v=<VIDEO_ID>&t=<seconds>s)` `` timestamps; suggest 2–3 follow-up notes passively.
+Failure Handling: Never hallucinate timestamps or missing text; mark unavailable full bodies '[PARTIAL SUMMARY — TRANSCRIPT/TEXT UNAVAILABLE]' or request user paste.
+Validation: scripts/validate_note.py, scripts/verify_vault_notes.py.
 -->
 
 # Verified Source Deconstruction: Article, Documentation, or Video
 
-- **Header Block**: Metadata per shared contract + `# Summary: <Source Title>`.
+- **Header Block:** Line-1 YAML Properties + `# Summary: <Source Title>`.
 
 ## 1. What source am I reviewing & what is its core thesis? (Metadata & 3-Bullet Thesis)
 
-<!-- Authoring note: KEEP source identity, scope, and actual access. Only summarize claims the source supports. Remove this gate before publication. -->
-
-- `> [!info] Source Metadata & Accessibility Audit`:
-    - **Title**: Exact source title
-    - **Author / Channel / Organization**: Verified creator (`[UNVERIFIED]` if missing)
-    - **Publication Date**: Verified date (`[UNVERIFIED]` if missing)
-    - **Original URL**: Direct link
-    - **Estimated Reading Time / Actual Video Duration**: Verified duration
-    - **Content Access Status**: `Full Transcript / Full Article Verified` vs. `Partial Text / Metadata Only`
-- _Degraded-Source Guardrail_: If the full transcript or article body is inaccessible, explicitly report what text/metadata was accessible and generate a clearly labeled **`[PARTIAL SUMMARY — TRANSCRIPT/TEXT UNAVAILABLE]`**, or ask the user to paste the text when there is too little evidence to summarize. Never hallucinate timestamps, quotes, authors, or dates.
-- **The Three-Bullet Core Thesis**: Distill the central argument, mechanism, and conclusion into exactly 3 dense, high-signal bullets.
+- `> [!info] Source Metadata & Accessibility Audit`: Title, Author/Channel (`[UNVERIFIED]` if absent), Publication Date, Original URL, Duration/Reading Time, and **Content Access Status** (`Full Transcript / Article Verified` vs. `Partial Text / Metadata Only`).
+- **Degraded-Source Guardrail:** If full text/transcript is inaccessible, disclose access limits clearly under **`[PARTIAL SUMMARY — TRANSCRIPT/TEXT UNAVAILABLE]`**.
+- **Three-Bullet Core Thesis:** Distill central argument, mechanism, and conclusion cleanly.
 
 ## 2. How does the material unfold section by section? (Anchored Section / Timestamp Breakdown)
 
-<!-- Authoring note: KEEP the verified order and exact locators for accessible passages. State gaps and label added context. Remove this gate before publication. -->
-
-- Chronological, deep-context breakdown of the argument, examples, and technical claims:
-    - **For YouTube / Video sources**: Prefix every section with a verified clickable Markdown timestamp link formatted as `[03:42](https://www.youtube.com/watch?v=VIDEO_ID&t=222s)`.
-    - **For Articles / Docs**: Link directly to verified `#section-anchors` whenever the document exposes them.
+Walk chronologically through arguments, examples, and claims:
+- **Videos:** Prefix sections with verified `` `[MM:SS](https://www.youtube.com/watch?v=<VIDEO_ID>&t=<seconds>s)` `` links matching exact seconds.
+- **Articles / Docs:** Anchor links to verified `#section-headings`.
 
 ## 3. Which claims hold up to independent verification? (Critical Evaluation & Fact-Check Audit)
 
-<!-- Authoring note: ADAPT the audit to claims that can be checked. Give each independent result a source or mark it unverified. Remove this gate before publication. -->
-
-- Distinguish the author's claims from independent technical verification using a structured table:`Claim / Practice in Source | Timestamp or Section | Independent Verification Status | Nuance, Correction, or Caveat`
-- Explicitly flag commercial sponsorships, affiliate bias, deprecated API calls, outdated best practices, or unbacked assertions (`[UNVERIFIED]`).
+Contrast source statements against independent verification:
+`Claim / Practice in Source | Timestamp or Section | Independent Verification Status | Nuance, Correction, or Caveat`
+Flag sponsorships, affiliate bias, deprecated APIs, or unsupported claims (`[UNVERIFIED]`).
 
 ## 4. What are my actionable takeaways & follow-up vault notes? (Actions, Reflections & Commands)
 
-<!-- Authoring note: KEEP applicable actions and links grounded in the source or explicitly labeled analysis. Remove this gate before publication. -->
-
-- **Key Takeaways & Immediate Actions**: Bullet list of concrete techniques or mental models to apply.
-- **What I learned** (`2–3` sentences) & **Open Confusion** (`**Confusion** :: ...`).
-- **Suggested Follow-Up Vault Notes (`2–3` Recommendations)**: Identify `2–3` high-leverage concepts from the source that deserve their own `Atomic` (via `/scribe-notes atomic note on <topic name>`) or `Deep Notes` (via `/scribe-notes <topic name>`). Provide the exact `/scribe-notes` invocation for each suggestion, keeping them strictly as unexecuted suggestions until the user requests them.
+- **Key Takeaways & Immediate Actions**, **What I learned**, and **Open Confusion** (`**Confusion** :: ...` when real).
+- **Suggested Follow-Up Vault Notes (`2–3`):** Propose unexecuted `/scribe-notes` suggestions for concepts worth dedicated `atomic` or `deep-notes` pages.
 
 <!-- optional: conflict -->
 ## [OPTIONAL] Where does independent evidence disagree? (Source Conflict)
 
-<!-- Authoring note: Include only a documented conflict. Attribute both claims and explain the comparison conditions. Remove this gate before publication. -->
+<!-- Include only when an authoritative specification or benchmark directly contradicts a material claim; delete cleanly otherwise. -->
 
-<!-- scaffold:activation
-Contextual Activation Guide
-- When to Include: A consequential claim in the article, docs, or video conflicts with inspected primary documentation, benchmarks, or specifications.
-- When to Omit Cleanly: Omit when Section 3's fact-check table already captures minor caveats or no substantive conflict exists. Delete this heading and block completely; never emit N/A. Renumber following sections and repair links.
-- What to Write: Align definitions and conditions between the source and primary authority, quote only necessary text, pinpoint the supported disagreement, and state what remains unresolved.
--->
+- **Context / Analysis / Check:** Disputed claim, conflicting primary source, condition alignment, and verification status.
 
-- **Context:** State the disputed source claim, timestamp/section, and conflicting primary authority.
-- **Analysis:** Align definitions and assumptions, isolate the exact supported disagreement, and separate opinion from factual error.
-- **Check:** State the primary-source verification status and any still-unverified edge condition.
-
-See [authoring rules](../../../shared/authoring_rules.md) for 5-key YAML, rendering, evidence, and cohesion.
-See [math gates](../../../shared/math_gates.md) for selected mathematical depth.
-See [footer contract](../../../shared/footer_widgets.md) for reflection behavior.
-- **Template Contract (`summary`):** Keep source claims distinct from independent verification, ensure every YouTube `[MM:SS]` timestamp matches `t=<seconds>s`, flag sponsorships/deprecated APIs, and degrade honestly to `[PARTIAL SUMMARY — TRANSCRIPT/TEXT UNAVAILABLE]` if full text is inaccessible.
+- **Contract Summary:** Verify timestamp parity, honest access flags, and [authoring_rules.md](../../../shared/authoring_rules.md) / [math_gates.md](../../../shared/math_gates.md) / [footer_widgets.md](../../../shared/footer_widgets.md).

@@ -292,7 +292,7 @@ AUTHORITY_GRAPH: dict[str, dict[str, Any]] = {
     "output_composition_rules": {
         "owner": "master_template",
         "module": "scriptorium.layout",
-        "spec": "references/templates/masters/README.md",
+        "spec": "references/architecture/template-module-catalog.md",
     },
     "note_metadata_and_lifecycle": {
         "owner": "vault_engine",

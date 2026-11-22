@@ -101,15 +101,15 @@ Activation levels below come directly from `master-registry.yaml`, `TEMPLATE_CAP
 
 ---
 
-## 7. Verified Runtime Routing Examples
+## 7. Runtime Routing Patterns
 
-All examples below correspond to actual `OrchestrationEngine.route()` and `analyze_universal_request()` behavior verified in `tests/test_repository_architecture_audit.py`:
+Every pattern below maps user intent independently of academic domain and is verified in `tests/test_repository_architecture_audit.py`:
 
-1. `/scribe-notes Explain Gradient Descent from first principles with derivations.` → `M1` (`deep_notes`), subtemplate `mathematical`, EIS deep + `mathematical_derivation`, `worked_examples`, `representation_alignment`.
-2. `/scribe-notes Explain binary search in C with code and execution traces.` → `M5` (`implementation_guide`), subtemplate `computational`, `code_explanation`, `executable_verification`, `EIS-05` state narration.
-3. `/scribe-notes Create a cheat sheet for integration formulas.` → `M3` (`quick_reference`, variant `formula_sheet`), subtemplate `mathematical`, `representation_alignment`, `revision_summary`.
-4. `/scribe-notes Compare SGD, Momentum, RMSProp, and Adam.` → `M7` (`synthesis_revision`, variant `comparison_guide`), subtemplate `mathematical`/`computational`, `comparisons`, `cross_topic_connections`.
-5. `/scribe-notes Create detailed notes from this textbook chapter in the original order.` → `M2` (`study_notes`, variant `lecture_order`), `preserve_source_order=True`, `source_policy` enforced.
-6. `/scribe-notes Create comprehensive notes on Machine Learning.` → Scope `S4`, interactive configuration + KCP (`F02`–`F13`) + hierarchical 18-note collection (`root_index` + 5 `group_index` + 12 adaptive child notes across `M1`/`M2`/`M7`).
-7. `/scribe-notes Explain how backpropagation and optimizers work together.` → `M1`/`M7` cross-topic synthesis (`F10`), linking canonical `[[Backpropagation]]`, `[[Gradient Descent]]`, `[[Loss Functions]]`.
-8. `The chain rule derivation in my backpropagation note is confusing.` → Lifecycle workflow (`F15` `QualityEngine.process_feedback()` + `F14` `KnowledgeEngine.analyze_collection_change_impact()`), localized `incremental_update_note()` preserving unrelated sections.
+1. **First-principles quantitative topic (`"Explain <concept> from first principles with derivations"`):** `M1` (`deep-notes`), subtemplate `mathematical`, deep `EIS` + `mathematical_derivation`, `worked_examples`, `representation_alignment`.
+2. **Algorithm & runtime tutorial (`"Explain <algorithm> in <language> with code and traces"`):** `M5` (`implementation-guide`), subtemplate `computational`, `code_explanation`, `executable_verification`, `EIS-05` state narration.
+3. **Dense formula/syntax lookup (`"Create a cheat sheet for <topic> formulas"`):** `M3` (`quick-reference`, variant `formula_sheet`), subtemplate `mathematical`, `representation_alignment`, `revision_summary`.
+4. **Multi-method comparison (`"Compare <Method A>, <Method B>, and <Method C>"`):** `M7` (`synthesis-revision`, variant `comparison_guide`), `comparisons`, `cross_topic_connections`.
+5. **Source-faithful sequence (`"Create detailed notes from this chapter in original order"`):** `M2` (`study-notes`, variant `lecture_order`), `preserve_source_order=True`, active `source_policy` enforced.
+6. **Broad multi-chapter curriculum (`"Create comprehensive notes on <Broad Field>"`):** Scope `S4`, interactive configuration + KCP (`F02`–`F13`) + Parent MOC + adaptive child chapters.
+7. **Cross-concept integration (`"Explain how <Concept A> and <Concept B> interact"`):** `M1`/`M7` cross-topic synthesis (`F10`), linking existing vault notes via verified wikilinks.
+8. **Localized feedback repair (`"The derivation in section X of my note is unclear"`):** Lifecycle repair (`F15` `QualityEngine.process_feedback()` + `F14` impact analysis), updating only the targeted section cleanly via `incremental_update_note()`.

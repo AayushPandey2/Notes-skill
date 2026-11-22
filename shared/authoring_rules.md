@@ -1,33 +1,39 @@
-# Shared authoring rules
+# Shared Authoring Rules
+
+## Purpose
+
+Canonical specification for note frontmatter profiles, Obsidian Markdown/math/Mermaid rendering, source evidence hygiene, prose cohesion, and vault path/link integrity across every Scriptorium output.
+
+## Activation Trigger
+
+Always active across `/scribe-notes` and any vault write (`VaultEngine`, `scripts/validate_note.py`, `scripts/verify_vault_notes.py`).
 
 ## Metadata
 
-Every generated note begins on line 1 with valid YAML frontmatter (`---` ... `---`) matching its output profile:
-- **Comprehensive M1 KCP v2 collections** ([composition-contract.md](../references/workflows/notes-creation/composition-contract.md)): strictly the 5 ordered YAML keys `id`, `aliases`, `topic`, `tags`, `nexttopics` (nonempty strings for `id`/`topic`, lists for the rest; aliases include the title; hierarchical `domain/`, `subject/`, `topic/` tags; resolved forward wikilinks in `nexttopics`; zero extra keys — planning state and manifests live under `.scriptorium/collections/`).
-- **Single notes, `M2`–`M7` outputs, and legacy nested collections** ([properties-policy.md](../references/metadata/properties-policy.md)): standard Obsidian Properties (`topic`, `tags`, `master_topic`, `domain`, `note_type`, plus optional managed fields such as `id`, `aliases`, `nexttopics`, `parent_topic`, `collection_id`, `prerequisites`, `related`, `source_mode`, `status`, `created`, `updated` via `VaultEngine`).
+Every note begins on line 1 with valid YAML (`---` ... `---`) matching its profile:
+- **Comprehensive `M1` KCP v2 collections** ([composition-contract.md](../references/workflows/notes-creation/composition-contract.md)): strictly the 5 ordered keys `id`, `aliases`, `topic`, `tags`, `nexttopics` (nonempty strings for `id`/`topic`, lists for the rest; aliases include title; `domain/`/`subject/`/`topic/` tags; resolved forward wikilinks in `nexttopics`; zero extra keys).
+- **Single notes, `M2`–`M7`, and legacy nested collections** ([properties-policy.md](../references/metadata/properties-policy.md)): canonical Obsidian Properties (`topic`, `tags`, `master_topic`, `domain`, `note_type`, plus managed optional keys via `VaultEngine`).
 
-Do not inject a `deepstudy-master` tag or dump internal routing/review logs into YAML frontmatter. Preserve existing IDs and custom user properties when editing.
+Never inject a `deepstudy-master` tag or internal review/routing logs into YAML; preserve existing IDs and custom user properties on updates.
 
 ## Rendering
 
-Use native `$...$` and separate-line `$$` math delimiters. Never place code inside math. Quote every line of a callout, including blank lines and answers: an unquoted blank ends the block. Good: `> [!note] Assumption` followed by `> $x > 0$`; bad: an unquoted equation intended to remain inside that callout.
-
-Escape literal pipes in Markdown tables, even inside code or wikilink aliases: `[[Target\|Label]]`. Quote Mermaid node labels and use Unicode symbols: good `A["x → y"]`, bad `A["$x$"]`. For spatial geometry, scientific schematics, architecture diagrams, function plots, and illustrations, follow the web-image-first BVIA/LAVIA workflow ([representations.md](../references/workflows/notes-creation/representations.md)): reuse or acquire verified openly licensed images via web image research, inspect the downloaded asset, store it locally under `assets/scriptorium/<collection-slug>/` (`![[assets/scriptorium/<collection-slug>/<figure>.png]]`), and explain it through `Explain -> Show -> Decode -> Connect`. Programmatic SVG diagram generation is retired (report missing external visuals honestly rather than synthesizing SVGs or ASCII boxes); reserve `mermaid flowchart` / `sequenceDiagram` for causal pipelines, state machines, and protocol exchanges. Check rendering separately when available; syntax checks do not establish visual correctness.
-
-Use `**Confusion** :: question` on its own line for Dataview. Do not emit empty or invented confusion. Strip scaffold comments, legacy `<!-- SECTION: S* -->` markers, authoring gates, optional markers, unused headings and placeholder rows before publication. If numbered sections are omitted, renumber retained sections consecutively and repair anchor links.
+- **Math & Callouts:** Use native `$...$` and separate-line `$$` delimiters without code inside math. Quote every line of a callout, including internal blank lines (`>`), because an unquoted blank ends the block.
+- **Tables & Mermaid:** Escape literal pipes inside Markdown tables (`[[Target\|Label]]` and inside inline math). Quote Mermaid node labels and use Unicode symbols (`A["x → y"]`, never `A["$x$"]`).
+- **Web-Image-First Visuals:** For schematics, architecture figures, geometry, and plots, follow [representations.md](../references/workflows/notes-creation/representations.md): acquire verified openly licensed raster images (`png`/`jpg`/`webp`), inspect pixels/labels, store locally under `assets/scriptorium/<collection-slug>/` (`![[assets/scriptorium/<collection-slug>/<figure>.png]]`), and teach via `Explain -> Show -> Decode -> Connect`. Programmatic SVG diagram synthesis is retired; report unavailable external visuals honestly instead of fabricating SVGs or ASCII boxes. Reserve Mermaid `flowchart` / `sequenceDiagram` for causal workflows and state transitions.
+- **Publish Hygiene:** Use `**Confusion** :: question` on its own line for Dataview only when genuine. Strip all scaffold comments, `<!-- SECTION: S* -->` markers, authoring notes, unused optional sections, and placeholder rows; renumber remaining headings and repair internal anchors.
 
 ## Evidence
 
-Read the full supporting passage before citing it. Cite near claims; record version/page/section when material. Never cite bare root domains/homepages (`https://gallica.bnf.fr/`, `https://arxiv.org/`, `https://archive.org/`, `https://openstax.org/`) in Primary Sources tables—omit the generic URL and mark `[UNVERIFIED]` if no specific deep link is verified. Distinguish source findings, inference, expected results and observed execution. When `language: "none"` (or no fenced code block exists), forbid execution claims (`executed via`, `Observed Execution Output`, `all assertions passed`); when code is not executed in a live shell, label `Status: static verification (not executed)` and never invent version strings. When an implementation is executed via `plan_notes.py verify-runtimes`, record its exact status, runtime version, and verbatim `stdout` under `### Verification — <stack>`. For multi-stack comparisons, document the common inputs and parameters in a `Shared fixture:` field and include a `Framework | Exposes | Hides | Pitfall` comparison table.
+- Read the supporting passage before citing; attach locators (`page`, `section`, `timestamp`) near claims. Never cite bare root-domain homepages (`[UNVERIFIED]` if no verified deep link exists).
+- Separate observed source statements, author inference, expected behavior, and observed runtime execution. When no runnable fenced code exists (`language: "none"`), forbid execution claims (`Observed Execution Output`, `all assertions passed`); label unexecuted code `Status: static verification (not executed)`. For runtime checks via `scripts/plan_notes.py verify-runtimes`, record runtime version and verbatim `stdout` under `### Verification — <stack>`, and include `Shared fixture:` + `Framework | Exposes | Hides | Pitfall` for multi-stack comparisons.
 
 ## Cohesion
 
-Explain the causal connection between ideas following [the canonical teaching core](teaching_core.md); use precise student-to-future-self prose and domain-natural headings (ban CS/architecture buzzwords like `"Computational Purpose"`, `"Position in the Broader Architecture"`, `"Taxonomic Lineage"`, `"Deep Theory Stack"`, `"Cross-Architecture Trade-Off"`, and `"Parameter Synthesis & Reverse-Engineering"` on non-software notes). Introduce intuition before equations, explain why each new concept follows from limitations of the prior one, compare alternatives causally in prose before tables, and strip internal claim stubs (`*Key mathematical claim:*`). Merge short opening material when it avoids repetition; give substantial missing prerequisites enough space before use. When using an analogy, state its explicit mapping and the adjacent boundary where the analogy breaks so intuition never imports false properties. Deep-note mastery checks follow the objectives without a question quota and include step-by-step worked reasoning in detailed solutions; other routes retain their existing limits. Define notation at first use and keep asymmetric, non-square example values that expose axis, broadcast, or order bugs.
+- Write clear, beginner-respectful instructor prose per [teaching_core.md](teaching_core.md) with domain-natural headings (ban generic CS labels like `"Computational Purpose"`, `"Position in the Broader Architecture"`, `"Taxonomic Lineage"`, `"Deep Theory Stack"`, `"Cross-Architecture Trade-Off"`, `"Parameter Synthesis & Reverse-Engineering"` on non-software subjects).
+- Give definitions and governing formulas one canonical home; state analogy breakdown boundaries; merge thin opening prose; align prose/math/visuals/code dimensions cleanly.
+- Standardize sequential filenames and body wikilinks on `01 - <Title>.md` (never mix hyphen-slug and numbered styles). Place new collections directly under the configured vault target (`resolve_collection_layout`, `create_category_folders=false` default). Future planned notes linked in prose must appear in YAML `nexttopics`; otherwise keep future mentions as plain text.
 
-## Links and placement
+## Validation
 
-Standardize sequential filenames and body wikilinks on `01 - <Title>.md` (never mix `02-hyphenated-slug` style with `01 - Title` naming). Place new collections directly under the configured vault root (`resolve_collection_layout`, `create_category_folders=false` default) rather than inventing category subfolders like `6 - Full Notes`. Existing notes must match exact on-disk filenames; planned future notes mentioned via forward wikilink (`[[02 - ...]]`) must be listed in YAML `nexttopics`, otherwise keep future mentions as plain text until created. Practice, atomic notes and cheatsheets live in sibling `Practice Sets/`, `Atomic Notes/`, and `Cheatsheets/` directories; compare outputs live in `comparison/`.
-
-## Contracts
-
-Teaching core: [teaching_core.md](teaching_core.md). Math: [math_gates.md](math_gates.md). Deep-study planning and module composition: [adaptive-engine.md](../references/workflows/notes-creation/adaptive-engine.md). Command routing: [router.md](../router.md). Reflection implementation: [footer_widgets.md](footer_widgets.md). Machine checks implement schema, syntax, math deconstruction, teaching quality, and links; authors remain responsible for source fidelity and reasoning.
+Machine verification (`scripts/validate_note.py`, `scripts/verify_vault_notes.py`) enforces schema, delimiters, callout quoting, fold parity, and links; authors/reviewers remain responsible for mathematical correctness and source fidelity.

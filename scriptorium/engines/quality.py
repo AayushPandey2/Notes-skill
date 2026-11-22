@@ -496,6 +496,78 @@ _ANALOGY_RE = re.compile(r"\b(?:just\s+like|like\s+a|analogous\s+to|think\s+of\s
 _ANALOGY_LIMIT_RE = re.compile(r"\b(?:breaks?\s+down|unlike\s+the\s+analogy|limit(?:ation)?s?\s+of\s+this\s+analogy|however,?\s+in\s+reality|unlike\s+a\s+real)\b", re.I)
 
 
+def _collect_prose_and_structural_friction(
+    document: str,
+    parsed: Any,
+    body: str,
+    profile: str,
+    explanation_blueprint: Any | None,
+    add_issue: Callable[..., None],
+) -> None:
+    """Inspect sections, density, repetition, analogies, and pronoun ambiguity (CF-03..CF-09)."""
+    from scriptorium.engines.pedagogy import ExplanationBlueprint, analyze_information_density
+
+    if re.search(
+        r"(?:^|[.!?]\s+)(?:Now\s+differentiate|Just\s+apply|Simply\s+substitute|Now\s+multiply\s+both\s+sides)",
+        body,
+        re.I | re.M,
+    ):
+        add_issue("CF-03", "major", "Operation is narrated mechanically without stating its explanatory purpose.", "add_operation_motivation")
+
+    for sec in parsed.sections:
+        sec_lines = [ln.strip() for ln in sec.content.splitlines()[1:] if ln.strip()]
+        if sec_lines and sec_lines[0].startswith("$$") and (
+            not isinstance(explanation_blueprint, ExplanationBlueprint) or explanation_blueprint.context.get("selected_master") != "M3"
+        ):
+            add_issue(
+                "CF-04",
+                "minor",
+                f"Section '{sec.heading}' opens abruptly with a display equation before motivating its purpose.",
+                f"add_framing_sentence_before_equation:{sec.slug}",
+                location=sec.slug,
+            )
+
+    density = analyze_information_density(document, reader_level=profile)
+    for sec_rep in density.get("overloaded_sections", []):
+        add_issue(
+            "CF-05",
+            "major" if profile == "beginner" else "minor",
+            f"Section '{sec_rep['heading']}' introduces high semantic density ({sec_rep['estimated_new_terms']} terms, {sec_rep['unique_symbols']} symbols).",
+            "split_dense_paragraph_and_anchor_with_example",
+            location=sec_rep["heading"],
+        )
+
+    sentences = [
+        re.sub(r"\s+", " ", s).strip()
+        for s in re.split(r"(?<=[.!?])\s+", re.sub(r"```.*?```|\$\$.*?\$\$", " ", body, flags=re.S))
+        if len(s.split()) >= 8 and not s.strip().startswith(("#", "|", ">"))
+    ]
+    seen_sent: set[str] = set()
+    for sent in sentences:
+        key = re.sub(r"[^a-z0-9 ]+", "", sent.lower())
+        if key in seen_sent:
+            add_issue("CF-06", "minor", f"Repeated sentence detected: '{sent[:70]}...'", "remove_redundant_sentence")
+            break
+        seen_sent.add(key)
+
+    if _ANALOGY_RE.search(body) and not _ANALOGY_LIMIT_RE.search(body):
+        add_issue(
+            "CF-08",
+            "minor",
+            "Analogy introduced without disclosing where the analogy breaks down.",
+            "add_analogy_breakdown_clause",
+            deterministic=False,
+        )
+
+    if m_pron := _AMBIGUOUS_PRONOUN_RE.search(body):
+        add_issue(
+            "CF-09",
+            "minor",
+            f"Ambiguous standalone pronoun '{m_pron.group(1)}' starts a sentence without naming its referent.",
+            f"replace_ambiguous_pronoun_with_explicit_noun:{m_pron.group(1)}",
+        )
+
+
 def review_explanatory_clarity(
     document: str,
     explanation_blueprint: Any | None = None,
@@ -511,7 +583,6 @@ def review_explanatory_clarity(
     """
     from scriptorium.engines.pedagogy import (
         ExplanationBlueprint,
-        analyze_information_density,
         detect_explanation_gaps,
         validate_explanation_structure,
     )
@@ -542,30 +613,19 @@ def review_explanatory_clarity(
             "check_basis": "deterministic" if deterministic else "semantic_heuristic",
         })
 
-    # CF-01 & CF-11: Undefined technical jargon / premature advanced detail (suppressed for advanced readers!)
     if profile in {"beginner", "intermediate"}:
         intro_text = parsed.sections[0].content if parsed.sections else body[:500]
         for term in _BEGINNER_JARGON_TERMS:
-            if re.search(rf"\b{term}\b", body, re.I):
-                defined = bool(re.search(rf"\b{term}\b[^.\n]{{0,40}}(?:\b(?:means?|is\s+(?:a|an|the)|denotes?|refers?\s+to|measures?)|\(|—)", body, re.I))
-                if not defined:
-                    if profile == "beginner" and re.search(rf"\b{term}\b", intro_text, re.I):
-                        _add(
-                            "CF-11",
-                            "major",
-                            f"Advanced term '{term}' appears in introductory reasoning for a beginner without plain-language grounding.",
-                            f"define_or_defer_advanced_term:{term}",
-                            location="introduction",
-                        )
-                    else:
-                        _add(
-                            "CF-01",
-                            "major",
-                            f"Technical term '{term}' is used without definition for a {profile} reader.",
-                            f"define_term_near_first_use:{term}",
-                        )
+            if re.search(rf"\b{term}\b", body, re.I) and not re.search(
+                rf"\b{term}\b[^.\n]{{0,40}}(?:\b(?:means?|is\s+(?:a|an|the)|denotes?|refers?\s+to|measures?)|\(|—)",
+                body,
+                re.I,
+            ):
+                if profile == "beginner" and re.search(rf"\b{term}\b", intro_text, re.I):
+                    _add("CF-11", "major", f"Advanced term '{term}' appears in introductory reasoning for a beginner without plain-language grounding.", f"define_or_defer_advanced_term:{term}", location="introduction")
+                else:
+                    _add("CF-01", "major", f"Technical term '{term}' is used without definition for a {profile} reader.", f"define_term_near_first_use:{term}")
 
-    # CF-02 & CF-07: Reuse PedagogyEngine gap detector for undefined symbols & hidden assumptions
     gap_report = detect_explanation_gaps(body, reader_level=profile)
     for gap in gap_report.get("gaps", []):
         if gap["type"] == "undefined_symbol":
@@ -575,89 +635,23 @@ def review_explanatory_clarity(
         elif gap["type"] == "skipped_derivation_step":
             _add("CF-03", "major", gap["description"], "add_intermediate_derivation_motivation")
 
-    # CF-03: Unmotivated algebraic or algorithmic step narration
-    if re.search(r"(?:^|[.!?]\s+)(?:Now\s+differentiate|Just\s+apply|Simply\s+substitute|Now\s+multiply\s+both\s+sides)", body, re.I | re.M):
-        _add("CF-03", "major", "Operation is narrated mechanically without stating its explanatory purpose.", "add_operation_motivation")
+    _collect_prose_and_structural_friction(document, parsed, body, profile, explanation_blueprint, _add)
 
-    # CF-04: Abrupt conceptual transition (display equation dropped immediately after heading with zero framing prose)
-    for sec in parsed.sections:
-        sec_lines = [ln.strip() for ln in sec.content.splitlines()[1:] if ln.strip()]
-        if sec_lines and sec_lines[0].startswith("$$") and (not isinstance(explanation_blueprint, ExplanationBlueprint) or explanation_blueprint.context.get("selected_master") != "M3"):
-            _add(
-                "CF-04",
-                "minor",
-                f"Section '{sec.heading}' opens abruptly with a display equation before motivating its purpose.",
-                f"add_framing_sentence_before_equation:{sec.slug}",
-                location=sec.slug,
-            )
-
-    # CF-05: Excessive semantic density (reuses PedagogyEngine density controller!)
-    density = analyze_information_density(document, reader_level=profile)
-    for sec_rep in density.get("overloaded_sections", []):
-        _add(
-            "CF-05",
-            "major" if profile == "beginner" else "minor",
-            f"Section '{sec_rep['heading']}' introduces high semantic density ({sec_rep['estimated_new_terms']} terms, {sec_rep['unique_symbols']} symbols).",
-            "split_dense_paragraph_and_anchor_with_example",
-            location=sec_rep["heading"],
-        )
-
-    # CF-06: Unnecessary repetition (identical or near-identical non-trivial sentences)
-    sentences = [
-        re.sub(r"\s+", " ", s).strip()
-        for s in re.split(r"(?<=[.!?])\s+", re.sub(r"```.*?```|\$\$.*?\$\$", " ", body, flags=re.S))
-        if len(s.split()) >= 8 and not s.strip().startswith(("#", "|", ">"))
-    ]
-    seen_sent: set[str] = set()
-    for sent in sentences:
-        key = re.sub(r"[^a-z0-9 ]+", "", sent.lower())
-        if key in seen_sent:
-            _add("CF-06", "minor", f"Repeated sentence detected: '{sent[:70]}...'", "remove_redundant_sentence")
-            break
-        seen_sent.add(key)
-
-    # CF-08: Analogy without boundary/breakdown disclosure
-    if _ANALOGY_RE.search(body) and not _ANALOGY_LIMIT_RE.search(body):
-        _add(
-            "CF-08",
-            "minor",
-            "Analogy introduced without disclosing where the analogy breaks down.",
-            "add_analogy_breakdown_clause",
-            deterministic=False,
-        )
-
-    # CF-09: Unclear standalone pronoun referent ("This causes...", "It reduces...")
-    if m_pron := _AMBIGUOUS_PRONOUN_RE.search(body):
-        _add(
-            "CF-09",
-            "minor",
-            f"Ambiguous standalone pronoun '{m_pron.group(1)}' starts a sentence without naming its referent.",
-            f"replace_ambiguous_pronoun_with_explicit_noun:{m_pron.group(1)}",
-        )
-
-    # CF-10: Representation mismatch (reuses QualityEngine representation consistency checker!)
     if representation_spec:
         rep_res = check_representation_consistency(representation_spec)
         for conf in rep_res.get("conflicts", []):
             _add("CF-10", "critical", conf["detail"], f"repair_representation:{conf.get('repair_target', 'spec')}")
 
-    # EIS-01..EIS-06 structural checks + CF-12 central question destination check
     eis_issues: list[dict[str, Any]] = []
     if isinstance(explanation_blueprint, ExplanationBlueprint):
         eis_issues = validate_explanation_structure(document, explanation_blueprint)
         cq_topic = explanation_blueprint.topic.lower()
         if explanation_blueprint.activation_levels.get("eis_02_questions") in {"standard", "deep"}:
             if cq_topic and cq_topic not in lowered and len(body.split()) < 40:
-                _add(
-                    "CF-12",
-                    "major",
-                    f"Section does not clearly resolve the central question for '{explanation_blueprint.topic}'.",
-                    "add_explicit_resolution_of_central_question",
-                )
+                _add("CF-12", "major", f"Section does not clearly resolve the central question for '{explanation_blueprint.topic}'.", "add_explicit_resolution_of_central_question")
 
     major_or_critical = [i for i in issues if i["severity"] in {"critical", "major"}]
     major_or_critical_eis = [i for i in eis_issues if i["severity"] in {"critical", "major"}]
-
     return {
         "simulated_reader": profile,
         "hypothetical_review": True,

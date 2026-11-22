@@ -1,103 +1,56 @@
 <!-- scaffold:preflight
+Purpose: Build, implement from scratch, trace on non-trivial inputs, test, and verify algorithms or systems engineering solutions cleanly.
 Master ID: M5 (implementation_guide / compatibility route: dsa).
-Primary intent: practical_implementation — build, implement from scratch, trace, test, and debug technical solutions with verified executable evidence.
-Activation signals: /scribe-notes implementation requests, "implement from scratch", "build this project", "write and test the code", "debug this program", "code walkthrough", "solve <problem> in <language>".
-Non-activation: Deep conceptual theory with a small code example -> M1; API lookup table -> M3/syntax_reference.
-Pre-Flight: [router](../../../router.md), [teaching core](../../../shared/teaching_core.md), and [authoring rules](../../../shared/authoring_rules.md).
-Strip this block before emission.
+Activation Trigger: /scribe-notes requests to implement from scratch, build/debug code, write verified algorithm solutions, or trace program state.
+Non-activation: Deep conceptual theory with minor snippets -> M1; syntax/API table -> M3/syntax_reference.
+Inputs: Problem/system spec, stated bounds, chosen language/stack, test fixtures, and runtime verification status.
+Dependencies: router.md, shared/teaching_core.md, shared/authoring_rules.md, shared/math_gates.md, metadata/properties-policy.md.
+Decision Rules: Lock generated code to user-specified stack; start with minimal naive baseline exposing the bottleneck before optimal code; run verify-runtimes before claiming observed execution.
+Failure Handling: Tag missing constraints [ASSUMED / UNVERIFIED]; label unexecuted code 'static verification (not executed)'; never fabricate runtime metrics.
+Validation: scripts/plan_notes.py verify-runtimes, QualityEngine.validate_master(..., "M5"), scripts/validate_note.py.
 -->
 
 # M5 — Implementation, Algorithmic Design & Technical Verification Guide
 
-Invoked internally through `/scribe-notes` (locking code generation to the requested language when specified) for algorithm solutions, from-scratch implementations, framework walkthroughs, debugging guides, and build tutorials. Integrates `EIS-05` state narration, F11 implementation-staged progressive disclosure, F12 implementation/debugging outcomes, and mandatory line-1 Obsidian Properties ([properties-policy.md](../../metadata/properties-policy.md)).
-- **Header Block**: Line-1 Obsidian Properties YAML frontmatter (`topic`, `tags`, `master_topic`, `domain`, `note_type: implementation-guide`, plus optional `id`, `aliases`, `nexttopics`; strict 5-key YAML applies only to comprehensive M1 KCP v2 collections) + `# DSA: <Problem Title>` (or `# <nn>. <Implementation Title>`) + `> [!abstract] Complexity Target & Core Invariant`.
+- **Header Block:** Line-1 Obsidian Properties (`note_type: implementation-guide`) + `# Implementation: <Title>` (or `# DSA: <Title>` when solving DSA tasks) + `> [!abstract] Complexity Target & Core Invariant`.
 
 ## 1. What is the exact problem, what are the constraints & what complexity target do they force? (Problem Specification & Envelope)
 
-<!--
-KEEP the problem/implementation contract, requirements, runtime/library versions, and actual constraints. Tag missing constraints as [ASSUMED / UNVERIFIED]. Remove before publication.
--->
-
-- **Problem Statement & I/O Contract**: Formal specification, input/output types, dependencies, and concrete small example.
-- **Verified Constraints & Missing-Constraint Audit**: List stated input bounds, runtime versions, and memory/time limits (`[ASSUMED / UNVERIFIED]` if missing).
-- **Inferred Asymptotic Target Envelope**: Deduce plausible time and auxiliary space complexity targets from stated limits without guessing wall-clock timings.
-- **Algorithmic Pattern & Unbreakable Invariant**: Name the core architecture/pattern and state its governing invariant in `2–3` sentences.
+- **Problem Statement & I/O Contract:** Input/output types, preconditions, and small concrete instance.
+- **Constraints Audit:** Verified bounds and library/compiler versions (`[ASSUMED / UNVERIFIED]` for unstated limits).
+- **Target Complexity & Governing Invariant:** Asymptotic envelope justified from bounds and core invariant (`2–3` sentences).
 
 ## 2. What is the brute-force baseline and why does it bottleneck? (Naive Approach & The Optimization Bridge)
 
-<!--
-Show the smallest baseline or naive design that exposes the bottleneck (omit fake optimizations if baseline is already optimal). Remove before publication.
--->
-
-- **Brute-Force Intuition & Runnable Code**: Direct baseline implementation in the selected language.
-- **Exact Bottleneck Quantification**: Time/space cost explaining why the naive approach bottlenecks.
-- **The Optimization Bridge**: Pinpoint the redundant work and structural insight that eliminates it.
+- **Baseline Intuition & Runnable Code:** Simplest baseline exposing redundant work (omit fake naive variants when optimal is already direct).
+- **Bottleneck Quantification & Optimization Bridge:** Identify exact cost wall and the structural invariant eliminating it.
 
 ## 3. How does the optimal algorithm work step by step? (Mechanism, Correctness Justification & Dry-Run Table)
 
-<!--
-Trace a discriminating input, map equations/invariants to code variables, and justify initialization, maintenance, and termination. Remove before publication.
--->
-
-- **Step-by-Step Optimal Mechanism & Correctness Proof**: Walk through state transitions, invariant justification (`math_level` `1` or `2`), and exact Time/Space Complexity.
-- **Complete Step-by-Step Dry-Run Table**: Choose a **tricky, non-trivial input** triggering key branches/evictions and trace every step in a Markdown table (escaping pipes `\|`).
+- **Mechanism & Correctness:** State transitions, loop/recursion invariant (`initialization`, `maintenance`, `termination`), and exact complexity.
+- **Dry-Run Trace Table:** Trace a **discriminating, non-trivial input** triggering key branches/edge cases (escaping internal `|` pipes cleanly).
 
 ## 4. How do I implement and stress-test the optimal solution? (Implementation & Edge-Case Suite)
 
-<!--
-KEEP a complete runnable implementation in the selected language with honest verification tier (generated / syntax_checked / executed / tests_passed). Never fabricate execution output or run untrusted source code. Remove before publication.
--->
-
-- **Complete Optimal Implementation**:
-    - Fully runnable, self-contained code with imports/includes, explicit equation-to-code mapping, and a test driver.
-    - For `C`/`C++`, explicitly audit integer widths (`int64_t` vs. `int32_t`), bounds, and memory/iterator validity.
-    - Record runtime/compiler version and exact execution status (`executed` + verbatim `stdout` via `plan_notes.py verify-runtimes`, or `static verification (not executed)`).
-- **Verified Edge-Case Test Matrix (`4–5` Tricky Cases)**:
-    - Markdown table and runnable assertions covering: (1) Minimum/empty boundary input, (2) Duplicate/all-equal elements, (3) Adversarial/monotonic order, (4) Overflow/extreme boundary, and (5) The tricky dry-run input.
+- **Runnable Optimal Implementation:** Complete self-contained code with explicit equation-to-variable mapping and test driver. In statically typed/systems languages, audit numeric bit-widths, overflow bounds, and iterator/memory safety. Record runtime version and verbatim output (`executed` via `scripts/plan_notes.py verify-runtimes`, or `static verification (not executed)`).
+- **Edge-Case Test Matrix (`4–5` Cases):** Assertions covering minimal/empty, duplicate/degenerate, adversarial/monotonic, extreme boundary, and dry-run fixture.
 
 ## 5. How does this pattern transfer to harder variations? (Related Problems, Twists & Reflections)
 
-<!--
-KEEP variations, debugging follow-ups, or operational extensions that alter the invariant or constraints. Remove before publication.
--->
-
-- **Related Problems (`2–3` Curated Follow-Ups)**: Present each prompt visibly, then place its structural twist and optimal adaptation inside an independently collapsed callout: `> [!example]- Reveal Structural Twist & Optimal Solution for <Related Problem Title>`
+- **Related Variations (`2–3`):** Show visible prompt followed by an unquoted blank line and collapsed `> [!example]- Reveal Structural Twist & Optimal Solution for <Title>`.
 
 <!-- optional: complexity -->
 ## [OPTIONAL] Why does the resource bound hold? (Formal Complexity & Lower-Bound Derivation)
 
-<!--
-Include only formal resource reasoning allowed by the math contract. Remove before publication.
--->
+<!-- Include only when non-obvious recurrence/amortized/lower-bound proof adds insight; delete cleanly otherwise. -->
 
-<!-- scaffold:activation
-Contextual Activation Guide
-- When to Include: A non-obvious recurrence, amortized charging/potential argument, or information-theoretic lower bound is essential to proving optimality.
-- When to Omit Cleanly: Omit when complexity follows trivially from a single loop or is already derived in Section 3. Delete this heading and block completely; never emit N/A. Renumber following sections and repair links.
-- What to Write: State the cost model and input variables; derive the recurrence, potential function, or lower bound step by step; separate worst-case from amortized bounds and show a discriminating worst-case input.
--->
-
-- **Context:** State the cost model, input-size variables, and why naive counting is insufficient.
-- **Analysis:** Justify the recurrence, amortized charging/potential argument, or lower bound and separate worst-case from amortized cost.
-- **Check:** Supply a concrete adversarial/discriminating input confirming the tight bound.
+- **Context / Analysis / Check:** Cost model, recurrence/potential derivation, worst-case vs amortized distinction, discriminating bound case.
 
 <!-- optional: visual -->
-## [OPTIONAL] How do pointers, windows, or structures evolve step by step? (Visual Diagram / ASCII State-Transition Walkthrough)
+## [OPTIONAL] How do pointers, windows, or structures evolve step by step? (Visual Diagram / State-Transition Walkthrough)
 
-<!--
-Include a diagram only when a state transition is hard to follow in the trace. Remove before publication.
--->
+<!-- Include when spatial structure beats table trace; use Mermaid or verified external assets under assets/scriptorium/<slug>/ (never programmatic SVGs). -->
 
-<!-- scaffold:activation
-Contextual Activation Guide
-- When to Include: Multi-pointer motion, monotonic stack/deque eviction, tree/DP-table transitions, or bit/memory layouts are clearer spatially than in prose alone.
-- When to Omit Cleanly: Omit when Section 3's dry-run table already makes state transitions obvious. Delete this heading and block completely; never emit N/A. Renumber following sections and repair links.
-- What to Write: Render a compact ASCII state-transition walkthrough or Mermaid diagram aligned to the exact tricky dry-run input, highlighting the pivotal invariant-preserving transition.
--->
+- **Context / Analysis / Check:** Structure traced, inflection transitions ([representations.md](../../workflows/notes-creation/representations.md)), and invariant parity check.
 
-- **Context:** Name the spatial structure (pointers, window, stack, tree, DP grid) and tricky input being traced.
-- **Analysis:** Show the state transitions across the key inflection steps (if saving an externally acquired diagram, persist it under `assets/scriptorium/<collection-slug>/` following [representations.md](../../workflows/notes-creation/representations.md); never generate programmatic SVG diagrams).
-- **Check:** State the invariant visible at every transition and the edge state that would violate it.
-
-See [authoring rules](../../../shared/authoring_rules.md), [math gates](../../../shared/math_gates.md), and [footer contract](../../../shared/footer_widgets.md).
-- **Template Contract (`M5` / `dsa`):** Retain constraints audit (`[ASSUMED / UNVERIFIED]`), runnable baseline + optimal code, tricky dry-run table, honest execution status (`verify-runtimes`), edge-case suite, and collapsed follow-up twists.
+- **Contract Summary:** Verify constraints audit, runnable baseline + optimal code, tricky dry-run trace, honest runtime status, edge-case suite, and [authoring_rules.md](../../../shared/authoring_rules.md) / [math_gates.md](../../../shared/math_gates.md) / [footer_widgets.md](../../../shared/footer_widgets.md).

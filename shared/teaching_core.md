@@ -1,28 +1,32 @@
 # Shared Canonical Teaching Core
 
-Single authoritative pedagogical contract shared across substantive Scriptorium notes (`M1`, `M2`, `M4`, `M5`, `M7`) including topic notes, source notes, and video notes (`/scribe-ytnotes`, `/scribe-ytlecture`). Keep prose **topic-independent**, **self-contained**, and written like a dedicated instructor preparing a domain textbook for a first-time learner—never formula dumps, duplicated H1/H2 chapter headers, post-code diagram dumps, or mechanical heading checklists.
+## Purpose
 
-## 1. Progressive Understanding Principle & Layers (`A`–`H`)
+Establish one domain-independent educational architecture shared across substantive Scriptorium outputs (`M1`, `M2`, `M4`, `M5`, `M7`, including source and `/scribe-ytnotes` video notes) so first-time learners understand *why* an idea exists before encountering formal symbols, code, or visuals.
 
-**Core Rule:** Never introduce notation, formalism, or algorithms before the reader has enough context to understand what problem they solve. Develop one conceptual move per paragraph, explain prose reasoning before compact summary tables, and distinguish derivation, prediction, inference, optimization, and code execution.
+## Activation Trigger & Scope
 
-1. **Layer A — Orientation:** Establish the concrete problem, why earlier/simpler approaches fail, and what goal the concept achieves.
-2. **Layer B — Intuition:** Build a simple concrete mental model or familiar scenario first (disclose explicitly where any analogy stops holding).
-3. **Layer C — Foundation Bridge & Components:** Define unfamiliar terms, units, and required prerequisites right before use; provide inline refreshers or exact links rather than `"See linear algebra"`.
-4. **Layer D — Mechanism Breakdown:** Walk step by step through what enters, transforms, interacts, and exits.
-5. **Layer E — Mandatory Atomic Formula + Folded Walkthrough Contract (`M01`–`M14`):** Render every displayed `$$...$$` equation together with its immediately following Obsidian-native collapsed explanation (`render_formula_component`, `validate_formula_folds`, `scriptorium/engines/mathematics.py`):
-   - **Placement:** Every displayed formula across main prose, worked examples, assessments, appendices, display tables, and video/source notes MUST own a `> [!example]- Understand this formula step by step` callout immediately below it while keeping preceding prose readable with folds closed.
-   - **Content (`10` adaptive elements):** Answer (1) Purpose, (2) Plain-language reading aloud, (3) All symbols/indices/operators, (4) Object types/shapes/units, (5) Operations, (6) Evaluation order, (7) Non-obvious derivation reasoning & assumptions, (8) Meaningful concrete numerical example + interpretation (no generic `"substitute the values"` / `"this computes the result"` filler), (9) Conditions/edge cases, (10) Misconceptions.
-   - **Anti-Recursive Nesting:** Keep supporting arithmetic inside a formula fold inline (`$...$`); if a derivation step needs its own display block, emit a sibling formula+fold component rather than nesting callouts recursively or bundling unrelated formulas into one `$$...$$` block.
-6. **Layer F — Complete Worked Application (`Step 1`–`Step 12`):** Progress cleanly through: Question & Objective → Method & Assumptions → Formula + Fold → Substituted Inputs → Intermediate Operations → Result → Interpretation → Sanity Check → Common Mistakes → Generalization (retaining folded assessments separately from inline formula folds).
-7. **Layer G — Analysis, Causal Comparisons & Boundaries:** Explain *why* alternatives differ causally in scenario prose **before** summarizing in comparison tables. Always state applicability assumptions and explicit **Use when / When not to use** limits.
-8. **Layer H — Raster Visual & Video-Frame Reading Integration:** Use verified local downloaded raster images (`png`/`jpg`/`webp` — SVGs rejected on new acquisitions) and verified local video frames placed where the reader first needs the visual (never dumped after code). Wrap each visual with `Explain -> Show -> Decode -> Connect`.
+- **Activate on:** Every generated note routed to `M1`, `M2`, `M4`, `M5`, or `M7` (`T03`, `TEACH-01`–`TEACH-10`). Compact `M3` cheat sheets and question-only `M6` assessments follow their own density/self-test contracts while preserving symbol/condition accuracy.
+- **Dependencies:** [shared/math_gates.md](math_gates.md) (`M01`–`M14`, `Step 1`–`12`, formula folds), [shared/authoring_rules.md](authoring_rules.md) (YAML, rendering, evidence, cohesion), [representations.md](../references/workflows/notes-creation/representations.md) (`BVIA`/`LAVIA`).
 
-## 2. Internal Semantic Composition Sequence (`A`–`N`)
+## Execution Sequence — Progressive Understanding Layers (`A`–`H`)
 
-Use this sequence to plan coherent continuous prose with single clean H1 chapter titles (never repeat H1 as H2):
-`A. Concept Orientation -> B. Starting Intuition -> C. Foundation Bridge -> D. Mechanism Breakdown -> E. Formal Representation + Fold -> F. Complete Worked Example -> G. Visual / Frame Walkthrough -> H. Deeper Interpretation -> I. Comparisons and Selection -> J. Limitations and Misconceptions -> K. Practical Application -> L. Knowledge Check -> M. Transition`.
+Write continuous, domain-natural prose advancing one conceptual move per paragraph—never dump bare `$$...$$` formulas, repeat H1 chapter titles as H2 headings, dump figures after code, or expose internal step labels as section headings:
 
-## 3. Quality Gate & Executable Verification
+1. **Layer A — Orientation:** State the concrete problem, why naive/earlier methods break, and what capability the concept delivers.
+2. **Layer B — Intuition:** Build an accessible mental model from familiar experience before introducing formalism; state where any analogy stops holding (`CF-08`).
+3. **Layer C — Foundation Bridge & Components:** Define unfamiliar terms, units, and required prerequisites immediately before first use rather than deferring to vague pointers.
+4. **Layer D — Mechanism Breakdown:** Walk chronologically/causally through inputs, transformations, interactions, and outputs.
+5. **Layer E — Formalism & Folded Walkthrough (`shared/math_gates.md`):** Introduce notation only after intuition is ready; pair every displayed `$$...$$` equation with an immediately following `> [!example]- Understand this formula step by step` callout (`M01`–`M14`).
+6. **Layer F — Complete Worked Application (`Step 1`–`12`):** Execute worked numerical/structural examples following [shared/math_gates.md](math_gates.md#worked-application-protocol-step-112).
+7. **Layer G — Causal Comparisons & Boundaries:** Explain *why* alternatives differ causally in scenario prose **before** summary comparison tables; state applicability assumptions and explicit **Use when / When not to use** limits.
+8. **Layer H — Visual & Video-Frame Integration:** Embed inspected local raster assets (`png`/`jpg`/`webp`; SVG synthesis retired) at the exact point of need using `Explain -> Show -> Decode -> Connect`.
 
-Notes must pass both structural integrity (`validate_formula_folds`, `validate_published_composition`) and **12-dimension teaching-quality verification** (`QualityEngine.evaluate_teaching()`, `scriptorium/engines/quality.py`) plus the 8-question **Beginner Reader Simulation**—never averaging away missing formula folds, duplicate headings, misplaced figures, prerequisite gaps, or overcompression.
+## Output Semantic Spine (`A`–`N`)
+
+Plan continuous sections along: `Orientation -> Intuition -> Foundation Bridge -> Mechanism -> Formalism + Fold -> Worked Example -> Visual Walkthrough -> Deeper Interpretation -> Causal Comparison -> Limitations & Misconceptions -> Application -> Knowledge Check -> Transition`.
+
+## Failure Handling & Validation
+
+- **Failure Handling:** Reject unprepared equation drops, undefined symbols, ungrounded analogies, or sparse summary-bullet overcompression compressing multiple distinct concepts; repair the smallest defective span rather than rewriting passing sections.
+- **Validation:** Pass `QualityEngine.evaluate_teaching()` (12 teaching dimensions + Beginner Reader Simulation), `validate_formula_folds`, and `QualityEngine.review_explanatory_clarity()` (`CF-01`–`CF-12`).

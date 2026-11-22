@@ -1,13 +1,15 @@
-# Semantic verification
+# Semantic Verification Checklist
 
-Run mechanical checks from [router](../../../router.md#plan-and-publish), then inspect what automation cannot establish:
+## Purpose & Activation Trigger
 
-- Outcome and scope match the saved `instructional_plan`, ARRIE `research_plan`, and supplied source policy.
-- Deep plans: inspect required modules and per-concept depths, prerequisite order, source inventory receipts, verified `evidence_registry` citations (`validate_note.py --evidence`), contradiction handling, and cross-chunk consistency under [research-engine.md](../research/research-engine.md) and [source-fidelity.md](../research/source-fidelity.md#semantic-review-and-correction).
-- Every important claim traces to inspected evidence (`content_verified: true`) under [evidence rules](../../../shared/authoring_rules.md#evidence); recommended further-learning resources follow [resource-recommendations.md](../research/resource-recommendations.md) and stay distinct from factual citations.
-- Definitions, dimensions, tensor shapes, units, assumptions, equations, visuals, and code agree across retained representations (`scriptorium/engines/pedagogy.py (`scripts/scribe.py pedagogy`)` / [pedagogical-intelligence.md](../notes-creation/pedagogical-intelligence.md)).
-- Implementations teach distinct purposes; observed execution tier differs explicitly from static checks or proofs.
-- Worked examples are non-redundant and attributed; point-of-need misconceptions avoid invented statistics; revision summaries preserve applicability conditions and link back to Layer A headings.
-- Explanation Intelligence (`EIS-01`–`EIS-07`): verify central-question resolution, coherent transitions without invented causality, motivated derivation steps, explicit applicability boundaries, verified procedural traces/invariants (only where applicable), reasoning-preserving retrieval cues, and absence of `CF-01`–`CF-12` friction or leaked blueprint headings (`QualityEngine.review_explanatory_clarity()` / `scripts/scribe.py explain --review`).
-- Optional modules meet their activation guides; omitted modules leave no empty headings or broken numbering.
-- Apply [cohesion](../../../shared/authoring_rules.md#cohesion). A passing linter establishes neither mathematical proof nor factual correctness.
+Verify educational quality, source fidelity, representation alignment, and mathematical/runtime honesty after mechanical syntax checks pass (`A9 Checker`, `T13`, `validate_note.py` / `notes compose --validate`).
+
+## Semantic Inspection Gates
+
+- **Plan & Source Alignment:** Outcome matches `instructional_plan`, ARRIE `research_plan`, and active `source_policy` (strict/expanded element order, `[UNVERIFIED]` gaps, verified `evidence_registry` entries with `content_verified: true`, separate `resource-recommendations.md` list).
+- **Educational Spine (`EIS-01`–`EIS-07`):** Run `QualityEngine.review_explanatory_clarity()` / `scripts/scribe.py explain --review` and confirm beginner-first progression, central-question resolution, intuitive transitions before equations, zero `CF-01`–`CF-12` cognitive friction, zero leaked scaffold/blueprint headings, and atomic `> [!example]- Understand this formula step by step` folds beneath every `$$...$$`.
+- **Cross-Representation Parity & Honesty:** Definitions, units, shapes, equations, prose, inspected raster visuals (`Explain -> Show -> Decode -> Connect`), and code match cleanly; execution claims match actual observed runtime status (`plan_notes.py verify-runtimes`); omitted optional blocks leave zero `N/A` placeholders or broken numbering.
+
+## Failure Handling & Validation
+
+- Repair only the smallest defective span + dependents ([authoring_rules.md](../../../shared/authoring_rules.md)), invalidate stale review receipts, and confirm `QualityEngine.evaluate_teaching()` and `scripts/verify_vault_notes.py` pass without modifying unrelated vault notes.

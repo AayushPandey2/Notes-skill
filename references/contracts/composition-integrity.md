@@ -1,5 +1,7 @@
 # Composition integrity contract (KCP version 2)
 
+> **Contents:** [Authoring & publication](#authoring-and-publication) · [Shared obligations & reviews](#shared-obligations-and-reviews) · [Pedagogy & prerequisites](#pedagogy-objectives-and-prerequisites) · [Math & technical records](#mathematical-and-technical-records) · [Claims & research](#claims-and-research) · [Visuals](#visuals) · [Assessments](#assessments) · [Repair & optimization](#repair-and-optimization)
+
 This is the canonical contract for the audit-derived F01–F25 features. The older
 collection-lifecycle F02–F15 names describe existing capabilities, not this audit's
 numbering. Both use the existing KCP `composition` field and six E1–E6 facades.

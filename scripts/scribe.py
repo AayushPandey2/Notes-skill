@@ -46,17 +46,7 @@ def _composition_preferences(spec):
         "hierarchical_collection", [], spec.get("source_policy", "adaptive"))
 
 
-def main(argv: list[str] | None = None) -> int:
-    if hasattr(sys.stdout, "reconfigure"):
-        sys.stdout.reconfigure(encoding="utf-8")
-
-    # Fast passthrough for rich nested sub-CLIs
-    args_list = list(sys.argv[1:] if argv is None else argv)
-    if args_list and args_list[0] == "research":
-        return research_mod.main(args_list[1:])
-    if args_list and args_list[0] == "pedagogy":
-        return ped_core_mod.main(args_list[1:])
-
+def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
 
@@ -169,6 +159,224 @@ def main(argv: list[str] | None = None) -> int:
         p_yt.add_argument("--vault", type=Path, default=None, help="Optional vault root for frame asset storage.")
         p_yt.add_argument("--duration", type=int, default=None, help="Optional video duration in seconds.")
 
+    return parser
+
+
+def _handle_notes_compose(args: argparse.Namespace, orch: OrchestrationEngine, vault: VaultEngine) -> int:
+    try:
+        ped = PedagogyEngine()
+        spec = json.loads(args.spec.read_text(encoding="utf-8-sig"))
+        composition = ped.plan_composition(spec)
+        if sum(bool(x) for x in (args.prepare, args.publish, args.validate, args.repair, args.repair_visuals, args.context)) > 1:
+            raise ValueError("Choose one of --prepare, --publish, --validate, --context, --repair or --repair-visuals")
+        if args.context:
+            from scriptorium.engines.composition import compile_context
+            print(json.dumps(compile_context(composition, args.context), indent=2, ensure_ascii=False))
+            return 0
+        if args.repair:
+            from scriptorium.engines.composition.contracts import repair_plan
+            print(json.dumps(repair_plan(composition, args.repair), indent=2, ensure_ascii=False))
+            return 0
+        if args.repair_visuals:
+            vault_dir = _resolve_compose_vault(args.vault)
+            if not vault_dir:
+                raise ValueError("Visual repair requires --vault")
+            from scriptorium.engines.composition import contained, lavia
+            from scriptorium.models import parse_note, slugify
+            slug = slugify(composition.get("collection_slug") or composition["topic"])
+            manifest_path = contained(vault_dir, f"assets/scriptorium/{slug}/manifest.json")
+            if manifest_path.is_file():
+                manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
+            else:
+                state_path = contained(vault_dir, f".scriptorium/collections/col-{slugify(composition['topic'])}.json")
+                if not state_path.is_file():
+                    raise ValueError(f"No LAVIA manifest or collection state found for '{composition['topic']}'")
+                state = json.loads(state_path.read_text(encoding="utf-8-sig"))
+                manifest = state.get("manifest") or lavia.build_asset_manifest(
+                    composition, state.get("renderers", {}), collection_slug=composition.get("collection_slug")
+                )
+            bodies = (
+                json.loads(args.drafts.read_text(encoding="utf-8-sig"))
+                if args.drafts
+                else {
+                    c["id"]: parse_note(contained(vault_dir, c["path"]).read_text(encoding="utf-8-sig")).body.strip() + "\n"
+                    for c in composition["chapters"]
+                    if contained(vault_dir, c["path"]).is_file()
+                }
+            )
+            repaired = lavia.repair_visual_assets(vault_dir, composition, bodies, manifest, execute=True)
+            if composition.get("organize_by_collection") or composition.get("collection_slug") or manifest_path.is_file():
+                lavia.save_asset_manifest(vault_dir, repaired["manifest"])
+            print(json.dumps({"repaired_ids": repaired["repaired_ids"], "manifest": repaired["manifest"]}, indent=2, ensure_ascii=False))
+            return 0
+        if args.prepare:
+            vault_dir = _resolve_compose_vault(args.vault)
+            if not vault_dir or not args.drafts:
+                raise ValueError("Preparation requires --vault and --drafts")
+            from scriptorium.engines.composition import lavia, prepare_composition
+            bodies, renderers = prepare_composition(vault_dir, composition, json.loads(args.drafts.read_text(encoding="utf-8-sig")))
+            manifest = lavia.build_asset_manifest(composition, renderers, collection_slug=composition.get("collection_slug"))
+            print(json.dumps({"drafts": bodies, "renderers": renderers, "manifest": manifest, "obligations": composition["obligations"]}, indent=2, ensure_ascii=False))
+            return 0 if all(r["status"] == "verified" for r in renderers.values()) else 1
+        if args.validate and not args.publish:
+            vault_dir = _resolve_compose_vault(args.vault)
+            if not vault_dir:
+                raise ValueError("Validation requires --vault")
+            from scriptorium.engines.composition import validate_published_composition
+            result = validate_published_composition(vault_dir, composition)
+            print(json.dumps(result, indent=2, ensure_ascii=False))
+            return 0 if result["valid"] else 1
+        if not args.publish:
+            print(json.dumps(composition, indent=2, ensure_ascii=False))
+            return 0
+        vault_dir = _resolve_compose_vault(args.vault)
+        if not all((vault_dir, args.drafts, args.evidence, args.reviews)):
+            raise ValueError("Publication requires --vault, --drafts, --evidence, and --reviews")
+        def _read_json(path: Path):
+            return json.loads(path.read_text(encoding="utf-8-sig"))
+        from scriptorium.engines.composition import to_collection_plan
+        plan = to_collection_plan(composition)
+        kcp = orch.build_kcp(vault_dir, plan, _composition_preferences(spec), include_synthesis=False)
+        result = vault.publish_composition(
+            vault_dir,
+            kcp.composition,
+            _read_json(args.drafts),
+            evidence=_read_json(args.evidence),
+            reviews=_read_json(args.reviews),
+            expected_hashes=_read_json(args.expected_hashes) if args.expected_hashes else None,
+        )
+        print(json.dumps(result, indent=2, ensure_ascii=False))
+        return 0 if result["complete"] else 1
+    except (ValueError, OSError, KeyError) as exc:
+        print(json.dumps({"complete": False, "error": str(exc)}, ensure_ascii=False))
+        return 1
+
+
+def _handle_notes_command(
+    args: argparse.Namespace,
+    orch: OrchestrationEngine,
+    vault: VaultEngine,
+    quality: QualityEngine,
+) -> int:
+    if args.notes_action == "compose":
+        return _handle_notes_compose(args, orch, vault)
+
+    if args.notes_action == "start":
+        existing_topics: list[str] = []
+        if args.vault and args.vault.is_dir():
+            existing_topics = [p.stem for p in args.vault.rglob("*.md") if ".scriptorium" not in p.parts]
+        state = orch.start_notes_session(
+            args.request,
+            has_source=args.has_source,
+            source_sections=args.source_section or None,
+            existing_vault_notes=existing_topics or None,
+        )
+        saved_path = str(orch.save_session_state(args.vault, state)) if args.vault else None
+        prompt_text = orch.format_configuration_prompt(state)
+        if args.as_json:
+            print(json.dumps({
+                "session_id": state.request_id,
+                "stage": state.stage,
+                "saved_path": saved_path,
+                "prompt": prompt_text,
+                "state": state.to_dict(),
+            }, indent=2, ensure_ascii=False))
+        else:
+            print(prompt_text)
+            if saved_path:
+                print(f"\n[session_id={state.request_id}]")
+        return 0
+
+    if args.notes_action == "respond":
+        state = orch.load_session_state(args.vault, args.session_id)
+        res = orch.respond_to_session(state, args.reply)
+        orch.save_session_state(args.vault, res["state"])
+        if args.as_json:
+            print(json.dumps({
+                "session_id": res["state"].request_id,
+                "stage": res["stage"],
+                "ready_to_generate": res["ready_to_generate"],
+                "message": res["message"],
+            }, indent=2, ensure_ascii=False))
+        else:
+            print(res["message"])
+        return 0
+
+    if args.notes_action == "generate":
+        state = orch.load_session_state(args.vault, args.session_id)
+        if state.stage != "COLLECTION_PLAN_READY" or not state.collection_plan or not state.resolved_preferences:
+            print(json.dumps({
+                "error": f"Session '{args.session_id}' is in stage '{state.stage}'; approve configuration/plan before generating.",
+            }, indent=2))
+            return 1
+        if state.resolved_preferences.master == "M1" and state.collection_plan.organization == "hierarchical_collection" and not args.legacy_layout:
+            print(json.dumps({"complete": False, "status": "requires_composition_spec",
+                "message": "Full-topic notes use 5–10 authored chapters and a MOC. Use notes compose --spec with concepts and optional chapter allocation; --legacy-layout retains an existing nested collection."}, indent=2))
+            return 1
+        if args.checkpoints:
+            kcp = orch.build_kcp(
+                args.vault,
+                state.collection_plan,
+                state.resolved_preferences,
+                raw_request=state.original_intent.raw_request,
+                include_synthesis=args.synthesis,
+                include_assessment=args.assessment,
+            )
+            gen = vault.generate_with_checkpoints(args.vault, kcp, state.resolved_preferences)
+            if args.synthesis and kcp.synthesis_notes:
+                for syn in kcp.synthesis_notes:
+                    vault.write_note(args.vault / syn["proposed_path"], syn["content"])
+            if args.assessment and kcp.assessment_plan:
+                vault.write_note(args.vault / kcp.assessment_plan["proposed_path"], kcp.assessment_plan["content"])
+        else:
+            gen = vault.generate_collection(args.vault, state.collection_plan, state.resolved_preferences)
+        state.stage = "COMPLETED" if gen["complete"] else "PARTIAL_FAILURE"
+        orch.save_session_state(args.vault, state)
+        payload: dict = {"generation": gen}
+        if args.validate:
+            val = quality.validate_collection(args.vault, state.collection_plan, manifest=gen["manifest"])
+            payload["validation"] = val
+        print(json.dumps(payload, indent=2, ensure_ascii=False))
+        ok = gen["complete"] and (not args.validate or payload["validation"]["valid"])
+        return 0 if ok else 1
+
+    if args.notes_action == "validate":
+        state = orch.load_session_state(args.vault, args.session_id)
+        if not state.collection_plan:
+            print(json.dumps({"valid": False, "error": "No collection plan recorded in session."}, indent=2))
+            return 1
+        val = quality.validate_collection(args.vault, state.collection_plan)
+        print(json.dumps(val, indent=2, ensure_ascii=False))
+        return 0 if val["valid"] else 1
+
+    if args.notes_action == "refine":
+        plan = orch.load_session_state(args.vault, args.session_id).collection_plan if args.session_id else None
+        res = quality.process_feedback(
+            args.vault,
+            plan,
+            args.feedback,
+            target_note_path=args.note,
+            apply_approved=args.apply,
+            source_policy=args.source_policy,
+        )
+        print(json.dumps(res, indent=2, ensure_ascii=False))
+        return 0 if res.get("status") in {"proposal_ready", "applied"} else 1
+
+    return 2
+
+
+def main(argv: list[str] | None = None) -> int:
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
+
+    # Fast passthrough for rich nested sub-CLIs
+    args_list = list(sys.argv[1:] if argv is None else argv)
+    if args_list and args_list[0] == "research":
+        return research_mod.main(args_list[1:])
+    if args_list and args_list[0] == "pedagogy":
+        return ped_core_mod.main(args_list[1:])
+
+    parser = _build_parser()
     args = parser.parse_args(args_list)
     orch = OrchestrationEngine(REPO_ROOT)
     vault = VaultEngine()
@@ -197,10 +405,7 @@ def main(argv: list[str] | None = None) -> int:
             master_topic=args.master_topic,
             subdomain=args.subdomain,
         )
-        if args.format == "json":
-            print(json.dumps(props, indent=2, ensure_ascii=False))
-        else:
-            print(dump_frontmatter(props))
+        print(json.dumps(props, indent=2, ensure_ascii=False) if args.format == "json" else dump_frontmatter(props))
         return 0
 
     if args.command == "update":
@@ -266,189 +471,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.command == "notes":
-        if args.notes_action == "compose":
-            try:
-                ped = PedagogyEngine()
-                spec = json.loads(args.spec.read_text(encoding="utf-8-sig"))
-                composition = ped.plan_composition(spec)
-                if sum(bool(x) for x in (args.prepare, args.publish, args.validate, args.repair, args.repair_visuals, args.context)) > 1:
-                    raise ValueError("Choose one of --prepare, --publish, --validate, --context, --repair or --repair-visuals")
-                if args.context:
-                    from scriptorium.engines.composition import compile_context
-                    print(json.dumps(compile_context(composition, args.context), indent=2, ensure_ascii=False))
-                    return 0
-                if args.repair:
-                    from scriptorium.engines.composition.contracts import repair_plan
-                    print(json.dumps(repair_plan(composition, args.repair), indent=2, ensure_ascii=False))
-                    return 0
-                if args.repair_visuals:
-                    vault_dir = _resolve_compose_vault(args.vault)
-                    if not vault_dir:
-                        raise ValueError("Visual repair requires --vault")
-                    from scriptorium.engines.composition import contained, lavia
-                    from scriptorium.models import parse_note, slugify
-                    slug = slugify(composition.get("collection_slug") or composition["topic"])
-                    manifest_path = contained(vault_dir, f"assets/scriptorium/{slug}/manifest.json")
-                    if manifest_path.is_file():
-                        manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
-                    else:
-                        state_path = contained(vault_dir, f".scriptorium/collections/col-{slugify(composition['topic'])}.json")
-                        if not state_path.is_file():
-                            raise ValueError(f"No LAVIA manifest or collection state found for '{composition['topic']}'")
-                        state = json.loads(state_path.read_text(encoding="utf-8-sig"))
-                        manifest = state.get("manifest") or lavia.build_asset_manifest(
-                            composition, state.get("renderers", {}), collection_slug=composition.get("collection_slug")
-                        )
-                    if args.drafts:
-                        bodies = json.loads(args.drafts.read_text(encoding="utf-8-sig"))
-                    else:
-                        bodies = {
-                            c["id"]: parse_note(contained(vault_dir, c["path"]).read_text(encoding="utf-8-sig")).body.strip() + "\n"
-                            for c in composition["chapters"]
-                            if contained(vault_dir, c["path"]).is_file()
-                        }
-                    repaired = lavia.repair_visual_assets(vault_dir, composition, bodies, manifest, execute=True)
-                    if composition.get("organize_by_collection") or composition.get("collection_slug") or manifest_path.is_file():
-                        lavia.save_asset_manifest(vault_dir, repaired["manifest"])
-                    print(json.dumps({"repaired_ids": repaired["repaired_ids"], "manifest": repaired["manifest"]}, indent=2, ensure_ascii=False))
-                    return 0
-                if args.prepare:
-                    vault_dir = _resolve_compose_vault(args.vault)
-                    if not vault_dir or not args.drafts:
-                        raise ValueError("Preparation requires --vault and --drafts")
-                    from scriptorium.engines.composition import prepare_composition
-                    from scriptorium.engines.composition import lavia
-                    bodies, renderers = prepare_composition(vault_dir, composition, json.loads(args.drafts.read_text(encoding="utf-8-sig")))
-                    manifest = lavia.build_asset_manifest(composition, renderers, collection_slug=composition.get("collection_slug"))
-                    print(json.dumps({"drafts": bodies, "renderers": renderers, "manifest": manifest, "obligations": composition["obligations"]}, indent=2, ensure_ascii=False))
-                    return 0 if all(r["status"] == "verified" for r in renderers.values()) else 1
-                if args.validate and not args.publish:
-                    vault_dir = _resolve_compose_vault(args.vault)
-                    if not vault_dir:
-                        raise ValueError("Validation requires --vault")
-                    from scriptorium.engines.composition import validate_published_composition
-                    result = validate_published_composition(vault_dir, composition)
-                    print(json.dumps(result, indent=2, ensure_ascii=False))
-                    return 0 if result["valid"] else 1
-                if not args.publish:
-                    print(json.dumps(composition, indent=2, ensure_ascii=False))
-                    return 0
-                vault_dir = _resolve_compose_vault(args.vault)
-                if not all((vault_dir, args.drafts, args.evidence, args.reviews)):
-                    raise ValueError("Publication requires --vault, --drafts, --evidence, and --reviews")
-                def read_json(path):
-                    return json.loads(path.read_text(encoding="utf-8-sig"))
-                from scriptorium.engines.composition import to_collection_plan
-                plan = to_collection_plan(composition)
-                kcp = orch.build_kcp(vault_dir, plan, _composition_preferences(spec), include_synthesis=False)
-                result = vault.publish_composition(vault_dir, kcp.composition, read_json(args.drafts),
-                    evidence=read_json(args.evidence), reviews=read_json(args.reviews),
-                    expected_hashes=read_json(args.expected_hashes) if args.expected_hashes else None)
-                print(json.dumps(result, indent=2, ensure_ascii=False))
-                return 0 if result["complete"] else 1
-            except (ValueError, OSError, KeyError) as exc:
-                print(json.dumps({"complete": False, "error": str(exc)}, ensure_ascii=False))
-                return 1
-        if args.notes_action == "start":
-            existing_topics: list[str] = []
-            if args.vault and args.vault.is_dir():
-                existing_topics = [p.stem for p in args.vault.rglob("*.md") if ".scriptorium" not in p.parts]
-            state = orch.start_notes_session(
-                args.request,
-                has_source=args.has_source,
-                source_sections=args.source_section or None,
-                existing_vault_notes=existing_topics or None,
-            )
-            saved_path = str(orch.save_session_state(args.vault, state)) if args.vault else None
-            prompt_text = orch.format_configuration_prompt(state)
-            if args.as_json:
-                print(json.dumps({
-                    "session_id": state.request_id,
-                    "stage": state.stage,
-                    "saved_path": saved_path,
-                    "prompt": prompt_text,
-                    "state": state.to_dict(),
-                }, indent=2, ensure_ascii=False))
-            else:
-                print(prompt_text)
-                if saved_path:
-                    print(f"\n[session_id={state.request_id}]")
-            return 0
-
-        if args.notes_action == "respond":
-            state = orch.load_session_state(args.vault, args.session_id)
-            res = orch.respond_to_session(state, args.reply)
-            orch.save_session_state(args.vault, res["state"])
-            if args.as_json:
-                print(json.dumps({
-                    "session_id": res["state"].request_id,
-                    "stage": res["stage"],
-                    "ready_to_generate": res["ready_to_generate"],
-                    "message": res["message"],
-                }, indent=2, ensure_ascii=False))
-            else:
-                print(res["message"])
-            return 0
-
-        if args.notes_action == "generate":
-            state = orch.load_session_state(args.vault, args.session_id)
-            if state.stage != "COLLECTION_PLAN_READY" or not state.collection_plan or not state.resolved_preferences:
-                print(json.dumps({
-                    "error": f"Session '{args.session_id}' is in stage '{state.stage}'; approve configuration/plan before generating.",
-                }, indent=2))
-                return 1
-            if state.resolved_preferences.master == "M1" and state.collection_plan.organization == "hierarchical_collection" and not args.legacy_layout:
-                print(json.dumps({"complete": False, "status": "requires_composition_spec",
-                    "message": "Full-topic notes use 5–10 authored chapters and a MOC. Use notes compose --spec with concepts and optional chapter allocation; --legacy-layout retains an existing nested collection."}, indent=2))
-                return 1
-            if args.checkpoints:
-                kcp = orch.build_kcp(
-                    args.vault,
-                    state.collection_plan,
-                    state.resolved_preferences,
-                    raw_request=state.original_intent.raw_request,
-                    include_synthesis=args.synthesis,
-                    include_assessment=args.assessment,
-                )
-                gen = vault.generate_with_checkpoints(args.vault, kcp, state.resolved_preferences)
-                if args.synthesis and kcp.synthesis_notes:
-                    for syn in kcp.synthesis_notes:
-                        vault.write_note(args.vault / syn["proposed_path"], syn["content"])
-                if args.assessment and kcp.assessment_plan:
-                    vault.write_note(args.vault / kcp.assessment_plan["proposed_path"], kcp.assessment_plan["content"])
-            else:
-                gen = vault.generate_collection(args.vault, state.collection_plan, state.resolved_preferences)
-            state.stage = "COMPLETED" if gen["complete"] else "PARTIAL_FAILURE"
-            orch.save_session_state(args.vault, state)
-            payload: dict = {"generation": gen}
-            if args.validate:
-                val = quality.validate_collection(args.vault, state.collection_plan, manifest=gen["manifest"])
-                payload["validation"] = val
-            print(json.dumps(payload, indent=2, ensure_ascii=False))
-            ok = gen["complete"] and (not args.validate or payload["validation"]["valid"])
-            return 0 if ok else 1
-
-        if args.notes_action == "validate":
-            state = orch.load_session_state(args.vault, args.session_id)
-            if not state.collection_plan:
-                print(json.dumps({"valid": False, "error": "No collection plan recorded in session."}, indent=2))
-                return 1
-            val = quality.validate_collection(args.vault, state.collection_plan)
-            print(json.dumps(val, indent=2, ensure_ascii=False))
-            return 0 if val["valid"] else 1
-
-        if args.notes_action == "refine":
-            plan = orch.load_session_state(args.vault, args.session_id).collection_plan if args.session_id else None
-            res = quality.process_feedback(
-                args.vault,
-                plan,
-                args.feedback,
-                target_note_path=args.note,
-                apply_approved=args.apply,
-                source_policy=args.source_policy,
-            )
-            print(json.dumps(res, indent=2, ensure_ascii=False))
-            return 0 if res.get("status") in {"proposal_ready", "applied"} else 1
+        return _handle_notes_command(args, orch, vault, quality)
 
     if args.command == "optimize":
         ctrl = orch.create_token_controller()

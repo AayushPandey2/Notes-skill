@@ -9,8 +9,6 @@ from __future__ import annotations
 
 from io import BytesIO
 import importlib.util
-import json
-import os
 from pathlib import Path
 import re
 import shutil
@@ -22,10 +20,8 @@ from scriptorium.engines.composition.media import inspect_image_content
 from scriptorium.models import (
     AssetRecord,
     ConceptPlanRecord,
-    FormulaTeachingRecord,
     VideoEvidenceRecord,
     contained_path,
-    content_hash,
     slugify,
 )
 

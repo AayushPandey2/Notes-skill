@@ -1,44 +1,26 @@
 ---
 name: scribe-notes
-description: Universal adaptive note-creation command. Interactively calibrates note style (M1-M7), depth, scope (single note vs. hierarchical multi-note collection), and Obsidian Properties before generating verified study notes.
+description: Universal adaptive Obsidian note-creation command. Use when asked to create, expand, or organize study notes, comprehensive first-principles guides, lecture/PDF/YouTube notes (/scribe-ytnotes, /scribe-ytlecture), worked solutions, implementation tutorials, comparison guides, cheat sheets, or atomic cards in Obsidian.
 ---
 
-# `/scribe-notes` — Universal Adaptive Notes Command
+# `/scribe-notes`
 
-`/scribe-notes` is the **sole public note-creation command** in Scriptorium (with `/scribe-ytnotes` and `/scribe-ytlecture` wired as compatible video-source aliases feeding the same unified pipeline via `scripts/scribe.py ytnotes` / `ytlecture`). All note styles (`M1`–`M7` and variants) run across the 12 logical architectures (`A0`–`A11`), executable pipeline triggers (`T01`–`T16`, `VIDEO-01`–`VIDEO-04`), mathematical/teaching micro-triggers (`MATH-01`–`MATH-10`, `TEACH-01`–`TEACH-10`), and the shared [teaching core](../../shared/teaching_core.md) (mandatory `> [!example]- Understand this formula step by step` fold directly beneath every displayed `$$...$$`, beginner-first progression, raster-only web image & video-frame grounding, and 12-dimension quality verification; see [SKILL.md](../../SKILL.md) and [router.md](../../router.md)).
+`/scribe-notes` is Scriptorium's single public entrypoint for creating or updating learning notes (including `/scribe-ytnotes` and `/scribe-ytlecture` video aliases via `scripts/scribe.py ytnotes` / `ytlecture`). Interactive calibration runs first so template, depth, and folder layout match user intent without wasted generation passes.
 
-> **Non-note commands preserved separately:** `/scribe-doubt` (read-only vault Q&A), `/scribe-quiz` (interactive active-recall quizzing), `/scribe-setfolder` (vault target folder configuration).
+## Execution Flow
 
-## Comprehensive topic collections
+1. **Interactive Configuration Gate (`scripts/scribe.py notes start` / `respond`):**
+   - Pass user request and vault path to infer master (`M1`–`M7`), variant, depth, scope tier (`S0`–`S5`), and `single_note` vs. `hierarchical_collection`. Ask only unanswered configuration questions (never a knowledge quiz) and accept plain follow-up replies or `"use your recommendations"`.
+   - For broad collections (`S3`–`S5`), preview the Parent Map of Content + child notes + dependency path before writing, keeping hierarchy, prerequisite, and related graphs separate.
+2. **Research, Pedagogical Core & Visuals:**
+   - Load [shared/teaching_core.md](../../shared/teaching_core.md), [shared/authoring_rules.md](../../shared/authoring_rules.md), and the active master/subtemplate via selective context compilation—avoid loading unrelated masters.
+   - Put intuition before formal definitions, embed an atomic `> [!example]- Understand this formula step by step` fold directly beneath every displayed `$$...$$`, and acquire verified raster web/video visuals under `assets/scriptorium/<collection-slug>/` via LAVIA/BVIA ([representations.md](../../references/workflows/notes-creation/representations.md)) with zero programmatic SVG synthesis.
+3. **Comprehensive M1 Collections vs. Single / `M2`–`M7` Notes:**
+   - **Comprehensive M1 (KCP v2):** Follow [composition-contract.md](../../references/workflows/notes-creation/composition-contract.md) and [composition-integrity.md](../../references/contracts/composition-integrity.md). Publish one MOC + 5–10 chapters directly under `<Vault>/<Topic>/` with exact five-key YAML (`id`, `aliases`, `topic`, `tags`, `nexttopics`), using `scripts/scribe.py notes compose --spec` through `--prepare`, artifact-bound review receipts, `--publish`, `--repair`, and `--validate`.
+   - **Single notes & `M2`–`M7`:** Run `scripts/scribe.py notes generate --vault "<vault>" --session-id "<id>" --validate`, applying Obsidian Properties (`topic`, `tags`, `master_topic`, `domain`, `note_type`), safe incremental reconciliation, and semantic/structural validation.
 
-For full-topic M1 notes, follow [the composition contract](../../references/workflows/notes-creation/composition-contract.md), [the KCP integrity contract](../../references/contracts/composition-integrity.md), and [the representation contract](../../references/workflows/notes-creation/representations.md):
-- **Layout (`T04`, `T14`):** Publish to the vault-native `<Topic>/` folder via `resolve_collection_layout` (honoring `/scribe-setfolder`, `create_category_folders=false` default) with one numbered MOC and 5–10 substantive chapters (omit `chapters` for adaptive planning). Supply a shared concept plan to `scripts/scribe.py notes compose`.
-- **Metadata:** Exact five-key YAML (`id`, `aliases`, `topic`, `tags`, `nexttopics`) with hierarchical `domain/`, `subject/`, `topic/` tags; internal state stays in `.scriptorium/collections/` manifests.
-- **Web-Image-First Visuals (`T06`–`T09`):** Follow LAVIA web-image discovery and BVIA accessibility evaluation + image inspection + `Explain -> Show -> Decode -> Connect` walkthroughs, persisting verified local assets under `assets/scriptorium/<collection-slug>/`. Programmatic SVG diagram creation is retired; if no permitted image exists, record an unmet visual obligation honestly.
-- **Preparation & Integrity (`T10`–`T16`):** Run `notes compose --prepare` before reviewing; hash prepared chapter bodies for artifact-bound reviews. Use `--context` (`T16`) for selective compilation, `--repair` (`T15`) for dependency-aware fixes, and `--validate` (`T13`) to recheck published artifacts without writing. Record unavailable host checks explicitly. `notes generate --legacy-layout` remains available for existing nested collections; other masters and explicitly narrow single notes follow the workflow below.
+## On-Demand References
 
-## Legacy and single-note execution contract
-
-1. **Always start with the Interactive Configuration Gate (before generating final notes):**
-   - Inspect the request via `python scripts/scribe.py notes start "<request>" --vault "<vault>"` (or `OrchestrationEngine.start_notes_session()`).
-   - If the user invoked bare `/scribe-notes` with no topic, ask first what topic, source, or learning goal they want notes on.
-   - Infer provisional recommendations for **master template (`M1`–`M7`)**, **variant**, **depth**, **scope tier (`S0`–`S5`)**, and **organization (`single_note` vs. `hierarchical_collection`)**.
-   - Ask only the **adaptive, unanswered** plain-text configuration questions (typically 1–4 concise questions; skip any preference already explicitly stated in the user's request, or honor `"skip questions"` / `"use your recommendations"`).
-   - Present the inferred recommendation clearly alongside a zero-friction default (`Reply "use your recommendations" to proceed`).
-2. **Accept Natural Follow-Up Replies Without Repeating `/scribe-notes`:**
-   - Process free-text answers, numbered/lettered replies (`1b, 2a`), partial answers, mid-flow corrections (`"actually make it a cheat sheet"`), outline edits (`"remove CNNs and add Bayesian Inference"`), or cancellation (`"cancel"`) via `python scripts/scribe.py notes respond --vault "<vault>" --session-id "<id>" --reply "<reply>"`.
-3. **Preview Substantial Hierarchical Collections Before Generation:**
-   - For broad topics (`S3`–`S5`, or `hierarchical_collection` with > 3 notes), show the proposed **Parent Map of Content (`index`) + grouped child notes + learning path** before writing notes.
-   - Keep **Topic Hierarchy** (`parent_id` / `child_ids`), **Prerequisites** (`prerequisite_ids`), and **Related Links** (`related_ids`) strictly separated.
-4. **Generate Through the Full Adaptive Pipeline & Validate Collection-Wide:**
-   - Run `python scripts/scribe.py notes generate --vault "<vault>" --session-id "<id>" --validate`.
-   - Every child note uses the full adaptive `M1`–`M7` + `EIS-01..EIS-07` Explanation Intelligence pipeline, mandatory Obsidian Properties (`topic`, `tags`, `master_topic`, `domain`, `note_type`, `parent_topic`, `collection_id`), safe atomic writes, and non-destructive incremental reconciliation if a canonical file already exists.
-   - Parent MOC notes (`note_type: index`) synthesize structure and link to every child without duplicating child derivations.
-   - Validate structural integrity, wikilinks, Obsidian Properties, coverage completeness, and manifest honesty before reporting completion.
-
-## Reference Architecture
-
-- Master skill instructions: `../../SKILL.md`
-- Request router & seven-master policy: `../../router.md`, `../../references/routing/master-registry.yaml`, `../../references/routing/routing-policy.md`
-- Pre-generation gate & interactive playbooks: `../../references/workflows/notes-creation/pre-gen-gate.md`, `../../references/workflows/notes-creation/command-playbooks.md`
-- Obsidian Properties & tag taxonomy: `../../references/metadata/properties-policy.md`, `../../references/metadata/tag-taxonomy.md`
+- Routing & full architecture: [SKILL.md](../../SKILL.md), [router.md](../../router.md), [routing-policy.md](../../references/routing/routing-policy.md)
+- Pre-gen gate & playbooks: [pre-gen-gate.md](../../references/workflows/notes-creation/pre-gen-gate.md), [command-playbooks.md](../../references/workflows/notes-creation/command-playbooks.md)
+- Metadata & taxonomy: [properties-policy.md](../../references/metadata/properties-policy.md), [tag-taxonomy.md](../../references/metadata/tag-taxonomy.md)

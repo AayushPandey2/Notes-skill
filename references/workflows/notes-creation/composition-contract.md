@@ -1,5 +1,7 @@
 # Comprehensive knowledge composition
 
+> **Contents:** [Planning & authoring](#planning-and-authoring) · [Depth & research](#depth-and-research) · [Tables & visuals](#tables-and-visuals) · [Publication, checkpoints & repair](#publication-checkpoints-and-repair) · [Compatibility & efficiency](#compatibility-migration-and-efficiency)
+
 This contract extends KCP and the existing instructional registry for full-topic
 M1 notes. `/scribe-notes` remains the public command. M2–M7 and explicitly narrow
 single-note requests retain their current products. Existing nested collections

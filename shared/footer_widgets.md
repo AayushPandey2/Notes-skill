@@ -1,6 +1,8 @@
-# Reflection footer
+# Reflection Footer Contract
 
-Compact routed scaffolds use the following reflection block. Deep-study and source-study notes select useful reflection fields and widgets through [adaptive-engine.md](../references/workflows/notes-creation/adaptive-engine.md). See [authoring rules](authoring_rules.md#rendering). Fill the applicable reflection fields in the final section, keeping entries within any route's word cap. Record a Confusion field only for a genuine unresolved issue where the route permits omission. Obsidian requires Dataview JavaScript queries enabled for the button to execute.
+## Purpose & Activation Trigger
+
+Append a lightweight Dataview reflection and vault-navigation footer at the end of compact/source-study notes (`M2`, `M3`, `M4`, `M5`, `M7`) when vault tracking widgets are enabled (respecting route word caps; deep-study notes select reflection blocks dynamically via [adaptive-engine.md](../references/workflows/notes-creation/adaptive-engine.md)). Omit genuine empty `Confusion` fields cleanly. Requires Obsidian Dataview JS enabled for the button.
 
 <!-- scaffold:footer -->
 ### Metacognitive Reflection & Vault Integration

@@ -1,8 +1,11 @@
 # Variant: Multi-Note Exam Revision Pack
 
-- **Parent Master:** [M7 — Synthesis & Revision](../masters/synthesis-revision.md)
-- **Specialization:** Consolidates a completed topic folder into an exam-ready Layer B/C review guide.
-- **Key Overrides:**
-  1. **Zero invented claims:** Draw definitions, formulas, and comparisons exclusively from verified vault notes (`[[Note Title]]`) or verified ARRIE evidence.
-  2. **Structure:** (a) Big-picture concept progression, (b) Consolidated formula & condition sheet with links to full derivations, (c) Side-by-side method comparison table, (d) High-yield traps & diagnostic checklist.
-  3. **Anti-duplication:** Summarize into retrieval cues—never copy full paragraphs verbatim from Layer A notes (`validate_revision_integrity`).
+- **Purpose:** Synthesize an existing multi-note vault topic folder into one unified Layer B/C exam-review guide without copying paragraphs verbatim.
+- **Parent Master:** [M7 — Synthesis & Revision](../masters/synthesis-revision.md) (`revision_pack`)
+- **Activation Trigger:** `"revision pack"`, `"exam revision"`, `"consolidate topic notes"` via `/scribe-notes`.
+- **Inputs & Dependencies:** Existing vault index (`scripts/vault_index.py`), sibling notes (`[[Note Title]]`), verified ARRIE receipts; [revision-and-linking.md](../../workflows/revision/revision-and-linking.md).
+- **Execution Overrides:**
+  1. Draw definitions, formulas, and comparisons exclusively from verified vault notes (`[[Note Title]]`) or verified sources—never invent external claims.
+  2. Organize into: (a) Big-picture conceptual progression, (b) Consolidated formula & condition sheet linked to full derivations, (c) Side-by-side method comparison table, (d) High-yield traps & diagnostic checklist.
+  3. Compress into retrieval cues; link back to Layer A headings rather than pasting verbatim prose.
+- **Failure Handling & Validation:** Enforce formula assumption retention (`validate_revision_integrity`) and wikilink resolution (`scripts/verify_vault_notes.py`).

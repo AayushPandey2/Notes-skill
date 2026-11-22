@@ -1,9 +1,29 @@
-# Math gates
+# Mathematical Reasoning & Formula-Fold Gates
 
-Use [per-concept mathematical depth](../references/workflows/notes-creation/adaptive-engine.md#selection-and-depth) (`M0–M5`) for deep-study notes, [the canonical teaching core](teaching_core.md) (`M01–M14` deconstruction, atomic `> [!example]- Understand this formula step by step` fold directly beneath every displayed `$$...$$`, and `Step 1–12` worked solving), and route-level `math_level` (`0–2`) for source-study and compact routes. Rendering follows [authoring rules](authoring_rules.md#rendering).
+## Purpose
 
-Good: prepare the reader with purpose and intuition before showing the formula, attach one immediately following folded callout (`render_formula_component`) explaining pronunciation, every symbol/object type/shape compatibility (`(1×3)(3×1)` vs invalid `(3×1)(3×1)`), expanded sums, meaningful declared numerical arithmetic, interpretation, assumptions, and misconceptions, then verify via `validate_formula_folds` + `verify_math_deconstruction` (`scriptorium/engines/mathematics.py`). Keep supporting arithmetic inline inside folds (never recursively nest display `$$` inside a formula fold). Bad: dump bare `$$...$$` formulas, use generic filler like `"substitute the values"` or `"this computes the result"`, convert complex display math into unreadable inline runs to evade checks, repeat formulas identically, or force irrelevant zero/tie/infinity tables.
+Ensure every mathematical expression across Scriptorium notes teaches meaning, dimensions, derivations, and numerical computation cleanly—never dropping opaque symbolic formulas onto beginners.
 
-Good: use asymmetric non-square dimensions and distinct values to reveal transpose/axis errors; name the chain rule, penalty matrix mask ($I_0$ vs intercept centering), or objective scaling convention explicitly. Distinguish mathematical derivation from prediction, inference, optimization, and code execution.
+## Activation Trigger & Inputs
 
-Deep notes use [per-concept depth](../references/workflows/notes-creation/adaptive-engine.md#selection-and-depth) (`M0–M5`), without domain ceilings or display-equation quotas. Source and video notes label independently added derivations separately from presenter/source statements while preserving the same atomic formula-fold contract.
+- **Activate when:** `math_depth >= 1`, knowledge type is `mathematical` or `scientific`, master is `M4`, or any displayed `$$...$$` block appears anywhere (main body, worked solutions, assessments, tables, or video/source notes; `T10`–`T11`, `MATH-01`–`MATH-10`).
+- **Inputs:** Concept objective, depth (`M0`–`M5` for deep notes; `math_level` `0`–`2` for source/compact routes), governing equations, symbol/unit/dimension specs, and concrete numerical fixtures.
+- **Dependencies:** `scriptorium/engines/mathematics.py` (`render_formula_component`, `validate_formula_folds`, `check_dimension_compatibility`, `build_worked_solution`, `verify_numerical_trace`), [shared/teaching_core.md](teaching_core.md), [adaptive-engine.md](../references/workflows/notes-creation/adaptive-engine.md#selection-and-depth).
+
+## Execution Rules — Atomic Formula + Fold Contract (`M01`–`M14`)
+
+1. **Prepare Before Display:** Orient the learner in plain language before any `$$...$$` block; never open a conceptual section with a naked equation or dump back-to-back equations without intervening explanation.
+2. **Mandatory Collapsible Walkthrough:** Place one native folded callout directly beneath **every** displayed `$$...$$` equation using the single canonical builder (`render_formula_component`):
+   - Heading: `> [!example]- Understand this formula step by step` (preceding narrative stays smooth when all folds are closed).
+   - Adaptive elements (`M01`–`M14`): Purpose → Spoken reading → Every symbol/subscript/operator → Object types, SI units, and explicit shape compatibility (`(m×k)(k×n)`) → Expanded operations → Evaluation order → Non-obvious derivation/chain-rule/mask/scaling reasoning & assumptions → Meaningful declared numerical calculation (zero `"substitute the values"` filler; use distinct non-square numbers exposing axis/order bugs) → Interpretation & conditions → Misconception check.
+3. **Anti-Recursive Nesting & Parity:** Keep supporting arithmetic inside formula folds inline (`$...$`); emit separate sibling formula+fold blocks for distinct derivation steps rather than nesting callouts recursively, bundling unrelated equations together, converting complex math into unreadable inline text, or forcing irrelevant constant/infinity filler tables.
+4. **Source Attribution:** Distinguish derivation steps present in a supplied source/video from independently added explanatory bridges.
+
+## Worked Application Protocol (`Step 1`–`12`)
+
+Solve every quantitative problem systematically: State Question & Objective → Method & Assumptions → Symbols & Units → Governing Formula + Fold → Declared Numerical Inputs → Explicit Intermediate Arithmetic → Final Result → Contextual Interpretation → Sanity Check (magnitude/sign/units/limits) → Common Mistakes → Pattern Generalization.
+
+## Failure Handling & Validation
+
+- **Failure Handling:** Flag and locally repair unprepared formulas (`MATH-DECON-01`), stacked equations (`MATH-DECON-02`), missing/nested folds, dimension mismatches, or unverified arithmetic before publication.
+- **Validation:** Run `validate_formula_folds`, `verify_math_deconstruction`, and `verify_numerical_trace` (`scriptorium/engines/mathematics.py`) alongside `scripts/validate_note.py` (`MATH-01`–`MATH-10`).

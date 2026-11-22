@@ -484,6 +484,402 @@ def _resolve_note_schema(
     return "generic"
 
 
+def _check_syllabus_boundary(
+    md_file: Path,
+    rel_file: str,
+    vault_root: Path,
+    index: dict[str, Any],
+    y_obj: dict[str, Any] | None,
+    schema: str,
+) -> list[dict[str, Any]]:
+    """Enforce locked 00-MOC syllabus allowlists on generated topic folders."""
+    syllabi = index.get("syllabi") or {}
+    rel_parts = {p.lower() for p in Path(rel_file).parts[:-1]}
+    specialized = bool(rel_parts & {"practice sets", "atomic notes", "cheatsheets", "comparison"}) or (
+        y_obj and y_obj.get("template") in ("practice", "atomic", "cheat-sheet", "comparison")
+    )
+    if (
+        not syllabi
+        or specialized
+        or schema in {"builtin_syllabus", "builtin_cheatsheet", "builtin_comparison"}
+        or md_file.name.upper().startswith("00-MOC-")
+    ):
+        return []
+
+    matched_contract = None
+    for cand_dir in (md_file.parent, md_file.parent.parent):
+        if _is_within_vault(vault_root, cand_dir):
+            cand_rel = cand_dir.relative_to(vault_root).as_posix()
+            if cand_rel in syllabi:
+                matched_contract = syllabi[cand_rel]
+                break
+    if matched_contract is None:
+        return []
+
+    allowed = matched_contract["allowed"]
+    fname_low = md_file.name.lower()
+    rel_low = rel_file.lower()
+    if fname_low in allowed or rel_low in allowed or any(rel_low.endswith("/" + a) for a in allowed):
+        return []
+    return [
+        {
+            "file": rel_file,
+            "line": 1,
+            "level": "ERROR",
+            "code": "OUT_OF_SCOPE_NOTE_CREATED",
+            "message": (
+                f"Note '{md_file.name}' is outside the locked syllabus allowlist "
+                f"in '{matched_contract['moc_rel']}'."
+            ),
+        }
+    ]
+
+
+def _check_frontmatter_rules(
+    rel_file: str,
+    y_obj: dict[str, Any],
+    yaml_lines: list[str] | None,
+    ids_to_files: dict[str, list[Path]],
+    pre_tags: dict[str, str],
+    schema: str,
+    is_builtin: bool,
+    manifest: dict[str, Any] | None,
+) -> list[dict[str, Any]]:
+    """Validate YAML metadata keys, LaTeX leakage, tag similarity, and duplicate IDs."""
+    findings: list[dict[str, Any]] = []
+    if is_builtin:
+        for lno, key_path, val in _scan_yaml_for_latex(y_obj, yaml_lines or []):
+            findings.append({
+                "file": rel_file,
+                "line": lno,
+                "level": "ERROR",
+                "code": "LATEX_IN_FRONTMATTER",
+                "message": f"Raw LaTeX or '$' in YAML '{key_path}': {val[:60]!r}",
+            })
+    if "review_log" in y_obj and not isinstance(y_obj["review_log"], list):
+        findings.append({
+            "file": rel_file,
+            "line": 2,
+            "level": "ERROR",
+            "code": "INVALID_REVIEW_LOG",
+            "message": "Optional 'review_log' YAML property must be a list.",
+        })
+    fid = y_obj.get("id")
+    if isinstance(fid, str) and len(ids_to_files.get(fid.strip(), [])) > 1:
+        findings.append({
+            "file": rel_file,
+            "line": 2,
+            "level": "ERROR",
+            "code": "DUPLICATE_YAML_ID",
+            "message": f"Duplicate YAML id '{fid}' across vault.",
+        })
+
+    raw_tags = y_obj.get("tags") or y_obj.get("tag") or []
+    if isinstance(raw_tags, str):
+        raw_tags = [x.strip() for x in re.split(r"[,\s]+", raw_tags) if x.strip()]
+    if isinstance(raw_tags, list):
+        for t in raw_tags:
+            ts = str(t).strip().lstrip("#")
+            if not ts:
+                continue
+            nk = _normalize_tag_key(ts)
+            if nk in pre_tags and pre_tags[nk] != ts:
+                findings.append({
+                    "file": rel_file,
+                    "line": 2,
+                    "level": "WARNING",
+                    "code": "NEAR_DUPLICATE_TAG",
+                    "message": f"Tag '{ts}' closely resembles existing vault tag '{pre_tags[nk]}'.",
+                })
+
+    if schema == "builtin_deep":
+        for req in MANDATORY_TOPIC_KEYS:
+            if req not in y_obj:
+                findings.append({
+                    "file": rel_file,
+                    "line": 2,
+                    "level": "ERROR",
+                    "code": "MISSING_YAML_KEY",
+                    "message": f"Missing mandatory key '{req}' in YAML frontmatter.",
+                })
+        raw_title = y_obj.get("title")
+        if isinstance(raw_title, str) and raw_title.strip():
+            clean_alias = _clean_title_for_alias(raw_title)
+            existing_a = [str(a).strip().lower() for a in (y_obj.get("aliases") or [])]
+            if clean_alias and clean_alias.lower() not in existing_a:
+                findings.append({
+                    "file": rel_file,
+                    "line": 2,
+                    "level": "ERROR",
+                    "code": "MISSING_TITLE_ALIAS",
+                    "message": f"Clean title '{clean_alias}' missing from YAML aliases.",
+                })
+
+    if schema == "custom" and manifest and manifest.get("template_frontmatter_keys"):
+        for req in manifest["template_frontmatter_keys"]:
+            if req not in y_obj:
+                findings.append({
+                    "file": rel_file,
+                    "line": 2,
+                    "level": "WARNING",
+                    "code": "CUSTOM_TEMPLATE_KEY_MISSING",
+                    "message": f"Key '{req}' from selected custom template is absent.",
+                })
+    return findings
+
+
+def _check_inline_math_delimiters(
+    raw_line: str,
+    stripped: str,
+    rel_file: str,
+    line_no: int,
+) -> list[dict[str, Any]]:
+    """Audit inline '$' pairing, leading/trailing spaces, and unescaped table pipes."""
+    findings: list[dict[str, Any]] = []
+    masked = re.sub(r"(?<!\\)\$\$(.+?)(?<!\\)\$\$", " ", raw_line)
+    masked = re.sub(r"`[^`]*`", " ", masked)
+    is_table = stripped.startswith("|") and stripped.endswith("|") and len(stripped) > 1
+    i = 0
+    n = len(masked)
+    while i < n:
+        if masked[i] == "\\" and i + 1 < n:
+            i += 2
+            continue
+        if masked[i] != "$":
+            i += 1
+            continue
+        j = i + 1
+        close_pos = -1
+        while j < n:
+            if masked[j] == "\\" and j + 1 < n:
+                j += 2
+                continue
+            if masked[j] == "$":
+                close_pos = j
+                break
+            j += 1
+        if close_pos == -1:
+            findings.append({
+                "file": rel_file,
+                "line": line_no,
+                "level": "ERROR",
+                "code": "DELIMITER_IMBALANCE",
+                "message": f"Unbalanced inline '$' delimiter on line {line_no}.",
+            })
+            break
+        expr = masked[i + 1 : close_pos]
+        if expr and (expr[0].isspace() or expr[-1].isspace()):
+            findings.append({
+                "file": rel_file,
+                "line": line_no,
+                "level": "ERROR",
+                "code": "INLINE_MATH_WHITESPACE",
+                "message": f"Whitespace immediately inside inline math delimiters: '${expr}$'.",
+            })
+        if is_table and re.search(r"(?<!\\)\|", expr):
+            findings.append({
+                "file": rel_file,
+                "line": line_no,
+                "level": "ERROR",
+                "code": "TABLE_RAW_PIPE_IN_MATH",
+                "message": f"Unescaped '|' inside inline math in Markdown table: '${expr}$'.",
+            })
+        i = close_pos + 1
+    return findings
+
+
+def _check_wikilink_line(
+    raw_line: str,
+    rel_file: str,
+    line_no: int,
+    md_file: Path,
+    vault_root: Path,
+    index: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """Verify wikilinks, image embeds, heading anchors, and block anchors on one line."""
+    findings: list[dict[str, Any]] = []
+    stems = index["stems"]
+    titles = index["titles"]
+    aliases = index["aliases"]
+    ids_map = index["ids_map"]
+    anchors_by_file = index["anchors_by_file"]
+    blocks_by_file = index["blocks_by_file"]
+
+    for m_wl in re.finditer(r"\[\[([^\]]+)\]\]", raw_line):
+        inner = m_wl.group(1)
+        target_full = re.split(r"\\?\|", inner, maxsplit=1)[0].strip()
+        if Path(target_full).suffix.lower() in {".png", ".jpg", ".jpeg", ".svg", ".gif", ".webp", ".pdf"}:
+            asset = target_full.lstrip("/")
+            if not ((vault_root / asset).is_file() or any(vault_root.rglob(Path(asset).name))):
+                findings.append({
+                    "file": rel_file,
+                    "line": line_no,
+                    "level": "ERROR",
+                    "code": "UNRESOLVED_IMAGE_EMBED",
+                    "message": f"Unresolved image embed '![[{inner}]]'.",
+                })
+            continue
+        if "#" in target_full:
+            target_part, anchor_part = (p.strip() for p in target_full.split("#", 1))
+        else:
+            target_part, anchor_part = target_full, ""
+
+        if not target_part:
+            resolved_target = md_file
+        else:
+            key = target_part.lower()
+            key_stem = Path(target_part).stem.lower()
+            resolved_target = (
+                stems.get(key)
+                or stems.get(key_stem)
+                or aliases.get(key)
+                or titles.get(key)
+                or ids_map.get(key)
+            )
+            if resolved_target is None:
+                findings.append({
+                    "file": rel_file,
+                    "line": line_no,
+                    "level": "ERROR",
+                    "code": "UNRESOLVED_WIKILINK",
+                    "message": f"Unresolved wikilink '[[{inner}]]'.",
+                })
+                continue
+
+        if anchor_part:
+            if anchor_part.startswith("^"):
+                blk_id = anchor_part[1:].lower()
+                if blk_id not in blocks_by_file.get(resolved_target, set()):
+                    findings.append({
+                        "file": rel_file,
+                        "line": line_no,
+                        "level": "ERROR",
+                        "code": "UNRESOLVED_BLOCK_ANCHOR",
+                        "message": f"Block anchor '#^{anchor_part[1:]}' not found in '{resolved_target.name}'.",
+                    })
+            else:
+                valid_anchors = anchors_by_file.get(resolved_target, set())
+                a_norm = anchor_part.lower()
+                a_slug = _heading_slug(anchor_part)
+                if (
+                    a_norm not in valid_anchors
+                    and a_slug not in valid_anchors
+                    and re.sub(r"-{2,}", "-", a_slug) not in valid_anchors
+                ):
+                    findings.append({
+                        "file": rel_file,
+                        "line": line_no,
+                        "level": "ERROR",
+                        "code": "UNRESOLVED_HEADING_ANCHOR",
+                        "message": f"Heading anchor '#{anchor_part}' not found in '{resolved_target.name}'.",
+                    })
+    return findings
+
+
+def _check_builtin_schema_rules(
+    rel_file: str,
+    schema: str,
+    body_text: str,
+    body_idx: int,
+    has_key_equations: bool,
+    s5_line: int,
+    s5_impl_count: int,
+    q_blocks: list[tuple[int, str, bool]],
+) -> list[dict[str, Any]]:
+    """Apply product-level callout, section, and Q&A checks for built-in schemas."""
+    findings: list[dict[str, Any]] = []
+    if schema == "builtin_cheatsheet":
+        if "> [!abstract] Core Formula Snapshot" not in body_text:
+            findings.append({
+                "file": rel_file,
+                "line": body_idx + 1,
+                "level": "ERROR",
+                "code": "MISSING_CHEATSHEET_SNAPSHOT",
+                "message": "Cheatsheet missing '> [!abstract] Core Formula Snapshot' callout.",
+            })
+        for sec_h in ("## 1. Definition", "## 2. Theory", "## 3. Formulas", "## 4. Glossary", "## 5. Extra Knowledge"):
+            if sec_h not in body_text:
+                findings.append({
+                    "file": rel_file,
+                    "line": body_idx + 1,
+                    "level": "ERROR",
+                    "code": "MISSING_CHEATSHEET_SECTION",
+                    "message": f"Cheatsheet missing required section '{sec_h}'.",
+                })
+        for sec_h, lo, hi in (("## 1. Definition", 25, 30), ("## 2. Theory", 50, 60)):
+            m_sec = re.search(rf"^{re.escape(sec_h)}\s*\n(.*?)(?=\n<!--|\n## |\Z)", body_text, flags=re.MULTILINE | re.DOTALL)
+            if m_sec:
+                wc = len(re.findall(r"\S+", m_sec.group(1).strip()))
+                if not (lo <= wc <= hi):
+                    findings.append({
+                        "file": rel_file,
+                        "line": body_idx + 1,
+                        "level": "WARNING",
+                        "code": "CHEATSHEET_WORD_BUDGET",
+                        "message": f"{sec_h} word count is {wc} (target {lo}-{hi} words).",
+                    })
+
+    if schema == "builtin_comparison":
+        if "> [!abstract] Core Trade-Off Verdict" not in body_text:
+            findings.append({
+                "file": rel_file,
+                "line": body_idx + 1,
+                "level": "ERROR",
+                "code": "MISSING_COMPARISON_VERDICT",
+                "message": "Comparison note missing '> [!abstract] Core Trade-Off Verdict' callout.",
+            })
+        for sec_h in (
+            "## 1. Conceptual & Mathematical Divergence",
+            "## 2. Multi-Dimensional Trade-Off Matrix",
+            "## 3. Failure Regimes & Edge-Case Behavior",
+            "## 4. Decision Rules & Transfer Scenarios",
+        ):
+            if sec_h not in body_text:
+                findings.append({
+                    "file": rel_file,
+                    "line": body_idx + 1,
+                    "level": "ERROR",
+                    "code": "MISSING_COMPARISON_SECTION",
+                    "message": f"Comparison note missing required section '{sec_h}'.",
+                })
+
+    if schema == "builtin_deep":
+        if not has_key_equations:
+            findings.append({
+                "file": rel_file,
+                "line": body_idx + 1,
+                "level": "ERROR",
+                "code": "MISSING_KEY_EQUATIONS_CALLOUT",
+                "message": "Missing required '> [!abstract] Key Equations' callout.",
+            })
+        if s5_impl_count > 3:
+            findings.append({
+                "file": rel_file,
+                "line": s5_line or body_idx + 1,
+                "level": "WARNING",
+                "code": "TOO_MANY_SECTION_5_IMPLEMENTATIONS",
+                "message": f"Section 5 should include at most 3 distinct implementations; found {s5_impl_count}.",
+            })
+        if len(q_blocks) < 5:
+            findings.append({
+                "file": rel_file,
+                "line": body_idx + 1,
+                "level": "ERROR",
+                "code": "INSUFFICIENT_SECTION_6_QA",
+                "message": f"Section 6 requires at least 5 #### Question blocks; found {len(q_blocks)}.",
+            })
+        for q_line, q_title, has_c in q_blocks:
+            if not has_c:
+                findings.append({
+                    "file": rel_file,
+                    "line": q_line,
+                    "level": "ERROR",
+                    "code": "MISSING_ANSWER_CALLOUT",
+                    "message": f"Question '{q_title}' missing '> [!example]-' answer callout.",
+                })
+    return findings
+
+
 def validate_file(
     md_file: Path,
     vault_root: Path,
@@ -495,14 +891,6 @@ def validate_file(
     rel_file = md_file.relative_to(vault_root).as_posix()
     text = md_file.read_text(encoding="utf-8")
     lines = text.splitlines()
-
-    stems = index["stems"]
-    titles = index["titles"]
-    aliases = index["aliases"]
-    ids_map = index["ids_map"]
-    ids_to_files = index["ids_to_files"]
-    anchors_by_file = index["anchors_by_file"]
-    blocks_by_file = index["blocks_by_file"]
 
     pre_tags: dict[str, str] = dict(index["existing_tags"])
     if manifest and isinstance(manifest.get("pre_generation_tags"), list):
@@ -516,53 +904,17 @@ def validate_file(
             if isinstance(loaded, dict):
                 y_obj = loaded
         except yaml.YAMLError as exc:
-            findings.append(
-                {
-                    "file": rel_file,
-                    "line": 2,
-                    "level": "ERROR",
-                    "code": "YAML_SYNTAX_ERROR",
-                    "message": f"Invalid YAML frontmatter: {exc}",
-                }
-            )
+            findings.append({
+                "file": rel_file,
+                "line": 2,
+                "level": "ERROR",
+                "code": "YAML_SYNTAX_ERROR",
+                "message": f"Invalid YAML frontmatter: {exc}",
+            })
 
     schema = _resolve_note_schema(rel_file, y_obj, manifest)
+    findings.extend(_check_syllabus_boundary(md_file, rel_file, vault_root, index, y_obj, schema))
 
-    # Enforce locked syllabus allowlist if a 00-MOC syllabus governs this folder
-    syllabi = index.get("syllabi") or {}
-    rel_parts = {p.lower() for p in Path(rel_file).parts[:-1]}
-    specialized = bool(rel_parts & {"practice sets", "atomic notes", "cheatsheets", "comparison"}) or (
-        y_obj and y_obj.get("template") in ("practice", "atomic", "cheat-sheet", "comparison")
-    )
-    if syllabi and not specialized and schema not in {"builtin_syllabus", "builtin_cheatsheet", "builtin_comparison"}:
-        if not md_file.name.upper().startswith("00-MOC-"):
-            cur_dir = md_file.parent
-            matched_contract = None
-            for cand_dir in (cur_dir, cur_dir.parent):
-                if _is_within_vault(vault_root, cand_dir):
-                    cand_rel = cand_dir.relative_to(vault_root).as_posix()
-                    if cand_rel in syllabi:
-                        matched_contract = syllabi[cand_rel]
-                        break
-            if matched_contract is not None:
-                allowed = matched_contract["allowed"]
-                fname_low = md_file.name.lower()
-                rel_low = rel_file.lower()
-                if fname_low not in allowed and rel_low not in allowed and not any(
-                    rel_low.endswith("/" + a) for a in allowed
-                ):
-                    findings.append(
-                        {
-                            "file": rel_file,
-                            "line": 1,
-                            "level": "ERROR",
-                            "code": "OUT_OF_SCOPE_NOTE_CREATED",
-                            "message": (
-                                f"Note '{md_file.name}' is outside the locked syllabus allowlist "
-                                f"in '{matched_contract['moc_rel']}'."
-                            ),
-                        }
-                    )
     if schema == "routed":
         from validate_note import validate_text
 
@@ -577,101 +929,11 @@ def validate_file(
     is_builtin = schema.startswith("builtin_")
 
     if y_obj is not None:
-        # Built-in schemas forbid raw LaTeX in YAML; custom templates allow literal LaTeX if template requires it
-        if is_builtin:
-            for lno, key_path, val in _scan_yaml_for_latex(y_obj, yaml_lines or []):
-                findings.append(
-                    {
-                        "file": rel_file,
-                        "line": lno,
-                        "level": "ERROR",
-                        "code": "LATEX_IN_FRONTMATTER",
-                        "message": f"Raw LaTeX or '$' in YAML '{key_path}': {val[:60]!r}",
-                    }
-                )
-        if "review_log" in y_obj and not isinstance(y_obj["review_log"], list):
-            findings.append(
-                {
-                    "file": rel_file,
-                    "line": 2,
-                    "level": "ERROR",
-                    "code": "INVALID_REVIEW_LOG",
-                    "message": "Optional 'review_log' YAML property must be a list.",
-                }
+        findings.extend(
+            _check_frontmatter_rules(
+                rel_file, y_obj, yaml_lines, index["ids_to_files"], pre_tags, schema, is_builtin, manifest
             )
-        fid = y_obj.get("id")
-        if isinstance(fid, str) and len(ids_to_files.get(fid.strip(), [])) > 1:
-            findings.append(
-                {
-                    "file": rel_file,
-                    "line": 2,
-                    "level": "ERROR",
-                    "code": "DUPLICATE_YAML_ID",
-                    "message": f"Duplicate YAML id '{fid}' across vault.",
-                }
-            )
-
-        # Near-duplicate tag warning against pre-generation tag snapshot
-        raw_tags = y_obj.get("tags") or y_obj.get("tag") or []
-        if isinstance(raw_tags, str):
-            raw_tags = [x.strip() for x in re.split(r"[,\s]+", raw_tags) if x.strip()]
-        if isinstance(raw_tags, list):
-            for t in raw_tags:
-                ts = str(t).strip().lstrip("#")
-                if not ts:
-                    continue
-                nk = _normalize_tag_key(ts)
-                if nk in pre_tags and pre_tags[nk] != ts:
-                    findings.append(
-                        {
-                            "file": rel_file,
-                            "line": 2,
-                            "level": "WARNING",
-                            "code": "NEAR_DUPLICATE_TAG",
-                            "message": f"Tag '{ts}' closely resembles existing vault tag '{pre_tags[nk]}'.",
-                        }
-                    )
-
-        if schema == "builtin_deep":
-            for req in MANDATORY_TOPIC_KEYS:
-                if req not in y_obj:
-                    findings.append(
-                        {
-                            "file": rel_file,
-                            "line": 2,
-                            "level": "ERROR",
-                            "code": "MISSING_YAML_KEY",
-                            "message": f"Missing mandatory key '{req}' in YAML frontmatter.",
-                        }
-                    )
-            raw_title = y_obj.get("title")
-            if isinstance(raw_title, str) and raw_title.strip():
-                clean_alias = _clean_title_for_alias(raw_title)
-                existing_a = [str(a).strip().lower() for a in (y_obj.get("aliases") or [])]
-                if clean_alias and clean_alias.lower() not in existing_a:
-                    findings.append(
-                        {
-                            "file": rel_file,
-                            "line": 2,
-                            "level": "ERROR",
-                            "code": "MISSING_TITLE_ALIAS",
-                            "message": f"Clean title '{clean_alias}' missing from YAML aliases.",
-                        }
-                    )
-
-        # Custom template expected frontmatter keys check if manifest provides schema
-        if schema == "custom" and manifest and manifest.get("template_frontmatter_keys"):
-            for req in manifest["template_frontmatter_keys"]:
-                if req not in y_obj:
-                    findings.append(
-                        {
-                            "file": rel_file,
-                            "line": 2,
-                            "level": "WARNING",
-                            "code": "CUSTOM_TEMPLATE_KEY_MISSING",
-                            "message": f"Key '{req}' from selected custom template is absent.",
-                        }
-                    )
+        )
 
     if schema == "builtin_deep" and isinstance(y_obj, dict):
         from scriptorium.engines._decision import audit_note_against_contract, check_slug_and_forward_links, resolve_decisions
@@ -686,7 +948,6 @@ def validate_file(
             topic_val,
             tags=[str(t) for t in tags_val],
         )
-        # Legacy vault scans lack the saved editorial decision for proof depth.
         contract["math_level"] = None
         for c_line, c_msg in audit_note_against_contract(body_text, contract):
             findings.append({
@@ -700,7 +961,7 @@ def validate_file(
             body_text,
             metadata=y_obj,
             target_filename=md_file.name,
-            existing_stems=set(stems.keys()),
+            existing_stems=set(index["stems"].keys()),
         ):
             findings.append({
                 "file": rel_file,
@@ -710,21 +971,11 @@ def validate_file(
                 "message": s_msg,
             })
 
-    in_fence = False
-    in_mermaid = False
-    in_display = False
-    display_start_line = 0
-    fence_char = ""
-    fence_len = 0
-    in_section_5 = False
-    s5_line = 0
-    s5_impl_count = 0
-    in_section_6 = False
-    has_key_equations = False
+    in_fence = in_mermaid = in_display = False
+    display_start_line = fence_len = s5_line = s5_impl_count = cur_q_line = 0
+    fence_char = cur_q_title = ""
+    in_section_5 = in_section_6 = has_key_equations = cur_q_callout = False
     q_blocks: list[tuple[int, str, bool]] = []
-    cur_q_line = 0
-    cur_q_title = ""
-    cur_q_callout = False
 
     for idx, raw_line in enumerate(lines):
         line_no = idx + 1
@@ -735,133 +986,40 @@ def validate_file(
             marker = m_fence.group(1)
             lang = m_fence.group(2).strip().lower()
             if not in_fence:
-                in_fence = True
-                in_mermaid = lang == "mermaid"
-                fence_char = marker[0]
-                fence_len = len(marker)
+                in_fence, in_mermaid, fence_char, fence_len = True, lang == "mermaid", marker[0], len(marker)
                 continue
             if marker[0] == fence_char and len(marker) >= fence_len and stripped[len(marker) :].strip() == "":
-                in_fence = False
-                in_mermaid = False
+                in_fence = in_mermaid = False
                 continue
         if in_fence:
             if in_mermaid and is_builtin and "$" in raw_line:
-                findings.append(
-                    {
-                        "file": rel_file,
-                        "line": line_no,
-                        "level": "ERROR",
-                        "code": "MERMAID_RAW_MATH_DELIMITER",
-                        "message": "Raw '$' inside Mermaid node label; use Unicode.",
-                    }
-                )
+                findings.append({
+                    "file": rel_file,
+                    "line": line_no,
+                    "level": "ERROR",
+                    "code": "MERMAID_RAW_MATH_DELIMITER",
+                    "message": "Raw '$' inside Mermaid node label; use Unicode.",
+                })
             continue
 
-        # Unresolved dynamic template expressions
         if UNRESOLVED_TPL_RE.search(raw_line):
-            findings.append(
-                {
-                    "file": rel_file,
-                    "line": line_no,
-                    "level": "ERROR",
-                    "code": "UNRESOLVED_TEMPLATE_SYNTAX",
-                    "message": "Unresolved dynamic template placeholder (<% ... %> or {{...}}) in note.",
-                }
-            )
+            findings.append({
+                "file": rel_file,
+                "line": line_no,
+                "level": "ERROR",
+                "code": "UNRESOLVED_TEMPLATE_SYNTAX",
+                "message": "Unresolved dynamic template placeholder (<% ... %> or {{...}}) in note.",
+            })
+        if m_ph := PLACEHOLDER_RE.search(raw_line):
+            findings.append({
+                "file": rel_file,
+                "line": line_no,
+                "level": "ERROR",
+                "code": "PLACEHOLDER_TOKEN",
+                "message": f"Unresolved placeholder token '{m_ph.group(0)}'.",
+            })
 
-        # Placeholder tokens
-        m_ph = PLACEHOLDER_RE.search(raw_line)
-        if m_ph:
-            findings.append(
-                {
-                    "file": rel_file,
-                    "line": line_no,
-                    "level": "ERROR",
-                    "code": "PLACEHOLDER_TOKEN",
-                    "message": f"Unresolved placeholder token '{m_ph.group(0)}'.",
-                }
-            )
-
-        # Wikilinks across YAML + Body (handling ![[...]] asset embeds separately from note links)
-        for m_wl in re.finditer(r"\[\[([^\]]+)\]\]", raw_line):
-            inner = m_wl.group(1)
-            target_full = re.split(r"\\?\|", inner, maxsplit=1)[0].strip()
-            if Path(target_full).suffix.lower() in {".png", ".jpg", ".jpeg", ".svg", ".gif", ".webp", ".pdf"}:
-                asset = target_full.lstrip("/")
-                if not ((vault_root / asset).is_file() or any(vault_root.rglob(Path(asset).name))):
-                    findings.append(
-                        {
-                            "file": rel_file,
-                            "line": line_no,
-                            "level": "ERROR",
-                            "code": "UNRESOLVED_IMAGE_EMBED",
-                            "message": f"Unresolved image embed '![[{inner}]]'.",
-                        }
-                    )
-                continue
-            if "#" in target_full:
-                target_part, anchor_part = target_full.split("#", 1)
-                target_part = target_part.strip()
-                anchor_part = anchor_part.strip()
-            else:
-                target_part, anchor_part = target_full, ""
-
-            if not target_part:
-                resolved_target = md_file
-            else:
-                key = target_part.lower()
-                key_stem = Path(target_part).stem.lower()
-                resolved_target = (
-                    stems.get(key)
-                    or stems.get(key_stem)
-                    or aliases.get(key)
-                    or titles.get(key)
-                    or ids_map.get(key)
-                )
-                if resolved_target is None:
-                    findings.append(
-                        {
-                            "file": rel_file,
-                            "line": line_no,
-                            "level": "ERROR",
-                            "code": "UNRESOLVED_WIKILINK",
-                            "message": f"Unresolved wikilink '[[{inner}]]'.",
-                        }
-                    )
-                    continue
-
-            if anchor_part:
-                if anchor_part.startswith("^"):
-                    blk_id = anchor_part[1:].lower()
-                    if blk_id not in blocks_by_file.get(resolved_target, set()):
-                        findings.append(
-                            {
-                                "file": rel_file,
-                                "line": line_no,
-                                "level": "ERROR",
-                                "code": "UNRESOLVED_BLOCK_ANCHOR",
-                                "message": f"Block anchor '#^{anchor_part[1:]}' not found in '{resolved_target.name}'.",
-                            }
-                        )
-                else:
-                    valid_anchors = anchors_by_file.get(resolved_target, set())
-                    a_norm = anchor_part.lower()
-                    a_slug = _heading_slug(anchor_part)
-                    if (
-                        a_norm not in valid_anchors
-                        and a_slug not in valid_anchors
-                        and re.sub(r"-{2,}", "-", a_slug) not in valid_anchors
-                    ):
-                        findings.append(
-                            {
-                                "file": rel_file,
-                                "line": line_no,
-                                "level": "ERROR",
-                                "code": "UNRESOLVED_HEADING_ANCHOR",
-                                "message": f"Heading anchor '#{anchor_part}' not found in '{resolved_target.name}'.",
-                            }
-                        )
-
+        findings.extend(_check_wikilink_line(raw_line, rel_file, line_no, md_file, vault_root, index))
         if idx < body_idx:
             continue
 
@@ -870,11 +1028,9 @@ def validate_file(
 
         if schema == "builtin_deep":
             if re.match(r"^##\s+5\.\s+", stripped):
-                in_section_5 = True
-                s5_line = line_no
+                in_section_5, s5_line = True, line_no
             elif in_section_5 and re.match(r"^##\s+\d+\.\s+", stripped):
                 in_section_5 = False
-
             if in_section_5 and re.match(r"^###\s+Implementation\b", stripped, flags=re.IGNORECASE):
                 s5_impl_count += 1
 
@@ -885,241 +1041,68 @@ def validate_file(
                     q_blocks.append((cur_q_line, cur_q_title, cur_q_callout))
                     cur_q_line = 0
                 in_section_6 = False
-
             if in_section_6:
                 if re.match(r"^####\s+", stripped):
                     if cur_q_line:
                         q_blocks.append((cur_q_line, cur_q_title, cur_q_callout))
-                    cur_q_line = line_no
-                    cur_q_title = stripped
-                    cur_q_callout = False
+                    cur_q_line, cur_q_title, cur_q_callout = line_no, stripped, False
                 elif cur_q_line and stripped.startswith("> [!example]-"):
                     cur_q_callout = True
-
                 if BANNED_S6_LABELS_RE.search(raw_line):
-                    findings.append(
-                        {
-                            "file": rel_file,
-                            "line": line_no,
-                            "level": "ERROR",
-                            "code": "FORBIDDEN_SECTION_6_STRUCTURE",
-                            "message": f"Forbidden Section 6 scaffolding label on line {line_no}.",
-                        }
-                    )
-
-            if re.search(r"</?(?:details|summary)\b", raw_line, flags=re.IGNORECASE):
-                findings.append(
-                    {
+                    findings.append({
                         "file": rel_file,
                         "line": line_no,
                         "level": "ERROR",
                         "code": "FORBIDDEN_SECTION_6_STRUCTURE",
-                        "message": "Forbidden raw <details>/<summary> HTML tag.",
-                    }
-                )
-
-        if re.match(r"^\s*[\"'`]+#{1,6}[\"'`]+", raw_line):
-            findings.append(
-                {
+                        "message": f"Forbidden Section 6 scaffolding label on line {line_no}.",
+                    })
+            if re.search(r"</?(?:details|summary)\b", raw_line, flags=re.IGNORECASE):
+                findings.append({
                     "file": rel_file,
                     "line": line_no,
                     "level": "ERROR",
-                    "code": "QUOTED_HEADING_MARKER",
-                    "message": "Heading hashes wrapped in quotation marks.",
-                }
-            )
+                    "code": "FORBIDDEN_SECTION_6_STRUCTURE",
+                    "message": "Forbidden raw <details>/<summary> HTML tag.",
+                })
+
+        if re.match(r"^\s*[\"'`]+#{1,6}[\"'`]+", raw_line):
+            findings.append({
+                "file": rel_file,
+                "line": line_no,
+                "level": "ERROR",
+                "code": "QUOTED_HEADING_MARKER",
+                "message": "Heading hashes wrapped in quotation marks.",
+            })
 
         body_check = re.sub(r"^\s*>\s?", "", raw_line).strip()
         if body_check == "$$":
             if in_display:
                 in_display = False
             else:
-                in_display = True
-                display_start_line = line_no
+                in_display, display_start_line = True, line_no
             continue
         if in_display:
             continue
 
-        masked = re.sub(r"(?<!\\)\$\$(.+?)(?<!\\)\$\$", " ", raw_line)
-        masked = re.sub(r"`[^`]*`", " ", masked)
-        is_table = stripped.startswith("|") and stripped.endswith("|") and len(stripped) > 1
-
-        i = 0
-        n = len(masked)
-        while i < n:
-            if masked[i] == "\\" and i + 1 < n:
-                i += 2
-                continue
-            if masked[i] == "$":
-                j = i + 1
-                close_pos = -1
-                while j < n:
-                    if masked[j] == "\\" and j + 1 < n:
-                        j += 2
-                        continue
-                    if masked[j] == "$":
-                        close_pos = j
-                        break
-                    j += 1
-                if close_pos == -1:
-                    findings.append(
-                        {
-                            "file": rel_file,
-                            "line": line_no,
-                            "level": "ERROR",
-                            "code": "DELIMITER_IMBALANCE",
-                            "message": f"Unbalanced inline '$' delimiter on line {line_no}.",
-                        }
-                    )
-                    break
-                expr = masked[i + 1 : close_pos]
-                if expr and (expr[0].isspace() or expr[-1].isspace()):
-                    findings.append(
-                        {
-                            "file": rel_file,
-                            "line": line_no,
-                            "level": "ERROR",
-                            "code": "INLINE_MATH_WHITESPACE",
-                            "message": f"Whitespace immediately inside inline math delimiters: '${expr}$'.",
-                        }
-                    )
-                if is_table and re.search(r"(?<!\\)\|", expr):
-                    findings.append(
-                        {
-                            "file": rel_file,
-                            "line": line_no,
-                            "level": "ERROR",
-                            "code": "TABLE_RAW_PIPE_IN_MATH",
-                            "message": f"Unescaped '|' inside inline math in Markdown table: '${expr}$'.",
-                        }
-                    )
-                i = close_pos + 1
-                continue
-            i += 1
+        findings.extend(_check_inline_math_delimiters(raw_line, stripped, rel_file, line_no))
 
     if in_section_6 and cur_q_line:
         q_blocks.append((cur_q_line, cur_q_title, cur_q_callout))
-
     if in_display:
-        findings.append(
-            {
-                "file": rel_file,
-                "line": display_start_line,
-                "level": "ERROR",
-                "code": "DELIMITER_IMBALANCE",
-                "message": "Unclosed display math '$$' block.",
-            }
-        )
+        findings.append({
+            "file": rel_file,
+            "line": display_start_line,
+            "level": "ERROR",
+            "code": "DELIMITER_IMBALANCE",
+            "message": "Unclosed display math '$$' block.",
+        })
 
     body_text = "\n".join(lines[body_idx:])
-    if schema == "builtin_cheatsheet":
-        if "> [!abstract] Core Formula Snapshot" not in body_text:
-            findings.append(
-                {
-                    "file": rel_file,
-                    "line": body_idx + 1,
-                    "level": "ERROR",
-                    "code": "MISSING_CHEATSHEET_SNAPSHOT",
-                    "message": "Cheatsheet missing '> [!abstract] Core Formula Snapshot' callout.",
-                }
-            )
-        for sec_h in ("## 1. Definition", "## 2. Theory", "## 3. Formulas", "## 4. Glossary", "## 5. Extra Knowledge"):
-            if sec_h not in body_text:
-                findings.append(
-                    {
-                        "file": rel_file,
-                        "line": body_idx + 1,
-                        "level": "ERROR",
-                        "code": "MISSING_CHEATSHEET_SECTION",
-                        "message": f"Cheatsheet missing required section '{sec_h}'.",
-                    }
-                )
-        for sec_h, lo, hi in (("## 1. Definition", 25, 30), ("## 2. Theory", 50, 60)):
-            m_sec = re.search(rf"^{re.escape(sec_h)}\s*\n(.*?)(?=\n<!--|\n## |\Z)", body_text, flags=re.MULTILINE | re.DOTALL)
-            if m_sec:
-                wc = len(re.findall(r"\S+", m_sec.group(1).strip()))
-                if not (lo <= wc <= hi):
-                    findings.append(
-                        {
-                            "file": rel_file,
-                            "line": body_idx + 1,
-                            "level": "WARNING",
-                            "code": "CHEATSHEET_WORD_BUDGET",
-                            "message": f"{sec_h} word count is {wc} (target {lo}-{hi} words).",
-                        }
-                    )
-
-    if schema == "builtin_comparison":
-        if "> [!abstract] Core Trade-Off Verdict" not in body_text:
-            findings.append(
-                {
-                    "file": rel_file,
-                    "line": body_idx + 1,
-                    "level": "ERROR",
-                    "code": "MISSING_COMPARISON_VERDICT",
-                    "message": "Comparison note missing '> [!abstract] Core Trade-Off Verdict' callout.",
-                }
-            )
-        for sec_h in (
-            "## 1. Conceptual & Mathematical Divergence",
-            "## 2. Multi-Dimensional Trade-Off Matrix",
-            "## 3. Failure Regimes & Edge-Case Behavior",
-            "## 4. Decision Rules & Transfer Scenarios",
-        ):
-            if sec_h not in body_text:
-                findings.append(
-                    {
-                        "file": rel_file,
-                        "line": body_idx + 1,
-                        "level": "ERROR",
-                        "code": "MISSING_COMPARISON_SECTION",
-                        "message": f"Comparison note missing required section '{sec_h}'.",
-                    }
-                )
-
-    if schema == "builtin_deep":
-        if not has_key_equations:
-            findings.append(
-                {
-                    "file": rel_file,
-                    "line": body_idx + 1,
-                    "level": "ERROR",
-                    "code": "MISSING_KEY_EQUATIONS_CALLOUT",
-                    "message": "Missing required '> [!abstract] Key Equations' callout.",
-                }
-            )
-        if s5_impl_count > 3:
-            findings.append(
-                {
-                    "file": rel_file,
-                    "line": s5_line or body_idx + 1,
-                    "level": "WARNING",
-                    "code": "TOO_MANY_SECTION_5_IMPLEMENTATIONS",
-                    "message": f"Section 5 should include at most 3 distinct implementations; found {s5_impl_count}.",
-                }
-            )
-        if len(q_blocks) < 5:
-            findings.append(
-                {
-                    "file": rel_file,
-                    "line": body_idx + 1,
-                    "level": "ERROR",
-                    "code": "INSUFFICIENT_SECTION_6_QA",
-                    "message": f"Section 6 requires at least 5 #### Question blocks; found {len(q_blocks)}.",
-                }
-            )
-        for q_line, q_title, has_c in q_blocks:
-            if not has_c:
-                findings.append(
-                    {
-                        "file": rel_file,
-                        "line": q_line,
-                        "level": "ERROR",
-                        "code": "MISSING_ANSWER_CALLOUT",
-                        "message": f"Question '{q_title}' missing '> [!example]-' answer callout.",
-                    }
-                )
-
+    findings.extend(
+        _check_builtin_schema_rules(
+            rel_file, schema, body_text, body_idx, has_key_equations, s5_line, s5_impl_count, q_blocks
+        )
+    )
     return findings
 
 
