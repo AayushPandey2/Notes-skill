@@ -21,7 +21,7 @@ Dispatch each active public command or `/scribe-notes` internal branch cleanly�
 ### Command C — Comprehensive Learning (`M1` Deep Notes)
 - **Trigger:** Broad or first-principles deep-learning requests routed to `M1`.
 - **Inputs & Dependencies:** [adaptive-engine.md](adaptive-engine.md), [research-engine.md](../research/research-engine.md), [teaching_core.md](../../../shared/teaching_core.md), [math_gates.md](../../../shared/math_gates.md).
-- **Execution & Review:** Plan concepts and depth, inspect evidence using [research guidance](../research/research-engine.md), explain each displayed equation, work examples step by step, acquire only needed inspected visuals, and review the actual Markdown with [the manual checklist](../validation/verification-checklist.md). Keep internal planning labels out of the note.
+- **Execution & Review:** Plan concepts and depth, inspect evidence using [research guidance](../research/research-engine.md), explain each displayed equation, work examples step by step, complete needed visuals through [representations.md](representations.md), create each new content note's [companion lab](experimental-lab.md), and review saved Markdown and assets with [the manual checklist](../validation/verification-checklist.md). Keep internal planning labels out of the note.
 
 ### Command D — Rapid Reference (`M3` Quick Reference / Variants)
 - **Trigger:** Cheat sheet, formula sheet, syntax table, or CLI command reference requests.
@@ -47,8 +47,8 @@ Dispatch each active public command or `/scribe-notes` internal branch cleanly�
 
 ### Command I — Multi-Note Curriculum (`M2` Collection Series)
 - **Trigger:** Structured multi-note curriculum without single-unit lock.
-- **Execution:** Decompose into `4–10+` numbered child notes (minimum `3` + MOC index), preserve source terminology/order, label additions, and apply `shared/math_gates.md` (`M01`–`M14`) whenever quantitative material appears.
+- **Execution:** Decompose into `4–10+` numbered child notes (minimum `3` + MOC index), preserve source terminology/order, label additions, create [one lab per new content note](experimental-lab.md) but none for the MOC, and apply `shared/math_gates.md` (`M01`–`M14`) whenever quantitative material appears.
 
 ### Command V — Unified Video & Lecture Ingestion (`/scribe-ytnote` -> `/scribe-notes`)
 - **Trigger:** Video URL, lecture recording, transcript, or candidate video frames (`/scribe-ytnote`, `/scribe-ytnotes`, `/scribe-ytlecture`).
-- **Execution & Validation:** State tool/media availability honestly, declare explicit `access_state` (`full_multimodal`, `transcript_plus_frames`, `transcript_only`, `media_only`, `metadata_only`), segment transcript chronologically, keep only clear inspected stills under `assets/scriptorium/<slug>/`, explain prose + formulas via `shared/teaching_core.md` + `shared/math_gates.md`, and degrade honestly on unavailable transcripts/frames.
+- **Execution & Validation:** State tool/media availability honestly, declare explicit `access_state` (`full_multimodal`, `transcript_plus_frames`, `transcript_only`, `media_only`, `metadata_only`), segment transcript chronologically, save and inspect usable stills through [representations.md](representations.md), create a [companion lab](experimental-lab.md) for each new content note, explain prose + formulas via `shared/teaching_core.md` + `shared/math_gates.md`, and degrade honestly on unavailable transcripts/frames.

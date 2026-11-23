@@ -49,7 +49,7 @@ Validation: [verification-checklist.md](../../workflows/validation/verification-
 <!-- optional: visual -->
 ## [OPTIONAL] How do pointers, windows, or structures evolve step by step? (Visual Diagram / State-Transition Walkthrough)
 
-<!-- Include when spatial structure beats table trace; use Mermaid or verified external assets under assets/scriptorium/<slug>/ (never programmatic SVGs). -->
+<!-- Include when spatial structure beats table trace; follow representations.md for native Mermaid or completed local raster embeds. -->
 
 - **Context / Analysis / Check:** Structure traced, inflection transitions ([representations.md](../../workflows/notes-creation/representations.md)), and invariant parity check.
 

@@ -9,7 +9,7 @@
 - **Execution Procedure:**
   1. Explain the research question and evaluation metric intuition before reporting metric numbers.
   2. Pair every metric claim with dataset, protocol, baseline, and variance/uncertainty metadata.
-  3. Inspect and explain downloaded research figures (`T06`–`T09`) rather than fabricating plots; flag absent ablations explicitly.
+  3. Complete needed research figures through [representations.md](../../workflows/notes-creation/representations.md) and explain them; flag absent ablations explicitly.
 - **Dependencies:** [research-engine.md](../../workflows/research/research-engine.md), [source-fidelity.md](../../workflows/research/source-fidelity.md), [teaching_core.md](../../../shared/teaching_core.md).
 - **Review:** Check each numerical claim against its source location, dataset, metric, protocol, and uncertainty; label illustrative values.
 - **Failure Behavior:** Reject unmatched benchmark comparisons, missing uncertainty classifications, or unlabeled synthetic data presented as empirical findings.

@@ -9,7 +9,7 @@
 - **Execution Procedure:**
   1. Motivate the observable phenomenon before introducing physical laws or differential equations.
   2. Define every physical constant and variable with SI or domain units and review dimensional balance in the actual equation.
-  3. Acquire real schematic/plot assets via web image research (`T06`–`T09`, zero programmatic SVG generation) and walk the reader through labels and physical meaning.
+  3. For needed figures, complete the source, download, local-inspection, embed, and saved-note checks in [representations.md](../../workflows/notes-creation/representations.md); walk the reader through labels and physical meaning.
   4. Separate observed measurements and uncertainties from idealized assumptions.
 - **Dependencies:** [math_gates.md](../../../shared/math_gates.md), [representations.md](../../workflows/notes-creation/representations.md).
 - **Review:** Check unit balance, conditions, figure labels, and claim citations in the actual note; disclose calculations not independently verified.

@@ -20,7 +20,7 @@ Never inject a `deepstudy-master` tag or internal review/routing logs into YAML;
 
 - **Math & Callouts:** Use native `$...$` and separate-line `$$` delimiters without code inside math. Quote every line of a callout, including internal blank lines (`>`), because an unquoted blank ends the block.
 - **Tables & Mermaid:** Escape literal pipes inside Markdown tables (`[[Target\|Label]]` and inside inline math). Quote Mermaid node labels and use Unicode symbols (`A["x → y"]`, never `A["$x$"]`).
-- **Visuals:** Follow [representations.md](../references/workflows/notes-creation/representations.md) when a visual helps. Inspect any external image with an available viewer, check its rights, store it locally, and explain what it shows. Use native Mermaid for simple flows and state changes.
+- **Visuals:** Follow [representations.md](../references/workflows/notes-creation/representations.md): preserve native Mermaid for suitable relationships, and count an external raster image only after source check, local download and inspection, embed, and saved-note target check.
 - **Publish Hygiene:** Use `**Confusion** :: question` on its own line for Dataview only when genuine. Strip all scaffold comments, `<!-- SECTION: S* -->` markers, authoring notes, unused optional sections, and placeholder rows; renumber remaining headings and repair internal anchors.
 
 ## Evidence

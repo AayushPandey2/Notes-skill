@@ -10,6 +10,7 @@ Load only guidance relevant to the current request. Start with [router.md](../ro
 | Supplied source or disputed claim | [research](workflows/research/research-engine.md), [source fidelity](workflows/research/source-fidelity.md) |
 | Video or an interactive command | [command playbooks](workflows/notes-creation/command-playbooks.md) |
 | Figure, diagram, or video still | [visual guidance](workflows/notes-creation/representations.md) |
+| New content note's companion investigation | [experimental lab and six domain templates](workflows/notes-creation/experimental-lab.md) |
 | Existing note revision | [revision and linking](workflows/revision/revision-and-linking.md) |
 | Before saving notes | [manual verification](workflows/validation/verification-checklist.md) |
 
