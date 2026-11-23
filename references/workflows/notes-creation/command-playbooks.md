@@ -1,39 +1,54 @@
-# Command playbooks
+# Command Playbooks
 
-Load only the active branch. All note-creation playbooks (`B`, `C`, `D`, `E`, `F`, `H`, `I`) execute internally through the universal `/scribe-notes` interactive workflow (`scripts/scribe.py notes`), while `A` (`/scribe-doubt`) and `G` (`/scribe-quiz`) remain standalone non-note utilities. All writing uses [router workflow](../../../router.md#plan-and-publish) and [shared contracts](../../../shared/authoring_rules.md).
+## Purpose & Progressive Loading Rule
 
-## Command A
+Dispatch each active public command or `/scribe-notes` internal branch cleanly—load only the single active branch alongside [router](../../../router.md) and [authoring_rules.md](../../../shared/authoring_rules.md).
 
-Doubt: index and extract only relevant existing notes. Answer with exact wikilink citations. No external research or edits; state missing coverage.
+## Playbook Matrix (Trigger -> Inputs -> Execution -> Output & Validation)
 
-## Command B
+### Command A
 
-Expand: inspect coverage with `vault_index.py --discover` and read `detected_workflow` (`"deepnotes"`, `"notes"`, `"mixed"`, or `null`). Match the existing workflow: if `"notes"`, bypass full ARRIE multi-source research in favor of bounded direct lookup and author missing subtopics with `studynotes` (never `deepstudy-master`); if `"deepnotes"` (or `null` when starting deep coverage), use the [ARRIE research engine](../research/research-engine.md) and `deepstudy-master` (`--template deepstudy-master`); if `"mixed"`, match the dominant existing subtopic style or ask the user. Identify gaps within requested scope, update the syllabus allowlist before new files, preserve existing notes, and run `patch_links` with `--dry-run` for metadata-only edits.
+- **Role:** `/scribe-doubt` — Read-only vault Q&A.
+- **Trigger:** `/scribe-doubt <question>` or read-only lookup on existing vault notes.
+- **Inputs & Dependencies:** Vault path, question, native file search/read tools.
+- **Execution & Output:** Discover and read only matching vault notes; answer with exact `[[Note Title]]` / `[[Note Title#Heading]]` citations.
+- **Failure / Constraints:** Perform zero edits and zero external web research; state missing vault coverage honestly.
 
-## Command C
+### Command B — Expand Existing Vault Topic (`/scribe-notes`)
+- **Trigger:** Adding subtopics or filling gaps inside an existing vault topic directory.
+- **Execution:** Inspect existing vault notes directly, match dominant style (or clarify when mixed), update the index/syllabus allowlist first, reconcile existing notes non-destructively, and verify metadata without overwriting custom YAML.
 
-Deepnotes: build the [instructional plan](adaptive-engine.md) from objectives, reader baseline and inspected sources, run concept-specific evidence planning and verification via the [ARRIE research engine](../research/research-engine.md) (`scriptorium/engines/research.py (`scripts/scribe.py research`)`), then persist through `plan_notes.py start`. Select subtemplates and module depths per concept; code needs a learning purpose and a justified primary tool. Compose with the M1 master from the compact `research_package`, curate further-learning resources separately via [resource-recommendations.md](../research/resource-recommendations.md) when helpful, complete pending notes, and apply source coverage, evidence/citation, runtime, structural and semantic checks. Never emit internal module headings or legacy markers.
+### Command C — Comprehensive Learning (`M1` Deep Notes)
+- **Trigger:** Broad or first-principles deep-learning requests routed to `M1`.
+- **Inputs & Dependencies:** [adaptive-engine.md](adaptive-engine.md), [research-engine.md](../research/research-engine.md), [teaching_core.md](../../../shared/teaching_core.md), [math_gates.md](../../../shared/math_gates.md).
+- **Execution & Review:** Plan concepts and depth, inspect evidence using [research guidance](../research/research-engine.md), explain each displayed equation, work examples step by step, complete needed visuals through [representations.md](representations.md), create each new content note's [companion lab](experimental-lab.md), and review saved Markdown and assets with [the manual checklist](../validation/verification-checklist.md). Keep internal planning labels out of the note.
 
-## Command D
+### Command D — Rapid Reference (`M3` Quick Reference / Variants)
+- **Trigger:** Cheat sheet, formula sheet, syntax table, or CLI command reference requests.
+- **Execution:** Distill verified definitions, formulas with units/conditions, choice cues, and high-signal pitfalls from sibling notes or bounded authorities while enforcing `M3` density caps.
 
-Distill: extract relevant definitions, equations, choices and pitfalls from existing notes. Route to cheat-sheet; retain its compact limit. New research only for an explicit evidence gap.
+### Command E — Source-Faithful Ingestion (`M2` / `lecture_order`)
+- **Trigger:** PDF, slide deck, URL, or raw source notes with sequence/terminology preservation.
+- **Execution & Failure:** Extract source segments directly, verify uncertain formulas against source passages, preserve sequence via local `[Educational Addition — Prerequisite Bridge]` inserts instead of silent reordering, and label inaccessible spans explicitly without inventing missing pages.
 
-## Command E
+### Command F — Trade-Off Comparison (`M7` / `comparison_guide`)
+- **Trigger:** Explicit multi-option comparison or "X vs Y" request.
+- **Execution:** Resolve targets, explain causal divergences before tables under equivalent workloads/assumptions, prove trade-offs on a shared example, and state crossover regimes.
 
-Ingest: extract the actual PDF/URL/raw notes; inspect equations against source where extraction is uncertain. Avoid duplicate coverage and destructive overwrites. Label inaccessible passages; never invent missing pages.
+### Command G
 
-## Command F
+- **Role:** `/scribe-quiz` — Interactive active recall.
+- **Trigger:** `/scribe-quiz <topic/note>` over existing vault notes (`M6`).
+- **Execution & Constraints:** Ask **one question per turn**, wait for the user reply, and grade strictly against existing note content. Save weak spots in an existing body review section only when the learner asks for a saved record; never add YAML keys for quiz state.
 
-Compare: resolve both existing notes, compare shared axes fairly, publish to comparison and echo the exact generated Markdown in chat. Clarify ambiguous note identity before writing.
+### Command H — Atomic Card (`M3` / `atomic_card`)
+- **Trigger:** Single-concept transcludable note (`<150` words).
+- **Execution:** Fetch a source only when the active source policy permits it. Write one focused definition, micro-example, and boundary sentence; resolve existing wikilinks and keep pending concepts as plain text.
 
-## Command G
+### Command I — Multi-Note Curriculum (`M2` Collection Series)
+- **Trigger:** Structured multi-note curriculum without single-unit lock.
+- **Execution:** Decompose into `4–10+` numbered child notes (minimum `3` + MOC index), preserve source terminology/order, label additions, create [one lab per new content note](experimental-lab.md) but none for the MOC, and apply `shared/math_gates.md` (`M01`–`M14`) whenever quantitative material appears.
 
-Quiz: ask one question, wait, grade against the note, then continue. Record weak spots in a body review field using patch_links; do not introduce YAML keys or load templates.
-
-## Command H
-
-Atomic: one bounded direct search/fetch, then atomic template. Resolve existing vault links; future concepts stay plain text.
-
-## Command I
-
-Study notes: decompose any topic without an explicit single-unit source lock into multiple focused, numbered subtopic files (`4–10+` notes, minimum `3`, plus `00-MOC-<topic>.md`) using `studynotes` for core outputs — never collapse a whole topic into one file. Preserve supplied source terminology, scope and emphasis; label supplemental examples. A topic without sources permits bounded authoritative lookup; an inaccessible specified source requires a gap notice. Do not switch to deep-study aliases. Math depth follows the actual source/outcome, not the subject label alone.
+### Command V — Unified Video & Lecture Ingestion (`/scribe-ytnote` -> `/scribe-notes`)
+- **Trigger:** Video URL, lecture recording, transcript, or candidate video frames (`/scribe-ytnote`, `/scribe-ytnotes`, `/scribe-ytlecture`).
+- **Execution & Validation:** State tool/media availability honestly, declare explicit `access_state` (`full_multimodal`, `transcript_plus_frames`, `transcript_only`, `media_only`, `metadata_only`), segment transcript chronologically, save and inspect usable stills through [representations.md](representations.md), create a [companion lab](experimental-lab.md) for each new content note, explain prose + formulas via `shared/teaching_core.md` + `shared/math_gates.md`, and degrade honestly on unavailable transcripts/frames.

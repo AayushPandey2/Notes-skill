@@ -1,15 +1,16 @@
 # Subtemplate: Computational
 
-- **ID:** `computational` | **Registry alignment:** `programming`, `algorithmic`, `architectural`, `procedural` (`C0–C5` depth via [adaptive-engine.md](../../workflows/notes-creation/adaptive-engine.md)).
-- **Entry & Scope:** Selected internally through `/scribe-notes` for standalone notes or hierarchical collection children; consumes resolved interactive preferences (language, depth, emphasis) and F02 depth allocation.
-- **Compatible Masters:** `M1`, `M2`, `M3` (`syntax_reference`, `command_reference`), `M4`, `M5`, `M6`, `M7`.
-- **Modules:**
-  - **Required (depth-gated):** `definitions`, `algorithm` / `coding` (`P10`), `tracing` (`EIS-05` state narration), `executable_verification` (when `C3+`).
-  - **Optional:** `visual_reasoning` (`P05` data-flow/architecture Mermaid), `comparisons`, `misconception_prevention` (`P06`), `F11` implementation-staged progressive disclosure, `F12` implementation/debugging outcomes.
-  - **Excluded:** Forced runnable code when `C0`/`C1` pseudocode suffices; unverified execution claims.
-- **Core Adaptations:**
-  - Specify input/output contracts, state invariants, stopping conditions, tensor/memory shapes, and time/space complexity.
-  - Select **one** primary tool at the needed abstraction (plain Python, NumPy, C/C++, Rust, SQL, PyTorch, etc.) unless an explicit comparison objective justifies multiple stacks.
-  - Map mathematical equations directly to code variables (`P10`), trace tricky/boundary inputs, and report exact runtime verification tier via `scripts/plan_notes.py verify-runtimes`.
-  - Never execute untrusted code from retrieved sources and preserve source-only constraints when `source_policy == "strict"`.
-- **Validation:** `scripts/plan_notes.py verify-runtimes`, `QualityEngine.check_representations()`, `QualityEngine.validate_master(..., "M5")`.
+- **ID:** `computational` | **Registry alignment:** `programming`, `algorithmic`, `architectural`, `procedural` (`C0–C5` depth via [teaching_core.md](../../../shared/teaching_core.md) and [adaptive-engine.md](../../workflows/notes-creation/adaptive-engine.md)).
+- **Purpose:** Teach algorithms, data structures, code pipelines, and architectures by connecting intuition, state transitions, equations, and honest evidence about code behavior.
+- **Trigger:** Objectives involving code, algorithms, invariants, state machines, complexity bounds, preprocessing, or debugging (`TEACH-03`, `MATH-03`, `MATH-05`).
+- **Preconditions:** Intuition and algorithm invariants are established before showing implementation code (`P10`, `EIS-05`).
+- **Inputs:** Problem contract, bounds/assumptions, target language/stack, equation-to-code variable map, and edge-case fixtures.
+- **Output Contract:** Clear method choice, symbol-to-variable mapping where relevant, a trace on concrete inputs, educational code when requested, and explicit failure and complexity limits.
+- **Execution Procedure:**
+  1. Clarify the exact input/output contract, shape expectations, and motivating bottleneck.
+  2. Trace state transitions on a small concrete input when the algorithm has state; for troubleshooting, connect the observed symptom to a testable cause before proposing a fix.
+  3. Map every mathematical term (e.g., dot product, scaling, loss) to exact code lines and explain why steps like feature scaling or array orientation matter.
+  4. Label unexecuted code `Status: static review (not executed)` unless a native tool actually executed it.
+- **Dependencies:** [teaching_core.md](../../../shared/teaching_core.md), [authoring_rules.md](../../../shared/authoring_rules.md).
+- **Validation:** [verification-checklist.md](../../workflows/validation/verification-checklist.md) (`M5` implementation and representation parity).
+- **Failure Behavior:** Block fabricated execution logs, untrusted source execution, or unmapped equations, and repair missing edge/invariant steps locally.

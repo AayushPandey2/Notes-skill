@@ -1,14 +1,10 @@
 ---
 name: scribe-setfolder
-description: "Set the target Obsidian notes folder path in ~/.scriptorium-config.json so all generated notes are saved there. Usage: /scribe-setfolder <folder path>"
+description: Set or inspect the default Obsidian vault and notes folder used by Scriptorium. Use for /scribe-setfolder or a request to change where Scriptorium writes notes.
 ---
 
 # `/scribe-setfolder`
 
-Resolve the Scriptorium base directory (`../scriptorium/`, `~/.gemini/config/skills/scriptorium/`, `~/.claude/skills/scriptorium/`, or `~/.codex/skills/scriptorium/`) and run:
+Input: a folder path or a request to inspect the current setting. Locate the vault root using its `.obsidian/` directory; if there is no such directory, ask which folder is the vault before saving. Confirm the selected notes folder is inside that vault, reject `..` and links that escape it, and use native file tools to read or update `~/.scriptorium-config.json` directly. Store `vault_path`, vault-relative `notes_folder`, and resolved `notes_path`; preserve unrelated settings.
 
-```sh
-python3 <skill_dir>/scripts/plan_notes.py setfolder "$ARGUMENTS"
-```
-
-Report the saved `vault_path`, `notes_folder`, and `notes_path` from `~/.scriptorium-config.json`.
+Output: the saved or current paths, and whether the folder exists. Create a missing folder only when the user has authorized its creation. This command changes destination configuration, not learning notes, and creates no helper programs.

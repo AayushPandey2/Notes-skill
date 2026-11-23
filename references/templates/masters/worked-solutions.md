@@ -3,14 +3,14 @@ Master ID: M4 (worked_solutions / route: worked-solutions).
 Primary intent: worked_problem_solving — problem-centered step-by-step solutions with method selection, intermediate calculations, and verification.
 Activation signals: "solve these problems", "worked solutions", "show every step/calculation", "solved examples", "explain how to solve".
 Non-activation: "Teach me concept X with examples" -> M1 or M2; "Quiz me without answers" -> M6; "Implement a codebase" -> M5.
-Contracts: [router](../../../router.md), [authoring rules](../../../shared/authoring_rules.md), [math gates](../../../shared/math_gates.md), [pedagogical-intelligence](../../workflows/notes-creation/pedagogical-intelligence.md).
+Contracts: [teaching core](../../../shared/teaching_core.md), [router](../../../router.md), [authoring rules](../../../shared/authoring_rules.md), [math gates](../../../shared/math_gates.md), [pedagogical-intelligence](../../workflows/notes-creation/pedagogical-intelligence.md).
 Strip this block before emission.
 -->
 
 # M4 — Worked Problems & Step-by-Step Solutions
 
 - **Header Block**: 5-key YAML frontmatter + `# <nn>. <Topic> — Worked Problems & Solutions`.
-- **Core Rule**: Organize around **problems and their solution procedures**, never long textbook chapter prose. Every intermediate algebraic, algorithmic, or logical step must be justified and verified.
+- **Core Rule**: Organize around **problems and their Step 1–12 solution procedures** ([math_gates.md](../../../shared/math_gates.md): Question -> Method & Assumptions -> Symbols & Dimensions -> Formula -> Substitute Inputs -> Intermediate Arithmetic -> Final Answer -> Contextual Interpretation -> Sanity Check -> Common Mistakes -> Generalization), never long textbook chapter prose or bare final numbers. Every intermediate step must be explicitly justified and checked.
 
 ## 1. Problem Set Scope, Governing Tools & Method Selection Map
 
@@ -30,7 +30,7 @@ For each problem (`### Problem <k>: <Short Title>`), include the needed logical 
 ## 3. Synthesis of Solution Patterns & Pitfalls
 
 - Concise summary of how to recognize which method applies on unseen variations, linking back to full conceptual notes (`M1`/`M2`) where available.
-- **Verification Integrity**: Recalculate every numerical step (`scriptorium/engines/pedagogy.py (`scripts/scribe.py pedagogy`)`); under `strict` source mode, distinguish source problems from added practice variations.
+- **Verification Integrity**: Recalculate every numerical step carefully; under `strict` source mode, distinguish source problems from added practice variations.
 
 See [authoring rules](../../../shared/authoring_rules.md), [math gates](../../../shared/math_gates.md), and [footer contract](../../../shared/footer_widgets.md).
 - **Template Contract (`M4` / `worked-solutions`):** Lead with problem-solving structure, show every consequential intermediate step, verify every final answer independently, and preserve all theorem hypotheses.

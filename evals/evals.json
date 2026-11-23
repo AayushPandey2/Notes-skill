@@ -1,0 +1,82 @@
+{
+  "skill_name": "scriptorium",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "/scribe-notes Explain Gradient Descent and Ridge Regression for beginners with every equation explained step by step and a visual intuition plot.",
+      "expected_output": "Routes to M1 without scripts, explains equations for the intended learner, and uses an inspected, attributed local visual when a suitable one is available; otherwise reports the visual gap honestly.",
+      "files": [],
+      "expectations": [
+        "Routes through /scribe-notes to master M1 (deep-notes) with no pre-generation knowledge quiz and zero generated scripts",
+        "Introduces plain-language motivation and intuition before displayed equations",
+        "Every display math $$...$$ block is immediately followed by '> [!note]- 📐 Understand this formula'",
+        "Uses only visually inspected local images with checked rights and attribution, or reports why a suitable image was unavailable"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "/scribe-ytnote Build structured study notes from this lecture video with timestamps, equations, and clearest whiteboard frames: https://www.youtube.com/watch?v=aircAruvnKk",
+      "expected_output": "Uses the unified /scribe-notes video workflow, reports explicit access_state honestly, segments timestamped transcript blocks, keeps only clear inspected stills locally under assets/scriptorium/<slug>/ when accessible, and places collapsible formula folds directly beneath displayed math.",
+      "files": [],
+      "expectations": [
+        "Uses unified video workflow inside /scribe-notes without creating a parallel generator or helper script",
+        "Records explicit video access_state honestly",
+        "Attaches '> [!note]- 📐 Understand this formula' directly under displayed equations"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "/scribe-notes Create a compact formula sheet for Classical Thermodynamics equations with variable units and applicability conditions.",
+      "expected_output": "Selective context loads only M3 quick-reference + formula-sheet variant + math_gates without loading unrelated M1-M7 specs, producing dense equation blocks with symbols, SI units, and applicability conditions.",
+      "files": [],
+      "expectations": [
+        "Routes to master M3 with variant 'formula_sheet'",
+        "Selective context omits unrelated M1/M5/M6 master templates",
+        "Includes explicit units and applicability conditions for every listed equation"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "/scribe-notes Create notes on this transformer PDF strictly from the supplied source without external lookup.",
+      "expected_output": "Routes to master M2 (study-notes) preserving strict source_policy='strict', keeps supplied terminology and sequence intact with inline local prerequisite bridges if needed, and labels any unsupported passage explicitly rather than fetching external material.",
+      "files": [],
+      "expectations": [
+        "Preserves source_policy='strict' without overriding source constraints during routing",
+        "Routes to M2 (study-notes) preserving source order and terminology",
+        "Marks missing/inaccessible details transparently rather than inventing external facts"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "/scribe-doubt Based only on my existing Transformers vault notes, why do we scale dot-product attention by sqrt(d_k)?",
+      "expected_output": "Executes read-only lookup across existing vault notes, answers directly from retrieved content with exact [[Note Title#Heading]] wikilink citations, performs zero file edits, and skips note-creation templates.",
+      "files": [],
+      "expectations": [
+        "Routes to /scribe-doubt Command A strictly read-only",
+        "Cites exact [[Note Title]] / [[Note Title#Heading]] wikilinks from existing vault notes",
+        "Performs zero file writes or external web searches"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "/scribe-quiz Quiz me on my Logistic Regression vault notes one question at a time.",
+      "expected_output": "Launches interactive active-recall session under M6/Command G, asks one question and waits for learner response before grading against the vault note, and leaves vault files unchanged unless the learner asks to save weak spots.",
+      "files": [],
+      "expectations": [
+        "Presents exactly one question per turn and waits for user reply",
+        "Grades strictly against existing vault note claims",
+        "Keeps YAML frontmatter clean without adding extra custom quiz keys"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "/scribe-setfolder Physics/Quantum Mechanics",
+      "expected_output": "Persists configured vault_path and notes_folder in ~/.scriptorium-config.json directly and reports the resolved notes_path.",
+      "files": [],
+      "expectations": [
+        "Updates ~/.scriptorium-config.json directly without creating a helper script",
+        "Reports saved vault_path, notes_folder, and notes_path from ~/.scriptorium-config.json"
+      ]
+    }
+  ]
+}

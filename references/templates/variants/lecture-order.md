@@ -1,8 +1,11 @@
 # Variant: Lecture / Source-Order Study Notes
 
-- **Parent Master:** [M2 — Structured Study Notes](../masters/study-notes.md)
-- **Specialization:** Preserves the exact teaching progression of a supplied chapter, lecture transcript, slide deck, video, article, or documentation sequence without imposing classroom/teacher framing.
-- **Key Overrides:**
-  1. **Interleaved example preservation:** When the source introduces `Concept A -> Example A -> Concept B -> Example B`, keep each example immediately attached to its concept inside Section 2 rather than grouping all definitions first and all examples later.
-  2. **Local prerequisite bridges:** If the source uses a prerequisite before defining it, insert a concise labeled `[Educational Addition — Prerequisite Bridge]` right before use rather than reordering the source's sections.
-  3. **Source-faithful emphasis:** Match the source's terminology, locator anchors (page, heading, or timestamp), and scope boundaries (`source-fidelity.md`).
+- **Purpose:** Preserve the exact teaching sequence, terminology, and example interleaving of a lecture, video, PDF, or chapter without artificial reorganization.
+- **Parent Master:** [M2 — Structured Study Notes](../masters/study-notes.md) (`lecture_order`)
+- **Activation Trigger:** Supplied lecture, PDF, slide deck, video (`/scribe-ytnotes` / `/scribe-ytlecture`), or `"preserve order"` / `"study notes"` via `/scribe-notes`.
+- **Inputs & Dependencies:** Verified source segments, locators (page/heading/timestamp), candidate video frames if applicable; [source-fidelity.md](../../workflows/research/source-fidelity.md), [math_gates.md](../../../shared/math_gates.md).
+- **Execution Overrides:**
+  1. Interleave examples right beside the concept they demonstrate in Section 2 rather than hoisting all examples into a later summary section.
+  2. Insert labeled `[Educational Addition — Prerequisite Bridge]` micro-explanations inline right before dependent notation instead of silently reordering sections.
+  3. Attach locator anchors (pages, sections, timestamps) and `[UNVERIFIED]` / gap markers cleanly whenever source segments are inaccessible.
+- **Failure Handling & Validation:** Reject unattributed section reordering or invented missing source pages ([source-fidelity.md](../../workflows/research/source-fidelity.md)).

@@ -2,15 +2,15 @@
 id: "moc-<topic-slug>"
 aliases: ["<Topic Title> — Syllabus & Learning Graph", "<Topic Title> Syllabus", "<Topic Title> MOC"]
 topic: "<Topic Title>"
-tags: [<base-domain-kebab>, <master-topic-kebab>, <topic-kebab>, moc]
-nexttopics: ["[[01-<subtopic-1-slug>]]"]
+tags: ["domain/<domain-slug>", "subject/<subject-slug>", "topic/<topic-slug>"]
+nexttopics: ["[[01 - <Subtopic 1>]]"]
 ---
 
 # <Topic Title> — Syllabus & Learning Graph
 
 <!-- AUTHORING CONTRACT:
-- Use the [adaptive instructional engine](adaptive-engine.md), [ARRIE research engine](../research/research-engine.md), and [authoring rules](../../../shared/authoring_rules.md) before selecting subtopics.
-- Write this file FIRST before any 01-... note is created.
+- Use [adaptive planning](adaptive-engine.md), [research guidance](../research/research-engine.md), and [authoring rules](../../../shared/authoring_rules.md) before selecting subtopics.
+- Write this file FIRST before any `01 - <Title>.md` note is created.
 - Nothing outside `allowed_subtopics` may be created during a `/scribe-notes` collection or expansion run.
 - Tangential concepts must be handled with a 2-sentence inline recap + [[link]] (if in vault) or plain text—never a new .md file.
 -->
@@ -19,8 +19,8 @@ nexttopics: ["[[01-<subtopic-1-slug>]]"]
 <!-- Keep the scope and allowlist. Include out-of-scope entries when they prevent a plausible tangent. Match the saved plan. -->
 - **Core Learning Objective:** <!-- 1–2 sentences defining the exact start-to-end boundary of <Topic Title>. -->
 - **In-Scope Subtopics (Strict Allowlist):**
-  1. `01-<subtopic-1-slug>.md` — <!-- 1-line scope -->
-  2. `02-<subtopic-2-slug>.md` — <!-- 1-line scope -->
+  1. `01 - <Subtopic 1>.md` — <!-- 1-line scope -->
+  2. `02 - <Subtopic 2>.md` — <!-- 1-line scope -->
 - **Explicitly Out-of-Scope (Do-Not-Create Fence):**
   - **<Adjacent Topic 1>:** <!-- Why excluded; link target if it exists, else plain text. -->
   - **<Prerequisite Topic 2>:** <!-- Why excluded; 2-sentence recap rule applies. -->
@@ -58,5 +58,5 @@ flowchart TD
 
 | Order | Note | Layer | Prerequisites (`depends_on`) | Next | Status |
 |---|---|---|---|---|---|
-| 01 | [[01-<subtopic-1-slug>\|<Subtopic 1>]] | L1 Foundations | — | [[02-<subtopic-2-slug>\|<Subtopic 2>]] | planned |
-| 02 | [[02-<subtopic-2-slug>\|<Subtopic 2>]] | L2 Core | [[01-<subtopic-1-slug>\|<Subtopic 1>]] | — | planned |
+| 01 | [[01 - <Subtopic 1>\|<Subtopic 1>]] | L1 Foundations | — | [[02 - <Subtopic 2>\|<Subtopic 2>]] | planned |
+| 02 | [[02 - <Subtopic 2>\|<Subtopic 2>]] | L2 Core | [[01 - <Subtopic 1>\|<Subtopic 1>]] | — | planned |

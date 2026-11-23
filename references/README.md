@@ -1,18 +1,17 @@
-# Scriptorium Reference Library
+# Reference index
 
-Load only the branch needed for the active request (progressive loading):
+Load only guidance relevant to the current request. Start with [router.md](../router.md) for a note route and the selected master under `templates/masters/`.
 
-For comprehensive M1 publication, load [KCP composition integrity](contracts/composition-integrity.md)
-alongside the selected master. It owns audit-derived obligations and verification;
-the existing lifecycle and routing references remain applicable to other paths.
+| Need | Read |
+|---|---|
+| Ambiguous or combined output | [routing policy](routing/routing-policy.md), [master registry](routing/master-registry.yaml) |
+| Existing notes, paths, YAML, and tags | [destination gate](workflows/notes-creation/pre-gen-gate.md), [properties](metadata/properties-policy.md), [tags](metadata/tag-taxonomy.md) |
+| Broad topic collection | [adaptive planning](workflows/notes-creation/adaptive-engine.md), [composition](workflows/notes-creation/composition-contract.md) |
+| Supplied source or disputed claim | [research](workflows/research/research-engine.md), [source fidelity](workflows/research/source-fidelity.md) |
+| Video or an interactive command | [command playbooks](workflows/notes-creation/command-playbooks.md) |
+| Figure, diagram, or video still | [visual guidance](workflows/notes-creation/representations.md) |
+| New content note's companion investigation | [experimental lab and six domain templates](workflows/notes-creation/experimental-lab.md) |
+| Existing note revision | [revision and linking](workflows/revision/revision-and-linking.md) |
+| Before saving notes | [manual verification](workflows/validation/verification-checklist.md) |
 
-1. **Architecture (`architecture/`):** [architecture/system-overview.md](architecture/system-overview.md) & [architecture/template-module-catalog.md](architecture/template-module-catalog.md) — End-to-end architecture, Python 6-engine responsibility map, Knowledge Collection Plan (`KCP`, F02–F15), and Master–Variant–Subtemplate–Module usage catalog.
-2. **Routing (`routing/`):** [routing/README.md](routing/README.md) — `M1`–`M7` master registry and request routing policy.
-3. **Templates (`templates/`):** [templates/README.md](templates/README.md) — Seven canonical masters (`masters/`), specializations (`variants/`), subject adaptations (`subtemplates/`), and reusable modules (`modules/`).
-4. **Workflows (`workflows/`):**
-   - [workflows/research/README.md](workflows/research/README.md) — ARRIE research planning, source fidelity, evidence verification, and learning resources.
-   - [workflows/notes-creation/README.md](workflows/notes-creation/README.md) — Adaptive instructional engine, pedagogical intelligence (`P01–P11`), pre-generation gate, command playbooks, and syllabus contract.
-   - [workflows/revision/README.md](workflows/revision/README.md) — Multi-layer revision, synthesis, and Obsidian vault linking.
-   - [workflows/validation/README.md](workflows/validation/README.md) — Layered product, source, pedagogical, technical, and semantic verification.
-5. **Metadata (`metadata/`):** [metadata/README.md](metadata/README.md) — Mandatory Obsidian Properties policy, central tag taxonomy, and note naming.
-6. **Contracts (`contracts/`):** [contracts/README.md](contracts/README.md) — Schemas and migration notes.
+The [template catalog](architecture/template-module-catalog.md) maps masters, variants, and subtemplates; [module catalog](templates/modules/module-catalog.md) gives conditional teaching moves. Read one selected variant or subtemplate, not the full directories. [Architecture](architecture/system-overview.md) and [migration history](contracts/migration-notes.md) are maintenance context, not note-generation prerequisites.

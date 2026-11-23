@@ -1,15 +1,15 @@
 # Multi-Layer Revision, Knowledge Synthesis & Vault Linking
 
-Use this workflow when generating revision layers within `M1`/`M2` notes or standalone `M3`/`M7` revision artifacts.
+## Purpose & Activation Trigger
 
-## 1. Three Complementary Layers
-- **Layer A (Authoritative Full Note):** Primary learning note (`M1` or `M2`) holding complete derivations, mechanisms, examples, and citations.
-- **Layer B (Structured Concept Review):** Core definitions, key equations with applicability conditions, critical distinctions, and point-of-need caveats pointing back to Layer A headings.
-- **Layer C (Rapid Revision):** Compact scannable retrieval cues or linked `M3`/`M7` artifact (`Cheatsheets/`, `comparison/`). Never repeat Layer A paragraphs verbatim and never introduce unsupported new claims.
+Govern condensed Layer B/C revision sections inside `M1`/`M2` notes, standalone `M3`/`M7` revision outputs (`revision_pack`, `concept_map`), and safe vault wikilink maintenance (`T02`, `T14`, `P08`, `P11`).
 
-## 2. Revision Integrity Rules
-1. Every condensed formula must preserve its domain/applicability assumptions (`pedagogical_engine.validate_revision_integrity`).
-2. Every internal anchor (`[[#Heading]]`) must resolve to an existing Layer A heading.
-3. Cross-topic links resolve through `vault_index.py` / `vault_graph.py`, distinguishing `existing_note`, `planned_note` (listed in YAML `nexttopics`), `external_resource`, and `unresolved_concept` (plain text).
-4. Avoid link inflation—link only concepts supporting prerequisite review, comparison, application, or revision.
-5. For safe frontmatter/link maintenance across an existing vault, use `scripts/patch_links.py --dry-run` first and verify acyclicity with `scripts/vault_graph.py --check-cycles`.
+## Decision Rules & Integrity Contract
+
+1. **Three Layers Without Duplication:** Keep **Layer A** (`M1`/`M2` main note) authoritative for complete derivations and citations; build **Layer B** (definitions, key formulas + conditions, critical distinctions) and **Layer C** (`M3`/`M7` rapid review) as structured retrieval cues pointing to Layer A headings rather than copying paragraphs or inventing claims.
+2. **Preserve Formula Hypotheses:** Review every condensed equation for its domain and applicability assumptions.
+3. **Link & Acyclicity Hygiene:** Distinguish verified `existing_note` wikilinks from `planned_note` (`nexttopics`), external URLs, and plain-text `unresolved_concept` items. Avoid link inflation—link only prerequisite, contrast, or revision anchors that resolve cleanly to existing or planned vault notes.
+
+## Execution & Review
+
+- Inspect target notes before updating wikilinks, verify DAG acyclicity manually, and review against [verification-checklist.md](../validation/verification-checklist.md).

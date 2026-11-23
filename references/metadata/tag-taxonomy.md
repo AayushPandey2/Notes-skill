@@ -1,6 +1,6 @@
 # Central Tag Taxonomy
 
-All generated notes use one consistent hierarchical Obsidian tag taxonomy managed by `scriptorium/engines/vault.py` (`generate_tags`, `normalize_tag`):
+All generated notes use one consistent hierarchical Obsidian tag taxonomy:
 
 ```text
 topic/<specific-topic-slug>
@@ -26,6 +26,6 @@ skill/<skill-slug>                       # optional, only when useful
 Comprehensive five-key notes require `topic/`, `subject/`, `domain/` roots from the
 same generator. Topic tags describe owned concepts; collection classification
 supplies the parent subject/domain. Legacy tags remain for compatibility.
-`validate_semantic_tags` rejects generic-only, malformed and duplicate tags; it
-cannot certify an author's classification. Unknown topics retain a general
-fallback until the author supplies an explicit reviewed classification.
+Review tags for generic-only, malformed, duplicate, or unrelated values; this
+cannot certify an author's classification. When the classification is unclear,
+ask or use only the narrower tags that the topic supports.

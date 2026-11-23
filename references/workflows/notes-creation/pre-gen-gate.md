@@ -1,14 +1,18 @@
-# Pre-Generation Resolution Gate (Mandatory Before Writing)
+# Pre-Generation Resolution Gate
 
-Before creating or expanding notes via `/scribe-notes`, execute this 8-step gate:
+## Purpose & Activation Trigger
 
-0. **Interactive Configuration & Scope Gate:** Run `python3 <skill_dir>/scripts/scribe.py notes start "<request>" --vault "<vault_path>"` to infer provisional template (`M1`–`M7`), variant, depth, scope tier (`S0`–`S5`), and organization (`single_note` vs. `hierarchical_collection`). Ask only unanswered configuration questions, confirm preferences (or honor `"use your recommendations"`), and preview substantial hierarchical collections before generating notes.
-1. **Resolve Vault:** Validate `[PATH_TO_OBSIDIAN_VAULT]` canonically (explicit argument, `SCRIPTORIUM_VAULT_PATH`, or `~/.scriptorium-config.json`; reject `..` traversal and escaping symlinks).
-2. **Refresh Index:** Run `python3 <skill_dir>/scripts/vault_index.py "<vault_path>" --discover --topic "<topic>"`.
-3. **Retrieve Existing Concepts:** Link existing coverage via `[[Exact Filename|Title]]` instead of duplicating; reconcile existing canonical notes non-destructively via `VaultEngine.update_note()` instead of overwriting user content.
-4. **Resolve Placement & Naming:** Prefer local folder conventions (`<Domain>/<Topic>.md` or `<Topic>/<Group>/<Child>.md` with a meaningful Parent Map of Content `note_type: index`); save standalone practice sets in `Practice Sets/`, atomic notes in `Atomic Notes/`, and cheatsheets in `Cheatsheets/` when requested; disambiguate duplicate basenames with vault-relative paths.
-5. **Resolve Template Precedence:** Honor named custom selectors and universal `/scribe-notes` dynamic routing across all seven canonical masters (`M1`–`M7`, loading templates exclusively from `references/templates/`). `/scribe-notes` supports every master including `M1` (`deep-notes.md`), `M2` (`study-notes.md`), `M3` (`quick-reference.md`), `M4` (`worked-solutions.md`), `M5` (`implementation-guide.md`), `M6` (`assessment.md`), and `M7` (`synthesis-revision.md`). Never execute Templater JS or save unresolved template expressions.
-6. **Resolve Tags & Obsidian Properties:** Generate valid Obsidian Properties (`topic`, `tags`, `master_topic`, `domain`, `note_type`, plus `parent_topic` and `collection_id` for hierarchical collections) via `VaultEngine` (`references/metadata/properties-policy.md`, `references/metadata/tag-taxonomy.md`); reuse exact existing vault tags and preserve user-defined tags and custom properties on update.
-7. **Lock Operational Manifest & Collection Validation:** Persist plans and collection manifests under `.scriptorium/collections/` (or `.scriptorium/plans/`). Execute the mandatory **Humanization & Cohesion Pass** (`shared/authoring_rules.md`) and EIS-07 clarity review before publication, then run collection-wide validation (`scripts/scribe.py notes validate`) alongside scoped vault checks.
+Resolve user intent, vault target, existing coverage, placement, template route, and metadata **before** writing any note prose via `/scribe-notes`.
 
-**Scoped Validation:** Always run `python3 <skill_dir>/scripts/verify_vault_notes.py "<vault_path>" --files <created_or_edited_files> --fix` (or `--manifest <manifest.json> --fix`) so unrelated vault notes remain byte-for-byte unchanged.
+## Execution Sequence
+
+0. **Interactive Configuration Gate:** Resolve master (`M1`–`M7`), variant, depth, scope (`S0`–`S5`), and `single_note` vs `hierarchical_collection`. Ask only unanswered configuration questions (never run a pre-gen knowledge quiz) and preview substantial hierarchical collections before writing.
+1. **Resolve Vault Root:** Explicit vault path → `SCRIPTORIUM_VAULT_PATH` → `~/.scriptorium-config.json` (`/scribe-setfolder`); reject `..` traversal and escaping symlinks.
+2. **Index Existing Coverage:** Search existing vault Markdown files directly using native file/search tools to detect existing workflows and notes.
+3. **Non-Destructive Reuse:** Link existing notes via `[[Exact Filename|Title]]`; update existing notes incrementally rather than overwriting custom user sections or YAML.
+4. **Resolve Placement & Metadata:** Use `<Vault>/<Topic>/` (`create_category_folders=false` default; specialized files in `Practice Sets/`, `Atomic Notes/`, `Cheatsheets/`, `comparison/`) and attach profile-appropriate YAML ([properties-policy.md](../../metadata/properties-policy.md), [tag-taxonomy.md](../../metadata/tag-taxonomy.md)).
+5. **Select Template:** Load only templates under `references/templates/` matching the routed master/variant (`M1`–`M7`); never run Templater JS or emit unresolved placeholders.
+
+## Failure Handling & Review
+
+- Review changed files against [verification-checklist.md](../validation/verification-checklist.md) so unrelated vault files stay untouched.

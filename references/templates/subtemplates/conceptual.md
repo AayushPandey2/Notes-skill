@@ -1,13 +1,13 @@
-# Subtemplate: Conceptual
+﻿# Conceptual composition
 
-- **ID:** `conceptual` | **Registry alignment:** `conceptual`, `comparative` (philosophy, economics, law, literature, social sciences, foundational theory).
-- **Entry & Scope:** Selected internally through `/scribe-notes` for standalone notes or hierarchical collection children; consumes resolved interactive preferences, source policy, and F02 depth allocation.
-- **Compatible Masters:** `M1`, `M2`, `M3` (`atomic_card`), `M6`, `M7` (`comparison_guide`, `concept_map`, `revision_pack`).
-- **Modules:**
-  - **Required (depth-gated):** `motivation`, `definitions`, `intuition`, `limitations` (`EIS-04` conceptual contrasts & applicability boundaries).
-  - **Optional:** `comparison`, `worked_examples` (real-world cases), `cross_topic_connections` (`P08`), `F10` cross-note synthesis, `F11` progressive disclosure, `F12` explanation/discrimination outcomes.
-  - **Excluded:** Artificial formulas, decorative diagrams, and CS/software jargon on non-software subjects.
-- **Core Adaptations:**
-  - Build precision through motivating questions (`EIS-02`), crisp definitions, discriminating distinctions, near-miss counterexamples, and textual/real-world cases.
-  - Explain where any analogy breaks down (`P03`, `CF-08`); keep arguments logically traceable from premises to conclusions and surface competing perspectives without false consensus.
-- **Validation:** `QualityEngine.review_explanatory_clarity()` (`CF-01..CF-12`), `KnowledgeEngine.verify_claim_links()`.
+Activate for conceptual mastery, definitions, comparisons, or method-selection objectives (TEACH-01, TEACH-02, TEACH-04, TEACH-08).
+
+Inputs are the concept identity, learning objectives, prerequisites, audience, source policy, authored theory, examples, boundary conditions, and relevant source evidence. Bridge unfamiliar prerequisites before relying on them. Explain an analogy's limits before advancing to formal reasoning.
+
+Author prerequisites before formalism, orient the learner, explain the mechanism and boundaries, and verify every required teaching role directly in Markdown.
+
+Use natural paragraphs, meaningful transitions, concrete examples and counterexamples. Explain causal differences before a comparison table. Do not fill a missing lesson with a topic-name substitution or invent mathematical content for a nonmathematical concept.
+
+Review the finished Markdown against [verification-checklist.md](../../workflows/validation/verification-checklist.md) to ensure zero pending explanations, zero generic placeholders, and accurate source-grounded reasoning.
+
+When evidence or content is missing, repair the specific section. Preserve source restrictions; retrieve additional sources only when that policy permits them. See [teaching_core.md](../../../shared/teaching_core.md).
