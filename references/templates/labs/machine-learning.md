@@ -101,7 +101,7 @@ Use identical inputs, target, objective, and metric. **Visual 5: Implementation 
 Cover shape, configuration, convergence, and unsupported-input failures with concrete checks.
 
 # IMPLEMENTATION TRACK C — RUST
-Keep the learning track, but state a genuine limitation when an implementation or crate cannot be verified.
+Keep the learning track. A missing local Cargo installation or the fact that educational code was not run is an **execution-status limit**, not evidence that a Rust crate is unavailable. Read current crate documentation and examples for the lab's actual algorithm, select a supported version, and write complete Markdown-fenced Rust examples when support exists. Use a specific limitation only after documented support or a compatible API cannot be found; name what was checked and why it fails the task. Do not invent APIs or claim compilation without running Cargo.
 ## LAB SECTION 06 — RUST FROM SCRATCH
 ### 6.1 Why Rust?
 State what typed, systems-level implementation teaches for this algorithm.
@@ -123,11 +123,11 @@ Compare actual representations and abstractions, not assumed speed.
 Explain relevant compiler, ownership, indexing, type, and precision errors.
 ## LAB SECTION 07 — RUST LIBRARY IMPLEMENTATION
 ### 7.1 Select the Library
-Choose a documented crate only when it supports the algorithm and the comparison teaches something.
+Check the current documentation for a crate that supports the lab's algorithm and data shape. For example, `smartcore` documents k-NN, linear regression, decision trees, random forests, and metrics; `linfa-bayes` documents Naive Bayes and `linfa-svm` documents SVMs. Verify the selected version and exact example API rather than assuming that these crates cover every variant. A crate need not be preinstalled to include a static-review educational example.
 ### 7.2 Dependencies
-**Code Block C2: Cargo.toml.** Include verified dependencies and versions, or state why none can be responsibly given.
+**Code Block C2: Cargo.toml.** Include the selected documented crate and compatible version in a Markdown fence; do not omit it merely because the local toolchain is unavailable.
 ### 7.3 Complete Source Code
-**Code Block C3: Full Rust library implementation.** Use verified APIs only; keep a specific limitation if unavailable.
+**Code Block C3: Full Rust library implementation.** Use verified APIs for the same fixture or a justified equivalent, with data conversion, fitting, prediction, output, and error handling. Label it `Status: static review (not executed)` until Cargo actually runs. Keep a specific limitation only when documented support is genuinely absent or incompatible, not when documentation was simply not checked.
 ### 7.4 Explanation
 Explain imports, traits, structures, initialization, operations, output, and errors.
 ### 7.5 Output Comparison
