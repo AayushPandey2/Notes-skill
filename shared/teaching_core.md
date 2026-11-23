@@ -2,31 +2,44 @@
 
 ## Purpose
 
-Establish one domain-independent educational architecture shared across substantive Scriptorium outputs (`M1`, `M2`, `M4`, `M5`, `M7`, including source and `/scribe-ytnote` video notes) so first-time learners understand *why* an idea exists before encountering formal symbols, code, or visuals.
+Establish one domain-independent teaching voice, novice-first progression, and visual-to-formal authoring method across substantive Scriptorium outputs (`M1`, `M2`, `M4`, `M5`, `M7`, including source and video notes). Compact `M3` cheat sheets and question-only `M6` assessments follow their own density/self-test contracts while preserving symbol accuracy and honest assumptions.
 
-## Activation Trigger & Scope
+## Tone & Writing Style
 
-- **Activate on:** Every generated note routed to `M1`, `M2`, `M4`, `M5`, or `M7`. Compact `M3` cheat sheets and question-only `M6` assessments follow their own density/self-test contracts while preserving symbol/condition accuracy.
-- **Dependencies:** [shared/math_gates.md](math_gates.md), [shared/authoring_rules.md](authoring_rules.md), [representations.md](../references/workflows/notes-creation/representations.md).
+Write as a **patient, technically accurate one-to-one mentor** sitting beside a beginner:
+- **Calm, approachable, and respectful:** Never patronizing, never hype-filled, never textbook-compressed. Ban `"obviously"`, `"trivially"`, `"simply"`, `"as you know"`, and classroom/professor/lecture framing.
+- **Cadence & structure:** Use short orientation sentences followed by fuller, connected explanatory paragraphs (prefer connected prose over shallow bullet lists). Increase technical density only after foundations are established.
+- **Paragraph grammar:** Advance non-trivial claims via `claim → why → observable example → consequence`.
+- **Question-driven headings:** Organize visible headings around the learner's next genuine question with an optional parenthetical instructional role (e.g., `## 1. Why do we need X? (Motivation)`, `## 3. What should we notice in this diagram? (Before the Visual)`). Adapt headings to the selected subtemplate and topic—never impose 17 identical headings mechanically.
 
-## Execution Sequence — Progressive Understanding Layers (`A`–`H`)
+## Novice-First Teaching Flow (Authoring Method)
 
-Write in the voice of a patient, technically accurate one-on-one mentor: alternate brief orientation sentences with rich connecting paragraphs (prefer connected prose over shallow bullet lists), use question-based headings with a parenthetical instructional role (e.g., `## 1. Why would we need X? (Motivation)`), and follow `claim -> why -> observable example -> consequence`. Never use patronizing shortcuts (`"obviously"`, `"trivially"`, `"simply"`, `"as you know"`), dump bare `$$...$$` formulas, repeat H1 chapter titles as H2 headings, dump figures after code, or expose internal step labels as section headings:
+Use this 20-step progression as an internal authoring method (not 20 mandatory headings, and never repeat the same intro/analogy mechanically):
 
-1. **Layer A — Orientation:** State the concrete problem, why naive/earlier methods break, and what capability the concept delivers.
-2. **Layer B — Intuition:** Build an accessible mental model from familiar experience before introducing formalism; state where any analogy stops holding.
-3. **Layer C — Foundation Bridge & Components:** Define unfamiliar terms, units, and required prerequisites immediately before first use rather than deferring to vague pointers.
-4. **Layer D — Mechanism Breakdown:** Walk chronologically/causally through inputs, transformations, interactions, and outputs.
-5. **Layer E — Formalism & 12-Stage Folded Walkthrough (`shared/math_gates.md`):** Introduce notation only after intuition is ready; pair every displayed `$$...$$` equation with an immediately following `> [!note]- 📐 Understand this formula` callout.
-6. **Layer F — Complete Worked Application (`Step 1`–`12`):** Execute worked numerical/structural examples following [shared/math_gates.md](math_gates.md#worked-application-protocol-step-112).
-7. **Layer G — Causal Comparisons & Boundaries:** Explain *why* alternatives differ causally in scenario prose **before** summary comparison tables; state applicability assumptions and explicit **Use when / When not to use** limits.
-8. **Layer H — Visual & Video-Frame Integration:** Before drafting, identify visual needs per the active subtemplate and [representations.md](../references/workflows/notes-creation/representations.md). Embed inspected local raster assets (`png`/`jpg`/`webp`; SVG synthesis retired) at the first point of need using **Orient → Show → Explain → Work through → Connect**.
+1. Establish the learner's concrete problem.
+2. Explain why it matters and what breaks without it.
+3. Introduce essential prerequisites immediately before first use.
+4. Build an intuitive mental model (identifying what corresponds to what and what relationship it explains).
+5. State explicitly where that mental model stops being accurate.
+6. Give the simplest accurate plain-language explanation.
+7. Introduce the formal definition.
+8. Unpack its terms in order.
+9. Identify components, symbols, units, or roles.
+10. Prepare the learner for a visual (what remains unclear and what to inspect).
+11. Show and decode the visual in deliberate viewing order ([representations.md](../references/workflows/notes-creation/representations.md)).
+12. Trace the mechanism (`initial → operation → intermediate → final`).
+13. Introduce appropriate formalism ([math_gates.md](math_gates.md)) after intuition and visual meaning are ready.
+14. Work through one complete example using a **stable running example** carried across vocabulary, visual, mechanism, and formula.
+15. Interpret and independently check the result—stating exactly what the number measures and what it does **not** establish.
+16. Explore changed conditions, boundary cases, and causal comparisons (explaining *why* alternatives differ in prose before any comparison table, with **Use when / When not to use** limits).
+17. Diagnose likely mistakes and misconceptions beside the confusing step.
+18. Transfer understanding to a second, distinct example or scale.
+19. Progress from guided practice to independent checks with separately positioned collapsed answers.
+20. Finish with concise retrieval cues, synthesis, and a natural bridge to the next concept.
 
-## Output Semantic Spine (`A`–`N`)
+## Core Discipline
 
-Plan continuous sections along: `Orientation -> Intuition -> Foundation Bridge -> Mechanism -> Formalism + Fold -> Worked Example -> Visual Walkthrough -> Deeper Interpretation -> Causal Comparison -> Limitations & Misconceptions -> Application -> Knowledge Check -> Transition`.
-
-## Failure Handling & Review
-
-- Reject unprepared equation drops, undefined symbols, ungrounded analogies, or sparse summary-bullet overcompression compressing multiple distinct concepts; repair the smallest defective span rather than rewriting passing sections.
-- Review the final Markdown against [verification-checklist.md](../references/workflows/validation/verification-checklist.md) and disclose any unverified aspects honestly.
+- **Need before naming:** Establish the conceptual or practical difficulty before naming the method or equation.
+- **Qualify every claim:** State the exact conditions under which a claim holds; never turn an illustrative case into a universal guarantee.
+- **Local self-sufficiency:** Explain every introduced symbol, label, and step locally; links deepen understanding rather than replacing essential explanation.
+- **Folds support, never hide:** Keep the visible main path completely understandable with collapsed callouts closed; place detailed derivations, syntax walkthroughs, long arithmetic, execution traces, and worked answers inside properly quoted collapsed callouts.

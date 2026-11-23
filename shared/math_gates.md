@@ -2,40 +2,36 @@
 
 ## Purpose
 
-Ensure every mathematical expression across Scriptorium notes teaches meaning, dimensions, derivations, and numerical computation cleanly—never dropping opaque symbolic formulas onto beginners.
+Ensure every mathematical expression teaches meaning, dimensions, derivations, and numerical interpretation—bridging visuals and intuition into formalism via **Question → intuition → visual meaning → symbols → formula → calculation → interpretation → check**.
 
 ## Activation Trigger & Inputs
 
-- **Activate when:** `math_depth >= 1`, knowledge type is `mathematical` or `scientific`, master is `M4`, or any displayed `$$...$$` block appears anywhere (main body, worked solutions, assessments, tables, or video/source notes).
-- **Inputs:** Concept objective, depth (`M0`–`M5` for deep notes; `math_level` `0`–`2` for source/compact routes), governing equations, symbol/unit/dimension specs, and concrete numerical fixtures.
+- **Activate when:** `math_depth >= 1`, knowledge type is `mathematical` or `scientific`, master is `M4`, or any displayed `$$...$$` block appears anywhere.
+- **Inputs:** Concept objective, depth (`M0`–`M5` for deep notes; `math_level` `0`–`2` for source/compact routes), governing equations, symbol/unit/dimension specs, and the running example fixture.
 - **Dependencies:** [shared/teaching_core.md](teaching_core.md), [adaptive-engine.md](../references/workflows/notes-creation/adaptive-engine.md#selection-and-depth).
 
-## Execution Rules — Atomic Formula + Fold Contract (`M01`–`M14`)
+## Execution Rules — Atomic Formula + Fold Contract
 
-1. **Prepare Before Display:** Orient the learner in plain language before any `$$...$$` block; never open a conceptual section with a naked equation or dump back-to-back equations without intervening explanation.
-2. **Mandatory 12-Stage Collapsible Walkthrough:** Place one Obsidian-native collapsed callout directly beneath **every** displayed `$$...$$` equation:
-   - Heading: `> [!note]- 📐 Understand this formula` (preceding narrative remains smooth when all folds are closed).
-   - Canonical 12-stage headings (apply relevant stages in depth; omit genuinely inapplicable stages without generic filler, and quote blank separator lines with `>`):
-     1. `### 1. Why this formula exists`
-     2. `### 2. Formula components`
-     3. `### 3. Symbol-by-symbol breakdown`
-     4. `### 4. How to read it`
-     5. `### 5. Prerequisites`
-     6. `### 6. Numerical example`
-     7. `### 7. Visual interpretation`
-     8. `### 8. Parameter behavior`
-     9. `### 9. Derivation`
-     10. `### 10. Implementation` (only when code serves the learning objective; use the requested language)
-     11. `### 11. Limitations and mistakes`
-     12. `### 12. Mental model and recall`
-3. **Anti-Recursive Nesting & Parity:** Keep supporting arithmetic inside formula folds inline (`$...$`); emit separate sibling formula+fold blocks for distinct derivation steps rather than nesting callouts recursively, bundling unrelated equations together, converting complex math into unreadable inline text, or forcing irrelevant filler tables.
-4. **Source Attribution:** Distinguish derivation steps present in a supplied source/video from independently added explanatory bridges.
+1. **Question & Intuition First:** Never drop an advanced expression before explaining what problem it solves. Orient the learner in plain language (and visual meaning where helpful) before any `$$...$$` block; never stack back-to-back equations without intervening explanation.
+2. **Native Obsidian Delimiters:** Use `$...$` and separate-line `$$...$$` consistently with [authoring_rules.md](authoring_rules.md) (never copy `\(...\)` or `\[...\]` from external samples, and never leave raw LaTeX commands like `\frac` outside math delimiters).
+3. **Visible Meaning + Collapsed Walkthrough:** Keep visible prose understandable with folds closed, and place an immediately following `> [!note]- 📐 Understand this formula` callout beneath **every** displayed `$$...$$` equation covering relevant items without generic filler (and quoting every line, including blank separator lines with `>`):
+   - Purpose (`1. Why this formula exists`)
+   - Components (`2. Formula components`)
+   - Symbols, types, dimensions, or units (`3. Symbol-by-symbol breakdown`)
+   - Read-aloud interpretation (`4. How to read it`)
+   - Prerequisites & assumptions (`5. Prerequisites & assumptions`)
+   - Worked calculation with explicit intermediate steps (`6. Numerical example`)
+   - Visual/parameter intuition (`7. Visual & parameter interpretation`)
+   - Non-obvious transformations / derivation (`8. Derivation`)
+   - Code correspondence when relevant (`9. Implementation`)
+   - Meaning of result, sanity check, and limitations (`10. Interpretation, sanity check & limits`)
+   - Mental model & recall (`11. Mental model & recall`)
+4. **Anti-Recursive Nesting & Honesty:** Keep supporting arithmetic inside formula folds inline (`$...$`); emit separate sibling formula+fold blocks for distinct derivation steps rather than nesting callouts recursively. Distinguish source derivations from added explanatory bridges.
 
-## Worked Application Protocol (`Step 1`–`12`)
+## Worked Application & Interpretation Protocol
 
-Solve every quantitative problem systematically: State Question & Objective → Method & Assumptions → Symbols & Units → Governing Formula + Fold → Declared Numerical Inputs → Explicit Intermediate Arithmetic → Final Result → Contextual Interpretation → Sanity Check (magnitude/sign/units/limits) → Common Mistakes → Pattern Generalization.
+Solve quantitative problems systematically: **Question & Objective → Method & Assumptions → Symbols & Units → Governing Formula + Fold → Declared Inputs → Explicit Intermediate Arithmetic → Final Result → Careful Interpretation (what the result measures and what it does NOT establish) → Sanity Check (magnitude/sign/units/limits) → Common Mistakes → Pattern Generalization**.
 
 ## Failure Handling & Review
 
-- Flag and locally repair unprepared formulas, stacked equations, missing/nested/generic folds, dimension mismatches, or arithmetic errors before finishing.
-- Verify every displayed `$$...$$` block directly against [verification-checklist.md](../references/workflows/validation/verification-checklist.md).
+Locally repair unprepared equations, stacked equations, missing/nested/generic folds, raw LaTeX outside delimiters, dimension mismatches, or uninterpreted numbers before verifying against [verification-checklist.md](../references/workflows/validation/verification-checklist.md).

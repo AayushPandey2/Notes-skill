@@ -1,24 +1,16 @@
 # Subtemplate: Computational
 
-- **Purpose:** Teach algorithms, data structures, ML/DL mechanics, and code pipelines by connecting intuition, state transitions, mathematics, and honest code explanations.
-- **Activation conditions:** Code, algorithms, invariants, state machines, complexity bounds, ML/DL architectures, or debugging (`programming`, `algorithmic`, `architectural`, `procedural`).
-- **Required inputs:** Input/output contract, bounds/assumptions, target language/stack, equation-to-code mapping, edge-case fixtures, and execution status.
+- **Purpose:** Teach algorithms, data structures, ML/DL models, software systems, and code pipelines by connecting intuition, state transitions, architecture traces, mathematics, and beginner-accessible code walkthroughs.
+- **Activation conditions:** Code, algorithms, invariants, system architectures, state machines, complexity bounds, ML/DL pipelines, or debugging (`programming`, `algorithmic`, `architectural`, `procedural`).
+- **Expected inputs:** Problem/system contract, bounds/assumptions, target stack, equation-to-code mapping, deterministic running fixture, edge-case inputs, and honest execution status.
 
 > **Authoring-agent image instruction:** Before drafting, identify the visual learning needs of each substantive concept. Acquire suitable images where they materially improve understanding. Inspect the saved images, then compose the explanation around their actual visible content. Do not treat image placement as an optional finishing step.
 
-## Teaching Sequence
-
-1. **Contract & bottleneck:** Clarify exact input/output types, shapes, and why a naive approach bottlenecks.
-2. **Visual & state intuition:** Show intermediate states or data flow before code so the learner sees what the code is automating.
-3. **Complete code + collapsed walkthrough:** Present the complete relevant code block, give a brief visible summary, then explain operations in a collapsed `> [!example]- Step-by-step: ...` callout (covering purpose, syntax, variables, types, inputs, internal execution, math link, output, shapes, mistakes, and next step).
-4. **Equation-to-code mapping:** Map mathematical terms directly to code expressions, types, and shapes.
-5. **Trace, test & debug:** Walk a small concrete input through the code, state edge cases, and report honest execution status.
-
-## Obligations
-
-- **Evidence expectations:** Label unexecuted code `Status: static review (not executed)`; never fabricate runtime output, benchmarks, or crate/library APIs.
-- **Visual requirements:** Follow [representations.md](../../workflows/notes-creation/representations.md) using **Orient → Show → Explain → Work through → Connect**. Image opportunities: ML/DL decision boundaries, network architectures, tensor organization, diagnostic curves (loss/ROC/confusion matrices), and meaningful intermediate/before-after states; use native Mermaid for control flow, pipelines, and state machines.
-- **Mathematical explanation requirements:** Bind any governing equations via [math_gates.md](../../../shared/math_gates.md) and expand code-to-math mappings step by step rather than one-line claims.
-- **Practical-example requirements:** Trace one small concrete input end to end (showing exact slice/tensor/variable values) and include edge-case checks.
-- **Failure handling:** Replace one-line syntax summaries, cross-reference-only explanations, or unverified API claims with complete step-by-step walkthroughs and honest gaps.
-- **Completion checks:** Verify against [verification-checklist.md](../../workflows/validation/verification-checklist.md) — complete code before breakdown, collapsed walkthroughs quoted properly, and honest execution status.
+- **Teaching progression:** Establish the bottleneck or system question → trace one concrete input through intermediate states or system components (inputs/outputs, state, trust boundaries, failure/recovery) → present complete relevant code → summarize briefly in visible prose → unpack operations in collapsed `> [!example]- Step-by-step: ...` walkthroughs → map math to code → diagnose mistakes and test edge cases.
+- **Necessary prerequisite bridges:** Define types, shapes, memory/ownership concepts, and API roles before first use; never reduce syntax explanations to one-line summaries or cross-references.
+- **Visual opportunities:** Follow [representations.md](../../workflows/notes-creation/representations.md) using the six-phase visual narrative. Image opportunities: ML/DL decision boundaries, architectures, tensor layouts, diagnostic curves, and meaningful before/after states; use native Mermaid for control flow, pipelines, sequence traces, and state machines.
+- **Formalism appropriate to the knowledge type:** Expand equation-to-code mappings step by step via [math_gates.md](../../../shared/math_gates.md) (collection contents, iteration, conversions, calculations, small trace, nonempty/precision limits).
+- **Worked-example requirements:** Trace one deterministic miniature fixture end to end through variables, shapes, and outputs (never stop at a whole-system picture without tracing a concrete input).
+- **Evidence requirements:** Keep educational code inside Markdown fences, verify APIs before citing, and label unexecuted code `Status: static review (not executed)` once per implementation; never fabricate outputs or benchmarks.
+- **Practice and mastery checks:** Include code-prediction, trace-the-state, bug-diagnosis, and edge-case exercises with collapsed answers.
+- **Failure handling:** Locally replace one-line syntax summaries, hollow placeholder tracks, unmapped formulas, or fabricated outputs via [verification-checklist.md](../../workflows/validation/verification-checklist.md).

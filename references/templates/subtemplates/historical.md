@@ -1,24 +1,16 @@
 # Subtemplate: Historical
 
-- **Purpose:** Teach historical sequences, primary evidence, structural causes, consequences, and historiographical debate without false determinism or forced math/code.
+- **Purpose:** Teach historical sequences, primary evidence, structural causes, consequences, and historiographical debate without false determinism or forced technical machinery.
 - **Activation conditions:** Historical analysis, institutional evolution, chronology-centered topics, or origin/context studies (`historical`).
-- **Required inputs:** Dated context, actors/institutions, primary and secondary sources with locators, causal hypotheses, and contested scholarly interpretations.
+- **Expected inputs:** Earlier setting, actors/institutions, verified dates and primary/secondary sources with locators, turning points, causal hypotheses, and contested scholarly interpretations.
 
 > **Authoring-agent image instruction:** Before drafting, identify the visual learning needs of each substantive concept. Acquire suitable images where they materially improve understanding. Inspect the saved images, then compose the explanation around their actual visible content. Do not treat image placement as an optional finishing step.
 
-## Teaching Sequence
-
-1. **Dated context:** Establish the social, institutional, or intellectual setting before events unfold.
-2. **Chronological development:** Sequence documented events clearly in prose (adding a Mermaid timeline only when sequence density warrants).
-3. **Visual & primary-source grounding:** Acquire and inspect relevant maps, archival artifacts, or historical diagrams, decoding them with **Orient → Show → Explain → Work through → Connect**.
-4. **Causal analysis:** Separate primary documented facts from retrospective causal arguments and explain *why* structural forces mattered.
-5. **Historiographical debate:** Present competing scholarly interpretations fairly without collapsing genuine disagreement.
-
-## Obligations
-
-- **Evidence expectations:** Verify dates, actors, and quotes against inspected sources with locators; mark contested or unverified claims honestly.
-- **Visual requirements:** Follow [representations.md](../../workflows/notes-creation/representations.md) using **Orient → Show → Explain → Work through → Connect**. Image opportunities: historical maps, archival documents/artifacts, portraits/diagrams of contemporary apparatus, and period charts; use native Mermaid only for clean chronological or institutional relationships.
-- **Mathematical explanation requirements:** Do not force mathematical or algorithmic notation onto non-quantitative history; apply [math_gates.md](../../../shared/math_gates.md) only if genuine quantitative historical data/models appear.
-- **Practical-example requirements:** Ground abstract historical forces in at least one specific primary-source episode, actor decision, or institutional case.
-- **Failure handling:** Flag unsupported causal assertions, anachronisms, or collapsed scholarly disputes locally and repair against verified sources.
-- **Completion checks:** Verify against [verification-checklist.md](../../workflows/validation/verification-checklist.md) — verified dates/citations, separated facts vs interpretations, and decoded visuals.
+- **Teaching progression:** Establish the earlier setting and tensions before events unfold → trace verified chronology and turning points → decode primary-source/map visuals via the six-phase visual narrative → analyze structural causes vs. contingent decisions → present competing scholarly interpretations and legacy without projecting later outcomes as inevitable.
+- **Necessary prerequisite bridges:** Define period-specific institutions, offices, or social terms before relying on them.
+- **Visual opportunities:** Follow [representations.md](../../workflows/notes-creation/representations.md) using the six-phase visual narrative. Image opportunities: historical maps, archival artifacts, contemporary diagrams, and period charts; use native Mermaid only for clean chronological or institutional relationships. Omit forced visuals where prose chronology is clearer.
+- **Formalism appropriate to the knowledge type:** Do not force equations, code, or computational metrics onto non-quantitative history; apply [math_gates.md](../../../shared/math_gates.md) only if genuine quantitative historical data appears.
+- **Worked-example requirements:** Ground broad structural forces in at least one concrete primary-source episode, actor decision, or institutional case.
+- **Evidence requirements:** Verify dates, actors, quotes, and source credibility with exact locators; separate primary facts from retrospective interpretation and mark uncertain dates `[UNVERIFIED]`.
+- **Practice and mastery checks:** Include causal-analysis, primary-source/map reading, and competing-interpretation questions with collapsed answers.
+- **Failure handling:** Locally repair unsupported causal claims, anachronisms, or collapsed scholarly disputes via [verification-checklist.md](../../workflows/validation/verification-checklist.md).

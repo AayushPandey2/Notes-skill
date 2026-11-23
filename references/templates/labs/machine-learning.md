@@ -1,6 +1,6 @@
 # Machine Learning experimental lab reference
 
-Use this 14-section heading hierarchy, order, named code-block roles, and visual roles for a classical ML investigation. This is an authoring reference, not text to copy into a finished lesson. The [shared lab contract](../../workflows/notes-creation/experimental-lab.md) controls evidence, collapsed walkthroughs, metadata, links, and execution honesty. Every visual must teach at its point of need via **Orient → Show → Explain → Work through → Connect**; plan inspected local raster assets separately from Mermaid and tables. Never fill a result slot with fabricated output or hollow grouped placeholder ranges.
+Use this 14-section heading hierarchy, order, named code-block roles, and visual roles for a classical ML investigation. This is an authoring reference, not text to copy into a finished lesson. The [shared lab contract](../../workflows/notes-creation/experimental-lab.md) controls evidence, collapsed walkthroughs, metadata, links, and execution honesty. Every visual must teach at its point of need via the six-phase narrative in [representations.md](../../workflows/notes-creation/representations.md); plan inspected local raster assets separately from Mermaid and tables. Never fill a result slot with fabricated output or hollow grouped placeholder ranges.
 
 If an optional Rust track (`05` or `06`) is omitted because it is inapplicable or no verified crate is warranted, briefly explain that choice in the implementation-selection discussion and renumber subsequent sections consecutively.
 

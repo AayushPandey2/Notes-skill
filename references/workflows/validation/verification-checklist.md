@@ -2,16 +2,30 @@
 
 ## Purpose & Activation Trigger
 
-Perform an explicit manual review of educational quality, source fidelity, representation alignment, lab completeness, and Markdown/Obsidian structure before concluding any note-creation or update task. Review the actual generated content, not merely headings. This is a manual review checklist, not an automated software test or validator script.
+Perform an explicit manual review of reader-facing teaching quality, source fidelity, representation alignment, lab completeness, and Markdown/Obsidian structure before concluding any note-creation or update task. Review the actual generated content, not merely headings. **Do not treat heading count, word count, or image count as proof of teaching quality.** This is a manual review checklist, not an automated software test or validator script.
 
-## Review Gates
+## Reader-Facing Quality Questions
 
-- **Direct-Authoring & Safety:** Confirm no scripts, downloaders, or builder files were created or executed during note generation, and no existing unrelated Obsidian notes or assets were overwritten.
+Before finishing any substantive note or lab, verify every applicable question honestly:
+1. Does the opening establish a real learner problem or question before naming the method?
+2. Are prerequisites and unfamiliar terms introduced immediately before first use?
+3. Is every analogy explained clearly (what corresponds to what) and bounded (where it breaks down)?
+4. Are formal definitions unpacked term by term rather than dropped whole?
+5. Does every image receive preparation (what to look for), element-by-element decoding, concrete tracing, limit qualification, and a reading check?
+6. Can the reader trace one concrete running example end to end?
+7. Are equations connected to the mechanism and visual meaning (`Question → intuition → visual meaning → symbols → formula → calculation → interpretation → check`)?
+8. Are difficult transformations and non-obvious steps explained rather than skipped?
+9. Are calculated results interpreted accurately (stating what the number measures and what it does **not** establish)?
+10. Are assumptions, conditions, and failure limits explicit?
+11. Does practice progress from guided examples toward independent application with separately explained answers?
+12. Can the note support understanding with collapsed folds closed and deeper study with them open?
+13. Are sources, citations, and execution status honest?
+
+## Structural, Visual & Lab Gates
+
+- **Direct-Authoring & Safety:** Confirm no scripts, downloaders, or builder files were created or executed, and no existing unrelated Obsidian notes or assets were overwritten.
 - **Metadata & YAML:** Line 1 starts with valid `--- ... ---` YAML matching either the 5-key comprehensive `M1` profile (`id`, `aliases`, `topic`, `tags`, `nexttopics`) or Obsidian Properties (`topic`, `tags`, `master_topic`, `domain`, `note_type`), with zero leaked scaffold comments or internal planning logs.
-- **Educational Spine & Clarity:** Beginner-first progression (motivation and intuition before equations), natural paragraph spacing, prerequisite bridges before first use, causal comparisons before summary tables, and explicit limitations (`Use when / When not to use`).
-- **Mathematical Fold Parity & Delimiters:** Every displayed `$$...$$` equation is preceded by orienting prose and immediately followed by a properly quoted `> [!note]- 📐 Understand this formula` callout explaining relevant symbols, units/shapes, derivations, and numerical walkthroughs without nested `$$` delimiters. Reject raw mathematical commands (such as `\frac`) outside math delimiters.
-- **Visual Coverage & Image-Led Teaching:** Count downloaded web images separately from native Mermaid, Markdown tables, and video frames. Reject visually rich notes with unexplained missing image coverage, planned image paths without local assets, or images inserted without interpretation. For each external figure, verify source check, raster download, local image inspection, vault-relative embed, saved target, caption, attribution, and **Orient → Show → Explain → Work through → Connect** prose. Check Mermaid syntax and prose walkthrough; claim rendering only if observed.
-- **Substantive Explanations & Collapsed Walkthroughs:** Reject cross-reference-only explanations ("See Visual 1", "Matches Section 3.7"), one-line syntax explanations presented as complete walkthroughs ("`split_at(3)` returns two slices", "`cargo new ...`"), and unmapped math-to-code claims. Confirm important code blocks provide complete code before breakdown, brief visible summaries, and properly quoted collapsed `> [!example]- ...` walkthroughs.
-- **Companion Lab Integrity:** Each new content note has one existing or newly created sibling lab; MOCs, labs, assets, and internal documents do not recurse. Reject empty or unjustified implementation tracks, grouped placeholder ranges (such as `7.2–7.6`), broken numbering after removing old ML Section 04, a professional workflow reduced to a short summary (instead of detailed stages + integrated program), or contradictory old template instructions. Check reciprocal links, matched comparison inputs, verification details (property, concrete inputs, expected results, tolerance, establishes/does not establish, execution status), and label unexecuted code `Status: static review (not executed)`. Never present static review as executed verification.
-- **Links & Completeness:** Internal `[[wikilinks]]` resolve to existing or planned notes, all fenced code blocks are closed, citations have actual locators, and any unverified aspect (such as code execution, cryptographic hashing, or Obsidian UI rendering) is disclosed honestly.
-- **Source Coverage & Safe Saving:** For a supplied source, compare its important sections and claims with the final note headings; mark omitted or inaccessible parts. Before revising, inspect original notes and assets; after saving, inspect written files, confirm custom YAML and unrelated files remain, and report any partial write.
+- **Mathematical Fold Parity & Delimiters:** Every displayed `$$...$$` equation is preceded by orienting prose and immediately followed by a properly quoted `> [!note]- 📐 Understand this formula` callout without nested `$$` delimiters. Reject incompatible `\(...\)` / `\[...\]` delimiters or raw mathematical commands (such as `\frac`) outside math delimiters.
+- **Visual Coverage & Local Acquisition:** Count downloaded web images separately from native Mermaid, Markdown tables, and video frames. Reject visually rich notes with unexplained missing image coverage (recheck long visually rich notes with 0 or 1 downloaded image), planned/remote image URLs without local raster assets, or images inserted without the six-phase narrative. Check Mermaid syntax and prose walkthrough; claim rendering only if observed.
+- **Substantive Explanations & Companion Lab:** Reject patronizing shortcuts (`"obviously"`, `"trivially"`, `"as you know"`), cross-reference-only explanations, one-line syntax explanations presented as complete walkthroughs, grouped placeholder ranges (such as `7.2–7.6`), broken numbering after removing old ML Section 04, empty/unjustified implementation tracks, or a professional workflow reduced to a short summary. Confirm each new content note has one sibling lab with reciprocal links, complete code before breakdown, collapsed walkthroughs, and `Status: static review (not executed)` on unexecuted code.
+- **Links, Source Coverage & Safe Saving:** Internal `[[wikilinks]]` resolve to existing or planned notes, all fenced code blocks are closed, citations have actual locators, and supplied source coverage gaps or unverified steps (execution, hashing, Obsidian UI rendering) are disclosed honestly. Inspect written files after saving and confirm unrelated files remain intact.
