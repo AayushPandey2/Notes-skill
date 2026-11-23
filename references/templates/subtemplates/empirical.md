@@ -1,15 +1,24 @@
 # Subtemplate: Empirical
 
-- **ID:** `empirical` | **Registry alignment:** `research` (empirical studies, ML benchmarks, papers, economics, statistical/clinical evaluation) via [teaching_core.md](../../../shared/teaching_core.md).
-- **Purpose:** Teach experimental findings, ablations, metrics, and research papers rigorously while separating illustrative fixtures from verified empirical measurements.
-- **Trigger:** Research breakdown, benchmark evaluation, experimental methodology, or uncertainty analysis objectives (`TEACH-04`, `TEACH-05`, `TEACH-09`, `MATH-08`).
-- **Preconditions:** Evaluation metrics, experimental setups, and baseline conditions are defined before comparing numerical performance.
-- **Inputs:** Source claims/tables, datasets, metrics, protocols, uncertainty values (`SD`/`SE`/`CI`), and threats to validity.
-- **Output Contract:** Method motivation, matched-protocol comparison, explicit uncertainty and limitation qualifiers, clearly labeled illustrative vs observed examples, and honest gaps (`[UNVERIFIED]`).
-- **Execution Procedure:**
-  1. Explain the research question and evaluation metric intuition before reporting metric numbers.
-  2. Pair every metric claim with dataset, protocol, baseline, and variance/uncertainty metadata.
-  3. Complete needed research figures through [representations.md](../../workflows/notes-creation/representations.md) and explain them; flag absent ablations explicitly.
-- **Dependencies:** [research-engine.md](../../workflows/research/research-engine.md), [source-fidelity.md](../../workflows/research/source-fidelity.md), [teaching_core.md](../../../shared/teaching_core.md).
-- **Review:** Check each numerical claim against its source location, dataset, metric, protocol, and uncertainty; label illustrative values.
-- **Failure Behavior:** Reject unmatched benchmark comparisons, missing uncertainty classifications, or unlabeled synthetic data presented as empirical findings.
+- **Purpose:** Teach research papers, benchmarks, experimental studies, and statistical/clinical evaluations while separating illustrative fixtures from verified empirical evidence.
+- **Activation conditions:** Paper breakdowns, benchmark evaluations, ablations, experimental methodology, or uncertainty analysis (`research`).
+- **Required inputs:** Source claims/tables, datasets, metrics, experimental protocols, baselines, uncertainty values (`SD`/`SE`/`CI`), and threats to validity.
+
+> **Authoring-agent image instruction:** Before drafting, identify the visual learning needs of each substantive concept. Acquire suitable images where they materially improve understanding. Inspect the saved images, then compose the explanation around their actual visible content. Do not treat image placement as an optional finishing step.
+
+## Teaching Sequence
+
+1. **Research question & metric intuition:** Explain what question the study asks and what each metric measures before reporting numbers.
+2. **Protocol & baseline parity:** State dataset, splits, controls, and baseline conditions before comparing outcomes.
+3. **Source-figure walkthrough:** Acquire and inspect key source figures, then explain axes, error bars, and comparisons via **Orient → Show → Explain → Work through → Connect**.
+4. **Uncertainty & ablations:** Pair metric claims with variance/uncertainty and identify missing ablations or confounded variables.
+5. **Validity & limits:** Bound conclusions by sample, protocol, and threats to internal/external validity.
+
+## Obligations
+
+- **Evidence expectations:** Cite exact source locators (page, section, table, figure); mark missing data `[UNVERIFIED]` and never present illustrative data as empirical findings.
+- **Visual requirements:** Follow [representations.md](../../workflows/notes-creation/representations.md) using **Orient → Show → Explain → Work through → Connect**. Image opportunities: actual source figures, experimental setups, and reported benchmark/ablation plots; use Markdown tables for exact reported numbers.
+- **Mathematical explanation requirements:** Explain metric definitions, loss objectives, or statistical tests through [math_gates.md](../../../shared/math_gates.md) when quantitative formulas appear.
+- **Practical-example requirements:** Walk through one concrete reading of a reported result row or figure data point to show how the metric behaves.
+- **Failure handling:** Reject unmatched benchmark comparisons, missing uncertainty qualifiers, or uninspected source figures; disclose inaccessible paywalled/missing artifacts honestly.
+- **Completion checks:** Verify against [verification-checklist.md](../../workflows/validation/verification-checklist.md) — every claim locator-backed, illustrative vs observed separated, and source figures decoded.

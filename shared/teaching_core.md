@@ -20,7 +20,7 @@ Write continuous, domain-natural prose advancing one conceptual move per paragra
 5. **Layer E — Formalism & 12-Stage Folded Walkthrough (`shared/math_gates.md`):** Introduce notation only after intuition is ready; pair every displayed `$$...$$` equation with an immediately following `> [!note]- 📐 Understand this formula` callout.
 6. **Layer F — Complete Worked Application (`Step 1`–`12`):** Execute worked numerical/structural examples following [shared/math_gates.md](math_gates.md#worked-application-protocol-step-112).
 7. **Layer G — Causal Comparisons & Boundaries:** Explain *why* alternatives differ causally in scenario prose **before** summary comparison tables; state applicability assumptions and explicit **Use when / When not to use** limits.
-8. **Layer H — Visual & Video-Frame Integration:** Embed inspected local raster assets (`png`/`jpg`/`webp`; SVG synthesis retired) at the exact point of need using `Explain -> Show -> Decode -> Connect`.
+8. **Layer H — Visual & Video-Frame Integration:** Before drafting, identify visual needs per the active subtemplate and [representations.md](../references/workflows/notes-creation/representations.md). Embed inspected local raster assets (`png`/`jpg`/`webp`; SVG synthesis retired) at the first point of need using **Orient → Show → Explain → Work through → Connect**.
 
 ## Output Semantic Spine (`A`–`N`)
 
