@@ -7,7 +7,7 @@ Inputs: Problem/system spec, stated bounds, chosen language/stack, test fixtures
 Dependencies: router.md, shared/teaching_core.md, shared/authoring_rules.md, shared/math_gates.md, metadata/properties-policy.md.
 Decision Rules: Lock generated code to user-specified stack; start with minimal naive baseline exposing the bottleneck before optimal code; run verify-runtimes before claiming observed execution.
 Failure Handling: Tag missing constraints [ASSUMED / UNVERIFIED]; label unexecuted code 'static verification (not executed)'; never fabricate runtime metrics.
-Validation: scripts/plan_notes.py verify-runtimes, QualityEngine.validate_master(..., "M5"), scripts/validate_note.py.
+Validation: [verification-checklist.md](../../workflows/validation/verification-checklist.md) (`M5` implementation rules).
 -->
 
 # M5 — Implementation, Algorithmic Design & Technical Verification Guide
@@ -32,7 +32,7 @@ Validation: scripts/plan_notes.py verify-runtimes, QualityEngine.validate_master
 
 ## 4. How do I implement and stress-test the optimal solution? (Implementation & Edge-Case Suite)
 
-- **Runnable Optimal Implementation:** Complete self-contained code with explicit equation-to-variable mapping and test driver. In statically typed/systems languages, audit numeric bit-widths, overflow bounds, and iterator/memory safety. Record runtime version and verbatim output (`executed` via `scripts/plan_notes.py verify-runtimes`, or `static verification (not executed)`).
+- **Runnable Optimal Implementation:** Complete self-contained code with explicit equation-to-variable mapping and test driver. In statically typed/systems languages, audit numeric bit-widths, overflow bounds, and iterator/memory safety. Label unexecuted code `Status: static review (not executed)` unless a native tool actually executed it.
 - **Edge-Case Test Matrix (`4–5` Cases):** Assertions covering minimal/empty, duplicate/degenerate, adversarial/monotonic, extreme boundary, and dry-run fixture.
 
 ## 5. How does this pattern transfer to harder variations? (Related Problems, Twists & Reflections)

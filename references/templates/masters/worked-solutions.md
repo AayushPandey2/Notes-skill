@@ -10,7 +10,7 @@ Strip this block before emission.
 # M4 — Worked Problems & Step-by-Step Solutions
 
 - **Header Block**: 5-key YAML frontmatter + `# <nn>. <Topic> — Worked Problems & Solutions`.
-- **Core Rule**: Organize around **problems and their Step 1–12 solution procedures** (`scriptorium/engines/mathematics.py`: Question -> Method & Assumptions -> Symbols & Dimensions -> Formula -> Substitute Inputs -> Intermediate Arithmetic -> Final Answer -> Contextual Interpretation -> Sanity Check -> Common Mistakes -> Generalization), never long textbook chapter prose or bare final numbers. Every intermediate step is justified and deterministically checked (`MATH-05`, `MATH-10`).
+- **Core Rule**: Organize around **problems and their Step 1–12 solution procedures** ([math_gates.md](../../../shared/math_gates.md): Question -> Method & Assumptions -> Symbols & Dimensions -> Formula -> Substitute Inputs -> Intermediate Arithmetic -> Final Answer -> Contextual Interpretation -> Sanity Check -> Common Mistakes -> Generalization), never long textbook chapter prose or bare final numbers. Every intermediate step must be explicitly justified and checked.
 
 ## 1. Problem Set Scope, Governing Tools & Method Selection Map
 
@@ -30,7 +30,7 @@ For each problem (`### Problem <k>: <Short Title>`), include the needed logical 
 ## 3. Synthesis of Solution Patterns & Pitfalls
 
 - Concise summary of how to recognize which method applies on unseen variations, linking back to full conceptual notes (`M1`/`M2`) where available.
-- **Verification Integrity**: Recalculate every numerical step (`scriptorium/engines/pedagogy.py (`scripts/scribe.py pedagogy`)`); under `strict` source mode, distinguish source problems from added practice variations.
+- **Verification Integrity**: Recalculate every numerical step carefully; under `strict` source mode, distinguish source problems from added practice variations.
 
 See [authoring rules](../../../shared/authoring_rules.md), [math gates](../../../shared/math_gates.md), and [footer contract](../../../shared/footer_widgets.md).
 - **Template Contract (`M4` / `worked-solutions`):** Lead with problem-solving structure, show every consequential intermediate step, verify every final answer independently, and preserve all theorem hypotheses.

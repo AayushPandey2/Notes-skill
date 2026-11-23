@@ -6,7 +6,7 @@ Inputs: Accessed article text, docs page, or video transcript/frames; source URL
 Dependencies: router.md, shared/authoring_rules.md, shared/math_gates.md, workflows/research/source-fidelity.md.
 Decision Rules: Separate source claims from independent verification; link video entries via verified `` `[MM:SS](https://www.youtube.com/watch?v=<VIDEO_ID>&t=<seconds>s)` `` timestamps; suggest 2–3 follow-up notes passively.
 Failure Handling: Never hallucinate timestamps or missing text; mark unavailable full bodies '[PARTIAL SUMMARY — TRANSCRIPT/TEXT UNAVAILABLE]' or request user paste.
-Validation: scripts/validate_note.py, scripts/verify_vault_notes.py.
+Validation: [verification-checklist.md](../../workflows/validation/verification-checklist.md).
 -->
 
 # Verified Source Deconstruction: Article, Documentation, or Video

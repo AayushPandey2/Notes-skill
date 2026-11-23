@@ -7,7 +7,7 @@ Inputs: Verified sibling notes or source equations/definitions, target scope (na
 Dependencies: router.md, shared/authoring_rules.md, shared/math_gates.md; variants flashcards.md, mock-exam.md.
 Decision Rules: 15–20 tiered questions for full sets (10–14 narrow); keep hints and solutions in separate collapsed callouts separated by an unquoted blank line.
 Failure Handling: Reject answer-only quantitative keys without worked steps or trivial copy-paste recall; mark static Markdown limits honestly.
-Validation: QualityEngine.validate_master(..., "M6"), scripts/validate_note.py, scripts/verify_vault_notes.py.
+Validation: [verification-checklist.md](../../workflows/validation/verification-checklist.md) (`M6` assessment rules).
 -->
 
 # M6 — Practice, Active Recall & Diagnostic Assessment

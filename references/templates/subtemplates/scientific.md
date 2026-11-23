@@ -11,6 +11,6 @@
   2. Define every physical constant/variable with SI or domain units and verify dimensional balance (`check_dimension_compatibility`).
   3. Acquire real schematic/plot assets via web image research (`T06`–`T09`, zero programmatic SVG generation) and walk the reader through labels and physical meaning.
   4. Separate observed measurements and uncertainties from idealized assumptions.
-- **Dependencies:** `scriptorium/engines/mathematics.py`, `scriptorium/engines/composition/lavia.py`, [representations.md](../../workflows/notes-creation/representations.md).
+- **Dependencies:** [math_gates.md](../../../shared/math_gates.md), [representations.md](../../workflows/notes-creation/representations.md).
 - **Validation:** `QualityEngine.check_representations()`, `F09` unit consistency, `QualityEngine.evaluate_teaching()`, `KnowledgeEngine.verify_claim_links()`.
 - **Failure Behavior:** Reject inconsistent units, fabricated experimental curves/SVGs, or unlabeled approximations; surface unmet visual obligations honestly.

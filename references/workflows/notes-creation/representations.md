@@ -6,15 +6,9 @@ stable `id`, learning `objective` and semantic `kind`. Ask what learning difficu
 the artifact resolves before selecting a backend; optional artifacts can have
 reviewed omissions, while critical failures block publication.
 
-## Registry and execution
+## Registry and backends
 
-`composition/renderers.py` owns `FAMILIES`, `KINDS`, `BUILTIN_BACKENDS` and
-`select_representation(requirement, available=...)`. `BACKENDS` declares each
-backend's accepted inputs, domains, output suffix, runtime dependencies,
-verification, and failure behavior. Programmatic SVG diagram generation has been
-retired (`RETIRED_SVG_BACKENDS`). Families R1–R12 route visual diagram/figure
-requests to `external` (web image discovery & local download), `mermaid`, `table`,
-or `interactive` textual sequences:
+Programmatic SVG diagram generation is retired. Visual diagram/figure requests route to `external` (web image discovery & local raster download), `mermaid`, `table`, or `interactive` textual sequences:
 
 | Family | Semantic purpose | Active backends |
 |---|---|---|
@@ -56,7 +50,7 @@ Programmatic SVG diagram drawing is strictly prohibited. All external visuals fo
 
 ## Beginner-first visual intelligence (BVIA)
 
-`composition/bvia.py` evaluates candidate cognitive accessibility
+`composition/bvia.py` -> Beginner-first visual intelligence (BVIA) evaluates candidate cognitive accessibility:
 (`evaluate_visual_accessibility`: `beginner_friendly`, `guided_intermediate`,
 `advanced_technical`, `unsuitable`), ranks external candidates with technical accuracy
 and permissive licensing as hard constraints (`rank_image_candidates`), orders
@@ -82,10 +76,9 @@ In strict source-only plans, remote acquisition additionally requires the visual
 `origin` to be `supplied`; otherwise use a supplied local offline fallback.
 
 `asset_policy` is `local_preferred` (default), `offline_only`, or `remote_allowed`.
-LAVIA (`composition/lavia.py`) coordinates concept-level visual coverage planning,
-collection-organized storage (`assets/scriptorium/<collection-slug>/<name>-<hash>.<ext>`),
-canonical manifests (`assets/scriptorium/<collection-slug>/manifest.json`), SHA-256
-deduplication, offline embed validation, and targeted dependency-aware repair.
+LAVIA coordinates concept-level visual coverage planning, collection-organized
+storage (`assets/scriptorium/<collection-slug>/<name>-<hash>.<ext>`),
+attribution, and `read_file` inspection before prose composition.
 All successful acquisitions create a content-addressed local snapshot and a
 specification-bound `.media.json` receipt. `local_preferred` and `offline_only`
 always emit local vault embeds (`![[...]]` or relative Markdown paths). Attribution

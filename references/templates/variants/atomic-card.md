@@ -7,7 +7,7 @@ Inputs: Single canonical concept title, single direct fact lookup/verification, 
 Dependencies: router.md, shared/authoring_rules.md, shared/math_gates.md.
 Decision Rules: Strictly <150 words body (including links); one indivisible claim + one micro-example + one boundary; bounded direct fetch only.
 Failure Handling: Represent planned non-existent vault links cleanly as plain text marked '(pending note)' rather than fabricating dead wikilinks.
-Validation: scripts/validate_note.py, scripts/verify_vault_notes.py.
+Validation: [verification-checklist.md](../../workflows/validation/verification-checklist.md).
 -->
 
 # Single-Concept Transcludable Knowledge Building Block

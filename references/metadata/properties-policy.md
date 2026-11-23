@@ -6,8 +6,8 @@ Canonical specification for line-1 YAML frontmatter, vault filename conventions,
 
 ## Activation Trigger & Dependencies
 
-- **Activate on:** Every note generation, companion artifact split, or incremental vault update (`VaultEngine`, `scripts/scribe.py properties` / `update` / `migrate`).
-- **Dependencies:** `scriptorium/engines/vault.py` (`build_obsidian_properties`, `validate_obsidian_properties`, `incremental_update_note`), [tag-taxonomy.md](tag-taxonomy.md), [authoring_rules.md](../../shared/authoring_rules.md).
+- **Activate on:** Every note generation, companion artifact split, or incremental vault update.
+- **Dependencies:** [tag-taxonomy.md](tag-taxonomy.md), [authoring_rules.md](../../shared/authoring_rules.md).
 
 ## Execution & Output Contract
 
@@ -39,4 +39,4 @@ Populate optional managed fields only when meaningful: `subdomain`, `id`, `alias
 
 ## Failure Handling & Validation
 
-- Reject `..` path traversal, Windows reserved names, escaping symlinks, missing mandatory keys, or multi-artifact notation drift via `KnowledgeEngine.check_multi_artifact()`, `QualityEngine.validate_properties()`, and `scripts/verify_vault_notes.py`.
+- Reject `..` path traversal, Windows reserved names, escaping symlinks, missing mandatory keys, or multi-artifact notation drift during review ([verification-checklist.md](../workflows/validation/verification-checklist.md)).

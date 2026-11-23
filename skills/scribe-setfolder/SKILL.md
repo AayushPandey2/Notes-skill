@@ -9,9 +9,6 @@ Persist the user's preferred Obsidian vault root and notes subfolder so every do
 
 ## Procedure
 
-1. Resolve the active Scriptorium base directory (repository root, `~/.gemini/antigravity/skills/scriptorium/`, `~/.gemini/config/skills/scriptorium/`, or `~/.codex/skills/scriptorium/`).
-2. Execute the folder setup CLI with the supplied path arguments:
-   ```sh
-   python "<skill_dir>/scripts/plan_notes.py" setfolder "<folder path>"
-   ```
-3. Report the saved `vault_path`, `notes_folder`, and resolved `notes_path` from `~/.scriptorium-config.json` (remember `create_category_folders=false` remains default so Scriptorium writes collections directly under that configured target rather than inventing extra nested category directories).
+1. Validate the supplied folder path: confirm it exists (or create it only if the user explicitly confirms) and locate the vault root (nearest parent containing `.obsidian/`, or the folder itself if no `.obsidian/` exists).
+2. Read `~/.scriptorium-config.json` if present, update `vault_path`, `notes_folder` (relative path from `vault_path`, or `""` if root), and `notes_path`, and write clean formatted JSON back to `~/.scriptorium-config.json` directly using native file tools (never generate a helper script).
+3. Report the saved `vault_path`, `notes_folder`, and resolved `notes_path` (`create_category_folders=false` remains default so Scriptorium writes collections directly under that configured target rather than inventing extra nested category directories).

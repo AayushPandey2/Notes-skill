@@ -16,7 +16,7 @@ Inputs: Verified source sections/transcript/syllabus, access scope status, targe
 Dependencies: shared/teaching_core.md, shared/authoring_rules.md, shared/math_gates.md, workflows/notes-creation/adaptive-engine.md, workflows/research/source-fidelity.md.
 Decision Rules: Preserve verified source sequence; place Foundation Bridges & M01–M14 formula+folds directly before dependent notation; merge redundant sections cleanly without fabricating missing pages.
 Failure Handling: Label partial access explicitly and mark unsupported claims [UNVERIFIED]; omit unused optional templates before publishing.
-Validation: scripts/validate_note.py, scripts/verify_vault_notes.py, QualityEngine.validate_master(..., "M2").
+Validation: [verification-checklist.md](../../workflows/validation/verification-checklist.md) (`M2` study-notes rules).
 -->
 
 # <Topic / Source Title>

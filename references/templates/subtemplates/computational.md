@@ -10,7 +10,7 @@
   1. Clarify the exact input/output contract, shape expectations, and motivating bottleneck.
   2. Trace state transitions on small asymmetric concrete inputs before full implementation.
   3. Map every mathematical term (e.g., dot product, scaling, loss) to exact code lines and explain why steps like feature scaling or array orientation matter.
-  4. Verify syntax/execution via `plan_notes.py verify-runtimes` and report verbatim status (`executed`, `tests_passed`, or `static verification (not executed)`).
-- **Dependencies:** `scriptorium/engines/pedagogy.py`, `scripts/plan_notes.py`, [teaching_core.md](../../../shared/teaching_core.md).
-- **Validation:** `scripts/plan_notes.py verify-runtimes`, `QualityEngine.check_representations()`, `QualityEngine.validate_master(..., "M5")`.
+  4. Label unexecuted code `Status: static review (not executed)` unless a native tool actually executed it.
+- **Dependencies:** [teaching_core.md](../../../shared/teaching_core.md), [authoring_rules.md](../../../shared/authoring_rules.md).
+- **Validation:** [verification-checklist.md](../../workflows/validation/verification-checklist.md) (`M5` implementation and representation parity).
 - **Failure Behavior:** Block fabricated execution logs, untrusted source execution, or unmapped equations, and repair missing edge/invariant steps locally.

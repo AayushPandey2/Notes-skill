@@ -7,7 +7,7 @@ Inputs: Verified sibling notes or concise authoritative definitions, formulas wi
 Dependencies: router.md, shared/authoring_rules.md, shared/math_gates.md; variants formula-sheet.md, syntax-reference.md, command-reference.md, atomic-card.md.
 Decision Rules: Default body <=350 words and bullets <=20 words; omit equations cleanly at math_level 0.
 Failure Handling: Never sacrifice essential domain restrictions or symbol definitions just to compress lines.
-Validation: scripts/validate_note.py, scripts/verify_vault_notes.py, QualityEngine.validate_master(..., "M3").
+Validation: [verification-checklist.md](../../workflows/validation/verification-checklist.md) (`M3` quick-reference rules).
 -->
 
 # M3 — Quick Reference & Rapid-Recall Cheat Sheet

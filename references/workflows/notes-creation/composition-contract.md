@@ -37,10 +37,7 @@ Each explicit chapter has `id`, `title`, `concepts` (owned IDs), and optional
 Known external prerequisites belong in `known_prerequisites`. Shared symbols belong
 in `notation`. Tables and visuals can carry their specifications in the same plan.
 
-Run `python scripts/scribe.py notes compose --spec <spec.json>` to validate and
-inspect the common plan. This performs no retrieval, authoring, or publication.
-The registry adds capabilities to existing knowledge-type strategies rather than
-replacing the six physical subtemplate documents or ten instructional strategies.
+Author and review chapters directly against these rules without creating intermediate JSON builders or helper scripts.
 
 Capability dependency resolution supplies a stable order and assigns each shared
 explanation stage one primary owner. Supporting capabilities contribute unique
@@ -115,7 +112,7 @@ obligation and the four named collection reviews. The integrity contract defines
 the fields; nonempty strings cannot establish verification. Hash the exact prepared
 bodies and include actual excerpts, reviewer identity, method, result and limits.
 
-Run `python scripts/scribe.py notes compose --spec <spec.json> --vault <vault> --drafts <drafts.json> --evidence <evidence.json> --reviews <reviews.json> --publish`.
+Author and publish each chapter under `<Vault>/<Topic>/` using native file tools, preserving existing custom sections and five-key YAML integrity.
 The CLI builds the existing KCP with the shared composition field and publishes
 through E6. The entire collection is checked before chapter writes: evidence, review records,
 planned sections, unfinished markers, fences, display-math delimiters, local links,
@@ -128,7 +125,7 @@ is not a filesystem transaction. On failure, committed checkpoints remain usable
 and the result reports partial failure. Identical reruns do not rewrite notes.
 Changed existing chapters require reviewed expected hashes via `--expected-hashes`.
 Repair only affected chapter bodies, obligations, and dependent references.
-Run `python scripts/scribe.py notes compose --spec <spec.json> --vault <vault> --validate`
+Review every published chapter against [verification-checklist.md](../validation/verification-checklist.md) to confirm YAML, links, local visual embeds, and formula folds.
 to recheck publication without writing. It detects modified reviewed chapters,
 changed assets, a changed plan identity, and extra files inside the topic folder.
 

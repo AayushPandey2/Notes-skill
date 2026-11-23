@@ -6,7 +6,7 @@ Inputs: Primary paper PDF/text + supplementary material, exact equation numbers,
 Dependencies: router.md, shared/authoring_rules.md, shared/math_gates.md, workflows/research/source-fidelity.md.
 Decision Rules: Attribute exact paper section/equation numbers; separate independent explanatory derivations visibly; flag unstated ablations honestly.
 Failure Handling: Mark unavailable metrics or ablations '[ABLATION / RESULT ABSENT IN PAPER]'; never fabricate baselines or supplementary claims.
-Validation: scripts/validate_note.py, KnowledgeEngine.verify_claim_links().
+Validation: [verification-checklist.md](../../workflows/validation/verification-checklist.md) and [source-fidelity.md](../../workflows/research/source-fidelity.md).
 -->
 
 # Primary Research Paper Deconstruction, Derivation & Ablation Audit

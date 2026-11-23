@@ -14,7 +14,7 @@ Evaluate candidate resources (`textbook`, `academic_lecture_notes`, `official_do
 
 ## 2. Pedagogical Progression Order
 
-Order recommended resources along a clear learning progression adapted to the subject (validated by `scriptorium/engines/research.py (`scripts/scribe.py research`) curate_learning_resources`):
+Order recommended resources along a clear learning progression adapted to the subject:
 
 1. `conceptual_foundation`
 2. `formal_explanation`

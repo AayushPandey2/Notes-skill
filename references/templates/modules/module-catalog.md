@@ -11,7 +11,7 @@ Every module below is declared in [instructional-registry.json](../../workflows/
 | `visual_reasoning` (`P05`) | Obsidian-compatible diagrams (`function_graph`, `flowchart`, `timeline`, `geometric_diagram`, etc.) | M1, M2, M5, M7 | `validate_visuals`, `validate_note._mermaid` |
 | `representation_alignment` (`P03`) | Canonical symbol, unit, equation-code, and tensor-shape consistency | M1, M2, M3, M4, M5 | `validate_representations` |
 | `misconception_prevention` (`P06`) | Point-of-need corrections without invented frequency stats | M1, M2, M4, M5, M6, M7 | `audit_misconceptions` |
-| `code_explanation` & `executable_verification` (`P10`) | Equation-to-code mapping and truthful runtime verification tiers | M1, M3 (`syntax_reference`), M5 | `verify_executable_example`, `plan_notes.py verify-runtimes` |
+| `code_explanation` & `executable_verification` (`P10`) | Equation-to-code mapping and honest static/execution status labels | M1, M3 (`syntax_reference`), M5 | [verification-checklist.md](../../workflows/validation/verification-checklist.md) |
 | `comparisons` | Equivalent-criteria trade-off matrices and crossover edge cases | M1, M3, M7 | `comparison-guide.md` |
 | `cross_topic_connections` (`P08`) | Typed semantic vault links (`existing_note` vs. `planned_note`) with link-inflation guard | M1, M2, M7 | `resolve_cross_topic_connections` |
 | `cognitive_load` (`P09`) | Concept-level detail facets and beginner symbol-density protection | M1, M2 | `audit_cognitive_load` |

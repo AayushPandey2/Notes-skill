@@ -1,23 +1,12 @@
-# Teaching input contract
+# Concept authoring checklist (formerly teaching-input contract)
 
-Use for `notes generate --teaching <json>`. The JSON object maps concept IDs or exact chapter titles from the approved session plan to records. These are researched content inputs, not assertions that quality has been verified.
+When planning and authoring any note or collection directly in Markdown, ensure every concept covers these elements as applicable (without creating intermediate JSON builders or helper scripts):
 
-Each record may supply:
+- **Core teaching (`what`, `why`, `how`, `when_use`, `when_not_use`, `apply`):** Motivating starting problem, intuitive mental model (with analogy limits), prerequisite bridges immediately before use, step-by-step causal mechanism, worked application, selection criteria, limitations/misconceptions, and reinforcement.
+- **Mathematics (`shared/math_gates.md`):** Orienting prose before every `$$...$$`, followed immediately by `> [!note]- 📐 Understand this formula` covering applicable 12-stage elements (purpose, components, symbol-by-symbol breakdown with shapes/units, plain reading, prerequisites, numerical walkthrough, visual/parameter intuition, derivation, implementation, limitations, recall).
+- **Worked examples (`Step 1`–`12`):** Problem, given values, target quantity, assumptions, governing formula, explicit intermediate steps, result, interpretation, sanity check, common mistakes, and generalization.
+- **Comparisons:** Causal explanation of *why* methods differ (suitability, assumptions, mechanism, strengths, limitations) **before** any summary table.
+- **Visuals (`workflows/notes-creation/representations.md`):** Search open educational raster images (`png`/`jpg`/`webp`), verify permissive license, download into `<Vault>/assets/scriptorium/<slug>/`, inspect via `read_file`, and write `Explain -> Show -> Decode -> Connect`. Report unavailable visuals honestly.
+- **Assessments:** Objective-aligned questions with separate collapsed `> [!hint]- Hint` and `> [!tip]- Answer` callouts.
 
-- `objectives`: concrete learning goals; `sections`: ordered `{heading, content}` narrative sections.
-- `teaching`: structured six-question teaching roles (`what`, `why`, `how`, `when_use`, `when_not_use`, `apply`, plus optional `intuition` and `reinforcement`), or `teaching_bindings` mapping canonical roles to `sections` headings.
-- `mechanism`: causal mechanism record with `inputs`, `steps` (`component`, `receives`, `operation`, `reason`, `produces`, `next`), `outputs`, and `interpretation`.
-- `depth_profile`: explicit instructional demand (`complexity`: `trivial` | `simple` | `standard` | `complex`, `internal_mechanisms`, `prerequisite_burden`, `mathematical_difficulty`, `implementation_importance`, `advanced_connections`, `assessment_types`).
-- `practical`: adaptive 12-stage laboratory (`domain`: `programming` | `machine_learning` | `mathematics` | `experimental` | `humanities` | `general`, `stages`, optional `omissions`, `code`, `language`, and bound `execution` receipt `{code_sha256, status, expected, observed, method}`).
-- `starting_intuition`, `familiar_anchor`, `prerequisite_bridges` (`{term, explanation}`), `comparisons` (causal prose + `suitability`/`assumptions`/`mechanism`/`strengths`/`limitations`/`resources`/`reliability`/`interpretability`/`practical_constraints` + optional `table`), `misconceptions` and `practical_application`.
-- `equations`: mathematical component specifications described in [math gates](../../shared/math_gates.md), including symbol meanings, operation order, assumptions, `required_stages`, `stage_omissions` (substantive reasons only), and numerical traces.
-- `worked_problems`: problem, given inputs, objective, assumptions, formula, symbols, intermediate steps and expected result. Arithmetic expressions use the bounded evaluator.
-- `assessments`: `{id, type, objectives, question, hint, reasoning, answer}` records rendered as questions with separate collapsed hint and answer callouts.
-- `visual_requirements`: learning objectives (with optional `role` from `overview`, `motivation`, `mechanism`, `mathematical`, `worked_example`, `comparison`, `application`, `synthesis`) that activate web research, or `visual_specs`: explicit acquisition specifications. Set `visual_required` when a chapter cannot be complete without its visual support.
-- A visual specification can include `inspection_findings` with the exact `content_hash`, observed `text_labels_extracted`, and review method. The downloaded hash must match before those findings enter composition.
-
-The Writer tracks orientation, mechanism, examples, interpretation, limitations, intuition, prerequisite bridges and formula folds as applicable. `require_complete` rejects pending structural obligations; comprehensive public generation enables it automatically. Use the canonical narrative roles when supplying complete authored sections, or use the corresponding teaching fields so the Tutor supplies their headings. A record with headings alone cannot establish scientific or educational accuracy.
-
-The Publisher acquires declared visuals before composition, checks final formula folds after reconciliation, normalizes generated links to real note paths, and atomically writes notes and state. Resume is bound to both input specifications and file hashes. Existing personal sections are preserved; a validation failure blocks writing rather than deleting them.
-
-`complete` in the file-generation manifest reports committed files; `verified` remains false until educational review is established outside structural generation. Do not describe this as full educational acceptance or UI verification.
+Manual review checks Markdown structure and content completeness; it does not replace independent human review or live Obsidian UI inspection.

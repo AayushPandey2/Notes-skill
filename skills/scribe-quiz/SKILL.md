@@ -10,5 +10,5 @@ Run focused active-recall quizzing against existing vault notes without overwhel
 ## Procedure
 
 1. Follow [router.md](../../router.md) and [Command G](../../references/workflows/notes-creation/command-playbooks.md#command-g) under master `M6` (`mock_exam` behavior) without loading full M1 composition specs.
-2. Inspect the target note(s), then ask **one question at a time** and wait for the learner's answer before revealing feedback or moving on—multi-question dumps defeat active recall.
-3. Grade the response strictly against what the note supports, give concise corrective feedback referencing `[[Note Title#Heading]]`, and optionally record weak spots in the note's body review field via `scripts/patch_links.py` (never inject extra YAML frontmatter keys).
+2. Read the target note(s), then ask **one question at a time** and wait for the learner's answer before revealing feedback or moving on—multi-question dumps defeat active recall.
+3. Grade the response strictly against what the note supports, give concise corrective feedback referencing `[[Note Title#Heading]]`, and optionally record weak spots in the note's body review section directly (never inject extra YAML frontmatter keys or generate scripts).

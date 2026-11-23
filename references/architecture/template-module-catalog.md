@@ -1,6 +1,6 @@
 # Scriptorium Template, Variant, Subtemplate & Module Usage Catalog
 
-Authoritative inventory of all active templates, variants, subtemplates, and reusable modules registered in [master-registry.yaml](../routing/master-registry.yaml) and [instructional-registry.json](../workflows/notes-creation/instructional-registry.json). Every path and activation rule below is verified by `scripts/scribe.py audit` and `tests/test_repository_architecture_audit.py`.
+Authoritative inventory of all active templates, variants, subtemplates, and reusable modules registered in [master-registry.yaml](../routing/master-registry.yaml) and [instructional-registry.json](../workflows/notes-creation/instructional-registry.json).
 
 ## 1. Taxonomy Boundaries
 
@@ -60,7 +60,7 @@ Authoritative inventory of all active templates, variants, subtemplates, and reu
 
 ## 5. Master–Subtemplate–Module Usage Matrix (Verified Against Implementation)
 
-Activation levels below come directly from `master-registry.yaml`, `TEMPLATE_CAPABILITIES` in `orchestration.py`, and `MASTER_EIS_ACTIVATION` in `_explanation.py`:
+Activation levels below come from [master-registry.yaml](../routing/master-registry.yaml) and [instructional-registry.json](../workflows/notes-creation/instructional-registry.json):
 
 | Module / Capability | Category | Owner Engine | M1 | M2 | M3 | M4 | M5 | M6 | M7 |
 |---|---|---|---|---|---|---|---|---|---|

@@ -6,7 +6,7 @@ Inputs: Resolved comparison candidates (existing notes or verified sources), sha
 Dependencies: router.md, shared/authoring_rules.md, shared/math_gates.md, workflows/notes-creation/representations.md.
 Decision Rules: Lead with 'Choose X When...' verdict; explain causal differences before comparison tables; compare under matched workloads; prove a crossover edge case.
 Failure Handling: Never fabricate quantitative benchmarks (mark unmeasured metrics '[UNVERIFIED]'); clarify ambiguous target notes before writing.
-Validation: scripts/validate_note.py, QualityEngine.validate_master(..., "M7", variant="comparison_guide").
+Validation: [verification-checklist.md](../../workflows/validation/verification-checklist.md) (`M7` comparison guide).
 -->
 
 # Decision-First Architectural, Algorithm & Tool Comparison

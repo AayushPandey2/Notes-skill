@@ -10,6 +10,6 @@
   1. Explain the research question and evaluation metric intuition before reporting metric numbers.
   2. Pair every metric claim with dataset, protocol, baseline, and variance/uncertainty metadata.
   3. Inspect and explain downloaded research figures (`T06`–`T09`) rather than fabricating plots; flag absent ablations explicitly.
-- **Dependencies:** `scriptorium/engines/research.py`, `scriptorium/engines/composition/checks.py`, [teaching_core.md](../../../shared/teaching_core.md).
+- **Dependencies:** [research-engine.md](../../workflows/research/research-engine.md), [source-fidelity.md](../../workflows/research/source-fidelity.md), [teaching_core.md](../../../shared/teaching_core.md).
 - **Validation:** `KnowledgeEngine.verify_claim_links()`, `checks.check_claim`, `QualityEngine.evaluate_teaching()`.
 - **Failure Behavior:** Reject unmatched benchmark comparisons, missing uncertainty classifications, or unlabeled synthetic data presented as empirical findings.

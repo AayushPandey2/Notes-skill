@@ -8,4 +8,4 @@
   1. Interleave examples right beside the concept they demonstrate in Section 2 rather than hoisting all examples into a later summary section.
   2. Insert labeled `[Educational Addition — Prerequisite Bridge]` micro-explanations inline right before dependent notation instead of silently reordering sections.
   3. Attach locator anchors (pages, sections, timestamps) and `[UNVERIFIED]` / gap markers cleanly whenever source segments are inaccessible.
-- **Failure Handling & Validation:** Reject unattributed section reordering or invented missing source pages via `plan_notes.py publish --coverage`.
+- **Failure Handling & Validation:** Reject unattributed section reordering or invented missing source pages ([source-fidelity.md](../../workflows/research/source-fidelity.md)).

@@ -10,13 +10,13 @@ Dispatch each active public command or `/scribe-notes` internal branch cleanly�
 
 - **Role:** `/scribe-doubt` — Read-only vault Q&A.
 - **Trigger:** `/scribe-doubt <question>` or read-only lookup on existing vault notes.
-- **Inputs & Dependencies:** Vault path, question, `scripts/vault_index.py`.
+- **Inputs & Dependencies:** Vault path, question, native file search/read tools.
 - **Execution & Output:** Discover and read only matching vault notes; answer with exact `[[Note Title]]` / `[[Note Title#Heading]]` citations.
 - **Failure / Constraints:** Perform zero edits and zero external web research; state missing vault coverage honestly.
 
 ### Command B — Expand Existing Vault Topic (`/scribe-notes`)
 - **Trigger:** Adding subtopics or filling gaps inside an existing vault topic directory.
-- **Execution:** Run `vault_index.py --discover`, inspect `detected_workflow` (`"deep-notes"`, `"study-notes"`, `"mixed"`, or `null`), match dominant style (or clarify when mixed), update the index/syllabus allowlist first, reconcile existing notes non-destructively, and run `scripts/patch_links.py --dry-run` for metadata updates.
+- **Execution:** Inspect existing vault notes directly, match dominant style (or clarify when mixed), update the index/syllabus allowlist first, reconcile existing notes non-destructively, and verify metadata without overwriting custom YAML.
 
 ### Command C — Comprehensive Learning (`M1` Deep Notes)
 - **Trigger:** Broad or first-principles deep-learning requests routed to `M1`.
@@ -39,7 +39,7 @@ Dispatch each active public command or `/scribe-notes` internal branch cleanly�
 
 - **Role:** `/scribe-quiz` — Interactive active recall.
 - **Trigger:** `/scribe-quiz <topic/note>` over existing vault notes (`M6`).
-- **Execution & Constraints:** Ask **one question per turn**, wait for the user reply, grade strictly against existing note content, and log weak spots only in body review fields via `scripts/patch_links.py` (never inject extra YAML keys).
+- **Execution & Constraints:** Ask **one question per turn**, wait for the user reply, grade strictly against existing note content, and log weak spots only in body review fields (never inject extra YAML keys).
 
 ### Command H — Atomic Card (`M3` / `atomic_card`)
 - **Trigger:** Single-concept transcludable note (`<150` words).
@@ -50,5 +50,5 @@ Dispatch each active public command or `/scribe-notes` internal branch cleanly�
 - **Execution:** Decompose into `4–10+` numbered child notes (minimum `3` + MOC index), preserve source terminology/order, label additions, and apply `shared/math_gates.md` (`M01`–`M14`) whenever quantitative material appears.
 
 ### Command V — Unified Video & Lecture Ingestion (`/scribe-ytnote` -> `/scribe-notes`)
-- **Trigger:** Video URL, lecture recording, timestamped transcript JSON, or candidate video frames (`VIDEO-01`–`VIDEO-04`, `scripts/scribe.py ytnote`; compatible aliases `ytnotes` and `ytlecture` remain supported).
-- **Execution & Validation:** Check tool availability honestly (`yt-dlp`, `ffmpeg`, captions), declare explicit `access_state` (`full_multimodal`, `transcript_plus_frames`, `transcript_only`, `media_only`, `metadata_only`), segment transcript chronologically, screen frames via `composition/video.py` to keep readable derivation/diagram stills under `assets/scriptorium/<slug>/`, explain prose + formulas via `shared/teaching_core.md` + `shared/math_gates.md`, and degrade honestly on unavailable transcripts/frames.
+- **Trigger:** Video URL, lecture recording, transcript, or candidate video frames (`/scribe-ytnote`, `/scribe-ytnotes`, `/scribe-ytlecture`).
+- **Execution & Validation:** State tool/media availability honestly, declare explicit `access_state` (`full_multimodal`, `transcript_plus_frames`, `transcript_only`, `media_only`, `metadata_only`), segment transcript chronologically, keep only clear inspected stills under `assets/scriptorium/<slug>/`, explain prose + formulas via `shared/teaching_core.md` + `shared/math_gates.md`, and degrade honestly on unavailable transcripts/frames.

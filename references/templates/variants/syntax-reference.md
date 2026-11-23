@@ -6,7 +6,7 @@ Inputs: Official versioned documentation, shared concrete running fixture, edge-
 Dependencies: router.md, shared/authoring_rules.md, shared/math_gates.md.
 Decision Rules: Group signatures by task workflow; state copy-vs-view, mutation, and layout semantics before lookup tables; reuse one shared running fixture across all recipes.
 Failure Handling: Never fabricate unverified signatures or performance timings; handle empty/zero/boundary inputs explicitly in recipes.
-Validation: scripts/validate_note.py, scripts/plan_notes.py verify-runtimes.
+Validation: [verification-checklist.md](../../workflows/validation/verification-checklist.md).
 -->
 
 # Workflow-Organized API Reference, Execution Model & Cookbook

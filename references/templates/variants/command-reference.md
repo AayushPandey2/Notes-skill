@@ -8,4 +8,4 @@
   1. Group commands strictly by operational workflow (`Inspect`, `Create`, `Debug`, `Recover`) rather than alphabetical order.
   2. Emit dense tables: `Command & Key Flags | Effect | Concrete Example | Safety / Destructive Caveat`.
   3. Declare OS/shell assumptions and exact verified versions; never invent unverified flags.
-- **Failure Handling & Validation:** Label destructive operations visibly; verify syntax via `scripts/validate_note.py` (`<=350`-word default M3 target where applicable).
+- **Failure Handling & Validation:** Label destructive operations visibly; review syntax against [verification-checklist.md](../../workflows/validation/verification-checklist.md) (`<=350`-word default M3 target where applicable).

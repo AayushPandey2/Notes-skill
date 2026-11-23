@@ -17,7 +17,7 @@ Each `sources` entry has a stable `id`, `location` (an actually inspected sectio
 
 Identification is the source inventory; assignment is its concept list; planning is the saved instructional plan. After drafting and checking each element, create a scratch JSON report with `elements`: each record has `id`, `status` (`explained` or `validated`), `anchor` (an actual Markdown heading slug), and `note` (brief support/check result, explicitly identifying additions where relevant). Only `validated` receipts satisfy publication. Duplicate or unknown IDs, missing anchors and incomplete required coverage fail. Receipts confirm an author's review, not machine-proven fidelity.
 
-Use `plan_notes.py publish ... --coverage coverage.json` for source-grounded deep plans. Publication rechecks receipts against the persisted inventory and draft, enforces required element heading order for strict/expanded policies, and saves the accepted report next to plan state with a draft hash. Receipts sharing a heading still require manual within-section order review. Interrupted attempts revalidate; completed identical outputs remain idempotent. Do not put inventory metadata in note YAML. If there are material gaps, save the draft and report them without calling the source coverage complete. Independent notes need no empty coverage report.
+For source-grounded plans, verify every required element against the inspected source passages, preserve required element heading order for strict/expanded policies, and report any material gaps explicitly without inventing claims. Independent notes need no coverage report.
 
 ## Semantic review and correction
 

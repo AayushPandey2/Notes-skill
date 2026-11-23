@@ -1,6 +1,6 @@
 # Central Tag Taxonomy
 
-All generated notes use one consistent hierarchical Obsidian tag taxonomy managed by `scriptorium/engines/vault.py` (`generate_tags`, `normalize_tag`):
+All generated notes use one consistent hierarchical Obsidian tag taxonomy:
 
 ```text
 topic/<specific-topic-slug>

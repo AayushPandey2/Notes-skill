@@ -2,7 +2,7 @@
 
 ## Purpose & Single Authority
 
-Select exactly one canonical master (`M1`–`M7`) and optional variant (`master-registry.yaml`) per requested artifact independently of academic domain, owned by `scriptorium/engines/orchestration.py` (`scripts/scribe.py route`).
+Select exactly one canonical master (`M1`–`M7`) and optional variant ([master-registry.yaml](master-registry.yaml)) per requested artifact independently of academic domain.
 
 ## Activation Trigger & Precedence Rules
 
@@ -15,4 +15,4 @@ Select exactly one canonical master (`M1`–`M7`) and optional variant (`master-
 ## Multi-Artifact & Failure Handling
 
 - **Multi-Artifact Split:** Integrated add-ons (`"... with a formula summary at the end"`) stay modules inside the primary master; explicit multi-deliverable asks emit linked routes sharing one evidence registry and notation table.
-- **Failure Handling & Validation:** Raise a structured error if a registered template/variant is missing; verify routing determinism via `OrchestrationEngine.validate_registry()` (`scripts/scribe.py validate-registry`).
+- **Failure Handling & Validation:** Report a missing template/variant explicitly rather than improvising an unregistered layout; verify routing against [master-registry.yaml](master-registry.yaml) and [verification-checklist.md](../workflows/validation/verification-checklist.md).

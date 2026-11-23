@@ -10,6 +10,6 @@
   1. Establish historical problem/context before events unfold.
   2. Sequence documented chronology cleanly using prose (plus Mermaid timelines only when sequence density warrants).
   3. Distinguish primary historical facts from retrospective causal arguments and avoid imposing mathematical/algorithmic templates.
-- **Dependencies:** `scriptorium/engines/research.py`, `scriptorium/engines/knowledge.py`, [teaching_core.md](../../../shared/teaching_core.md).
+- **Dependencies:** [research-engine.md](../../workflows/research/research-engine.md), [teaching_core.md](../../../shared/teaching_core.md).
 - **Validation:** `KnowledgeEngine.verify_claim_links()`, `QualityEngine.evaluate_teaching()`, `QualityEngine.review_explanatory_clarity()`.
 - **Failure Behavior:** Flag unsupported causal assertions (`EIS-SPINE-002`), collapsed scholarly disputes, or forced technical jargon.

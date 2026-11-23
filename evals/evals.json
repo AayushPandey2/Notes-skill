@@ -4,25 +4,24 @@
     {
       "id": 1,
       "prompt": "/scribe-notes Explain Gradient Descent and Ridge Regression for beginners with every equation explained step by step and a visual intuition plot.",
-      "expected_output": "Interactive configuration gate resolves M1 deep-notes, beginner-first progression precedes every equation, each displayed $$...$$ equation has a collapsible '> [!example]- Understand this formula step by step' callout directly beneath it explaining symbols, shapes/units, expanded terms, concrete numbers, and assumptions, and visuals are acquired via web-image-first raster search under assets/scriptorium/<slug>/ without programmatic SVG synthesis.",
+      "expected_output": "Resolves M1 deep-notes directly without scripts, beginner-first progression precedes every equation, each displayed $$...$$ equation has a collapsible '> [!note]- 📐 Understand this formula' callout directly beneath it explaining symbols, shapes/units, expanded terms, concrete numbers, and assumptions, and visuals are acquired via web-image-first raster search under assets/scriptorium/<slug>/ without programmatic SVG synthesis.",
       "files": [],
       "expectations": [
-        "Routes through /scribe-notes to master M1 (deep-notes) with no pre-generation knowledge quiz",
+        "Routes through /scribe-notes to master M1 (deep-notes) with no pre-generation knowledge quiz and zero generated scripts",
         "Introduces plain-language motivation and intuition before displayed equations",
-        "Every display math $$...$$ block is immediately followed by '> [!example]- Understand this formula step by step'",
-        "Visual acquisition uses LAVIA/BVIA raster search without programmatic SVG generation"
+        "Every display math $$...$$ block is immediately followed by '> [!note]- 📐 Understand this formula'",
+        "Visual acquisition uses local raster downloads (png/jpg/webp) inspected before writing, without programmatic SVG generation"
       ]
     },
     {
       "id": 2,
       "prompt": "/scribe-ytnote Build structured study notes from this lecture video with timestamps, equations, and clearest whiteboard frames: https://www.youtube.com/watch?v=aircAruvnKk",
-      "expected_output": "Routes through the unified /scribe-notes video adapter (composition/video.py, VIDEO-01..04), reports explicit access_state honestly, segments timestamped transcript blocks, screens candidate frames to retain clear derivation/diagram stills locally under assets/scriptorium/<slug>/ while rejecting transition/blur frames, and places collapsible formula folds directly beneath displayed math.",
+      "expected_output": "Uses the unified /scribe-notes video workflow, reports explicit access_state honestly, segments timestamped transcript blocks, keeps only clear inspected stills locally under assets/scriptorium/<slug>/ when accessible, and places collapsible formula folds directly beneath displayed math.",
       "files": [],
       "expectations": [
-        "Uses unified video adapter feeding /scribe-notes without creating a parallel note generator",
-        "Records explicit video access_state and preserves meaningful intermediate derivation frames",
-        "Rejects noisy or duplicate frames with recorded screening reasons",
-        "Attaches '> [!example]- Understand this formula step by step' directly under displayed equations"
+        "Uses unified video workflow inside /scribe-notes without creating a parallel generator or helper script",
+        "Records explicit video access_state honestly",
+        "Attaches '> [!note]- 📐 Understand this formula' directly under displayed equations"
       ]
     },
     {
@@ -32,7 +31,7 @@
       "files": [],
       "expectations": [
         "Routes to master M3 with variant 'formula_sheet'",
-        "Selective context compilation omits unrelated M1/M5/M6 master templates",
+        "Selective context omits unrelated M1/M5/M6 master templates",
         "Includes explicit units and applicability conditions for every listed equation"
       ]
     },
@@ -61,7 +60,7 @@
     {
       "id": 6,
       "prompt": "/scribe-quiz Quiz me on my Logistic Regression vault notes one question at a time.",
-      "expected_output": "Launches interactive active-recall session under M6/Command G, asks one question and waits for learner response before grading against the vault note, and updates only body weak-spot fields via patch_links without adding extra YAML keys.",
+      "expected_output": "Launches interactive active-recall session under M6/Command G, asks one question and waits for learner response before grading against the vault note, and updates only body weak-spot fields without adding extra YAML keys.",
       "files": [],
       "expectations": [
         "Presents exactly one question per turn and waits for user reply",
@@ -72,10 +71,10 @@
     {
       "id": 7,
       "prompt": "/scribe-setfolder Physics/Quantum Mechanics",
-      "expected_output": "Persists configured vault_path and notes_folder in ~/.scriptorium-config.json via plan_notes.py setfolder and reports the resolved notes_path.",
+      "expected_output": "Persists configured vault_path and notes_folder in ~/.scriptorium-config.json directly and reports the resolved notes_path.",
       "files": [],
       "expectations": [
-        "Invokes plan_notes.py setfolder with the requested path",
+        "Updates ~/.scriptorium-config.json directly without creating a helper script",
         "Reports saved vault_path, notes_folder, and notes_path from ~/.scriptorium-config.json"
       ]
     }
