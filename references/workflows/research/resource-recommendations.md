@@ -1,4 +1,4 @@
-# Learner-Aware Resource Recommendation Engine
+# Further-learning resources
 
 Use this contract when recommending further-learning resources (under Mode `R-R` or in the revision/further-learning section of a deep-study note). **Learning resources are strictly distinct from factual research citations:** a source cited to verify a theorem or API behavior is not automatically a good pedagogical recommendation for a beginner, and an accessible tutorial is not automatically a primary authority for factual verification.
 
@@ -14,7 +14,7 @@ Evaluate candidate resources (`textbook`, `academic_lecture_notes`, `official_do
 
 ## 2. Pedagogical Progression Order
 
-Order recommended resources along a clear learning progression adapted to the subject (validated by `scriptorium/engines/research.py (`scripts/scribe.py research`) curate_learning_resources`):
+Order recommended resources along a clear learning progression adapted to the subject:
 
 1. `conceptual_foundation`
 2. `formal_explanation`

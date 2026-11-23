@@ -1,44 +1,12 @@
 ---
 name: scribe-notes
-description: Universal adaptive note-creation command. Interactively calibrates note style (M1-M7), depth, scope (single note vs. hierarchical multi-note collection), and Obsidian Properties before generating verified study notes.
+description: Create or revise Obsidian learning notes from a topic, PDF, article, video, source material, or existing notes. Use for comprehensive notes, study guides, worked solutions, implementation explanations, quick references, assessments, and comparisons.
 ---
 
-# `/scribe-notes` — Universal Adaptive Notes Command
+# `/scribe-notes`
 
-`/scribe-notes` is the **sole public note-creation command** in Scriptorium 6.0. All note styles (`M1` Deep Learning Notes, `M2` Structured Study Notes, `M3` Quick Reference / Cheat Sheet / Formula Sheet / Atomic Card, `M4` Worked Problems & Solutions, `M5` Implementation & Technical Guide, `M6` Practice & Assessment / Flashcards, `M7` Synthesis / Comparison / Concept Map / Paper Breakdown) are routed internally through `/scribe-notes` across the 12 logical roles (**Director, Map, Tutor, Planner, Researcher, Writer, Visuals, Assets, Quiz, Checker, Vault, Speed**) and Tier 0–4 triggers (`T01`–`T15`; see [SKILL.md](../../SKILL.md) and [router.md](../../router.md)).
+Input: the learner's request and sources; an explicit vault path if given. Default to a single note for a narrow request and a planned collection for a broad topic. Use [router.md](../../router.md) to select the master, and [the destination gate](../../references/workflows/notes-creation/pre-gen-gate.md) before any write. A video request uses Command V in the [command playbooks](../../references/workflows/notes-creation/command-playbooks.md) when transcript or media access is available.
 
-> **Non-note commands preserved separately (`T16` & Vault config):** `/scribe-doubt` (read-only vault Q&A), `/scribe-quiz` (interactive active-recall quizzing), `/scribe-setfolder` (vault target folder configuration).
+Follow [the direct-authoring workflow](../../shared/runtime_pipeline.md) and the [root authoring rule](../../SKILL.md#scriptorium). Load only the selected master and relevant variant, knowledge-type subtemplate, and policies via [the reference index](../../references/README.md). Source-only means no outside browsing; distinguish any labeled expansion the user permits. Teach prerequisites before first use, explain equations and worked examples at the requested depth, and cite actual source locations.
 
-## Comprehensive topic collections
-
-For full-topic M1 notes, follow [the composition contract](../../references/workflows/notes-creation/composition-contract.md), [the KCP integrity contract](../../references/contracts/composition-integrity.md), and [the representation contract](../../references/workflows/notes-creation/representations.md):
-- **Layout (`T04`–`T05`):** Publish to the vault-native `<Topic>/` folder via `resolve_collection_layout` (honoring `/scribe-setfolder`, `create_category_folders=false` default) with one numbered MOC and 5–10 substantive chapters (omit `chapters` for adaptive planning). Supply a shared concept plan to `scripts/scribe.py notes compose`.
-- **Metadata:** Exact five-key YAML (`id`, `aliases`, `topic`, `tags`, `nexttopics`) with hierarchical `domain/`, `subject/`, `topic/` tags; internal state stays in `.scriptorium/collections/` manifests.
-- **Web-Image-First Visuals (`T09`):** Follow LAVIA routing (Reuse → Discover → Download/Validate → Documented SVG Fallback) and BVIA cognitive accessibility ranking + `Explain -> Show -> Decode -> Connect` walkthroughs, persisting verified local assets under `assets/scriptorium/<collection-slug>/`.
-- **Preparation & Integrity (`T10`–`T15`):** Run `notes compose --prepare` before reviewing; hash prepared chapter bodies for artifact-bound reviews. Use `--context` for selective compilation, `--repair` for dependency-aware fixes, and `--validate` to recheck published artifacts without writing. Record unavailable host checks explicitly. `notes generate --legacy-layout` remains available for existing nested collections; other masters and explicitly narrow single notes follow the workflow below.
-
-## Legacy and single-note execution contract
-
-1. **Always start with the Interactive Configuration Gate (before generating final notes):**
-   - Inspect the request via `python scripts/scribe.py notes start "<request>" --vault "<vault>"` (or `OrchestrationEngine.start_notes_session()`).
-   - If the user invoked bare `/scribe-notes` with no topic, ask first what topic, source, or learning goal they want notes on.
-   - Infer provisional recommendations for **master template (`M1`–`M7`)**, **variant**, **depth**, **scope tier (`S0`–`S5`)**, and **organization (`single_note` vs. `hierarchical_collection`)**.
-   - Ask only the **adaptive, unanswered** plain-text configuration questions (typically 1–4 concise questions; skip any preference already explicitly stated in the user's request, or honor `"skip questions"` / `"use your recommendations"`).
-   - Present the inferred recommendation clearly alongside a zero-friction default (`Reply "use your recommendations" to proceed`).
-2. **Accept Natural Follow-Up Replies Without Repeating `/scribe-notes`:**
-   - Process free-text answers, numbered/lettered replies (`1b, 2a`), partial answers, mid-flow corrections (`"actually make it a cheat sheet"`), outline edits (`"remove CNNs and add Bayesian Inference"`), or cancellation (`"cancel"`) via `python scripts/scribe.py notes respond --vault "<vault>" --session-id "<id>" --reply "<reply>"`.
-3. **Preview Substantial Hierarchical Collections Before Generation:**
-   - For broad topics (`S3`–`S5`, or `hierarchical_collection` with > 3 notes), show the proposed **Parent Map of Content (`index`) + grouped child notes + learning path** before writing notes.
-   - Keep **Topic Hierarchy** (`parent_id` / `child_ids`), **Prerequisites** (`prerequisite_ids`), and **Related Links** (`related_ids`) strictly separated.
-4. **Generate Through the Full Adaptive Pipeline & Validate Collection-Wide:**
-   - Run `python scripts/scribe.py notes generate --vault "<vault>" --session-id "<id>" --validate`.
-   - Every child note uses the full adaptive `M1`–`M7` + `EIS-01..EIS-07` Explanation Intelligence pipeline, mandatory Obsidian Properties (`topic`, `tags`, `master_topic`, `domain`, `note_type`, `parent_topic`, `collection_id`), safe atomic writes, and non-destructive incremental reconciliation if a canonical file already exists.
-   - Parent MOC notes (`note_type: index`) synthesize structure and link to every child without duplicating child derivations.
-   - Validate structural integrity, wikilinks, Obsidian Properties, coverage completeness, and manifest honesty before reporting completion.
-
-## Reference Architecture
-
-- Master skill instructions: `../../SKILL.md`
-- Request router & seven-master policy: `../../router.md`, `../../references/routing/master-registry.yaml`, `../../references/routing/routing-policy.md`
-- Pre-generation gate & interactive playbooks: `../../references/workflows/notes-creation/pre-gen-gate.md`, `../../references/workflows/notes-creation/command-playbooks.md`
-- Obsidian Properties & tag taxonomy: `../../references/metadata/properties-policy.md`, `../../references/metadata/tag-taxonomy.md`
+Output: final Obsidian Markdown, a companion lab for each newly generated content note under [the lab contract](../../references/workflows/notes-creation/experimental-lab.md), and needed, inspected local raster assets at the authorized destination. Review image needs and completed embeds separately for each note and lab; when multiple genuine needs exist, a single image or Mermaid diagram does not finish that file. Complete [visual acquisition and saved-embed checks](../../references/workflows/notes-creation/representations.md). For ML labs, check documented Rust crate support and include the library implementation when available, even if local Cargo execution is unavailable. Review actual files with [verification-checklist.md](../../references/workflows/validation/verification-checklist.md); preserve unrelated notes, custom properties, and assets. If source access, download, image inspection, execution, or Obsidian rendering is unavailable, report the specific limit and do not claim it was verified.

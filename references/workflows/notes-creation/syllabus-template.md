@@ -9,7 +9,7 @@ nexttopics: ["[[01 - <Subtopic 1>]]"]
 # <Topic Title> — Syllabus & Learning Graph
 
 <!-- AUTHORING CONTRACT:
-- Use the [adaptive instructional engine](adaptive-engine.md), [ARRIE research engine](../research/research-engine.md), and [authoring rules](../../../shared/authoring_rules.md) before selecting subtopics.
+- Use [adaptive planning](adaptive-engine.md), [research guidance](../research/research-engine.md), and [authoring rules](../../../shared/authoring_rules.md) before selecting subtopics.
 - Write this file FIRST before any `01 - <Title>.md` note is created.
 - Nothing outside `allowed_subtopics` may be created during a `/scribe-notes` collection or expansion run.
 - Tangential concepts must be handled with a 2-sentence inline recap + [[link]] (if in vault) or plain text—never a new .md file.

@@ -1,8 +1,11 @@
 # Variant: Concept Map & Knowledge Network
 
-- **Parent Master:** [M7 — Synthesis & Revision](../masters/synthesis-revision.md)
-- **Specialization:** Visual and semantic map connecting prerequisites, generalizations, contrasts, and applications across topics.
-- **Key Overrides:**
-  1. **Visual map:** One clean Mermaid diagram (`flowchart TD` or `flowchart LR`, double-quoted labels, Unicode symbols only) with typed edge labels (`requires`, `generalizes`, `contrasts`, `feeds`).
-  2. **Semantic Connection Table:** `Concept | Relation | Target | Concise Bridge | Canonical Vault Link`.
-  3. **Vault hygiene:** Distinguish `existing_note` wikilinks from `planned_note` entries (`nexttopics`) and plain-text `unresolved_concept` items (`resolve_cross_topic_connections`).
+- **Purpose:** Map prerequisite, generalization, contrast, and dependency structure across an entire topic or vault cluster cleanly.
+- **Parent Master:** [M7 — Synthesis & Revision](../masters/synthesis-revision.md) (`concept_map`)
+- **Activation Trigger:** `"concept map"`, `"knowledge map"`, `"dependency graph for <topic>"` via `/scribe-notes`.
+- **Inputs & Dependencies:** Existing vault notes, canonical concept relationships, [revision-and-linking.md](../../workflows/revision/revision-and-linking.md).
+- **Execution Overrides:**
+  1. Emit one clean Mermaid diagram (`flowchart TD` or `flowchart LR`, double-quoted Unicode labels, zero raw `$...$`) with typed edge labels (`requires`, `generalizes`, `contrasts`, `feeds`).
+  2. Follow with a Semantic Connection Table: `Concept | Relation | Target | Concise Bridge | Canonical Vault Link`.
+  3. Separate `existing_note` wikilinks from `planned_note` (`nexttopics`) and plain-text `unresolved_concept` labels.
+- **Failure Handling & Validation:** Reject cyclic prerequisite graphs or fabricated links ([verification-checklist.md](../../workflows/validation/verification-checklist.md)).

@@ -1,15 +1,13 @@
-# Subtemplate: Mathematical
+﻿# Mathematical composition
 
-- **ID:** `mathematical` | **Registry alignment:** `mathematical` (`M0–M5` depth via [adaptive-engine.md](../../workflows/notes-creation/adaptive-engine.md) and [math_gates.md](../../../shared/math_gates.md)).
-- **Entry & Scope:** Selected internally through `/scribe-notes` for standalone notes or hierarchical collection children (never requires a separate slash command; consumes resolved interactive preferences and F02 depth allocation).
-- **Compatible Masters:** `M1`, `M2`, `M3` (`formula_sheet`), `M4`, `M5`, `M6`, `M7`.
-- **Modules:**
-  - **Required (depth-gated):** `definitions`, `mathematics`, `representation_alignment` (`P03`), `EIS-03` derivation motivation (for `M1`/`M4`), `F09` notation governance.
-  - **Optional:** `derivation` (`M4`), `proof` (`M5`), `worked_examples` (`P04`), `visual_reasoning` (`P05`), `F11` progressive disclosure, `F12` calculation/derivation outcomes.
-  - **Excluded:** Unmotivated code blocks when `C0`, decorative non-mathematical analogies without breakdown disclosure.
-- **Core Adaptations:**
-  - Define symbols, domains, units, and shapes at first use; give each governing equation one canonical home and preserve source-specific notation (`E(W)` vs. `J(\theta)`) under `strict` mode.
-  - Pair formal statements with geometric/intuitive interpretation and verified numerical traces (`EIS-05`, `P03`).
-  - Justify every non-obvious transformation at `M4` (naming the rule and domain guard); supply quantified theorem hypotheses, proof, and counterexample at `M5`.
-  - Never substitute intuition or a numerical check for a requested proof, and never strip validity conditions in condensed `M3`/`M7` outputs.
-- **Validation:** `QualityEngine.check_representations()`, `PedagogyEngine.verify_trace()`, `shared/math_gates.md`, `F09` `CollectionTerminologyRegistry.validate_consistency()`.
+Activate for a displayed equation, a mathematical objective, or a worked numerical problem (MATH-01 through MATH-10).
+
+Before composition, supply the equation, its purpose, symbol meanings and types, prerequisite explanations, operation order, assumptions, and any numerical inputs. Supply dimensions for matrix operations. Use the twelve stages defined in [math_gates.md](../../../shared/math_gates.md); adapt stage depth to the actual formula rather than inventing irrelevant examples.
+
+Bind every displayed `$$...$$` formula directly to an immediately following `> [!note]- 📐 Understand this formula` callout ([math_gates.md](../../../shared/math_gates.md)), covering applicable stages (`1`–`12`) and explicit intermediate arithmetic for worked examples.
+
+For a proof, state the claim, assumptions, and why each step follows; a numerical example cannot prove a universal result. For a calculation, show actual intermediate values, units, and a magnitude or boundary check. Mark any computation that was not independently executed as a manual review.
+
+Keep intermediate arithmetic inside folds inline. Distinct displayed derivation steps need separate sibling formula-and-fold components. Never nest display math inside a formula explanation.
+
+Review the composed Markdown against [verification-checklist.md](../../workflows/validation/verification-checklist.md); missing, generic, or nested formula folds, dimension mismatches, or unverified arithmetic must be repaired locally before finishing. Do not replace a failure with a generic explanation.

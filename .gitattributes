@@ -1,6 +1,0 @@
-# Renderer code revisions must be stable across Windows/Linux checkouts.
-/scriptorium/engines/composition/*.py text eol=lf
-# These files are evidence whose exact bytes are recorded in the manifest.
-/examples/adaptive-composition/vault/.scriptorium/evidence/** -text
-/examples/adaptive-composition/vault/assets/scriptorium/** -text
-/examples/scriptorium-5/vault/assets/scriptorium/** -text
