@@ -1,7 +1,7 @@
-# Migration & Historical Architecture Notes
+# Migration history and changed guarantees
 
-Scriptorium has been migrated to a **pure instruction-and-reference-only skill** with zero executable scripts or custom runtimes.
+Scriptorium's former Python engine, Node runtime, scripts, and executable tests were removed before this instruction-only rewrite. The public skill folders are `/scribe-notes`, `/scribe-doubt`, `/scribe-quiz`, and `/scribe-setfolder`. Video aliases and retired note-command names can be interpreted by `/scribe-notes`; they are not separately installed by this repository.
 
-- **Public Entry Commands:** `/scribe-notes` (including `/scribe-ytnote` / `/scribe-ytnotes` / `/scribe-ytlecture`), `/scribe-doubt`, `/scribe-quiz`, and `/scribe-setfolder`.
-- **Retired Public Wrappers:** `/scribe-deepnotes`, `/scribe-distill`, `/scribe-atomic-notes`, `/scribe-compare`, `/scribe-dsa`, `/scribe-practice`, `/scribe-ingest`, and `/scribe-expand` are unified into `/scribe-notes`.
-- **Retired Executable Infrastructure:** The prior Python (`scriptorium/`, `scripts/`, `tests/`) and intermediate Node.js (`runtime/`, `package.json`) architectures were removed. Educational composition, 12-stage formula folds, web-image-first visual acquisition/inspection, and Obsidian publishing now execute directly via native assistant tools and [verification-checklist.md](../workflows/validation/verification-checklist.md).
+The assistant now researches with available tools, writes Obsidian Markdown directly, and reviews the actual result. The [manual checklist](../workflows/validation/verification-checklist.md) preserves practical checks for source claims, mathematics, YAML, links, visual rights, and existing-note safety. It does not replace engine guarantees: automatic source coverage, code or numeric execution, cryptographic binding, renderer checks, atomic multi-file publication, cache invalidation, and checkpoint recovery are unavailable unless a separate available native tool establishes a particular check.
+
+For the former implementation's detailed rules, consult the verified pre-rewrite backup recorded in the implementation handoff. Do not recreate a runtime to recover them.

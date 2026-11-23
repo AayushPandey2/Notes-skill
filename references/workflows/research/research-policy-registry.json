@@ -1,366 +1,40 @@
 {
-  "version": 1,
+  "version": 2,
   "modes": {
     "R-S0": {
-      "name": "strict_source_only",
       "source_policy": "strict",
-      "allow_external_browsing": false,
-      "allow_external_verification": false,
-      "allow_external_expansion": false,
-      "require_source_inventory": true,
-      "description": "Notes rely exclusively on provided material; preserve source terminology, assumptions, and sequence without external factual expansion."
+      "external_research": "forbidden",
+      "use_when": "The user limits the note to supplied material."
     },
     "R-S1": {
-      "name": "source_faithful_verified",
-      "source_policy": "strict",
-      "allow_external_browsing": true,
-      "allow_external_verification": true,
-      "allow_external_expansion": false,
-      "require_source_inventory": true,
-      "description": "Provided source is main instructional authority; targeted external verification allowed, preserving original source statements and labeling discrepancies."
+      "source_policy": "source_first",
+      "external_research": "targeted_verification",
+      "use_when": "The user permits outside verification while keeping the supplied source primary."
     },
     "R-S2": {
-      "name": "source_faithful_expanded",
       "source_policy": "expanded",
-      "allow_external_browsing": true,
-      "allow_external_verification": true,
-      "allow_external_expansion": true,
-      "require_source_inventory": true,
-      "description": "Preserve source scope and order while allowing labeled supplemental research for prerequisites, intuition, examples, derivations, and current APIs."
+      "external_research": "labeled_supplementation",
+      "use_when": "The user permits added explanations or examples beyond the source."
     },
     "R-I": {
-      "name": "independent",
       "source_policy": "independent",
-      "allow_external_browsing": true,
-      "allow_external_verification": true,
-      "allow_external_expansion": true,
-      "require_source_inventory": false,
-      "description": "No authoritative user source supplied; construct and verify curriculum from claim-appropriate primary and secondary sources."
+      "external_research": "permitted",
+      "use_when": "No supplied source controls the content."
     },
     "R-C": {
-      "name": "comparative",
       "source_policy": "comparative",
-      "allow_external_browsing": true,
-      "allow_external_verification": true,
-      "allow_external_expansion": true,
-      "require_source_inventory": false,
-      "description": "Compare alternatives across shared criteria, matched versions, assumptions, datasets, and evaluation conditions."
+      "external_research": "permitted",
+      "use_when": "The task compares claims or methods across sources."
     },
     "R-L": {
-      "name": "literature_review",
       "source_policy": "comparative",
-      "allow_external_browsing": true,
-      "allow_external_verification": true,
-      "allow_external_expansion": true,
-      "require_source_inventory": false,
-      "description": "Systematic or extensive literature synthesis recording search scope, dates, databases, inclusion/exclusion criteria, conflicts, and open questions."
+      "external_research": "documented_search",
+      "use_when": "The learner requests an extensive literature review."
     },
     "R-R": {
-      "name": "resource_discovery",
       "source_policy": "independent",
-      "allow_external_browsing": true,
-      "allow_external_verification": true,
-      "allow_external_expansion": true,
-      "require_source_inventory": false,
-      "description": "Discover and rank learner-appropriate further-study resources separately from factual evidence citations."
+      "external_research": "permitted",
+      "use_when": "The task is to recommend further-learning resources."
     }
-  },
-  "research_depths": {
-    "0": {
-      "code": "R0",
-      "label": "No external retrieval",
-      "soft_query_budget": 0,
-      "description": "Permitted local knowledge, source text, or deterministic local verification suffices."
-    },
-    "1": {
-      "code": "R1",
-      "label": "Targeted verification",
-      "soft_query_budget": 2,
-      "description": "Verify one or a few specific uncertain facts, signatures, dates, or assumptions."
-    },
-    "2": {
-      "code": "R2",
-      "label": "Focused authoritative research",
-      "soft_query_budget": 4,
-      "description": "Retrieve directly relevant authoritative primary or standard sources for a concept."
-    },
-    "3": {
-      "code": "R3",
-      "label": "Multi-source concept research",
-      "soft_query_budget": 7,
-      "description": "Investigate distinct facets of a concept (theory, math, implementation, limits) via appropriate source categories."
-    },
-    "4": {
-      "code": "R4",
-      "label": "Extensive comparative research",
-      "soft_query_budget": 12,
-      "description": "Evaluate competing approaches, empirical discrepancies, or complex versioned technical claims."
-    },
-    "5": {
-      "code": "R5",
-      "label": "Systematic research workflow",
-      "soft_query_budget": 20,
-      "description": "Reproducible multi-database literature workflow with explicit scope, inclusion/exclusion criteria, and documented limitations."
-    }
-  },
-  "source_roles": {
-    "local_user_source": "primary",
-    "original_paper": "primary",
-    "official_documentation": "primary",
-    "language_specification": "primary",
-    "maintained_repository": "primary",
-    "official_standard": "primary",
-    "primary_archive": "primary",
-    "experimental_report": "primary",
-    "benchmark_report": "primary",
-    "clinical_guideline": "primary",
-    "statute_or_regulation": "primary",
-    "court_decision": "primary",
-    "security_advisory": "primary",
-    "official_statistics": "primary",
-    "design_document": "primary",
-    "release_notes": "primary",
-    "preprint": "primary",
-    "academic_textbook": "secondary",
-    "scholarly_paper": "secondary",
-    "scholarly_review": "secondary",
-    "scholarly_history": "secondary",
-    "academic_lecture_notes": "secondary",
-    "institutional_reference": "secondary",
-    "technical_guide": "secondary",
-    "course": "secondary",
-    "video_lecture": "secondary",
-    "encyclopedia": "tertiary",
-    "educational_tutorial": "tertiary",
-    "interactive_visualization": "tertiary",
-    "practice_platform": "tertiary",
-    "general_web": "tertiary"
-  },
-  "verification_states": [
-    "supported_directly",
-    "supported_with_qualifications",
-    "supported_indirectly",
-    "corroborated_independently",
-    "computationally_verified",
-    "contradicted",
-    "unresolved",
-    "source_unavailable",
-    "not_verified"
-  ],
-  "coverage_states": [
-    "complete",
-    "sufficient_with_qualifications",
-    "partial",
-    "missing",
-    "not_applicable"
-  ],
-  "evidence_types": {
-    "no_external_research": {
-      "default_depth": 0,
-      "freshness_days": 3650,
-      "source_preferences": ["local_user_source"],
-      "evidence_requirements": ["internal_consistency"],
-      "verification": {"local_check": "when_applicable"},
-      "primary_required": false
-    },
-    "factual_verification": {
-      "default_depth": 1,
-      "freshness_days": 365,
-      "source_preferences": ["official_documentation", "institutional_reference", "original_paper", "academic_textbook"],
-      "evidence_requirements": ["claim", "source_location"],
-      "verification": {"source_inspection": "required"},
-      "primary_required": true
-    },
-    "conceptual_expansion": {
-      "default_depth": 2,
-      "freshness_days": 1095,
-      "source_preferences": ["academic_textbook", "academic_lecture_notes", "scholarly_review", "official_documentation"],
-      "evidence_requirements": ["definition", "distinctions", "boundary_conditions"],
-      "verification": {"terminology_alignment": "required"},
-      "primary_required": false
-    },
-    "mathematical_definition": {
-      "default_depth": 2,
-      "freshness_days": 3650,
-      "source_preferences": ["academic_textbook", "original_paper", "scholarly_paper", "academic_lecture_notes"],
-      "evidence_requirements": ["formal_definition", "notation", "domain_conditions"],
-      "verification": {"notation_check": "required"},
-      "primary_required": false
-    },
-    "mathematical_proof": {
-      "default_depth": 3,
-      "freshness_days": 3650,
-      "source_preferences": ["academic_textbook", "original_paper", "scholarly_paper", "academic_lecture_notes"],
-      "evidence_requirements": ["theorem_statement", "assumptions", "proof_or_derivation", "applicability_conditions"],
-      "verification": {"algebraic_check": "when_applicable", "independent_review": "risk_based"},
-      "primary_required": true
-    },
-    "programming_api": {
-      "default_depth": 2,
-      "freshness_days": 90,
-      "source_preferences": ["official_documentation", "language_specification", "maintained_repository", "release_notes"],
-      "evidence_requirements": ["api_signature", "version", "expected_behavior"],
-      "verification": {"runtime_execution": "when_available", "release_notes": "when_version_sensitive"},
-      "primary_required": true
-    },
-    "empirical_result": {
-      "default_depth": 3,
-      "freshness_days": 180,
-      "source_preferences": ["original_paper", "experimental_report", "benchmark_report", "scholarly_review"],
-      "evidence_requirements": ["methodology", "dataset_or_sample", "evaluation_metric", "limitations"],
-      "verification": {"methodology_audit": "required", "independent_corroboration": "preferred"},
-      "primary_required": true
-    },
-    "historical_claim": {
-      "default_depth": 2,
-      "freshness_days": 1825,
-      "source_preferences": ["primary_archive", "original_paper", "scholarly_history", "institutional_reference"],
-      "evidence_requirements": ["event", "date_context", "source_attribution"],
-      "verification": {"chronology_vs_interpretation": "required"},
-      "primary_required": true
-    },
-    "scientific_measurement": {
-      "default_depth": 2,
-      "freshness_days": 730,
-      "source_preferences": ["experimental_report", "institutional_reference", "academic_textbook", "scholarly_paper"],
-      "evidence_requirements": ["units", "experimental_conditions", "error_bounds", "applicability_regime"],
-      "verification": {"dimensional_check": "required"},
-      "primary_required": true
-    },
-    "clinical_health": {
-      "default_depth": 3,
-      "freshness_days": 180,
-      "source_preferences": ["clinical_guideline", "scholarly_review", "institutional_reference", "scholarly_paper"],
-      "evidence_requirements": ["evidence_grade", "population", "contraindications", "publication_date"],
-      "verification": {"peer_review_check": "required"},
-      "primary_required": true
-    },
-    "economic_data": {
-      "default_depth": 2,
-      "freshness_days": 90,
-      "source_preferences": ["official_statistics", "institutional_reference", "scholarly_paper"],
-      "evidence_requirements": ["date", "jurisdiction", "units", "measurement_method", "revision_status"],
-      "verification": {"date_and_scope_check": "required"},
-      "primary_required": true
-    },
-    "legal_regulation": {
-      "default_depth": 3,
-      "freshness_days": 90,
-      "source_preferences": ["statute_or_regulation", "court_decision", "institutional_reference"],
-      "evidence_requirements": ["jurisdiction", "effective_date", "text_locator"],
-      "verification": {"jurisdiction_and_currency": "required"},
-      "primary_required": true
-    },
-    "security_advisory": {
-      "default_depth": 3,
-      "freshness_days": 30,
-      "source_preferences": ["security_advisory", "official_standard", "official_documentation", "maintained_repository"],
-      "evidence_requirements": ["affected_versions", "publication_date", "remediation"],
-      "verification": {"version_check": "required"},
-      "primary_required": true
-    },
-    "software_architecture": {
-      "default_depth": 2,
-      "freshness_days": 180,
-      "source_preferences": ["design_document", "original_paper", "official_standard", "official_documentation", "maintained_repository", "scholarly_paper"],
-      "evidence_requirements": ["component_contract", "tradeoffs", "observed_vs_recommended"],
-      "verification": {"implementation_alignment": "when_available"},
-      "primary_required": true
-    },
-    "literature_synthesis": {
-      "default_depth": 5,
-      "freshness_days": 180,
-      "source_preferences": ["original_paper", "scholarly_review", "scholarly_paper", "experimental_report"],
-      "evidence_requirements": ["search_scope", "search_dates", "inclusion_exclusion_criteria", "conflicting_findings", "open_questions"],
-      "verification": {"multi_source_synthesis": "required"},
-      "primary_required": true
-    },
-    "learning_resource": {
-      "default_depth": 2,
-      "freshness_days": 365,
-      "source_preferences": ["academic_textbook", "academic_lecture_notes", "official_documentation", "course", "interactive_visualization", "video_lecture", "practice_platform"],
-      "evidence_requirements": ["title", "author_or_institution", "access_status", "learner_level", "why_useful"],
-      "verification": {"access_verification": "when_available"},
-      "primary_required": false
-    }
-  },
-  "provider_adapters": {
-    "local_document": {
-      "source_types": ["local_user_source"],
-      "capabilities": ["read", "extract_sections", "vault_search"],
-      "requires_auth": false,
-      "supports_full_text": true,
-      "supports_locators": true,
-      "read_only": true,
-      "offline_capable": true,
-      "failure_behavior": "report_missing_or_unreadable_local_file"
-    },
-    "general_web": {
-      "source_types": ["general_web", "educational_tutorial", "course", "video_lecture", "interactive_visualization"],
-      "capabilities": ["discover", "fetch_page"],
-      "requires_auth": false,
-      "supports_full_text": true,
-      "supports_locators": true,
-      "read_only": true,
-      "offline_capable": false,
-      "failure_behavior": "fallback_to_local_or_mark_source_unavailable"
-    },
-    "academic_discovery": {
-      "source_types": ["original_paper", "scholarly_paper", "scholarly_review", "preprint"],
-      "capabilities": ["discover_metadata", "fetch_open_text", "resolve_doi"],
-      "requires_auth": false,
-      "supports_full_text": false,
-      "supports_locators": true,
-      "read_only": true,
-      "offline_capable": false,
-      "failure_behavior": "record_metadata_only_and_do_not_invent_body_claims"
-    },
-    "official_documentation": {
-      "source_types": ["official_documentation", "language_specification", "release_notes", "design_document"],
-      "capabilities": ["versioned_lookup", "fetch_page"],
-      "requires_auth": false,
-      "supports_full_text": true,
-      "supports_locators": true,
-      "read_only": true,
-      "offline_capable": false,
-      "failure_behavior": "mark_version_unverified_if_unavailable"
-    },
-    "source_repository": {
-      "source_types": ["maintained_repository", "release_notes"],
-      "capabilities": ["inspect_code", "inspect_releases"],
-      "requires_auth": false,
-      "supports_full_text": true,
-      "supports_locators": true,
-      "read_only": true,
-      "offline_capable": false,
-      "failure_behavior": "fallback_to_official_documentation_or_mark_unverified"
-    },
-    "institutional_source": {
-      "source_types": ["official_standard", "primary_archive", "official_statistics", "statute_or_regulation", "clinical_guideline", "security_advisory", "institutional_reference"],
-      "capabilities": ["discover", "fetch_page"],
-      "requires_auth": false,
-      "supports_full_text": true,
-      "supports_locators": true,
-      "read_only": true,
-      "offline_capable": false,
-      "failure_behavior": "preserve_uncertainty_and_disclose_access_limit"
-    },
-    "computational_verification": {
-      "source_types": ["local_user_source"],
-      "capabilities": ["execute_code", "numeric_check", "unit_test", "consistency_check"],
-      "requires_auth": false,
-      "supports_full_text": true,
-      "supports_locators": true,
-      "read_only": true,
-      "offline_capable": true,
-      "failure_behavior": "record_static_verification_status"
-    }
-  },
-  "progression_stages": [
-    "conceptual_foundation",
-    "formal_explanation",
-    "worked_examples",
-    "practical_implementation",
-    "advanced_theory"
-  ]
+  }
 }

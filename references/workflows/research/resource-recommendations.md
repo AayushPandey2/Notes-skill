@@ -1,4 +1,4 @@
-# Learner-Aware Resource Recommendation Engine
+# Further-learning resources
 
 Use this contract when recommending further-learning resources (under Mode `R-R` or in the revision/further-learning section of a deep-study note). **Learning resources are strictly distinct from factual research citations:** a source cited to verify a theorem or API behavior is not automatically a good pedagogical recommendation for a beginner, and an accessible tutorial is not automatically a primary authority for factual verification.
 

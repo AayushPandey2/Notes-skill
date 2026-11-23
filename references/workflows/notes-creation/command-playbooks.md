@@ -21,7 +21,7 @@ Dispatch each active public command or `/scribe-notes` internal branch cleanly�
 ### Command C — Comprehensive Learning (`M1` Deep Notes)
 - **Trigger:** Broad or first-principles deep-learning requests routed to `M1`.
 - **Inputs & Dependencies:** [adaptive-engine.md](adaptive-engine.md), [research-engine.md](../research/research-engine.md), [teaching_core.md](../../../shared/teaching_core.md), [math_gates.md](../../../shared/math_gates.md).
-- **Execution & Validation:** Plan concepts and depths (`0–5`), verify evidence via ARRIE (`research_package`), embed atomic formula+folds beneath every displayed `$$...$$`, execute `Step 1`–`12` worked examples, acquire raster web visuals via BVIA/LAVIA, verify 12-dimension teaching quality (`QualityEngine.evaluate_teaching()`), and strip internal module labels.
+- **Execution & Review:** Plan concepts and depth, inspect evidence using [research guidance](../research/research-engine.md), explain each displayed equation, work examples step by step, acquire only needed inspected visuals, and review the actual Markdown with [the manual checklist](../validation/verification-checklist.md). Keep internal planning labels out of the note.
 
 ### Command D — Rapid Reference (`M3` Quick Reference / Variants)
 - **Trigger:** Cheat sheet, formula sheet, syntax table, or CLI command reference requests.
@@ -39,11 +39,11 @@ Dispatch each active public command or `/scribe-notes` internal branch cleanly�
 
 - **Role:** `/scribe-quiz` — Interactive active recall.
 - **Trigger:** `/scribe-quiz <topic/note>` over existing vault notes (`M6`).
-- **Execution & Constraints:** Ask **one question per turn**, wait for the user reply, grade strictly against existing note content, and log weak spots only in body review fields (never inject extra YAML keys).
+- **Execution & Constraints:** Ask **one question per turn**, wait for the user reply, and grade strictly against existing note content. Save weak spots in an existing body review section only when the learner asks for a saved record; never add YAML keys for quiz state.
 
 ### Command H — Atomic Card (`M3` / `atomic_card`)
 - **Trigger:** Single-concept transcludable note (`<150` words).
-- **Execution:** Perform one bounded direct fetch if needed, write one focused definition + micro-example + boundary sentence, resolve existing wikilinks cleanly, and keep pending concepts as plain text.
+- **Execution:** Fetch a source only when the active source policy permits it. Write one focused definition, micro-example, and boundary sentence; resolve existing wikilinks and keep pending concepts as plain text.
 
 ### Command I — Multi-Note Curriculum (`M2` Collection Series)
 - **Trigger:** Structured multi-note curriculum without single-unit lock.

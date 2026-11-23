@@ -10,4 +10,4 @@ Use natural paragraphs, meaningful transitions, concrete examples and counterexa
 
 Review the finished Markdown against [verification-checklist.md](../../workflows/validation/verification-checklist.md) to ensure zero pending explanations, zero generic placeholders, and accurate source-grounded reasoning.
 
-When evidence or content is missing, repair the specific pending obligation. Preserve strict source restrictions; retrieve additional sources only when that policy permits them. See [teaching_core.md](../../../shared/teaching_core.md).
+When evidence or content is missing, repair the specific section. Preserve source restrictions; retrieve additional sources only when that policy permits them. See [teaching_core.md](../../../shared/teaching_core.md).

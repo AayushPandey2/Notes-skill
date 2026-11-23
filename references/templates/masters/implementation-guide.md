@@ -5,7 +5,7 @@ Activation Trigger: /scribe-notes requests to implement from scratch, build/debu
 Non-activation: Deep conceptual theory with minor snippets -> M1; syntax/API table -> M3/syntax_reference.
 Inputs: Problem/system spec, stated bounds, chosen language/stack, test fixtures, and runtime verification status.
 Dependencies: router.md, shared/teaching_core.md, shared/authoring_rules.md, shared/math_gates.md, metadata/properties-policy.md.
-Decision Rules: Lock generated code to user-specified stack; start with minimal naive baseline exposing the bottleneck before optimal code; run verify-runtimes before claiming observed execution.
+Decision Rules: Lock educational code to the user-specified stack; explain a simpler baseline when it clarifies the bottleneck. Claim observed execution only when an available tool actually ran the code.
 Failure Handling: Tag missing constraints [ASSUMED / UNVERIFIED]; label unexecuted code 'static verification (not executed)'; never fabricate runtime metrics.
 Validation: [verification-checklist.md](../../workflows/validation/verification-checklist.md) (`M5` implementation rules).
 -->

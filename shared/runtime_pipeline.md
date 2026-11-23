@@ -1,19 +1,11 @@
-# Direct-authoring pipeline
+# Direct-authoring workflow
 
-During note creation, author content directly. Never create, execute, or modify scripts or project source code to assemble, render, validate, download, or publish notes.
+The [authoring rule in the root skill](../SKILL.md#scriptorium) governs every note-creation route. Educational code in a note is lesson content, never a note builder.
 
-This prohibition covers:
-- Separate `.py`, `.js`, `.mjs`, `.cjs`, `.ts`, `.ps1`, `.sh`, `.bat`, or equivalent executable files.
-- Inline interpreter commands, heredoc programs, generated functions, or temporary builders used as a substitute for separate files.
-- Executable code hidden inside Markdown, JSON, configuration, or files with renamed extensions.
-- Runtime patches or newly generated helpers used to bypass an unavailable capability.
+1. Resolve the user's request, permitted sources, audience, scope, and authorized Obsidian destination. Check existing notes before choosing filenames.
+2. Load the selected master and only relevant variant, subtemplate, teaching module, and policy.
+3. Research within the source policy. Acquire and inspect an image only when it improves the explanation and its rights and content can be checked with available tools.
+4. Draft the intended Markdown directly. Review claims, calculations, YAML, links, and embeds against the actual draft.
+5. Save only the intended files and inspect the saved result. Keep existing user content and assets unless the user authorized a specific replacement.
 
-## Workflow
-
-1. Resolve the requested note type (`M1`–`M7`), scope, sources, and authorized Obsidian destination.
-2. Read only the relevant master, subtemplate, and policies from `shared/` and `references/`.
-3. Research claims and acquire/inspect required raster assets (`png`/`jpg`/`webp`) using native tools.
-4. Author final Markdown directly and write notes/assets into the authorized destination (preserving unrelated notes).
-5. Review actual Markdown, YAML, wikilinks, local embeds, and formula folds against [verification-checklist.md](../references/workflows/validation/verification-checklist.md).
-
-Educational code examples may appear inside a note's Markdown fences when the lesson requires them; they remain lesson content, never the mechanism used to generate notes. If a capability (such as code execution, hash verification, or Obsidian UI rendering) cannot be established with available native tools, report that limitation honestly rather than claiming automated verification.
+Use [the manual verification checklist](../references/workflows/validation/verification-checklist.md). Disclose checks that could not be done; do not claim that manual review provided automatic validation, atomic publication, or recovery.

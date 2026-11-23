@@ -1,14 +1,10 @@
 ---
 name: scribe-quiz
-description: Run an interactive one-question-at-a-time active-recall quiz over existing Obsidian vault notes and log weak spots cleanly. Use whenever the user wants to test themselves, review flashcards/viva prompts, practice recall on existing notes, or run /scribe-quiz.
+description: Quiz a learner interactively, one question at a time, using existing Obsidian vault notes. Use for active recall, viva practice, or review of material already in the vault.
 ---
 
 # `/scribe-quiz`
 
-Run focused active-recall quizzing against existing vault notes without overwhelming the learner or polluting note frontmatter.
+Input: a topic or note and an explicit or configured vault. Read the relevant notes and follow [Command G](../../references/workflows/notes-creation/command-playbooks.md#command-g). Ask one question and wait for the learner's answer before grading or asking another. Ground feedback in the notes with exact wikilinks, and state when they do not support an answer.
 
-## Procedure
-
-1. Follow [router.md](../../router.md) and [Command G](../../references/workflows/notes-creation/command-playbooks.md#command-g) under master `M6` (`mock_exam` behavior) without loading full M1 composition specs.
-2. Read the target note(s), then ask **one question at a time** and wait for the learner's answer before revealing feedback or moving on—multi-question dumps defeat active recall.
-3. Grade the response strictly against what the note supports, give concise corrective feedback referencing `[[Note Title#Heading]]`, and optionally record weak spots in the note's body review section directly (never inject extra YAML frontmatter keys or generate scripts).
+Output: an interactive quiz in chat. Keep notes unchanged by default; record weak spots in an existing body review section only if the learner asks for a saved record. Preserve YAML and unrelated note text. Do not create scripts.

@@ -1,20 +1,20 @@
 # Instructional planning and composition
 
-Load this for deep study. The [M1 master](../../templates/masters/deep-notes.md) owns document composition; [registry](instructional-registry.json) owns reusable subtemplates, objective depth floors and module contracts. Read only selected registry entries after classification. Python validates decisions, not factual or pedagogical truth.
+Load this for deep study. The [M1 master](../../templates/masters/deep-notes.md) owns document composition; [registry](instructional-registry.json) maps knowledge types to subtemplates. Read only selected entries after classification. Review depth choices against the learner request; no program validates them.
 
 ## Planning input
 
-Before authoring, plan each concept with `audience` (beginner/intermediate/advanced), `source_policy` (independent/strict/expanded/comparative), `sources`, and `concepts`. Each concept has a stable `id`, reader-facing `title`, nonempty `types` and `objectives`, `prerequisites`, `depth`, optional `modules`, and a concise `reason`.
+Before authoring, identify audience, source policy (`independent`, `strict`, `source_first`, `expanded`, or `comparative`), learning objectives, and important concepts. For each concept, note its prerequisites, needed depth, and main teaching home. Keep this as a short plan; do not create a JSON builder.
 
 Classify from the intended task and inspected source, never topic keywords alone. Registry types are conceptual, mathematical, programming, algorithmic, architectural, scientific, historical, comparative, procedural and research. Map computational to programming, geometrical to mathematical plus visualization, experimental to scientific, analytical/theoretical to the actual object and objective, and research-oriented to research. Mixed concepts select several types. Examination is an overlay: record syllabus/question expectations in `reason`, align practice to them, and preserve understanding. Source fidelity is a cross-cutting policy, not a separate master.
 
-Prerequisites are objects with `concept` and `treatment`: known, reminder, explain or foundation. Internal dependencies must precede the consuming concept; known external foundations need a reader-baseline reason, while missing external material is explained locally before use. A major missing foundation becomes its own earlier concept. For strict sources retain source order and put necessary reminders immediately before use, clearly labeled; do not silently reorder the source. Cycles require decomposing shared foundations, not guessing an order.
+Treat prerequisites as known, needing a reminder, or needing a foundation. Internal dependencies precede the consuming concept; missing external material is explained locally before use. For source-ordered notes retain the source sequence and label necessary bridges; do not silently reorder it. Break cycles by explaining a shared foundation first.
 
 Old outline fields still work: the adapter uses purpose, requested math level and selected tool, records its assumptions, and produces one concept. For substantial work author the richer plan before drafting; title/domain hints cannot substitute for semantic classification. Unknown objectives or malformed plans fail before writing.
 
 ## Selection and depth
 
-For each concept, take the union of required objectives and source obligations. Registry objective values are minimum instructional capabilities, not word counts. Set independent `math`, `code`, `visual`, `theory`, `practice`, `assessment` levels. Explicit profiles can raise them; a conflict with a required objective must be resolved by changing scope or the plan, never silently clamped by subject. “Exhaustive” raises coverage of relevant ideas, not every dimension to 5.
+For each concept, combine the learner's objectives with important source material. Choose the needed depth for math, code, visuals, theory, practice, and assessment separately; these are planning judgments, not word counts. If a requested scope conflicts with required source material, resolve the scope openly. “Exhaustive” means covering relevant ideas, not maximizing every dimension.
 
 | Level | Math | Code | Visual | Theory | Practice | Assessment |
 |---|---|---|---|---|---|---|
@@ -25,7 +25,7 @@ For each concept, take the union of required objectives and source obligations. 
 | 4 | Justified derivation and verification | From scratch, trace, debug, tests | Connect representations or changing conditions | Deep causal/theoretical analysis | Unfamiliar transfer | Justify and diagnose |
 | 5 | Rigorous theorem/proof when required | Robust engineering for actual constraints | Detailed multi-scale analysis | Guarantees and limits | Integrated design/project | Synthesis and mastery |
 
-Each module inherits its dimension's level: select the corresponding output from its registry contract and expand only consequential steps. Derivation needs M4+, proof M5, code C2+ for executable blocks; C1 remains pseudocode. A scientific/research classification does not automatically require conducting an experiment: describe and assess the evidence at the required level. Theory depth alone never activates formal proof. A source-mandated formula, example, figure or exercise makes its relevant module required, with enough depth to explain it.
+Use the [module guide](../../templates/modules/module-catalog.md) only for teaching moves that serve the objective. Explain derivations or proofs when requested or needed for the claim; include educational code only when it serves the lesson. Scientific or research notes may explain an experiment without conducting one. A source-mandated formula, example, figure, or exercise needs enough explanation to preserve its meaning.
 
 Apply depth to each selected module's particular output:
 
@@ -50,7 +50,7 @@ Apply depth to each selected module's particular output:
 | Assessment | Recognize/explain | Apply with worked checks | Transfer, justify, diagnose or synthesize |
 | Revision | Key terms/relationships | Procedure or retrieval cues | Integrate dependencies and assess mastery |
 
-Every module has required/supporting/optional/excluded status, depth and reason. Required means necessary to an objective, type or source obligation; supporting improves understanding; optional is a separate extension, unloaded by default; excluded is absent. Use `modules` overrides only with a reason. Required modules and dependencies cannot be excluded. Defaults do not force examples, code, visuals or mathematics where their dimension is zero. Promote a module to required for source coverage or a concrete misconception, then recheck its dependencies.
+Use a teaching move when the objective or source requires it, or when it materially improves understanding. Omit moves that add no value; a default template must not force code, diagrams, or mathematics into an unrelated subject. Recheck prerequisite explanations when adding a new concept or misconception correction.
 
 Select a computational tool only after choosing executable code (`code >= 2`). Prefer the single minimal abstraction matching the pedagogical goal—pure host-language logic for core algorithms, lightweight array/matrix operations for transparent mathematical mechanics, or higher-level libraries only when the learning objective requires them. Distinguish discrete finite-difference approximations from exact symbolic/automatic differentiation, and preserve distinct algorithmic formulations without conflating incompatible models. Explicit user tool choices always take precedence; additional stacks require an explicit comparison objective with distinct roles, and unexecuted code remains labeled `static verification (not executed)`.
 

@@ -25,11 +25,11 @@ Every Markdown file MUST begin on line 1 with `---` ... `---` before any heading
 | `note_type` | string | Canonical `M1`–`M7` type (`deep-notes`, `study-notes`, `quick-reference`, `worked-solutions`, `implementation-guide`, `assessment`, `synthesis-revision`) |
 
 Populate optional managed fields only when meaningful: `subdomain`, `id`, `aliases`, `nexttopics`, `concept_ids`, `prerequisites`, `related`, `source_mode`, `source_refs`, `difficulty`, `status`, `created`, `updated`, `template_id`, `coverage_status`.
-- **Comprehensive `M1` KCP v2 Profile:** Follow [composition-contract.md](../workflows/notes-creation/composition-contract.md) strictly (exact 5 ordered keys: `id`, `aliases`, `topic`, `tags`, `nexttopics`).
+- **Comprehensive `M1` Profile:** Follow [composition-contract.md](../workflows/notes-creation/composition-contract.md) (the five keys `id`, `aliases`, `topic`, `tags`, `nexttopics`).
 
 ### 2. Filenames, Placement & Multi-Artifact Alignment
 
-- **Topic Collections:** Default vault-native `<Topic>/` folder via `resolve_collection_layout` (`create_category_folders=false`), `<Topic>/00-MOC-<topic-slug>.md`, and sequential child notes `<nn> - <Title>.md` (or `--legacy-names` `<nn>-<slug>.md` only when explicitly requested).
+- **Topic Collections:** Use the authorized `<Vault>/<Topic>/` folder, `00 - Map of Contents.md`, and sequential child notes `<nn> - <Title>.md`. Preserve an existing collection's names and layout when revising it; do not create category folders without a request.
 - **Specialized Siblings:** `Practice Sets/`, `Atomic Notes/`, `Cheatsheets/`, and `comparison/`.
 - **Multi-Artifact Alignment:** Companion outputs from one request share identical `domain`, `master_topic`, canonical `topic`, `concept_ids`, symbol definitions, and formula applicability conditions while setting distinct per-artifact `note_type` values.
 

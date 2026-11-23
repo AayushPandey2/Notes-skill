@@ -20,7 +20,7 @@ Never inject a `deepstudy-master` tag or internal review/routing logs into YAML;
 
 - **Math & Callouts:** Use native `$...$` and separate-line `$$` delimiters without code inside math. Quote every line of a callout, including internal blank lines (`>`), because an unquoted blank ends the block.
 - **Tables & Mermaid:** Escape literal pipes inside Markdown tables (`[[Target\|Label]]` and inside inline math). Quote Mermaid node labels and use Unicode symbols (`A["x → y"]`, never `A["$x$"]`).
-- **Web-Image-First Visuals:** For schematics, architecture figures, geometry, and plots, follow [representations.md](../references/workflows/notes-creation/representations.md): acquire verified openly licensed raster images (`png`/`jpg`/`webp`), inspect pixels/labels via `read_file`, store locally under `assets/scriptorium/<collection-slug>/` (`![[assets/scriptorium/<collection-slug>/<figure>.png]]`), and teach via `Explain -> Show -> Decode -> Connect`. Programmatic SVG diagram synthesis is retired; report unavailable external visuals honestly instead of fabricating SVGs or ASCII boxes. Reserve Mermaid `flowchart` / `sequenceDiagram` for causal workflows and state transitions.
+- **Visuals:** Follow [representations.md](../references/workflows/notes-creation/representations.md) when a visual helps. Inspect any external image with an available viewer, check its rights, store it locally, and explain what it shows. Use native Mermaid for simple flows and state changes.
 - **Publish Hygiene:** Use `**Confusion** :: question` on its own line for Dataview only when genuine. Strip all scaffold comments, `<!-- SECTION: S* -->` markers, authoring notes, unused optional sections, and placeholder rows; renumber remaining headings and repair internal anchors.
 
 ## Evidence

@@ -1,14 +1,10 @@
 ---
 name: scribe-setfolder
-description: Configure and persist the default Obsidian vault and target notes folder path in ~/.scriptorium-config.json so all generated notes save to the chosen location. Use whenever the user runs /scribe-setfolder or wants to set, change, or verify where Scriptorium writes Obsidian notes.
+description: Set or inspect the default Obsidian vault and notes folder used by Scriptorium. Use for /scribe-setfolder or a request to change where Scriptorium writes notes.
 ---
 
 # `/scribe-setfolder`
 
-Persist the user's preferred Obsidian vault root and notes subfolder so every downstream `/scribe-notes`, `/scribe-doubt`, and `/scribe-quiz` run resolves the same destination reliably.
+Input: a folder path or a request to inspect the current setting. Locate the vault root using its `.obsidian/` directory; if there is no such directory, ask which folder is the vault before saving. Confirm the selected notes folder is inside that vault, reject `..` and links that escape it, and use native file tools to read or update `~/.scriptorium-config.json` directly. Store `vault_path`, vault-relative `notes_folder`, and resolved `notes_path`; preserve unrelated settings.
 
-## Procedure
-
-1. Validate the supplied folder path: confirm it exists (or create it only if the user explicitly confirms) and locate the vault root (nearest parent containing `.obsidian/`, or the folder itself if no `.obsidian/` exists).
-2. Read `~/.scriptorium-config.json` if present, update `vault_path`, `notes_folder` (relative path from `vault_path`, or `""` if root), and `notes_path`, and write clean formatted JSON back to `~/.scriptorium-config.json` directly using native file tools (never generate a helper script).
-3. Report the saved `vault_path`, `notes_folder`, and resolved `notes_path` (`create_category_folders=false` remains default so Scriptorium writes collections directly under that configured target rather than inventing extra nested category directories).
+Output: the saved or current paths, and whether the folder exists. Create a missing folder only when the user has authorized its creation. This command changes destination configuration, not learning notes, and creates no helper programs.

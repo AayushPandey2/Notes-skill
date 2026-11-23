@@ -11,5 +11,5 @@
   2. Sequence documented chronology cleanly using prose (plus Mermaid timelines only when sequence density warrants).
   3. Distinguish primary historical facts from retrospective causal arguments and avoid imposing mathematical/algorithmic templates.
 - **Dependencies:** [research-engine.md](../../workflows/research/research-engine.md), [teaching_core.md](../../../shared/teaching_core.md).
-- **Validation:** `KnowledgeEngine.verify_claim_links()`, `QualityEngine.evaluate_teaching()`, `QualityEngine.review_explanatory_clarity()`.
+- **Review:** Check dates and citations against inspected sources; separate documented events from causal interpretation and contested accounts.
 - **Failure Behavior:** Flag unsupported causal assertions (`EIS-SPINE-002`), collapsed scholarly disputes, or forced technical jargon.

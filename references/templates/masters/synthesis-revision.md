@@ -21,7 +21,7 @@ Strip this block before emission.
 ## 2. Core Comparisons, Distinctions & Key Formulas
 
 - Explain causal trade-offs and conditions *before* summarizing in the multi-axis comparison table under equivalent assumptions (`Feature | Candidate A | Candidate B | Governing Trade-Off`).
-- **Key Formulas & Applicability Conditions** *(when quantitative)*: Formula, brief symbol meanings, assumptions, and wikilink back to full Layer E/F derivations (`validate_revision_integrity`).
+- **Key Formulas & Applicability Conditions** *(when quantitative)*: Formula, brief symbol meanings, assumptions, and wikilink back to full Layer E/F derivations; review that conditions remain intact.
 
 ## 3. Critical Pitfalls, Misconceptions & Revision Checklist
 

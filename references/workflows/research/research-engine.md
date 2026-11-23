@@ -1,6 +1,6 @@
-# Adaptive Research & Resource Intelligence Engine (ARRIE)
+# Research and source evaluation
 
-Load this specification for evidence-grounded deep study, verification, comparative analysis, literature synthesis, or resource discovery. The [adaptive instructional guide](../notes-creation/adaptive-engine.md) remains the sole authority for subtemplates, modules, depths (`0–5`), and note structure. ARRIE owns **research requirements, source discovery, claim verification, contradiction resolution, provenance, coverage, and further-learning curation**—backed by [research-policy-registry.json](research-policy-registry.json).
+Load this guidance for evidence-grounded deep study, verification, comparative analysis, literature synthesis, or resource discovery. The [instructional guide](../notes-creation/adaptive-engine.md) handles note structure; this page handles source discovery, claim checks, contradictions, provenance, and coverage. [research-policy-registry.json](research-policy-registry.json) maps source modes to permission boundaries.
 
 ## 1. Research Modes & Precedence
 
@@ -9,14 +9,14 @@ Explicit user instructions and active source constraints override inferred defau
 | Mode | Policy mapping | External browsing | Purpose |
 |---|---|---|---|
 | `R-S0` (`strict_source_only`) | `strict` | Forbidden | Notes rely exclusively on supplied material; preserve terminology, assumptions, and order; mark ambiguities instead of externally rewriting them. |
-| `R-S1` (`source_faithful_verified`) | `strict` | Targeted verification only | Provided source is main authority; external checks verify uncertain claims while preserving the source's statements and labeling any discrepancy separately. |
+| `R-S1` (`source_faithful_verified`) | `source_first` | Targeted verification only | Provided source is main authority; external checks verify uncertain claims while preserving the source's statements and labeling any discrepancy separately. Do not select this for an explicit source-only request. |
 | `R-S2` (`source_faithful_expanded`) | `expanded` | Labeled supplementation | Preserve source scope and sequence; permit labeled external research for prerequisites, intuition, examples, derivations, or current APIs. |
 | `R-I` (`independent`) | `independent` | Permitted | No authoritative user source supplied; build and verify the curriculum from claim-appropriate primary and secondary sources. |
 | `R-C` (`comparative`) | `comparative` | Permitted | Compare alternatives across matched versions, datasets, assumptions, and evaluation criteria. |
 | `R-L` (`literature_review`) | `comparative` | Systematic | Extensive synthesis documenting search scope, dates, databases, inclusion/exclusion criteria, conflicts, and open questions (never call it PRISMA unless followed). |
 | `R-R` (`resource_discovery`) | `independent` | Permitted | Discover and rank learner-appropriate study resources separately from factual citations; see [resource-recommendations.md](resource-recommendations.md). |
 
-Apply [source-fidelity.md](source-fidelity.md) for element inventories and `--coverage` publication receipts on `R-S0`, `R-S1`, and `R-S2`.
+Apply [source-fidelity.md](source-fidelity.md) for manual source coverage review on `R-S0`, `R-S1`, and `R-S2`.
 
 ## 2. Per-Concept Research Requirements & Adaptive Depth (`R0–R5`)
 
@@ -31,7 +31,7 @@ Assign an independent research depth (`0–5`) per concept / research question�
 - **`R4` (Extensive comparative research):** Compare competing methods, empirical measurements, or versioned system designs across matched conditions.
 - **`R5` (Systematic research workflow):** Reproducible multi-database literature workflow with documented scope, inclusion/exclusion rules, and unresolved gaps.
 
-Budgets in [research-policy-registry.json](research-policy-registry.json) are soft constraints, never rigid source quotas.
+Use the source mode in [research-policy-registry.json](research-policy-registry.json) as a permission boundary, not a source quota. Stop when the important claims are sufficiently supported or the access limit is clear.
 
 ## 3. Research Questions, Source Categories & Query Strategy
 

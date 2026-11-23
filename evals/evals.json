@@ -4,13 +4,13 @@
     {
       "id": 1,
       "prompt": "/scribe-notes Explain Gradient Descent and Ridge Regression for beginners with every equation explained step by step and a visual intuition plot.",
-      "expected_output": "Resolves M1 deep-notes directly without scripts, beginner-first progression precedes every equation, each displayed $$...$$ equation has a collapsible '> [!note]- 📐 Understand this formula' callout directly beneath it explaining symbols, shapes/units, expanded terms, concrete numbers, and assumptions, and visuals are acquired via web-image-first raster search under assets/scriptorium/<slug>/ without programmatic SVG synthesis.",
+      "expected_output": "Routes to M1 without scripts, explains equations for the intended learner, and uses an inspected, attributed local visual when a suitable one is available; otherwise reports the visual gap honestly.",
       "files": [],
       "expectations": [
         "Routes through /scribe-notes to master M1 (deep-notes) with no pre-generation knowledge quiz and zero generated scripts",
         "Introduces plain-language motivation and intuition before displayed equations",
         "Every display math $$...$$ block is immediately followed by '> [!note]- 📐 Understand this formula'",
-        "Visual acquisition uses local raster downloads (png/jpg/webp) inspected before writing, without programmatic SVG generation"
+        "Uses only visually inspected local images with checked rights and attribution, or reports why a suitable image was unavailable"
       ]
     },
     {
@@ -60,7 +60,7 @@
     {
       "id": 6,
       "prompt": "/scribe-quiz Quiz me on my Logistic Regression vault notes one question at a time.",
-      "expected_output": "Launches interactive active-recall session under M6/Command G, asks one question and waits for learner response before grading against the vault note, and updates only body weak-spot fields without adding extra YAML keys.",
+      "expected_output": "Launches interactive active-recall session under M6/Command G, asks one question and waits for learner response before grading against the vault note, and leaves vault files unchanged unless the learner asks to save weak spots.",
       "files": [],
       "expectations": [
         "Presents exactly one question per turn and waits for user reply",

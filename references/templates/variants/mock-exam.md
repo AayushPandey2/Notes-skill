@@ -8,4 +8,4 @@
   1. Structure strictly in escalating progression: Section A (Core Definitions & Defense), Section B (Quantitative Derivation, Calculation, or State Trace), Section C (Boundary Critique & Oral Viva Follow-Ups).
   2. Isolate full worked solutions and grading rubrics inside collapsed callouts (`> [!tip]- Reveal approach and solution`) or a trailing Answer Key.
   3. Keep interaction boundaries honest: `/scribe-quiz` quizzes one question per turn in chat; static Markdown never pretends auto-grading.
-- **Failure Handling & Validation:** Reject answer-only quantitative solutions or extra custom YAML keys via `QualityEngine.validate_master(..., "M6")`.
+- **Review:** Check that quantitative answers show the reasoning and that the note has no extra quiz-state YAML keys.

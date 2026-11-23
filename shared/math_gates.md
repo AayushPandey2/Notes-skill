@@ -25,7 +25,7 @@ Ensure every mathematical expression across Scriptorium notes teaches meaning, d
      7. `### 7. Visual interpretation`
      8. `### 8. Parameter behavior`
      9. `### 9. Derivation`
-     10. `### 10. Python implementation`
+     10. `### 10. Implementation` (only when code serves the learning objective; use the requested language)
      11. `### 11. Limitations and mistakes`
      12. `### 12. Mental model and recall`
 3. **Anti-Recursive Nesting & Parity:** Keep supporting arithmetic inside formula folds inline (`$...$`); emit separate sibling formula+fold blocks for distinct derivation steps rather than nesting callouts recursively, bundling unrelated equations together, converting complex math into unreadable inline text, or forcing irrelevant filler tables.

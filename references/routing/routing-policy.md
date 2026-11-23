@@ -1,18 +1,10 @@
-# Intelligent Routing Policy
+# Routing policy
 
-## Purpose & Single Authority
+Load when a request names multiple products or its intended format is unclear. The [master registry](master-registry.yaml) maps the seven products to real files; it does not install commands or run software.
 
-Select exactly one canonical master (`M1`–`M7`) and optional variant ([master-registry.yaml](master-registry.yaml)) per requested artifact independently of academic domain.
+1. Respect the user's explicit command and source limits. A source-only request uses `R-S0` and never browses outside supplied material. `R-S1` permits targeted external verification only when the user permits source-first verification. An output choice never loosens a source restriction.
+2. Honor an explicit requested product such as “formula sheet” or “worked solutions.” Ignore a negated product phrase such as “don't make a cheat sheet.” Otherwise choose the dominant learning objective via [router.md](../../router.md).
+3. A bare topic defaults to M1. Supplied lectures or chapters requested in order use M2. A paper analysis or comparison uses M7. A video request uses M2 unless the user requests a different product.
+4. Keep a small summary inside the primary note when it supports that note. For two independently requested artifacts, route each separately and share the same verified facts and notation.
 
-## Activation Trigger & Precedence Rules
-
-1. **Public Commands:** `/scribe-notes` is the sole note-creation entrypoint (`M1`–`M7`, variants, KCP collections, plus `/scribe-ytnotes`/`/scribe-ytlecture` video aliases). `/scribe-doubt`, `/scribe-quiz`, and `/scribe-setfolder` remain standalone utilities. Invoke of any retired note command (`/scribe-deepnotes`, `/scribe-distill`, `/scribe-atomic-notes`, `/scribe-compare`, `/scribe-dsa`, `/scribe-practice`, `/scribe-ingest`, `/scribe-expand`) returns a migration hint to `/scribe-notes`.
-2. **Negation-Aware Explicit Selectors:** Honor explicit deliverable phrases (`"formula sheet"`, `"compare X vs Y"`, `"worked solutions"`, etc.) unless negated (`"don't make a cheat sheet; explain deeply"` strips the negated form before classification).
-3. **Dominant Objective:** Classify primary intent (`comprehensive_learning`, `structured_study`, `rapid_reference`, `worked_problem_solving`, `practical_implementation`, `knowledge_assessment`, `synthesis_and_revision`).
-4. **Source-Policy Invariance:** Source constraints (`strict` / `source_first` / `R-S0`) never flip an explicit format request, and brevity rules never silence required source concepts.
-5. **Documented Defaults:** Bare topic -> `M1`; supplied lecture/PDF with sequential/study request -> `M2/lecture_order`; standalone research paper URL -> `M7/paper_breakdown`; standalone article/docs/video URL -> `M7/quick_summary`.
-
-## Multi-Artifact & Failure Handling
-
-- **Multi-Artifact Split:** Integrated add-ons (`"... with a formula summary at the end"`) stay modules inside the primary master; explicit multi-deliverable asks emit linked routes sharing one evidence registry and notation table.
-- **Failure Handling & Validation:** Report a missing template/variant explicitly rather than improvising an unregistered layout; verify routing against [master-registry.yaml](master-registry.yaml) and [verification-checklist.md](../workflows/validation/verification-checklist.md).
+The installed public skill folders are `/scribe-notes`, `/scribe-doubt`, `/scribe-quiz`, and `/scribe-setfolder`. Video aliases are intent hints handled by `/scribe-notes` when available. Old note-command names may be explained as migrated requests; do not claim they are installed commands. If a selected template is missing, state that gap rather than inventing a registry entry.

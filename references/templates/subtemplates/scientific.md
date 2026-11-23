@@ -8,9 +8,9 @@
 - **Output Contract:** Intuitive mechanism, unit-consistent equations (`M05`, `M11`), concrete worked calculation with units, web-acquired figures under `assets/scriptorium/<slug>/` with reading guides, and explicit validity regimes.
 - **Execution Procedure:**
   1. Motivate the observable phenomenon before introducing physical laws or differential equations.
-  2. Define every physical constant/variable with SI or domain units and verify dimensional balance (`check_dimension_compatibility`).
+  2. Define every physical constant and variable with SI or domain units and review dimensional balance in the actual equation.
   3. Acquire real schematic/plot assets via web image research (`T06`–`T09`, zero programmatic SVG generation) and walk the reader through labels and physical meaning.
   4. Separate observed measurements and uncertainties from idealized assumptions.
 - **Dependencies:** [math_gates.md](../../../shared/math_gates.md), [representations.md](../../workflows/notes-creation/representations.md).
-- **Validation:** `QualityEngine.check_representations()`, `F09` unit consistency, `QualityEngine.evaluate_teaching()`, `KnowledgeEngine.verify_claim_links()`.
+- **Review:** Check unit balance, conditions, figure labels, and claim citations in the actual note; disclose calculations not independently verified.
 - **Failure Behavior:** Reject inconsistent units, fabricated experimental curves/SVGs, or unlabeled approximations; surface unmet visual obligations honestly.
