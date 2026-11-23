@@ -1,15 +1,13 @@
-# Subtemplate: Mathematical
+﻿# Mathematical composition
 
-- **ID:** `mathematical` | **Registry alignment:** `mathematical` (`M0–M5` depth via [teaching_core.md](../../../shared/teaching_core.md), [adaptive-engine.md](../../workflows/notes-creation/adaptive-engine.md), and [math_gates.md](../../../shared/math_gates.md)).
-- **Purpose:** Transform compact equations, derivations, and numerical methods into beginner-accessible, step-by-step understanding without sacrificing rigor.
-- **Trigger:** Learning objectives involving formulas, symbols, vector/matrix operations, optimization objectives, derivatives, probability, or proofs (`MATH-01`–`MATH-10` via `scriptorium/triggers.py`).
-- **Preconditions:** Concept orientation and starting intuition precede formal equations (`TEACH-02`); prerequisites bridged locally (`TEACH-01`).
-- **Inputs:** Concept objective, learner level, governing equation(s), symbol metadata, operand dimensions/units, and declared synthetic inputs when applicable.
-- **Output Contract:** Prose applying `M01`–`M14` proportionally (`scriptorium/engines/mathematics.py`): purpose, natural pronunciation, symbol inventory (subscripts, superscripts, transposes, operators), object types, explicit shape compatibility, expanded elementary form, declared numerical substitution with intermediate arithmetic, contextual interpretation, sanity check, and misconception guard.
-- **Execution Procedure:**
-  1. Prepare the motivating problem and intuitive mental model before any `$$` display equation.
-  2. Call `Mathematics.detect_equation_features` / `check_dimension_compatibility` to select active `M01`–`M14` obligations and verify shapes.
-  3. Synthesize symbol breakdown, expanded form, and `Step 1–12` worked numerical steps cleanly into continuous prose (avoiding equation dumping or duplicated definitions).
-- **Dependencies:** `scriptorium/engines/mathematics.py`, `scriptorium/engines/pedagogy.py`, [teaching_core.md](../../../shared/teaching_core.md), [math_gates.md](../../../shared/math_gates.md).
-- **Validation:** `PedagogyEngine.verify_math_teaching()`, `PedagogyEngine.verify_trace()`, `PedagogyEngine.validate_worked_problem()`, `F09` `CollectionTerminologyRegistry.validate_consistency()`.
-- **Failure Behavior:** Reject unprepared formula drops (`MATH-DECON-01`), back-to-back equation dumps (`MATH-DECON-02`), dimension mismatches, or unverified arithmetic steps and emit targeted local repairs.
+Activate for a displayed equation, a mathematical objective, or a worked numerical problem (MATH-01 through MATH-10).
+
+Before composition, supply the equation, its purpose, symbol meanings and types, prerequisite explanations, operation order, assumptions, and any numerical inputs. Supply dimensions for matrix operations. Use the twelve stages defined in [math_gates.md](../../../shared/math_gates.md); adapt stage depth to the actual formula rather than inventing irrelevant examples.
+
+The runtime owner is `scriptorium/engines/mathematics.py`. `render_formula_component` binds a displayed formula to its immediately following collapsed Obsidian explanation. `deconstruct_equation` exposes the same component to the canonical Writer in `scriptorium/engines/composition/writing.py`. `build_worked_solution` uses that component and verifies declared intermediate arithmetic.
+
+The component returns per-stage `supplied` / `not_supplied` evidence. Missing evidence does not mean a stage was verified or deliberately omitted. Dimensions and arithmetic are checked when supplied; mathematical truth and teaching quality require review of the actual artifact.
+
+Keep intermediate arithmetic inside folds inline. Distinct displayed derivation steps need separate sibling formula-and-fold components. Never nest display math inside a formula explanation.
+
+Validation runs on the actual composed Markdown through `validate_formula_folds`; malformed, missing, generic or recursively nested explanations fail composition. Correct the affected equation record and regenerate its component. Use `check_dimension_compatibility`, `verify_worked_calculation`, and `verify_math_deconstruction` for the additional applicable checks. Do not replace a failure with a generic explanation.

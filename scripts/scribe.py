@@ -122,11 +122,12 @@ def _build_parser() -> argparse.ArgumentParser:
     pn_gen = notes_sub.add_parser("generate", help="Generate and validate notes for an approved /scribe-notes session.")
     pn_gen.add_argument("--vault", type=Path, required=True)
     pn_gen.add_argument("--session-id", required=True)
+    pn_gen.add_argument("--teaching", type=Path, help="Authored teaching and visual requirements keyed by concept ID or title.")
     pn_gen.add_argument("--checkpoints", action="store_true", help="Use dependency-aware checkpointed batch generation (F06).")
     pn_gen.add_argument("--synthesis", action="store_true", help="Generate M7 cross-note synthesis notes when warranted (F10).")
     pn_gen.add_argument("--assessment", action="store_true", help="Generate M6 competency-aligned collection assessment (F13).")
     pn_gen.add_argument("--validate", action="store_true", help="Run collection-wide quality validation after generation.")
-    pn_gen.add_argument("--legacy-layout", action="store_true", help="Retain nested concept files for an existing legacy collection.")
+    pn_gen.add_argument("--legacy-layout", action="store_true", help="Deprecated option; all layouts use the canonical generation pipeline.")
 
     pn_val = notes_sub.add_parser("validate", help="Run collection-wide validation for a generated /scribe-notes session.")
     pn_val.add_argument("--vault", type=Path, required=True)
@@ -309,11 +310,22 @@ def _handle_notes_command(
                 "error": f"Session '{args.session_id}' is in stage '{state.stage}'; approve configuration/plan before generating.",
             }, indent=2))
             return 1
-        if state.resolved_preferences.master == "M1" and state.collection_plan.organization == "hierarchical_collection" and not args.legacy_layout:
-            print(json.dumps({"complete": False, "status": "requires_composition_spec",
-                "message": "Full-topic notes use 5–10 authored chapters and a MOC. Use notes compose --spec with concepts and optional chapter allocation; --legacy-layout retains an existing nested collection."}, indent=2))
+        teaching = json.loads(args.teaching.read_text(encoding="utf-8-sig")) if args.teaching else {}
+        if not isinstance(teaching, dict) or any(not isinstance(record, dict) for record in teaching.values()):
+            print(json.dumps({"complete": False, "error": "Teaching input must map concept IDs or titles to objects."}))
             return 1
-        if args.checkpoints:
+        missing = [node.concept_id for node in state.collection_plan.nodes
+                   if node.note_role in {"child", "single"}
+                   and not (teaching.get(node.concept_id) or teaching.get(node.title))]
+        if missing:
+            print(json.dumps({"complete": False, "status": "requires_teaching_contract",
+                "missing_concepts": missing,
+                "message": "Supply researched teaching records with --teaching; note generation has no generic prose fallback."}, indent=2))
+            return 1
+        if state.resolved_preferences.master == "M1" and state.collection_plan.organization == "hierarchical_collection":
+            for record in teaching.values():
+                record["require_complete"] = True
+        if args.checkpoints or args.synthesis or args.assessment:
             kcp = orch.build_kcp(
                 args.vault,
                 state.collection_plan,
@@ -322,14 +334,14 @@ def _handle_notes_command(
                 include_synthesis=args.synthesis,
                 include_assessment=args.assessment,
             )
-            gen = vault.generate_with_checkpoints(args.vault, kcp, state.resolved_preferences)
+            gen = vault.generate_with_checkpoints(args.vault, kcp, state.resolved_preferences, teaching_by_node=teaching)
             if args.synthesis and kcp.synthesis_notes:
                 for syn in kcp.synthesis_notes:
                     vault.write_note(args.vault / syn["proposed_path"], syn["content"])
             if args.assessment and kcp.assessment_plan:
                 vault.write_note(args.vault / kcp.assessment_plan["proposed_path"], kcp.assessment_plan["content"])
         else:
-            gen = vault.generate_collection(args.vault, state.collection_plan, state.resolved_preferences)
+            gen = vault.generate_collection(args.vault, state.collection_plan, state.resolved_preferences, teaching_by_node=teaching)
         state.stage = "COMPLETED" if gen["complete"] else "PARTIAL_FAILURE"
         orch.save_session_state(args.vault, state)
         payload: dict = {"generation": gen}

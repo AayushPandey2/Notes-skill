@@ -1,26 +1,22 @@
 ---
 name: scribe-notes
-description: Universal adaptive Obsidian note-creation command. Use when asked to create, expand, or organize study notes, comprehensive first-principles guides, lecture/PDF/YouTube video notes (/scribe-ytnote), worked solutions, implementation tutorials, comparison guides, cheat sheets, or atomic cards in Obsidian.
+description: Create and publish Obsidian learning notes from researched teaching records, sources, PDFs, or videos. Use when generating study notes, comprehensive collections, worked solutions, implementations, comparisons, revision or assessments.
 ---
 
-# `/scribe-notes`
+# /scribe-notes
 
-`/scribe-notes` is Scriptorium's single public entrypoint for creating or updating learning notes (including `/scribe-ytnote`—combining `/scribe-ytnotes` and `/scribe-ytlecture`—via `scripts/scribe.py ytnote`). Interactive calibration runs first so template, depth, and folder layout match user intent without wasted generation passes.
+Use `python scripts/scribe.py notes start "<request>" --vault "<vault>"`, then `notes respond` for unresolved configuration and plan approval. Preserve M1–M7 output products, variants, source policy, prerequisite order and the user's chosen layout. Video aliases enter through `scripts/scribe.py ytnote`.
 
-## Execution Flow
+Before authoring, load [teaching rules](../../shared/teaching_core.md), [authoring rules](../../shared/authoring_rules.md), and only the active master and subtemplates via `scripts/scribe.py optimize --compile "<request>"`. Research actual claims; strict source policy forbids unsupplied outside claims and media.
 
-1. **Interactive Configuration Gate (`scripts/scribe.py notes start` / `respond`):**
-   - Pass user request and vault path to infer master (`M1`–`M7`), variant, depth, scope tier (`S0`–`S5`), and `single_note` vs. `hierarchical_collection`. Ask only unanswered configuration questions (never a knowledge quiz) and accept plain follow-up replies or `"use your recommendations"`.
-   - For broad collections (`S3`–`S5`), preview the Parent Map of Content + child notes + dependency path before writing, keeping hierarchy, prerequisite, and related graphs separate.
-2. **Research, Pedagogical Core & Visuals:**
-   - Load [shared/teaching_core.md](../../shared/teaching_core.md), [shared/authoring_rules.md](../../shared/authoring_rules.md), and the active master/subtemplate via selective context compilation—avoid loading unrelated masters.
-   - Put intuition before formal definitions, embed an atomic `> [!note]- 📐 Understand this formula` fold directly beneath every displayed `$$...$$`, and acquire verified raster web/video visuals under `assets/scriptorium/<collection-slug>/` via LAVIA/BVIA ([representations.md](../../references/workflows/notes-creation/representations.md)) with zero programmatic SVG synthesis.
-3. **Comprehensive M1 Collections vs. Single / `M2`–`M7` Notes:**
-   - **Comprehensive M1 (KCP v2):** Follow [composition-contract.md](../../references/workflows/notes-creation/composition-contract.md) and [composition-integrity.md](../../references/contracts/composition-integrity.md). Publish one MOC + 5–10 chapters directly under `<Vault>/<Topic>/` with exact five-key YAML (`id`, `aliases`, `topic`, `tags`, `nexttopics`), using `scripts/scribe.py notes compose --spec` through `--prepare`, artifact-bound review receipts, `--publish`, `--repair`, and `--validate`.
-   - **Single notes & `M2`–`M7`:** Run `scripts/scribe.py notes generate --vault "<vault>" --session-id "<id>" --validate`, applying Obsidian Properties (`topic`, `tags`, `master_topic`, `domain`, `note_type`), safe incremental reconciliation, and semantic/structural validation.
+Prepare concept-owned teaching records using [the teaching input contract](../../references/contracts/teaching-input.md). For comprehensive collections, every child needs researched theory, foundations, meaningful examples and limitations. Supply mathematical records for substantive equations; the runtime emits immediate collapsible twelve-stage explanations and verifies declared arithmetic. Select the [mathematical subtemplate](../../references/templates/subtemplates/mathematical.md) only when needed.
 
-## On-Demand References
+Express required visuals as `visual_requirements` or `visual_specs` on the owning concept. Follow [the media contract](../../references/workflows/notes-creation/representations.md): research and compare candidates, verify each file's reuse rights, acquire real local raster bytes, inspect them, and supply hash-bound semantic findings before grounded writing. Missing required images block the chapter and its parent index. Metadata/pixel inspection alone does not establish image meaning. Custom SVG generation has no active backend.
 
-- Routing & full architecture: [SKILL.md](../../SKILL.md), [router.md](../../router.md), [routing-policy.md](../../references/routing/routing-policy.md)
-- Pre-gen gate & playbooks: [pre-gen-gate.md](../../references/workflows/notes-creation/pre-gen-gate.md), [command-playbooks.md](../../references/workflows/notes-creation/command-playbooks.md)
-- Metadata & taxonomy: [properties-policy.md](../../references/metadata/properties-policy.md), [tag-taxonomy.md](../../references/metadata/tag-taxonomy.md)
+Run `python scripts/scribe.py notes generate --vault "<vault>" --session-id "<id>" --teaching "<teaching.json>" --validate`. Ordinary and checkpoint modes execute `composition/publication.py`, which calls `composition/writing.py` and the mathematical/visual owners. Comprehensive runs require teaching records and reject pending teaching obligations; there is no generic prose fallback. Keep execution and validation evidence with the generated artifacts.
+
+For importing an already-authored five-key collection, retain `notes compose --spec` with preparation, artifact-bound reviews, publication, repair and validation under [the comprehensive contract](../../references/workflows/notes-creation/composition-contract.md). This is an authored-artifact import, not a second prose generator. Both publication surfaces use the same Publisher owner and safe-write boundary.
+
+Validate actual Markdown, local hashes, links and assessments. Inspect educational reasoning separately from structural checks. Verify Reading View and Live Preview when Obsidian access is available; otherwise report UI acceptance as incomplete. Never modify existing notes or assets during tests.
+
+Use [metadata policy](../../references/metadata/properties-policy.md) for Properties profiles. Preserve the five-key profile for explicit comprehensive imports. The other public skills remain read-only doubt answering, interactive quizzes and folder configuration.

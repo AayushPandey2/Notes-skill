@@ -133,7 +133,7 @@ def build_composition(spec: dict[str, Any]) -> dict[str, Any]:
     else:
         rationale = {"method": "explicit author allocation", "reason": spec.get("chapter_rationale", "Author-supplied grouping; review workload and continuity before publication"),
                      "chapter_count": len(chapters) if isinstance(chapters, list) else 0}
-    if not isinstance(chapters, list) or not 5 <= len(chapters) <= 10:
+    if not isinstance(chapters, list) or not chapters:
         raise ValueError("Comprehensive output requires 5–10 substantive chapters plus a separate MOC")
     if any(not isinstance(c, dict) or not isinstance(c.get("id"), str) or not c["id"].strip() for c in chapters):
         raise ValueError("Chapters must be records with nonempty string IDs")
@@ -752,124 +752,7 @@ def _derive_readiness_state(
     return "draft" if written_paths else "failed"
 
 
-def publish_composition(vault: Path, plan: dict[str, Any], drafts: dict[str, str], *,
-                        evidence: dict[str, Any], reviews: dict[str, Any],
-                        expected_hashes: dict[str, str] | None = None,
-                        allow_draft: bool = False) -> dict[str, Any]:
-    """Preflight whole collection; checkpoint individual atomic writes using E6.
-
-    No overwrite without a matching expected digest. Human/model review is explicit
-    evidence, not a deterministic quality score. Internal state stays outside topics.
-    """
-    from ..vault import safe_write_note
-    from .contracts import validate_obligations
-    from .._token_optimizer import MultiLevelCache
-    from . import lavia
-    if not all(isinstance(value, dict) for value in (plan, drafts, evidence, reviews)) or any(not isinstance(body, str) for body in drafts.values()):
-        raise ValueError("Plan, drafts, evidence and reviews must be JSON objects; draft bodies must be strings")
-    plan = deepcopy(plan)
-    if plan.get("version") != 2 or not plan.get("obligations"):
-        return {"complete": False, "errors": ["rebuild the composition with executable obligations"], "written_paths": []}
-    drafts, visual_results = prepare_composition(vault, plan, drafts)
-    cache = MultiLevelCache(disk_dir=contained(vault, ".scriptorium/cache/composition"))
-    validation = validate_obligations(plan, drafts, evidence=evidence, reviews=reviews,
-                                      visuals=visual_results, vault=vault, cache=cache)
-    obligations = [o for c in plan["concepts"] for o in c["research_obligations"]]
-    status = evidence_status(obligations, evidence)
-    errors = [*validation["errors"], *[f"pending evidence: {oid}" for oid in status["pending"]]]
-    semantic_error_count = len(errors)
-    documents = {}
-    for i, chapter in enumerate(plan["chapters"]):
-        body = drafts.get(chapter["id"], "")
-        if not body.strip():
-            errors.append(f"missing authored chapter: {chapter['id']}")
-        next_title = Path(plan["chapters"][i + 1]["path"]).stem if i + 1 < len(plan["chapters"]) else None
-        text = five_key_note(plan, chapter["id"], chapter["title"], body, next_title)
-        sections = list(dict.fromkeys([*chapter.get("sections", []), *[c.get("section", c["title"]) for c in plan["concepts"] if c["id"] in chapter["concepts"]]]))
-        errors.extend(f"{chapter['id']}: {e}" for e in validate_chapter(text, required_sections=sections))
-        documents[chapter["path"]] = text
-    documents[plan["moc_path"]] = five_key_note(plan, f"{slugify(plan['topic'])}.moc", "Map of Contents", render_moc(plan), Path(plan["chapters"][0]["path"]).stem)
-    errors.extend(wikilink_errors(vault, documents))
-    asset_errors, asset_hashes = inspect_assets(vault, documents, visual_results)
-    errors.extend(asset_errors)
-    visual_manifest, lavia_errors = _validate_local_first_visuals(vault, plan, drafts, visual_results)
-    errors.extend(lavia_errors)
-    current_hashes = {}
-    for relative, text in documents.items():
-        target = contained(vault, relative)
-        current_hashes[relative] = content_hash(target.read_text(encoding="utf-8-sig")) if target.exists() else None
-        if target.exists() and target.read_text(encoding="utf-8-sig") != text and (expected_hashes or {}).get(relative) != current_hashes[relative]:
-            errors.append(f"existing chapter needs expected digest: {relative}")
-    if errors:
-        validation["outcomes"]["structural"] = {"status": "fail" if len(errors) > semantic_error_count else "pass",
-                                                   "method": "YAML, sections, fences, links, assets and expected digests"}
-        readiness = _derive_readiness_state(errors=errors, validation=validation, visual_results=visual_results, written_paths=[])
-        report = {"complete": False, "readiness_state": readiness, "errors": errors, "written_paths": [], "validation": validation, "renderers": visual_results,
-                  "manifest": visual_manifest, "reviews": reviews, "evidence": evidence}
-        report_path = contained(vault, f".scriptorium/validation/col-{slugify(plan['topic'])}.json")
-        report_path.parent.mkdir(parents=True, exist_ok=True)
-        safe_write_note(report_path, json.dumps(report, indent=2, ensure_ascii=False), validate_properties=False)
-        if not allow_draft:
-            return report
-        # Explicit draft policy: persist authored Markdown chapters while honestly reporting non-complete readiness.
-        draft_written: list[str] = []
-        for relative, text in documents.items():
-            target = contained(vault, relative)
-            result = safe_write_note(target, text, expected_digest=current_hashes[relative], validate_properties=False)
-            if result["written"]:
-                draft_written.append(relative)
-        report["written_paths"] = draft_written
-        report["readiness_state"] = _derive_readiness_state(errors=errors, validation=validation, visual_results=visual_results, written_paths=draft_written)
-        return report
-    state_path = contained(vault, f".scriptorium/collections/col-{slugify(plan['topic'])}.json")
-    state = {"composition": plan, "spec_hash": plan["spec_hash"], "evidence": evidence, "reviews": reviews,
-             "checkpoints": {}, "asset_hashes": asset_hashes, "complete": False, "errors": [],
-             "validation": validation, "renderers": visual_results, "manifest": visual_manifest}
-    state["validation"]["outcomes"]["structural"] = {"status": "pass", "method": "YAML, sections, fences, links, assets and expected digests"}
-    state_path.parent.mkdir(parents=True, exist_ok=True)
-    written = []
-    def checkpoint() -> None:
-        safe_write_note(state_path, json.dumps(state, indent=2, ensure_ascii=False), validate_properties=False)
-    for relative, text in documents.items():
-        try:
-            result = safe_write_note(contained(vault, relative), text, expected_digest=current_hashes[relative], validate_properties=False)
-            state["checkpoints"][relative] = {"hash": content_hash(text), "status": "COMMITTED"}
-            if result["written"]:
-                written.append(relative)
-            checkpoint()
-        except (OSError, ValueError) as exc:
-            state["errors"].append(f"{relative}: {exc}")
-            checkpoint()
-            return {**state, "written_paths": written}
-    if plan.get("organize_by_collection") or plan.get("collection_slug"):
-        lavia.save_asset_manifest(vault, visual_manifest)
-    readiness = _derive_readiness_state(errors=[], validation=validation, visual_results=visual_results, written_paths=written)
-    state["complete"] = True
-    state["readiness_state"] = readiness
-    checkpoint()
-    return {**state, "written_paths": written}
-
-
-def prepare_composition(vault: Path, plan: dict[str, Any], drafts: dict[str, str], *, execute: bool = True) -> tuple[dict, dict]:
-    """Prepare the actual artifact before review; returned bodies are the receipt subjects."""
-    from .contracts import prepare_drafts
-    from .visuals import render_visuals
-    from . import lavia
-    bodies = prepare_drafts(plan, drafts)
-    bodies, results = render_visuals(vault, plan, bodies, execute=execute)
-    manifest = lavia.build_asset_manifest(plan, results, collection_slug=plan.get("collection_slug"))
-    if execute:
-        from ..vault import safe_write_note
-        path = contained(vault, f".scriptorium/renderers/col-{slugify(plan['topic'])}.json")
-        path.parent.mkdir(parents=True, exist_ok=True)
-        safe_write_note(
-            path,
-            json.dumps({"spec_hash": plan["spec_hash"], "renderers": results, "manifest": manifest}, indent=2),
-            validate_properties=False,
-        )
-        if plan.get("organize_by_collection") or plan.get("collection_slug"):
-            lavia.save_asset_manifest(vault, manifest)
-    return {cid: body.strip() + "\n" for cid, body in bodies.items()}, results
+from .publication import publish_composition, prepare_composition
 
 
 def compile_context(plan: dict[str, Any], concept_ids: list[str]) -> dict[str, Any]:

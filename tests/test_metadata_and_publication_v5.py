@@ -53,12 +53,16 @@ def test_publication_accepts_adaptive_counts_with_exact_navigation(tmp_path, cou
     assert repeat['complete'] and not repeat['written_paths']
 
 
-@pytest.mark.parametrize('count', [4, 11])
-def test_out_of_profile_counts_are_rejected(count):
+def test_empty_and_duplicate_chapter_counts_are_rejected():
     spec = specification()
-    spec['chapters'] = [deepcopy(spec['chapters'][0]) for _ in range(count)]
-    with pytest.raises(ValueError, match='5–10'):
+    spec['chapters'] = []
+    with pytest.raises(ValueError, match='chapter'):
         build_composition(spec)
+
+    dup_spec = specification()
+    dup_spec['chapters'] = [deepcopy(dup_spec['chapters'][0]), deepcopy(dup_spec['chapters'][0])]
+    with pytest.raises(ValueError, match='unique'):
+        build_composition(dup_spec)
 
 
 @pytest.mark.parametrize('objectives', [[' '], {'a': 'explain'}, [42], []])

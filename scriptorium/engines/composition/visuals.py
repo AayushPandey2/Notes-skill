@@ -165,6 +165,12 @@ def render_visuals(
                     media_spec = routed["visual"]
 
                 acquired = media.media_artifact(vault, media_spec, digest, execute=execute, http_get=image_http_get)
+                findings = media_spec.get("inspection_findings")
+                if findings:
+                    if findings.get("content_hash") != acquired["hash"]:
+                        raise ValueError("Semantic inspection findings do not bind the downloaded image")
+                    acquired["inspection"]["semantic_findings"] = findings
+                    acquired["inspection"]["text_labels_extracted"] = list(findings.get("text_labels_extracted") or [])
                 status.update(acquired)
                 status["status"] = "verified"
                 embed = status["embed"]
@@ -282,6 +288,7 @@ def acquire_node_visuals(
     proposed_path: str,
     node_visuals: list[dict[str, Any]],
     learner_level: str = "beginner",
+    source_policy: str = "adaptive",
     http_get: Callable[[str, int], dict[str, Any]] | None = None,
     image_http_get: Callable[[str, int], dict[str, Any]] | None = None,
 ) -> tuple[list[str], dict[str, dict[str, Any]]]:
@@ -295,6 +302,7 @@ def acquire_node_visuals(
         norm_visuals.append(v)
 
     v_plan = {
+        "source_policy": source_policy,
         "topic": collection_title,
         "collection_slug": slugify(collection_title),
         "organize_by_collection": True,

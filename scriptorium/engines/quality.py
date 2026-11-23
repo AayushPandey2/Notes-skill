@@ -53,7 +53,7 @@ def audit_repository(root: Path = REPO_ROOT) -> dict[str, Any]:
     checked = 0
     files = [
         p for p in root.rglob("*")
-        if p.is_file() and not any(x in p.parts for x in (".git", "__pycache__", ".pytest_cache", ".test-deps", ".venv"))
+        if p.is_file() and not any(x in p.parts for x in (".git", "__pycache__", ".pytest_cache", ".test-deps", ".venv", "advanced-before"))
         and not (".scriptorium" in p.parts and "cache" in p.parts)
     ]
     for path in files:
@@ -909,7 +909,7 @@ def validate_note_collection(
                 if node.concept_id not in parent_node.child_ids:
                     _err("structural_integrity", node.concept_id, f"Parent '{parent_node.title}' does not list '{node.title}' in child_ids.")
                 # Verify child links back to parent
-                if f"[[{parent_node.title}]]" not in parsed.body:
+                if not set(_WIKILINK_RE.findall(parsed.body)).intersection({parent_node.title, parent_node.proposed_path.removesuffix(".md")}):
                     _err("wikilink_navigation", node.concept_id, f"Child note '{node.title}' does not link back to parent [[{parent_node.title}]].")
 
         # 3. Non-placeholder & depth checks
@@ -925,7 +925,7 @@ def validate_note_collection(
             # Parent MOC checks: must link to every child AND must not duplicate child bodies
             for cid in node.child_ids:
                 child = node_map.get(cid)
-                if child and f"[[{child.title}]]" not in parsed.body:
+                if child and not set(_WIKILINK_RE.findall(parsed.body)).intersection({child.title, child.proposed_path.removesuffix(".md")}):
                     _err("wikilink_navigation", node.concept_id, f"Parent MOC '{node.title}' is missing wikilink to child [[{child.title}]].")
             if "```python" in parsed.body or "$$" in parsed.body:
                 _warn("duplication_boundary", node.concept_id, f"Parent MOC '{node.title}' contains code or display derivations that belong inside child notes.")
@@ -937,7 +937,27 @@ def validate_note_collection(
             if x not in node_map
         }
         for target in _WIKILINK_RE.findall(parsed.body):
+            if Path(target).suffix.lower() in {".png", ".jpg", ".jpeg", ".webp", ".svg", ".gif"}:
+                from scriptorium.models import contained_path, content_hash
+                try:
+                    asset_path = contained_path(vault_root, target)
+                    if not asset_path.is_file():
+                        raise ValueError("local image is missing")
+                    matching = [visual for record in (manifest or {}).get("nodes", [])
+                                for visual in record.get("visuals", {}).values()
+                                if visual.get("path") == target]
+                    if any(visual.get("hash") != content_hash(asset_path.read_bytes()) for visual in matching):
+                        raise ValueError("local image changed since acquisition")
+                except (ValueError, OSError) as exc:
+                    _err("asset_integrity", node.concept_id, f"Invalid image embed {target}: {exc}")
+                continue
             t_low = target.strip().lower()
+            from scriptorium.models import contained_path
+            try:
+                if contained_path(vault_root, target if target.endswith(".md") else target + ".md").is_file():
+                    continue
+            except ValueError:
+                pass
             if (
                 t_low not in collection_titles
                 and t_low not in collection_stems

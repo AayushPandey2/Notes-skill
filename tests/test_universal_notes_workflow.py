@@ -413,13 +413,21 @@ def test_29_10_cli_universal_notes_start_respond_generate_validate(tmp_path):
     assert out2["ready_to_generate"] is True
     assert out2["stage"] == "COLLECTION_PLAN_READY"
 
-    # 3. Generate + validate via CLI
+    # 3. The host supplies researched teaching records; generic prose fallback is retired.
+    teaching_path = tmp_path / "teaching.json"
+    teaching_path.write_text(json.dumps({"Gradient Descent": {"source_facts": [
+        "Gradient descent iteratively changes parameters using local gradient information.",
+        "The gradient identifies the direction of steepest local increase. Moving against it can decrease a differentiable objective when the step is sufficiently small.",
+        "The learning rate scales the update. An excessive step can overshoot, and a stationary point need not be a global optimum.",
+    ]}}), encoding="utf-8")
+    # Generate + validate via the same public CLI.
     p3 = subprocess.run(
         [
             PYTHON, "-B", str(ROOT / "scripts" / "scribe.py"),
             "notes", "generate",
             "--vault", str(tmp_path),
             "--session-id", sid,
+            "--teaching", str(teaching_path),
             "--validate",
         ],
         capture_output=True, text=True, check=True,

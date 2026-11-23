@@ -1,8 +1,0 @@
-One-head attention interfaces
-
-| component | input | output | operation |
-| --- | --- | --- | --- |
-| Score product | Q: B,T_q,d_k; K: B,T_k,d_k | B,T_q,T_k | Q times transpose(K) / sqrt(d_k) |
-| Weighted values | A: B,T_q,T_k; V: B,T_k,d_v | B,T_q,d_v | A times V |
-
-Symbols specify dimensions, not observed tensors.

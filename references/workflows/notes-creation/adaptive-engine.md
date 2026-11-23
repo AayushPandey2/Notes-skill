@@ -4,7 +4,7 @@ Load this for deep study. The [M1 master](../../templates/masters/deep-notes.md)
 
 ## Planning input
 
-Before `plan_notes.py start`, add `instructional_plan` to each deep outline item. It contains `audience` (beginner/intermediate/advanced), `source_policy` (independent/strict/expanded/comparative), `sources`, and `concepts`. Each concept has a stable `id`, reader-facing `title`, nonempty `types` and `objectives`, `prerequisites`, `depth`, optional `modules`, and a concise `reason`. Use the concrete example in [evaluation fixtures](../../../examples/adaptive-deepnotes/scenarios.json).
+Before `plan_notes.py start`, add `instructional_plan` to each deep outline item. It contains `audience` (beginner/intermediate/advanced), `source_policy` (independent/strict/expanded/comparative), `sources`, and `concepts`. Each concept has a stable `id`, reader-facing `title`, nonempty `types` and `objectives`, `prerequisites`, `depth`, optional `modules`, and a concise `reason`.
 
 Classify from the intended task and inspected source, never topic keywords alone. Registry types are conceptual, mathematical, programming, algorithmic, architectural, scientific, historical, comparative, procedural and research. Map computational to programming, geometrical to mathematical plus visualization, experimental to scientific, analytical/theoretical to the actual object and objective, and research-oriented to research. Mixed concepts select several types. Examination is an overlay: record syllabus/question expectations in `reason`, align practice to them, and preserve understanding. Source fidelity is a cross-cutting policy, not a separate master.
 

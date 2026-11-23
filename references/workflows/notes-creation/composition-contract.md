@@ -36,7 +36,6 @@ Each explicit chapter has `id`, `title`, `concepts` (owned IDs), and optional
 `prerequisites`, selected `capabilities` (`S01`–`S18`), optional `depth` and `signals`.
 Known external prerequisites belong in `known_prerequisites`. Shared symbols belong
 in `notation`. Tables and visuals can carry their specifications in the same plan.
-See the executable fixture in [examples](../../../examples/adaptive-composition/README.md).
 
 Run `python scripts/scribe.py notes compose --spec <spec.json>` to validate and
 inspect the common plan. This performs no retrieval, authoring, or publication.

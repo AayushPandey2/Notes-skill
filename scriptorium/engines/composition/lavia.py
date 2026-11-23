@@ -17,7 +17,7 @@ from pathlib import Path
 import posixpath
 import re
 from typing import Any, Callable
-from urllib.parse import quote_plus, urlencode
+from urllib.parse import quote_plus, urlencode, urlsplit
 import urllib.request
 
 from scriptorium.models import content_hash, slugify
@@ -229,7 +229,7 @@ def search_web_images(
                 # Prefer native raster, or use Wikimedia's rasterized PNG thumbnail when original is SVG
                 if mime not in SUPPORTED_MIMES:
                     thumb_url = str(info.get("thumburl") or "").strip()
-                    thumb_mime = str(info.get("thumbmime") or ("image/png" if thumb_url.lower().endswith(".png") else "")).lower()
+                    thumb_mime = str(info.get("thumbmime") or ("image/png" if urlsplit(thumb_url).path.lower().endswith(".png") else "")).lower()
                     if thumb_url.startswith("https://") and thumb_mime in SUPPORTED_MIMES:
                         img_url = thumb_url
                         mime = thumb_mime
@@ -279,7 +279,7 @@ def search_web_images(
                 "gsrsearch": query,
                 "gsrlimit": str(max(1, min(10, max_results_per_query))),
                 "prop": "pageimages|info",
-                "piprop": "original|thumbnail",
+                "piprop": "name|original|thumbnail",
                 "pithumbsize": "1200",
                 "inprop": "url",
                 "format": "json",
@@ -304,21 +304,37 @@ def search_web_images(
                 h = int(thumb.get("height") or orig.get("height") or 0)
                 if w < min_width or h < min_height:
                     continue
+                # Article text licenses do not establish reuse rights for an image.
+                # Resolve the named file's own Commons metadata before accepting it.
+                file_name = page.get("pageimage")
+                if not file_name:
+                    rejected.append({"url": img_url, "reason": "image-specific license metadata unavailable"})
+                    continue
+                rights_url = "https://commons.wikimedia.org/w/api.php?" + urlencode({
+                    "action": "query", "titles": "File:" + str(file_name), "prop": "imageinfo",
+                    "iiprop": "url|extmetadata", "format": "json",
+                })
+                try:
+                    file_payload = fetcher(rights_url, timeout)
+                    entries = list((file_payload.get("query") or {}).get("pages", {}).values())
+                    info = next(item["imageinfo"][0] for item in entries if item.get("imageinfo"))
+                    metadata = info.get("extmetadata") or {}
+                    rights = _clean_html_text((metadata.get("LicenseShortName") or {}).get("value"))
+                    verify_license_and_rights(rights, require_permissive=require_permissive_license)
+                except (ValueError, KeyError, TypeError, StopIteration, OSError) as exc:
+                    rejected.append({"url": img_url, "reason": f"image-specific rights unresolved: {exc}"})
+                    continue
                 mime = "image/jpeg" if low_u.endswith((".jpg", ".jpeg")) else ("image/webp" if low_u.endswith(".webp") else "image/png")
                 seen_urls.add(img_url)
                 candidates.append({
                     "url": img_url,
-                    "source": str(page.get("fullurl") or f"https://en.wikipedia.org/?curid={page.get('pageid', '')}"),
-                    "author": "Wikipedia / Wikimedia contributors",
-                    "rights": "CC BY-SA 4.0",
-                    "mime": mime,
-                    "width": w,
-                    "height": h,
-                    "title": page.get("title", ""),
-                    "alt": str(page.get("title") or query)[:240],
-                    "relevance_score": 12,
-                    "query": query,
-                    "discovery_source": "wikipedia_pageimages",
+                    "source": str(info.get("descriptionurl") or rights_url),
+                    "author": _clean_html_text((metadata.get("Artist") or {}).get("value")) or "See original file attribution",
+                    "rights": rights,
+                    "mime": mime, "width": w, "height": h,
+                    "title": page.get("title", ""), "alt": str(page.get("title") or query)[:240],
+                    "relevance_score": 12, "query": query,
+                    "discovery_source": "wikipedia_pageimages_with_file_license",
                 })
         if len(candidates) >= max(3, max_results_per_query):
             break
@@ -419,6 +435,8 @@ def resolve_visual_route(
         derived_status = search_res["search_status"]
 
     ranked = rank_image_candidates(candidates, learner_level=learner_level) if candidates else []
+    if visual.get("approved_source"):
+        ranked = [candidate for candidate in ranked if candidate.get("source") == visual["approved_source"]]
     for cand in ranked:
         if cand.get("url") and cand.get("source") and cand.get("rights"):
             resolved = {
@@ -430,28 +448,6 @@ def resolve_visual_route(
                 "alt": cand.get("alt") or visual.get("objective", ""),
                 "relevance": cand.get("relevance") or visual.get("objective", ""),
                 "accessibility": cand.get("accessibility"),
-                "require_permissive_license": True,
-                "candidate_count_evaluated": len(candidates),
-            }
-            return {"route": "external_image_download", "visual": resolved, "search_status": "FOUND"}
-
-    # Fallback if host_candidates lacked accessibility fields for strict ranker but still had permissive url/source/rights
-    for cand in candidates:
-        if cand.get("url") and cand.get("source") and cand.get("rights") and cand.get("technical_accuracy") is not False:
-            from .media import verify_license_and_rights
-            try:
-                verify_license_and_rights(cand["rights"], require_permissive=True)
-            except ValueError as exc:
-                rejection_reasons.append(str(exc))
-                continue
-            resolved = {
-                **visual,
-                "kind": visual.get("kind") or "source_figure",
-                "url": cand["url"],
-                "source": cand["source"],
-                "rights": cand["rights"],
-                "alt": cand.get("alt") or visual.get("objective", ""),
-                "relevance": cand.get("relevance") or visual.get("objective", ""),
                 "require_permissive_license": True,
                 "candidate_count_evaluated": len(candidates),
             }

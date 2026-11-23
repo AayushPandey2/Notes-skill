@@ -399,125 +399,92 @@ def render_formula_component(
     vis_text = str(data.get("visual_interpretation") or "").strip()
     param_text = str(data.get("parameter_behavior") or "").strip()
     py_impl = str(data.get("python_implementation") or "").strip()
-    recall_qs = [str(q).strip() for q in (data.get("recall_questions") or []) if str(q).strip()]
+    recall_qs = [str(q).strip() for q in data.get("recall_questions", []) if str(q).strip()]
 
-    fold_inner: list[str] = []
-
-    def _add_stage(heading: str, stage_lines: list[str]) -> None:
-        if not stage_lines:
-            return
-        if fold_inner:
-            fold_inner.append("")
-        fold_inner.append(f"### {heading}")
-        fold_inner.extend(stage_lines)
-
-    # Stage 1: Formula Introduction and Intuition
-    if purpose_text:
-        _add_stage("1. Why this formula exists", [purpose_text])
-
-    # Stage 2: Formula Decomposition
-    if data.get("operation_breakdown"):
-        comp_lines = [f"{idx}. {step_text}" for idx, step_text in enumerate(data["operation_breakdown"], 1)]
-        _add_stage("2. Formula components", comp_lines)
-
-    # Stage 3: Symbol-by-Symbol Decoding
-    sym_lines: list[str] = []
+    # Each stage has one owner and is rendered only from supplied teaching evidence.
+    # Absence is recorded below; an omitted stage is never claimed as verified.
+    symbol_lines = []
     if symbols:
-        sym_lines.extend(["| Symbol | Name / Meaning | Type | Shape / Units | Role |", "|---|---|---|---|---|"])
-        for s in symbols:
-            sym_lines.append(
-                f"| ${s['symbol']}$ | {s['meaning']} | {s.get('type', 'quantity')} | "
-                f"{s.get('shape') or s.get('units') or 'scalar'} | {s.get('role', s['meaning'])} |"
-            )
+        symbol_lines = ["| Symbol | Name / Meaning | Type | Shape / Units | Role |", "|---|---|---|---|---|"]
+        symbol_lines += [f"| ${x['symbol']}$ | {x['meaning']} | {x.get('type', 'unspecified')} | "
+                         f"{x.get('shape') or x.get('units') or 'not supplied'} | {x.get('role', x['meaning'])} |"
+                         for x in symbols]
     if data.get("shapes_units_domains"):
-        if sym_lines:
-            sym_lines.append("")
-        sym_lines.append("**Shapes, units, and domains:** " + "; ".join(str(x) for x in data["shapes_units_domains"]))
+        symbol_lines.append("**Shapes, units, and domains:** " + "; ".join(map(str, data["shapes_units_domains"])))
     if dim_check:
-        sym_lines.append(f"**Shape compatibility:** `{dim_check.get('compatibility_summary') or dim_check.get('output_shape')}`.")
-    _add_stage("3. Symbol-by-symbol breakdown", sym_lines)
-
-    # Stage 4: Mathematical Pronunciation
-    if pron_text:
-        _add_stage("4. How to read it", [pron_text])
-
-    # Stage 5: Prerequisite Mathematics
-    if prereq_text:
-        _add_stage("5. Prerequisites", [prereq_text])
-
-    # Stage 6: Complete Numerical Example
-    if isinstance(num_ex, dict) and (calc_check or num_ex.get("summary")):
-        num_lines: list[str] = []
+        symbol_lines.append(f"**Shape compatibility:** `{dim_check.get('compatibility_summary') or dim_check.get('output_shape')}`.")
+    numerical_lines = []
+    if isinstance(num_ex, dict):
         if num_ex.get("inputs"):
-            formatted_inputs = ", ".join(f"`{k} = {v}`" for k, v in num_ex["inputs"].items())
-            num_lines.append(f"- **Declared inputs:** {formatted_inputs}")
+            numerical_lines.append("**Declared inputs:** " + ", ".join(f"`{k} = {v}`" for k, v in num_ex["inputs"].items()))
         if calc_check:
-            for st in calc_check["evaluated_steps"]:
-                expl = f" — {st['explanation']}" if st.get("explanation") else ""
-                num_lines.append(f"- **{st['label']}:** `{st['expr']}` = `{st['computed']}`{expl}")
+            numerical_lines += [f"- **{x['label']}:** `{x['expr']}` = `{x['computed']}` ? {x.get('explanation', '')}"
+                                for x in calc_check["evaluated_steps"]]
         elif num_ex.get("summary"):
-            num_lines.append(f"- **Trace:** {num_ex['summary']}")
-        if num_ex.get("interpretation"):
-            num_lines.append(f"- **Result meaning:** {num_ex['interpretation']}")
-        if num_ex.get("sanity_check"):
-            num_lines.append(f"- **Sanity check:** {num_ex['sanity_check']}")
-        _add_stage("6. Numerical example", num_lines)
-
-    # Stage 7: Visual and Geometric Intuition
-    if vis_text:
-        _add_stage("7. Visual interpretation", vis_text.splitlines())
-
-    # Stage 8: Parameter Experimentation
-    if param_text:
-        _add_stage("8. Parameter behavior", param_text.splitlines())
-
-    # Stage 9: Mathematical Derivation
-    deriv_lines: list[str] = []
+            numerical_lines.append(str(num_ex["summary"]))
+        for key in ("interpretation", "sanity_check"):
+            if num_ex.get(key):
+                numerical_lines.append(("**Result meaning / interpretation:** " if key == "interpretation" else "**Sanity check:** ") + str(num_ex[key]))
+    derivation = []
     if data.get("expanded_form"):
-        exp_clean = str(data["expanded_form"]).strip().replace("\n", " ")
-        deriv_lines.append(f"**Expanded elementary form:** ${exp_clean}$")
+        derivation.append("**Expanded elementary form:** $" + str(data["expanded_form"]).replace("\n", " ") + "$")
     if data.get("derivation_reasoning"):
-        if deriv_lines:
-            deriv_lines.append("")
-        deriv_lines.append(str(data["derivation_reasoning"]).strip())
-    _add_stage("9. Derivation", deriv_lines)
-
-    # Stage 10: Python Implementation
-    if py_impl:
-        if "```" in py_impl:
-            _add_stage("10. Python implementation", py_impl.splitlines())
-        else:
-            _add_stage("10. Python implementation", ["```python", *py_impl.splitlines(), "```"])
-
-    # Stage 11: Applications, Limitations, and Misconceptions
-    lim_lines: list[str] = []
+        derivation.append(str(data["derivation_reasoning"]))
+    limitations = []
     if data.get("assumptions"):
-        lim_lines.append("**Assumptions & conditions:** " + "; ".join(str(x) for x in data["assumptions"]))
+        limitations.append("**Assumptions & conditions:** " + "; ".join(map(str, data["assumptions"])))
     if data.get("misconceptions"):
-        if lim_lines:
-            lim_lines.append("")
-        lim_lines.append("**Common mistakes to avoid:**")
-        lim_lines.extend(f"- {mc}" for mc in data["misconceptions"])
-    _add_stage("11. Limitations and mistakes", lim_lines)
-
-    # Stage 12: Mental Model and Active Recall
-    mental_lines: list[str] = []
-    interp_text = str((num_ex or {}).get("interpretation") if isinstance(num_ex, dict) else "" or data.get("interpretation") or "").strip()
-    if data.get("interpretation") and str(data["interpretation"]).strip() != interp_text:
-        mental_lines.append(f"**Mental model:** {str(data['interpretation']).strip()}")
-    elif interp_text and not (isinstance(num_ex, dict) and (calc_check or num_ex.get("summary"))):
-        mental_lines.append(f"**Mental model:** {interp_text}")
-    if data.get("generalization"):
-        mental_lines.append(f"**Generalization:** {str(data['generalization']).strip()}")
+        limitations += ["**Common mistakes to avoid:**", *[f"- {x}" for x in data["misconceptions"]]]
+    mental = [str(data[k]) for k in ("interpretation", "generalization") if data.get(k)]
     if recall_qs:
-        mental_lines.append("**Quick recall checks:**")
-        mental_lines.extend(f"- {q}" for q in recall_qs)
-    _add_stage("12. Mental model and recall", mental_lines)
-
-    while fold_inner and not fold_inner[-1].strip():
-        fold_inner.pop()
+        mental += ["**Quick recall checks:**", *[f"- {x}" for x in recall_qs]]
+    stages = [
+        ("Why this formula exists", [purpose_text] if purpose_text else []),
+        ("Formula components", [f"{i}. {x}" for i, x in enumerate(data.get("operation_breakdown", []), 1)]),
+        ("Symbol-by-symbol breakdown", symbol_lines),
+        ("How to read it", [pron_text] if pron_text else []),
+        ("Prerequisites", [prereq_text] if prereq_text else []),
+        ("Numerical example", numerical_lines),
+        ("Visual interpretation", vis_text.splitlines()),
+        ("Parameter behavior", param_text.splitlines()),
+        ("Derivation", derivation),
+        ("Python implementation", (py_impl.splitlines() if "```" in py_impl else ["```python", *py_impl.splitlines(), "```"])
+         if py_impl else []),
+        ("Limitations and mistakes", limitations),
+        ("Mental model and recall", mental),
+    ]
+    omissions = data.get("stage_omissions", {})
+    _trivial_omission_re = re.compile(r"^(?:none|n/?a|skip|todo|tbd|not needed|omit|placeholder)$", re.I)
+    if not isinstance(omissions, dict) or any(
+        str(key) not in {str(i) for i in range(1, 13)}
+        or not isinstance(value, str)
+        or len(value.strip()) < 10
+        or _trivial_omission_re.match(value.strip())
+        for key, value in omissions.items()
+    ):
+        raise ValueError("Stage omissions require a numbered stage and a substantive domain-specific reason (>= 10 chars)")
+    required_stages = data.get("required_stages", [])
+    if not isinstance(required_stages, list) or any(type(value) is not int or not 1 <= value <= 12 for value in required_stages):
+        raise ValueError("Required mathematical stages must be integers from 1 to 12")
+    if "1" in {str(k) for k in omissions}:
+        raise ValueError("Stage 1 (Why this formula exists) cannot be omitted")
+    if "3" in {str(k) for k in omissions} and features["detected_symbols"] and 3 in required_stages:
+        raise ValueError("Stage 3 (Symbol-by-symbol breakdown) cannot be omitted when equation contains symbols")
+    for number in required_stages:
+        if not stages[number - 1][1] and str(number) not in omissions:
+            raise ValueError(f"Required formula teaching stage {number} is missing")
+    if any(stages[int(key) - 1][1] for key in omissions):
+        raise ValueError("A mathematical stage cannot be both supplied and omitted")
+    fold_inner = []
+    for number, (heading, lines) in enumerate(stages, 1):
+        if lines:
+            if fold_inner:
+                fold_inner.append("")
+            fold_inner += [f"### {number}. {heading}", *lines]
     if not fold_inner:
         raise ValueError("Formula teaching component cannot render an empty explanation fold")
+    if any("$$" in line for line in fold_inner):
+        raise ValueError("Formula stages cannot contain nested display equations; use inline intermediate arithmetic")
 
     fold_lines = _format_callout_block(fold_inner, title="📐 Understand this formula", callout_type="note", quote_prefix=quote_prefix)
     display_lines = [f"{quote_prefix}$$", f"{quote_prefix}{eq}", f"{quote_prefix}$$"]
@@ -546,11 +513,14 @@ def render_formula_component(
         assumptions=list(data.get("assumptions") or []),
         misconceptions=list(data.get("misconceptions") or []),
         recall_questions=recall_qs,
-        validation_status="verified",
+        validation_status="structurally_checked",
         placement=str(data.get("placement") or "prose"),
     )
 
     return {
+        "stage_status": {str(i): "supplied" if lines else "justifiably_omitted" if str(i) in omissions else "not_supplied" for i, (_, lines) in enumerate(stages, 1)},
+        "stage_omissions": omissions,
+        "required_stages": required_stages,
         "formula_id": formula_id,
         "equation": eq,
         "complexity": features["complexity"],
@@ -571,6 +541,8 @@ def deconstruct_equation(spec: dict[str, Any], *, learner_level: str = "beginner
 
     component = render_formula_component(spec, learner_level=learner_level)
     return {
+        "stage_status": component["stage_status"],
+        "required_stages": component["required_stages"],
         "formula_id": component["formula_id"],
         "equation": component["equation"],
         "complexity": component["complexity"],
@@ -787,7 +759,7 @@ def build_worked_solution(problem_spec: dict[str, Any], *, learner_level: str = 
     formula_component = render_formula_component(
         {
             "equation": str(problem_spec["formula"]).strip(),
-            "purpose": f"Computes {problem_spec['find']} for {problem_spec['problem']}",
+            "purpose": str(problem_spec.get("purpose") or f"Computes {problem_spec['find']} for {problem_spec['problem']}"),
             "pronunciation": str(problem_spec.get("pronunciation") or f"Formula computing {problem_spec['find']}."),
             "symbols": sym_defs,
             "operation_breakdown": [
@@ -795,6 +767,14 @@ def build_worked_solution(problem_spec: dict[str, Any], *, learner_level: str = 
                 + (f" ({st['explanation']})" if st.get("explanation") else "")
                 for st in calc["evaluated_steps"]
             ],
+            "numerical_example": {
+                "inputs": problem_spec["given"] if isinstance(problem_spec["given"], dict) else {},
+                "steps": problem_spec["steps"],
+                "expected_result": problem_spec.get("expected_result"),
+                "interpretation": problem_spec.get("interpretation") or "The declared calculation yields the requested quantity.",
+                "sanity_check": problem_spec.get("verification_note") or "Check the declared inputs, operation order and domain restrictions.",
+            },
+            "derivation_reasoning": problem_spec.get("derivation_reasoning", ""),
             "interpretation": str(problem_spec.get("interpretation") or f"Evaluates to `{calc['final_value']}` under {given_str}."),
             "assumptions": assump_list,
             "misconceptions": list(problem_spec.get("common_mistakes") or ["Check variable signs, denominator constraints, and units before computing."])

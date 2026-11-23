@@ -15,8 +15,6 @@ from dataclasses import asdict, dataclass, field
 import re
 from typing import Any, Callable
 
-from scriptorium.engines.vault import build_obsidian_properties, render_note_with_properties
-from scriptorium.layout import canonical_note_type
 from scriptorium.models import parse_note, slugify
 
 BLUEPRINT_SCHEMA_VERSION = "1.0"
@@ -612,6 +610,19 @@ def build_explanation_blueprint(
             "teaching_extensions": {
                 k: ext_src.get(k) or (context or {}).get(k)
                 for k in (
+                    "teaching",
+                    "teaching_bindings",
+                    "mechanism",
+                    "depth_profile",
+                    "practical",
+                    "objectives",
+                    "sections",
+                    "chapter",
+                    "assets",
+                    "inspections",
+                    "evidence",
+                    "assessments",
+                    "require_complete",
                     "familiar_anchor",
                     "starting_intuition",
                     "analogy_limit",
@@ -650,242 +661,6 @@ def build_explanation_blueprint(
         },
         conflict_resolutions=conflicts,
     )
-
-
-def compose_explanation_note(
-    blueprint: ExplanationBlueprint,
-    *,
-    source_facts: list[str] | None = None,
-    domain_override: str | None = None,
-    master_topic_override: str | None = None,
-) -> str:
-    """Compose a natural-prose Markdown note with mandatory Obsidian Properties from an ExplanationBlueprint.
-
-    Never exposes internal blueprint role names as visible headings.
-    """
-    master = blueprint.context.get("selected_master", "M1")
-    source_mode = blueprint.context.get("source_mode", "adaptive")
-    preserve_order = bool(blueprint.context.get("preserve_source_order"))
-    note_type = canonical_note_type({
-        "M1": "deep-notes",
-        "M2": "study-notes",
-        "M3": "quick-reference",
-        "M4": "worked-solutions",
-        "M5": "implementation-guide",
-        "M6": "assessment",
-        "M7": "synthesis-revision",
-    }.get(master, "deep-notes"))
-
-    props = build_obsidian_properties(
-        topic=blueprint.topic,
-        note_type=note_type,
-        domain=domain_override,
-        master_topic=master_topic_override,
-        concept_ids=[blueprint.concept_id],
-        source_mode=source_mode,
-    )
-
-    spine = blueprint.explanatory_spine
-    lines: list[str] = [f"# {blueprint.topic}", ""]
-
-    if master == "M3":
-        lines.append("## Core Reference")
-        if blueprint.variable_roles:
-            lines.append("| Symbol | Meaning | Operational Role |")
-            lines.append("|---|---|---|")
-            for vr in blueprint.variable_roles:
-                lines.append(f"| `{vr['symbol']}` | {vr['meaning']} | {vr['effect']} |")
-            lines.append("")
-        conds = blueprint.boundaries.get("required_conditions") or []
-        if conds:
-            lines.append("## Applicability Conditions")
-            for c in conds:
-                lines.append(f"- {c}")
-            lines.append("")
-        if blueprint.contrasts:
-            c0 = blueprint.contrasts[0]
-            lines.append("## Key Distinction")
-            lines.append(f"- **{c0['concept_a']} vs {c0['concept_b']}**: {c0['distinction']}")
-            lines.append("")
-        if blueprint.retrieval.get("cues"):
-            lines.append("## Recall Cues")
-            lines.append("- " + " → ".join(blueprint.retrieval["cues"]))
-            lines.append("")
-        return render_note_with_properties(props, "\n".join(lines))
-
-    if preserve_order and source_facts:
-        lines.append("## 1. Source Context & Overview")
-        lines.append(
-            "> [!info] Source & Scope Context\n"
-            f"> - **Source Policy**: `{source_mode}` (preserves original sequence; no external facts added)"
-        )
-        lines.append("")
-        lines.append("## 2. Sequential Development")
-        for idx, fact in enumerate(source_facts, 1):
-            rendered_fact = fact if idx == 1 else f"Building directly on the preceding point: {fact}"
-            lines.append(f"### 2.{idx} Step {idx}")
-            lines.append(rendered_fact)
-            lines.append("")
-        if blueprint.retrieval.get("summary") and source_mode != "strict":
-            lines.append("## 3. Synthesis")
-            lines.append(blueprint.retrieval["summary"])
-            lines.append("")
-        return render_note_with_properties(props, "\n".join(lines))
-
-    ext = blueprint.context.get("teaching_extensions") or {}
-    audience = str(blueprint.context.get("audience_depth") or "beginner").lower()
-
-    lines.append("## Why This Matters & Starting Problem")
-    if spine.get("starting_problem"):
-        lines.append(spine["starting_problem"].strip())
-        lines.append("")
-    if spine.get("obstacle"):
-        lines.append(spine["obstacle"].strip())
-        lines.append("")
-    if ext.get("familiar_anchor"):
-        lines.append(str(ext["familiar_anchor"]).strip())
-        lines.append("")
-    if blueprint.central_question.get("explicit_in_prose") and blueprint.central_question.get("question"):
-        lines.append(f"This leads directly to our central guiding question: *{blueprint.central_question['question']}*")
-        lines.append("")
-
-    if ext.get("starting_intuition"):
-        lines.append("## Intuitive Picture Before Any Formalism")
-        lines.append(str(ext["starting_intuition"]).strip())
-        lines.append("")
-        if ext.get("analogy_limit"):
-            lines.append(f"*Where this intuition reaches its limit:* {str(ext['analogy_limit']).strip()}")
-            lines.append("")
-
-    if ext.get("prerequisite_bridges"):
-        lines.append("## Building the Needed Foundations")
-        for br in ext["prerequisite_bridges"]:
-            if isinstance(br, dict):
-                lines.append(f"### {br.get('term', 'Prerequisite')}")
-                lines.append(str(br.get("explanation", "")).strip())
-                lines.append("")
-            else:
-                lines.append(f"- {br}")
-                lines.append("")
-
-    mechanism_parts = [p.strip() for p in (spine.get("necessary_insight", ""), spine.get("mechanism", ""), spine.get("result", "")) if p and p.strip()]
-    if mechanism_parts:
-        lines.append("## How the Mechanism Works")
-        for part in mechanism_parts:
-            lines.append(part)
-            lines.append("")
-
-    steps = blueprint.mathematical_motivation.get("steps") or []
-    if steps:
-        lines.append("## Stepping Into the Mathematical Idea")
-        for idx, st in enumerate(steps, 1):
-            goal_text = st["goal"][0].lower() + st["goal"][1:] if st.get("goal") else "move forward"
-            op_name = st.get("operation", "operation").replace("_", " ")
-            basis_name = st.get("mathematical_basis", "mathematical rule").replace("_", " ")
-            lines.append(f"### Step {idx}: {op_name.title()}")
-            lines.append(
-                f"To {goal_text}, we apply **{op_name}** grounded in {basis_name}, producing `{st.get('result', '')}`."
-            )
-            lines.append("")
-            if st.get("interpretation") or st.get("next_purpose"):
-                lines.append(f"{st.get('interpretation', '')} {st.get('next_purpose', '')}".strip())
-                lines.append("")
-        if blueprint.mathematical_motivation.get("local_vs_global_note"):
-            lines.append(blueprint.mathematical_motivation["local_vs_global_note"].strip())
-            lines.append("")
-
-    if ext.get("equations"):
-        from scriptorium.engines.mathematics import deconstruct_equation
-        lines.append("## Formal Formulation and Mathematical Breakdown")
-        for eq_spec in ext["equations"]:
-            decon = deconstruct_equation(eq_spec, learner_level=audience)
-            lines.append(decon["markdown"].strip())
-            lines.append("")
-
-    if blueprint.variable_roles:
-        lines.append("## Roles of Key Quantities")
-        lines.append("| Symbol | Meaning | Operational Role | Effect of Change |")
-        lines.append("|---|---|---|---|")
-        for vr in blueprint.variable_roles:
-            lines.append(f"| `{vr['symbol']}` | {vr['meaning']} | {vr['role']} | {vr['effect']} |")
-        lines.append("")
-
-    if ext.get("worked_problems"):
-        from scriptorium.engines.mathematics import build_worked_solution
-        lines.append("## Worked Examples")
-        for prob in ext["worked_problems"]:
-            wk = build_worked_solution(prob, learner_level=audience)
-            lines.append(wk["markdown"].strip())
-            lines.append("")
-
-    if ext.get("visual_walkthroughs"):
-        for vw in ext["visual_walkthroughs"]:
-            lines.append(str(vw).strip())
-            lines.append("")
-
-    exec_st = blueprint.execution_state
-    if exec_st.get("applicable") and exec_st.get("example_trace"):
-        lines.append("## Step-by-Step State Evolution")
-        if exec_st.get("invariant", {}).get("applicable"):
-            lines.append(f"**Preserved Invariant:** {exec_st['invariant']['statement']}")
-            lines.append("")
-        cols = list(exec_st["example_trace"][0].keys())
-        lines.append("| " + " | ".join(cols) + " |")
-        lines.append("|" + "|".join("---" for _ in cols) + "|")
-        for row in exec_st["example_trace"]:
-            lines.append("| " + " | ".join(str(row[c]) for c in cols) + " |")
-        lines.append("")
-
-    if ext.get("comparisons"):
-        lines.append("## Comparing Alternatives and Selecting a Method")
-        for cmp_item in ext["comparisons"]:
-            if isinstance(cmp_item, dict):
-                lines.append(f"### {cmp_item.get('title', 'Comparison')}")
-                if cmp_item.get("causal_explanation"):
-                    lines.append(str(cmp_item["causal_explanation"]).strip())
-                    lines.append("")
-                if cmp_item.get("table"):
-                    lines.append(str(cmp_item["table"]).strip())
-                    lines.append("")
-            else:
-                lines.append(str(cmp_item).strip())
-                lines.append("")
-
-    req_conds = blueprint.boundaries.get("required_conditions") or []
-    lims = blueprint.boundaries.get("known_limitations") or []
-    miscs = ext.get("misconceptions") or []
-    if (req_conds or lims or blueprint.contrasts or miscs) and not blueprint.boundaries.get("minimal_caveats_only"):
-        lines.append("## Applicability Conditions, Misconceptions, and Distinctions")
-        for c in req_conds:
-            lines.append(f"- **Required condition:** {c}")
-        for lim in lims:
-            lines.append(f"- **Limitation (when not to use):** {lim}")
-        for con in blueprint.contrasts:
-            lines.append(
-                f"- **{con['concept_a']} vs. {con['concept_b']}:** {con['distinction']} "
-                f"*(Example: {con['discriminating_example']})*"
-            )
-        for mc in miscs:
-            lines.append(f"- **Common misconception:** {mc}")
-        lines.append("")
-
-    if ext.get("practical_application"):
-        lines.append("## Practical Application")
-        lines.append(str(ext["practical_application"]).strip())
-        lines.append("")
-
-    if blueprint.retrieval.get("enabled") and blueprint.retrieval.get("summary") and not blueprint.retrieval.get("internal_only"):
-        lines.append("## Reconstructing the Reasoning")
-        lines.append("**Key cues:** " + " → ".join(blueprint.retrieval["cues"]))
-        lines.append("")
-        lines.append(blueprint.retrieval["summary"])
-        lines.append("")
-
-    if ext.get("transition"):
-        lines.append(str(ext["transition"]).strip())
-        lines.append("")
-
-    return render_note_with_properties(props, "\n".join(lines))
 
 
 # ---------------------------------------------------------------------------

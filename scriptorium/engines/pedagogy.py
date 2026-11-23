@@ -33,10 +33,10 @@ from scriptorium.engines._pedagogical_core import (
 from scriptorium.engines._explanation import (
     ExplanationBlueprint,
     build_explanation_blueprint,
-    compose_explanation_note,
     validate_explanation_structure,
     verify_numerical_trace,
 )
+from scriptorium.engines.composition.writing import compose_explanation_note
 
 # ---------------------------------------------------------------------------
 # Mechanism 7 — Explanation Gap Detector (Section 16)

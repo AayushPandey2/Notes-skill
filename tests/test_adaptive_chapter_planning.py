@@ -11,35 +11,38 @@ def inventory(titles, **overrides):
             for i, title in enumerate(titles)]
 
 
-@pytest.mark.parametrize("topic,size,count", [
-    ("Ancient history", 5, 5),
-    ("Circuit analysis", 24, 6),
-    ("Algorithms", 36, 8),
-    ("Multivariable calculus", 45, 10),
+@pytest.mark.parametrize("topic,size", [
+    ("Ancient history", 1),
+    ("Circuit analysis", 8),
+    ("Algorithms", 16),
+    ("Multivariable calculus", 25),
 ])
-def test_adaptive_counts_and_exact_ownership_across_domains(topic, size, count):
+def test_adaptive_counts_and_exact_ownership_across_domains(topic, size):
     concepts = inventory([f"{topic} concept {i}" for i in range(size)])
     result = plan_chapters(concepts)
     chapters = result["chapters"]
-    assert len(chapters) == count
+    assert len(chapters) >= 1
     owned = [cid for chapter in chapters for cid in chapter["concepts"]]
     assert owned == [concept["id"] for concept in concepts]
     assert len(owned) == len(set(owned))
-    assert len({chapter["id"] for chapter in chapters}) == count
+    assert len({chapter["id"] for chapter in chapters}) == len(chapters)
     assert all(chapter["sections"] and chapter["estimate"]["units"] > 0 for chapter in chapters)
     assert sum(chapter["estimate"]["units"] for chapter in chapters) == pytest.approx(result["rationale"]["total_workload_units"])
 
 
 def test_depth_changes_allocation_without_topic_specific_rules():
-    concepts = inventory([f"Concept {i}" for i in range(14)])
+    concepts = inventory([f"Concept {i}" for i in range(6)], group="Core")
     basic = plan_chapters(concepts)
     for concept in concepts:
-        concept.update(depth={"mathematical": 4, "implementation": 4, "research": 4, "visual": 3},
-                       examples=[{"id": "worked"}], assessments=[{"id": "check"}])
+        concept.update(
+            depth={"mathematical": 4, "implementation": 4, "research": 4, "visual": 3},
+            depth_profile={"complexity": "complex", "internal_mechanisms": 2},
+            examples=[{"id": "worked"}],
+            assessments=[{"id": "check"}],
+        )
     demanding = plan_chapters(concepts)
-    assert len(basic["chapters"]) == 5
-    assert len(demanding["chapters"]) == 10
-    assert demanding["rationale"]["scope_review_required"]
+    assert len(basic["chapters"]) == 1
+    assert len(demanding["chapters"]) == 6
     assert demanding["rationale"]["total_workload_units"] > basic["rationale"]["total_workload_units"]
 
 
@@ -55,27 +58,24 @@ def test_prerequisite_order_overrides_input_and_group_preference():
     assert result["rationale"]["concept_estimates"]["c11"]["prerequisite_depth"] == 11
 
 
-def test_ready_concepts_prefer_coherent_groups_and_balance_load():
-    concepts = inventory([f"Concept {i}" for i in range(25)])
-    for i, concept in enumerate(concepts):
-        concept["group"] = f"Group {i % 5}"
+def test_coherent_simple_concepts_group_and_demanding_concepts_stay_standalone():
+    concepts = inventory([f"Concept {i}" for i in range(6)])
+    for i in range(4):
+        concepts[i]["group"] = "Foundations"
+        concepts[i]["complexity"] = "trivial"
+    concepts[4]["objectives"] = ["derive the closed-form update"]
+    concepts[5]["depth_profile"] = {"complexity": "complex", "internal_mechanisms": 2}
     result = plan_chapters(concepts)
-    # Five contiguous groups can each occupy a chapter without mixing concepts.
-    assert len(result["chapters"]) == 6  # Total burden requires a split of one group.
-    assert result["rationale"]["split_groups"]
-    assert all(len(chapter["estimate"]["groups"]) <= 2 for chapter in result["chapters"])
-    loads = [chapter["estimate"]["units"] for chapter in result["chapters"]]
-    assert max(loads) <= 2 * min(loads)
+    assert result["chapters"][0]["concepts"] == ["c0", "c1", "c2", "c3"]
+    assert result["chapters"][1]["concepts"] == ["c4"]
+    assert result["chapters"][2]["concepts"] == ["c5"]
 
 
-def test_fragments_merge_and_overloaded_groups_split_without_new_concepts():
-    concepts = inventory([f"Concept {i}" for i in range(30)])
-    for i, concept in enumerate(concepts):
-        concept["group"] = "Broad group" if i < 20 else f"Small group {i}"
+def test_trivial_concepts_with_same_prerequisites_can_share_chapter():
+    concepts = inventory([f"Term {i}" for i in range(3)], complexity="trivial")
     result = plan_chapters(concepts)
-    assert result["rationale"]["split_groups"]["Broad group"]
-    assert result["rationale"]["merged_groups"]
-    assert {cid for ch in result["chapters"] for cid in ch["concepts"]} == {concept["id"] for concept in concepts}
+    assert len(result["chapters"]) == 1
+    assert result["chapters"][0]["concepts"] == ["c0", "c1", "c2"]
 
 
 def test_external_known_optional_and_missing_prerequisites_remain_explicit():
@@ -89,10 +89,10 @@ def test_external_known_optional_and_missing_prerequisites_remain_explicit():
     assert next(record for record in records if record["id"] == "gap")["classification"] == "missing"
 
 
-@pytest.mark.parametrize("fault", ["too_small", "duplicate", "empty_id", "title", "objective", "unknown", "cycle", "classification", "malformed"])
+@pytest.mark.parametrize("fault", ["empty", "duplicate", "empty_id", "title", "objective", "unknown", "cycle", "classification", "malformed"])
 def test_invalid_inventories_fail_before_allocation(fault):
     concepts = inventory([f"Concept {i}" for i in range(5)])
-    if fault == "too_small": concepts.pop()
+    if fault == "empty": concepts = []
     if fault == "duplicate": concepts[1]["id"] = "c0"
     if fault == "empty_id": concepts[0]["id"] = " "
     if fault == "title": concepts[0]["title"] = ""
@@ -107,7 +107,7 @@ def test_invalid_inventories_fail_before_allocation(fault):
         plan_chapters(concepts)
 
 
-@pytest.mark.parametrize("count", [4, 11, True, 5.5])
+@pytest.mark.parametrize("count", [0, -1, True, 5.5])
 def test_explicit_chapter_bounds(count):
     with pytest.raises(ValueError):
         validate_chapter_count(count)

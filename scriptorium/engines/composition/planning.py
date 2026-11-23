@@ -1,44 +1,28 @@
-"""Deterministic chapter allocation for the existing composition plan.
+"""Prerequisite-safe chapter allocation driven by teaching obligations and coherence.
 
-Workload units are transparent planning estimates, not measured reading time or
-a claim that a chapter is pedagogically complete. Authored content and the
-existing educational obligations still require separate review.
+A chapter count is an outcome. No minimum quota or maximum chapter count pads or
+truncates a subject. Explicitly coherent simple concepts may share a chapter;
+complex mechanisms and derivations retain their own instructional space.
 """
 from __future__ import annotations
-
 from collections import Counter
 import json
-import math
 import re
 from typing import Any, Iterable
-
 from scriptorium.models import content_hash
-
-
-MIN_CHAPTERS = 5
-MAX_CHAPTERS = 10
-TARGET_WORKLOAD = 6.0
-DEPTH_WEIGHTS = {
-    "conceptual": 0.15,
-    "mathematical": 0.30,
-    "algorithmic": 0.25,
-    "implementation": 0.40,
-    "research": 0.35,
-    "visual": 0.20,
-    "analytical": 0.20,
-}
+from .learning import QUESTIONS
 
 
 def validate_chapter_count(count: int) -> None:
-    if type(count) is not int or not MIN_CHAPTERS <= count <= MAX_CHAPTERS:
-        raise ValueError("Comprehensive output requires 5–10 substantive chapters")
+    if type(count) is not int or count < 1:
+        raise ValueError("Chapter count must be a positive integer")
 
 
 def _inventory(concepts: list[dict[str, Any]], known: set[str]):
     from .contracts import PREREQUISITES
 
-    if not isinstance(concepts, list) or len(concepts) < MIN_CHAPTERS:
-        raise ValueError("At least five substantive concepts are needed; narrow the output profile instead of padding")
+    if not isinstance(concepts, list) or not concepts:
+        raise ValueError("At least one substantive concept is required")
     records: dict[str, dict[str, Any]] = {}
     for concept in concepts:
         if not isinstance(concept, dict):
@@ -103,63 +87,6 @@ def _topological_order(records, parents):
     return ordered
 
 
-def _workload(concept: dict[str, Any], prerequisite_depth: int) -> dict[str, Any]:
-    # Reuse the canonical depth semantics; do not maintain another objective parser.
-    from . import allocate_depth
-
-    levels = allocate_depth(concept, source_policy="adaptive")["levels"]
-    for field in ("examples", "assessments"):
-        if not isinstance(concept.get(field, []), list):
-            raise ValueError(f"Concept {field} must be a list")
-    components = {
-        "concept": 1.0,
-        "additional_objectives": 0.25 * (len(concept["objectives"]) - 1),
-        "prerequisite_depth": 0.15 * min(prerequisite_depth, 6),
-        "depth": sum(levels[name] * weight for name, weight in DEPTH_WEIGHTS.items()),
-        "worked_examples": 0.25 * len(concept.get("examples", [])),
-        "assessments": 0.15 * len(concept.get("assessments", [])),
-    }
-    return {"units": round(sum(components.values()), 4), "components": components,
-            "depth_levels": levels, "prerequisite_depth": prerequisite_depth}
-
-
-def _partition(ordered, records, estimates, count):
-    """Balance contiguous topological segments while keeping supplied groups together.
-
-    Dynamic programming globally considers splits and merges, rather than
-    repeatedly applying local rules that can oscillate or lose ownership.
-    """
-    size = len(ordered)
-    prefix = [0.0]
-    for cid in ordered:
-        prefix.append(prefix[-1] + estimates[cid]["units"])
-    target = prefix[-1] / count
-    # A segment's cost combines normalized workload variance and a modest
-    # supplied-group boundary penalty. Dependencies are already topological.
-    costs = [[math.inf] * (size + 1) for _ in range(count + 1)]
-    cuts = [[None] * (size + 1) for _ in range(count + 1)]
-    costs[0][0] = 0.0
-    for parts in range(1, count + 1):
-        for end in range(parts, size - (count - parts) + 1):
-            for start in range(parts - 1, end):
-                if not math.isfinite(costs[parts - 1][start]):
-                    continue
-                load = prefix[end] - prefix[start]
-                boundary = bool(start and records[ordered[start]].get("group") and
-                                records[ordered[start]].get("group") == records[ordered[start - 1]].get("group"))
-                score = costs[parts - 1][start] + ((load - target) / target) ** 2 + 0.20 * boundary
-                if score < costs[parts][end]:
-                    costs[parts][end], cuts[parts][end] = score, start
-    segments, end = [], size
-    for parts in range(count, 0, -1):
-        start = cuts[parts][end]
-        if start is None:
-            raise ValueError("Unable to allocate nonempty chapters")
-        segments.append(ordered[start:end])
-        end = start
-    return list(reversed(segments)), target
-
-
 def _safe_chapter_title(value: str) -> str:
     from . import safe_title
 
@@ -170,67 +97,79 @@ def _safe_chapter_title(value: str) -> str:
     return safe_title(cleaned)
 
 
-def plan_chapters(concepts: list[dict[str, Any]], *, known_prerequisites: Iterable[str] = ()) -> dict[str, Any]:
-    """Allocate supplied concepts into five to ten chapters without inventing scope.
+def _requirements(concept, prerequisite_depth: int = 0):
+    from . import allocate_depth
 
-    ``group`` is an optional coherence hint, not permission to violate a
-    prerequisite. Classified missing external prerequisites remain visible in
-    the rationale for the existing obligation engine to resolve.
-    """
+    profile = concept.get("depth_profile", {})
+    complexity = profile.get("complexity", concept.get("complexity", "standard"))
+    goals = " ".join(concept["objectives"]).lower()
+    requirements = list(QUESTIONS) if complexity != "trivial" else ["what"]
+    if re.search(r"\b(?:derive|prove)\b", goals): requirements.append("derivation")
+    if re.search(r"\b(?:calculate|compute|solve)\b", goals): requirements.append("numerical_walkthrough")
+    if re.search(r"\b(?:implement|experiment|debug)\b", goals): requirements.append("practical_laboratory")
+    if concept.get("visual_requirements") or concept.get("signals", {}).get("spatial"):
+        requirements.append("visual_explanation")
+    requirements += ["example:"+str(e.get("id", i)) for i,e in enumerate(concept.get("examples", []))]
+    requirements += ["assessment:"+str(e.get("id", i)) for i,e in enumerate(concept.get("assessments", []))]
+    standalone = complexity == "complex" or profile.get("internal_mechanisms", 1) > 1 or "derivation" in requirements
+    depth_levels = allocate_depth(concept, source_policy="adaptive")["levels"]
+    return {
+        "requirements": requirements,
+        "units": len(requirements),
+        "prerequisite_depth": prerequisite_depth,
+        "depth_levels": depth_levels,
+        "complexity": complexity,
+        "standalone": standalone,
+        "reason": "Separate intermediate reasoning" if standalone else "Coherent concepts may share teaching context",
+    }
+
+
+def plan_chapters(concepts: list[dict[str, Any]], *, known_prerequisites: Iterable[str] = ()) -> dict[str, Any]:
     if isinstance(known_prerequisites, (str, bytes)):
-        raise ValueError("known_prerequisites must be a collection of concept IDs")
+        raise ValueError("known_prerequisites must contain concept IDs")
     try:
-        supplied_known = list(known_prerequisites)
+        known_list = list(known_prerequisites)
     except TypeError as exc:
-        raise ValueError("known_prerequisites must be a collection of concept IDs") from exc
-    if any(not isinstance(cid, str) or not cid.strip() for cid in supplied_known):
+        raise ValueError("known_prerequisites must contain concept IDs") from exc
+    if any(not isinstance(cid, str) or not cid.strip() for cid in known_list):
         raise ValueError("known_prerequisites must contain nonempty concept IDs")
-    known = set(supplied_known)
-    records, parents, external = _inventory(concepts, known)
+    records, parents, external = _inventory(concepts, set(known_list))
     ordered = _topological_order(records, parents)
-    depths, estimates = {}, {}
+    prereq_depths: dict[str, int] = {}
     for cid in ordered:
-        depths[cid] = max((depths[parent] + 1 for parent in parents[cid]), default=0)
-        estimates[cid] = _workload(records[cid], depths[cid])
-    total = sum(record["units"] for record in estimates.values())
-    desired = math.ceil(total / TARGET_WORKLOAD)
-    count = min(MAX_CHAPTERS, len(concepts), max(MIN_CHAPTERS, desired))
-    validate_chapter_count(count)
-    segments, balanced_target = _partition(ordered, records, estimates, count)
-    chapters, title_counts, used_titles = [], Counter(), set()
-    group_owners: dict[str, list[str]] = {}
+        prereq_depths[cid] = (1 + max(prereq_depths[p] for p in parents[cid])) if parents[cid] else 0
+    estimates = {cid: _requirements(records[cid], prereq_depths[cid]) for cid in ordered}
+    segments=[]
+    for cid in ordered:
+        current=records[cid]; previous=segments[-1][-1] if segments else None
+        coherent = previous is not None and current.get("group") and current.get("group")==records[previous].get("group")
+        shared_definition = previous is not None and estimates[cid]["complexity"]=="trivial" and estimates[previous]["complexity"]=="trivial" and parents[cid]==parents[previous]
+        if (coherent or shared_definition) and not estimates[cid]["standalone"] and not any(estimates[x]["standalone"] for x in segments[-1]):
+            segments[-1].append(cid)
+        else:
+            segments.append([cid])
+    chapters=[];counts=Counter();used=set();group_owners={}
     for owned in segments:
-        groups = list(dict.fromkeys(records[cid]["group"] for cid in owned if records[cid].get("group")))
-        shared_group = groups[0] if len(groups) == 1 and all(records[cid].get("group") == groups[0] for cid in owned) else None
-        title = _safe_chapter_title(shared_group or records[owned[0]]["title"])
-        base = title
-        title_counts[base.casefold()] += 1
-        if title.casefold() in used_titles:
-            title = f"{base} - Part {title_counts[base.casefold()]}"
-            while title.casefold() in used_titles:
-                title_counts[base.casefold()] += 1
-                title = f"{base} - Part {title_counts[base.casefold()]}"
-        used_titles.add(title.casefold())
-        # Membership-derived IDs survive a new earlier chapter when this
-        # chapter's actual ownership remains unchanged.
-        identifier = "chapter-" + content_hash(json.dumps(owned, ensure_ascii=False))[:12]
-        load = round(sum(estimates[cid]["units"] for cid in owned), 4)
-        chapters.append({"id": identifier, "title": title, "concepts": owned,
-                         "sections": list(dict.fromkeys(records[cid].get("section", records[cid]["title"]) for cid in owned)),
-                         "estimate": {"units": load, "concept_count": len(owned), "groups": groups}})
-        for group in groups:
-            group_owners.setdefault(group, []).append(identifier)
-    return {"chapters": chapters, "rationale": {
-        "method": "stable prerequisite order; workload-bounded count; balanced contiguous partition with group preference",
-        "chapter_count": count, "concept_count": len(concepts), "bounds": [MIN_CHAPTERS, MAX_CHAPTERS],
-        "target_workload_units": TARGET_WORKLOAD, "balanced_workload_units": round(balanced_target, 4),
-        "total_workload_units": round(total, 4), "unbounded_recommendation": desired,
-        "concept_estimates": estimates, "topological_order": ordered, "external_prerequisites": external,
-        "split_groups": {group: owners for group, owners in group_owners.items() if len(owners) > 1},
-        "merged_groups": [{"chapter": chapter["id"], "groups": chapter["estimate"]["groups"]}
-                          for chapter in chapters if len(chapter["estimate"]["groups"]) > 1],
-        "overloaded_chapters": [chapter["id"] for chapter in chapters
-                                if chapter["estimate"]["units"] > max(TARGET_WORKLOAD, balanced_target) * 1.5],
-        "scope_review_required": desired > MAX_CHAPTERS,
-        "limitations": "Heuristic instructional workload, not measured time or educational certification. An indivisible heavy concept needs author review; no concepts or content are fabricated.",
-    }}
+        groups=list(dict.fromkeys(records[cid]["group"] for cid in owned if records[cid].get("group")))
+        title=_safe_chapter_title(groups[0] if len(groups)==1 else records[owned[0]]["title"])
+        base=title
+        while title.casefold() in used:
+            counts[base]+=1;title=f"{base} - Part {counts[base]+1}"
+        used.add(title.casefold())
+        identifier="chapter-"+content_hash(json.dumps(owned,ensure_ascii=False))[:12]
+        obligations={cid:estimates[cid]["requirements"] for cid in owned}
+        chapters.append({"id":identifier,"title":title,"concepts":owned,
+                         "sections":list(dict.fromkeys(records[cid].get("section",records[cid]["title"]) for cid in owned)),
+                         "teaching_obligations":obligations,
+                         "estimate":{"units":sum(len(value) for value in obligations.values()),"concept_count":len(owned),"groups":groups}})
+        for group in groups: group_owners.setdefault(group,[]).append(identifier)
+    return {"chapters":chapters,"rationale":{
+        "method":"prerequisite order, explicit coherence and instructional obligations; no chapter quota",
+        "chapter_count":len(chapters),"concept_count":len(concepts),"bounds":[1,None],
+        "topological_order":ordered,"external_prerequisites":external,"concept_estimates":estimates,
+        "total_workload_units":sum(len(x["requirements"]) for x in estimates.values()),
+        "workload_units_meaning":"number of explicit instructional obligations, not a quality or depth score",
+        "split_groups":{g:owners for g,owners in group_owners.items() if len(owners)>1},
+        "merged_groups":[],"overloaded_chapters":[],
+        "scope_review_required":any(item["classification"]=="missing" for item in external),
+        "limitations":"Topic coherence and semantic adequacy require author evidence; unrelated concepts are not merged by title keywords."}}
