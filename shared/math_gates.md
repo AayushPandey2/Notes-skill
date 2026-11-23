@@ -13,9 +13,21 @@ Ensure every mathematical expression across Scriptorium notes teaches meaning, d
 ## Execution Rules — Atomic Formula + Fold Contract (`M01`–`M14`)
 
 1. **Prepare Before Display:** Orient the learner in plain language before any `$$...$$` block; never open a conceptual section with a naked equation or dump back-to-back equations without intervening explanation.
-2. **Mandatory Collapsible Walkthrough:** Place one native folded callout directly beneath **every** displayed `$$...$$` equation using the single canonical builder (`render_formula_component`):
-   - Heading: `> [!example]- Understand this formula step by step` (preceding narrative stays smooth when all folds are closed).
-   - Adaptive elements (`M01`–`M14`): Purpose → Spoken reading → Every symbol/subscript/operator → Object types, SI units, and explicit shape compatibility (`(m×k)(k×n)`) → Expanded operations → Evaluation order → Non-obvious derivation/chain-rule/mask/scaling reasoning & assumptions → Meaningful declared numerical calculation (zero `"substitute the values"` filler; use distinct non-square numbers exposing axis/order bugs) → Interpretation & conditions → Misconception check.
+2. **Mandatory 12-Stage Collapsible Walkthrough:** Place one Obsidian-native collapsed callout directly beneath **every** displayed `$$...$$` equation using `render_formula_component` (`scriptorium/engines/mathematics.py`):
+   - Heading: `> [!note]- 📐 Understand this formula` (preceding narrative remains smooth when all folds are closed).
+   - Canonical 12-stage headings (apply relevant stages in depth; omit inapplicable stages cleanly with zero generic filler, and quote blank separator lines with `>`):
+     1. `### 1. Why this formula exists`
+     2. `### 2. Formula components`
+     3. `### 3. Symbol-by-symbol breakdown`
+     4. `### 4. How to read it`
+     5. `### 5. Prerequisites`
+     6. `### 6. Numerical example`
+     7. `### 7. Visual interpretation`
+     8. `### 8. Parameter behavior`
+     9. `### 9. Derivation`
+     10. `### 10. Python implementation`
+     11. `### 11. Limitations and mistakes`
+     12. `### 12. Mental model and recall`
 3. **Anti-Recursive Nesting & Parity:** Keep supporting arithmetic inside formula folds inline (`$...$`); emit separate sibling formula+fold blocks for distinct derivation steps rather than nesting callouts recursively, bundling unrelated equations together, converting complex math into unreadable inline text, or forcing irrelevant constant/infinity filler tables.
 4. **Source Attribution:** Distinguish derivation steps present in a supplied source/video from independently added explanatory bridges.
 

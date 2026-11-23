@@ -161,7 +161,7 @@ def _default_http_get_json(url: str, timeout: int = 8) -> dict[str, Any]:
 def search_web_images(
     queries: list[str] | dict[str, Any],
     *,
-    sources: tuple[str, ...] = ("wikimedia_commons",),
+    sources: tuple[str, ...] = ("wikimedia_commons", "wikipedia"),
     max_results_per_query: int = 5,
     min_width: int = 320,
     min_height: int = 180,
@@ -169,10 +169,10 @@ def search_web_images(
     require_permissive_license: bool = True,
     http_get: Callable[[str, int], dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
-    """Discover real candidate educational images via open web APIs (e.g., Wikimedia Commons).
+    """Discover real candidate educational images via open web APIs (Wikimedia Commons & Wikipedia).
 
-    Evaluates resolution, MIME type, attribution, and licensing before returning ranked candidates.
-    Supports dependency-injected ``http_get(url, timeout) -> dict`` for offline tests.
+    Evaluates resolution, MIME type (raster PNG/JPEG/WebP or Commons PNG thumbnails), attribution,
+    and licensing before returning ranked candidates. Supports injected ``http_get`` for offline tests.
     """
     from .media import SUPPORTED_MIMES, verify_license_and_rights
 
@@ -207,6 +207,7 @@ def search_web_images(
                 "gsrlimit": str(max(1, min(20, max_results_per_query))),
                 "prop": "imageinfo",
                 "iiprop": "url|size|mime|extmetadata",
+                "iiurlwidth": "1200",
                 "format": "json",
             })
             api_url = f"https://commons.wikimedia.org/w/api.php?{params}"
@@ -214,22 +215,31 @@ def search_web_images(
                 payload = fetcher(api_url, timeout)
             except Exception as exc:
                 search_errors.append(f"wikimedia_commons ({query}): {exc}")
-                continue
+                payload = {}
             pages = (payload.get("query") or {}).get("pages") or {}
             for page in pages.values():
                 infos = page.get("imageinfo") or []
                 if not infos:
                     continue
                 info = infos[0]
-                img_url = str(info.get("url") or "").strip()
-                if not img_url or not img_url.startswith("https://") or img_url in seen_urls:
-                    continue
                 mime = str(info.get("mime") or "").split(";", 1)[0].strip().lower()
-                if mime not in SUPPORTED_MIMES:
-                    rejected.append({"url": img_url, "reason": f"unsupported MIME {mime}"})
-                    continue
+                img_url = str(info.get("url") or "").strip()
                 w = int(info.get("width") or 0)
                 h = int(info.get("height") or 0)
+                # Prefer native raster, or use Wikimedia's rasterized PNG thumbnail when original is SVG
+                if mime not in SUPPORTED_MIMES:
+                    thumb_url = str(info.get("thumburl") or "").strip()
+                    thumb_mime = str(info.get("thumbmime") or ("image/png" if thumb_url.lower().endswith(".png") else "")).lower()
+                    if thumb_url.startswith("https://") and thumb_mime in SUPPORTED_MIMES:
+                        img_url = thumb_url
+                        mime = thumb_mime
+                        w = int(info.get("thumbwidth") or w or 1200)
+                        h = int(info.get("thumbheight") or h or 800)
+                    else:
+                        rejected.append({"url": img_url, "reason": f"unsupported MIME {mime}"})
+                        continue
+                if not img_url or not img_url.startswith("https://") or img_url in seen_urls:
+                    continue
                 if w < min_width or h < min_height:
                     rejected.append({"url": img_url, "reason": f"insufficient resolution {w}x{h} (< {min_width}x{min_height})"})
                     continue
@@ -261,6 +271,54 @@ def search_web_images(
                     "relevance_score": 15,
                     "query": query,
                     "discovery_source": "wikimedia_commons",
+                })
+        if "wikipedia" in sources and len(candidates) < max_results_per_query:
+            wp_params = urlencode({
+                "action": "query",
+                "generator": "search",
+                "gsrsearch": query,
+                "gsrlimit": str(max(1, min(10, max_results_per_query))),
+                "prop": "pageimages|info",
+                "piprop": "original|thumbnail",
+                "pithumbsize": "1200",
+                "inprop": "url",
+                "format": "json",
+            })
+            wp_url = f"https://en.wikipedia.org/w/api.php?{wp_params}"
+            try:
+                wp_payload = fetcher(wp_url, timeout)
+            except Exception as exc:
+                search_errors.append(f"wikipedia ({query}): {exc}")
+                wp_payload = {}
+            wp_pages = (wp_payload.get("query") or {}).get("pages") or {}
+            for page in wp_pages.values():
+                thumb = page.get("thumbnail") or {}
+                orig = page.get("original") or {}
+                img_url = str(thumb.get("source") or orig.get("source") or "").strip()
+                if not img_url.startswith("https://") or img_url in seen_urls:
+                    continue
+                low_u = img_url.split("?", 1)[0].lower()
+                if low_u.endswith(".svg") or not any(low_u.endswith(ext) for ext in (".png", ".jpg", ".jpeg", ".webp")):
+                    continue
+                w = int(thumb.get("width") or orig.get("width") or 0)
+                h = int(thumb.get("height") or orig.get("height") or 0)
+                if w < min_width or h < min_height:
+                    continue
+                mime = "image/jpeg" if low_u.endswith((".jpg", ".jpeg")) else ("image/webp" if low_u.endswith(".webp") else "image/png")
+                seen_urls.add(img_url)
+                candidates.append({
+                    "url": img_url,
+                    "source": str(page.get("fullurl") or f"https://en.wikipedia.org/?curid={page.get('pageid', '')}"),
+                    "author": "Wikipedia / Wikimedia contributors",
+                    "rights": "CC BY-SA 4.0",
+                    "mime": mime,
+                    "width": w,
+                    "height": h,
+                    "title": page.get("title", ""),
+                    "alt": str(page.get("title") or query)[:240],
+                    "relevance_score": 12,
+                    "query": query,
+                    "discovery_source": "wikipedia_pageimages",
                 })
         if len(candidates) >= max(3, max_results_per_query):
             break

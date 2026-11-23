@@ -47,7 +47,7 @@ def test_multiformat_validation_and_svg_security():
     assert media.validate_image_bytes(_webp_vp8l(40, 20), "image/webp")["width"] == 40
 
     bad_svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><script>alert(1)</script></svg>'
-    assert media.validate_svg_markup(bad_svg)
+    assert not hasattr(media, "validate_svg_markup")
     with pytest.raises(ValueError, match="SVG downloads are rejected"):
         media.validate_image_bytes(bad_svg.encode("utf-8"), "image/svg+xml")
 

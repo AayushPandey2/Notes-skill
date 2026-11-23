@@ -312,9 +312,15 @@ GENERIC_FOLD_PHRASES: tuple[str, ...] = (
 )
 
 
-def _format_callout_block(lines: list[str], *, title: str = "Understand this formula step by step", quote_prefix: str = "") -> list[str]:
-    """Wrap explanatory lines inside an Obsidian-native folded callout block."""
-    out = [f"{quote_prefix}> [!example]- {title}"]
+def _format_callout_block(
+    lines: list[str],
+    *,
+    title: str = "📐 Understand this formula",
+    callout_type: str = "note",
+    quote_prefix: str = "",
+) -> list[str]:
+    """Wrap explanatory lines inside an Obsidian-native collapsed callout block."""
+    out = [f"{quote_prefix}> [!{callout_type}]- {title}"]
     for ln in lines:
         if not ln.strip():
             out.append(f"{quote_prefix}>")
@@ -389,76 +395,131 @@ def render_formula_component(
 
     purpose_text = str(data.get("purpose") or "").strip()
     pron_text = str(data.get("pronunciation") or "").strip()
+    prereq_text = str(data.get("prerequisites") or "").strip()
+    vis_text = str(data.get("visual_interpretation") or "").strip()
+    param_text = str(data.get("parameter_behavior") or "").strip()
+    py_impl = str(data.get("python_implementation") or "").strip()
+    recall_qs = [str(q).strip() for q in (data.get("recall_questions") or []) if str(q).strip()]
 
     fold_inner: list[str] = []
+
+    def _add_stage(heading: str, stage_lines: list[str]) -> None:
+        if not stage_lines:
+            return
+        if fold_inner:
+            fold_inner.append("")
+        fold_inner.append(f"### {heading}")
+        fold_inner.extend(stage_lines)
+
+    # Stage 1: Formula Introduction and Intuition
     if purpose_text:
-        fold_inner.extend(["**What question does it answer?**", purpose_text, ""])
-    if pron_text:
-        fold_inner.extend([f"**How to read it aloud:** {pron_text}", ""])
+        _add_stage("1. Why this formula exists", [purpose_text])
+
+    # Stage 2: Formula Decomposition
+    if data.get("operation_breakdown"):
+        comp_lines = [f"{idx}. {step_text}" for idx, step_text in enumerate(data["operation_breakdown"], 1)]
+        _add_stage("2. Formula components", comp_lines)
+
+    # Stage 3: Symbol-by-Symbol Decoding
+    sym_lines: list[str] = []
     if symbols:
-        fold_inner.extend(["| Symbol | Name / Meaning | Type | Shape / Units | Role |", "|---|---|---|---|---|"])
+        sym_lines.extend(["| Symbol | Name / Meaning | Type | Shape / Units | Role |", "|---|---|---|---|---|"])
         for s in symbols:
-            fold_inner.append(
+            sym_lines.append(
                 f"| ${s['symbol']}$ | {s['meaning']} | {s.get('type', 'quantity')} | "
                 f"{s.get('shape') or s.get('units') or 'scalar'} | {s.get('role', s['meaning'])} |"
             )
-        fold_inner.append("")
     if data.get("shapes_units_domains"):
-        fold_inner.append("**Shapes, units, and domains:** " + "; ".join(str(x) for x in data["shapes_units_domains"]))
-        fold_inner.append("")
+        if sym_lines:
+            sym_lines.append("")
+        sym_lines.append("**Shapes, units, and domains:** " + "; ".join(str(x) for x in data["shapes_units_domains"]))
     if dim_check:
-        fold_inner.append(f"**Shape compatibility:** `{dim_check.get('compatibility_summary') or dim_check.get('output_shape')}`.")
-        fold_inner.append("")
-    if data.get("expanded_form"):
-        # Keep expanded form inline inside the fold to avoid recursive display folding.
-        exp_clean = str(data["expanded_form"]).strip().replace("\n", " ")
-        fold_inner.append(f"**Expanded elementary form:** ${exp_clean}$")
-        fold_inner.append("")
-    if data.get("operation_breakdown"):
-        fold_inner.append("**Step-by-step operations:**")
-        for idx, step_text in enumerate(data["operation_breakdown"], 1):
-            fold_inner.append(f"{idx}. {step_text}")
-        fold_inner.append("")
-    if data.get("derivation_reasoning"):
-        fold_inner.append(f"**Derivation reasoning:** {str(data['derivation_reasoning']).strip()}")
-        fold_inner.append("")
+        sym_lines.append(f"**Shape compatibility:** `{dim_check.get('compatibility_summary') or dim_check.get('output_shape')}`.")
+    _add_stage("3. Symbol-by-symbol breakdown", sym_lines)
+
+    # Stage 4: Mathematical Pronunciation
+    if pron_text:
+        _add_stage("4. How to read it", [pron_text])
+
+    # Stage 5: Prerequisite Mathematics
+    if prereq_text:
+        _add_stage("5. Prerequisites", [prereq_text])
+
+    # Stage 6: Complete Numerical Example
     if isinstance(num_ex, dict) and (calc_check or num_ex.get("summary")):
-        fold_inner.append("**Worked numerical example:**")
+        num_lines: list[str] = []
         if num_ex.get("inputs"):
             formatted_inputs = ", ".join(f"`{k} = {v}`" for k, v in num_ex["inputs"].items())
-            fold_inner.append(f"- **Declared inputs:** {formatted_inputs}")
+            num_lines.append(f"- **Declared inputs:** {formatted_inputs}")
         if calc_check:
             for st in calc_check["evaluated_steps"]:
                 expl = f" — {st['explanation']}" if st.get("explanation") else ""
-                fold_inner.append(f"- **{st['label']}:** `{st['expr']}` = `{st['computed']}`{expl}")
+                num_lines.append(f"- **{st['label']}:** `{st['expr']}` = `{st['computed']}`{expl}")
         elif num_ex.get("summary"):
-            fold_inner.append(f"- **Trace:** {num_ex['summary']}")
+            num_lines.append(f"- **Trace:** {num_ex['summary']}")
         if num_ex.get("interpretation"):
-            fold_inner.append(f"- **Interpretation:** {num_ex['interpretation']}")
+            num_lines.append(f"- **Result meaning:** {num_ex['interpretation']}")
         if num_ex.get("sanity_check"):
-            fold_inner.append(f"- **Sanity check:** {num_ex['sanity_check']}")
-        fold_inner.append("")
-    elif data.get("interpretation"):
-        fold_inner.append(f"**Interpretation:** {str(data['interpretation']).strip()}")
-        fold_inner.append("")
+            num_lines.append(f"- **Sanity check:** {num_ex['sanity_check']}")
+        _add_stage("6. Numerical example", num_lines)
+
+    # Stage 7: Visual and Geometric Intuition
+    if vis_text:
+        _add_stage("7. Visual interpretation", vis_text.splitlines())
+
+    # Stage 8: Parameter Experimentation
+    if param_text:
+        _add_stage("8. Parameter behavior", param_text.splitlines())
+
+    # Stage 9: Mathematical Derivation
+    deriv_lines: list[str] = []
+    if data.get("expanded_form"):
+        exp_clean = str(data["expanded_form"]).strip().replace("\n", " ")
+        deriv_lines.append(f"**Expanded elementary form:** ${exp_clean}$")
+    if data.get("derivation_reasoning"):
+        if deriv_lines:
+            deriv_lines.append("")
+        deriv_lines.append(str(data["derivation_reasoning"]).strip())
+    _add_stage("9. Derivation", deriv_lines)
+
+    # Stage 10: Python Implementation
+    if py_impl:
+        if "```" in py_impl:
+            _add_stage("10. Python implementation", py_impl.splitlines())
+        else:
+            _add_stage("10. Python implementation", ["```python", *py_impl.splitlines(), "```"])
+
+    # Stage 11: Applications, Limitations, and Misconceptions
+    lim_lines: list[str] = []
     if data.get("assumptions"):
-        fold_inner.append("**Assumptions & conditions:** " + "; ".join(str(x) for x in data["assumptions"]))
-        fold_inner.append("")
+        lim_lines.append("**Assumptions & conditions:** " + "; ".join(str(x) for x in data["assumptions"]))
     if data.get("misconceptions"):
-        fold_inner.append("**Common misunderstandings to avoid:**")
-        for mc in data["misconceptions"]:
-            fold_inner.append(f"- {mc}")
-        fold_inner.append("")
+        if lim_lines:
+            lim_lines.append("")
+        lim_lines.append("**Common mistakes to avoid:**")
+        lim_lines.extend(f"- {mc}" for mc in data["misconceptions"])
+    _add_stage("11. Limitations and mistakes", lim_lines)
+
+    # Stage 12: Mental Model and Active Recall
+    mental_lines: list[str] = []
+    interp_text = str((num_ex or {}).get("interpretation") if isinstance(num_ex, dict) else "" or data.get("interpretation") or "").strip()
+    if data.get("interpretation") and str(data["interpretation"]).strip() != interp_text:
+        mental_lines.append(f"**Mental model:** {str(data['interpretation']).strip()}")
+    elif interp_text and not (isinstance(num_ex, dict) and (calc_check or num_ex.get("summary"))):
+        mental_lines.append(f"**Mental model:** {interp_text}")
     if data.get("generalization"):
-        fold_inner.append(f"**Generalizing beyond the example:** {data['generalization']}")
-        fold_inner.append("")
+        mental_lines.append(f"**Generalization:** {str(data['generalization']).strip()}")
+    if recall_qs:
+        mental_lines.append("**Quick recall checks:**")
+        mental_lines.extend(f"- {q}" for q in recall_qs)
+    _add_stage("12. Mental model and recall", mental_lines)
 
     while fold_inner and not fold_inner[-1].strip():
         fold_inner.pop()
     if not fold_inner:
         raise ValueError("Formula teaching component cannot render an empty explanation fold")
 
-    fold_lines = _format_callout_block(fold_inner, quote_prefix=quote_prefix)
+    fold_lines = _format_callout_block(fold_inner, title="📐 Understand this formula", callout_type="note", quote_prefix=quote_prefix)
     display_lines = [f"{quote_prefix}$$", f"{quote_prefix}{eq}", f"{quote_prefix}$$"]
     pre_prose = ([f"{quote_prefix}{purpose_text}", quote_prefix.rstrip() if quote_prefix else ""] if purpose_text and not quote_prefix else [])
     if purpose_text and quote_prefix:
@@ -475,11 +536,16 @@ def render_formula_component(
         symbols=symbols,
         shapes_units_domains=list(data.get("shapes_units_domains") or ([dim_check.get("compatibility_summary")] if dim_check else [])),
         operation_sequence=list(data.get("operation_breakdown") or []),
+        prerequisites=prereq_text,
         derivation_reasoning=str(data.get("derivation_reasoning") or ""),
         numerical_example=dict(num_ex) if isinstance(num_ex, dict) else {},
+        visual_interpretation=vis_text,
+        parameter_behavior=param_text,
+        python_implementation=py_impl,
         interpretation=str((num_ex or {}).get("interpretation") or data.get("interpretation") or ""),
         assumptions=list(data.get("assumptions") or []),
         misconceptions=list(data.get("misconceptions") or []),
+        recall_questions=recall_qs,
         validation_status="verified",
         placement=str(data.get("placement") or "prose"),
     )

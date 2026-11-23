@@ -17,7 +17,7 @@ Write continuous, domain-natural prose advancing one conceptual move per paragra
 2. **Layer B — Intuition:** Build an accessible mental model from familiar experience before introducing formalism; state where any analogy stops holding (`CF-08`).
 3. **Layer C — Foundation Bridge & Components:** Define unfamiliar terms, units, and required prerequisites immediately before first use rather than deferring to vague pointers.
 4. **Layer D — Mechanism Breakdown:** Walk chronologically/causally through inputs, transformations, interactions, and outputs.
-5. **Layer E — Formalism & Folded Walkthrough (`shared/math_gates.md`):** Introduce notation only after intuition is ready; pair every displayed `$$...$$` equation with an immediately following `> [!example]- Understand this formula step by step` callout (`M01`–`M14`).
+5. **Layer E — Formalism & 12-Stage Folded Walkthrough (`shared/math_gates.md`):** Introduce notation only after intuition is ready; pair every displayed `$$...$$` equation with an immediately following `> [!note]- 📐 Understand this formula` callout (`render_formula_component`).
 6. **Layer F — Complete Worked Application (`Step 1`–`12`):** Execute worked numerical/structural examples following [shared/math_gates.md](math_gates.md#worked-application-protocol-step-112).
 7. **Layer G — Causal Comparisons & Boundaries:** Explain *why* alternatives differ causally in scenario prose **before** summary comparison tables; state applicability assumptions and explicit **Use when / When not to use** limits.
 8. **Layer H — Visual & Video-Frame Integration:** Embed inspected local raster assets (`png`/`jpg`/`webp`; SVG synthesis retired) at the exact point of need using `Explain -> Show -> Decode -> Connect`.

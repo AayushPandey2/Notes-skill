@@ -467,7 +467,7 @@ class ConceptPlanRecord:
 
 @dataclass
 class FormulaTeachingRecord:
-    """Owned atomic formula + folded walkthrough contract."""
+    """Owned 12-stage atomic formula + folded walkthrough contract."""
     formula_id: str
     expression: str
     concept_owner: str
@@ -476,11 +476,16 @@ class FormulaTeachingRecord:
     symbols: list[dict[str, Any]] = field(default_factory=list)
     shapes_units_domains: list[str] = field(default_factory=list)
     operation_sequence: list[str] = field(default_factory=list)
+    prerequisites: str = ""
     derivation_reasoning: str = ""
     numerical_example: dict[str, Any] = field(default_factory=dict)
+    visual_interpretation: str = ""
+    parameter_behavior: str = ""
+    python_implementation: str = ""
     interpretation: str = ""
     assumptions: list[str] = field(default_factory=list)
     misconceptions: list[str] = field(default_factory=list)
+    recall_questions: list[str] = field(default_factory=list)
     validation_status: str = "pending"
     placement: str = "prose"  # prose | worked_example | assessment | appendix | table | source
 
@@ -648,7 +653,7 @@ def scan_display_math_blocks(text: str) -> list[DisplayMathBlock]:
         if cm:
             ctype = cm.group(1).lower()
             title_low = cm.group(3).strip().lower()
-            is_formula_fold = (ctype == "example" and (
+            is_formula_fold = (ctype in {"note", "example"} and (
                 "understand this formula" in title_low or "formula step by step" in title_low or "step-by-step" in title_low or "equation walkthrough" in title_low
             ))
             callout_stack.append((qdepth, ctype, is_formula_fold))

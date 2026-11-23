@@ -20,7 +20,6 @@ import struct
 import tempfile
 import time
 from urllib.parse import urljoin, urlsplit, urlunsplit
-import xml.etree.ElementTree as ET
 import zlib
 
 from scriptorium.models import content_hash, slugify
@@ -125,8 +124,38 @@ def _request_once(url: str, host: str, address: str) -> tuple[int, dict, bytes]:
         connection.close()
 
 
-def fetch_image(url: str) -> tuple[bytes,dict]:
+def fetch_image(url: str, *, http_get: object | None = None) -> tuple[bytes, dict]:
     """Validate DNS and pin the socket for every redirect; proxies are not used."""
+    if http_get is not None:
+        _url(url)
+        resp = http_get(url, TIMEOUT)
+        status = int(resp.get("status", 200)) if isinstance(resp, dict) else 200
+        if status != 200:
+            raise ValueError(f"Image HTTP status {status}")
+        headers = {str(k).lower(): str(v) for k, v in (resp.get("headers") or {}).items()} if isinstance(resp, dict) else {}
+        raw = resp.get("body", b"") if isinstance(resp, dict) else b""
+        if not isinstance(raw, (bytes, bytearray)) or len(raw) > MAX_BYTES:
+            raise ValueError("Image exceeds the byte limit or has invalid body")
+        raw = bytes(raw)
+        mime = headers.get("content-type", "").split(";", 1)[0].strip().lower()
+        if not mime:
+            if raw.startswith(b"\x89PNG\r\n\x1a\n"):
+                mime = "image/png"
+            elif raw.startswith(b"\xff\xd8"):
+                mime = "image/jpeg"
+            elif raw.startswith(b"RIFF") and raw[8:12] == b"WEBP":
+                mime = "image/webp"
+        dimensions = validate_image_bytes(raw, mime)
+        return raw, {
+            "url": url,
+            "final_url": url,
+            "mime": mime,
+            "bytes": len(raw),
+            **dimensions,
+            "redirects": 0,
+            "acquired_at": datetime.now(timezone.utc).isoformat(),
+            "availability": "observed at acquisition via supplied adapter; not a continuing availability guarantee",
+        }
     current, seen = url, set()
     for step in range(MAX_REDIRECTS+1):
         if current in seen:
@@ -318,47 +347,80 @@ def decode_webp(raw: bytes, mime: str = "image/webp") -> dict:
     return {"width": width, "height": height, "decoder": "bounded WebP header parser"}
 
 
-def validate_svg_markup(text: str) -> list[str]:
-    """Allowlist security sanitizer for externally sourced or legacy SVG markup (never generates SVGs)."""
-    svg_ns = "http://www.w3.org/2000/svg"
-    try:
-        root = ET.fromstring(text)
-    except ET.ParseError as exc:
-        return [f"Invalid XML: {exc}"]
-    errors: list[str] = []
-    if root.tag != f"{{{svg_ns}}}svg" or (not root.get("viewBox") and not (root.get("width") and root.get("height"))):
-        errors.append("SVG needs namespace and viewBox or explicit dimensions")
-    allowed_tags = {"svg", "title", "desc", "rect", "text", "tspan", "path", "polyline", "polygon", "line", "circle", "ellipse", "g", "defs", "marker"}
-    for element in root.iter():
-        tag_name = element.tag.rsplit("}", 1)[-1]
-        if tag_name not in allowed_tags:
-            errors.append("Unsupported active SVG content")
-        if any(
-            k.lower().startswith("on")
-            or k.endswith("href")
-            or re.search(r"url\s*\(|javascript:|data:", v, re.I)
-            for k, v in element.attrib.items()
-        ):
-            errors.append("Unsupported SVG event or external resource")
-    return errors
+def validate_visual_embeds(
+    note_text: str,
+    *,
+    note_path: Path | None = None,
+    vault_root: Path | None = None,
+) -> dict[str, Any]:
+    """Validate that every Markdown/Obsidian image embed resolves to a non-empty, valid local raster file."""
+    errors: list[dict[str, str]] = []
+    verified: list[dict[str, Any]] = []
+    ext_mime = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp"}
+    in_fence = False
 
+    for line_no, raw_line in enumerate(note_text.splitlines(), 1):
+        stripped = raw_line.strip()
+        if stripped.startswith(("```", "~~~")):
+            in_fence = not in_fence
+            continue
+        if in_fence:
+            continue
 
-def validate_svg_bytes(raw: bytes, mime: str = "image/svg+xml") -> dict:
-    """Sanitize and validate downloaded third-party SVG against active scripts and external refs."""
-    if len(raw) > MAX_BYTES or mime != "image/svg+xml":
-        raise ValueError("Only bounded SVG with matching image/svg+xml MIME is supported")
-    try:
-        text = raw.decode("utf-8")
-    except UnicodeDecodeError as exc:
-        raise ValueError("SVG must be valid UTF-8") from exc
-    if re.search(r"<!DOCTYPE|<!ENTITY", text, re.I):
-        raise ValueError("SVG DOCTYPE and XML entities are forbidden")
-    issues = validate_svg_markup(text)
-    if issues:
-        raise ValueError("; ".join(issues))
-    root = ET.fromstring(text)
-    return {"width": root.get("width") or "viewBox", "height": root.get("height") or "viewBox",
-            "decoder": "bounded XML/SVG allowlist sanitizer"}
+        targets: list[str] = []
+        for m in re.finditer(r"!\[\[([^\]]+)\]\]", raw_line):
+            inner = m.group(1)
+            target = re.split(r"\\?\|", inner, maxsplit=1)[0].strip()
+            targets.append(target)
+        for m in re.finditer(r"!\[[^\]]*\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)", raw_line):
+            targets.append(m.group(1).strip())
+
+        for target in targets:
+            if not target:
+                continue
+            low = target.lower()
+            if low.startswith(("http://", "https://")):
+                errors.append({"line": str(line_no), "target": target, "reason": "Remote image URL not downloaded locally"})
+                continue
+            suffix = Path(target.split("#", 1)[0]).suffix.lower()
+            if suffix == ".svg":
+                errors.append({"line": str(line_no), "target": target, "reason": "SVG embed prohibited in raster-only workflow"})
+                continue
+            if suffix not in ext_mime:
+                errors.append({"line": str(line_no), "target": target, "reason": f"Unsupported image extension '{suffix}'"})
+                continue
+
+            clean_rel = target.split("#", 1)[0].lstrip("/")
+            candidates: list[Path] = []
+            if note_path is not None:
+                candidates.append((note_path.parent / clean_rel).resolve())
+            if vault_root is not None:
+                candidates.append((vault_root / clean_rel).resolve())
+                if "/" not in clean_rel and "\\" not in clean_rel:
+                    candidates.extend(p.resolve() for p in vault_root.rglob(Path(clean_rel).name))
+
+            resolved_file = next((c for c in candidates if c.is_file()), None)
+            if resolved_file is None:
+                errors.append({"line": str(line_no), "target": target, "reason": "Referenced local image file is missing"})
+                continue
+            if vault_root is not None:
+                try:
+                    resolved_file.relative_to(vault_root.resolve())
+                except ValueError:
+                    errors.append({"line": str(line_no), "target": target, "reason": "Image path escapes vault root"})
+                    continue
+            raw = resolved_file.read_bytes()
+            if not raw:
+                errors.append({"line": str(line_no), "target": target, "reason": "Image file is 0 bytes"})
+                continue
+            try:
+                info = validate_image_bytes(raw, ext_mime[suffix])
+            except ValueError as exc:
+                errors.append({"line": str(line_no), "target": target, "reason": f"Invalid raster bytes: {exc}"})
+                continue
+            verified.append({"line": line_no, "target": target, "path": str(resolved_file), **info})
+
+    return {"valid": not errors, "verified_count": len(verified), "verified": verified, "errors": errors}
 
 
 def inspect_image_content(source: Path | bytes, *, mime: str | None = None) -> dict:
@@ -496,7 +558,7 @@ def _write_immutable(path: Path, raw: bytes):
             temporary.unlink(missing_ok=True)
 
 
-def media_artifact(vault: Path, visual: dict, digest: str, *, execute: bool) -> dict:
+def media_artifact(vault: Path, visual: dict, digest: str, *, execute: bool, http_get: object | None = None) -> dict:
     from . import contained
     source,rights,alt,relevance = _metadata(visual)
     policy = visual.get("asset_policy","local_preferred")
@@ -540,7 +602,11 @@ def media_artifact(vault: Path, visual: dict, digest: str, *, execute: bool) -> 
             fallback_used = True
         else:
             try:
-                raw,provenance = fetch_image(visual["url"])
+                raw, provenance = (
+                    fetch_image(visual["url"], http_get=http_get)
+                    if http_get is not None
+                    else fetch_image(visual["url"])
+                )
             except (OSError,ValueError,http.client.HTTPException) as exc:
                 if not fallback:
                     raise ValueError(f"Remote image acquisition failed: {exc}") from exc

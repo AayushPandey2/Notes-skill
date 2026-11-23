@@ -1300,6 +1300,8 @@ def generate_collection_with_checkpoints(
     fail_on_concept_id: str | None = None,
     resume: bool = True,
     source_facts_by_node: dict[str, list[str]] | None = None,
+    visual_specs: dict[str, list[dict[str, Any]]] | None = None,
+    http_get: Any = None,
 ) -> dict[str, Any]:
     """F06: Execute dependency-ordered batches with SHA-256 checkpoints, honest partial reporting, and idempotent resume."""
     from scriptorium.engines.vault import (
@@ -1394,8 +1396,30 @@ def generate_collection_with_checkpoints(
                     )
                 else:
                     facts = (source_facts_by_node or {}).get(cid)
+                    walkthroughs_for_node: list[str] | None = None
+                    node_visuals = (visual_specs or {}).get(cid) or (visual_specs or {}).get(node.title)
+                    if node_visuals:
+                        from scriptorium.engines.composition.visuals import acquire_node_visuals
+
+                        walkthroughs_for_node, _ = acquire_node_visuals(
+                            vault_root,
+                            collection_title=plan.title,
+                            concept_id=cid,
+                            node_title=node.title,
+                            proposed_path=node.proposed_path,
+                            node_visuals=node_visuals,
+                            learner_level=preferences.depth,
+                            image_http_get=http_get,
+                        )
                     content = _compose_child_note(
-                        node, plan, node_map, preferences, domain=root_domain, master_topic=root_mt, source_facts=facts
+                        node,
+                        plan,
+                        node_map,
+                        preferences,
+                        domain=root_domain,
+                        master_topic=root_mt,
+                        source_facts=facts,
+                        visual_walkthroughs=walkthroughs_for_node or None,
                     )
                     # Apply F11 progressive disclosure if applicable
                     m_id = (node.template_plan or {}).get("master") or preferences.master

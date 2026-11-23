@@ -14,7 +14,6 @@ from scriptorium.engines.composition import (
     inventory_migration, publish_composition, render_table, resolve_capabilities,
     select_visual, to_collection_plan, validate_chapter,
 )
-from scriptorium.engines.composition.media import validate_svg_markup as validate_svg
 from scriptorium.engines._collection_intelligence import build_knowledge_collection_plan
 from scriptorium.engines._interactive import ResolvedNotePreferences
 from scriptorium.models import content_hash, parse_note
@@ -192,7 +191,9 @@ def test_web_image_first_visual_selection_and_svg_retirement():
     assert select_visual({"kind": "intuition", "objective": "Build intuition"}, available=set())["status"] == "unavailable"
     with pytest.raises(ValueError, match="removed"):
         select_visual({"kind": "equation", "objective": "Plot", "renderer": "svg"}, available={"external"})
-    assert validate_svg('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><rect width="10" height="10"/></svg>') == []
+    from scriptorium.engines.composition import media
+    with pytest.raises(ValueError, match="SVG downloads are rejected"):
+        media.validate_image_bytes(b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><rect width="10" height="10"/></svg>', "image/svg+xml")
 
 
 def test_cli_plans_without_writing_and_rejects_bad_spec(tmp_path):

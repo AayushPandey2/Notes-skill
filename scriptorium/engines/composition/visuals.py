@@ -17,6 +17,43 @@ from typing import Any, Callable
 from scriptorium.models import content_hash, slugify
 
 
+_KIND_ALIASES = {
+    "external_image": "source_figure",
+    "image": "source_figure",
+    "diagram": "source_figure",
+    "figure": "source_figure",
+    "conceptual_overview": "intuition",
+    "overview": "intuition",
+}
+
+
+def _normalize_visual_spec(raw_visual: dict[str, Any]) -> dict[str, Any]:
+    """Normalize caller visual fields to canonical representation/media keys."""
+    visual = dict(raw_visual)
+    if visual.get("preferred_renderer") and not visual.get("renderer"):
+        visual["renderer"] = visual["preferred_renderer"]
+    raw_kind = str(visual.get("kind") or visual.get("type") or "source_figure").strip().lower()
+    visual["kind"] = _KIND_ALIASES.get(raw_kind, raw_kind)
+    if not visual.get("objective"):
+        visual["objective"] = (
+            visual.get("learning_objective")
+            or visual.get("caption")
+            or visual.get("alt_text")
+            or f"Illustrate {visual.get('concept', 'concept')}"
+        )
+    if not visual.get("alt") and (visual.get("alt_text") or visual.get("caption")):
+        visual["alt"] = visual.get("alt_text") or visual.get("caption")
+    if not visual.get("relevance") and (visual.get("caption") or visual.get("objective")):
+        visual["relevance"] = visual.get("caption") or visual.get("objective")
+    if not visual.get("source") and visual.get("url"):
+        visual["source"] = visual["url"]
+    if not visual.get("rights") and visual.get("origin") == "supplied":
+        visual["rights"] = "author-permitted"
+    if visual.get("filename_stem") and not visual.get("asset_name"):
+        visual["asset_name"] = visual["filename_stem"]
+    return visual
+
+
 def render_visuals(
     vault: Path,
     plan: dict[str, Any],
@@ -24,6 +61,7 @@ def render_visuals(
     *,
     execute: bool = True,
     http_get: Callable[[str, int], dict[str, Any]] | None = None,
+    image_http_get: Callable[[str, int], dict[str, Any]] | None = None,
 ) -> tuple[dict[str, str], dict[str, dict[str, Any]]]:
     """Execute verified visual acquisition/rendering backends; preserve unmet obligations."""
     from . import bvia, contained, lavia, media, renderers, select_visual
@@ -40,7 +78,8 @@ def render_visuals(
         + Path(__file__).read_bytes()
     )
 
-    for visual in plan.get("visuals", []):
+    for raw_visual in plan.get("visuals", []):
+        visual = _normalize_visual_spec(raw_visual)
         started = time.perf_counter()
         status: dict[str, Any] = {
             "renderer": None,
@@ -102,13 +141,14 @@ def render_visuals(
                 if embed_style and "embed_style" not in media_spec:
                     media_spec["embed_style"] = embed_style
 
-                # When URL is not yet supplied and live/adapter search is requested, discover via LAVIA + BVIA
+                # When URL is not yet supplied and live/adapter search is enabled, discover via LAVIA + BVIA
                 if not media_spec.get("url") and media_spec.get("asset_policy") != "offline_only":
+                    can_search = execute and bool(plan.get("auto_web_image_search", True))
                     routed = lavia.resolve_visual_route(
                         media_spec,
                         host_candidates=media_spec.get("candidates"),
-                        search_available=execute and bool(media_spec.get("search_queries") or plan.get("auto_web_image_search") or http_get),
-                        auto_search=execute and bool(media_spec.get("search_queries") or plan.get("auto_web_image_search") or http_get),
+                        search_available=can_search,
+                        auto_search=can_search,
                         http_get=http_get,
                         learner_level=plan.get("learner_level", "beginner"),
                     )
@@ -124,7 +164,7 @@ def render_visuals(
                         continue
                     media_spec = routed["visual"]
 
-                acquired = media.media_artifact(vault, media_spec, digest, execute=execute)
+                acquired = media.media_artifact(vault, media_spec, digest, execute=execute, http_get=image_http_get)
                 status.update(acquired)
                 status["status"] = "verified"
                 embed = status["embed"]
@@ -139,10 +179,11 @@ def render_visuals(
                         terminology_registry=plan.get("notation"),
                         inspection=acquired.get("inspection"),
                     )
-                    if media_spec.get("explain") or media_spec.get("decode_components") or plan.get("enforce_bvia_walkthrough")
+                    if media_spec.get("explain") or media_spec.get("decode_components") or plan.get("enforce_bvia_walkthrough", True)
                     else embed + "\n\n" + visual.get("interpretation", visual["objective"])
                 )
-                if embed not in bodies.get(chapter["id"], ""):
+                status["walkthrough"] = walkthrough
+                if bodies.get(chapter["id"], "").strip() and embed not in bodies.get(chapter["id"], ""):
                     bodies[chapter["id"]] = insert_at_section(bodies.get(chapter["id"], ""), visual["section"], walkthrough)
                 continue
 
@@ -199,3 +240,74 @@ def render_visuals(
             results[visual["id"]] = status
 
     return bodies, results
+
+
+def acquire_and_inspect_visuals(
+    vault: Path,
+    plan: dict[str, Any],
+    *,
+    execute: bool = True,
+    http_get: Callable[[str, int], dict[str, Any]] | None = None,
+    image_http_get: Callable[[str, int], dict[str, Any]] | None = None,
+) -> tuple[dict[str, list[str]], dict[str, dict[str, Any]]]:
+    """Acquire, validate, and inspect visuals BEFORE prose composition.
+
+    Returns ``(walkthroughs_by_chapter, results)`` so the writer can compose
+    explanations grounded in inspected image content rather than bolting
+    images onto pre-written chapters.
+    """
+    _, results = render_visuals(vault, plan, {}, execute=execute, http_get=http_get, image_http_get=image_http_get)
+    walkthroughs_by_chapter: dict[str, list[str]] = {}
+    chapters = plan.get("chapters") or []
+    for raw_visual in plan.get("visuals", []):
+        vid = raw_visual.get("id")
+        if not vid or vid not in results:
+            continue
+        res = results[vid]
+        wt = res.get("walkthrough")
+        if not wt:
+            continue
+        owner = next((c["id"] for c in chapters if raw_visual.get("concept") in c.get("concepts", [])), None)
+        if owner:
+            walkthroughs_by_chapter.setdefault(owner, []).append(wt)
+    return walkthroughs_by_chapter, results
+
+
+def acquire_node_visuals(
+    vault_root: Path,
+    *,
+    collection_title: str,
+    concept_id: str,
+    node_title: str,
+    proposed_path: str,
+    node_visuals: list[dict[str, Any]],
+    learner_level: str = "beginner",
+    http_get: Callable[[str, int], dict[str, Any]] | None = None,
+    image_http_get: Callable[[str, int], dict[str, Any]] | None = None,
+) -> tuple[list[str], dict[str, dict[str, Any]]]:
+    """Acquire and inspect visuals for a single topic node before prose composition."""
+    norm_visuals: list[dict[str, Any]] = []
+    for idx_v, raw_v in enumerate(node_visuals, 1):
+        v = dict(raw_v)
+        v.setdefault("id", v.get("visual_id") or f"vis-{slugify(concept_id)}-{idx_v}")
+        v.setdefault("concept", concept_id)
+        v.setdefault("objective", v.get("learning_objective") or f"Visually illustrate {node_title}")
+        norm_visuals.append(v)
+
+    v_plan = {
+        "topic": collection_title,
+        "collection_slug": slugify(collection_title),
+        "organize_by_collection": True,
+        "auto_web_image_search": True,
+        "learner_level": learner_level,
+        "chapters": [{"id": concept_id, "path": proposed_path, "concepts": [concept_id]}],
+        "visuals": norm_visuals,
+    }
+    walkthroughs_by_ch, v_results = acquire_and_inspect_visuals(
+        vault_root,
+        v_plan,
+        execute=True,
+        http_get=http_get,
+        image_http_get=image_http_get,
+    )
+    return walkthroughs_by_ch.get(concept_id, []), v_results

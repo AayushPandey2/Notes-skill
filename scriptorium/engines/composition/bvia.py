@@ -148,7 +148,8 @@ def compose_visual_walkthrough(
 ) -> str:
     """Assemble Explain -> Show -> Decode -> Connect prose grounded in inspected image content."""
     registry = terminology_registry or {}
-    explain = visual.get("explain") or f"To understand {visual.get('objective', 'this mechanism')}, examine how the key parts interact in the figure below."
+    obj_clean = str(visual.get("objective") or "this mechanism").strip().rstrip(".")
+    explain = visual.get("explain") or f"To build visual intuition ({obj_clean}), examine how the key parts interact in the figure below."
     verified_labels = list((inspection or {}).get("text_labels_extracted") or [])
     decode_items = list(visual.get("decode_components") or [])
     if not decode_items:
@@ -167,8 +168,7 @@ def compose_visual_walkthrough(
         explain.strip(),
         "",
         embed.strip(),
-        "",
-        f"*Figure: {visual.get('alt') or visual.get('objective', 'Visual explanation')}.*",
+        *([] if "*Figure:" in embed else ["", f"*Figure: {visual.get('alt') or visual.get('objective', 'Visual explanation')}*"]),
         "",
         "**How to read this figure:**",
         f"- *Where to begin:* {entry}",

@@ -11,7 +11,6 @@ import pytest
 
 from scriptorium.engines.composition import media, renderers
 from scriptorium.engines.composition.visuals import render_visuals
-from scriptorium.engines.composition.media import validate_svg_markup as validate_svg
 
 
 def png(width=2,height=2, *, scanline_filter=0):
@@ -292,5 +291,8 @@ def test_nested_chapter_links_resolve_to_actual_local_media_and_html(tmp_path,mo
 
 
 def test_svg_rejects_active_resources():
-    assert validate_svg('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><style>@import "https://evil";</style></svg>')
-    assert validate_svg('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><rect fill="url(https://evil)"/></svg>')
+    assert not hasattr(media, "validate_svg_markup")
+    with pytest.raises(ValueError, match="SVG downloads are rejected"):
+        media.validate_image_bytes(b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><style>@import "https://evil";</style></svg>', "image/svg+xml")
+    with pytest.raises(ValueError, match="SVG downloads are rejected"):
+        media.validate_image_bytes(b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"><rect fill="url(https://evil)"/></svg>', "image/svg+xml")

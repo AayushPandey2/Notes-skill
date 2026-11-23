@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 import re
 import tempfile
-from typing import Any
+from typing import Any, Callable
 
 import yaml
 
@@ -948,6 +948,8 @@ def _compose_child_note(
     domain: str,
     master_topic: str,
     source_facts: list[str] | None = None,
+    visual_walkthroughs: list[str] | None = None,
+    teaching_extensions: dict[str, Any] | None = None,
     created: str | date | None = None,
 ) -> str:
     """Compose a full adaptive child or single note using EIS-01..EIS-07 + M1-M7 + Obsidian Properties."""
@@ -962,6 +964,18 @@ def _compose_child_note(
     prereq_titles = [node_map[pid].title if pid in node_map else pid for pid in node.prerequisite_ids]
     related_titles = [node_map[rid].title if rid in node_map else rid for rid in node.related_ids]
 
+    ctx = {
+        **(teaching_extensions or {}),
+        "transition": (
+            (teaching_extensions or {}).get("transition")
+            or f"With this foundation on {node.title} established, connect these assumptions to related topics"
+            + (f" such as [[{related_titles[0]}]]" if related_titles else "")
+            + "."
+        ),
+    }
+    if visual_walkthroughs:
+        ctx["visual_walkthroughs"] = list(visual_walkthroughs)
+
     bp = build_explanation_blueprint(
         node.title,
         master=master,
@@ -970,13 +984,7 @@ def _compose_child_note(
         preserve_source_order=preferences.preserve_source_order,
         source_facts=source_facts,
         prerequisites=prereq_titles,
-        context={
-            "transition": (
-                f"With this foundation on {node.title} established, connect these assumptions to related topics"
-                + (f" such as [[{related_titles[0]}]]" if related_titles else "")
-                + "."
-            )
-        },
+        context=ctx,
     )
     composed = compose_explanation_note(
         bp,
@@ -1074,6 +1082,8 @@ def generate_note_collection(
     preferences: Any,
     *,
     source_facts_by_node: dict[str, list[str]] | None = None,
+    visual_specs: dict[str, list[dict[str, Any]]] | None = None,
+    http_get: Callable[[str], tuple[bytes, str]] | None = None,
     overwrite_policy: str = "reconcile",
     created: str | date | None = None,
 ) -> dict[str, Any]:
@@ -1097,6 +1107,23 @@ def generate_note_collection(
             continue
         target_path = vault_root / node.proposed_path
         try:
+            visual_report: dict[str, Any] | None = None
+            walkthroughs_for_node: list[str] = []
+            node_visuals = (visual_specs or {}).get(cid) or (visual_specs or {}).get(node.title)
+            if node_visuals and node.note_role not in {"root_index", "group_index"}:
+                from scriptorium.engines.composition.visuals import acquire_node_visuals
+
+                walkthroughs_for_node, visual_report = acquire_node_visuals(
+                    vault_root,
+                    collection_title=plan.title,
+                    concept_id=cid,
+                    node_title=node.title,
+                    proposed_path=node.proposed_path,
+                    node_visuals=node_visuals,
+                    learner_level=preferences.depth,
+                    image_http_get=http_get,
+                )
+
             if node.note_role in {"root_index", "group_index"}:
                 generated_content = render_parent_moc(
                     node,
@@ -1117,6 +1144,7 @@ def generate_note_collection(
                     domain=root_domain,
                     master_topic=root_master_topic,
                     source_facts=node_facts,
+                    visual_walkthroughs=walkthroughs_for_node or None,
                     created=created,
                 )
 
@@ -1148,7 +1176,7 @@ def generate_note_collection(
             if not write_res["written"] and action == "created":
                 action = "unchanged"
             written_paths.append(node.proposed_path)
-            records.append({
+            rec = {
                 "concept_id": cid,
                 "title": node.title,
                 "role": node.note_role,
@@ -1156,7 +1184,10 @@ def generate_note_collection(
                 "status": action,
                 "master": (node.template_plan or {}).get("master") or ("index" if "index" in node.note_role else preferences.master),
                 "word_count": len(re.findall(r"\b\w+\b", parse_note(final_content).body)),
-            })
+            }
+            if visual_report is not None:
+                rec["visual_report"] = visual_report
+            records.append(rec)
         except Exception as exc:
             failed_nodes.append({"concept_id": cid, "title": node.title, "path": node.proposed_path, "error": str(exc)})
             records.append({

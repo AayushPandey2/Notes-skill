@@ -277,13 +277,13 @@ def construct_explanatory_spine(
 
     ctx_spine = (context or {}).get("spine") or {}
     spine = {
-        "starting_problem": ctx_spine.get("starting_problem") or f"Identify the motivating problem or phenomenon addressed by {topic}.",
-        "desired_outcome": ctx_spine.get("desired_outcome") or f"Establish a rigorous, verifiable understanding of {topic}.",
-        "obstacle": ctx_spine.get("obstacle") or f"Surface intuition alone leaves the governing constraints and intermediate reasoning of {topic} unspecified.",
-        "necessary_insight": ctx_spine.get("necessary_insight") or f"Formulate the central principle or invariant defining how {topic} works.",
-        "mechanism": ctx_spine.get("mechanism") or f"Develop each intermediate transition connecting prerequisites to {topic} via {rel_type.replace('_', ' ')}.",
-        "result": ctx_spine.get("result") or f"Establish the characteristic result or behavior of {topic}.",
-        "implication": ctx_spine.get("implication") or f"Relate {topic} to adjacent concepts within verified applicability boundaries.",
+        "starting_problem": ctx_spine.get("starting_problem") or f"When first encountering {topic}, learners need a clear concrete problem that shows why this idea is useful before seeing formal definitions.",
+        "desired_outcome": ctx_spine.get("desired_outcome") or f"By working through {topic} step by step, you can predict how it behaves and apply it with confidence.",
+        "obstacle": ctx_spine.get("obstacle") or f"A quick high-level summary of {topic} often hides the key constraints and intermediate steps that make the method actually work.",
+        "necessary_insight": ctx_spine.get("necessary_insight") or f"The core idea behind {topic} is a single unifying principle that connects the starting intuition to the formal structure.",
+        "mechanism": ctx_spine.get("mechanism") or f"Each step in {topic} builds directly on the previous one through {rel_type.replace('_', ' ')}, turning inputs into a clear outcome.",
+        "result": ctx_spine.get("result") or f"Putting these steps together yields the defining behavior of {topic} that we can verify on concrete examples.",
+        "implication": ctx_spine.get("implication") or f"Understanding {topic} clarifies where it works well, where its assumptions break down, and how it connects to related ideas.",
         "required_insights": list(
             ctx_spine.get("required_insights")
             or [slugify(f)[:32].replace("-", "_") for f in (source_facts or [topic])[:5]]
@@ -593,6 +593,11 @@ def build_explanation_blueprint(
         topic, spine, boundaries, master=master, activation=activations["eis_06_retrieval"], context=context
     )
 
+    ext_src = (
+        dict((context or {}).get("teaching_extensions") or {})
+        if isinstance((context or {}).get("teaching_extensions"), dict)
+        else dict(context or {})
+    )
     return ExplanationBlueprint(
         concept_id=cid,
         topic=topic,
@@ -605,7 +610,7 @@ def build_explanation_blueprint(
             "audience_depth": audience,
             "complexity": complexity,
             "teaching_extensions": {
-                k: (context or {}).get(k)
+                k: ext_src.get(k) or (context or {}).get(k)
                 for k in (
                     "familiar_anchor",
                     "starting_intuition",
@@ -619,7 +624,7 @@ def build_explanation_blueprint(
                     "practical_application",
                     "transition",
                 )
-                if (context or {}).get(k)
+                if ext_src.get(k) or (context or {}).get(k)
             },
         },
         activation_levels=activations,
@@ -730,46 +735,63 @@ def compose_explanation_note(
     ext = blueprint.context.get("teaching_extensions") or {}
     audience = str(blueprint.context.get("audience_depth") or "beginner").lower()
 
-    lines.append("## Motivation and Core Idea")
-    opening = f"{spine.get('starting_problem', '')} {spine.get('obstacle', '')}".strip()
-    if ext.get("familiar_anchor"):
-        opening += f" {str(ext['familiar_anchor']).strip()}"
-    if blueprint.central_question.get("explicit_in_prose") and blueprint.central_question.get("question"):
-        opening += f" This raises the central question: *{blueprint.central_question['question']}*"
-    lines.append(opening)
-    lines.append("")
-    if ext.get("starting_intuition"):
-        lines.append("## Core Intuition and Mental Model")
-        intuition_line = str(ext["starting_intuition"]).strip()
-        if ext.get("analogy_limit"):
-            intuition_line += f" *(Where this intuition stops: {str(ext['analogy_limit']).strip()})*"
-        lines.append(intuition_line)
+    lines.append("## Why This Matters & Starting Problem")
+    if spine.get("starting_problem"):
+        lines.append(spine["starting_problem"].strip())
         lines.append("")
+    if spine.get("obstacle"):
+        lines.append(spine["obstacle"].strip())
+        lines.append("")
+    if ext.get("familiar_anchor"):
+        lines.append(str(ext["familiar_anchor"]).strip())
+        lines.append("")
+    if blueprint.central_question.get("explicit_in_prose") and blueprint.central_question.get("question"):
+        lines.append(f"This leads directly to our central guiding question: *{blueprint.central_question['question']}*")
+        lines.append("")
+
+    if ext.get("starting_intuition"):
+        lines.append("## Intuitive Picture Before Any Formalism")
+        lines.append(str(ext["starting_intuition"]).strip())
+        lines.append("")
+        if ext.get("analogy_limit"):
+            lines.append(f"*Where this intuition reaches its limit:* {str(ext['analogy_limit']).strip()}")
+            lines.append("")
 
     if ext.get("prerequisite_bridges"):
         lines.append("## Building the Needed Foundations")
         for br in ext["prerequisite_bridges"]:
             if isinstance(br, dict):
-                lines.append(f"- **{br.get('term', 'Prerequisite')}:** {br.get('explanation', '')}")
+                lines.append(f"### {br.get('term', 'Prerequisite')}")
+                lines.append(str(br.get("explanation", "")).strip())
+                lines.append("")
             else:
                 lines.append(f"- {br}")
-        lines.append("")
+                lines.append("")
 
-    lines.append(f"{spine.get('necessary_insight', '')} {spine.get('mechanism', '')} {spine.get('result', '')}".strip())
-    lines.append("")
+    mechanism_parts = [p.strip() for p in (spine.get("necessary_insight", ""), spine.get("mechanism", ""), spine.get("result", "")) if p and p.strip()]
+    if mechanism_parts:
+        lines.append("## How the Mechanism Works")
+        for part in mechanism_parts:
+            lines.append(part)
+            lines.append("")
 
     steps = blueprint.mathematical_motivation.get("steps") or []
     if steps:
-        lines.append("## Mathematical Motivation")
-        for st in steps:
+        lines.append("## Stepping Into the Mathematical Idea")
+        for idx, st in enumerate(steps, 1):
+            goal_text = st["goal"][0].lower() + st["goal"][1:] if st.get("goal") else "move forward"
+            op_name = st.get("operation", "operation").replace("_", " ")
+            basis_name = st.get("mathematical_basis", "mathematical rule").replace("_", " ")
+            lines.append(f"### Step {idx}: {op_name.title()}")
             lines.append(
-                f"To {st['goal'][0].lower() + st['goal'][1:]} apply `{st['operation'].replace('_', ' ')}` "
-                f"using {st['mathematical_basis'].replace('_', ' ')}: `{st['result']}`. "
-                f"{st['interpretation']} {st['next_purpose']}"
+                f"To {goal_text}, we apply **{op_name}** grounded in {basis_name}, producing `{st.get('result', '')}`."
             )
             lines.append("")
+            if st.get("interpretation") or st.get("next_purpose"):
+                lines.append(f"{st.get('interpretation', '')} {st.get('next_purpose', '')}".strip())
+                lines.append("")
         if blueprint.mathematical_motivation.get("local_vs_global_note"):
-            lines.append(blueprint.mathematical_motivation["local_vs_global_note"])
+            lines.append(blueprint.mathematical_motivation["local_vs_global_note"].strip())
             lines.append("")
 
     if ext.get("equations"):

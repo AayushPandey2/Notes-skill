@@ -1103,6 +1103,19 @@ def validate_file(
             rel_file, schema, body_text, body_idx, has_key_equations, s5_line, s5_impl_count, q_blocks
         )
     )
+    # Enforce local raster image resolution & valid non-corrupt bytes for non-legacy embeds
+    from scriptorium.engines.composition.media import validate_visual_embeds
+
+    vis_report = validate_visual_embeds(text, note_path=md_file, vault_root=vault_root)
+    for err in vis_report.get("errors", []):
+        if is_builtin or schema == "routed":
+            findings.append({
+                "file": rel_file,
+                "line": int(err["line"]),
+                "level": "ERROR",
+                "code": "INVALID_VISUAL_EMBED",
+                "message": f"Image embed '{err['target']}' failed visual verification: {err['reason']}",
+            })
     return findings
 
 

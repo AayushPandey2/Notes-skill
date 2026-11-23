@@ -424,6 +424,7 @@ def compose_video_study_payload(
     source_url: str = "",
     transcript_entries: list[dict[str, Any]] | None = None,
     frame_candidates: list[dict[str, Any]] | None = None,
+    equations: list[dict[str, Any]] | None = None,
     vault: Path | None = None,
     collection_slug: str | None = None,
     video_duration_seconds: int | None = None,
@@ -578,6 +579,27 @@ def compose_video_study_payload(
                 lines.append(f"*Visible details:* {'; '.join(frm['visible_elements'])}.")
             if frm["ocr_uncertain"]:
                 lines.append(f"*Uncertain visual reading (preserved as uncertain):* {'; '.join(frm['ocr_uncertain'])}.")
+            lines.append("")
+
+    if equations:
+        from scriptorium.engines import mathematics
+
+        lines.append("## Key Equations and Step-by-Step Breakdown")
+        lines.append("")
+        for eq in equations:
+            if not isinstance(eq, dict):
+                continue
+            spec = dict(eq)
+            if not spec.get("equation") and spec.get("latex"):
+                spec["equation"] = spec.pop("latex")
+            if not spec.get("equation"):
+                continue
+            learner_lvl = str(spec.pop("learner_level", "beginner") or "beginner")
+            rendered_eq = mathematics.render_formula_component(
+                spec,
+                learner_level=learner_lvl,
+            )
+            lines.append(rendered_eq["markdown"])
             lines.append("")
 
     concepts = [
