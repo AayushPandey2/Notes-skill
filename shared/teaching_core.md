@@ -11,7 +11,7 @@ Establish one domain-independent educational architecture shared across substant
 
 ## Execution Sequence — Progressive Understanding Layers (`A`–`H`)
 
-Write continuous, domain-natural prose advancing one conceptual move per paragraph—never dump bare `$$...$$` formulas, repeat H1 chapter titles as H2 headings, dump figures after code, or expose internal step labels as section headings:
+Write in the voice of a patient, technically accurate one-on-one mentor: alternate brief orientation sentences with rich connecting paragraphs (prefer connected prose over shallow bullet lists), use question-based headings with a parenthetical instructional role (e.g., `## 1. Why would we need X? (Motivation)`), and follow `claim -> why -> observable example -> consequence`. Never use patronizing shortcuts (`"obviously"`, `"trivially"`, `"simply"`, `"as you know"`), dump bare `$$...$$` formulas, repeat H1 chapter titles as H2 headings, dump figures after code, or expose internal step labels as section headings:
 
 1. **Layer A — Orientation:** State the concrete problem, why naive/earlier methods break, and what capability the concept delivers.
 2. **Layer B — Intuition:** Build an accessible mental model from familiar experience before introducing formalism; state where any analogy stops holding.
