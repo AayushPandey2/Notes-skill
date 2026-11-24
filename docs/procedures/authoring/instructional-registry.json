@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "knowledge_types": {
+    "conceptual": "docs/blueprints/domains/conceptual.md",
+    "comparative": "docs/blueprints/domains/conceptual.md",
+    "mathematical": "docs/blueprints/domains/mathematical.md",
+    "programming": "docs/blueprints/domains/computational.md",
+    "algorithmic": "docs/blueprints/domains/computational.md",
+    "architectural": "docs/blueprints/domains/computational.md",
+    "procedural": "docs/blueprints/domains/computational.md",
+    "scientific": "docs/blueprints/domains/scientific.md",
+    "historical": "docs/blueprints/domains/historical.md",
+    "research": "docs/blueprints/domains/empirical.md"
+  },
+  "module_guide": "docs/blueprints/components/module-catalog.md"
+}

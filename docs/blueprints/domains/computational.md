@@ -1,0 +1,15 @@
+# Subtemplate: Computational
+
+- **Purpose:** Realize the [12 teaching layers](../../../core/teaching_core.md) for Machine Learning, Deep Learning, algorithms, and software systems theory—focusing on deep conceptual and mechanism understanding while keeping full multi-track implementation in the companion lab.
+- **Activation conditions:** ML/DL theory, algorithms, data structures, system architectures, state transitions, or complexity analysis (`programming`, `algorithmic`, `architectural`, `procedural`).
+- **Expected inputs:** Problem/task contract, data/state representation, 3-tier prerequisites, equation-to-mechanism bridge, deterministic running example, and boundary cases.
+
+> **Authoring-agent image instruction:** Before drafting, identify the visual learning needs of each substantive concept. Acquire suitable images where they materially improve understanding. Inspect the saved images, then compose the explanation around their actual visible content. Do not treat image placement as an optional finishing step.
+
+- **Realizing the 12 Teaching Layers:** Establish the prediction/system bottleneck (Layer 1) → intuitive mental model and simplest accurate explanation (Layers 2–3) → unpack terms (e.g., parameters vs. hyperparameters, training fit vs. generalization) and component/tensor roles (Layers 4–5) → decode complementary architecture, decision-boundary, or diagnostic visuals (Layer 6) → trace `Starting state → operation → reason → intermediate change → outcome` on one concrete input (Layer 7) → bridge to objective/loss formalism and worked calculation (Layers 8–9) → contrast nearby methods, edge cases, and failure regimes (Layers 10–11) → test transfer and independent reasoning (Layer 12).
+- **Domain expectations (ML, DL & Systems):**
+  - *Machine Learning:* Explain task, data, hypothesis space, prediction, loss, learning process, evaluation, and assumptions; distinguish parameters from hyperparameters and training fit from generalization; keep full multi-track code in the fixed companion lab.
+  - *Deep Learning:* Build tensor, component, forward-pass, loss, gradient, and update concepts progressively; separate inference from training and forward computation from differentiation; explain shapes at meaningful transitions.
+  - *Systems:* Trace one complete event through components, inputs/outputs, state, trust boundaries, and failure/recovery rather than stopping at a diagram.
+- **Visual opportunities:** Follow [representations.md](../../procedures/authoring/representations.md) using inspected local raster images for decision boundaries, architectures, tensor layouts, and diagnostics, plus native Mermaid for splits, flows, and state machines.
+- **Formalism, worked examples & failure handling:** Apply [math_gates.md](../../../core/math_gates.md) for governing losses/updates; trace one concrete example end to end; keep any illustrative snippet labeled `Status: static review (not executed)` if unexecuted; repair missing shape bridges or conflated terms via [verification-checklist.md](../../procedures/review/verification-checklist.md).

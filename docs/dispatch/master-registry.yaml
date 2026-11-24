@@ -1,0 +1,33 @@
+# Declarative routing aid. Files listed here are instructions, not programs.
+registry_version: 2
+masters:
+  M1: {intent: comprehensive_learning, path: docs/blueprints/formats/deep-notes.md}
+  M2: {intent: structured_study, path: docs/blueprints/formats/study-notes.md}
+  M3: {intent: rapid_reference, path: docs/blueprints/formats/quick-reference.md}
+  M4: {intent: worked_problem_solving, path: docs/blueprints/formats/worked-solutions.md}
+  M5: {intent: practical_implementation, path: docs/blueprints/formats/implementation-guide.md}
+  M6: {intent: knowledge_assessment, path: docs/blueprints/formats/assessment.md}
+  M7: {intent: synthesis_and_revision, path: docs/blueprints/formats/synthesis-revision.md}
+variants:
+  lecture_order: {master: M2, path: docs/blueprints/presets/lecture-order.md}
+  formula_sheet: {master: M3, path: docs/blueprints/presets/formula-sheet.md}
+  syntax_reference: {master: M3, path: docs/blueprints/presets/syntax-reference.md}
+  command_reference: {master: M3, path: docs/blueprints/presets/command-reference.md}
+  atomic_card: {master: M3, path: docs/blueprints/presets/atomic-card.md}
+  flashcards: {master: M6, path: docs/blueprints/presets/flashcards.md}
+  mock_exam: {master: M6, path: docs/blueprints/presets/mock-exam.md}
+  comparison_guide: {master: M7, path: docs/blueprints/presets/comparison-guide.md}
+  paper_breakdown: {master: M7, path: docs/blueprints/presets/paper-breakdown.md}
+  quick_summary: {master: M7, path: docs/blueprints/presets/quick-summary.md}
+  revision_pack: {master: M7, path: docs/blueprints/presets/revision-pack.md}
+  concept_map: {master: M7, path: docs/blueprints/presets/concept-map.md}
+  video_notes: {master: video_notes, path: docs/blueprints/formats/video-notes.md}
+subtemplates:
+  conceptual: docs/blueprints/domains/conceptual.md
+  mathematical: docs/blueprints/domains/mathematical.md
+  computational: docs/blueprints/domains/computational.md
+  scientific: docs/blueprints/domains/scientific.md
+  historical: docs/blueprints/domains/historical.md
+  empirical: docs/blueprints/domains/empirical.md
+public_commands: [scribe-notes, scribe-ytnotes, scribe-doubt, scribe-quiz, scribe-setfolder]
+video_intent_aliases: [scribe-ytnotes]
