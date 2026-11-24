@@ -7,18 +7,15 @@ Perform an explicit manual review of reader-facing teaching quality, source fide
 ## Reader-Facing Quality Questions
 
 Before finishing any substantive theory note or lab, verify every applicable prose question honestly (**never use word count, heading count, or image count as a measure of teaching depth**):
-1. Can a novice identify the concrete problem being solved before seeing the answer?
-2. Is every essential prerequisite locally supported (with secondary/outside topics bridged or bounded rather than replacing essential explanation with links)?
-3. Does each important term become understandable before use (plain + formal meaning, positive/non-example/boundary, and decisive distinction between confused terms)?
-4. Can the reader reconstruct the mechanism (`Starting state → operation → reason → intermediate change → outcome`)?
-5. Are difficult transitions and non-obvious mathematical steps explained rather than jumped over?
-6. Are visuals actively taught (question → what to inspect → local image → decoded labels/axes → concrete trace → formal connection → limits → check)?
-7. Does the running example include explicit inputs, assumptions, intermediate reasoning, and careful result interpretation (what it measures vs. what it does **not** establish)?
-8. Are assumptions, conditions, approximations vs. theorems, and failure limits visible?
-9. Can the reader distinguish adjacent concepts and trace transfer to a second context?
-10. Does practice progress from guided examples toward independent reasoning and transfer, with separately explained answers?
-11. Can the note stand alone with collapsed folds closed while offering deeper derivations, refreshers, and traces when opened?
-12. Are sources, citations, and execution status honest, with zero filler, repeated explanations, or ornamental images?
+1. Does the opening provide a clear roadmap (`Goal / Prerequisites / TOC` on deep guides), a tiny concrete input-to-output table before abstract definitions, and an upfront **Symbol Dictionary** with notation-clash warnings?
+2. Is every essential prerequisite locally supported via zero-prerequisite foundations (with small reference value tables and rules before formulas rely on them) rather than replacing essential explanation with links?
+3. Are paragraphs crisp and readable (1–3 sentences per single idea), and is the simpler baseline tested on concrete numbers to prove *where* it breaks before introducing the new method?
+4. Do quantitative explanations build **scalar case → multi-variable sum + contribution table → compact vector/matrix form**, pair `Part | Purpose` tables with **negative / zero / positive / extreme limit** checks, and explain every algebraic cancellation?
+5. Are visuals placed at conceptual inflection points (failure contrast, foundation curve, curve+derivative saturation, before/after geometry, diagnostics, Mermaid flows) and actively decoded (`question → what to inspect → local image → decoded labels/axes → concrete values → formal connection → limits → check`)?
+6. For iterative or multi-step mechanisms, is one stable running fixture traced across **Iteration 1 → Update → Iteration 2** (with intermediate tables), and do evaluation metrics reuse one shared fixture with imbalance caveats?
+7. Are assumptions paired with an explicit **"What this method does NOT require / mean"** check, `Mistake | Correct approach` table, and causal comparison matrix?
+8. Do comprehensive theory notes end with a grouped **Formula/Rule Cheat Sheet**, tiered **Beginner → Intermediate → Advanced** Q&A, **Worked Practice Problems** with verified solutions, and a final **N-Step Mental Model**?
+9. Are sources, citations, and execution status (`Status: static review (not executed)` / `"Documentation-checked example; not compiled or executed here."`) honest, with zero filler, repeated dummy calculations, or ornamental images?
 
 ## Structural, Visual & Lab Gates
 

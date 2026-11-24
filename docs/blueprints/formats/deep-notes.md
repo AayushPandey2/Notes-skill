@@ -1,37 +1,35 @@
 # M1 — Deep Learning Notes
 
 - **Master ID:** `M1` (`deep_notes` / compatibility route `deepstudy-master`)
-- **Primary intent:** `comprehensive_learning` — build complete first-principles understanding from the learner's baseline to requested mastery.
-- **Activation signals:** "teach me from scratch", "explain deeply", "comprehensive notes", "from fundamentals to advanced", or bare `/scribe-notes <topic>` without an explicit alternate product format.
-- **Non-activation:** Do not select M1 when the user primarily requests a compact cheat sheet (`M3`), solved problem set (`M4`), implementation/build guide (`M5`), quiz/flashcards (`M6`), or standalone comparison/revision pack (`M7`).
-- **Load as needed:** [teaching rules](../../../core/teaching_core.md), [adaptive planning](../../procedures/authoring/adaptive-engine.md), [research](../../procedures/sourcing/research-engine.md), [source fidelity](../../procedures/sourcing/source-fidelity.md), [authoring rules](../../../core/authoring_rules.md), and [math guidance](../../../core/math_gates.md).
-- **Output profile:** Comprehensive collections use the five-key YAML profile in [properties policy](../../properties/properties-policy.md); single or existing notes use their appropriate Obsidian properties without rewriting user-managed fields.
+- **Primary intent:** `comprehensive_learning` — deliver a complete, zero-prerequisite, self-contained explanation from first intuition through formal derivations, multi-step numerical traces, evaluation, common pitfalls, and independent practice.
+- **Activation signals:** `"teach me from scratch"`, `"explain deeply"`, `"comprehensive notes"`, `"from fundamentals to advanced"`, or bare `/scribe-notes <topic>` without an explicit alternate product format.
+- **Non-activation:** Do not select `M1` when the user primarily requests a compact `<350`-word cheat sheet (`M3`), pure solved problem set (`M4`), pure algorithm build guide (`M5`), pure quiz/flashcards (`M6`), or standalone comparison/revision pack (`M7`).
+- **Load as needed:** [teaching rules](../../../core/teaching_core.md), [math guidance](../../../core/math_gates.md), [visual rules](../../procedures/authoring/representations.md), [adaptive planning](../../procedures/authoring/adaptive-engine.md), [research](../../procedures/sourcing/research-engine.md), [source fidelity](../../procedures/sourcing/source-fidelity.md), and [authoring rules](../../../core/authoring_rules.md).
+- **Output profile:** Comprehensive collections use the five-key YAML profile in [properties policy](../../properties/properties-policy.md); single or existing notes use Obsidian properties without overwriting user-managed fields.
 
-## Orientation
+## 1. Opening Roadmap (Goal, Prerequisites & TOC)
 
-Give the bounded topic, central question, observable objectives, and learning roadmap. Follow the 3-tier prerequisite rule in [teaching_core.md](../../../core/teaching_core.md): explain essential prerequisites locally, bridge secondary ones, and bound outside topics with links. Apply the appropriate line-1 YAML profile from [properties policy](../../properties/properties-policy.md); keep planning records outside the finished note.
+Open cleanly with line-1 YAML, H1 title, a concise 3-line framing (`Level`, `Prerequisites` — noting all essential concepts are explained locally — and `Goal`), and a compact numbered **Table of Contents** for longer chapters so the learner sees the complete journey upfront. Apply the 3-tier prerequisite rule in [teaching_core.md](../../../core/teaching_core.md): never use a link to replace an essential local foundation.
 
-## Core learning sequence
+## 2. Progressive Self-Contained Flow (Micro-Cadence & 12 Layers)
 
-Order concepts by essential prerequisites, preserving source sequence with local bridges for source-grounded notes. Load and follow the matching knowledge-type subtemplate (`conceptual`, `mathematical`, `computational`, `scientific`, `empirical`, or `historical`) and only needed teaching moves at the depth the learner requires. Mathematics, code, proofs, diagrams, chronology, and experiments remain conditional.
+Load and follow the matching knowledge-type subtemplate (`conceptual`, `mathematical`, `computational`, `scientific`, `empirical`, or `historical`) and write in **short, crisp single-idea paragraphs (1–3 sentences)** separated by tables, calculations, and strategic visuals. Realize the applicable [12 teaching layers](../../../core/teaching_core.md#twelve-generalized-teaching-layers) in natural domain order without forcing irrelevant code or math onto non-quantitative topics:
 
-Compose one self-contained, beginner-respectful explanation following [teaching_core.md](../../../core/teaching_core.md) (mentor voice, question-driven headings, connective-tissue patterns, and the 12 teaching layers)—never dump equations before motivation and intuition, never force a link to substitute for an essential local explanation, and bridge formulas via **Question → intuition → visual meaning → symbols → formula → calculation → interpretation → check** ([math_gates.md](../../../core/math_gates.md)). Carry one stable running example across definitions, visuals, mechanism, and calculation, and test transfer on a second example. Plan and acquire complementary visuals through [representations.md](../../procedures/authoring/representations.md), inspect saved images before writing around them, and teach every visual via the six-phase narrative. Explain differences between alternatives causally before summary tables, place misconception corrections beside the confusing step, put consequential assumptions beside claims, keep detailed derivations/refreshers/traces in collapsed callouts so the central argument stays clear with folds closed, and review against [verification-checklist.md](../../procedures/review/verification-checklist.md).
+1. **Orientation, Real-World Map & Naming Clarification:** Start with a tiny concrete input-to-output table showing what the idea produces, add a real-world applications table, and clarify any misleading name (e.g., why its name reflects its math vs. its use).
+2. **Terminology, Concrete Dataset Table & Upfront Symbol Dictionary:** Show a tiny concrete multi-column fixture *before* defining terms; map each column to its role; include a complete **Symbol Dictionary** (`Symbol | Meaning`) plus explicit **notation-clash notes** wherever textbooks disagree.
+3. **Why Simpler Alternatives Fail:** Test the simpler baseline on concrete numbers that produce impossible or broken results, place a **failure-contrast visual** beside the math, and summarize in a comparison table.
+4. **Local Zero-Prerequisite Foundations:** Teach every needed mathematical or conceptual building block from scratch—with tiny reference value tables, governing identities, and boundary curves—before using them.
+5. **Progressive Model Construction:** Draw the end-to-end stage pipeline in native Mermaid first, then progress from **1-variable scalar case → multi-variable summation (with explicit contribution table) → compact vector/matrix or general form**, verifying matrix/data shapes visibly.
+6. **Component-by-Component Equation & Visual Dissection:** Break core formulas into parts (`Part | Purpose`), test **negative, zero, positive, and extreme limiting inputs** alongside paired curve/derivative visuals ([representations.md](../../procedures/authoring/representations.md)), pair every `$$...$$` with `> [!note]- 📐 Understand this formula`, and state **"what this does NOT imply"** caveats cleanly.
+7. **First-Principles Origin, Multi-Iteration Trace & Evaluation:** Derive *why* the rule or objective follows from first principles (noting numerical stability fixes where computational), trace a tiny fixture through **Iteration 1 → Update → Iteration 2** by hand, and define evaluation metrics and calibration around **one shared numerical fixture** (explaining when metrics like accuracy mislead).
+8. **Constraints, Assumptions ("What It Does NOT Require") & Variants:** Cover regularization/constraints with concrete penalty numbers, explicit assumptions alongside a **"What this method does NOT assume or require"** section, data preprocessing/leakage hygiene, variants, a `Mistake | Correct approach` table, and a multi-method comparison table.
 
-## Integration and assessment
+## 3. Closing Synthesis, Reference Sheet, Tiered Q&A & Practice
 
-Connect concepts through synthesis or cross-topic vault bridges without repeating prior chapters. Verify stated objectives through guided-to-independent practice testing reasoning and transfer, with separately explained answers.
+End deep notes with tools for long-term independent mastery:
+- **Formula / Rule Cheat Sheet:** Compact grouped tables (`Core Prediction`, `Probability/Relations`, `Loss & Updates`, `Constraints`, `Evaluation`) preserving conditions and notation.
+- **Tiered Concept & Interview Q&A:** Progressive **Beginner → Intermediate → Advanced** questions with crisp, reasoning-first answers.
+- **Worked Practice Problems:** Multi-step applied calculations and boundary checks showing complete substitution, intermediate steps, and verification (verifying that updates actually improve error).
+- **Final Numbered Mental Model:** A crisp 5–7 step sequence recapping the entire mechanism end to end.
 
-## Revision and further learning
-
-Provide concise retrieval cues preserving all applicability conditions, plus separately curated further-learning resources ([resource-recommendations.md](../../procedures/sourcing/resource-recommendations.md)) when helpful. Use [footer_widgets.md](../../../core/footer_widgets.md) only for active vault workflows.
-
-## Quality & validation gate
-
-Review ARRIE source coverage/citations, pedagogical quality, formula folds, and local visual embeds against [verification-checklist.md](../../procedures/review/verification-checklist.md) before finishing. Repair the smallest affected region rather than regenerating the entire note.
-
-**Activation examples:** Domain-independent comprehensive learning requests (e.g., first-principles derivations with code, visual analysis, or systematic conceptual foundations).  
-**Non-M1 examples:** Compact cheat sheets -> `M3`; solved problem sets -> `M4`; pure implementation guides -> `M5`; comparisons/revision packs -> `M7`.
-
-## Comprehensive composition profile
-
-For comprehensive M1 layout, metadata and publication, follow the [canonical composition contract](../../procedures/authoring/composition-contract.md).
+Review claims, citations, formula folds, local visual embeds, and readability against [verification-checklist.md](../../procedures/review/verification-checklist.md) before saving; repair the smallest affected span rather than regenerating whole chapters. For multi-chapter `M1` collections, follow [composition-contract.md](../../procedures/authoring/composition-contract.md).

@@ -40,11 +40,10 @@ Validation: [verification-checklist.md](../../procedures/review/verification-che
 
 ## 2. How does the material develop each idea? (Sequential Concepts & Explanations)
 
-Repeat `### 2.<k> <Subtopic Title>` in verified source order using connected mentor prose (developing the applicable teaching layers from [teaching_core.md](../../../core/teaching_core.md) rather than repetitive bullet labels), inserting concise `[Educational Addition — Prerequisite Bridge]` explanations inline right before dependent notation:
-- Motivate the source point (with locator) and build intuition/plain-language meaning before introducing formal terms or symbols.
-- Define unfamiliar terms, units, shapes, and domain restrictions locally, and decode any needed visuals via [representations.md](../../procedures/authoring/representations.md).
-- Follow [math_gates.md](../../../core/math_gates.md) for displayed equations (`$$...$$` + `> [!note]- 📐 Understand this formula`) and work one concrete example with explicit intermediate steps and interpretation.
-- End with a focused prediction or mechanism check when helpful.
+Repeat `### 2.<k> <Subtopic Title>` in verified source order using **short, crisp single-idea paragraphs (1–3 sentences)** separated by tiny concrete tables, explicit symbol disambiguation, and strategic visuals ([teaching_core.md](../../../core/teaching_core.md)):
+- Open each unfamiliar subtopic with a concrete tiny table or numerical scenario before defining abstract terms, and insert concise `[Educational Addition — Prerequisite Bridge]` foundations (value tables, rules, or symbol-clash notes) inline right before dependent notation.
+- Progress from **simple scalar case → multi-component sum/table → general compact form** whenever equations appear; break core formulas into parts (`Part | Purpose`), test negative/zero/positive/limit cases, pair every `$$...$$` with `> [!note]- 📐 Understand this formula`, and decode needed visuals via [representations.md](../../procedures/authoring/representations.md).
+- Include explicit **"Why simpler approach X fails here"** and **"What this does NOT assume"** clarifications where misconceptions arise, plus a worked example with intermediate arithmetic and a focused check.
 
 ## 3. How do I carry out the method or solve a problem? (Procedures, Reasoning & Worked Problems)
 
