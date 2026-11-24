@@ -1,9 +1,0 @@
-# Broad topic collections
-
-Load for a comprehensive M1 collection. Use [adaptive planning](adaptive-engine.md) to identify concepts, prerequisites, and each concept's main note. Let the scope determine chapter count; do not pad or split chapters to meet a quota. Keep an existing collection's layout when revising it.
-
-Plan one `00 - Map of Contents.md` and numbered topic chapters under the authorized `<Vault>/<Topic>/` folder. The map lists the learning path and links to actual chapters. Before writing, check the vault for overlapping notes, user naming conventions, existing IDs, and backlinks. Do not silently replace user text or create additional category folders.
-
-Author the final Markdown directly. Each concept should have one main explanatory home; bridge essential prerequisites before first use, and link to the main explanation from other chapters. Use [teaching guidance](../../../shared/teaching_core.md), [math guidance](../../../shared/math_gates.md), selected knowledge-type subtemplates, and [source fidelity](../research/source-fidelity.md) only when applicable. For visuals, follow [representations.md](representations.md). Keep the user's source limits even when a missing fact would benefit from external research.
-
-New comprehensive M1 notes use exactly the five YAML keys `id`, `aliases`, `topic`, `tags`, `nexttopics` as described in [properties policy](../../metadata/properties-policy.md). Existing notes keep user-managed properties and layout. Before saving, review the actual chapters for concept coverage, claims and citations, formula conditions, assessments, YAML, links, embeds, and accidental changes to existing content. Save the intended files with native tools, inspect what was saved, and report partial or unverified work honestly. No atomic collection transaction, checkpoint recovery, automatic hash binding, or automated educational acceptance is provided.
