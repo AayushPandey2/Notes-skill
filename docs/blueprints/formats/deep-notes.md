@@ -19,17 +19,15 @@ Load and follow the matching knowledge-type subtemplate (`conceptual`, `mathemat
 2. **Terminology, Concrete Dataset Table & Upfront Symbol Dictionary:** Show a tiny concrete multi-column fixture *before* defining terms; map each column to its role; include a complete **Symbol Dictionary** (`Symbol | Meaning`) plus explicit **notation-clash notes** wherever textbooks disagree.
 3. **Why Simpler Alternatives Fail:** Test the simpler baseline on concrete numbers that produce impossible or broken results, place a **failure-contrast visual** beside the math, and summarize in a comparison table.
 4. **Local Zero-Prerequisite Foundations:** Teach every needed mathematical or conceptual building block from scratch—with tiny reference value tables, governing identities, and boundary curves—before using them.
-5. **Progressive Model Construction:** Draw the end-to-end stage pipeline in native Mermaid first, then progress from **1-variable scalar case → multi-variable summation (with explicit contribution table) → compact vector/matrix or general form**, verifying matrix/data shapes visibly.
+5. **Progressive Model Construction:** Show the end-to-end stage pipeline using an inspected downloaded web diagram (never Mermaid or ASCII), then progress from **1-variable scalar case → multi-variable summation (with explicit contribution table) → compact vector/matrix or general form**, verifying matrix/data shapes visibly.
 6. **Component-by-Component Equation & Visual Dissection:** Break core formulas into parts (`Part | Purpose`), test **negative, zero, positive, and extreme limiting inputs** alongside paired curve/derivative visuals ([representations.md](../../procedures/authoring/representations.md)), pair every `$$...$$` with `> [!note]- 📐 Understand this formula`, and state **"what this does NOT imply"** caveats cleanly.
 7. **First-Principles Origin, Multi-Iteration Trace & Evaluation:** Derive *why* the rule or objective follows from first principles (noting numerical stability fixes where computational), trace a tiny fixture through **Iteration 1 → Update → Iteration 2** by hand, and define evaluation metrics and calibration around **one shared numerical fixture** (explaining when metrics like accuracy mislead).
 8. **Constraints, Assumptions ("What It Does NOT Require") & Variants:** Cover regularization/constraints with concrete penalty numbers, explicit assumptions alongside a **"What this method does NOT assume or require"** section, data preprocessing/leakage hygiene, variants, a `Mistake | Correct approach` table, and a multi-method comparison table.
 
-## 3. Closing Synthesis, Reference Sheet, Tiered Q&A & Practice
+## 3. Closing Mental Model & Companion Handoff
 
-End deep notes with tools for long-term independent mastery:
-- **Formula / Rule Cheat Sheet:** Compact grouped tables (`Core Prediction`, `Probability/Relations`, `Loss & Updates`, `Constraints`, `Evaluation`) preserving conditions and notation.
-- **Tiered Concept & Interview Q&A:** Progressive **Beginner → Intermediate → Advanced** questions with crisp, reasoning-first answers.
-- **Worked Practice Problems:** Multi-step applied calculations and boundary checks showing complete substitution, intermediate steps, and verification (verifying that updates actually improve error).
-- **Final Numbered Mental Model:** A crisp 5–7 step sequence recapping the entire mechanism end to end.
+End deep notes cleanly with a crisp **5–7 step Final Numbered Mental Model** recapping the entire mechanism end to end, plus reciprocal links to the topic's two required companion files—`<note stem> - Experimental Lab.md` ([experimental-lab.md](../../procedures/authoring/experimental-lab.md)) and `<note stem> - Cheatsheet & Interview Q&A.md` ([cheatsheet-interview.md](../../procedures/authoring/cheatsheet-interview.md)).
+
+Do **not** duplicate the full Formula Cheat Sheet, Tiered Interview Q&A, or Worked Practice Problems inside the main note; those now live in `<note stem> - Cheatsheet & Interview Q&A.md` with tap-to-reveal collapsible answers (`> [!tip]- Answer` and `> [!tip]- Solution`).
 
 Review claims, citations, formula folds, local visual embeds, and readability against [verification-checklist.md](../../procedures/review/verification-checklist.md) before saving; repair the smallest affected span rather than regenerating whole chapters. For multi-chapter `M1` collections, follow [composition-contract.md](../../procedures/authoring/composition-contract.md).

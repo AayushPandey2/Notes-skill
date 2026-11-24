@@ -55,8 +55,26 @@ Predict how concentration, temperature, solvent, or pH changes evidence as relev
 ## APPLICATION TRACK
 Use the chemistry in a meaningful analytical or practical setting.
 ## LAB SECTION 09 — ANALYTICAL OR PRACTICAL APPLICATION
-### Decision from evidence
-Interpret a sample or process with constraints and evidence quality; avoid unwarranted identification from a single indicator.
+### Part A — Complete Real-World Chemical / Analytical Study (10–12 Steps)
+Replace single-indicator guesses with a complete end-to-end analytical or reaction-system workflow grounded in balanced stoichiometry and sourced/published evidence (never invent wet-lab readings). For **every** step, provide prose purpose, balanced equations or analysis code (`Status: static review (not executed)` if unexecuted), collapsed walkthrough, interpretation, and transition:
+1. **Reagents, Constants & Balanced Equations:** State chemical species, phases, molar masses, equilibrium/rate constants, and balanced equations with conserved atoms and charge.
+2. **Load Analytical Dataset or Reaction Conditions:** Document replicate/standard counts, concentrations, temperature/pressure, and `Variable | Phase/Unit | Role` table.
+3. **Inspect Sample & Condition Integrity:** Check blank controls, replicate consistency, pH/temperature stability, and detection limits (`Check | Purpose` table).
+4. **Partition Calibration Standards vs. Unknown/Validation Samples:** Separate known standards used for calibration curves from unknown or held-out verification samples.
+5. **Build the Analytical Pipeline:** Chain `raw instrument signal -> blank/baseline subtraction -> calibration model (e.g., Beer-Lambert / Henderson-Hasselbalch) -> concentration & yield calculation`, preventing standard-to-unknown leakage.
+6. **Trace Internal Particle & Stoichiometric Mechanics:** Walk step by step through limiting reagent, proton transfer, equilibrium shift (Le Chatelier), or rate-law step.
+7. **Compare Qualitative, Calculated & Measured Outputs:** Contrast qualitative indicator shifts, idealized stoichiometric yields, and calibrated analytical concentrations in a `Method/Level | Example Output` table.
+8. **Evaluate Analytical Metrics by Category:** Separate **accuracy/trueness** (% recovery, relative error vs. reference standard) from **precision/sensitivity** (RSD, LOD, LOQ, $R^2$ of linear calibration range).
+9. **Plot Calibration Curve & Residuals:** Explain how to read linear dynamic range, upper saturation (Beer-Lambert deviation), and systematic residual drift.
+10. **Extract Fitted Thermodynamic/Kinetic Parameters:** Report fitted $K_a, k, E_a, \Delta H^\circ$ or molar absorptivity $\varepsilon$ with exact units and uncertainty (`Parameter | Meaning` table).
+11. **Error-Contribution Breakdown & Mechanistic Caveat:** Rank dominant analytical errors (pipetting, CO$_2$ absorption, side reactions) and note that kinetic fit alone does not uniquely prove elementary mechanism without intermediate evidence.
+
+### Part B — Reaction Conditions, Analytical Methods & Optimization
+- **Intrinsic Properties vs. Controllable Reaction/Instrument Parameters Table:** Contrast fixed molecular constants ($pK_a$, $\Delta G^\circ$) against tunable lab/process conditions (`pH`, `temperature`, `concentration`, `solvent`, `catalyst_loading`, `wavelength`).
+- **Condition-Sensitivity Table:** Concrete table showing how varying `pH`, temperature, or ionic strength shifts equilibrium position, selectivity, or side-reaction risk.
+- **Analytical Method Compatibility Matrix:** Compare titrimetry, UV-Vis spectrophotometry, potentiometry/pH-metry, and chromatography across selectivity, detection limit, matrix interference, and sample destructiveness.
+- **Limit, Purity & Safety Controls:** Explain LOD/LOQ bounds, buffer capacity limits, quenching/neutralization, and safe handling boundaries.
+- **Systematic Condition Sweep & Replicate Design:** Define a controlled factorial or one-factor-at-a-time matrix across replicates (`conditions × replicates`), keeping predicted shifts clearly separated from observed measurements.
 ## FINAL VALIDATION AND LEARNING
 Check the claim against chemistry and evidence.
 ## LAB SECTION 10 — VERIFICATION, UNCERTAINTY, AND REPRODUCIBILITY

@@ -15,7 +15,7 @@ Treat prerequisites using the 3-tier rule in [teaching_core.md](../../../core/te
 Scale depth and scope consistently without duplicating the shared teaching policy:
 - **Beginner presets:** Add local prerequisite support, concrete analogies (with limits), and explicit term unpacking.
 - **Advanced presets:** Increase causal/formal depth, boundary conditions, and proof rigor without skipping necessary definitions.
-- **Comprehensive presets:** Expand mechanisms across all 12 generalized layers in [teaching_core.md](../../../core/teaching_core.md)—including local foundation value tables, scalar-to-vector progression, multi-iteration hand traces, formula cheat sheet, tiered Beginner/Intermediate/Advanced Q&A, worked practice solutions, and a final N-step mental model.
+- **Comprehensive presets:** Expand mechanisms across all 12 generalized layers in [teaching_core.md](../../../core/teaching_core.md)—including local foundation value tables, scalar-to-vector progression, multi-iteration hand traces, and a final N-step mental model in the main note, paired with the companion lab and companion cheatsheet/tiered-Q&A/worked-problems file.
 - **Compact presets (`M3`, `quick-summary`, `atomic-card`):** Reduce scope and redundancy before removing essential reasoning; never promise a full self-contained lesson when a compact preset omits extended derivations or multi-case transfer.
 
 Old outline fields still work: the adapter uses purpose, requested math level and selected tool, records its assumptions, and produces one concept. For substantial work author the richer plan before drafting; title/domain hints cannot substitute for semantic classification. Unknown objectives or malformed plans fail before writing.

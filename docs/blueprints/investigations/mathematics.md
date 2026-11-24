@@ -52,8 +52,26 @@ Vary an assumption, record examples, seek a counterexample to an overbroad claim
 ## APPLICATION TRACK
 Connect the mathematical object to a genuine use without forcing code.
 ## LAB SECTION 08 — APPLIED MATHEMATICAL INVESTIGATION
-### Model and interpretation
-Build a small application, state simplifying assumptions, compute a result, and interpret its units or meaning. A paper construction is valid when software adds nothing.
+### Part A — Complete Applied Mathematical Case Study (10–12 Steps)
+Replace isolated single-equation checks with a realistic multi-step mathematical modeling or theorem-application workflow (paper construction and/or numerical verification where helpful). For **every** step, provide prose purpose, formal expression or code (`Status: static review (not executed)` if unexecuted), collapsed `> [!example]- Step-by-step: ...` or `> [!note]- 📐 Understand this formula` walkthrough, expected interpretation, and transition:
+1. **Setup & Conventions:** State domain, ambient space ($\mathbb{R}^n$, $\mathbb{C}^n$, metric space), and notation conventions.
+2. **Formulate the Concrete System / Problem:** Define the governing object (matrix, operator, differential system, or optimization objective) with exact dimensions and `Symbol | Domain | Meaning` table.
+3. **Structural & Domain Inspection:** Check domain restrictions, continuity/smoothness, symmetry, rank/determinant, or boundary conditions (`Check | Purpose` table).
+4. **Partition Hypotheses vs. Target Consequences:** Separate given axioms/boundary constraints from quantities to be solved or bounded.
+5. **Construct the Solution Pipeline:** Chain transformations (`normalize/canonicalize -> invariant reduction -> solve -> verify`), explaining why each transformation preserves equivalence.
+6. **Execute Internal Derivation / Solver Mechanics:** Walk step by step through the core algebraic, spectral, or iterative mechanism without skipping cancellations.
+7. **Compare Representation Forms:** Contrast exact symbolic form, numerical approximation, and geometric meaning in a `Representation | Example Output` table.
+8. **Verify Residuals & Error Metrics by Type:** Separate **exact algebraic identities** (zero residual, conservation laws) from **numerical accuracy bounds** (condition number, truncation/rounding error).
+9. **Diagnostic Plot / Phase & Error Geometry:** Interpret geometric trajectory, level-set, or convergence curves (using an inspected local web figure or exact table; never Mermaid/ASCII).
+10. **Extract Governing Invariants:** Inspect eigenvalues, singular values, fixed points, Lipschitz constants, or critical thresholds (`Invariant | Meaning` table).
+11. **Sensitivity Breakdown & Proof-vs-Evidence Caveat:** Show how outputs respond to parameter perturbations and explicitly distinguish **numerical evidence** from **formal proof**.
+
+### Part B — Hypotheses, Regime Parameters & Robustness Analysis
+- **Fixed Axioms vs. Tunable Model Parameters Table:** Contrast unchangeable domain axioms against controllable parameters (step size, regularization/damping, tolerance, truncation order).
+- **Sensitivity & Conditioning Table:** Show concrete regime behavior across parameter scales (well-conditioned vs. ill-conditioned / singular limits).
+- **Solution Method Compatibility Matrix:** Compare direct algebraic, inductive, spectral, and iterative methods (e.g., Newton's method $w_{\text{new}} = w_{\text{old}} - \frac{J'(w)}{J''(w)}$ vs. fixed-point iteration) across linearity, convexity, smoothness, and uniqueness requirements.
+- **Degeneracy & Boundary Controls:** Explain strictness tolerances, zero-pivot/singularity guards, and what happens when boundary hypotheses fail.
+- **Systematic Regime Sweep:** Design a multi-case verification across regular, boundary, and near-singular parameters, counting test regimes cleanly and distinguishing verified identities from unexecuted sweeps.
 ## FINAL VALIDATION AND LEARNING
 Check reasoning independently.
 ## LAB SECTION 09 — VERIFICATION AND CONSISTENCY CHECKS

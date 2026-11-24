@@ -10,13 +10,9 @@ Plan **complementary visuals** across a comprehensive note or lab at these speci
 3. **Paired function + sensitivity/derivative plots:** Show a curve alongside its rate-of-change plot to make peaks, vanishing gradients, or saturation visually obvious.
 4. **Geometric & transformation pairs:** Show original space vs. transformed space (e.g., linear boundary vs. polynomial circle, or non-separable XOR vs. interaction feature) and constraint geometry (e.g., diamond vs. circular penalties).
 5. **Metric, threshold & diagnostic visuals:** Pair threshold trade-offs (confusion matrix grid changes), ROC/PR ranking curves, calibration plots, and underfit/good-fit/overfit panels directly with the formulas they explain.
-6. **Workflow & dependency diagrams (Native Mermaid):** Use concise `flowchart` / `sequenceDiagram` blocks for multi-stage prediction flows (`Inputs → Linear Score → Squashing Function → Probability → Decision`), chain-rule paths, training loops, split boundaries, and cross-validation folds.
+6. **Architecture, workflow & pipeline visuals:** Acquire clear web raster diagrams showing multi-stage prediction flows (`Inputs → Linear Score → Squashing Function → Probability → Decision`), chain-rule paths, training loops, split boundaries, or cross-validation folds.
 
-Count downloaded web images separately from native Mermaid diagrams, Markdown tables, and text traces. Visually rich deep notes commonly benefit from **4–8+** complementary visuals distributed across sections (planning guide, not a forced quota); recheck a long, visually rich note with zero or one downloaded raster image. Do not create or download SVG assets, export Mermaid to SVG, or build HTML/JS viewers.
-
-## Native Mermaid
-
-Write fenced `mermaid` blocks (`flowchart TD`, `flowchart LR`, sequence, or state diagrams). State what the flow reveals, quote node labels, use clean edge labels and Unicode symbols instead of raw LaTeX, and walk through the main path, branches, and connection to the next equation or mechanism right beneath it. Never use Mermaid to fake numerical curves, empirical plots, or photographs. Check syntax manually; report rendering unverified until observed.
+**Mandatory Web Image Coverage & Zero-Mermaid/ASCII Rule:** Every generated content, deep, study, or video note **must** include **at least 4–5 relevant, high-clarity raster images acquired from the web** (`.png`, `.jpg`, `.webp` saved under `assets/scriptorium/<collection-slug>/`), distributed across conceptual inflection points and **taught directly around each image** via the Six-Phase Visual Narrative below. **Never use Mermaid (`mermaid` blocks) or ASCII art/diagrams for graphs, charts, plots, or flows**, and never create or download SVG assets or build HTML/JS viewers. If web search or image download is unavailable in the environment, report the exact access limitation honestly rather than falling back to Mermaid or ASCII.
 
 ## External raster image: acquisition & verification
 

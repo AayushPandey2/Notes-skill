@@ -27,5 +27,4 @@ Comprehensive five-key notes require `topic/`, `subject/`, `domain/` roots from 
 same generator. Topic tags describe owned concepts; collection classification
 supplies the parent subject/domain. Legacy tags remain for compatibility.
 Review tags for generic-only, malformed, duplicate, or unrelated values; this
-cannot certify an author's classification. When the classification is unclear,
-ask or use only the narrower tags that the topic supports.
+cannot certify an author's classification. When the classification is narrow or uncertain, infer and emit only the narrower tags that the topic clearly supports without prompting the user.

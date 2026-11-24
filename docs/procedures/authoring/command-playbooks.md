@@ -16,12 +16,12 @@ Dispatch each active public command or `/scribe-notes` internal branch cleanly�
 
 ### Command B — Expand Existing Vault Topic (`/scribe-notes`)
 - **Trigger:** Adding subtopics or filling gaps inside an existing vault topic directory.
-- **Execution:** Inspect existing vault notes directly, match dominant style (or clarify when mixed), update the index/syllabus allowlist first, reconcile existing notes non-destructively, and verify metadata without overwriting custom YAML.
+- **Execution:** Inspect existing vault notes directly, match the dominant style automatically without asking clarification/reverification prompts, update the index/syllabus allowlist first, reconcile existing notes non-destructively (emitting the 3-file bundle for each added subtopic), and verify metadata without overwriting custom YAML.
 
 ### Command C — Comprehensive Learning (`M1` Deep Notes)
 - **Trigger:** Broad or first-principles deep-learning requests routed to `M1`.
 - **Inputs & Dependencies:** [adaptive-engine.md](adaptive-engine.md), [research-engine.md](../sourcing/research-engine.md), [teaching_core.md](../../../core/teaching_core.md), [math_gates.md](../../../core/math_gates.md).
-- **Execution & Review:** Plan concepts and depth, inspect evidence using [research guidance](../sourcing/research-engine.md), explain each displayed equation, work examples step by step, complete needed visuals through [representations.md](representations.md), create each new content note's [companion lab](experimental-lab.md), and review saved Markdown and assets with [the manual checklist](../review/verification-checklist.md). Keep internal planning labels out of the note.
+- **Execution & Review:** Plan concepts and depth, inspect evidence using [research guidance](../sourcing/research-engine.md), explain each displayed equation, work examples step by step, complete needed visuals through [representations.md](representations.md), create each new content note's [companion lab](experimental-lab.md) and [cheatsheet & interview Q&A pack](cheatsheet-interview.md) (3-file topic bundle), and review saved Markdown and assets with [the manual checklist](../review/verification-checklist.md). Keep internal planning labels out of the note.
 
 ### Command D — Rapid Reference (`M3` Quick Reference / Variants)
 - **Trigger:** Cheat sheet, formula sheet, syntax table, or CLI command reference requests.
@@ -47,7 +47,7 @@ Dispatch each active public command or `/scribe-notes` internal branch cleanly�
 
 ### Command I — Multi-Note Curriculum (`M2` Collection Series)
 - **Trigger:** Structured multi-note curriculum without single-unit lock.
-- **Execution:** Decompose into `4–10+` numbered child notes (minimum `3` + MOC index), preserve source terminology/order, label additions, create [one lab per new content note](experimental-lab.md) but none for the MOC, and apply `core/math_gates.md` whenever quantitative material appears.
+- **Execution:** Decompose into `4–10+` numbered child notes (minimum `3` + MOC index), preserve source terminology/order, label additions, create [one lab](experimental-lab.md) and [one cheatsheet & interview Q&A file](cheatsheet-interview.md) per new content note (none for the MOC), and apply `core/math_gates.md` whenever quantitative material appears.
 
 ### Command V — Video-Grounded Notes (`/scribe-ytnotes` / `/scribe-notes`)
 - **Trigger:** Video URL, lecture recording, transcript, or explicitly requested playlist (`/scribe-ytnotes`).

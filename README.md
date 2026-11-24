@@ -8,7 +8,7 @@
 
 | Command | Entrypoint | What It Does | Writes to Vault? |
 |---|---|---|---|
-| `/scribe-notes` | [skills/scribe-notes/SKILL.md](skills/scribe-notes/SKILL.md) | Creates or revises learning notes (`M1`–`M7`), collections, and companion experimental labs. | Yes (notes, labs, inspected local assets) |
+| `/scribe-notes` | [skills/scribe-notes/SKILL.md](skills/scribe-notes/SKILL.md) | Creates or revises 3-file topic bundles (`M1`–`M7` notes, experimental labs, and cheatsheet & interview Q&A files). | Yes (notes, labs, cheatsheet/Q&A, inspected local assets) |
 | `/scribe-ytnotes` | [skills/scribe-ytnotes/SKILL.md](skills/scribe-ytnotes/SKILL.md) | Creates one self-contained, transcript-first note per video using downloaded web visuals and clickable timestamps (no lab, no frame capture). | Yes (1 note per video + local web images) |
 | `/scribe-doubt` | [skills/scribe-doubt/SKILL.md](skills/scribe-doubt/SKILL.md) | Answers questions strictly from existing vault notes with exact `[[Note Title#Heading]]` citations. | No (read-only) |
 | `/scribe-quiz` | [skills/scribe-quiz/SKILL.md](skills/scribe-quiz/SKILL.md) | Runs an interactive, one-question-per-turn recall or viva quiz grounded in existing vault notes. | No by default (optional body review note only if requested) |
@@ -24,8 +24,8 @@ Root orchestration starts at [SKILL.md](SKILL.md), routes note requests through 
 2. **Destination & Safety Gate:** [pre-gen-gate.md](docs/procedures/authoring/pre-gen-gate.md) checks existing vault files before writing, preserves custom YAML/notes, and prevents accidental overwrites.
 3. **Research & Source Fidelity:** [research-engine.md](docs/procedures/sourcing/research-engine.md) and [source-fidelity.md](docs/procedures/sourcing/source-fidelity.md) ground claims with locators, respect source-only boundaries, and mark unconfirmed claims `[UNVERIFIED]`.
 4. **Self-Contained Layered Teaching:** [teaching_core.md](core/teaching_core.md) applies the **12 teaching layers**, the **3-tier prerequisite rule** (explain essential terms locally, bridge secondary ones, bound outside topics), and mentor connective tissue. [math_gates.md](core/math_gates.md) enforces native `$...$` / `$$...$$` delimiters and immediately following `> [!note]- 📐 Understand this formula` collapsed walkthroughs.
-5. **Visual Acquisition & Six-Phase Narrative:** [representations.md](docs/procedures/authoring/representations.md) plans complementary visuals before drafting, downloads and inspects local raster assets (`.png`, `.jpg`, `.webp` under `assets/scriptorium/<slug>/`; SVG retired), teaches every figure through **Set question → Show → Decode → Trace → Connect → Check**, and uses native Mermaid for flows and states.
-6. **Companion Experimental Labs (Non-Video Notes):** [experimental-lab.md](docs/procedures/authoring/experimental-lab.md) creates one domain-matched `<note stem> - Experimental Lab.md` per new non-video content note (excluding `/scribe-ytnotes`, MOCs, and playlist indexes), with collapsed line-by-line code walkthroughs and honest `Status: static review (not executed)` labels.
+5. **Visual Acquisition & Six-Phase Narrative:** [representations.md](docs/procedures/authoring/representations.md) plans **at least 4–5 complementary web visuals** per note before drafting, downloads and inspects local raster assets (`.png`, `.jpg`, `.webp` under `assets/scriptorium/<slug>/`; SVG retired), teaches every figure through **Set question → Show → Decode → Trace → Connect → Check**, and forbids Mermaid or ASCII graphs/diagrams.
+6. **Companion Experimental Labs & Cheatsheet/Interview Packs (3-File Bundle for Non-Video Notes):** [experimental-lab.md](docs/procedures/authoring/experimental-lab.md) and [cheatsheet-interview.md](docs/procedures/authoring/cheatsheet-interview.md) require two siblings per new non-video content note (excluding `/scribe-ytnotes`, MOCs, and playlist indexes): `<note stem> - Experimental Lab.md` (with collapsed line-by-line code walkthroughs and honest `Status: static review (not executed)` labels) and `<note stem> - Cheatsheet & Interview Q&A.md` (with grouped formula sheets, tap-to-reveal `> [!tip]- Answer` interview Q&A, and `> [!tip]- Solution` worked problems).
 7. **Manual Verification:** [verification-checklist.md](docs/procedures/review/verification-checklist.md) performs reader-facing prose, formula-fold, local-embed, YAML, and wikilink checks on the saved Markdown before finishing.
 
 ---
@@ -79,9 +79,9 @@ scriptorium/
 │   │   ├── domains/                 # 6 knowledge-type subtemplates
 │   │   ├── presets/                 # 12 specialized output presets
 │   │   ├── components/              # Conditional teaching moves (module-catalog.md)
-│   │   └── investigations/          # 6 domain experimental lab templates
+│   │   └── investigations/          # 7 domain experimental lab templates
 │   └── procedures/                  # Conditional authoring, sourcing, updating & review
-│       ├── authoring/               # Adaptive planning, playbooks, lab contract, visuals, gate
+│       ├── authoring/               # Adaptive planning, playbooks, 3-file contracts, visuals, gate
 │       ├── sourcing/                # Research engine, source fidelity & recommendations
 │       ├── updating/                # Revision & safe vault linking
 │       └── review/                  # Manual reader-facing verification checklist

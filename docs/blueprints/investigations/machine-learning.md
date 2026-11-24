@@ -9,7 +9,7 @@ Keep the title, YAML frontmatter, and parent-note navigation link. **Do not** in
 > [!abstract] Parent Note
 > Core theory lives in [[<Parent Note>]].
 
-Open with a short, connected introduction explaining what the learner will investigate, why it matters, and a native Mermaid architecture flow showing how data splitting, modeling, experiments, and end-to-end verification connect.
+Open with a short, connected introduction explaining what the learner will investigate, why it matters, and an inspected local web architecture figure (or structured stage table; never Mermaid or ASCII) showing how data splitting, modeling, experiments, and end-to-end verification connect.
 
 ## LAB SECTION 01 — INTRODUCTION
 Explain the concrete problem, why training error alone is misleading, what the learner will build and investigate, and any essential prerequisite reminders needed before Section 02.
@@ -52,16 +52,33 @@ Design a small number of substantive investigations (e.g., polynomial complexity
 Never promise that Degree 4 always wins, Degree 15 always hits zero train error, more samples always shrink the gap, or one run must be U-shaped; distinguish theoretical nested-class properties from finite-precision solver behavior. Label unexecuted designs honestly; never title anticipated patterns "experimental findings."
 
 ## LAB SECTION 06 — REALISTIC END-TO-END WORKFLOW
-Teach each applicable stage sequentially (environment/imports, data acquisition/generation, evaluation partitions, training-data exploration, input validation, transformations, reusable transformers, pipeline construction, model configuration, validation-based selection, final held-out evaluation, internal-result interpretation, new-input inference, failure handling, and integrated complete program).
+Replace toy arrays with a complete, realistic end-to-end project on a built-in benchmark or domain-appropriate multi-feature dataset (for classification, e.g., Scikit-learn's `load_breast_cancer()` with 569 samples and 30 numerical features), followed by full hyperparameter and cross-validation mastery.
 
-For **every** step:
-1. Explain the purpose in connected prose.
-2. Show the relevant code directly below (merge purely conceptual steps into the next executable step rather than writing comment-only blocks).
-3. Add a collapsed `> [!example]- Step-by-step: ...` explanation directly below the code.
-4. Explain the output or decision.
-5. Connect to the next step.
+Organize Section 06 into two cohesive parts—**Part A: Complete Real-World Project (12 Steps)** and **Part B: Hyperparameters, Optimizers & Cross-Validation Tuning**—keeping every variable consistent and labeling unexecuted code `Status: static review (not executed)`.
 
-Keep variables consistent with the final integrated program, which must also carry a collapsed walkthrough tracing overall execution and integration boundaries. Ensure candidate and baseline are compared on the **same** partition, pipeline leakage boundaries are stated accurately, feature-count validation is explicit (not `np.atleast_2d`), and standardized polynomial coefficients are not misrepresented as importance rankings.
+### Part A — Complete Real-World Project (12 Steps)
+For **every** applicable step, provide: (1) prose explaining purpose and design choice, (2) executable Markdown code block, (3) collapsed `> [!example]- Step-by-step: ...` walkthrough, (4) expected output/table interpretation without fabricating unrun metrics, and (5) transition to the next step:
+1. **Import Libraries:** Group imports cleanly (`numpy`, `pandas`, `matplotlib.pyplot`, dataset loader, `train_test_split`, `GridSearchCV`, `StandardScaler`, estimator, `Pipeline`, and metrics/display classes).
+2. **Load Dataset & Align Target Polarity:** Load features into a labeled `DataFrame` and target into a `Series`; document sample count, feature count, and original `Label | Meaning` table. When domain recall targets the `0` label (e.g., `0 = Malignant, 1 = Benign`), explicitly flip (`y = 1 - y`) and show the updated `Label | Meaning` table.
+3. **Explore & Validate Dataset Integrity:** Inspect `head()`, `shape`, `info()`, `describe()`, `isnull().sum()`, and `value_counts()`, paired with a `Function | Purpose` reference table.
+4. **Split Dataset (Stratified Partition):** Perform `train_test_split(..., test_size=0.2, random_state=42, stratify=y)`, state exact partition sample counts (e.g., `569 -> 455 (~80%) train + 114 (~20%) test`), include a `Parameter | Meaning` table, and note that `42` is an arbitrary reproducibility seed.
+5. **Build Leakage-Free Preprocessing & Model `Pipeline`:** Chain `StandardScaler` ($x' = \frac{x - \mu}{s}$) and the estimator inside `Pipeline([...])`, explaining why scaling statistics must be learned on training data alone.
+6. **Train the Model (`.fit()` Internals):** Call `model.fit(X_train, y_train)` and walk through the internal execution sequence (compute train means/stds → standardize train features → initialize parameters → compute forward predictions → compute regularized loss → run optimizer steps → stop on tolerance or `max_iter`).
+7. **Predictions vs. Probabilities vs. Raw Scores:** Compare `predict()`, `predict_proba()`, `predict_proba()[:, 1]`, and `decision_function()` in a `Method | Example output` table, and remind learners to inspect `classes_` when labels are not `{0, 1}`.
+8. **Evaluate Metrics by Required Input Type:** Compute `accuracy_score`, `precision_score`, `recall_score`, `f1_score`, `roc_auc_score`, `log_loss`, `confusion_matrix`, and `classification_report` on the **same** test partition against a baseline, paired with a `Metric | Input` table separating hard-label metrics from probability/score metrics.
+9. **Plot Confusion Matrix:** Show `ConfusionMatrixDisplay.from_predictions(...)` with domain `display_labels` and explain how to read TP/FP/FN/TN trade-offs.
+10. **Plot ROC Curve:** Show `RocCurveDisplay.from_predictions(y_test, y_prob)` and explain threshold-independent ranking vs. calibration.
+11. **Extract Learned Parameters:** Inspect `named_steps["classifier"]` attributes (`coef_`, `intercept_`, `classes_`, `n_iter_`) in an `Attribute | Meaning` table, noting that pipeline coefficients measure log-odds/score change per **standardized** feature unit.
+12. **Visualize Coefficients & Causal Caveat:** Plot sorted horizontal bar coefficients (`pd.Series(..., index=X.columns).sort_values().plot(kind="barh")`), explain positive vs. negative effects holding other model features constant, and explicitly warn that learned associations are **not** causal relationships.
+
+### Part B — Hyperparameters, Optimizers & Cross-Validation Tuning
+Replace shallow single-loop tuning with a complete hyperparameter and `GridSearchCV` breakdown:
+- **Parameters vs. Hyperparameters Table:** Contrast learned weights/bias (updated by optimizer from data) against configured hyperparameters (`C`, `penalty`, `solver`, `max_iter`, `tol`, `class_weight`, `fit_intercept`, `l1_ratio`).
+- **Inverse Regularization Strength ($C$):** Present $C = \frac{1}{\lambda}$ (with compatible-normalization caveat) and a concrete `C | Regularization` table (`0.001` very strong → `1` moderate → `100` very weak), showing relative penalty $1/C$.
+- **Penalties & Mixing (`l1_ratio`):** Table of `L1` ($\sum_j |w_j|$), `L2` ($\sum_j w_j^2$), `Elastic Net` ($r\|\mathbf{w}\|_1 + \frac{1-r}{2}\|\mathbf{w}\|_2^2$ with `l1_ratio` table $0 \to 1$), and `None` (noting Scikit-learn version differences).
+- **Solvers, Compatibility & Second-Order Intuition:** Table of solver characteristics (`lbfgs`, `liblinear`, `newton-cg`, `newton-cholesky`, `sag`, `saga`), a `Solver | L1 | L2 | Elastic Net` compatibility matrix, and a concise **Newton's Method & L-BFGS** bridge ($w_{\text{new}} = w_{\text{old}} - \frac{J'(w)}{J''(w)}$ verified on $J(w) = w^2$ at $w=4$, plus $\boldsymbol{\theta}_{\text{new}} = \boldsymbol{\theta}_{\text{old}} - H^{-1}\nabla J$ and L-BFGS inverse-Hessian approximation).
+- **Stopping & Class-Handling Controls:** Explain `max_iter` (cap, not guaranteed count + convergence-warning troubleshooting), `tol`, `class_weight` (`"balanced"` vs. `{0: 1, 1: 5}`), and `fit_intercept` (origin-forced boundary when `False`).
+- **Hyperparameter Tuning with `GridSearchCV`:** Provide complete `Pipeline` + `param_grid` + `GridSearchCV(..., cv=5, scoring=..., n_jobs=-1)` code with a collapsed walkthrough, a 5-fold rotation table (`Round 1–5`), the CV average formula $S_{\text{CV}} = \frac{1}{K}\sum_{k=1}^{K} S_k$ with a concrete fold-average calculation, a `GridSearchCV` parameter/attribute table (`estimator`, `param_grid`, `cv`, `scoring`, `n_jobs`, `best_params_`, `best_estimator_`, `best_score_`), and exact total-fit counting (`combinations × folds + 1 refit`). Validate single-sample inference shapes explicitly (never `np.atleast_2d` blindly).
 
 ## LAB SECTION 07 — VERIFICATION, DEBUGGING, COMPARISON, AND INDEPENDENT PRACTICE
 Keep distinct final subheadings where helpful for navigation:

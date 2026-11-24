@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Canonical specification for note frontmatter profiles, Obsidian Markdown/math/Mermaid rendering, source evidence hygiene, prose cohesion, and vault path/link integrity across every Scriptorium output.
+Canonical specification for note frontmatter profiles, Obsidian Markdown/math rendering, source evidence hygiene, prose cohesion, and vault path/link integrity across every Scriptorium output.
 
 ## Activation Trigger
 
@@ -19,8 +19,8 @@ Never inject a `deepstudy-master` tag or internal review/routing logs into YAML;
 ## Rendering
 
 - **Math & Callouts:** Use native `$...$` and separate-line `$$` delimiters without code inside math. Quote every line of a callout, including internal blank lines (`>`), because an unquoted blank ends the block.
-- **Tables & Mermaid:** Escape literal pipes inside Markdown tables (`[[Target\|Label]]` and inside inline math). Quote Mermaid node labels and use Unicode symbols (`A["x → y"]`, never `A["$x$"]`).
-- **Visuals:** Follow [representations.md](../docs/procedures/authoring/representations.md): preserve native Mermaid for suitable relationships, and count an external raster image only after source check, local download and inspection, embed, and saved-note target check.
+- **Tables:** Escape literal pipes inside Markdown tables (`[[Target\|Label]]` and inside inline math).
+- **Visuals:** Follow [representations.md](../docs/procedures/authoring/representations.md): include **at least 4–5 relevant downloaded & inspected local web raster images** per generated content note and teach directly around each figure. **Never use Mermaid (`mermaid` blocks) or ASCII art/diagrams for graphs, charts, or flows.** Count an external raster image only after source check, local download and inspection, embed, and saved-note target check.
 - **Publish Hygiene:** Use `**Confusion** :: question` on its own line for Dataview only when genuine. Strip all scaffold comments, `<!-- SECTION: S* -->` markers, authoring notes, unused optional sections, and placeholder rows; renumber remaining headings and repair internal anchors.
 
 ## Evidence

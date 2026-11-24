@@ -30,7 +30,7 @@ State task, targets, output meaning, success criterion, prerequisites, and small
 Define train/review/test boundaries, batch, sequence, channel, feature, and spatial axes where relevant. Provide a shape table from input to target and a representative tensor; avoid ambiguous axis order.
 ## LAB SECTION 03 — MATHEMATICAL AND COMPUTATIONAL FOUNDATIONS
 ### Forward computation and loss
-Explain operation shapes, activations, loss construction, initialization assumptions, and one numeric forward trace. Give formula folds and an design/tensor-flow image or Mermaid as appropriate; avoid confusing forward values with gradients.
+Explain operation shapes, activations, loss construction, initialization assumptions, and one numeric forward trace. Give formula folds and an inspected local web design/tensor-flow image as appropriate (never Mermaid or ASCII); avoid confusing forward values with gradients.
 ## IMPLEMENTATION TRACK A — MECHANISM FROM FIRST PRINCIPLES
 Choose the smallest operation that reveals differentiation, not a whole framework.
 ## LAB SECTION 04 — FORWARD PASS AND CORE OPERATIONS
@@ -52,8 +52,27 @@ Vary learning rate, initialization, regularization, or batch size one at a time.
 ## PROFESSIONAL IMPLEMENTATION TRACK
 Carry a bounded task from dataset to new-input prediction.
 ## LAB SECTION 08 — END-TO-END DEEP LEARNING WORKFLOW
-### Reproducible pipeline
-Cover preprocessing boundaries, architecture choice, validation, checkpoint selection, stopping, held-out evaluation, and inference. Discuss resources and verified environment limits. Use workflow Mermaid and a relevant architecture figure.
+### Part A — Complete Real-World Deep Learning Project (12 Steps)
+Replace toy 2-layer arrays with a complete, realistic end-to-end workflow on a standard benchmark or domain dataset (e.g., Fashion-MNIST, CIFAR-10, or a realistic multi-feature tabular dataset). For **every** applicable step, provide: (1) prose explaining purpose and design choice, (2) executable Markdown code block (`Status: static review (not executed)` if unexecuted), (3) collapsed `> [!example]- Step-by-step: ...` walkthrough, (4) expected output/table interpretation without fabricating unrun metrics, and (5) transition to the next step:
+1. **Import Libraries & Set Reproducibility:** Group imports (`torch` / framework, `DataLoader`, transforms, loss/optimizer, metrics) and document device selection and seed setup.
+2. **Load Dataset & Align Target Labels:** Load dataset/tensors, state exact sample count, input tensor shape `(N, C, H, W)` or `(N, F)`, and `Label | Meaning` table (including explicit class remapping when a specific positive class is targeted).
+3. **Inspect Samples, Shapes & Class Balance:** Check tensor `shape`, `dtype`, value ranges (`min`/`max`), missing/corrupt items, and class counts (`Function | Purpose` table).
+4. **Partition Dataset (Train / Validation / Test):** Split cleanly with exact sample counts and a `Parameter | Meaning` table (`test_size` / `val_split`, `random_state` / generator seed, `stratify`), keeping `test` untouched until final evaluation.
+5. **Build Leakage-Free Preprocessing & `DataLoader` Pipeline:** Compute normalization statistics (`mean`, `std`) on the **training split only**, attach training-only augmentations, and wrap batches cleanly (`x' = (x - \mu) / s`).
+6. **Define Architecture & Trace Forward/Backward Training Loop:** Walk step by step through what `.train()` + one epoch does internally (zero gradients → forward pass → compute loss → `.backward()` autograd → gradient clipping if enabled → `optimizer.step()` → track batch losses).
+7. **Logits vs. Probabilities vs. Hard Predictions:** Compare raw `logits`, `sigmoid`/`softmax` probabilities, and `argmax`/thresholded classes in a `Stage | Example output` table, noting `model.eval()` and `torch.no_grad()`.
+8. **Evaluate Metrics by Required Input Type:** Separate hard-label metrics (`Accuracy`, `Precision`, `Recall`, `F1-score`, `Confusion Matrix`, `Classification Report`) from probability/logit metrics (`Cross-Entropy Loss`, `ROC-AUC`, `Calibration / ECE`) on the **same** held-out split against a baseline.
+9. **Plot Confusion Matrix:** Show confusion-matrix visualization with domain class labels and interpret per-class failure modes.
+10. **Plot Diagnostic Curves (Loss / ROC / Calibration):** Show ROC or training-vs-validation loss diagnostics without fabricating unexecuted plot values.
+11. **Inspect Learned Parameters & Gradient Health:** Examine `named_parameters()`, layer weight norms, parameter counts, and gradient norms (`Attribute/Method | Meaning` table).
+12. **Visualize Errors / Saliency & Causal Caveat:** Inspect misclassified examples or feature/patch sensitivities and explicitly state that high activation or weight magnitude shows learned correlation, **not** causal mechanism.
+
+### Part B — Hyperparameters, Optimizers & Validation Tuning
+- **Parameters vs. Hyperparameters Table:** Contrast trainable weights/biases/BatchNorm running stats against configured hyperparameters (`lr`, `weight_decay`, `optimizer`, `batch_size`, `epochs`, `dropout`, `scheduler`, `grad_clip`).
+- **Learning Rate ($\eta$), Weight Decay ($\lambda$) & Dropout:** Tables showing underfit/stable/divergent $\eta$ regimes, $L_2$/decoupled weight decay formula ($w \leftarrow (1 - \eta\lambda)w - \eta \nabla \mathcal{L}$), and dropout train-vs-eval scaling.
+- **Optimizer Comparison & Compatibility:** Table comparing `SGD` (with momentum), `Adam`, `AdamW`, and `RMSprop` on update rules, adaptive curvature/second-moment intuition, memory overhead, and regularization behavior (e.g., coupled $L_2$ vs. decoupled `AdamW`).
+- **Stopping, Scheduling & Imbalance Controls:** Explain `epochs`, `patience` (early stopping on validation loss), LR schedulers (`CosineAnnealingLR`, `ReduceLROnPlateau`), class-weighted `CrossEntropyLoss(weight=...)` / `pos_weight`, and `bias` toggles.
+- **Systematic Validation Tuning:** Show a structured validation sweep or $K$-fold CV setup with the CV average formula $S_{\text{CV}} = \frac{1}{K}\sum_{k=1}^{K} S_k$, exact total training-run count (`configs × folds + 1 final refit`), and explicit input-tensor shape checks at inference.
 ## FINAL VALIDATION AND LEARNING
 Separate quality, reliability, and cost.
 ## LAB SECTION 09 — EVALUATION AND ERROR ANALYSIS

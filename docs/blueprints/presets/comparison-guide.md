@@ -28,7 +28,7 @@ Include rows for: **Core Mechanism & Invariant**, **Time Complexity / Cost**, **
 
 ## 3. How do their mechanisms diverge under the hood? (Causal Pipeline & Mathematical Contrast)
 
-Contrast causal internals before tables (`math_level` `0–2` via `core/math_gates.md`) using a Mermaid `flowchart TD` (double-quoted Unicode labels) or verified local asset plus a `2–3` sentence summary.
+Contrast causal internals before tables (`math_level` `0–2` via `core/math_gates.md`) using a verified local web raster diagram ([representations.md](../../procedures/authoring/representations.md)) plus a `2–3` sentence summary (never Mermaid or ASCII).
 
 ## 4. What happens on the exact same workload and where does the winner flip? (Worked Benchmark & Crossover Edge Case)
 

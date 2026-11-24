@@ -16,7 +16,7 @@ Strip this block before emission.
 ## 1. Executive Synthesis & Conceptual Relationships
 
 - High-level integration connecting the target concepts, variants, or sources into one unified mental model.
-- Relationship map (Mermaid diagram or structured semantic table: `Concept | Role | Builds Upon | Contrasts With | Canonical Note`).
+- Relationship map (downloaded & inspected local web architecture/concept-network image plus a structured semantic table: `Concept | Role | Builds Upon | Contrasts With | Canonical Note`; never Mermaid or ASCII).
 
 ## 2. Core Comparisons, Distinctions & Key Formulas
 
