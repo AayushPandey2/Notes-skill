@@ -21,6 +21,7 @@ variants:
   quick_summary: {master: M7, path: docs/blueprints/presets/quick-summary.md}
   revision_pack: {master: M7, path: docs/blueprints/presets/revision-pack.md}
   concept_map: {master: M7, path: docs/blueprints/presets/concept-map.md}
+  video_notes: {master: video_notes, path: docs/blueprints/formats/video-notes.md}
 subtemplates:
   conceptual: docs/blueprints/domains/conceptual.md
   mathematical: docs/blueprints/domains/mathematical.md
@@ -28,5 +29,5 @@ subtemplates:
   scientific: docs/blueprints/domains/scientific.md
   historical: docs/blueprints/domains/historical.md
   empirical: docs/blueprints/domains/empirical.md
-public_commands: [scribe-notes, scribe-doubt, scribe-quiz, scribe-setfolder]
-video_intent_aliases: [scribe-ytnote, scribe-ytnotes, scribe-ytlecture]
+public_commands: [scribe-notes, scribe-ytnotes, scribe-doubt, scribe-quiz, scribe-setfolder]
+video_intent_aliases: [scribe-ytnotes]

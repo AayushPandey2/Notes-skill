@@ -30,4 +30,8 @@ Teach every embedded figure through six connected phases:
 5. **Phase 5 — Connect to formalism and limits:** State the general principle, equation, or mechanism the visual prepares for. Explicitly state whether the figure is **schematic, illustrative, simulated, measured, or source-provided**, and explain what it **does not prove**.
 6. **Phase 6 — Check interpretation:** Pose 1–2 specific questions requiring the reader to read the figure, with reasoning in a separately positioned or collapsed answer (`> [!tip]- Answer`).
 
-Do not replace this six-phase narrative with a caption followed by "as shown above." Keep external reference figures distinct from a lab's own experimental evidence. For video, distinguish transcript access from inspected frames and attach timestamps only to locatable segments.
+Do not replace this six-phase narrative with a caption followed by "as shown above." Keep external reference figures distinct from a lab's own experimental evidence.
+
+## Video notes: web images & timestamps
+
+For `/scribe-ytnotes` video notes, **do not** play the video or capture video frames. Instead, attach clickable `[MM:SS]` or `[HH:MM:SS](https://www.youtube.com/watch?v=<VIDEO_ID>&t=<seconds>s)` links to locatable transcript segments (matching URL `t=<seconds>s` and supporting hour-long videos), and acquire **multiple complementary raster web images** (`.png`, `.jpg`, `.webp`) under `assets/scriptorium/<video-id>/` using the external raster workflow above. Inspect each downloaded file (`read_file` or viewer), credit its source, and teach around it using the six-phase visual narrative.

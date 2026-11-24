@@ -7,4 +7,4 @@ Load when a request names multiple products or its intended format is unclear. T
 3. A bare topic defaults to M1. Supplied lectures or chapters requested in order use M2. A paper analysis or comparison uses M7. A video request uses M2 unless the user requests a different product.
 4. Keep a small summary inside the primary note when it supports that note. For two independently requested artifacts, route each separately and share the same verified facts and notation.
 
-The installed public skill folders are `/scribe-notes`, `/scribe-doubt`, `/scribe-quiz`, and `/scribe-setfolder`. Video aliases are intent hints handled by `/scribe-notes` when available. Old note-command names may be explained as migrated requests; do not claim they are installed commands. If a selected template is missing, state that gap rather than inventing a registry entry.
+The installed public skill folders are `/scribe-notes`, `/scribe-ytnotes`, `/scribe-doubt`, `/scribe-quiz`, and `/scribe-setfolder`. Old note-command names may be explained as migrated requests; do not claim they are installed commands. If a selected template is missing, state that gap rather than inventing a registry entry.

@@ -2,7 +2,7 @@
 
 - **Purpose:** Preserve the exact teaching sequence, terminology, and example interleaving of a lecture, video, PDF, or chapter without artificial reorganization.
 - **Parent Master:** [M2 — Structured Study Notes](../formats/study-notes.md) (`lecture_order`)
-- **Activation Trigger:** Supplied lecture, PDF, slide deck, video (`/scribe-ytnotes` / `/scribe-ytlecture`), or `"preserve order"` / `"study notes"` via `/scribe-notes`.
+- **Activation Trigger:** Supplied lecture, PDF, slide deck, video (`/scribe-ytnotes`), or `"preserve order"` / `"study notes"` via `/scribe-notes`.
 - **Inputs & Dependencies:** Verified source segments, locators (page/heading/timestamp), candidate video frames if applicable; [source-fidelity.md](../../procedures/sourcing/source-fidelity.md), [math_gates.md](../../../core/math_gates.md).
 - **Execution Overrides:**
   1. Interleave examples right beside the concept they demonstrate in Section 2 rather than hoisting all examples into a later summary section.

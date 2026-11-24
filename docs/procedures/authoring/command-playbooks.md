@@ -35,11 +35,11 @@ Dispatch each active public command or `/scribe-notes` internal branch cleanly�
 - **Trigger:** Explicit multi-option comparison or "X vs Y" request.
 - **Execution:** Resolve targets, explain causal divergences before tables under equivalent workloads/assumptions, prove trade-offs on a shared example, and state crossover regimes.
 
-### Command G
-
-- **Role:** `/scribe-quiz` — Interactive active recall.
-- **Trigger:** `/scribe-quiz <topic/note>` over existing vault notes (`M6`).
-- **Execution & Constraints:** Ask **one question per turn**, wait for the user reply, and grade strictly against existing note content. Save weak spots in an existing body review section only when the learner asks for a saved record; never add YAML keys for quiz state.
+### Command G — Interactive Vault Quiz (`/scribe-quiz`)
+- **Trigger:** `/scribe-quiz <topic/note>` or interactive recall/viva over existing vault notes (for static Markdown practice files, use `/scribe-notes` with `M6` [assessment.md](../../blueprints/formats/assessment.md) instead).
+- **Inputs & Discovery:** Vault path ([pre-gen-gate.md](pre-gen-gate.md)), target note(s), and read-only note inspection (zero web browsing).
+- **Execution & Constraints:** Ask **one question per turn**, wait for the learner's reply, grade strictly against existing note content with exact `[[Note Title#Heading]]` citations, escalate difficulty (`recall → application/trace → boundary/viva`), and keep vault notes unchanged by default. Save weak spots in an existing body review section only when explicitly requested; never add YAML keys for quiz state or create an experimental lab.
+- **Failure Handling:** State missing vault/note coverage honestly rather than inventing answers.
 
 ### Command H — Atomic Card (`M3` / `atomic_card`)
 - **Trigger:** Single-concept transcludable note (`<150` words).
@@ -47,8 +47,8 @@ Dispatch each active public command or `/scribe-notes` internal branch cleanly�
 
 ### Command I — Multi-Note Curriculum (`M2` Collection Series)
 - **Trigger:** Structured multi-note curriculum without single-unit lock.
-- **Execution:** Decompose into `4–10+` numbered child notes (minimum `3` + MOC index), preserve source terminology/order, label additions, create [one lab per new content note](experimental-lab.md) but none for the MOC, and apply `core/math_gates.md` (`M01`–`M14`) whenever quantitative material appears.
+- **Execution:** Decompose into `4–10+` numbered child notes (minimum `3` + MOC index), preserve source terminology/order, label additions, create [one lab per new content note](experimental-lab.md) but none for the MOC, and apply `core/math_gates.md` whenever quantitative material appears.
 
-### Command V — Unified Video & Lecture Ingestion (`/scribe-ytnote` -> `/scribe-notes`)
-- **Trigger:** Video URL, lecture recording, transcript, or candidate video frames (`/scribe-ytnote`, `/scribe-ytnotes`, `/scribe-ytlecture`).
-- **Execution & Validation:** State tool/media availability honestly, declare explicit `access_state` (`full_multimodal`, `transcript_plus_frames`, `transcript_only`, `media_only`, `metadata_only`), segment transcript chronologically, save and inspect usable stills through [representations.md](representations.md), create a [companion lab](experimental-lab.md) for each new content note, explain prose + formulas via `core/teaching_core.md` + `core/math_gates.md`, and degrade honestly on unavailable transcripts/frames.
+### Command V — Video-Grounded Notes (`/scribe-ytnotes` / `/scribe-notes`)
+- **Trigger:** Video URL, lecture recording, transcript, or explicitly requested playlist (`/scribe-ytnotes`).
+- **Execution & Validation:** Follow [video-notes.md](../../blueprints/formats/video-notes.md) (overrides collection splitting, companion-lab generation, and multi-language lab tracks). Check metadata/transcript access once and acquire the timestamped transcript into one compact evidence map—never play the video or capture video frames. Instead, download and inspect multiple relevant raster web images (`assets/scriptorium/<video-id>/<name>.png`) via [representations.md](representations.md), compose once around those visuals and timestamps, and repair omissions locally.
