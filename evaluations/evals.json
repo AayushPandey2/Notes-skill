@@ -16,11 +16,11 @@
     {
       "id": 2,
       "prompt": "/scribe-ytnotes Build structured study notes from this lecture video with timestamps, equations, and downloaded web diagrams: https://www.youtube.com/watch?v=aircAruvnKk",
-      "expected_output": "Uses the unified /scribe-notes video workflow, reports explicit access_state honestly, segments timestamped transcript blocks, keeps only clear inspected stills locally under assets/scriptorium/<slug>/ when accessible, and places collapsible formula folds directly beneath displayed math.",
+      "expected_output": "Uses the /scribe-ytnotes transcript-first workflow, produces one self-contained note with no experimental lab, reports explicit access_state honestly, downloads and inspects complementary web raster visuals under assets/scriptorium/<video-id>/, and places collapsible formula folds directly beneath displayed math.",
       "files": [],
       "expectations": [
-        "Uses unified video workflow inside /scribe-notes without creating a parallel generator or helper script",
-        "Records explicit video access_state honestly",
+        "Uses /scribe-ytnotes video-notes format without splitting one video into multiple files or creating an experimental lab",
+        "Records explicit video access_state honestly without playing or capturing video frames",
         "Attaches '> [!note]- 📐 Understand this formula' directly under displayed equations"
       ]
     },
