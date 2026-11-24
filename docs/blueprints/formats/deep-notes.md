@@ -9,7 +9,7 @@
 
 ## 1. Opening Roadmap (Goal, Prerequisites & TOC)
 
-Open cleanly with line-1 YAML, H1 title, a concise 3-line framing (`Level`, `Prerequisites` — noting all essential concepts are explained locally — and `Goal`), and a compact numbered **Table of Contents** for longer chapters so the learner sees the complete journey upfront. Apply the 3-tier prerequisite rule in [teaching_core.md](../../../core/teaching_core.md): never use a link to replace an essential local foundation.
+Open cleanly with line-1 YAML, H1 title, a concise 3-line framing (`Level`, `Prerequisites` — noting all essential concepts are explained locally — and `Goal`), and a compact numbered **Table of Contents** written as plain numbered section titles with **zero links** (never use `[[#...]]` or `[...](#...)` links inside the Table of Contents). Apply the 3-tier prerequisite rule in [teaching_core.md](../../../core/teaching_core.md): never use a link to replace an essential local foundation.
 
 ## 2. Progressive Self-Contained Flow (Micro-Cadence & 12 Layers)
 

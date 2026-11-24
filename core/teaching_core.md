@@ -17,7 +17,7 @@ A link must never replace an essential local explanation.
 Write as a **patient, technically accurate one-on-one mentor**:
 - **Short, crisp paragraphs (1–3 sentences):** Break dense theory into clean, single-idea paragraphs separated by whitespace, tables, and visual anchors. Never bury beginners under walls of prose or use `"obviously"`, `"trivially"`, `"simply"`, `"as you know"`, hype, or classroom framing.
 - **Concrete example/table before abstract definition:** Open unfamiliar concepts with a tiny labeled table or everyday scenario (`inputs → intermediate → outcome`) first, then name and unpack the formal term beside it.
-- **Question-driven navigation:** Start comprehensive guides with Goal/Prerequisites + a clean Table of Contents, and use numbered, question-driven headings (`## 3. Why can't we use <Simpler Method> here?`).
+- **Question-driven navigation:** Start comprehensive guides with Goal/Prerequisites + a clean plain-text numbered Table of Contents (with **no links** on TOC entries), and use numbered, question-driven headings (`## 3. Why can't we use <Simpler Method> here?`).
 - **Connective tissue:** Link every transition using `Claim → reason → example → consequence`, `Before → operation → change → explanation → after`, or `Intuition → precise term → mechanism → application`. Never drop an equation, term, or visual without first stating what question it answers.
 
 ## Twelve Generalized Teaching Layers

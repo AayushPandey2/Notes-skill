@@ -14,14 +14,14 @@ Every note begins on line 1 with valid YAML (`---` ... `---`) matching its profi
 - **Comprehensive `M1` collections** ([composition-contract.md](../docs/procedures/authoring/composition-contract.md)): strictly the 5 ordered keys `id`, `aliases`, `topic`, `tags`, `nexttopics` (nonempty strings for `id`/`topic`, lists for the rest; aliases include title; `domain/`/`subject/`/`topic/` tags; resolved forward wikilinks in `nexttopics`; zero extra keys).
 - **Single notes, `M2`–`M7`, and legacy nested collections** ([properties-policy.md](../docs/properties/properties-policy.md)): canonical Obsidian Properties (`topic`, `tags`, `master_topic`, `domain`, `note_type`, plus managed optional keys).
 
-Never inject a `deepstudy-master` tag or internal review/routing logs into YAML; preserve existing IDs and custom user properties on updates.
+Never inject a `deepstudy-master` tag, any `type/<note-type>` tag, or internal review/routing logs into YAML; preserve existing IDs and custom user properties on updates.
 
 ## Rendering
 
 - **Math & Callouts:** Use native `$...$` and separate-line `$$` delimiters without code inside math. Quote every line of a callout, including internal blank lines (`>`), because an unquoted blank ends the block.
 - **Tables:** Escape literal pipes inside Markdown tables (`[[Target\|Label]]` and inside inline math).
 - **Visuals:** Follow [representations.md](../docs/procedures/authoring/representations.md): include **at least 4–5 relevant downloaded & inspected local web raster images** per generated content note and teach directly around each figure. **Never use Mermaid (`mermaid` blocks) or ASCII art/diagrams for graphs, charts, or flows.** Count an external raster image only after source check, local download and inspection, embed, and saved-note target check.
-- **Publish Hygiene:** Use `**Confusion** :: question` on its own line for Dataview only when genuine. Strip all scaffold comments, `<!-- SECTION: S* -->` markers, authoring notes, unused optional sections, and placeholder rows; renumber remaining headings and repair internal anchors.
+- **Publish Hygiene:** Use `**Confusion** :: question` on its own line for Dataview only when genuine. Strip all scaffold comments, `<!-- SECTION: S* -->` markers, authoring notes, unused optional sections, and placeholder rows; renumber remaining headings, keep Table of Contents entries as plain numbered text with zero links, and repair any body internal anchors.
 
 ## Evidence
 
