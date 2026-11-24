@@ -5,7 +5,7 @@ Activation Trigger: "/scribe-notes atomic note on <concept>" or single-concept c
 Non-activation: Never trigger recursive atomic card generation; defer multi-concept guides to M1/M2.
 Inputs: Single canonical concept title, single direct fact lookup/verification, existing vault link targets.
 Dependencies: router.md, core/authoring_rules.md, core/math_gates.md.
-Decision Rules: Strictly <150 words body (including links); one indivisible claim + one micro-example + one boundary; bounded direct fetch only.
+Decision Rules: Strictly <150 words body (including links); reduce scope to one indivisible claim + one micro-example + one boundary (never promise a full multi-layer lesson here); bounded direct fetch only.
 Failure Handling: Represent planned non-existent vault links cleanly as plain text marked '(pending note)' rather than fabricating dead wikilinks.
 Validation: [verification-checklist.md](../../procedures/review/verification-checklist.md).
 -->

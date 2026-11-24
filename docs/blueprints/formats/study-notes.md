@@ -14,7 +14,7 @@ Non-activation: Deep first-principles reorganization without source order -> M1;
 Variants: lecture-order.md.
 Inputs: Verified source sections/transcript/syllabus, access scope status, target depth, math_level 0–2.
 Dependencies: core/teaching_core.md, core/authoring_rules.md, core/math_gates.md, procedures/authoring/adaptive-engine.md, procedures/sourcing/source-fidelity.md.
-Decision Rules: Preserve verified source sequence; place Foundation Bridges & M01–M14 formula+folds directly before dependent notation; merge redundant sections cleanly without fabricating missing pages.
+Decision Rules: Preserve verified source sequence; apply the 3-tier prerequisite rule and 12 teaching layers in core/teaching_core.md inline before dependent notation, and use > [!note]- 📐 Understand this formula per core/math_gates.md; merge redundant sections cleanly without fabricating missing pages.
 Failure Handling: Label partial access explicitly and mark unsupported claims [UNVERIFIED]; omit unused optional templates before publishing.
 Validation: [verification-checklist.md](../../procedures/review/verification-checklist.md) (`M2` study-notes rules).
 -->
@@ -40,15 +40,11 @@ Validation: [verification-checklist.md](../../procedures/review/verification-che
 
 ## 2. How does the material develop each idea? (Sequential Concepts & Explanations)
 
-Repeat `### 2.<k> <Subtopic Title>` in verified source order, inserting concise `[Educational Addition — Prerequisite Bridge]` explanations inline right before dependent notation rather than silently reordering the source:
-
-- **Core Statement / Source Point** — <What the source establishes, with locator.>
-- **In Simple Words** — <Beginner-clear intuitive explanation preserving meaning.>
-- **Why This Matters** — <Purpose, consequence, or link to prior idea.>
-- **Key Terms & Symbols** — <Define terms, units, shapes, and domain restrictions.>
-- **Formal Relation & Step-by-Step Breakdown** — <Follow [math_gates.md](../../../core/math_gates.md): intuition first, then `$$...$$` + `> [!example]- Understand this formula step by step`.>
-- **Illustrative Example** — <Setup/Given -> Step-by-Step Working -> Result/Interpretation (keep interleaved right beside the concept it teaches).>
-- **Quick Check** — <One focused prediction or mechanism check.>
+Repeat `### 2.<k> <Subtopic Title>` in verified source order using connected mentor prose (developing the applicable teaching layers from [teaching_core.md](../../../core/teaching_core.md) rather than repetitive bullet labels), inserting concise `[Educational Addition — Prerequisite Bridge]` explanations inline right before dependent notation:
+- Motivate the source point (with locator) and build intuition/plain-language meaning before introducing formal terms or symbols.
+- Define unfamiliar terms, units, shapes, and domain restrictions locally, and decode any needed visuals via [representations.md](../../procedures/authoring/representations.md).
+- Follow [math_gates.md](../../../core/math_gates.md) for displayed equations (`$$...$$` + `> [!note]- 📐 Understand this formula`) and work one concrete example with explicit intermediate steps and interpretation.
+- End with a focused prediction or mechanism check when helpful.
 
 ## 3. How do I carry out the method or solve a problem? (Procedures, Reasoning & Worked Problems)
 

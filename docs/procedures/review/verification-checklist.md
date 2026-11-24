@@ -6,20 +6,19 @@ Perform an explicit manual review of reader-facing teaching quality, source fide
 
 ## Reader-Facing Quality Questions
 
-Before finishing any substantive note or lab, verify every applicable question honestly:
-1. Does the opening establish a real learner problem or question before naming the method?
-2. Are prerequisites and unfamiliar terms introduced immediately before first use?
-3. Is every analogy explained clearly (what corresponds to what) and bounded (where it breaks down)?
-4. Are formal definitions unpacked term by term rather than dropped whole?
-5. Does every image receive preparation (what to look for), element-by-element decoding, concrete tracing, limit qualification, and a reading check?
-6. Can the reader trace one concrete running example end to end?
-7. Are equations connected to the mechanism and visual meaning (`Question → intuition → visual meaning → symbols → formula → calculation → interpretation → check`)?
-8. Are difficult transformations and non-obvious steps explained rather than skipped?
-9. Are calculated results interpreted accurately (stating what the number measures and what it does **not** establish)?
-10. Are assumptions, conditions, and failure limits explicit?
-11. Does practice progress from guided examples toward independent application with separately explained answers?
-12. Can the note support understanding with collapsed folds closed and deeper study with them open?
-13. Are sources, citations, and execution status honest?
+Before finishing any substantive theory note or lab, verify every applicable prose question honestly (**never use word count, heading count, or image count as a measure of teaching depth**):
+1. Can a novice identify the concrete problem being solved before seeing the answer?
+2. Is every essential prerequisite locally supported (with secondary/outside topics bridged or bounded rather than replacing essential explanation with links)?
+3. Does each important term become understandable before use (plain + formal meaning, positive/non-example/boundary, and decisive distinction between confused terms)?
+4. Can the reader reconstruct the mechanism (`Starting state → operation → reason → intermediate change → outcome`)?
+5. Are difficult transitions and non-obvious mathematical steps explained rather than jumped over?
+6. Are visuals actively taught (question → what to inspect → local image → decoded labels/axes → concrete trace → formal connection → limits → check)?
+7. Does the running example include explicit inputs, assumptions, intermediate reasoning, and careful result interpretation (what it measures vs. what it does **not** establish)?
+8. Are assumptions, conditions, approximations vs. theorems, and failure limits visible?
+9. Can the reader distinguish adjacent concepts and trace transfer to a second context?
+10. Does practice progress from guided examples toward independent reasoning and transfer, with separately explained answers?
+11. Can the note stand alone with collapsed folds closed while offering deeper derivations, refreshers, and traces when opened?
+12. Are sources, citations, and execution status honest, with zero filler, repeated explanations, or ornamental images?
 
 ## Structural, Visual & Lab Gates
 

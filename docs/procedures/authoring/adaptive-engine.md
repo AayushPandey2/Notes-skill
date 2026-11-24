@@ -8,7 +8,15 @@ Before authoring, identify audience, source policy (`independent`, `strict`, `so
 
 Classify from the intended task and inspected source, never topic keywords alone. Registry types are conceptual, mathematical, programming, algorithmic, architectural, scientific, historical, comparative, procedural and research. Map computational to programming, geometrical to mathematical plus visualization, experimental to scientific, analytical/theoretical to the actual object and objective, and research-oriented to research. Mixed concepts select several types. Examination is an overlay: record syllabus/question expectations in `reason`, align practice to them, and preserve understanding. Source fidelity is a cross-cutting policy, not a separate master.
 
-Treat prerequisites as known, needing a reminder, or needing a foundation. Internal dependencies precede the consuming concept; missing external material is explained locally before use. For source-ordered notes retain the source sequence and label necessary bridges; do not silently reorder it. Break cycles by explaining a shared foundation first.
+Treat prerequisites using the 3-tier rule in [teaching_core.md](../../../core/teaching_core.md): **essential now** (explain locally before first use), **useful but secondary** (short bridge + optional link), and **outside the learning objective** (state boundary + link for further study). A link must never substitute for a missing essential explanation. For source-ordered notes, retain the source sequence and label necessary bridges; do not silently reorder it. Break cycles by explaining a shared foundation first.
+
+### Audience & Scope Presets
+
+Scale depth and scope consistently without duplicating the shared teaching policy:
+- **Beginner presets:** Add local prerequisite support, concrete analogies (with limits), and explicit term unpacking.
+- **Advanced presets:** Increase causal/formal depth, boundary conditions, and proof rigor without skipping necessary definitions.
+- **Comprehensive presets:** Expand mechanisms, evidence, worked examples, and second-context transfer across the 12 teaching layers.
+- **Compact presets (`M3`, `quick-summary`, `atomic-card`):** Reduce scope and redundancy before removing essential reasoning; never promise a full self-contained lesson when a compact preset omits extended derivations or multi-case transfer.
 
 Old outline fields still work: the adapter uses purpose, requested math level and selected tool, records its assumptions, and produces one concept. For substantial work author the richer plan before drafting; title/domain hints cannot substitute for semantic classification. Unknown objectives or malformed plans fail before writing.
 

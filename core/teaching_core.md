@@ -2,44 +2,38 @@
 
 ## Purpose
 
-Establish one domain-independent teaching voice, novice-first progression, and visual-to-formal authoring method across substantive Scriptorium outputs (`M1`, `M2`, `M4`, `M5`, `M7`, including source and video notes). Compact `M3` cheat sheets and question-only `M6` assessments follow their own density/self-test contracts while preserving symbol accuracy and honest assumptions.
+Establish one domain-independent theory-authoring architecture across substantive Scriptorium outputs (`M1`, `M2`, `M4`, `M5`, `M7`, including source and video notes) so every note delivers a **self-contained learning experience** built from connected layers of explanation—not padded definitions, repeated introductions, or heading clutter. Compact `M3` cheat sheets and question-only `M6` assessments follow their own scope/density contracts while preserving honest assumptions.
 
-## Tone & Writing Style
+## Self-Containment & Prerequisite Rule
 
-Write as a **patient, technically accurate one-to-one mentor** sitting beside a beginner:
-- **Calm, approachable, and respectful:** Never patronizing, never hype-filled, never textbook-compressed. Ban `"obviously"`, `"trivially"`, `"simply"`, `"as you know"`, and classroom/professor/lecture framing.
-- **Cadence & structure:** Use short orientation sentences followed by fuller, connected explanatory paragraphs (prefer connected prose over shallow bullet lists). Increase technical density only after foundations are established.
-- **Paragraph grammar:** Advance non-trivial claims via `claim → why → observable example → consequence`.
-- **Question-driven headings:** Organize visible headings around the learner's next genuine question with an optional parenthetical instructional role (e.g., `## 1. Why do we need X? (Motivation)`, `## 3. What should we notice in this diagram? (Before the Visual)`). Adapt headings to the selected subtemplate and topic—never impose 17 identical headings mechanically.
+A reader must be able to understand the note's learning objective without repeatedly opening other notes to decode terms, symbols, images, or reasoning:
+- **Essential now:** explain locally before first use.
+- **Useful but secondary:** provide a short bridge and an optional link.
+- **Outside the learning objective:** state the boundary clearly and link for further study.
+A link must never substitute for a missing essential explanation.
 
-## Novice-First Teaching Flow (Authoring Method)
+## Tone, Connective Tissue & Heading Discipline
 
-Use this 20-step progression as an internal authoring method (not 20 mandatory headings, and never repeat the same intro/analogy mechanically):
+Write as a **patient, technically accurate one-to-one mentor** using short orientation sentences followed by fuller, connected paragraphs (never `"obviously"`, `"trivially"`, `"simply"`, `"as you know"`, hype, or classroom framing). Replace abrupt jumps with explicit connective tissue:
+- **Claim → reason → example → consequence.**
+- **Before → operation → change → explanation → after.**
+- **Observation → question → model → prediction → check.**
+- **Intuition → precise term → mechanism → application.**
 
-1. Establish the learner's concrete problem.
-2. Explain why it matters and what breaks without it.
-3. Introduce essential prerequisites immediately before first use.
-4. Build an intuitive mental model (identifying what corresponds to what and what relationship it explains).
-5. State explicitly where that mental model stops being accurate.
-6. Give the simplest accurate plain-language explanation.
-7. Introduce the formal definition.
-8. Unpack its terms in order.
-9. Identify components, symbols, units, or roles.
-10. Prepare the learner for a visual (what remains unclear and what to inspect).
-11. Show and decode the visual in deliberate viewing order ([representations.md](../docs/procedures/authoring/representations.md)).
-12. Trace the mechanism (`initial → operation → intermediate → final`).
-13. Introduce appropriate formalism ([math_gates.md](math_gates.md)) after intuition and visual meaning are ready.
-14. Work through one complete example using a **stable running example** carried across vocabulary, visual, mechanism, and formula.
-15. Interpret and independently check the result—stating exactly what the number measures and what it does **not** establish.
-16. Explore changed conditions, boundary cases, and causal comparisons (explaining *why* alternatives differ in prose before any comparison table, with **Use when / When not to use** limits).
-17. Diagnose likely mistakes and misconceptions beside the confusing step.
-18. Transfer understanding to a second, distinct example or scale.
-19. Progress from guided practice to independent checks with separately positioned collapsed answers.
-20. Finish with concise retrieval cues, synthesis, and a natural bridge to the next concept.
+Use a small number of meaningful, question-driven headings (`## 1. Why do we need X? (Motivation)`). Keep the main argument visible with folds closed; place detailed derivations, prerequisite refreshers, additional traces, extended counterexamples, optional advanced detail, and practice answers inside properly quoted collapsed callouts.
 
-## Core Discipline
+## Twelve Teaching Layers (Authoring Responsibilities)
 
-- **Need before naming:** Establish the conceptual or practical difficulty before naming the method or equation.
-- **Qualify every claim:** State the exact conditions under which a claim holds; never turn an illustrative case into a universal guarantee.
-- **Local self-sufficiency:** Explain every introduced symbol, label, and step locally; links deepen understanding rather than replacing essential explanation.
-- **Folds support, never hide:** Keep the visible main path completely understandable with collapsed callouts closed; place detailed derivations, syntax walkthroughs, long arithmetic, execution traces, and worked answers inside properly quoted collapsed callouts.
+Develop the applicable layers for each major concept (these are authoring responsibilities, **not** twelve mandatory headings):
+1. **Layer 1 — The problem:** Establish the question, what the learner observes, what remains uncertain, and why the concept is needed before giving the answer.
+2. **Layer 2 — An intuitive foothold:** Use a small concrete situation or accurate analogy (explaining correspondence and limits; never force an analogy when a direct example is clearer).
+3. **Layer 3 — Simplest accurate explanation:** State the core idea in ordinary language without premature advanced qualifications.
+4. **Layer 4 — Precise vocabulary:** Introduce the formal definition and unpack important words and relationships; integrate plain meaning, formal meaning, positive example, non-example/contrast, boundary case, and connection to the running example into natural prose—explicitly distinguishing commonly confused terms.
+5. **Layer 5 — Components and representation:** Explain parts, quantities, states, actors, or variables and how they relate.
+6. **Layer 6 — Visual understanding:** Prepare, show, decode, and reason through an inspected local visual ([representations.md](../docs/procedures/authoring/representations.md)) and connect visible details to the concept.
+7. **Layer 7 — The mechanism:** Trace **Starting state → operation → reason → intermediate change → outcome**, explaining why steps occur in that order.
+8. **Layer 8 — Formal reasoning:** Introduce equations ([math_gates.md](math_gates.md)), proofs, logical rules, or causal/disciplinary evidence only when the learner has a reason to need them, justifying difficult transitions.
+9. **Layer 9 — Complete worked example:** Carry one **stable running example** with concrete inputs, explicit assumptions, intermediate steps, and careful interpretation.
+10. **Layer 10 — Contrast and boundaries:** Explain nearby concepts, counterexamples, changed assumptions, failure cases, and limits.
+11. **Layer 11 — Transfer:** Apply the idea to a second context or unfamiliar case, identifying what stays the same and what changes.
+12. **Layer 12 — Independent understanding:** Progress from demonstration to guided practice to independent reasoning with separately explained answers.

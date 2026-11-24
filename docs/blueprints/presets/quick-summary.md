@@ -4,7 +4,7 @@ Parent Master: M7 (../formats/synthesis-revision.md) | Route: summary (variant: 
 Activation Trigger: "summarize <source/URL/video>", standalone article/docs/video URL, or /scribe-ytnotes single-video summary.
 Inputs: Accessed article text, docs page, or video transcript/frames; source URL, author, date, and verified access scope.
 Dependencies: router.md, core/authoring_rules.md, core/math_gates.md, procedures/sourcing/source-fidelity.md.
-Decision Rules: Separate source claims from independent verification; link video entries via verified `` `[MM:SS](https://www.youtube.com/watch?v=<VIDEO_ID>&t=<seconds>s)` `` timestamps; suggest 2–3 follow-up notes passively.
+Decision Rules: Reduce scope to source claims vs independent verification rather than promising a full self-contained theory lesson; preserve essential local term clarity, link video entries via verified `` `[MM:SS](https://www.youtube.com/watch?v=<VIDEO_ID>&t=<seconds>s)` `` timestamps, and suggest 2–3 follow-up notes passively.
 Failure Handling: Never hallucinate timestamps or missing text; mark unavailable full bodies '[PARTIAL SUMMARY — TRANSCRIPT/TEXT UNAVAILABLE]' or request user paste.
 Validation: [verification-checklist.md](../../procedures/review/verification-checklist.md).
 -->
