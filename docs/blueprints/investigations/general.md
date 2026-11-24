@@ -35,7 +35,7 @@ Define essential terms and assumptions before the procedure; show a small exampl
 Reveal the idea's causal steps.
 ## LAB SECTION 04 — FIRST-PRINCIPLES CONSTRUCTION OR WALKTHROUGH
 ### Trace one instance
-Build or reason through a small complete case, showing intermediate states and why each step follows. Use a process Mermaid or inspected figure as appropriate.
+Build or reason through a small complete case, showing intermediate states and why each step follows. Use an inspected local web figure or structured step table as appropriate (never Mermaid or ASCII).
 ## INVESTIGATION TRACK B — ESTABLISHED METHOD OR TOOL
 Explain what the standard approach adds.
 ## LAB SECTION 05 — STANDARD PRACTICE AND GUIDED APPLICATION
@@ -52,8 +52,26 @@ Table actual, supplied, published, or expected observations with clear labels. D
 ## APPLICATION TRACK
 Combine the stages in a realistic bounded task.
 ## LAB SECTION 08 — END-TO-END PRACTICAL TASK
-### Produce a deliverable
-Show a complete workflow and output with assumptions, checks, and handoff; use Mermaid for sequence and a figure only where appearance matters.
+### Part A — Complete Real-World Practical Workflow (10–12 Steps)
+Replace a brief summary with a realistic end-to-end applied workflow on a concrete domain corpus, case set, or operational task. For **every** step, provide prose purpose, structured procedure or executable Markdown block (`Status: static review (not executed)` if unexecuted), collapsed `> [!example]- Step-by-step: ...` walkthrough, expected output/interpretation, and transition:
+1. **Setup, Criteria & Scope Alignment:** State tools, constraints, stakeholders, and exact success-polarity definition (`Outcome | Meaning` table).
+2. **Load & Frame the Realistic Case Set:** Document item/case count, attributes, and contextual metadata.
+3. **Inspect & Audit Input Quality:** Check completeness, ambiguity, duplicates, conflicting definitions, and edge cases (`Audit Check | Purpose` table).
+4. **Partition Development Cases vs. Held-Out Evaluation Cases:** Separate reference cases used to refine rules/heuristics from unseen cases reserved for final testing.
+5. **Build the End-to-End Execution Pipeline:** Chain `ingest -> normalize/filter -> apply core method -> validate output -> format deliverable`, keeping criteria isolated from test-case peeking.
+6. **Trace Internal Decision Mechanics:** Walk step by step through how inputs are weighted, ranked, filtered, or resolved under constraints.
+7. **Compare Intermediate Scores vs. Final Decisions:** Contrast raw observations, intermediate scores/rankings, and final thresholded decisions in a `Stage | Example Output` table.
+8. **Evaluate Outcomes by Criterion Type:** Separate **process reliability** (consistency, reproducibility, constraint compliance) from **outcome effectiveness** (precision, recall, error cost, user impact) on the **same** held-out cases against a baseline.
+9. **Diagnostic Error & Trade-Off Analysis:** Map false positives vs. false negatives or failure modes across cases (using a structured matrix or inspected local web visual; never Mermaid/ASCII).
+10. **Extract Key Decision Drivers & Thresholds:** Inspect which rules, criteria, or weights governed the final outputs (`Driver | Meaning` table).
+11. **Visualize Impact & Correlation-vs-Causation Caveat:** Rank dominant drivers and explicitly note that observational pattern alignment does not prove causal effect without controlled intervention.
+
+### Part B — Constraints, Method Variants & Systematic Validation
+- **Fixed Constraints vs. Tunable Process Parameters Table:** Contrast non-negotiable domain constraints against configurable settings (thresholds, strictness, weights, batch size, review depth).
+- **Threshold & Strictness Sensitivity Table:** Concrete table showing how tightening or relaxing criteria trades coverage against precision/effort.
+- **Method & Strategy Compatibility Matrix:** Compare manual, rule-based, heuristic, and structured-framework approaches across transparency, scalability, edge-case handling, and failure cost.
+- **Quality & Failure Guards:** Explain stopping criteria, escalation triggers, tie-breaking rules, and fallback handling when evidence is incomplete.
+- **Multi-Case Cross-Validation Protocol:** Define a repeatable $K$-split or A/B case evaluation (`variants × splits`), reporting exact case counts and keeping planned trials distinct from verified outcomes.
 ## FINAL VALIDATION AND LEARNING
 Judge quality and transfer.
 ## LAB SECTION 09 — VERIFICATION AND QUALITY CHECKS

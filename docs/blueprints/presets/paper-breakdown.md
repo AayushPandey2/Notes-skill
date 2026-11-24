@@ -22,7 +22,7 @@ Validation: [verification-checklist.md](../../procedures/review/verification-che
 
 ## 2. How does the proposed mechanism work & why do the equations hold? (Architecture, Equations & Derivations)
 
-- **Mechanism Walkthrough & Visual Architecture:** Define one concrete **Named Running Example** with explicit input bounds/dimensions; trace data/control flow in Mermaid (`flowchart TD` / `sequenceDiagram`, double-quoted Unicode labels) or inspected figure ([representations.md](../../procedures/authoring/representations.md)) + `2–3` sentence summary.
+- **Mechanism Walkthrough & Visual Architecture:** Define one concrete **Named Running Example** with explicit input bounds/dimensions; trace data/control flow using an inspected local web architecture figure ([representations.md](../../procedures/authoring/representations.md)) + `2–3` sentence summary (never Mermaid or ASCII).
 - **Equations & Zero-Skip Derivation (`math_level` `1–2`):** Pair numbered paper equations (`$$...$$`) with collapsible formula folds (`math_gates.md`), Symbol Anatomy, Input-to-Output Behavior table, and `*Why this step holds:*` derivations. Mark added non-author clarifications visibly:
   `> [!note] Explanatory Derivation (Distinct from Authors' Presentation in Section X)`
 

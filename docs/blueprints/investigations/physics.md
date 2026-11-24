@@ -55,8 +55,26 @@ Vary one parameter, record predicted and actual or sourced behavior, and analyze
 ## APPLICATION TRACK
 Transfer the model to a real system.
 ## LAB SECTION 09 — REAL-WORLD APPLICATION OR SYSTEM STUDY
-### Apply with limits
-Estimate a practical quantity, explain assumptions and scale, and compare to a credible reference where available.
+### Part A — Complete Real-World Physical System Study (10–12 Steps)
+Replace thin single-number estimates with a complete end-to-end physical system analysis using realistic published/supplied data or a clearly labeled thought-experiment model (never fabricate measurements). For **every** step, provide prose purpose, equations or analysis code (`Status: static review (not executed)` if unexecuted), collapsed walkthrough (`> [!example]- Step-by-step: ...` / `> [!note]- 📐 Understand this formula`), interpretation, and transition:
+1. **System Setup & Physical Constants:** Define physical constants with SI units, coordinate axes, and sign conventions.
+2. **Load or Specify Physical Dataset / System Parameters:** Document sample/trial count, measured quantities, and `Variable | Symbol | SI Unit | Instrument Resolution` table.
+3. **Inspect Data Quality & Sanity Bounds:** Check units, physical bounds (positivity, conservation limits), missing readings, and outliers (`Check | Purpose` table).
+4. **Partition Calibration vs. Held-Out Test Regimes:** Separate runs used to calibrate apparatus/model constants from independent held-out operating points.
+5. **Build the Physical Modeling Pipeline:** Chain `raw reading -> baseline/zero-offset correction -> governing physical law -> uncertainty propagation`, preventing calibration leakage across held-out runs.
+6. **Trace Internal Physical Mechanism:** Walk step by step through energy/momentum/charge conservation, force balance, or field response behind the calculation.
+7. **Compare Ideal vs. Corrected vs. Measured Outputs:** Contrast ideal textbook prediction, calibrated/damped model prediction, and observed data in a `Model/Source | Example Output (with units)` table.
+8. **Evaluate Agreement Metrics by Error Type:** Separate **systematic bias / residual drift** from **random statistical uncertainty** ($\sigma$, standard error, $\chi^2_{\text{red}}$) on the **same** test points.
+9. **Plot Residuals & Parity (Predicted vs. Measured):** Show how to inspect non-random residual curvature (signaling unmodeled physics such as friction, heating, or non-ohmic behavior).
+10. **Extract Fitted Physical Constants & Uncertainties:** Report fitted parameters (`slope`, `intercept`, physical constants) with SI units and propagated uncertainty (`Attribute/Quantity | Meaning` table).
+11. **Error-Budget Breakdown & Causation Caveat:** Rank dominant uncertainty sources and note that statistical fit alone does not prove microscopic mechanism without controlled variation.
+
+### Part B — Physical Regimes, Approximations & Experimental Controls
+- **Universal Constants vs. Controllable Apparatus Parameters Table:** Contrast physical constants ($g, c, k_B, \epsilon_0$) against experimental controls (voltage, load, temperature, sampling rate, geometry).
+- **Validity Regime Table:** Map dimensionless numbers or scale limits (e.g., small-angle $\theta \ll 1\text{ rad}$, laminar vs. turbulent, linear vs. plastic regime) to model breakdown points.
+- **Model & Solver Compatibility Matrix:** Compare closed-form ideal laws, perturbative/linearized approximations, and numerical ODE/PDE integration across accuracy and assumptions.
+- **Instrument & Systematic Controls:** Explain resolution floor, detector saturation, contact/tare offset, and environmental drift controls.
+- **Multi-Condition Cross-Regime Validation:** Define a controlled parameter sweep across independent conditions, stating trial counts and keeping expected trends strictly distinct from observed data.
 ## FINAL VALIDATION AND LEARNING
 Judge the model against evidence.
 ## LAB SECTION 10 — MODEL–MEASUREMENT COMPARISON
