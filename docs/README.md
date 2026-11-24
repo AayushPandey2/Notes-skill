@@ -10,7 +10,7 @@ Load only guidance relevant to the current request. Start with [router.md](../ro
 | Supplied source or disputed claim | [research](procedures/sourcing/research-engine.md), [source fidelity](procedures/sourcing/source-fidelity.md) |
 | Video or an interactive command | [command playbooks](procedures/authoring/command-playbooks.md) |
 | Figure, diagram, or video still | [visual guidance](procedures/authoring/representations.md) |
-| New content note's companion investigation | [experimental lab and six domain templates](procedures/authoring/experimental-lab.md) |
+| New content note's companion investigation | [experimental lab and seven domain templates](procedures/authoring/experimental-lab.md) |
 | Existing note revision | [revision and linking](procedures/updating/revision-and-linking.md) |
 | Before saving notes | [manual verification](procedures/review/verification-checklist.md) |
 
