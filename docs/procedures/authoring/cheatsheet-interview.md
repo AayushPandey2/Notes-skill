@@ -1,11 +1,11 @@
 # Companion Cheatsheet & Interview Q&A Pack (File 3)
 
-For each newly generated non-video content note, generate a **3-file topic bundle** (replacing the older 2-file note + lab model):
+For each newly generated **substantive non-video learning note** (`M1`, `M2`, `M5`—unless the user requests a single file), generate a **3-file topic bundle** (replacing the older 2-file note + lab model):
 1. **File 1 — Learning Notes:** `<note stem>.md` (theory, intuition, foundations, visuals, derivations, and final mental model).
 2. **File 2 — Experimental Lab:** `<note stem> - Experimental Lab.md` ([experimental-lab.md](experimental-lab.md)).
 3. **File 3 — Cheatsheet & Interview Q&A:** `<note stem> - Cheatsheet & Interview Q&A.md` (this specification).
 
-Exclude `/scribe-ytnotes` video notes, playlist indexes, MOCs, labs, cheatsheet packs, and internal workflow documents. Link File 1, File 2, and File 3 reciprocally, share the active YAML metadata profile, and preserve identical notation, symbols, and source limits across all three files.
+**Explicit exemptions (no companions unless explicitly requested):** `M3` quick-reference and all compact presets (`atomic-card`, `formula-sheet`, `syntax-reference`, `command-reference`, `quick-summary`), standalone `M6` assessments (`flashcards`, `mock-exam`), standalone `M4`/`M7` outputs, `/scribe-ytnotes` video notes, playlist indexes, MOCs, labs, cheatsheet packs, and internal workflow documents. Link File 1, File 2, and File 3 reciprocally, share the active YAML metadata profile ([properties-policy.md](../../properties/properties-policy.md)), and preserve identical notation, symbols, and source limits across all three files.
 
 ## Required Structure of File 3
 

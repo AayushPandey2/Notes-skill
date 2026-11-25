@@ -46,8 +46,8 @@
     {
       "query": "/scribe-ytnotes Turn this MIT 18.06 lecture YouTube video into Obsidian notes with downloaded web diagrams",
       "should_trigger": true,
-      "expected_master": "M2",
-      "expected_command": "scribe-notes"
+      "expected_master": "video-notes",
+      "expected_command": "scribe-ytnotes"
     },
     {
       "query": "/scribe-doubt Why does batch normalization use running statistics during inference according to my existing notes?",

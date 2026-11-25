@@ -29,9 +29,11 @@ Populate optional managed fields only when meaningful: `subdomain`, `id`, `alias
 
 ### 2. Filenames, Placement & Multi-Artifact Alignment
 
-- **Topic Collections:** Use the authorized `<Vault>/<Topic>/` folder, `00 - Map of Contents.md`, and sequential child notes `<nn> - <Title>.md`. Preserve an existing collection's names and layout when revising it; do not create category folders without a request.
-- **Specialized Siblings:** `Practice Sets/`, `Atomic Notes/`, `Cheatsheets/`, and `comparison/`.
-- **Multi-Artifact Alignment:** Companion outputs from one request share identical `domain`, `master_topic`, canonical `topic`, `concept_ids`, symbol definitions, and formula applicability conditions while setting distinct per-artifact `note_type` values.
+- **Topic-First Placement Rule:** Always create `<Configured Target>/<Topic>/` first and place all notes, companions (`Experimental Lab`, `Cheatsheet & Interview Q&A`), MOCs, subtopic bundles, and `assets/` for that topic inside `<Topic>/`. Preserve an existing collection's names and layout when revising it.
+- **Standalone Specialized Directories (Exception):** `Practice Sets/`, `Atomic Notes/`, `Cheatsheets/`, and `comparison/` are used **only** when the user explicitly requests a standalone cross-topic or single-artifact output (`M3` cheat sheet, `atomic-card`, standalone `M6` practice set, or standalone `M7` comparison) outside a topic folder; when generated as part of a topic bundle or collection, keep them inside `<Configured Target>/<Topic>/`.
+- **Multi-Artifact Alignment:** Companion outputs from one request always share identical `topic`, symbol definitions, datasets, and formula applicability conditions while respecting their active YAML profile:
+  - *Under the Standard Profile (`M2`–`M7`, single notes):* share `domain`, `master_topic`, `topic`, and `concept_ids` while setting distinct per-artifact `note_type` values.
+  - *Under the Strict 5-Key `M1` Collection Profile:* keep **only** the 5 allowed keys (`id`, `aliases`, `topic`, `tags`, `nexttopics`) — never add `domain`, `master_topic`, `concept_ids`, or `note_type` — and align via shared `topic`, matching `domain/`/`subject/`/`topic/` tags, and reciprocal links.
 
 ### 3. Safe Incremental Update Preservation
 

@@ -12,7 +12,7 @@ Validation: [verification-checklist.md](../../procedures/review/verification-che
 
 # M6 — Practice, Active Recall & Diagnostic Assessment
 
-- **Destination & Mode Contract:** Manual sets save to `Practice Sets/<Subtopic> - Practice.md`; collection assessments save to `Practice Sets/<Topic> - Collection Assessment.md`. Reuse verified equations and conditions from sibling notes. Static Markdown uses collapsed callouts (`self-test`) or visible keys (`practice with answers`); interactive `/scribe-quiz` asks one question per turn in chat without claiming Markdown auto-grades.
+- **Destination & Mode Contract:** Save inside `<Configured Target>/<Topic>/` when part of a topic bundle, or to `Practice Sets/<Subtopic> - Practice.md` / `Practice Sets/<Topic> - Collection Assessment.md` only when explicitly requested as a standalone assessment ([properties-policy.md](../../properties/properties-policy.md)). Exempt from 3-file companion generation unless explicitly requested. Reuse verified equations and conditions from sibling notes. Static Markdown uses collapsed callouts (`self-test`) or visible keys (`practice with answers`); interactive `/scribe-quiz` asks one question per turn in chat without claiming Markdown auto-grades.
 - **Header Block:** Line-1 Obsidian Properties + `# <Topic or Subtopic> — Active Recall & Synthesis Practice Set` (no long theory summary or symbol preview).
 
 ## Tier 1 — Foundational Recall (Q1–Q5)

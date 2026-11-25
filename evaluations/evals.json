@@ -9,7 +9,7 @@
       "expectations": [
         "Routes through /scribe-notes to master M1 (deep-notes) with no pre-generation knowledge quiz and zero generated scripts",
         "Introduces plain-language motivation and intuition before displayed equations",
-        "Every display math $$...$$ block is immediately followed by '> [!note]- 📐 Understand this formula'",
+        "Every top-level display math $$...$$ block is immediately followed by '> [!example]- Understand this formula step by step' (without recursive nested folds inside the walkthrough)",
         "Uses only visually inspected local images with checked rights and attribution, or reports why a suitable image was unavailable"
       ]
     },
@@ -21,7 +21,7 @@
       "expectations": [
         "Uses /scribe-ytnotes video-notes format without splitting one video into multiple files or creating an experimental lab",
         "Records explicit video access_state honestly without playing or capturing video frames",
-        "Attaches '> [!note]- 📐 Understand this formula' directly under displayed equations"
+        "Attaches '> [!example]- Understand this formula step by step' directly under top-level displayed equations"
       ]
     },
     {
@@ -87,6 +87,39 @@
         "Companion ML lab omits standalone metadata inventories, repeated theory, general experiments, 12-step workflows, quizzes, and summaries",
         "Includes 4 aligned ML tracks with explicit objective-scaling conversions and actual optimizer/solver explanations",
         "Places '> [!example]- Understand this implementation: mathematics, code, and numerical dry run' (A-G) directly beneath every implementation and labels code 'Source and static review only; not compiled or executed here.'"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "/scribe-notes atomic note on TLB miss vs page fault",
+      "expected_output": "Routes to M3 atomic-card (<150 words), uses Standard Obsidian Properties YAML, omits TOC, and does NOT generate companion Experimental Lab or Cheatsheet & Interview Q&A files.",
+      "files": [],
+      "expectations": [
+        "Routes to M3 with variant 'atomic_card' and keeps body strictly under 150 words",
+        "Exempts atomic-card from 3-file companion bundle generation",
+        "Clearly distinguishes a translation-cache miss from a non-resident/unmapped page fault"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "/scribe-notes Explain Operating System Virtual Memory comprehensively from first principles",
+      "expected_output": "Uses curriculum discovery and an internal concept coverage matrix (not published as clutter), teaches progressive abstraction from concrete address translation to page tables/TLB/page faults, distinguishes TLB miss vs page fault, includes forward and reverse diagnosis, and passes adversarial theory review.",
+      "files": [],
+      "expectations": [
+        "Traces a concrete virtual-to-physical address translation before abstracting to multi-level paging",
+        "Explicitly distinguishes TLB miss from page fault and includes reverse diagnostic reasoning",
+        "Uses clickable Obsidian TOC and profile-appropriate YAML without forcing ML-specific dataset conventions"
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "/scribe-notes Create comprehensive notes on Classical Thermodynamics: Ideal vs Real Gases",
+      "expected_output": "Uses curriculum discovery, establishes ideal-to-real model progression explicitly naming relaxed assumptions, distinguishes heat vs temperature and empirical law vs model, uses non-recursive formula folds, and selects domain-appropriate physics lab realization.",
+      "files": [],
+      "expectations": [
+        "Explicitly contrasts ideal-gas assumptions with refined intermolecular/volume-corrected real-gas behavior",
+        "Distinguishes heat from temperature and classifies laws, models, and approximations accurately",
+        "Attaches '> [!example]- Understand this formula step by step' beneath top-level displayed equations without recursive nested folds"
       ]
     }
   ]

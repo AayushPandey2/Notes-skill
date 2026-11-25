@@ -9,7 +9,7 @@ Strip this block before emission.
 
 # M4 — Worked Problems & Step-by-Step Solutions
 
-- **Header Block**: 5-key YAML frontmatter + `# <nn>. <Topic> — Worked Problems & Solutions`.
+- **Header Block**: Standard Obsidian Properties YAML (`topic`, `tags`, `master_topic`, `domain`, `note_type: worked-solutions`) per [properties-policy.md](../../properties/properties-policy.md) + `# <nn>. <Topic> — Worked Problems & Solutions`.
 - **Core Rule**: Organize around **problems and their Step 1–12 solution procedures** ([math_gates.md](../../../core/math_gates.md): Question -> Method & Assumptions -> Symbols & Dimensions -> Formula -> Substitute Inputs -> Intermediate Arithmetic -> Final Answer -> Contextual Interpretation -> Sanity Check -> Common Mistakes -> Generalization), never long textbook chapter prose or bare final numbers. Every intermediate step must be explicitly justified and checked.
 
 ## 1. Problem Set Scope, Governing Tools & Method Selection Map

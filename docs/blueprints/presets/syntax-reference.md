@@ -22,7 +22,7 @@ Validation: [verification-checklist.md](../../procedures/review/verification-che
 
 Organize subsections by workflow (`### 2.1 Initialization`, `### 2.2 Transformation & Layout`, `### 2.3 Reduction & Query`, `### 2.4 Core Operators`), escaping internal `|`:
 `Function / Signature | Mechanism | Key Parameters & Defaults | Return Value & Mutation / Copy vs. View | Time & Allocation Complexity | Minimal One-Liner`
-At `math_level >= 1`, include Symbol Anatomy and 4-row Input-to-Output tables on the Named Running Example.
+When the concept's math profile in `core/math_gates.md` includes equations, include Symbol Anatomy and a concise Input-to-Output table on the Named Running Example.
 
 ## 3. How do I combine these calls to solve real problems? (Runnable Cookbook Recipes & Edge-Case Verification)
 

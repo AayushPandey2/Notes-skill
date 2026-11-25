@@ -1,9 +1,9 @@
 ---
-id: "<topic-slug>-<subtopic-number>"
-aliases: []
 topic: "<Topic or source title>"
 tags: []
-nexttopics: []
+master_topic: "<Broader conceptual parent>"
+domain: "<Field or Discipline>"
+note_type: study-notes
 ---
 
 <!-- scaffold:preflight
@@ -12,9 +12,9 @@ Master ID: M2 (study_notes / compatibility route: studynotes).
 Activation Trigger: /scribe-notes with supplied lecture, PDF, transcript, or structured study request ("notes from this lecture/PDF", "preserve chapter order", "study notes").
 Non-activation: Deep first-principles reorganization without source order -> M1; compact cheat sheet -> M3; problem set -> M4; build guide -> M5; quiz -> M6; revision pack -> M7.
 Variants: lecture-order.md.
-Inputs: Verified source sections/transcript/syllabus, access scope status, target depth, math_level 0–2.
+Inputs: Verified source sections/transcript/syllabus, access scope status, target depth, concept-level math profile (Conceptual through Formal reasoning).
 Dependencies: core/teaching_core.md, core/authoring_rules.md, core/math_gates.md, procedures/authoring/adaptive-engine.md, procedures/sourcing/source-fidelity.md.
-Decision Rules: Preserve verified source sequence; apply the 3-tier prerequisite rule and 12 teaching layers in core/teaching_core.md inline before dependent notation, and use > [!note]- 📐 Understand this formula per core/math_gates.md; merge redundant sections cleanly without fabricating missing pages.
+Decision Rules: Preserve verified source sequence; apply the 3-tier prerequisite rule and progressive teaching flow in core/teaching_core.md inline before dependent notation, and use > [!example]- Understand this formula step by step per core/math_gates.md; merge redundant sections cleanly without fabricating missing pages.
 Failure Handling: Label partial access explicitly and mark unsupported claims [UNVERIFIED]; omit unused optional templates before publishing.
 Validation: [verification-checklist.md](../../procedures/review/verification-checklist.md) (`M2` study-notes rules).
 -->
@@ -42,7 +42,7 @@ Validation: [verification-checklist.md](../../procedures/review/verification-che
 
 Repeat `### 2.<k> <Subtopic Title>` in verified source order using **short, crisp single-idea paragraphs (1–3 sentences)** separated by tiny concrete tables, explicit symbol disambiguation, and strategic visuals ([teaching_core.md](../../../core/teaching_core.md)):
 - Open each unfamiliar subtopic with a concrete tiny table or numerical scenario before defining abstract terms, and insert concise `[Educational Addition — Prerequisite Bridge]` foundations (value tables, rules, or symbol-clash notes) inline right before dependent notation.
-- Progress from **simple scalar case → multi-component sum/table → general compact form** whenever equations appear; break core formulas into parts (`Part | Purpose`), test negative/zero/positive/limit cases, pair every `$$...$$` with `> [!note]- 📐 Understand this formula`, and decode needed visuals via [representations.md](../../procedures/authoring/representations.md).
+- Progress from **simple scalar case → multi-component sum/table → general compact form** whenever equations appear; break core formulas into parts (`Part | Purpose`), test negative/zero/positive/limit cases, pair every top-level displayed `$$...$$` with `> [!example]- Understand this formula step by step`, and decode needed visuals via [representations.md](../../procedures/authoring/representations.md) (respecting source-only limits).
 - Include explicit **"Why simpler approach X fails here"** and **"What this does NOT assume"** clarifications where misconceptions arise, plus a worked example with intermediate arithmetic and a focused check.
 
 ## 3. How do I carry out the method or solve a problem? (Procedures, Reasoning & Worked Problems)

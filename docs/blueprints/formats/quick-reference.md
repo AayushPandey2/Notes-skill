@@ -5,7 +5,7 @@ Activation Trigger: Explicit request for "cheat sheet", "quick reference", "form
 Non-activation: Never select M3 when the learner asks for deep explanation or explicitly negates a cheat sheet.
 Inputs: Verified sibling notes or concise authoritative definitions, formulas with units/conditions, and common exam/operational traps.
 Dependencies: router.md, core/authoring_rules.md, core/math_gates.md; variants formula-sheet.md, syntax-reference.md, command-reference.md, atomic-card.md.
-Decision Rules: Default body <=350 words and bullets <=20 words; omit equations cleanly at math_level 0.
+Decision Rules: Default body <=350 words and bullets <=20 words; omit equations cleanly under the Conceptual math profile (core/math_gates.md); exempt from 3-file companion bundle generation unless explicitly requested.
 Failure Handling: Never sacrifice essential domain restrictions or symbol definitions just to compress lines.
 Validation: [verification-checklist.md](../../procedures/review/verification-checklist.md) (`M3` quick-reference rules).
 -->
@@ -13,7 +13,7 @@ Validation: [verification-checklist.md](../../procedures/review/verification-che
 # M3 — Quick Reference & Rapid-Recall Cheat Sheet
 
 - **Hard Caps (Default Cheat Sheet):** Total Markdown body **<=350 words**; ordinary bullets **<=20 words** each; preserve every symbol definition, domain restriction, and version caveat.
-- **Placement & Header:** Save to `Cheatsheets/<topic-slug>-CHEAT-SHEET.md` with line-1 YAML Properties + `# <nn>. <Subtopic Title> — Cheat Sheet`.
+- **Placement & Header:** Save inside `<Configured Target>/<Topic>/` when part of a topic bundle, or `Cheatsheets/<topic-slug>-CHEAT-SHEET.md` only when explicitly requested as a standalone cross-topic sheet ([properties-policy.md](../../properties/properties-policy.md)), with line-1 Standard Obsidian Properties YAML + `# <nn>. <Subtopic Title> — Cheat Sheet`. Omit TOC and do not generate companion labs/cheatsheets.
 
 ## 1. What are the core equations and invariants at a glance? (Formulas & Complexity)
 

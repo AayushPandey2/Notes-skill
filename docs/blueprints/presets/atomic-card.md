@@ -12,11 +12,11 @@ Validation: [verification-checklist.md](../../procedures/review/verification-che
 
 # Single-Concept Transcludable Knowledge Building Block
 
-- **Placement & Header:** Save to `Atomic Notes/<Canonical Concept Title>.md` with line-1 YAML + `# <Canonical Concept Title>` (strictly **<150 words** total Markdown body).
+- **Placement & Header:** Save inside `<Configured Target>/<Topic>/` when part of a topic collection, or to `Atomic Notes/<Canonical Concept Title>.md` only when explicitly requested as a standalone card ([properties-policy.md](../../properties/properties-policy.md)), with line-1 Standard Obsidian Properties YAML + `# <Canonical Concept Title>` (strictly **<150 words** total Markdown body; omit TOC and never trigger companion lab/cheatsheet generation).
 
 ## What is this concept and its governing claim?
 
-`2–3` high-precision sentences defining the exact concept plus its governing relation (`$$...$$` only if `math_level >= 1`).
+`2–3` high-precision sentences defining the exact concept plus its governing relation (`$$...$$` only when the concept's math profile in [math_gates.md](../../../core/math_gates.md) warrants an equation).
 
 ## What does a tiny concrete example look like?
 

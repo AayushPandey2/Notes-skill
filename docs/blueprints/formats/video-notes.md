@@ -33,7 +33,7 @@ Separate three categories internally and render them naturally:
 
 ## 4. Multiple Downloaded Web Images (Primary Visuals)
 
-Instead of capturing video frames, download **at least 4–5 complementary raster web images** (`.png`, `.jpg`, `.webp`) that directly illustrate the concepts, architectures, equations, plots, or apparatus taught in the video, distributed across the major topics (e.g., `architecture overview → mechanism/function plot → training/diagnostic example`), saved locally under `assets/scriptorium/<video-id>/<descriptive-name>.png`.
+Instead of capturing video frames, follow [representations.md](../../procedures/authoring/representations.md) to download **relevant complementary raster web images** (typically 3–5 for rich visual/technical lectures, fewer for purely verbal/symbolic talks; `.png`, `.jpg`, `.webp`) that directly illustrate the concepts, architectures, equations, plots, or apparatus taught in the video, saved locally under `assets/scriptorium/<video-id>/<descriptive-name>.png` (disabled under `strict` source mode).
 
 Follow [representations.md](../../procedures/authoring/representations.md) for every image: check source and reuse rights, download locally, inspect each saved file (`read_file` or viewer) before writing around it, embed the local path, add caption + source attribution (clearly identifying it as a downloaded reference image supporting the video), and teach directly around each image with **Set question → Show → Decode → Trace → Connect**. Never use Mermaid, ASCII graphs, or SVGs.
 

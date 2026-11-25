@@ -10,7 +10,7 @@ Strip this block before emission.
 
 # M7 — Synthesis, Cross-Topic Comparison & Revision
 
-- **Header Block**: 5-key YAML frontmatter + `# <nn>. <Topic> — Synthesis & Revision`.
+- **Header Block**: Standard Obsidian Properties YAML (`topic`, `tags`, `master_topic`, `domain`, `note_type: synthesis-revision`) per [properties-policy.md](../../properties/properties-policy.md) + `# <nn>. <Topic> — Synthesis & Revision`.
 - **Core Rule**: M7 organizes, contrasts, and consolidates what has been learned across concepts or sources—never a shallow truncation of M1 and never a vehicle for inventing unsupported claims.
 
 ## 1. Executive Synthesis & Conceptual Relationships
@@ -21,7 +21,7 @@ Strip this block before emission.
 ## 2. Core Comparisons, Distinctions & Key Formulas
 
 - Explain causal trade-offs and conditions *before* summarizing in the multi-axis comparison table under equivalent assumptions (`Feature | Candidate A | Candidate B | Governing Trade-Off`).
-- **Key Formulas & Applicability Conditions** *(when quantitative)*: Formula, brief symbol meanings, assumptions, and wikilink back to full Layer E/F derivations; review that conditions remain intact.
+- **Key Formulas & Applicability Conditions** *(when quantitative)*: Formula, brief symbol meanings, assumptions, and wikilink back to full derivations in `M1`/`M2`; review that conditions remain intact.
 
 ## 3. Critical Pitfalls, Misconceptions & Quick Reference
 
