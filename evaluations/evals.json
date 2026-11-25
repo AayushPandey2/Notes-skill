@@ -77,6 +77,17 @@
         "Updates ~/.scriptorium-config.json directly without creating a helper script",
         "Reports saved vault_path, notes_folder, and notes_path from ~/.scriptorium-config.json"
       ]
+    },
+    {
+      "id": 8,
+      "prompt": "/scribe-notes Lasso Regression",
+      "expected_output": "Generates a 3-file bundle where the companion lab uses the lean implementation-focused format (zero obsolete chapters), 4 comparable ML tracks (Python+NumPy, Python library, Rust from scratch, Rust Linfa/SmartCore), '> [!example]- Understand this implementation: mathematics, code, and numerical dry run' (A-G) beneath every implementation, honest optimizer naming, and 'Source and static review only; not compiled or executed here.'",
+      "files": [],
+      "expectations": [
+        "Companion ML lab omits standalone metadata inventories, repeated theory, general experiments, 12-step workflows, quizzes, and summaries",
+        "Includes 4 aligned ML tracks with explicit objective-scaling conversions and actual optimizer/solver explanations",
+        "Places '> [!example]- Understand this implementation: mathematics, code, and numerical dry run' (A-G) directly beneath every implementation and labels code 'Source and static review only; not compiled or executed here.'"
+      ]
     }
   ]
 }

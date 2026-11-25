@@ -1,21 +1,60 @@
-# Companion experimental lab
+# Companion Implementation Lab Contract
 
-For each newly generated non-video content note, create or update a **3-file topic bundle**: the content note (`<note stem>.md`), its sibling `<note stem> - Experimental Lab.md`, and its sibling `<note stem> - Cheatsheet & Interview Q&A.md` ([cheatsheet-interview.md](cheatsheet-interview.md)). Exclude `/scribe-ytnotes` video notes, playlist indexes, MOCs, labs, cheatsheet packs, and internal workflow documents; do not create companions retroactively across a vault. Link parent note, lab, and cheatsheet/interview pack reciprocally. Use the active metadata profile without adding keys, and preserve the parent's notation and source limits.
+For each newly generated non-video content note, create or update a **3-file topic bundle**: the content note (`<note stem>.md`), its sibling `<note stem> - Experimental Lab.md`, and its sibling `<note stem> - Cheatsheet & Interview Q&A.md` ([cheatsheet-interview.md](cheatsheet-interview.md)). Exclude `/scribe-ytnotes` video notes, playlist indexes, MOCs, labs, cheatsheet packs, and internal workflow documents; do not create companions retroactively across a vault. Link all three files reciprocally, share the active YAML profile, and keep definitions, symbols, datasets, assumptions, and conventions strictly consistent with the parent note.
 
-Choose **one** template from the practical learning objective, not a keyword. Use [Machine Learning](../../blueprints/investigations/machine-learning.md) for data, fitting, validation, and inference; [Deep Learning](../../blueprints/investigations/deep-learning.md) for tensors, architectures, gradients, and training dynamics; [Coding](../../blueprints/investigations/coding.md) for programming, algorithms, data structures, and software engineering; [Mathematics](../../blueprints/investigations/mathematics.md) for proof, derivation, and counterexample; [Physics](../../blueprints/investigations/physics.md) for physical models, measurements, and uncertainty; [Chemistry](../../blueprints/investigations/chemistry.md) for chemical systems, reactions, and evidence; or [General](../../blueprints/investigations/general.md) for another investigation. For an interdisciplinary objective, select the primary structure and incorporate relevant material inside it.
+## Lean Implementation-Focused Structure
 
-## Opening & Structure Rules
+Replace long multi-chapter experimental labs with a focused, implementation-first document. **Do not** include standalone sections for:
 
-- **No redundant opening inventory:** Keep the title, YAML frontmatter, and parent-note navigation link. **Do not** emit visible opening metadata dumps (`Level`, `Estimated prerequisites`, `Implementation languages`, `Libraries and tools`, `Practical objective`, `Experiment objective`, `Learning outcomes`, etc.) at the top of a generated lab, either as bullets or inside a callout. Begin instead with a short, connected introduction explaining what the learner will investigate and why it matters.
-- **Introduce context at the point of need:** Place essential prerequisite reminders immediately before first use, dependencies/setup beside the relevant implementation, experimental questions inside the investigation section, and practical purpose inside the introductory narrative.
-- **Compact, meaningful sections:** Organize around substantial, coherent sections rather than tiny single-sentence subsections. Adapt the shared progression: **Understand → Model or derive → Construct or investigate → Observe → Explain → Compare → Diagnose → Verify → Apply**.
+- Opening metadata inventories (`Level`, `Prerequisites`, `Languages`, `Libraries`, `Objectives`).
+- Repeated theory chapters (theory lives in `<note stem>.md`).
+- Historical background or general experimental investigations.
+- Professional-workflow chapters (e.g., 12-step project walkthroughs or hyperparameter sweeps).
+- Quiz and challenge chapters, learning roadmaps, repository-structure recommendations, or repetitive final summaries.
 
-## Code, Math, Dataset & Technical Standards
+Do not recreate removed chapters under different names. Retain **only**:
 
-- **Dataset & unit consistency:** Keep one consistent primary dataset, unit system, and notation across problem design, math, code, tables, and interpretation (e.g., `p` for feature count vs `k` for polynomial degree). If a second illustrative example is introduced, explain the transition explicitly. Never invent unsupported fitted predictions or mix synthetic cosine targets with housing-price claims.
-- **Brief visible summaries + collapsed walkthroughs:** Keep the main reading path concise. Beneath each important code block, give a brief visible interpretation and place a detailed collapsed walkthrough (`> [!example]- Understand this implementation line by line`, quoting every line including blank lines with `>`) covering meaningful lines/groups in execution order: purpose, syntax/identifiers, types/structures, inputs, internal operation, shapes, mathematical correspondence, output/state change, typical mistakes, and connection to the next step. Do not reduce a long program to four broad bullets.
-- **Mathematical bridge & folds:** Give every displayed `$$...$$` equation one immediately following `> [!note]- 📐 Understand this formula` callout containing pronunciation, symbols, dimensions, assumptions, and interpretation—do not repeat them as separate visible sections or add unbridged advanced formalism (such as Dirac delta notation) in beginner bridges. Establish one canonical worked calculation and connect other sections to it rather than repeating it.
-- **Educational code without local execution:** For educational code inside Markdown, **do not** inspect the local environment, install dependencies, create project files, compile, or execute. Missing local Cargo, compiler, or dependency access is never a reason to omit required code. Use official, version-specific documentation (`docs.rs` / `crates.io` / official docs) to verify compatible `Cargo.toml` dependencies, imports, types, fitting, prediction, and error handling—never invent APIs or mix incompatible versions. Label documentation-checked unexecuted code once (**"Documentation-checked example; not compiled or executed here."** or `Status: static review (not executed)`), describe expected behavior without fabricating outputs, and report a limitation only if documentation itself is inaccessible.
-- **Honest verification & technical accuracy:** Compare candidate and baseline on the **same** partition; use validation for selection and untouched test data once at the end. Explain pipeline boundaries accurately (a pipeline prevents leakage only when the caller fits it on training data alone). Validate feature counts explicitly rather than treating `np.atleast_2d` as a universal shape fix. Qualify coefficient magnitudes under correlated bases, treat train–validation gaps as generalization signals rather than proof of noise memorization, and report small-test-set uncertainty honestly.
+1. **Title and parent-note navigation:** Line-1 YAML frontmatter, `# <Topic> — Implementation Lab`, and a concise navigation callout linking `[[<Parent Note>]]` and `[[<Parent Note> - Cheatsheet & Interview Q&A]]`.
+2. **Brief shared problem and I/O contract:** State the central task, dataset/inputs, target, objective scaling, intercept/regularization conventions, prediction meaning, and comparison criteria shared across the tracks.
+3. **Relevant implementation tracks:**
+   - **Machine Learning:** Always provide **4 comparable tracks** (Python + NumPy, Python libraries, Rust from scratch, Rust using Linfa or SmartCore) per [machine-learning.md](../../blueprints/investigations/machine-learning.md).
+   - **Other domains:** Choose only domain-appropriate realizations per `deep-learning.md`, `coding.md`, `mathematics.md`, `physics.md`, `chemistry.md`, or `general.md`. Never force four programming tracks, gradient descent, or ML libraries onto unrelated subjects.
+4. **Setup beside each track:** Show necessary dependencies, versions, or `Cargo.toml` manifests as Markdown learning material directly beside each track, with a proportionate collapsed explanation beneath supporting blocks.
+5. **Complete code:** Place complete implementations inside properly formatted Markdown code fences (never create Python files, Rust projects, scripts, downloaders, builders, or validators).
+6. **Immediately following collapsed explanations:** Directly beneath every implementation's code block, include:
 
-Plan local visuals inside the lab itself using the six-phase narrative in [representations.md](representations.md), keeping external reference figures distinct from experimental results of the current lab. Review the saved note and assets with [verification-checklist.md](../review/verification-checklist.md).
+```markdown
+> [!example]- Understand this implementation: mathematics, code, and numerical dry run
+> ...
+```
+
+7. **Brief, accurate verification status:** End every lab containing code with:
+
+**`Source and static review only; not compiled or executed here.`**
+
+Integrate essential examples, comparisons, limitations, and checks directly into the collapsed explanations rather than separate chapters.
+
+## Collapsed Implementation Walkthrough Standard (A–G)
+
+Keep the full implementation visible before its walkthrough. Inside `> [!example]- Understand this implementation: mathematics, code, and numerical dry run`, quote **every** line—including blank lines—with `>` so Obsidian keeps the entire walkthrough inside one collapsed callout. Supporting blocks (imports, `pip install`, `Cargo.toml`) receive a proportionate collapsed explanation directly beneath them rather than repeating an entire long walkthrough.
+
+Every full implementation walkthrough must include sections **A through G**:
+
+- **A. Understand the inputs and state:** Define inputs, targets, shapes, types, units, assumptions, parameters, and settings using one consistent miniature dataset. Explain why inputs are prepared (centered, standardized, initialized, validated) and how original interpretations (such as intercept recovery) are recovered.
+- **B. Understand the mathematical mechanism:** Establish the algorithmic distinction (what this method changes compared with an alternative and why it matters), explicitly define objective scaling (SSE vs MSE vs half-MSE, normalized vs unnormalized penalties), derive or justify operations and library parameter conversions from that objective, and unpack intermediate quantities (`rho`, partial residual, gradient, threshold) before use.
+- **C. Follow the implementation in order:** For every meaningful line or tightly related group in execution order: (1) quote the expression, (2) explain its purpose, (3) explain unfamiliar syntax, (4) identify entering values and shapes, (5) explain the internal operation, (6) show the output or state change (explicitly tracking sequential vs simultaneous updates), and (7) connect it to the next operation.
+- **D. Complete a numerical dry run:** Trace one full meaningful operation with actual numbers (showing products, sums, norms, thresholds, updated values, and intercept recovery, while qualifying special dataset properties such as orthogonal features):
+  - *Gradient-based:* **Initialization → predictions → errors → gradient → update → new state → interpretation.**
+  - *Coordinate descent:* **Current state → partial residual → coordinate statistic → threshold → updated coordinate → next coordinate → completed sweep.**
+  - *Noniterative method:* Trace its actual construction or inference process.
+- **E. Interpret the output:** Explain returned values, parameter meanings (e.g., why a coefficient becomes zero or a probability changes), predictions, losses, and metrics, distinguishing training behavior from evidence of generalization and stating what the result does not prove.
+- **F. Explain failure cases:** Cover invalid inputs, shape mistakes, unstable arithmetic, incorrect operators, and violated assumptions using: **Problematic approach → failure mechanism → correction → explanation.**
+- **G. Reconstruct the core logic:** Finish with a short plain-language sequence enabling the learner to explain the implementation independently.
+
+## Instruction-Only & Static Correctness Review Gate
+
+Never execute code, compile Rust, run Cargo, install dependencies, probe local runtimes, or create executable scripts/projects. Review every displayed implementation statically before finalizing:
+
+1. **Operators:** Check every `*` vs `@`, `**` vs `^`, matrix vs element-wise operations, integer vs floating-point division, and logical vs bitwise operators based on types, shapes, and mathematics.
+2. **Gradients, Updates & Objective Scaling:** Check signs, averaging factors, transposes, bias updates, penalty gradients, threshold scaling, update ordering, stopping criteria, zero-denominator cases, and library hyperparameter conversions (`C`, `alpha`, `penalty`). Choose optimizers honestly (never force gradient descent onto coordinate-descent, proximal, tree, nearest-neighbor, or quasi-Newton methods).
+3. **Implementation Completeness:** Check syntax, indentation, imports, defined variables, consistent naming, input/output shapes, official versioned API consistency, dependencies, bounds, empty inputs, and numerical guards using hand calculations where feasible. Never copy `"Expected output"` from unexecuted references as verified output.

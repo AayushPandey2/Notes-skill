@@ -18,7 +18,7 @@ Never inject a `deepstudy-master` tag, any `type/<note-type>` tag, or internal r
 
 ## Rendering
 
-- **Math & Callouts:** Use native `$...$` and separate-line `$$` delimiters without code inside math. Quote every line of a callout, including internal blank lines (`>`), because an unquoted blank ends the block.
+- **Math & Callouts:** Use native `$...$` and separate-line `$$` delimiters without code inside math. Quote every line of a callout, including internal blank lines (`>`), because an unquoted blank ends the block. In companion implementation labs ([experimental-lab.md](../docs/procedures/authoring/experimental-lab.md)), place detailed **A–G** walkthroughs inside `> [!example]- Understand this implementation: mathematics, code, and numerical dry run` directly beneath every implementation's code block (and proportionate collapsed explanations beneath supporting setup blocks).
 - **Tables:** Escape literal pipes inside Markdown tables (`[[Target\|Label]]` and inside inline math).
 - **Visuals:** Follow [representations.md](../docs/procedures/authoring/representations.md): include **at least 4–5 relevant downloaded & inspected local web raster images** per generated content note and teach directly around each figure. **Never use Mermaid (`mermaid` blocks) or ASCII art/diagrams for graphs, charts, or flows.** Count an external raster image only after source check, local download and inspection, embed, and saved-note target check.
 - **Publish Hygiene:** Use `**Confusion** :: question` on its own line for Dataview only when genuine. Strip all scaffold comments, `<!-- SECTION: S* -->` markers, authoring notes, unused optional sections, and placeholder rows; renumber remaining headings, keep Table of Contents entries as plain numbered text with zero links, and repair any body internal anchors.
@@ -26,7 +26,7 @@ Never inject a `deepstudy-master` tag, any `type/<note-type>` tag, or internal r
 ## Evidence
 
 - Read the supporting passage before citing; attach locators (`page`, `section`, `timestamp`) near claims. Never cite bare root-domain homepages (`[UNVERIFIED]` if no verified deep link exists).
-- Separate observed source statements, author inference, expected behavior, and observed execution. When code in a Markdown fence has not been executed, label it `Status: static review (not executed)`—never fabricate execution outputs or runtime parity.
+- Separate observed source statements, author inference, expected behavior, and observed execution. Never execute educational code or inspect local runtimes; label unexecuted code `Source and static review only; not compiled or executed here.`—never fabricate execution outputs or runtime parity.
 
 ## Cohesion
 

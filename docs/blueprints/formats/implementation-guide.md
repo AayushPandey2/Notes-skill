@@ -5,8 +5,8 @@ Activation Trigger: /scribe-notes requests to implement from scratch, build/debu
 Non-activation: Deep conceptual theory with minor snippets -> M1; syntax/API table -> M3/syntax_reference.
 Inputs: Problem/system spec, stated bounds, chosen language/stack, test fixtures, and runtime verification status.
 Dependencies: router.md, core/teaching_core.md, core/authoring_rules.md, core/math_gates.md, properties/properties-policy.md.
-Decision Rules: Lock educational code to the user-specified stack; explain a simpler baseline when it clarifies the bottleneck. Claim observed execution only when an available tool actually ran the code.
-Failure Handling: Tag missing constraints [ASSUMED / UNVERIFIED]; label unexecuted code 'static verification (not executed)'; never fabricate runtime metrics.
+Decision Rules: Lock educational code to the user-specified stack; explain a simpler baseline when it clarifies the bottleneck. Never execute code or inspect local runtimes.
+Failure Handling: Tag missing constraints [ASSUMED / UNVERIFIED]; label code 'Source and static review only; not compiled or executed here.'; never fabricate runtime metrics.
 Validation: [verification-checklist.md](../../procedures/review/verification-checklist.md) (`M5` implementation rules).
 -->
 
@@ -32,7 +32,7 @@ Validation: [verification-checklist.md](../../procedures/review/verification-che
 
 ## 4. How do I implement and stress-test the optimal solution? (Implementation & Edge-Case Suite)
 
-- **Runnable Optimal Implementation:** Complete self-contained code with explicit equation-to-variable mapping and test driver. In statically typed/systems languages, audit numeric bit-widths, overflow bounds, and iterator/memory safety. Label unexecuted code `Status: static review (not executed)` unless a native tool actually executed it.
+- **Runnable Optimal Implementation:** Complete self-contained code with explicit equation-to-variable mapping and test driver. In statically typed/systems languages, audit numeric bit-widths, overflow bounds, and iterator/memory safety. Label code `Source and static review only; not compiled or executed here.` without running code on the user's device.
 - **Edge-Case Test Matrix (`4–5` Cases):** Assertions covering minimal/empty, duplicate/degenerate, adversarial/monotonic, extreme boundary, and dry-run fixture.
 
 ## 5. How does this pattern transfer to harder variations? (Related Problems, Twists & Reflections)

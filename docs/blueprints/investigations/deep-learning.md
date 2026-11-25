@@ -1,98 +1,29 @@
-# Deep Learning experimental lab
+# Deep Learning Implementation Lab Blueprint
 
-Use for tensor computation, architecture, gradients, and training dynamics. Keep this hierarchy and opening rules from [the lab contract](../../procedures/authoring/experimental-lab.md). Each subsection needs an explained example, observable deliverable, and visual only where it teaches; avoid invented training runs. Retain an inapplicable heading with a specific reason. Rust is optional.
+Use this lean, implementation-focused blueprint for Deep Learning companion labs (`<note stem> - Experimental Lab.md`). The [shared lab contract](../../procedures/authoring/experimental-lab.md) governs structure, collapsed **A–G** walkthroughs beneath every implementation, zero local execution, and static correctness review.
 
-The section prompts below define purpose and content. Use this companion check for a concrete example, evidence, visual opportunity, and common mistake at each section; “always” means the section has a role even in a paper investigation. Retain a heading and explain a specific missing dependency if no genuine artifact can be produced.
+**Do not** include standalone chapters for opening metadata inventories, repeated theory, historical background, separate training-dynamics experiments, 11-step workflows, quizzes/challenges, or repetitive summaries. **Do not** force 4-language Rust tracks onto Deep Learning unless the user explicitly requests Rust.
 
-| Section | Example and evidence/deliverable | Visual opportunity | Avoid; genuine limit |
-|---|---|---|---|
-| 01 | Classify images; state target and measurable outcome | Task-to-output diagram | Avoid claiming accuracy before measurement; always |
-| 02 | `(batch, channel, height, width)` shape table and split record | Labeled tensor axes | Avoid swapping channel order; sequence axes matter only for sequence tasks |
-| 03 | Two-input forward trace and scalar loss | Architecture and activation curve | Avoid unexplained matrix dimensions; a loss needs a defined target |
-| 04 | Small affine layer with calculated intermediate values | Forward-operation trace | Avoid implementing a full framework; code may be replaced by manual arithmetic if no execution tool |
-| 05 | Derivative of one weight and hand update | Gradient arrows | Avoid conflating derivative with output; full backprop only for the chosen small example |
-| 06 | Complete training loop and shape checks | Batch-to-update flow | Avoid missing `zero_grad` or eval mode; framework execution remains unverified until run |
-| 07 | Controlled learning-rate comparison table | Actual loss curves | Avoid invented curves; a planned trial stays unfilled |
-| 08 | Train/review/test and checkpoint plan | Data and model lifecycle | Avoid selecting checkpoints on test data; checkpoint artifacts require actual training |
-| 09 | Per-class or per-case error record | Verified confusion matrix or examples | Avoid one aggregate score hiding failures; class metrics need class targets |
-| 10 | NaN or shape-error diagnostic walkthrough | Failure trace | Avoid generic warnings; a specific failure may be illustrative if labeled |
-| 11 | Batch-memory estimate with assumptions | Memory components diagram | Avoid fabricated throughput; GPU results need measured hardware |
-| 12 | Manual vs framework output on same input | Architecture comparison | Avoid comparing unlike losses or data; a second architecture needs a learning purpose |
-| 13 | Shape, gradient, and controlled-change tasks | Diagram to annotate | Avoid tasks requiring unavailable compute; always |
-| 14 | Predict an update and diagnose one trace | Trace table | Avoid API trivia; always |
-| 15 | State mechanism, evidence, and limits | Usually no new image | Avoid converting planned experiments into findings; always |
+## Required Lab Structure
 
-## LAB SECTION 01 — INTRODUCTION AND LEARNING OBJECTIVES
-### Task and success
-State task, targets, output meaning, success criterion, prerequisites, and smallest useful model; show a workflow map, not an unearned performance claim.
-## LAB SECTION 02 — TASK, DATA, AND TENSOR DESIGN
-### Dimensions and boundaries
-Define train/review/test boundaries, batch, sequence, channel, feature, and spatial axes where relevant. Provide a shape table from input to target and a representative tensor; avoid ambiguous axis order.
-## LAB SECTION 03 — MATHEMATICAL AND COMPUTATIONAL FOUNDATIONS
-### Forward computation and loss
-Explain operation shapes, activations, loss construction, initialization assumptions, and one numeric forward trace. Give formula folds and an inspected local web design/tensor-flow image as appropriate (never Mermaid or ASCII); avoid confusing forward values with gradients.
-## IMPLEMENTATION TRACK A — MECHANISM FROM FIRST PRINCIPLES
-Choose the smallest operation that reveals differentiation, not a whole framework.
-## LAB SECTION 04 — FORWARD PASS AND CORE OPERATIONS
-### Trace an example
-Show complete educational code or a manual computation, intermediate shapes and values, and output interpretation. State execution status and numerical precision.
-## LAB SECTION 05 — GRADIENTS, BACKPROPAGATION, AND PARAMETER UPDATES
-### Chain rule and update
-Derive one small gradient, trace its flow and parameter update, distinguish differentiation from forward computation, and check sign and scale. Use a gradient-flow figure; avoid claiming a full model is manually differentiated.
-## IMPLEMENTATION TRACK B — FRAMEWORK IMPLEMENTATION
-Explain which operations autograd supplies.
-## LAB SECTION 06 — MODEL MODULES, AUTOGRAD, AND TRAINING LOOP
-### Runnable structure
-Show version-checked module, batch loop, loss, backward pass, optimizer step, and gradient clearing; explain accumulation and train/eval modes. Include shape checks and status. Avoid silently applying inference behavior during training.
-## EXPERIMENTAL INVESTIGATION
-Separate planned trials from observed evidence.
-## LAB SECTION 07 — TRAINING DYNAMICS AND CONTROLLED EXPERIMENTS
-### Variables and curves
-Vary learning rate, initialization, regularization, or batch size one at a time. Record controls, checkpoints, loss/metric tables and actual plots if available; do not sketch results as observations.
-## PROFESSIONAL IMPLEMENTATION TRACK
-Carry a bounded task from dataset to new-input prediction.
-## LAB SECTION 08 — END-TO-END DEEP LEARNING WORKFLOW
-### Part A — Complete Real-World Deep Learning Project (12 Steps)
-Replace toy 2-layer arrays with a complete, realistic end-to-end workflow on a standard benchmark or domain dataset (e.g., Fashion-MNIST, CIFAR-10, or a realistic multi-feature tabular dataset). For **every** applicable step, provide: (1) prose explaining purpose and design choice, (2) executable Markdown code block (`Status: static review (not executed)` if unexecuted), (3) collapsed `> [!example]- Step-by-step: ...` walkthrough, (4) expected output/table interpretation without fabricating unrun metrics, and (5) transition to the next step:
-1. **Import Libraries & Set Reproducibility:** Group imports (`torch` / framework, `DataLoader`, transforms, loss/optimizer, metrics) and document device selection and seed setup.
-2. **Load Dataset & Align Target Labels:** Load dataset/tensors, state exact sample count, input tensor shape `(N, C, H, W)` or `(N, F)`, and `Label | Meaning` table (including explicit class remapping when a specific positive class is targeted).
-3. **Inspect Samples, Shapes & Class Balance:** Check tensor `shape`, `dtype`, value ranges (`min`/`max`), missing/corrupt items, and class counts (`Function | Purpose` table).
-4. **Partition Dataset (Train / Validation / Test):** Split cleanly with exact sample counts and a `Parameter | Meaning` table (`test_size` / `val_split`, `random_state` / generator seed, `stratify`), keeping `test` untouched until final evaluation.
-5. **Build Leakage-Free Preprocessing & `DataLoader` Pipeline:** Compute normalization statistics (`mean`, `std`) on the **training split only**, attach training-only augmentations, and wrap batches cleanly (`x' = (x - \mu) / s`).
-6. **Define Architecture & Trace Forward/Backward Training Loop:** Walk step by step through what `.train()` + one epoch does internally (zero gradients → forward pass → compute loss → `.backward()` autograd → gradient clipping if enabled → `optimizer.step()` → track batch losses).
-7. **Logits vs. Probabilities vs. Hard Predictions:** Compare raw `logits`, `sigmoid`/`softmax` probabilities, and `argmax`/thresholded classes in a `Stage | Example output` table, noting `model.eval()` and `torch.no_grad()`.
-8. **Evaluate Metrics by Required Input Type:** Separate hard-label metrics (`Accuracy`, `Precision`, `Recall`, `F1-score`, `Confusion Matrix`, `Classification Report`) from probability/logit metrics (`Cross-Entropy Loss`, `ROC-AUC`, `Calibration / ECE`) on the **same** held-out split against a baseline.
-9. **Plot Confusion Matrix:** Show confusion-matrix visualization with domain class labels and interpret per-class failure modes.
-10. **Plot Diagnostic Curves (Loss / ROC / Calibration):** Show ROC or training-vs-validation loss diagnostics without fabricating unexecuted plot values.
-11. **Inspect Learned Parameters & Gradient Health:** Examine `named_parameters()`, layer weight norms, parameter counts, and gradient norms (`Attribute/Method | Meaning` table).
-12. **Visualize Errors / Saliency & Causal Caveat:** Inspect misclassified examples or feature/patch sensitivities and explicitly state that high activation or weight magnitude shows learned correlation, **not** causal mechanism.
+### Header & Navigation
+- Line-1 YAML frontmatter matching the parent note's profile.
+- `# <Topic> — Implementation Lab`
+- `> [!abstract] Parent Note & Companion Pack` linking `[[<Parent Note>]]` and `[[<Parent Note> - Cheatsheet & Interview Q&A]]`.
 
-### Part B — Hyperparameters, Optimizers & Validation Tuning
-- **Parameters vs. Hyperparameters Table:** Contrast trainable weights/biases/BatchNorm running stats against configured hyperparameters (`lr`, `weight_decay`, `optimizer`, `batch_size`, `epochs`, `dropout`, `scheduler`, `grad_clip`).
-- **Learning Rate ($\eta$), Weight Decay ($\lambda$) & Dropout:** Tables showing underfit/stable/divergent $\eta$ regimes, $L_2$/decoupled weight decay formula ($w \leftarrow (1 - \eta\lambda)w - \eta \nabla \mathcal{L}$), and dropout train-vs-eval scaling.
-- **Optimizer Comparison & Compatibility:** Table comparing `SGD` (with momentum), `Adam`, `AdamW`, and `RMSprop` on update rules, adaptive curvature/second-moment intuition, memory overhead, and regularization behavior (e.g., coupled $L_2$ vs. decoupled `AdamW`).
-- **Stopping, Scheduling & Imbalance Controls:** Explain `epochs`, `patience` (early stopping on validation loss), LR schedulers (`CosineAnnealingLR`, `ReduceLROnPlateau`), class-weighted `CrossEntropyLoss(weight=...)` / `pos_weight`, and `bias` toggles.
-- **Systematic Validation Tuning:** Show a structured validation sweep or $K$-fold CV setup with the CV average formula $S_{\text{CV}} = \frac{1}{K}\sum_{k=1}^{K} S_k$, exact total training-run count (`configs × folds + 1 final refit`), and explicit input-tensor shape checks at inference.
-## FINAL VALIDATION AND LEARNING
-Separate quality, reliability, and cost.
-## LAB SECTION 09 — EVALUATION AND ERROR ANALYSIS
-### Held-out evidence
-Define task-appropriate metrics, baselines, per-case errors, and limits; use an actual confusion matrix or example analysis only when data exists.
-## LAB SECTION 10 — NUMERICAL RELIABILITY AND DEBUGGING
-### Diagnose failures
-Check NaN/Inf, exploding or vanishing gradients, shape errors, loss/activation mismatches, forgotten gradient clearing, and overfitting; pair symptoms with concrete checks.
-## LAB SECTION 11 — EFFICIENCY AND RESOURCE TRADE-OFFS
-### Memory and compute
-Explain batch size, parameter/activation memory, precision, throughput, and measured versus estimated cost without fabricating benchmarks.
-## LAB SECTION 12 — IMPLEMENTATION AND ARCHITECTURE COMPARISON
-### Match assumptions
-Compare the small manual mechanism, framework model, and one justified architecture alternative on same inputs, outputs, and tradeoffs.
-## LAB SECTION 13 — PRACTICAL CHALLENGES
-### Tasks and checks
-Offer shape tracing, gradient checking, and one controlled training change with deliverables.
-## LAB SECTION 14 — FINAL LEARNING CHECKPOINT
-### Explain a failure
-Ask learners to predict shapes, explain a gradient update, and diagnose a training trace with answer guidance.
-## LAB SECTION 15 — FINAL SUMMARY
-### Transfer
-Summarize tensor flow, gradient flow, evidence, and limitations.
+### Shared Task & Tensor Contract
+Briefly define one coherent task across the tracks: tensor shapes (`(B, d_in) -> (B, d_out)`), `dtype`, forward computation, activation, loss scaling (e.g., logits-based cross-entropy vs manual sigmoid+BCE), parameter initialization, actual optimizer (`SGD+momentum`, `Adam`, `AdamW`), and equivalence boundaries.
+
+## Implementation Tracks
+
+Include the smallest meaningful tracks—typically **From-Scratch NumPy / Tensor** (explicit forward pass, manual chain-rule backprop, update) and **Framework (PyTorch / JAX)** (verified against official docs: module, loss, `zero_grad()`, `.backward()`, `optimizer.step()`, `.train()` vs `.eval()`).
+
+For each track:
+- `### [Implementation name]` + short rationale.
+- Setup/dependencies block + proportionate collapsed explanation.
+- Complete code block.
+- Immediately beneath it, `> [!example]- Understand this implementation: mathematics, code, and numerical dry run` covering **A–G** (inputs & tensor shapes, forward/backprop math & loss scaling, line-by-line execution order, a tiny batch forward/backward numerical dry run, output interpretation, failure cases like `NaN`/missing `zero_grad()`, and core-logic reconstruction).
+
+## Verification Status
+
+End with **`Source and static review only; not compiled or executed here.`**
