@@ -1,34 +1,49 @@
-# Mathematical Presentation & Precision Gates
+# Mathematical Inclusion, Depth & Presentation Policy
 
 ## Purpose
 
-Ensure every mathematical expression in Scriptorium theory notes is visually structured, progressively introduced, explained by **meaning**, and verified for exact terminology and arithmetic.
+Govern **whether, how deeply, and how** mathematics appears across Scriptorium outputs (`M1`–`M7`, video notes, and companion labs/cheatsheets) in one coherent, instruction-only policy. Use one shared standard with focused domain guidance—never append competing rules or assign one mathematical depth to an entire domain.
 
-## Activation Trigger & Inputs
+## 1. Objective-Driven Inclusion & Concept-Level Profiles
 
-- **Activate when:** `math_depth >= 1`, knowledge type is `mathematical` or `scientific`, master is `M4`, or any displayed `$$...$$` block appears.
-- **Dependencies:** [core/teaching_core.md](teaching_core.md), [adaptive-engine.md](../docs/procedures/authoring/adaptive-engine.md#selection-and-depth).
+Before drafting each concept, decide whether mathematics serves the learning objective: what the learner must understand or accomplish, whether a mathematical representation reveals something essential, whether math is required to calculate, derive, implement, compare, or verify, and what prerequisite bridge makes it accessible.
 
-## Execution Rules — Spacious, Visual & Consistent Math
+- **Use math when it improves precision or enables the intended reasoning.** Never add equations merely because a subject is technical, and never omit necessary math merely because the audience is a beginner (supply the missing bridge instead of replacing the mechanism with an analogy).
+- **Select depth per concept** using these internal planning profiles (planning decisions, **not** mandatory visible labels; different sections of one note may use different profiles):
 
-1. **Progressive Symbols & Native Delimiters:** Introduce symbols just in time as each equation enters (reserving the full Symbol Dictionary for the trailing Notation Reference). Use native `$...$` and separate-line `$$...$$` delimiters consistently with [authoring_rules.md](authoring_rules.md); never copy `\(...\)` or `\[...\]`.
-2. **Individual Subsections for Primary Metrics/Formulas:** Never compress multiple core metrics or formulas (such as Euclidean, Manhattan, Minkowski, and Chebyshev distances) into consecutive text-heavy bullets with inline math. Give each metric or core rule its own numbered subsection (`#### 5.1.1 ...`), display equation, geometric/visual intuition, concrete numerical example, and usage condition.
-3. **Keep Inline Math Short & Break Down Multi-Operator Equations:** Reserve `$...$` for short symbols (`$g_i$`, `$h_i$`, `$\lambda$`); move long fractions, summations, and substitutions into display `$$...$$` blocks. Do **not** use `\color{...}` or highlighting inside equations; when a complex equation combines multiple logical operations (e.g., $\arg\max$, $\sum$, indicator function), break its components down cleanly in a visible list or table beneath the equation.
-4. **Never Compress Multiple Equations or Derivations:**
-   - Introduce composite objectives with a high-level equation first, then present each component in its own display block.
-   - Never compress differentiation, setting to zero, and rearrangement into one single-line `\implies` chain; use separate labeled steps or multiline `$$ \begin{aligned} ... \end{aligned} $$` blocks with vertical `=` alignment and `\\[6pt]` spacing.
-5. **Consistent Equation-Emphasis Policy (No Arbitrary Boxing or Highlighting):**
-   - **Primary algorithm formulas** (including *both* uniform and weighted variants, or all peer update rules) → `\boxed{...}` (or `[!important]` callout).
-   - **Mathematical definitions** → standard `$$...$$` display equation.
-   - **Intermediate calculations** → multiline `aligned` steps.
-   - **Final numerical answers** → bold text (never `==highlight==` or `\color{...}`).
-6. **Meaning-First Visible Explanations (No Mechanical Formula Folds):**
-   - **Do not** attach `> [!note]- 📐 Understand this formula` or `"Read aloud"` transcriptions beneath every `$$...$$` block, and **never hide core derivations** inside collapsed callouts.
-   - Explain mathematical **meaning** visibly in crisp prose, using purposeful callouts (`[!info]`, `[!important]`, `[!example]`, `[!warning]`) selectively. Reserve collapsed callouts in theory notes strictly for optional extended proofs, nested checkpoint answers (`> > [!success]- Reveal Answer`), or advanced supplementary details.
-7. **Exact Terminology & Complete Worked Examples:**
-   - Maintain exact loss and algorithmic terminology (e.g., SSE vs. total half-squared-error loss, weighted vote proportions vs. calibrated probabilities).
-   - Carry the **same running dataset** through multi-stage calculations (`1. Compute → 2. Sort/Select → 3. Aggregate → 4. Result`) for *every* core task promised in the learning objectives, visually separating inputs from calculated outputs.
+| Profile | Appropriate treatment |
+|---|---|
+| **Conceptual** | No equations unless essential; teach through language, examples, and visuals. |
+| **Quantitative intuition** | Small calculations, proportions, counts, units, or numerical comparisons. |
+| **Working formulation** | Main equations, defined notation, interpretation, and a complete worked example. |
+| **Derivation and mechanism** | Justified transformations, intermediate steps, assumptions, and implementation mapping where relevant. |
+| **Formal reasoning** | Precise definitions, proofs, conditions, counterexamples, and generalization when required. |
 
-## Failure Handling & Review
+- **Choose the minimum depth that satisfies the objective.** Increase depth when the mechanism cannot be understood without it, the learner must implement the calculation, a transformation would otherwise be unexplained, a proof/derivation is requested, assumptions materially affect the conclusion, or numerical verification exposes a mistake. Keep detail lighter for recognition, orientation, or overviews. **Never** use equation counts or minimum derivation lengths as quality targets.
+- **Adapt to the topic, not just its domain:** ML optimization may need losses, gradients, and shapes, whereas an ML workflow overview may need only a diagram and concrete example; a mathematical theorem centers on definitions, assumptions, proof, and counterexamples; physics emphasizes governing laws, units, conditions, and limiting cases; chemistry uses quantitative relations where they explain the process; historical/conceptual topics use math only when it answers the actual question. Never force calculus into arithmetic or gradient descent into non-gradient methods.
 
-Locally repair compressed metric bullet lists, arbitrary `\boxed{}` usage, single-line derivations, heavy inline math, hidden core derivations, or missing worked examples before finalizing via [verification-checklist.md](../docs/procedures/review/verification-checklist.md).
+## 2. Explanatory Bridge & Collapsed Formula Walkthroughs
+
+Follow **Question → intuition → necessary quantities → mathematical statement → worked reasoning → interpretation → check**:
+
+1. **Before displaying any equation:** Explain the problem it solves, introduce essential terms, establish what the quantities represent, and state what the learner should expect the expression to do. Never open an unfamiliar concept with an unexplained equation, and keep the core explanation understandable before opening any fold.
+2. **Immediately beneath every displayed `$$...$$` block**, include a collapsed explanation (prefixing every interior line, including blank lines, with `>`). Never skip central algebraic transitions with `"rearranging gives"` or `"solving yields"`—keep the central transition visible in prose or `aligned` steps and place the full step-by-step algebra inside the formula fold. A bare displayed formula is never compliant merely because its symbols appear in a trailing notation table:
+
+```markdown
+> [!example]- Understand this formula step by step
+> ...
+```
+
+Cover the applicable items—**purpose, plain-language reading, symbols and indices, types/dimensions/units/domains, operations and order, assumptions, non-obvious transformations, numerical example or appropriate alternative, interpretation, and sanity check/limitations**—adapted to the formula (a proof statement needs no artificial numerical substitution; a dimensionless quantity needs no invented units). For derivations, explain each substantive transition without hiding unrelated formulas inside one block. Never repeat the same symbol dictionary or worked calculation across sections.
+
+## 3. Obsidian Rendering & Equation Readability
+
+- **Native delimiters only:** Use `$...$` for short inline symbols/simple relationships and separate-line `$$` delimiters (with blank lines before and after) for central equations, substantial calculations, matrices, piecewise definitions, and derivations. Never mix delimiter conventions, never use code fences for equations, never leave raw LaTeX commands (`\frac`, `\sum`, `\mathbb`) in prose, keep code identifiers in backticks, and never place raw LaTeX inside Mermaid labels.
+- **Readable formatting:** Use `aligned` with vertical `=` alignment and meaningful breaks for long derivations; use `cases` for genuine piecewise definitions; use clear matrix environments; write textual annotations with `\text{...}`; format units consistently; avoid excessive `\boxed{...}`, oversized expressions, `==highlight==`, or `\color{...}`, and avoid packing independent ideas into one display. Inside callouts, prefix every line—including blank lines and `$$` delimiters—with `>`. Avoid complex math inside Markdown tables, and escape literal pipes (`\|`).
+
+## 4. Notation Governance, Code Mapping & Reasoning Distinctions
+
+- **Notation hygiene:** Define symbols at or before first meaningful use and keep meanings stable. Distinguish sample indices from feature indices, scalars/vectors/matrices consistently, and estimates from exact quantities. State residual direction, keep units and objective scaling consistent (e.g., SSE vs. half-SSE vs. MSE; normalized vs. unnormalized penalties), and explain notation shifts between sources or libraries. Introduce advanced notation only when its explanatory value justifies the prerequisite burden.
+- **Equation-to-code alignment:** In implementation notes, verify and explain `@` vs. `*` in NumPy, `**` vs. `^`, array shapes and transposes, broadcasting, reduction axes, integer vs. floating-point division, objective normalization, gradient signs/scaling, and regularization conversions (`C`, `alpha`). A visually neat expression representing the wrong operation fails review.
+- **Distinguish reasoning types:** Clearly separate definitions, assumptions, identities, approximations, derived results, empirical observations, numerical illustrations, and formal proofs (a numerical example illustrates a theorem but does not prove it; an optimization step does not unconditionally decrease the objective). State conditions cleanly without burying the learner.
+- **Prevent repetition & overload:** Give each important equation one canonical home (referencing it briefly elsewhere unless a new context requires re-explanation). Keep essential reasoning visible; put extended calculations, refreshers, and optional formal detail in folds without concealing missing explanation. When a note becomes overloaded, narrow scope or split distinct objectives rather than stripping essential steps.

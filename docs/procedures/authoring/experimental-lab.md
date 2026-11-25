@@ -28,7 +28,7 @@ Do not recreate removed chapters under different names. Retain **only**:
 > ...
 ```
 
-7. **Brief, accurate verification status:** End every lab containing code with:
+7. **Brief, accurate verification status:** Any displayed `$$...$$` equation in a lab follows [math_gates.md](../../../core/math_gates.md) (native delimiters, blank lines, consistent objective scaling, and `> [!example]- Understand this formula step by step` beneath displayed blocks). End every lab containing code with:
 
 **`Source and static review only; not compiled or executed here.`**
 

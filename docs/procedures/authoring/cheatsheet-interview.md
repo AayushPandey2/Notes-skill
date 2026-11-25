@@ -14,7 +14,7 @@ Open with line-1 YAML frontmatter matching the active profile, the H1 title (`# 
 ### Section 1 — Complete Formula / Rule Cheat Sheet
 Organize core equations and rules into clean, domain-grouped subsections (for quantitative/ML topics: **Prediction Formulas**, **Probability / Core Relations**, **Loss & Optimization Formulas**, **Regularization / Constraint Formulas**, and **Evaluation Formulas**):
 - Present table-friendly rules in two-column `Concept | Formula` or `Metric | Formula` tables (using `$...$` inline math inside table cells and escaping any literal pipes).
-- Present multi-line objectives, gradients, and updates in separate-line `$$...$$` blocks followed by `> [!note]- 📐 Understand this formula` (consistent with [math_gates.md](../../../core/math_gates.md)).
+- Present multi-line objectives, gradients, and updates in separate-line `$$...$$` blocks followed by `> [!example]- Understand this formula step by step` (consistent with [math_gates.md](../../../core/math_gates.md)).
 - Define special indicators (such as $\mathbb{1}[\cdot]$), domain restrictions, and numerical stability expressions explicitly.
 
 ### Section 2 — Tiered Interview Questions & Answers (Tap-to-Reveal)

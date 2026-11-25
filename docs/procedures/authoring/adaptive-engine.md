@@ -12,17 +12,17 @@ Treat prerequisites using the 3-tier rule in [teaching_core.md](../../../core/te
 
 ### Audience & Scope Presets
 
-Scale depth and scope consistently without duplicating the shared teaching policy:
-- **Beginner presets:** Add local prerequisite support, concrete analogies (with limits), and explicit term unpacking.
-- **Advanced presets:** Increase causal/formal depth, boundary conditions, and proof rigor without skipping necessary definitions.
-- **Comprehensive presets:** Expand mechanisms across all 12 generalized layers in [teaching_core.md](../../../core/teaching_core.md)—including local foundation value tables, scalar-to-vector progression, multi-iteration hand traces, and a final N-step mental model in the main note, paired with the companion lab and companion cheatsheet/tiered-Q&A/worked-problems file.
-- **Compact presets (`M3`, `quick-summary`, `atomic-card`):** Reduce scope and redundancy before removing essential reasoning; never promise a full self-contained lesson when a compact preset omits extended derivations or multi-case transfer.
+Scale scope and support consistently without removing the reasoning necessary to understand the preset's stated learning objective (history remains optional):
+- **Beginner presets:** Supply more local prerequisite bridges, one conceptual burden at a time, and concrete examples beside definitions.
+- **Advanced presets:** Increase causal/formal depth, boundary conditions, and technical qualifications without skipping necessary definitions.
+- **Comprehensive presets:** Expand mechanisms, worked examples, evidence, and transfer across [teaching_core.md](../../../core/teaching_core.md), paired with the companion lab and companion cheatsheet/tiered-Q&A/worked-problems file.
+- **Compact presets (`M3`, `quick-summary`, `atomic-card`):** Narrow scope and reduce repetition while preserving all reasoning needed for the retained objective.
 
 Old outline fields still work: the adapter uses purpose, requested math level and selected tool, records its assumptions, and produces one concept. For substantial work author the richer plan before drafting; title/domain hints cannot substitute for semantic classification. Unknown objectives or malformed plans fail before writing.
 
 ## Selection and depth
 
-For each concept, combine the learner's objectives with important source material. Choose the needed depth for math, code, visuals, theory, practice, and assessment separately; these are planning judgments, not word counts. If a requested scope conflicts with required source material, resolve the scope openly. “Exhaustive” means covering relevant ideas, not maximizing every dimension.
+For each concept, combine the learner's objectives with important source material. Choose the needed depth for math, code, visuals, theory, practice, and assessment separately; these are planning judgments, not word counts or domain-wide defaults. For `Math`, map directly to the five internal concept-level profiles in [math_gates.md](../../../core/math_gates.md) (`Conceptual`, `Quantitative intuition`, `Working formulation`, `Derivation and mechanism`, `Formal reasoning`)—using the minimum depth that satisfies the objective. If a requested scope conflicts with required source material, resolve the scope openly. “Exhaustive” means covering relevant ideas, not maximizing every dimension.
 
 | Level | Math | Code | Visual | Theory | Practice | Assessment |
 |---|---|---|---|---|---|---|

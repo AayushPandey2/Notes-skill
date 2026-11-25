@@ -42,7 +42,7 @@ Follow [representations.md](../../procedures/authoring/representations.md) for e
 1. **YAML & Title:** Standard Obsidian Properties (`topic`, `tags`, `note_type: video-notes`) + `# <Video Title>`.
 2. **Source Identification & Access Status:** Concise callout with presenter/channel, video URL, duration, and `access_state`.
 3. **What the Video Explains:** Brief orientation + internal topic navigation for longer videos.
-4. **Timestamped Topic Sections:** Image-led, layered explanations anchored to source timestamps (`[MM:SS]` or `[HH:MM:SS](https://www.youtube.com/watch?v=<VIDEO_ID>&t=<seconds>s)`), preserving the presenter's examples, caveats, and conclusions, with `> [!note]- 📐 Understand this formula` folds and honest code reconstruction (never claiming unexecuted code ran). Never replace detailed explanations with a short summary in the name of token efficiency.
+4. **Timestamped Topic Sections:** Image-led, layered explanations anchored to source timestamps (`[MM:SS]` or `[HH:MM:SS](https://www.youtube.com/watch?v=<VIDEO_ID>&t=<seconds>s)`), preserving the presenter's examples, caveats, and conclusions, with `> [!example]- Understand this formula step by step` folds per [math_gates.md](../../../core/math_gates.md) and honest code reconstruction (never claiming unexecuted code ran). Never replace detailed explanations with a short summary in the name of token efficiency.
 5. **Final Synthesis & Reasoning Checks:** Core takeaways + reasoning checks with separately collapsed answers (`> [!tip]- Answer`).
 6. **References & Playlist Navigation:** Source link, downloaded image attributions, and previous/next playlist links when applicable.
 
