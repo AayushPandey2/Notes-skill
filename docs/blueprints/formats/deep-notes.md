@@ -7,9 +7,9 @@
 - **Load as needed:** [teaching rules](../../../core/teaching_core.md), [math guidance](../../../core/math_gates.md), [visual rules](../../procedures/authoring/representations.md), [adaptive planning](../../procedures/authoring/adaptive-engine.md), [research](../../procedures/sourcing/research-engine.md), [source fidelity](../../procedures/sourcing/source-fidelity.md), and [authoring rules](../../../core/authoring_rules.md).
 - **Output profile:** Comprehensive collections use the five-key YAML profile in [properties policy](../../properties/properties-policy.md); single or existing notes use Obsidian properties without overwriting user-managed fields.
 
-## 1. Opening Roadmap (Difficulty, Prerequisites, Objectives & TOC)
+## 1. Opening Roadmap (Purpose, Learning Path & TOC)
 
-Open cleanly with line-1 YAML, H1 title, and three **blank-line-separated** metadata blocks (`Difficulty`, `Prerequisites` — noting essential concepts are taught locally — and `Learning objectives`), followed by a compact **clickable Obsidian Table of Contents** (`- [[#1. Heading|Short Label]]`). Apply the 3-tier prerequisite rule in [teaching_core.md](../../../core/teaching_core.md): never use a link to replace an essential local foundation.
+Open cleanly with line-1 YAML, H1 title, a concise purpose and learning path (without repeating YAML `difficulty` as a visible body dump), and a compact **clickable Obsidian Table of Contents** (`- [[#1. Heading|Short Label]]`). Apply the 3-tier prerequisite rule in [teaching_core.md](../../../core/teaching_core.md): never use a link to replace an essential local foundation.
 
 ## 2. Progressive Explanation Flow
 
