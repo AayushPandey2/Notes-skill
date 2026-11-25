@@ -2,36 +2,33 @@
 
 ## Purpose
 
-Establish one domain-independent theory-authoring architecture across substantive Scriptorium outputs (`M1`, `M2`, `M4`, `M5`, `M7`, and video notes) so every note delivers a **complete, zero-prerequisite, self-contained learning experience** matching patient one-on-one mentoring. Compact `M3` cheat sheets and question-only `M6` assessments follow their own density contracts while preserving symbol accuracy and assumptions.
+Establish one domain-independent theory-authoring architecture across substantive Scriptorium outputs (`M1`, `M2`, `M4`, `M5`, `M7`, and video notes) so every note delivers a **complete, zero-prerequisite, self-contained learning experience**. Compact `M3` cheat sheets and question-only `M6` assessments follow their own density contracts while preserving symbol accuracy and assumptions.
 
 ## Self-Containment & Prerequisite Rule
 
-A reader starting with only basic foundational background must understand the note's entire argument without jumping to outside resources to decode terms, symbols, images, or derivations:
-- **Essential foundations now:** include a dedicated local foundations section or inline bridge explaining every mathematical, scientific, or conceptual tool from scratch—with small concrete value tables and real-world intuition—*before* formulas rely on them.
-- **Useful but secondary:** provide a brief local bridge and an optional wikilink.
-- **Outside the learning objective:** state the boundary explicitly and link for further study.
+A reader starting with only basic foundational background must understand the note's entire argument without jumping to outside resources:
+- **Essential foundations first:** Teach every prerequisite concept, mathematical tool, or base model (e.g., decision trees before gradient boosting; derivatives before optimization) locally with small concrete examples *before* advanced formulas or variants rely on them.
+- **Useful but secondary:** Provide a brief local bridge and an optional wikilink.
+- **Outside the learning objective:** State the boundary explicitly and link for further study.
 A link must never replace an essential local explanation.
 
-## Tone, Micro-Cadence & Readability
+## Tone, Spacing & Visual Hierarchy
 
-Write as a **patient, technically accurate one-on-one mentor**:
-- **Short, crisp paragraphs (1–3 sentences):** Break dense theory into clean, single-idea paragraphs separated by whitespace, tables, and visual anchors. Never bury beginners under walls of prose or use `"obviously"`, `"trivially"`, `"simply"`, `"as you know"`, hype, or classroom framing.
-- **Concrete example/table before abstract definition:** Open unfamiliar concepts with a tiny labeled table or everyday scenario (`inputs → intermediate → outcome`) first, then name and unpack the formal term beside it.
-- **Question-driven navigation:** Start comprehensive guides with Goal/Prerequisites + a clean plain-text numbered Table of Contents (with **no links** on TOC entries), and use numbered, question-driven headings (`## 3. Why can't we use <Simpler Method> here?`).
-- **Connective tissue:** Link every transition using `Claim → reason → example → consequence`, `Before → operation → change → explanation → after`, or `Intuition → precise term → mechanism → application`. Never drop an equation, term, or visual without first stating what question it answers.
+Write in one consistent voice—calm, technically precise, explanatory, and approachable:
+- **Separated opening metadata:** Place blank lines between `Difficulty`, `Prerequisites`, and `Learning objectives` blocks so Markdown renderers never merge them into a single paragraph, followed by a plain-text numbered Table of Contents (zero links).
+- **One idea per paragraph (1–3 sentences):** Break dense prose into small conceptual blocks separated by whitespace, tables, formulas, and visuals. Never introduce five or six advanced mechanisms inside one introductory paragraph.
+- **Breathing room in lists:** Never turn bullet points into miniature chapters; place blank lines between complex list items or promote substantial explanations into subsections.
+- **Short, navigable `H1–H4` headings:** Use clear 2–5 word headings (`Example Dataset`, `Mathematical Foundations`, `Objective Function`, `Mathematical Derivation`, `Step-by-Step Training`, `Evaluation and Best Practices`) rather than academic paper titles. Maintain a consistent `H1–H4` hierarchy across all sections and never use bold text (`**Step 1A**`) as pseudo-headings.
+- **Controlled bolding & natural prose:** Bold only key new terms or decisive takeaways, never every technical phrase. Ban commanding phrasing (`"Inspect Figure 4 carefully"`, `"Look at Figure 1"`), dramatic/exaggerated claims (`"Why Do Simpler Alternatives Fail?"` -> `"Limitations of ..."`), unsupported absolutes (`necessarily`, `always`, `dramatically lowers`, `prevents overfitting`, `dominant`), patronizing shortcuts (`"obviously"`, `"trivially"`, `"simply"`), and unedited self-correction transcripts (`"Wait—check the sign carefully!"`). Never retain a wrong table alongside a correction; teach pitfalls via a deliberate `Common mistake` callout beside the correct table.
 
-## Twelve Generalized Teaching Layers
+## Conceptual Flow & Progressive Teaching Layers
 
-Realize the applicable layers cleanly in the topic's natural sequence (adapting to the domain without forcing math/code onto unrelated subjects):
-1. **Layer 1 — Context, Real-World Map & Naming Clarification:** Open with what the concept does, a tiny concrete table showing how outputs behave, a real-world applications table (`Case | Negative/Class 0 | Positive/Class 1` or domain equivalent), and clarify misleading terminology (e.g., why something is named after its math vs. its task).
-2. **Layer 2 — Running Dataset/Case & Upfront Symbol Dictionary:** Show a tiny concrete multi-column example first, name inputs/targets beside it, provide a **complete upfront Symbol Dictionary** (`Symbol | Meaning`), and add a **notation-clash callout** wherever textbooks use the same symbol for different quantities.
-3. **Layer 3 — Why Simpler Alternatives Fail:** Test the simpler baseline on concrete numbers that expose exact impossible or broken outputs, illustrate the contrast visually, and summarize in a comparison table (`Property | Simpler Baseline | Target Concept`).
-4. **Layer 4 — Local Mathematical & Conceptual Foundations:** Teach every prerequisite tool needed later (constants, inverse functions, summations, derivatives/rates, units, or structural rules) using plain intuition, small reference value tables, plots, and governing identities before using them.
-5. **Layer 5 — Progressive Model Construction (Simple → Multi-Component → Compact Form):** Present the end-to-end stage diagram first, then build systematically from **1-variable scalar case → multi-variable summation (with a step-by-step calculation table) → compact vector/matrix or general form**, explaining *why* transpose or compactness is introduced.
-6. **Layer 6 — Component-by-Component Equation & Visual Dissection:** Break governing functions into individual sub-parts (`Part | Purpose`), inspect behavior across concrete **negative, zero, positive, and limiting cases** alongside paired curves/derivatives, and map every stage to the running example via [representations.md](../docs/procedures/authoring/representations.md).
-7. **Layer 7 — First-Principles Origin & Mechanism Trace:** Derive *why* the rule or objective exists from first principles (or physical/causal mechanism), contrast it causally against naive objectives, note numerical/practical stability fixes, and trace `Starting state → operation → reason → intermediate change → outcome`.
-8. **Layer 8 — Multi-Step Quantitative Hand Trace:** Initialize a tiny 3–4 row fixture and walk through **Iteration 1 → Parameter/State Update → Iteration 2** by hand (tables of intermediate terms included) so the learner sees quantities actually improve step by step.
-9. **Layer 9 — Evaluation, Diagnostics & Calibration:** Define every relevant metric or test around **one shared numerical fixture**, explain *when* aggregate scores mislead (e.g., imbalance), and decode diagnostic curves/matrices visually.
-10. **Layer 10 — Regularization, Assumptions & What Is NOT Required:** State constraints, failure regimes, and hyperparameters with concrete numerical penalties and solver/trade-off tables—plus an explicit **"What this method does NOT require"** section preventing common student myths.
-11. **Layer 11 — Preprocessing, Variants & Common Mistakes:** Explain input preparation, leakage boundaries, major variants/extensions, real advantages/disadvantages, a `Mistake | Correct approach` table, and a multi-method selection comparison table.
-12. **Layer 12 — Mental Model & Companion Cheatsheet/Interview Handoff:** Close comprehensive notes with a final numbered **N-Step Mental Model** summary and reciprocal links to the topic's companion lab and companion **Cheatsheet & Interview Q&A** file (which owns the grouped Formula/Rule Cheat Sheet, tiered **Beginner → Intermediate → Advanced** Q&A with tap-to-reveal `> [!tip]- Answer` folds, and **Worked Practice Problems** with `> [!tip]- Solution` folds). Keep collapsed callouts for long optional derivations in the main note while keeping the teaching argument clear in visible prose.
+Follow the natural learning progression **See it → Understand it → Derive it → Calculate it → Apply it** across the topic's sections:
+1. **Introduction & Intuition:** Explain what the concept does in plain language, where it is used, and clarify any misleading name without premature jargon.
+2. **Prerequisite Concepts & Base Models:** Build essential foundations locally (e.g., trees, loss functions, gradients, derivatives, regularization) before combining them.
+3. **Early Intuitive Example & Consistent Running Dataset:** Introduce one tiny concrete dataset early and trace an intuitive example on it *before* full derivations, then carry that **exact same dataset** consistently through derivations, visuals, step-by-step calculations, and evaluation.
+4. **Progressive Symbol Introduction (Notation Dictionary at the End):** Introduce symbols just in time as each concept enters (e.g., targets/predictions → base learner → gradients → curvature → regularization), flagging notation clashes inline. Place the complete **Notation / Symbol Dictionary** at the **end** of the note as a revision reference rather than dumping 15–20 symbols upfront.
+5. **Progression from Simple to General:** Move from a concrete 1-variable or single-step case → multi-term sum → compact vector/matrix form, explaining *why* compactness is introduced.
+6. **Complete Algorithmic & Domain Coverage:** When teaching selection algorithms (e.g., tree splits), compare candidate options in a table to show *why* the winning choice is selected; when claiming both regression and classification coverage, develop classification mechanics (logits, sigmoid, probabilities, gradients) explicitly rather than leaving them as regression-only examples.
+7. **Inline Concept Checkpoints & Section Takeaways:** Place short 2–4 question **Concept Checkpoints** (with optional collapsed `> [!tip]- Answer` folds) and brief takeaways after major sections so learners can test understanding without reading 5,000+ words to revise.
+8. **Closing Mental Model & Companion Handoff:** Close comprehensive notes with a concise numbered **Mental Model**, the trailing **Notation Reference**, and reciprocal links to `<note stem> - Experimental Lab.md` and `<note stem> - Cheatsheet & Interview Q&A.md` (which owns the full grouped Formula Cheat Sheet, tiered Q&A, and worked problem sets).

@@ -25,11 +25,11 @@ An image-search result, remote URL in a sample, or planned filename is not a com
 
 ## Mandatory Six-Phase Visual Narrative
 
-Teach every embedded figure through six tight steps woven naturally into the text:
-1. **Set the question (before the image, 1–3 crisp sentences):** Name what remains unclear and tell the reader what to inspect first.
-2. **Show the figure:** Embed the inspected local raster image with clear alt text, **Figure N — precise idea illustrated**, source link, and attribution.
-3. **Decode the elements:** Explain visible objects in deliberate viewing order (**orientation → axes/labels/units → shapes/curves → arrows/positions → legend**), describing position/direction without relying on color alone and bridging any symbol differences explicitly.
-4. **Trace concrete values:** Walk through specific visible coordinates, thresholds, or state transitions (`initial → operation → after`) directly on the figure.
+Teach every embedded figure naturally in calm, takeaway-driven prose—**avoid commanding phrasing** (`"Inspect Figure 4 carefully"`, `"Look at Figure 1"`) and avoid spending paragraphs narrating decorative colors or characters unrelated to the concept. Keep visuals aligned with the note's running dataset whenever possible, and explicitly bridge any context shift when an external figure uses a different domain:
+1. **Introduce the question (1–2 sentences):** Explain what conceptual point the figure clarifies before showing it.
+2. **Show the figure:** Embed the inspected local raster image with clear alt text, a concise **1-sentence caption** (`*Figure N — concise description of what is shown.*`), and place source links/attribution on a **separate muted line** beneath the caption rather than crowding everything into one line.
+3. **Explain the takeaway & elements:** State what the figure demonstrates conceptually, decoding axes, units, curves, or flows clearly without relying on color alone and bridging any symbol differences.
+4. **Trace concrete values:** Walk through specific coordinates, thresholds, or state transitions directly on the figure.
 5. **Connect to formalism & limits:** State the equation or principle the visual unlocks, whether it is **illustrative, simulated, measured, or source-provided**, and what it **does not prove**.
 6. **Check interpretation:** Include a quick visual check (`> [!tip]- Answer`) when reading the plot requires active reasoning.
 
