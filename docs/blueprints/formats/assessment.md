@@ -13,7 +13,9 @@ Validation: [verification-checklist.md](../../procedures/review/verification-che
 # M6 — Practice, Active Recall & Diagnostic Assessment
 
 - **Destination & Mode Contract:** Save inside `<Configured Target>/<Topic>/` when part of a topic bundle, or to `Practice Sets/<Subtopic> - Practice.md` / `Practice Sets/<Topic> - Collection Assessment.md` only when explicitly requested as a standalone assessment ([properties-policy.md](../../properties/properties-policy.md)). Exempt from 3-file companion generation unless explicitly requested. Reuse verified equations and conditions from sibling notes. Static Markdown uses collapsed callouts (`self-test`) or visible keys (`practice with answers`); interactive `/scribe-quiz` asks one question per turn in chat without claiming Markdown auto-grades.
-- **Header Block:** Line-1 Obsidian Properties + `# <Topic or Subtopic> — Active Recall & Synthesis Practice Set` (no long theory summary or symbol preview).
+- **Header Block:** Line-1 Standard Obsidian Properties YAML + `# <Topic or Subtopic> — Active Recall & Synthesis Practice Set` (no long theory summary or symbol preview).
+- **Cognitive Skill Sampling (Separate from Difficulty):** Sample across distinct cognitive skills rather than generating ten progressively longer definition prompts: *Recall, Recognition, Explanation, Calculation, Prediction, Diagnosis, Comparison, Critique, Construction, Transfer*.
+- **Misconception-Sensitive Distractors & Diagnostic Feedback:** For multiple-choice items, map each distractor to a specific, plausible misconception ([subject-theory-profiles.md](../components/subject-theory-profiles.md)). In interactive `/scribe-quiz` sessions, classify incorrect answers (*missing prerequisite, terminology confusion, invalid assumption, calculation error, mechanism misunderstanding, failed transfer*) and ask a targeted follow-up to confirm correction; **never** claim static Markdown files perform automated diagnosis.
 
 ## Tier 1 — Foundational Recall (Q1–Q5)
 

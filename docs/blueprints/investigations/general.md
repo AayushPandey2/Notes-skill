@@ -14,11 +14,23 @@ Use this lean, realization-focused blueprint when a named STEM or coding domain 
 ### Shared Task, Inputs & Success Criteria
 Briefly define the practical deliverable, given inputs/constraints, one small shared case, and concrete observable success criteria.
 
-## Domain-Appropriate Practical Realization(s)
+## Discipline-Appropriate Four-Track Realizations (Evidence-Oriented Profiles)
 
-Choose the smallest meaningful realization—such as a first-principles worked construction or decision procedure on the shared case (optionally paired with one established method when comparison adds clarity), or a structured evidence-analysis walkthrough (with code *only* if software execution is genuinely part of the topic).
+Select the matching discipline profile below rather than manufacturing fake experiments (using all 4 tracks for comprehensive topics, or the meaningful subset for narrower concepts):
 
-Directly beneath the realization, include `> [!example]- Understand this implementation: mathematics, code, and numerical dry run` (or `> [!example]- Understand this realization: method, steps, and worked dry run` for non-code realizations) covering **A–G**: inputs & criteria, governing principle, step-by-step execution order, one complete worked dry run on the shared case, output interpretation, failure cases & violated assumptions, and core-logic reconstruction.
+| Domain | Track 1 | Track 2 | Track 3 | Track 4 |
+|---|---|---|---|---|
+| **History** | Primary-source analysis | Chronology reconstruction | Competing interpretations | Evidence & uncertainty limits |
+| **Philosophy** | Argument reconstruction | Logical validity & soundness check | Objections & responses | Counterexamples & scope bounds |
+| **Literature** | Close reading | Structural / formal analysis | Alternative interpretation | Textual evidence audit |
+| **Linguistics** | Language data sample | Pattern & distribution analysis | Rule / grammar construction | Exceptions & variation |
+| **Economics** | Analytical model | Concrete numerical example | Comparative statics (assumption shift) | Empirical validity & limits |
+| **Psychology** | Construct operationalization | Study-design analysis | Data / effect interpretation | Confounds, bias & limitations |
+| **Sociology** | Bounded case study | Theoretical interpretation | Comparative evidence | Alternative structural accounts |
+| **Geography** | Spatial data fixture | Physical / human process analysis | Map / scale interpretation | Scale, boundary & uncertainty check |
+| **General** | First-principles construction | Standard decision / method | Controlled assumption variation | Verification & failure analysis |
+
+Directly beneath each realization, include `> [!example]- Understand this realization: method, steps, and worked dry run` (or `...implementation...` if code is genuinely required) covering **A–G**: **A** inputs & criteria; **B** governing principle; **C** step-by-step execution/argument order; **D** complete worked dry run (e.g., argument analysis, primary-source trace, or comparative-statics table); **E** interpretation; **F** failure cases & violated assumptions; **G** core-logic reconstruction.
 
 ## Verification Status
 

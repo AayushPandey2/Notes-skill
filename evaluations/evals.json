@@ -121,6 +121,61 @@
         "Distinguishes heat from temperature and classifies laws, models, and approximations accurately",
         "Attaches '> [!example]- Understand this formula step by step' beneath top-level displayed equations without recursive nested folds"
       ]
+    },
+    {
+      "id": 12,
+      "prompt": "/scribe-notes Explain React state, rendering lifecycle, and REST API integration for a task form",
+      "expected_output": "Routes to fullstack subject and lab blueprints, explains DOM/HTTP principles before framework syntax, traces browser-to-database request lifecycle, uses 4 full-stack tracks without forcing ML/Rust tracks, and labels code static-review only.",
+      "files": [],
+      "expectations": [
+        "Routes via subject-registry.yaml to fullstack theory and investigation blueprints",
+        "Traces end-to-end frontend-to-backend request, validation, and error handling flow",
+        "Never forces ML datasets, gradient descent, or 4-language Rust stacks"
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "/scribe-notes Explain SQL injection root causes and prevention with a defensive lab",
+      "expected_output": "Routes to cybersecurity subject and lab blueprints under security-education.md, applies the 7-step security-property framework (asset through verification), teaches parameterized queries defensively in isolated scope, and states what parameterization does not fix.",
+      "files": [],
+      "expectations": [
+        "Applies 7-step security-property reasoning and security-education.md boundaries",
+        "Teaches parameterized query binding defensively using synthetic/training scope only",
+        "Explicitly states limits of parameterization (does not solve broken authorization) without evading host safety policies"
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "/scribe-notes Teach Kirchhoff's laws and series/parallel resistor networks with a circuit lab",
+      "expected_output": "Routes to electrical subject and lab blueprints under physical-lab-safety.md, establishes passive sign convention and conservation laws, uses analytical + simulation + safe 5 V DC realization + fault diagnosis, and marks outputs Analytical/Expected rather than Observed.",
+      "files": [],
+      "expectations": [
+        "Establishes reference directions, passive sign convention, KCL/KVL, and ideal-to-real tolerance limits",
+        "Keeps physical realization at safe low voltage (e.g., 5 V DC) and labels outputs Analytical/Expected",
+        "Never fabricates benchtop multimeter measurements or forces ML/Rust tracks"
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "/scribe-notes Explain Binary Search invariants, correctness, and boundary cases in C++",
+      "expected_output": "Routes to algorithms subject and lab blueprints, proves loop invariant and termination before code, honors C++ without forcing Python/Rust, and includes boundary verification (empty, single element, duplicates, missing target).",
+      "files": [],
+      "expectations": [
+        "Establishes loop invariant (initialization, maintenance, termination) and mid-overflow safety",
+        "Honors requested C++ stack without forcing Python + Rust tracks",
+        "Covers empty, single-element, duplicate, and missing-target edge cases"
+      ]
+    },
+    {
+      "id": 16,
+      "prompt": "/scribe-notes Explain enzyme kinetics and Michaelis-Menten regulation from first principles",
+      "expected_output": "Routes to biology subject and lab blueprints under physical-lab-safety.md, connects 3D active-site structure to reaction rate mechanism and steady-state breakdown, distinguishes published/illustrative curves from observed wet-lab readings, and keeps bio-safe scope.",
+      "files": [],
+      "expectations": [
+        "Connects molecular structure, binding catalysis, and steady-state assumptions cleanly",
+        "Uses biology 4-track structure (mechanism, published evidence, controlled investigation, variation/disruption)",
+        "Labels data Published/Illustrative/Analytical and never fabricates wet-lab readings"
+      ]
     }
   ]
 }

@@ -43,7 +43,7 @@ Root orchestration starts at [SKILL.md](SKILL.md), routes note requests through 
   - [video-notes.md](docs/blueprints/formats/video-notes.md) — Single-file, transcript-first, web-image-led notes for `/scribe-ytnotes`
 - **Knowledge-Type Subtemplates (`domains/`):** [conceptual.md](docs/blueprints/domains/conceptual.md), [mathematical.md](docs/blueprints/domains/mathematical.md), [computational.md](docs/blueprints/domains/computational.md), [scientific.md](docs/blueprints/domains/scientific.md), [empirical.md](docs/blueprints/domains/empirical.md), [historical.md](docs/blueprints/domains/historical.md).
 - **Presets (`presets/`):** `atomic-card`, `command-reference`, `comparison-guide`, `concept-map`, `flashcards`, `formula-sheet`, `lecture-order`, `mock-exam`, `paper-breakdown`, `quick-summary`, `revision-pack`, `syntax-reference`.
-- **Implementation Lab Templates (`investigations/`):** [machine-learning.md](docs/blueprints/investigations/machine-learning.md) (lean implementation-focused 4-track ML blueprint), plus domain-tailored realization blueprints for [deep-learning.md](docs/blueprints/investigations/deep-learning.md), [coding.md](docs/blueprints/investigations/coding.md), [mathematics.md](docs/blueprints/investigations/mathematics.md), [physics.md](docs/blueprints/investigations/physics.md), [chemistry.md](docs/blueprints/investigations/chemistry.md), and [general.md](docs/blueprints/investigations/general.md).
+- **Subject Theory & Investigation Blueprints (`subjects/` & `investigations/`):** Mapped cleanly via [subject-registry.yaml](docs/dispatch/subject-registry.yaml) across `machine-learning`, `deep-learning`, `generative-ai`, `fullstack`, `cybersecurity`, `electrical`, `algorithms`, `operating-systems`, `networking`, `databases`, `devops`, `distributed-systems`, `mathematics`, `statistics`, `physics`, `chemistry`, `biology`, `coding`, and `general`, with safety boundaries in [security-education.md](docs/procedures/safety/security-education.md) and [physical-lab-safety.md](docs/procedures/safety/physical-lab-safety.md).
 
 ---
 
@@ -72,18 +72,20 @@ scriptorium/
 ├── docs/                            # Selectively loaded references
 │   ├── README.md                    # Reference loading index
 │   ├── design/                      # System overview & template-module catalog
-│   ├── dispatch/                    # master-registry.yaml & routing-policy.md
+│   ├── dispatch/                    # master-registry.yaml, subject-registry.yaml & routing-policy.md
 │   ├── properties/                  # properties-policy.md & tag-taxonomy.md
 │   ├── specs/                       # migration-notes.md
-│   ├── blueprints/                  # Formats, domains, presets, components & labs
+│   ├── blueprints/                  # Formats, domains, subjects, presets, components & labs
 │   │   ├── formats/                 # M1–M7 + video-notes.md
 │   │   ├── domains/                 # 6 knowledge-type subtemplates
+│   │   ├── subjects/                # 17 domain-specific theory blueprints
 │   │   ├── presets/                 # 12 specialized output presets
 │   │   ├── components/              # Module catalog & subject theory/misconception profiles
-│   │   └── investigations/          # 7 domain experimental lab templates
-│   └── procedures/                  # Conditional authoring, sourcing, updating & review
+│   │   └── investigations/          # 19 domain experimental lab templates
+│   └── procedures/                  # Conditional authoring, sourcing, safety, updating & review
 │       ├── authoring/               # Adaptive planning, curriculum discovery, playbooks, 3-file contracts, visuals, gate
 │       ├── sourcing/                # Research engine, source fidelity & recommendations
+│       ├── safety/                  # Security education & physical/wet-lab safety policies
 │       ├── updating/                # Revision & safe vault linking
 │       └── review/                  # Manual verification checklist & adversarial theory review
 └── evaluations/                     # Declarative trigger & quality eval prompts

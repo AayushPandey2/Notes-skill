@@ -13,10 +13,11 @@ Strip this block before emission.
 - **Header Block**: Standard Obsidian Properties YAML (`topic`, `tags`, `master_topic`, `domain`, `note_type: synthesis-revision`) per [properties-policy.md](../../properties/properties-policy.md) + `# <nn>. <Topic> — Synthesis & Revision`.
 - **Core Rule**: M7 organizes, contrasts, and consolidates what has been learned across concepts or sources—never a shallow truncation of M1 and never a vehicle for inventing unsupported claims.
 
-## 1. Executive Synthesis & Conceptual Relationships
+## 1. Executive Synthesis & Five Synthesis Operations
 
-- High-level integration connecting the target concepts, variants, or sources into one unified mental model.
-- Relationship map (downloaded & inspected local web architecture/concept-network image plus a structured semantic table: `Concept | Role | Builds Upon | Contrasts With | Canonical Note`; never Mermaid or ASCII).
+- Integrate the target concepts, variants, or sources into one unified mental model using the applicable synthesis operations (not a copy-paste of separate definitions): **Unification** (shared governing principle), **Contrast** (structurally meaningful differences), **Dependency** (prerequisite structure), **Generalization** (how a broader concept contains a narrower one), and **Transfer** (applying a principle across topics with analogy limits).
+- Relationship map (relevant inspected local web concept-network image when permitted + structured semantic table: `Concept | Role | Builds Upon | Contrasts With | Canonical Note`; never Mermaid or ASCII).
+- **Conflict Reconciliation:** Whenever existing notes or sources disagree, classify the cause explicitly—*different notation, different assumptions, different algorithm variant, different software version, genuine factual contradiction, or unresolved research question*—and explain the discrepancy instead of silently blending contradictory statements.
 
 ## 2. Core Comparisons, Distinctions & Key Formulas
 

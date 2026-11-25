@@ -38,31 +38,33 @@ Validation: [verification-checklist.md](../../procedures/review/verification-che
 
 - <Observable explanation, calculation, distinction, or application outcome.>
 
-## 2. How does the material develop each idea? (Sequential Concepts & Explanations)
+## 2. How does the material develop each idea? (Source-Preserving Educational Reconstruction)
 
-Repeat `### 2.<k> <Subtopic Title>` in verified source order using **short, crisp single-idea paragraphs (1–3 sentences)** separated by tiny concrete tables, explicit symbol disambiguation, and strategic visuals ([teaching_core.md](../../../core/teaching_core.md)):
-- Open each unfamiliar subtopic with a concrete tiny table or numerical scenario before defining abstract terms, and insert concise `[Educational Addition — Prerequisite Bridge]` foundations (value tables, rules, or symbol-clash notes) inline right before dependent notation.
-- Progress from **simple scalar case → multi-component sum/table → general compact form** whenever equations appear; break core formulas into parts (`Part | Purpose`), test negative/zero/positive/limit cases, pair every top-level displayed `$$...$$` with `> [!example]- Understand this formula step by step`, and decode needed visuals via [representations.md](../../procedures/authoring/representations.md) (respecting source-only limits).
-- Include explicit **"Why simpler approach X fails here"** and **"What this does NOT assume"** clarifications where misconceptions arise, plus a worked example with intermediate arithmetic and a focused check.
+Reconstruct every significant accessible source section in verified source order (`### 2.<k> <Subtopic Title>`) as a **source-preserving educational reconstruction**, adapting explanations to the actual discipline (never forcing ML numerical tables or scalar-to-vector math onto non-quantitative history, programming, or biology):
+- **Preserve source sequence & terminology:** Keep the presenter's/author's sequence and terms intact while clarifying ambiguity; insert concise `[Educational Addition — Prerequisite Bridge]` foundations inline right before dependent concepts without silently reordering sections.
+- **Reconstruct skipped transitions & preserve examples:** Fill in reasoning steps the presenter skipped, keep important source examples beside the concepts they support, and clearly label any substantial added explanation (`[Educational Addition]`, only when permitted by the active `source_policy`).
+- **Handle source figures & equations:** Decode source figures (or clearly labeled supplementary visuals when permitted by `source_policy`) via [representations.md](../../procedures/authoring/representations.md). When equations appear, pair every top-level `$$...$$` with `> [!example]- Understand this formula step by step` ([math_gates.md](../../../core/math_gates.md)).
+- **Separate source claims from corrections:** If the source contains an error or outdated convention, preserve the original claim accurately with its locator (`page`/`section`/`timestamp`) and present the evidence-based correction separately.
+- **Local misconceptions & depth:** Expand explanations proportionately to conceptual importance and place concise misconception clarifications inline right where confusion arises.
 
-## 3. How do I carry out the method or solve a problem? (Procedures, Reasoning & Worked Problems)
+## 3. How do I carry out the method or solve a problem? (Integrated Problem-Solving & Procedures)
 
-Merge into Section 2 when procedures appear inline in the source; otherwise document reusable procedures (`Starting Point -> Steps with Reasons -> Result & Applicability`) and `Step 1`–`12` worked problems with explicit dimensional/unit sanity checks and recognition cues.
+Merge into Section 2 when procedures appear inline in the source; otherwise document reusable procedures (`Starting Point -> Steps with Reasons -> Result & Applicability`) and domain-appropriate worked examples with independent verification checks and recognition cues.
 
 ## 4. Which rule or approach applies here? (Rules, Definitions & Reference Matrix)
 
 Omit when inline explanation suffices; otherwise map:
-`Rule / Definition / Formula | Symbol Meanings | Conditions for Use | Notes / Units / Caveats`
+`Rule / Definition / Formula | Meanings | Conditions for Use | Notes / Units / Caveats`
 Followed by **How to Choose the Right Rule or Approach** (naming distinguishing criteria before selecting).
 
-## 5. What needs clarification, and where are the limits? (Questions, Confusions & Caveats)
+## 5. Source Coverage Audit, Clarifications & Unresolved Gaps
 
-Keep only genuine edge cases, source attributions preceding corrections, `[UNVERIFIED]` / `[NEEDS CLARIFICATION]` notices, and real open confusions (`**Confusion** :: ...`).
+Maintain an explicit accounting of accessible vs. inaccessible or unreadable source sections, genuine edge cases, source-to-correction separations, `[UNVERIFIED]` / `[NEEDS CLARIFICATION]` notices, and real open confusions (`**Confusion** :: ...`).
 
-## 6. What can I recall, explain, and apply? (Key Takeaways & Active Recall)
+## 6. What can I recall, explain, and apply? (Conceptual Synthesis & Active Recall)
 
-- **Key Takeaways** & **Common Mistake to Avoid** (`Mistake -> why it fails -> how to prevent it`).
-- **Self-Check Questions** (Recall, Causal Explanation, Application) + **Answers / Hints** matched to objectives.
+- **Final Conceptual Synthesis & Common Mistake to Avoid** (`Mistake -> why it fails -> how to prevent it`).
+- **Source-Aligned Retrieval Cues / Self-Check Questions** (Recall, Causal Explanation, Application) + **Answers / Hints** matched to objectives.
 - **Next Topic Connection** pointing into `nexttopics`.
 
 <!-- Contract Summary: Apply [authoring_rules.md](../../../core/authoring_rules.md), [math_gates.md](../../../core/math_gates.md), and [footer_widgets.md](../../../core/footer_widgets.md). Remove unused scaffolding before saving. -->

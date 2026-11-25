@@ -1,8 +1,8 @@
 # Chemistry Implementation Lab Blueprint
 
-Use this lean, realization-focused blueprint for Chemistry companion labs (`<note stem> - Experimental Lab.md`). The [shared lab contract](../../procedures/authoring/experimental-lab.md) governs structure, collapsed step-by-step walkthroughs, and honest evidence.
+Use this lean, realization-focused blueprint for Chemistry companion labs (`<note stem> - Experimental Lab.md`). The [shared lab contract](../../procedures/authoring/experimental-lab.md) and [physical lab safety policy](../../procedures/safety/physical-lab-safety.md) govern structure, collapsed step-by-step walkthroughs, safe chemical boundaries, and honest evidence.
 
-**Do not** include standalone chapters for opening metadata inventories, repeated theory, historical background, separate condition-variation chapters, 10-step analytical chapters, quizzes/challenges, or repetitive summaries. **Do not** invent wet-lab observations, unsafe procedures, or force four programming tracks, ML splits, or gradient descent onto noncomputational chemistry topics.
+**Do not** include standalone chapters for opening metadata inventories, repeated theory, historical background, separate condition-variation chapters, 10-step analytical chapters, quizzes/challenges, or repetitive summaries. **Do not** invent wet-lab observations, supply hazardous synthesis/handling instructions, or force four programming tracks, ML splits, or gradient descent onto noncomputational chemistry topics.
 
 ## Required Lab Structure
 
@@ -12,13 +12,16 @@ Use this lean, realization-focused blueprint for Chemistry companion labs (`<not
 - `> [!abstract] Parent Note & Companion Pack` linking `[[<Parent Note>]]` and `[[<Parent Note> - Cheatsheet & Interview Q&A]]`.
 
 ### Shared Chemical System & Condition Contract
-Briefly define species, phases, concentrations, temperature/pressure, safe handling scope (explicitly noting paper/published-data mode when no wet lab is performed), and conserved quantities (atoms, charge).
+Briefly define species, phases, concentrations, temperature/pressure, safe handling scope (explicitly noting analytical/published-data mode when no wet lab is performed), and conserved quantities (atoms, charge).
 
-## Domain-Appropriate Chemical Realization(s)
+## Four Chemistry Tracks (Apply Track-Applicability Gate)
 
-Choose the smallest meaningful chemical realization—such as balanced symbolic equations + macroscopic–particle–symbolic stoichiometric/equilibrium/rate calculation, supplied/published analytical data processing, or a minimal kinetics/equilibrium script *only* when numerical root-finding or ODE integration is genuinely required.
+1. **Track 1 — Symbolic & Molecular:** Balance equations and connect particle-level mechanisms (electron flow, collisions, equilibrium exchange) to macroscopic symbols.
+2. **Track 2 — Quantitative Calculation:** Compute stoichiometry, pH/equilibrium, reaction rates, or $\Delta G / \Delta H$ under explicitly justified assumptions.
+3. **Track 3 — Experimental or Published Analysis:** Interpret supplied or published analytical data (e.g., titration curve, spectroscopy, calorimetry) without fabricating wet-lab readings.
+4. **Track 4 — Condition & Validity Analysis:** Examine how temperature, pressure, concentration, buffering, or ionic strength alter outcomes and break ideal approximations.
 
-Directly beneath the realization, include `> [!example]- Understand this implementation: mathematics, code, and numerical dry run` (or `> [!example]- Understand this realization: chemistry, procedure, and numerical dry run` for non-code realizations) covering **A–G**: species/inputs & units, particle-to-symbolic mechanism, step-by-step calculation/code order, one complete numerical dry run (moles, limiting reagent, equilibrium/pH, significant figures), chemical interpretation & competing mechanisms, failure cases (unbalanced charge, wrong stoichiometry, activity vs concentration), and core-logic reconstruction.
+Directly beneath each realization, include `> [!example]- Understand this realization: chemistry, procedure, and numerical dry run` (or `...implementation...` when simulation code appears) covering **A–G**: **A** species, mole/charge balances, conditions, units; **B** particle-to-symbolic mechanism; **C** step-by-step calculation/procedure order; **D** complete numerical dry run with significant figures; **E** chemical interpretation & competing pathways; **F** failure cases (unbalanced charge, wrong stoichiometry, activity vs. concentration); **G** core-logic reconstruction.
 
 ## Verification Status
 

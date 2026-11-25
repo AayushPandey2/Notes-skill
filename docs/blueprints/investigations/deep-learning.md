@@ -14,16 +14,21 @@ Use this lean, implementation-focused blueprint for Deep Learning companion labs
 ### Shared Task & Tensor Contract
 Briefly define one coherent task across the tracks: tensor shapes (`(B, d_in) -> (B, d_out)`), `dtype`, forward computation, activation, loss scaling (e.g., logits-based cross-entropy vs manual sigmoid+BCE), parameter initialization, actual optimizer (`SGD+momentum`, `Adam`, `AdamW`), and equivalence boundaries.
 
-## Implementation Tracks
+## Four Deep Learning Tracks (Apply Track-Applicability Gate)
 
-Include the smallest meaningful tracks—typically **From-Scratch NumPy / Tensor** (explicit forward pass, manual chain-rule backprop, update) and **Framework (PyTorch / JAX)** (verified against official docs: module, loss, `zero_grad()`, `.backward()`, `optimizer.step()`, `.train()` vs `.eval()`).
+For comprehensive DL topics, cover all 4 tracks below; for narrower concepts, select the meaningful subset. **Do not** force 4-language Rust tracks onto Deep Learning unless the user explicitly requests Rust.
+
+1. **Track 1 — Manual Tensor Implementation (First Principles):** Explicit NumPy forward pass, activation, loss scaling, manual chain-rule backpropagation, and parameter update on a tiny batch.
+2. **Track 2 — Automatic Differentiation:** Minimal computational graph / tape / autograd pass showing how forward dependencies drive reverse-mode gradient accumulation.
+3. **Track 3 — Framework Implementation (PyTorch / JAX):** Official-doc-verified module, numerically stable loss (e.g., logits-based cross-entropy), `zero_grad()`, `.backward()`, `optimizer.step()`, and `.train()` vs `.eval()` state management.
+4. **Track 4 — Training Diagnostics & Stability:** Controlled investigation of initialization, learning rate, normalization, gradient clipping, vanishing/exploding gradients, or shape/training-state failure modes.
 
 For each track:
 - `### [Implementation name]` + short rationale.
 - Setup/dependencies block + proportionate collapsed explanation.
 - Complete code block.
-- Immediately beneath it, `> [!example]- Understand this implementation: mathematics, code, and numerical dry run` covering **A–G** (inputs & tensor shapes, forward/backprop math & loss scaling, line-by-line execution order, a tiny batch forward/backward numerical dry run, output interpretation, failure cases like `NaN`/missing `zero_grad()`, and core-logic reconstruction).
+- Immediately beneath it, `> [!example]- Understand this implementation: mathematics, code, and numerical dry run` covering **A–G**: **A** batch dimensions, tensor dtypes, parameter shapes; **B** forward functions, loss scaling, chain-rule dependencies; **C** execution and gradient order; **D** one complete tiny batch forward/backward numerical dry run; **E** predictions, losses, gradients, updated parameters; **F** shape mismatches, `NaN`/overflow, missing `zero_grad()`, eval-mode mistakes; **G** reconstruction of the full training iteration.
 
 ## Verification Status
 
-End with **`Source and static review only; not compiled or executed here.`**
+State experiment status honestly (**Expected** / **Hand-calculated**, never **Executed**) and end with **`Source and static review only; not compiled or executed here.`**

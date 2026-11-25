@@ -10,22 +10,26 @@ Strip this block before emission.
 # M4 — Worked Problems & Step-by-Step Solutions
 
 - **Header Block**: Standard Obsidian Properties YAML (`topic`, `tags`, `master_topic`, `domain`, `note_type: worked-solutions`) per [properties-policy.md](../../properties/properties-policy.md) + `# <nn>. <Topic> — Worked Problems & Solutions`.
-- **Core Rule**: Organize around **problems and their Step 1–12 solution procedures** ([math_gates.md](../../../core/math_gates.md): Question -> Method & Assumptions -> Symbols & Dimensions -> Formula -> Substitute Inputs -> Intermediate Arithmetic -> Final Answer -> Contextual Interpretation -> Sanity Check -> Common Mistakes -> Generalization), never long textbook chapter prose or bare final numbers. Every intermediate step must be explicitly justified and checked.
+- **Six Worked-Solution Modes:** Select the reasoning mode matching the discipline rather than forcing one fixed algebraic template:
+  - *Calculation* (math, physics, chemistry) · *Proof construction* (math, theoretical CS) · *Algorithm tracing* (DSA, programming, systems) · *Diagnosis* (debugging, networking, electronics) · *Design* (engineering, software architecture) · *Evidence interpretation* (statistics, research, history).
+- **Core Rule**: Organize around problems and explicitly justified step-by-step reasoning ([math_gates.md](../../../core/math_gates.md) when quantitative), never long textbook prose or bare final answers. Every consequential step must be justified and verified independently.
 
 ## 1. Problem Set Scope, Governing Tools & Method Selection Map
 
 - State the problem family, shared definitions/notation, and exact assumptions/theorems invoked across the set.
 - Compact **Recognition-to-Method Table**: `Problem Pattern | Governing Method / Theorem | Key Precondition | Common Trap`.
 
-## 2. Step-by-Step Worked Solutions
+## 2. Step-by-Step Worked Solutions (with Optional Faded Progression)
 
 For each problem (`### Problem <k>: <Short Title>`), include the needed logical elements:
 1. **Problem Statement, Given & Objective**: Exact statement, known values/units/constraints, and target quantity.
-2. **Method Selection & Preconditions**: Why this rule/theorem applies and confirmation of its hypotheses.
-3. **Intermediate Steps & Calculations**: Numbered transitions with explicit justification at every non-obvious step (zero skipped algebra or hidden domain divisions).
-4. **Final Answer**: Clearly highlighted result with units, dimensions, or domain qualifiers.
-5. **Verification**: Independent substitution, dimensional check, boundary test, or numerical check confirming the answer solves the stated problem.
-6. **Alternative Method or Common Error** *(conditional)*: Include only when an alternative shortcut or frequent trap genuinely prevents mistakes.
+2. **Method Selection & Preconditions**: Why this rule/theorem/strategy applies and confirmation of its hypotheses (e.g., distinguishing stationary points from extrema, or checking input invariants).
+3. **Intermediate Steps & Reasoning**: Numbered transitions with explicit justification at every non-obvious step (zero skipped algebra, hidden domain divisions, or unexplained state jumps).
+4. **Final Answer**: Clearly stated result with units, dimensions, or domain qualifiers.
+5. **Independent Verification**: Substitution, dimensional check, boundary test, invariant proof, or counter-check confirming the result solves the stated problem.
+6. **Deepening Extensions** *(include when pedagogically valuable)*: **Alternative method** (showing a revealing second approach), **Incorrect solution analysis** (explaining why a plausible wrong method fails), and **Transfer variation** (modifying one condition and explaining how the solution changes).
+
+- **Faded Worked Examples (for multi-problem practice sets):** Gradually reduce scaffolding across the set so learners transition to independent solving: *Problem 1 (full worked steps)* → *Problem 2 (method supplied, learner predicts intermediate steps with collapsed reveal)* → *Problem 3 (governing principle + hint only, collapsed solution)* → *Problem 4+ (independent problem with concealed `> [!tip]- Solution`)*.
 
 ## 3. Synthesis of Solution Patterns & Pitfalls
 

@@ -12,7 +12,12 @@ Validation: [verification-checklist.md](../../procedures/review/verification-che
 
 # M3 — Quick Reference & Rapid-Recall Cheat Sheet
 
-- **Hard Caps (Default Cheat Sheet):** Total Markdown body **<=350 words**; ordinary bullets **<=20 words** each; preserve every symbol definition, domain restriction, and version caveat.
+- **Five Reference Profiles (Preset-Specific Budgets):** Select the profile matching the retrieval purpose rather than forcing one universal word cap (never drop essential validity conditions just to hit a word limit):
+  - **Atomic reference (`atomic-card`, `<150` words):** Recall one precise concept, micro-example, and boundary.
+  - **Formula reference (`formula-sheet`, `<=500` words):** Present `Relationship | Symbols & Units | Applicability Conditions | Recognition Cue | Canonical Derivation Link`.
+  - **Operational / Command reference (`command-reference`, `<=600` words):** Distinguish **read-only**, **state-changing**, and **destructive** operations; document `Command & Syntax | Preconditions/Permissions | Effect & Side Effects | Verification Check | Recovery | Version Notes`.
+  - **API / Syntax reference (`syntax-reference`, `<=600` words):** Document signature, mutation/ownership/async semantics, return types, error conditions, and version constraints.
+  - **Decision / General Cheat Sheet (default `M3`, `<=350` words, bullets `<=20` words):** Rapid condition-to-tool decision lookup and high-yield traps.
 - **Placement & Header:** Save inside `<Configured Target>/<Topic>/` when part of a topic bundle, or `Cheatsheets/<topic-slug>-CHEAT-SHEET.md` only when explicitly requested as a standalone cross-topic sheet ([properties-policy.md](../../properties/properties-policy.md)), with line-1 Standard Obsidian Properties YAML + `# <nn>. <Subtopic Title> — Cheat Sheet`. Omit TOC and do not generate companion labs/cheatsheets.
 
 ## 1. What are the core equations and invariants at a glance? (Formulas & Complexity)

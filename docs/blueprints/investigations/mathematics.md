@@ -14,12 +14,16 @@ Use this lean, realization-focused blueprint for Mathematics companion labs (`<n
 ### Shared Mathematical Task & Domain Contract
 Briefly state the claim, construction, or problem, along with exact definitions, symbols, quantifiers, admissibility/domain restrictions, and one concrete instance.
 
-## Domain-Appropriate Mathematical Realization(s)
+## Four Mathematical Tracks (Apply Track-Applicability Gate)
 
-Choose the smallest meaningful mathematical realization—such as a symbolic derivation/proof paired with normal and degenerate/boundary cases, an explicit construction with hypothesis-relaxation checks, or a minimal computational verification snippet *only* when computation is genuinely part of the mathematical task.
+Select all 4 tracks for comprehensive mathematical topics (or the meaningful subset for narrower concepts), never forcing irrelevant programming tracks onto non-computational mathematics:
+1. **Track 1 — Analytical:** Exact symbolic derivation, proof, or formal construction.
+2. **Track 2 — Concrete Numerical:** Fully worked exact-arithmetic example using small inspectable values (e.g., eigenvalues/eigenvectors of a $2\times 2$ matrix).
+3. **Track 3 — Alternative Representation:** Geometric, graphical, or second independent mathematical method illuminating why the result holds.
+4. **Track 4 — Verification & Boundary Cases:** Independent check (e.g., substituting $A\mathbf{v} = \lambda\mathbf{v}$), counterexamples, degenerate/defective cases, and hypothesis-relaxation checks (plus a minimal computational verification snippet *only* if computation is part of the objective).
 
-Directly beneath the realization, include `> [!example]- Understand this implementation: mathematics, code, and numerical dry run` (or `> [!example]- Understand this realization: mathematics, steps, and numerical dry run` for non-code derivations) covering **A–G**: inputs/hypotheses, mathematical mechanism, step-by-step logical transitions, a complete exact-arithmetic dry run (plus boundary case), interpretation, failure cases (e.g., dividing by zero, assuming the converse), and core-argument reconstruction.
+Directly beneath each realization, include `> [!example]- Understand this realization: mathematics, steps, and numerical dry run` (or `...implementation: mathematics, code, and numerical dry run` when code is included) covering **A–G**: **A** definitions, hypotheses, quantifiers, domain restrictions; **B** governing mathematical mechanism; **C** step-by-step justified logical transitions; **D** complete exact-arithmetic dry run + boundary case; **E** interpretation & scope; **F** failure cases (dividing by zero, assuming the converse, defective/degenerate failures); **G** core-argument reconstruction.
 
 ## Verification Status
 
-State what was verified by hand. If code is present, end with **`Source and static review only; not compiled or executed here.`**; otherwise state **`Analytical and manual arithmetic review only (no code executed).`**
+State what was verified by hand (**Analytical** / **Hand-calculated**). If code is present, end with **`Source and static review only; not compiled or executed here.`**; otherwise state **`Analytical and manual arithmetic review only (no code executed).`**

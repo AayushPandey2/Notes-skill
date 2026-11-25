@@ -13,6 +13,14 @@ Validation: [verification-checklist.md](../../procedures/review/verification-che
 # M5 — Implementation, Algorithmic Design & Technical Verification Guide
 
 - **Header Block:** Line-1 Obsidian Properties (`note_type: implementation-guide`) + `# Implementation: <Title>` (or `# DSA: <Title>` when solving DSA tasks) + `> [!abstract] Complexity Target & Core Invariant`.
+- **Six Implementation Types:** Select the mode matching the implementation request rather than forcing algorithmic baseline-vs-optimal framing onto every build:
+  - *Algorithm* (correctness, loop/recursion invariants, complexity)
+  - *Library / API* (contract, lifecycle, state transitions, error conditions)
+  - *System* (components, interfaces, resource management, concurrency/isolation)
+  - *Application / Full-Stack* (requirements, file responsibilities, frontend-to-backend request flow, persistent data model, input validation, authn/authz, config & secret handling, error propagation, reproducible setup, tests)
+  - *Infrastructure* (configuration, dependencies, environment isolation, reliability/recovery)
+  - *Debugging* (observed symptoms, competing hypotheses, discriminating inspections, verified fixes)
+  For Application/Full-Stack and System guides, multi-file architecture explanations are permitted inside Markdown code blocks (while still never creating repo/project files on disk or executing code).
 
 ## 1. What is the exact problem, what are the constraints & what complexity target do they force? (Problem Specification & Envelope)
 

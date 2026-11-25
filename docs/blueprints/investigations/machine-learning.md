@@ -11,12 +11,26 @@ Use this lean, implementation-focused blueprint for Machine Learning companion l
 - `# <Topic> — Implementation Lab`
 - `> [!abstract] Parent Note & Companion Pack` linking `[[<Parent Note>]]` and `[[<Parent Note> - Cheatsheet & Interview Q&A]]`.
 
-### Shared Problem and Input/Output Contract
-Define **one central learning task** teachable across all four tracks, aligning:
+### Shared Problem, Fixtures & Input/Output Contract
+Define **one central learning task** teachable across all four tracks, distinguishing the shared **model** from each track's actual **solver** and **objective convention**, and using two fixtures when helpful:
+- **Hand-trace fixture:** Tiny values permitting complete manual arithmetic inside the **D** dry run.
+- **Evaluation / stress fixture:** Larger or deliberately varied observations (e.g., collinear features, class imbalance, or non-orthogonal inputs) exposing limitations that a tiny orthogonal fixture hides.
+
+Align across tracks:
 - Dataset, feature representation, and target convention.
 - Objective scaling (explicitly distinguishing SSE, MSE, half-MSE, normalized vs unnormalized penalties) and intercept treatment.
 - Regularization convention, prediction meaning, and comparison criteria.
 - Genuine solver or hyperparameter-scaling conversions (never claim equivalence where formulations differ).
+
+### Cross-Track Equivalence & Algorithm-Specific Verification
+Include a concise **Cross-Track Equivalence Table** comparing predictions, parameter conventions, regularization scaling, intercept handling, convergence criteria, numerical precision (`float32`/`float64`), and applicable tolerances across the 4 tracks (never demanding bit-for-bit equality across different solvers). Apply algorithm-specific static verification inside the walkthroughs:
+- *Linear regression:* residual orthogonality/relationships and objective value.
+- *Logistic regression:* probability range $(0,1)$, log-sum-exp/logits stability, and analytical gradient check.
+- *KNN:* neighbor distance ordering and tie handling.
+- *Trees:* split criterion calculation and partition membership.
+- *K-means:* cluster assignments and centroid updates.
+- *PCA:* eigenvector/singular-vector orthogonality and reconstruction error.
+- *Neural networks:* analytical vs. finite-difference gradient check on the tiny fixture.
 
 ## Optimizer Selection & Honesty
 

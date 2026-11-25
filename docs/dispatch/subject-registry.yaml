@@ -1,0 +1,83 @@
+registry_version: 1
+subjects:
+  machine_learning:
+    theory: docs/blueprints/subjects/machine-learning.md
+    investigation: docs/blueprints/investigations/machine-learning.md
+    lab_strategy: four_ml_implementations
+  deep_learning:
+    theory: docs/blueprints/subjects/deep-learning.md
+    investigation: docs/blueprints/investigations/deep-learning.md
+    lab_strategy: tensor_to_framework_diagnostics
+  generative_ai:
+    theory: docs/blueprints/subjects/generative-ai.md
+    investigation: docs/blueprints/investigations/generative-ai.md
+    lab_strategy: applied_ai_four_tracks
+  programming:
+    theory: docs/blueprints/domains/computational.md
+    investigation: docs/blueprints/investigations/coding.md
+    lab_strategy: language_construct_state_analysis
+  algorithms:
+    theory: docs/blueprints/subjects/algorithms.md
+    investigation: docs/blueprints/investigations/algorithms.md
+    lab_strategy: baseline_optimized_verified
+  fullstack:
+    theory: docs/blueprints/subjects/fullstack.md
+    investigation: docs/blueprints/investigations/fullstack.md
+    lab_strategy: mechanism_framework_integration
+  cybersecurity:
+    theory: docs/blueprints/subjects/cybersecurity.md
+    investigation: docs/blueprints/investigations/cybersecurity.md
+    lab_strategy: defensive_authorized_validation
+    required_policy: docs/procedures/safety/security-education.md
+  electrical:
+    theory: docs/blueprints/subjects/electrical.md
+    investigation: docs/blueprints/investigations/electrical.md
+    lab_strategy: analysis_simulation_realization_faults
+    required_policy: docs/procedures/safety/physical-lab-safety.md
+  operating_systems:
+    theory: docs/blueprints/subjects/operating-systems.md
+    investigation: docs/blueprints/investigations/operating-systems.md
+    lab_strategy: trace_interface_simulation_diagnosis
+  networking:
+    theory: docs/blueprints/subjects/networking.md
+    investigation: docs/blueprints/investigations/networking.md
+    lab_strategy: packet_simulation_socket_diagnosis
+  databases:
+    theory: docs/blueprints/subjects/databases.md
+    investigation: docs/blueprints/investigations/databases.md
+    lab_strategy: relational_sql_transactions_plans
+  devops:
+    theory: docs/blueprints/subjects/devops.md
+    investigation: docs/blueprints/investigations/devops.md
+    lab_strategy: primitive_config_pipeline_recovery
+  distributed_systems:
+    theory: docs/blueprints/subjects/distributed-systems.md
+    investigation: docs/blueprints/investigations/distributed-systems.md
+    lab_strategy: trace_coordination_simulation_failures
+  mathematics:
+    theory: docs/blueprints/subjects/mathematics.md
+    investigation: docs/blueprints/investigations/mathematics.md
+    lab_strategy: analytical_numerical_geometric_checks
+  statistics:
+    theory: docs/blueprints/subjects/statistics.md
+    investigation: docs/blueprints/investigations/statistics.md
+    lab_strategy: manual_formal_simulation_verification
+  physics:
+    theory: docs/blueprints/subjects/physics.md
+    investigation: docs/blueprints/investigations/physics.md
+    lab_strategy: analytical_safe_physical_numerical_uncertainty
+    required_policy: docs/procedures/safety/physical-lab-safety.md
+  chemistry:
+    theory: docs/blueprints/subjects/chemistry.md
+    investigation: docs/blueprints/investigations/chemistry.md
+    lab_strategy: symbolic_quantitative_data_validity
+    required_policy: docs/procedures/safety/physical-lab-safety.md
+  biology:
+    theory: docs/blueprints/subjects/biology.md
+    investigation: docs/blueprints/investigations/biology.md
+    lab_strategy: mechanism_evidence_investigation_variation
+    required_policy: docs/procedures/safety/physical-lab-safety.md
+  general:
+    theory: docs/blueprints/domains/conceptual.md
+    investigation: docs/blueprints/investigations/general.md
+    lab_strategy: evidence_oriented_four_tracks
