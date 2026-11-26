@@ -1,13 +1,13 @@
 # Scriptorium Comparative Benchmark, Ablation & Learning-Effectiveness Protocol
 
-*Evaluation-only specification—never load during normal note authoring.*
+*Evaluation-only manual specification—never load during normal note authoring. All evaluations use freshly generated outputs and evaluator-supplied inputs outside this repository; never execute test scripts or store generated note bundles in the repository.*
 
 ## 1. Controlled Comparative Benchmark & Blind Anonymization
 
-Compare candidate approaches (e.g., plain prompt vs. prior Scriptorium commit vs. current Scriptorium) under strictly matched conditions:
-- Identical **topic**, **source material**, **learner knowledge profile**, **model**, **available tools**, and **resource limits**.
-- **Blind & anonymized grading:** Strip commit names, file-status tags (`-golden` / `-flawed`), and identifying headings, presenting anonymized IDs (e.g., `candidate-A`, `candidate-B`) to reviewers alongside [theory.md](rubrics/theory.md), [practical.md](rubrics/practical.md), and [presentation.md](rubrics/presentation.md). Keep `*-flawed.md` fixtures separate from their `*-flawed.expected-findings.md` keys.
-- **Evidence & variance discipline:** Record **missing requirements and contradicting passages** in addition to passed passages; evaluate repeated generations to measure variance; include relevant tool-use and source-access logs when judging `source_policy` compliance.
+Compare candidate approaches (e.g., plain prompt vs. prior Scriptorium version vs. current Scriptorium) manually under strictly matched conditions:
+- Identical **topic**, **freshly supplied source material**, **learner knowledge profile**, **model**, **available tools**, and **resource limits**.
+- **Blind & anonymized manual grading:** Strip commit names and identifying metadata, presenting anonymized fresh candidate outputs (e.g., `candidate-A`, `candidate-B`) to independent reviewers alongside [theory.md](rubrics/theory.md), [practical.md](rubrics/practical.md), and [presentation.md](rubrics/presentation.md). Keep evaluator answer keys separate from any candidate prompts.
+- **Evidence & variance discipline:** Cite **exact passages** for both satisfied requirements and missing/contradicting claims; evaluate repeated fresh generations to measure variance; inspect tool-use logs when judging `source_policy` compliance without executing educational code or custom test scripts.
 
 ## 2. Artifact-Aware Scoring Profiles (100 Points) & Calibrated Anchors
 

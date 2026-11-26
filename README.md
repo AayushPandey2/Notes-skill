@@ -1,6 +1,6 @@
 # Scriptorium
 
-**Scriptorium** is an instruction-and-reference-only agentic skill for authoring, organizing, and reviewing **Obsidian Markdown learning notes**. The core skill (`SKILL.md`, `core/`, `docs/`, `skills/`) consists purely of declarative Markdown instructions, templates, domain subtemplates, and routing metadata—with zero build dependencies or script-based note generators—while standalone development-only validation scripts live separately under `evaluations/` (`verify_knn_bundle.py`, `verify_logistic_bundle.py`).
+**Scriptorium** is a strictly **instruction-and-reference-only** agentic skill for authoring, organizing, and reviewing **Obsidian Markdown learning notes**. The entire repository (`SKILL.md`, `core/`, `docs/`, `skills/`, and `evaluations/`) consists purely of declarative Markdown instructions, templates, domain subtemplates, routing metadata, and manual evaluation rubrics—with **zero** executable scripts, custom validators, stored sample vaults, or pre-generated educational note bundles.
 
 ---
 
@@ -47,13 +47,13 @@ Root orchestration starts at [SKILL.md](SKILL.md) (using **responsibility-based 
 
 ## 2. How the Authoring Workflow Operates
 
-1. **Intent & Route Resolution:** [router.md](router.md) and [routing-policy.md](docs/dispatch/routing-policy.md) select the output format (`M1`–`M7`, or `video-notes.md` for `/scribe-ytnotes`) and load only the needed files via [docs/README.md](docs/README.md).
-2. **Destination & Safety Gate:** [pre-gen-gate.md](docs/procedures/authoring/pre-gen-gate.md) checks existing vault files before writing, preserves custom YAML/notes, and prevents accidental overwrites.
+1. **Intent & Route Resolution:** [router.md](router.md) and [routing-policy.md](docs/dispatch/routing-policy.md) select the output format (`M1`–`M7`, or `video-notes.md` for `/scribe-ytnotes`) and load only the needed files via [docs/README.md](docs/README.md), orchestrated by [runtime_pipeline.md](core/runtime_pipeline.md).
+2. **Destination & Safety Gate:** [pre-gen-gate.md](docs/procedures/authoring/pre-gen-gate.md) resolves paths without premature folder creation, preserves custom YAML/notes, and prevents accidental overwrites.
 3. **Research & Source Fidelity:** [research-engine.md](docs/procedures/sourcing/research-engine.md) and [source-fidelity.md](docs/procedures/sourcing/source-fidelity.md) ground claims with locators, respect source-only boundaries, and mark unconfirmed claims `[UNVERIFIED]`.
-4. **Self-Contained Layered Teaching, Theory Quality & Unified Math Policy:** [teaching_core.md](core/teaching_core.md) and [theory_quality_contract.md](core/theory_quality_contract.md) enforce genuine zero-prerequisite ordering, separated metadata, clickable Obsidian TOC links, progressive abstraction, multi-perspective explanations, forward/reverse reasoning, ideal-to-real model progression, epistemic claim classification, question-specific reasoning patterns, and calm reference prose. [curriculum-discovery.md](docs/procedures/authoring/curriculum-discovery.md) and [subject-theory-profiles.md](docs/blueprints/components/subject-theory-profiles.md) provide research-driven syllabus discovery, shared internal concept records, selectable topic-family completeness checklists, and a misconception library. [math_gates.md](core/math_gates.md) governs objective-driven math inclusion across five internal concept profiles, visible reasoning units, complete descriptive derivation folds, source boundaries, and equation-to-code alignment.
-5. **Relevance-Governed Visuals & Source Hierarchy:** [representations.md](docs/procedures/authoring/representations.md) uses a 5-level visual source hierarchy, adaptive image sizing, diagram-to-model correspondence, and relevance-based acquisition (disabled under `strict` source-only mode), while forbidding Mermaid or ASCII graphs/diagrams.
-6. **Artifact Cardinality & Subject-Tailored Labs:** `artifact_policy` in [master-registry.yaml](docs/dispatch/master-registry.yaml) controls bundle emission (`M1`/`M2` default to 3-file bundles; `M3`/`M4`/`M6`/`M7` emit single artifacts; `M5` emits an implementation guide without duplicating an identical lab; `/scribe-ytnotes` emits one self-contained note per video). [experimental-lab.md](docs/procedures/authoring/experimental-lab.md) uses four universal practical perspectives, shared-foundation + track-specific walkthroughs, and 3-attribute experiment integrity (*Origin*, *Method*, *Verification*).
-7. **Lean 6-Stage Review & Adversarial Verification:** [verification-checklist.md](docs/procedures/review/verification-checklist.md) and [adversarial-theory-review.md](docs/procedures/review/adversarial-theory-review.md) perform 6-stage quality, unified 0–5 theory-depth, safety-policy, and delivery checks against the actual saved Markdown.
+4. **Self-Contained Layered Teaching, Theory Quality & Unified Math Policy:** [teaching_core.md](core/teaching_core.md) and [theory_quality_contract.md](core/theory_quality_contract.md) enforce prerequisite closure, separated metadata, clickable Obsidian TOC links, progressive abstraction, multi-perspective explanations, forward/reverse reasoning, ideal-to-real model progression, epistemic claim classification, question-specific reasoning patterns, and textbook-clear prose. [curriculum-discovery.md](docs/procedures/authoring/curriculum-discovery.md) and [subject-theory-profiles.md](docs/blueprints/components/subject-theory-profiles.md) provide research-driven syllabus discovery, shared internal concept records, selectable topic-family completeness checklists, and a misconception library. [math_gates.md](core/math_gates.md) governs objective-driven math inclusion across five internal concept profiles, visible reasoning units, complete descriptive derivation folds, source boundaries, and equation-to-code alignment.
+5. **Relevance-Governed Visuals & Source Hierarchy:** [representations.md](docs/procedures/authoring/representations.md) uses a 5-level visual source hierarchy, adaptive image sizing, diagram-to-model correspondence, and complexity-scaled acquisition (disabled under `strict` source-only mode), while forbidding Mermaid or ASCII graphs/diagrams.
+6. **Artifact Cardinality & Subject-Tailored Labs:** The extensible `artifact_plan` in [adaptive-engine.md](docs/procedures/authoring/adaptive-engine.md) and `artifact_policy` in [master-registry.yaml](docs/dispatch/master-registry.yaml) control bundle emission (`M1`/`M2` default to conditional bundles resolved against source constraints and user overrides; `M3`/`M4`/`M6`/`M7` emit single artifacts; `M5` emits an implementation guide without duplicating an identical lab; `/scribe-ytnotes` emits one self-contained note per video). [experimental-lab.md](docs/procedures/authoring/experimental-lab.md) uses four universal practical perspectives, shared-foundation + track-specific walkthroughs, and 3-attribute experiment integrity (*Origin*, *Method*, *Verification*).
+7. **Manual 6-Stage Review & Adversarial Verification:** [verification-checklist.md](docs/procedures/review/verification-checklist.md) and [adversarial-theory-review.md](docs/procedures/review/adversarial-theory-review.md) run Stages 1–5 completely before saving and Stage 6 after saving against the actual saved Markdown.
 
 ---
 
@@ -117,16 +117,16 @@ scriptorium/
 │       ├── safety/                  # Security education & physical/wet-lab safety policies
 │       ├── updating/                # Revision, lifecycle & safe vault linking
 │       └── review/                  # Manual verification gate, educational editor & adversarial theory review
-└── evaluations/                     # Declarative trigger, adversarial & cross-domain evals
-    ├── evals.json
-    ├── trigger_eval.json
-    ├── rubrics/                     # Evaluation-only theory, practical & presentation rubrics
-    └── fixtures/                    # Evaluation-only golden vs. flawed contrast fixtures
+└── evaluations/                     # Declarative manual scenarios, triggers, rubrics & benchmark protocol
+    ├── evals.json                   # Self-contained manual behavioral scenarios (freshly evaluated)
+    ├── trigger_eval.json            # Declarative command-triggering queries
+    ├── benchmark-protocol.md        # Manual blind comparison & scoring methodology
+    └── rubrics/                     # Manual theory, practical & presentation rubrics
 ```
 
 ---
 
-## 5. Limits & Maintenance
+## 5. Manual Evaluation, Limits & Maintenance
 
-- **Honest verification:** Scriptorium relies on direct Markdown authoring and manual checklist review; it does not provide automated code execution, cryptographic publication receipts, atomic multi-file transactions, or live Obsidian UI rendering checks.
-- **Maintenance:** Keep executable scripts out of the authoring runtime (only development-only test/verification scripts belong in `evaluations/`), update affected callers and `evaluations/` when modifying shared rules, and see [migration-notes.md](docs/specs/migration-notes.md) and [LICENSE](LICENSE) for history and licensing.
+- **Honest verification & manual evaluation:** Scriptorium relies solely on direct Markdown authoring and manual checklist review; all scenarios in `evaluations/` are evaluated manually on freshly generated outputs using evaluator-supplied material under [benchmark-protocol.md](evaluations/benchmark-protocol.md). It does not provide automated script validators, code execution, automatic YAML parsing, cryptographic publication receipts, atomic multi-file transactions, or live Obsidian UI rendering checks.
+- **Maintenance:** Keep executable scripts and generated note bundles out of the repository entirely, update affected callers and declarative `evaluations/` scenarios when modifying shared rules, and see [migration-notes.md](docs/specs/migration-notes.md) and [LICENSE](LICENSE) for history and licensing.

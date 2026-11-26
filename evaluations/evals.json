@@ -341,23 +341,22 @@
     {
       "id": 33,
       "prompt": "/scribe-notes Explain why feature scaling changes K-Nearest Neighbors (KNN) predictions with a numerical example",
-      "expected_output": "Applies example-engineering validity gate: selects a discriminating fixture where unscaled vs range-normalized distances actually flip the selected nearest neighbor.",
+      "expected_output": "Applies example-engineering validity gate: selects a discriminating worked example where unscaled vs range-normalized distances actually flip the selected nearest neighbor.",
       "files": [],
       "expectations": [
-        "Constructs a concrete fixture where unscaled features pick one neighbor and scaled features flip to a different neighbor",
+        "Constructs a concrete worked example where unscaled features pick one neighbor and scaled features flip to a different neighbor",
         "Verifies intermediate Euclidean distances accurately across prose and any code"
       ]
     },
     {
       "id": 34,
       "prompt": "/scribe-notes Summarize what this Adam optimizer tutorial proves about Adam always outperforming SGD",
-      "expected_output": "Applies claim-verification evidence sufficiency: distinguishes what the supplied tutorial explains from universal empirical superiority claims, flagging unsupported generalizations.",
-      "files": [
-        "evaluations/fixtures/sources/adam-tutorial-excerpt.md"
-      ],
+      "evaluator_supplied_input": "Evaluator supplies at evaluation time a fresh short tutorial explaining Adam's moment updates (m_t, v_t) alongside an unsupported claim that Adam outperforms SGD across deep learning tasks.",
+      "expected_output": "Applies claim-verification evidence sufficiency: distinguishes what the evaluator-supplied tutorial explains from universal empirical superiority claims, flagging unsupported generalizations.",
+      "files": [],
       "expectations": [
         "Rejects or qualifies the overclaim that Adam universally outperforms SGD across tasks",
-        "Separates optimizer mechanics documented in the excerpt from missing comparative benchmark evidence"
+        "Separates optimizer mechanics documented in the supplied excerpt from missing comparative benchmark evidence"
       ]
     },
     {
@@ -383,10 +382,9 @@
     {
       "id": 37,
       "prompt": "/scribe-quiz Quiz me on Logistic Regression targeting prediction, diagnosis, and transfer—not just definitions",
-      "expected_output": "Applies mastery-design 7-step progression across conditional multi-turn responses using only the clean vault note: treats wrong-answer causes as uncertain hypotheses until confirmed, and classifies valid correction of the defective threshold statement as note_conflict without editing the vault.",
-      "files": [
-        "evaluations/fixtures/quizzes/logistic-regression/vault/logistic-regression.md"
-      ],
+      "evaluator_supplied_input": "Evaluator supplies a fresh clean Logistic Regression vault note containing one subtle threshold-precision misconception (without labeling it) and provides conditional learner turns at evaluation time.",
+      "expected_output": "Applies mastery-design 7-step progression across conditional multi-turn responses using only the evaluator-supplied note: treats wrong-answer causes as uncertain hypotheses until confirmed, and classifies valid correction of the defective threshold statement as note_conflict without editing the vault.",
+      "files": [],
       "expectations": [
         "Asks one question per turn sampling prediction/diagnosis/transfer rather than bare recall",
         "Treats learner wrong-answer root cause as an uncertain hypothesis confirmed via discriminating follow-up without inventing prior quiz history",
@@ -396,15 +394,12 @@
     {
       "id": 38,
       "prompt": "/scribe-notes Create a revision pack for my existing Neural Networks vault notes focusing on documented weak areas without inventing past quiz scores",
-      "expected_output": "Applies revision-strategy read-only discovery over the realistic mini-vault: grounds citations in real headings inside neural-networks.md, targets weak-areas.md, avoids inventing quiz scores, and leaves unrelated vault notes untouched.",
-      "files": [
-        "evaluations/fixtures/vaults/neural-networks/neural-networks.md",
-        "evaluations/fixtures/vaults/neural-networks/weak-areas.md",
-        "evaluations/fixtures/vaults/neural-networks/unrelated-git-basics.md"
-      ],
+      "evaluator_supplied_input": "Evaluator supplies a fresh temporary vault folder containing existing Neural Networks notes, a Weak Areas note without historical quiz scores, and one unrelated Git note.",
+      "expected_output": "Applies revision-strategy read-only discovery over the evaluator-supplied vault: grounds citations in real headings inside the existing Neural Networks note, targets documented weak areas, avoids inventing quiz scores, and leaves unrelated vault notes untouched.",
+      "files": [],
       "expectations": [
-        "Resolves citations to actual headings in neural-networks.md (e.g., [[neural-networks#Backpropagation & Chain Rule]]) and targets documented gaps in weak-areas.md",
-        "Never fabricates past learner quiz scores or touches unrelated-git-basics.md"
+        "Resolves citations to actual headings in the supplied Neural Networks note and targets documented weak spots",
+        "Never fabricates past learner quiz scores or modifies unrelated vault notes"
       ]
     },
     {
@@ -420,10 +415,9 @@
     {
       "id": 40,
       "prompt": "/scribe-notes Create notes strictly from these two supplied lecture paragraphs with no exercises or outside additions",
-      "expected_output": "Applies resolved artifact_plan and source-constraint precedence over default theory_bundle against the supplied hashing lecture fixture: emits only main_note, omits unsupported experimental_lab and mastery_pack, and qualifies the worst-case randomized hashing overstatement honestly.",
-      "files": [
-        "evaluations/fixtures/sources/strict-lecture-paragraphs.md"
-      ],
+      "evaluator_supplied_input": "Evaluator supplies two strict-source lecture paragraphs on hash tables containing zero exercises and one strong worst-case randomized-hashing claim.",
+      "expected_output": "Applies resolved artifact_plan and source-constraint precedence over default theory_bundle against the evaluator-supplied strict-source paragraphs: emits only main_note, omits unsupported experimental_lab and mastery_pack, and qualifies the worst-case claim honestly without unauthorized retrieval.",
+      "files": [],
       "expected_artifacts": {
         "required": [
           "main_note"
@@ -436,19 +430,18 @@
       "expectations": [
         "Resolves artifact_plan to include only main_note and omit unsupported Experimental Lab and Cheatsheet/Q&A artifacts",
         "Performs zero external source retrieval and introduces no unsupported examples or external web visuals",
-        "Preserves supplied hashing terminology, discloses strict source boundaries, and qualifies the randomized worst-case overclaim cleanly"
+        "Preserves supplied terminology, discloses strict source boundaries, and qualifies any overstatement cleanly"
       ]
     },
     {
       "id": 41,
       "prompt": "/scribe-audit Audit my existing Logistic Regression vault note read-only without rewriting it",
-      "expected_output": "Applies /scribe-audit in vault-only mode against logistic-regression.md: identifies the threshold precision defect as confirmed Major without penalizing non-Scriptorium YAML, outputs structured finding(s) with location/severity/confidence/correction/verification, and performs zero file writes.",
-      "files": [
-        "evaluations/fixtures/quizzes/logistic-regression/vault/logistic-regression.md"
-      ],
+      "evaluator_supplied_input": "Evaluator supplies an existing user-written Logistic Regression note containing a threshold-precision error and non-Scriptorium YAML.",
+      "expected_output": "Applies /scribe-audit in vault-only mode: identifies the threshold precision defect as confirmed Major without penalizing non-Scriptorium YAML, outputs structured finding(s) with location/severity/confidence/correction/verification, and performs zero file writes.",
+      "files": [],
       "expectations": [
-        "Operates strictly read-only in vault-only mode with zero edits to logistic-regression.md",
-        "Separates factual defects (threshold lowering increasing precision) from stylistic YAML differences using appropriate audit profiles",
+        "Operates strictly read-only in vault-only mode with zero edits to the supplied note",
+        "Separates factual defects from stylistic YAML differences using appropriate audit profiles",
         "Reports structured findings including severity, confidence (confirmed/suspected/unverifiable), exact correction, and verification method"
       ]
     },
@@ -488,24 +481,22 @@
     {
       "id": 45,
       "prompt": "/scribe-audit Audit my attached comprehensive note about the two-sample averaging filter. Stay read-only and use the supplied draft only. Explain which passages require repair and whether each repair follows from the supplied content.",
+      "evaluator_supplied_input": "Evaluator supplies at evaluation time a draft note on a two-sample averaging filter containing a missing alternating-input derivation step, a circular proof of a stipulated definition, and comparison reasoning hidden inside an informational callout.",
       "expected_output": "Identifies the missing alternating-input derivation, circular proof of the filter definition, and interpretation hidden in a fold. Distinguishes reconstructible local repairs from external additions.",
-      "files": [
-        "evaluations/fixtures/blind/averaging-filter-flawed.md"
-      ],
+      "files": [],
       "expectations": [
-        "Identifies the missing previous-sample sign relation and substitution even though the stated zero output is correct",
-        "Identifies the circular proof of the stipulated equal-weight average",
-        "Locates the constant-versus-alternating comparison inside the informational callout and recommends exposing it",
+        "Identifies missing sign relation and substitution steps even where stated final output is correct",
+        "Identifies any circular proof of a stipulated definition",
+        "Locates essential comparison reasoning hidden inside callouts and recommends exposing it",
         "Keeps the draft read-only and proposes only source-supported repairs"
       ]
     },
     {
       "id": 46,
       "prompt": "/scribe-notes Turn the attached rotational energy excerpt into a single study note. Use only what the excerpt actually states, with no additional derivations or outside sources.",
-      "expected_output": "Retains the fixed-axis condition and doubling example, marks the derivation as absent from the supplied material, and writes only the main note.",
-      "files": [
-        "evaluations/fixtures/sources/strict-rotational-energy.md"
-      ],
+      "evaluator_supplied_input": "Evaluator supplies at evaluation time a strict-source rotational kinetic energy excerpt stating K = (1/2) I omega^2 under fixed-axis rotation without deriving it.",
+      "expected_output": "Retains the fixed-axis condition and scaling example, marks any unprovided derivation as absent from the supplied material, and writes only the main note.",
+      "files": [],
       "expected_artifacts": {
         "required": [
           "main_note"
@@ -516,9 +507,9 @@
         ]
       },
       "expectations": [
-        "States the meaning of K, I and angular speed and retains the fixed-axis assumption",
-        "Identifies the missing derivation without inventing a particle model or adding external sources",
-        "Preserves the fixed-inertia fourfold energy change and emits only the requested note"
+        "States symbol meanings accurately and retains the fixed-axis assumption",
+        "Identifies missing derivation honestly without inventing outside particle derivations or sources",
+        "Preserves quantitative scaling relationships and emits only the requested note"
       ]
     },
     {
@@ -679,28 +670,25 @@
     {
       "id": 62,
       "prompt": "/scribe-audit Review this beginner KNN theory note read-only from the supplied file. Identify important teaching and visual deficiencies while preserving the technical strengths. Do not browse or assume the linked companions were supplied.",
-      "expected_output": "A source-bounded findings report citing the dense learning units, premature formulas and visual gaps and preserving the exact examples.",
-      "files": [
-        "evaluations/fixtures/blind/knn-compressed-flawed.md"
-      ],
+      "evaluator_supplied_input": "Evaluator supplies a fresh compressed beginner KNN draft note with premature notation and missing visual explanations alongside sound numeric comparisons.",
+      "expected_output": "A source-bounded findings report citing dense learning units, premature formulas and visual gaps while preserving technical strengths.",
+      "files": [],
       "expectations": [
-        "Identifies premature weighted notation, compressed query/search mechanism and geometry without explanation",
-        "Preserves correct numeric comparison, exact matches and leakage guidance",
-        "Does not rewrite the source or presume that omitted companion inputs are absent from the original vault"
+        "Identifies premature notation, compressed mechanisms and visual gaps without rewriting the source",
+        "Preserves correct numeric comparisons and avoids presuming uninspected companions are defective",
+        "Performs zero external browsing"
       ]
     },
     {
       "id": 63,
       "prompt": "/scribe-audit Review this circle area teaching note and its included diagram, read-only. No online research. Explain how to make it teach a beginner who understands area but is new to derivatives.",
-      "expected_output": "Finds the concealed mechanism, incomplete derivation, irrelevant visual and non-discriminating example while preserving the correct derivative.",
-      "files": [
-        "evaluations/fixtures/blind/circle-mechanism-flawed.md",
-        "evaluations/fixtures/bundles/knn/assets/metric-paths.png"
-      ],
+      "evaluator_supplied_input": "Evaluator supplies a fresh circle-area draft note paired with a mismatched geometric diagram image at evaluation time.",
+      "expected_output": "Finds concealed mechanisms, incomplete derivation steps, unrelated visuals (by inspecting the actual image) and non-discriminating examples while preserving correct derivatives.",
+      "files": [],
       "expectations": [
-        "Identifies the missing mathematical justification and the visible-reading-path gap",
-        "Explains why the actual figure does not depict circles or annuli",
-        "Notices that radius 1 and diameter 2 are the same circle and proposes a discriminating example"
+        "Identifies missing mathematical justification and hidden prose inside callouts",
+        "Inspects the supplied image directly and flags when it fails to depict circles or annuli",
+        "Proposes discriminating examples rather than repeating trivial equivalent parameters"
       ]
     },
     {

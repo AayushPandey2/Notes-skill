@@ -58,7 +58,7 @@ For source-grounded plans, review required elements against inspected passages, 
 
 ## Semantic review and correction
 
-Check definitions, terms, prerequisites and analogy limits; mathematics needs correct assumptions, units, algebra, numerical cases and logical proofs; code needs appropriate fixtures, syntax, dependencies, boundary behavior and honest execution evidence. Inspect visual labels, axes, shapes, relationships and whether data is illustrative or observed. Check source claims against inspected passages and inventory, plus sequence, examples, exercises and qualifications. Assess explanatory continuity and aligned practice, not heading presence. A numerical check does not prove a theorem, and an anchor does not establish factual support.
+Check definitions, terms, prerequisites and analogy limits; mathematics needs correct assumptions, units, algebra, numerical cases and logical proofs; code needs appropriate worked examples, syntax, dependencies, boundary behavior and honest static review evidence. Inspect visual labels, axes, shapes, relationships and whether data is illustrative or observed. Check source claims against inspected passages and inventory, plus sequence, examples, exercises and qualifications. Assess explanatory continuity and aligned practice, not heading presence. A numerical check does not prove a theorem, and an anchor does not establish factual support.
 
 Correct the smallest defective section and dependent explanations, then review the affected claims and links again. After repeated failures of the same check, retain the draft with a precise gap rather than loop without new evidence. Report structural, executed and semantic checks separately. Preserve all unrelated user notes.
 

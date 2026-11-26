@@ -6,7 +6,7 @@ Canonical specification for note frontmatter profiles, Obsidian Markdown/math re
 
 ## Activation Trigger
 
-Always active across `/scribe-notes` and any vault write. Follow [the direct-authoring pipeline](runtime_pipeline.md): author Markdown directly; never generate or execute scripts or educational code during normal note authoring (trusted standalone verification scripts under `evaluations/` are development-only tooling separate from the authoring runtime).
+Always active across `/scribe-notes` and any vault write. Follow [the direct-authoring pipeline](runtime_pipeline.md): author Markdown directly; never create, retain, or execute scripts, custom validators, temporary builders, or educational code anywhere.
 
 ## Metadata
 

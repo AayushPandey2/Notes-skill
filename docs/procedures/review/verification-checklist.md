@@ -1,6 +1,6 @@
 # Six-Stage Verification Gate & Bounded Acceptance
 
-Execute **Stages 1–5 completely before saving**, resolve an explicit bounded **Acceptance Decision**, and run **Stage 6 after saving**. Never use word count, heading count, or image count as proof of educational quality, and never represent manual review as automated verification. Permission, authorization, and safety boundaries ([security-education.md](../safety/security-education.md), [physical-lab-safety.md](../safety/physical-lab-safety.md)) apply continuously throughout the workflow, not only at review time.
+Execute **Stages 1–5 completely before saving** using strictly **manual, script-free inspection**, resolve an explicit bounded **Acceptance Decision**, and run **Stage 6 after saving**. Never use word count, heading count, or image count as proof of educational quality, and never claim automated YAML parsing, code execution, script validation, or live Obsidian rendering checks. Permission, authorization, and safety boundaries ([security-education.md](../safety/security-education.md), [physical-lab-safety.md](../safety/physical-lab-safety.md)) apply continuously throughout the workflow, not only at review time.
 
 ## Pre-Publication Stages (Stages 1–5 — Before Saving)
 

@@ -25,7 +25,7 @@ Keep essential interpretation visible in prose and place extended trace/derivati
 
 ## 3. Three-Attribute Experiment Integrity & Static Review Gate
 
-Never present predicted outputs, synthetic calculations, or fictional apparatus readings as observed or executed evidence. Track and render three independent attributes naturally in prose (e.g., *"These values are hand-calculated predictions for an illustrative fixture; the implementation has not been executed."*):
+Never present predicted outputs, synthetic calculations, or fictional apparatus readings as observed or executed evidence. Track and render three independent attributes naturally in prose (e.g., *"These values are hand-calculated predictions for an illustrative example dataset; the implementation has not been executed."*):
 
 | Attribute | Values |
 |---|---|

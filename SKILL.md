@@ -18,20 +18,17 @@ Scriptorium is an instruction-only skill for authoring Obsidian Markdown. Its si
 - [Audit existing notes](skills/scribe-audit/SKILL.md): inspect existing vault notes read-only across quality, math, consistency, and evidence dimensions without rewriting the vault.
 - [Set the notes folder](skills/scribe-setfolder/SKILL.md): update the user's destination configuration only.
 
-## Governance & Precedence by Responsibility
+## Governance & Deterministic Precedence
 
-Resolve overlapping policies by **responsibility** (preset specialization overrides parent master defaults, while binding safety, source, and correctness constraints always hold):
+Resolve overlapping policies using this **deterministic 7-level precedence** (source boundaries remain binding throughout all stages; **no preset, subject blueprint, evaluation procedure, or fallback may authorize scripts or execution**, and presentation/metadata preferences never override correctness):
 
-| Conflict Category | Authoritative Policy |
-|---|---|
-| **Permission & authorization** | Host capabilities and safety policies ([security-education.md](docs/procedures/safety/security-education.md), [physical-lab-safety.md](docs/procedures/safety/physical-lab-safety.md)) |
-| **Source restrictions** | Active `source_policy` and granular permissions ([source-fidelity.md](docs/procedures/sourcing/source-fidelity.md)) |
-| **Requested deliverables** | Explicit user request and `artifact_policy` ([master-registry.yaml](docs/dispatch/master-registry.yaml)) |
-| **Format specialization** | Selected preset (`docs/blueprints/presets/`) overrides parent master (`docs/blueprints/formats/`) defaults |
-| **Mathematical correctness** | [math_gates.md](core/math_gates.md) and subject truth (visible reasoning and complete derivations within source permissions) |
-| **Subject coverage** | Primary and selectively merged secondary subject profiles ([subject-registry.yaml](docs/dispatch/subject-registry.yaml)) |
-| **Presentation** | [authoring_rules.md](core/authoring_rules.md) and active format |
-| **Optional teaching methods** | [teaching_core.md](core/teaching_core.md), [theory_quality_contract.md](core/theory_quality_contract.md), and concept plan |
+1. **Host safety, permission & authorization restrictions** ([security-education.md](docs/procedures/safety/security-education.md), [physical-lab-safety.md](docs/procedures/safety/physical-lab-safety.md))
+2. **Global instruction-only & non-execution restrictions** (zero script creation, code execution, or custom validators anywhere)
+3. **Explicit user requirements & source restrictions** ([source-fidelity.md](docs/procedures/sourcing/source-fidelity.md), explicit format/single-file overrides)
+4. **Factual, conceptual & mathematical correctness** ([math_gates.md](core/math_gates.md), verified mechanisms and subject truth)
+5. **Requested output format & applicable preset** ([master-registry.yaml](docs/dispatch/master-registry.yaml), preset overrides over parent master defaults)
+6. **Relevant subject-specific guidance** ([subject-registry.yaml](docs/dispatch/subject-registry.yaml), primary + selective secondary support)
+7. **Presentation & optional teaching preferences** ([authoring_rules.md](core/authoring_rules.md), [teaching_core.md](core/teaching_core.md), [theory_quality_contract.md](core/theory_quality_contract.md))
 
 ## Note creation
 

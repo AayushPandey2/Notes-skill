@@ -3,7 +3,7 @@
 Inherits shared structure, YAML, navigation, shared-foundation A–G deduplication, and 3-attribute integrity rules from [experimental-lab.md](../../procedures/authoring/experimental-lab.md), and enforces [security-education.md](../../procedures/safety/security-education.md).
 
 ## Applicability & Shared Threat Boundary
-Applies to security engineering, defensive controls, cryptography usage, and AI security. Define the protected asset, intended security property, trust boundary, and isolated training environment (*OWASP Juice Shop*, *PortSwigger Web Security Academy*, *OWASP WSTG*, or synthetic fixtures—never real targets).
+Applies to security engineering, defensive controls, cryptography usage, and AI security. Define the protected asset, intended security property, trust boundary, and isolated training environment (*OWASP Juice Shop*, *PortSwigger Web Security Academy*, *OWASP WSTG*, or synthetic training examples—never real targets).
 
 ## Practical Realizations
 1. **Bounded Mechanism Demonstration:** Synthetic, non-weaponized illustration of why the vulnerability occurs (e.g., unsafe query concatenation vs. structural binding).
