@@ -16,16 +16,16 @@ Dispatch each active public command or `/scribe-notes` internal branch cleanly�
 
 ### Command B — Expand Existing Vault Topic (`/scribe-notes`)
 - **Trigger:** Adding subtopics or filling gaps inside an existing vault topic directory.
-- **Execution:** Inspect existing vault notes directly, match dominant style (or clarify when mixed), update the index/syllabus allowlist first, reconcile existing notes non-destructively, and verify metadata without overwriting custom YAML.
+- **Execution:** Inspect existing vault notes and match the dominant style. Plan any index or syllabus updates as part of the incremental revision. Publish accepted changes together where possible, preserving existing layouts and custom YAML.
 
 ### Command C — Comprehensive Learning (`M1` Deep Notes)
 - **Trigger:** Broad or first-principles deep-learning requests routed to `M1`.
-- **Inputs & Dependencies:** [adaptive-engine.md](adaptive-engine.md), [research-engine.md](../sourcing/research-engine.md), [teaching_core.md](../../../core/teaching_core.md), [math_gates.md](../../../core/math_gates.md).
-- **Execution & Review:** Plan concepts and depth, inspect evidence using [research guidance](../sourcing/research-engine.md), explain each displayed equation, work examples step by step, complete needed visuals through [representations.md](representations.md), create each new content note's [companion lab](experimental-lab.md), and review saved Markdown and assets with [the manual checklist](../review/verification-checklist.md). Keep internal planning labels out of the note.
+- **Inputs & Dependencies:** [adaptive-engine.md](adaptive-engine.md), [research-engine.md](../sourcing/research-engine.md), [teaching_core.md](../../../core/teaching_core.md), [theory_quality_contract.md](../../../core/theory_quality_contract.md), [math_gates.md](../../../core/math_gates.md).
+- **Execution & Review:** Plan concepts and depth, inspect evidence using [research guidance](../sourcing/research-engine.md), connect mathematical milestones and verify derivations, work examples step by step, complete needed visuals through [representations.md](representations.md), generate the artifacts dictated by `artifact_policy` in [master-registry.yaml](../../dispatch/master-registry.yaml), and review saved Markdown and assets with [the manual checklist](../review/verification-checklist.md). Keep internal planning labels out of the note.
 
 ### Command D — Rapid Reference (`M3` Quick Reference / Variants)
 - **Trigger:** Cheat sheet, formula sheet, syntax table, or CLI command reference requests.
-- **Execution:** Distill verified definitions, formulas with units/conditions, choice cues, and high-signal pitfalls from sibling notes or bounded authorities while enforcing `M3` density caps.
+- **Execution:** Distill verified definitions, formulas with units and conditions, choice cues, and pitfalls from permitted sources. Follow the selected M3 density target.
 
 ### Command E — Source-Faithful Ingestion (`M2` / `lecture_order`)
 - **Trigger:** PDF, slide deck, URL, or raw source notes with sequence/terminology preservation.
@@ -37,18 +37,22 @@ Dispatch each active public command or `/scribe-notes` internal branch cleanly�
 
 ### Command G — Interactive Vault Quiz (`/scribe-quiz`)
 - **Trigger:** `/scribe-quiz <topic/note>` or interactive recall/viva over existing vault notes (for static Markdown practice files, use `/scribe-notes` with `M6` [assessment.md](../../blueprints/formats/assessment.md) instead).
-- **Inputs & Discovery:** Vault path ([pre-gen-gate.md](pre-gen-gate.md)), target note(s), and read-only note inspection (zero web browsing).
-- **Execution & Constraints:** Ask **one question per turn**, wait for the learner's reply, grade strictly against existing note content with exact `[[Note Title#Heading]]` citations, escalate difficulty (`recall → application/trace → boundary/viva`), and keep vault notes unchanged by default. Save weak spots in an existing body review section only when explicitly requested; never add YAML keys for quiz state or create an experimental lab.
+- **Execution & Delegation:** [skills/scribe-quiz/SKILL.md](../../../skills/scribe-quiz/SKILL.md) is the canonical owner of the read-only 7-step interactive progression (including `note_conflict` classification, misconception uncertainty, one-question-per-turn pacing, zero web browsing, and no YAML quiz-state keys). Load [pre-gen-gate.md](pre-gen-gate.md), [mastery-design.md](mastery-design.md), and [revision-strategy.md](../learning/revision-strategy.md) alongside it.
 - **Failure Handling:** State missing vault/note coverage honestly rather than inventing answers.
 
+### Command J — Read-Only Vault Quality Audit (`/scribe-audit`)
+- **Trigger:** `/scribe-audit <note/folder>` or explicit quality review of existing vault notes without immediate rewrites.
+- **Execution & Delegation:** Delegate to [skills/scribe-audit/SKILL.md](../../../skills/scribe-audit/SKILL.md) as the canonical read-only audit workflow, inspecting across the six audit profiles (factual, pedagogical, presentation, Scriptorium conformance, bundle consistency, and currency) using [adversarial-theory-review.md](../review/adversarial-theory-review.md), [educational-editor.md](../review/educational-editor.md), [verification-checklist.md](../review/verification-checklist.md), and [claim-verification.md](../sourcing/claim-verification.md).
+- **Failure / Constraints:** Remain strictly read-only by default, cite exact `[[Note Title#Heading]]` locators, and never claim unperformed code execution or live Obsidian rendering.
+
 ### Command H — Atomic Card (`M3` / `atomic_card`)
-- **Trigger:** Single-concept transcludable note (`<150` words).
+- **Trigger:** A transcludable reference for one concept, typically under 150 words.
 - **Execution:** Fetch a source only when the active source policy permits it. Write one focused definition, micro-example, and boundary sentence; resolve existing wikilinks and keep pending concepts as plain text.
 
 ### Command I — Multi-Note Curriculum (`M2` Collection Series)
 - **Trigger:** Structured multi-note curriculum without single-unit lock.
-- **Execution:** Decompose into `4–10+` numbered child notes (minimum `3` + MOC index), preserve source terminology/order, label additions, create [one lab per new content note](experimental-lab.md) but none for the MOC, and apply `core/math_gates.md` whenever quantitative material appears.
+- **Execution:** Let the source's real sub-branches determine child-note count (no artificial chapter quotas) plus MOC index, preserve source terminology/order, label additions per `source_policy`, follow `artifact_policy` in [master-registry.yaml](../../dispatch/master-registry.yaml) for companions (none for the MOC), and apply `core/math_gates.md` whenever quantitative material appears.
 
 ### Command V — Video-Grounded Notes (`/scribe-ytnotes` / `/scribe-notes`)
 - **Trigger:** Video URL, lecture recording, transcript, or explicitly requested playlist (`/scribe-ytnotes`).
-- **Execution & Validation:** Follow [video-notes.md](../../blueprints/formats/video-notes.md) (overrides collection splitting, companion-lab generation, and multi-language lab tracks). Check metadata/transcript access once and acquire the timestamped transcript into one compact evidence map—never play the video or capture video frames. Instead, download and inspect multiple relevant raster web images (`assets/scriptorium/<video-id>/<name>.png`) via [representations.md](representations.md), compose once around those visuals and timestamps, and repair omissions locally.
+- **Execution & Validation:** Delegate to [video-notes.md](../../blueprints/formats/video-notes.md) as the single authority (transcript-first, conditional web visuals, staged drafting for long transcripts, and honest disclosure of un-narrated visual content; never play video or capture frames).

@@ -1,11 +1,9 @@
-# Variant: Lecture / Source-Order Study Notes
+# Preset: Lecture / Source-Order Study Notes (`M2` / `lecture_order`)
 
-- **Purpose:** Preserve the exact teaching sequence, terminology, and example interleaving of a lecture, video, PDF, or chapter without artificial reorganization.
-- **Parent Master:** [M2 — Structured Study Notes](../formats/study-notes.md) (`lecture_order`)
-- **Activation Trigger:** Supplied lecture, PDF, slide deck, video (`/scribe-ytnotes`), or `"preserve order"` / `"study notes"` via `/scribe-notes`.
-- **Inputs & Dependencies:** Verified source segments, locators (page/heading/timestamp), candidate video frames if applicable; [source-fidelity.md](../../procedures/sourcing/source-fidelity.md), [math_gates.md](../../../core/math_gates.md).
-- **Execution Overrides:**
-  1. Interleave examples right beside the concept they demonstrate in Section 2 rather than hoisting all examples into a later summary section.
-  2. Insert labeled `[Educational Addition — Prerequisite Bridge]` micro-explanations inline right before dependent notation instead of silently reordering sections.
-  3. Attach locator anchors (pages, sections, timestamps) and `[UNVERIFIED]` / gap markers cleanly whenever source segments are inaccessible.
-- **Failure Handling & Validation:** Reject unattributed section reordering or invented missing source pages ([source-fidelity.md](../../procedures/sourcing/source-fidelity.md)).
+- **Parent Master:** [M2 — Study Notes](../formats/study-notes.md) (`theory_bundle` default unless single-file requested).
+- **Activation Trigger:** Supplied lecture, PDF, slide deck, or `"preserve order"` / `"study notes"` via `/scribe-notes`.
+
+## Source-Order Overrides
+1. **Interleave Examples Beside Concepts:** Place source examples right beside the concept they illustrate rather than hoisting them to a trailing summary.
+2. **Distinguish Bridges from Source Claims ([source-fidelity.md](../../procedures/sourcing/source-fidelity.md)):** Insert `[Educational Addition — Prerequisite Bridge]` inline before dependent concepts *only when `source_policy` permits*; under `strict` mode, log missing prerequisites as explicit source gaps instead of importing outside theory.
+3. **Separate Corrections & Locators:** Attach exact locators (page, section, timestamp), mark inaccessible segments `[UNVERIFIED]`, and keep permitted corrections visibly separate from original presenter claims.

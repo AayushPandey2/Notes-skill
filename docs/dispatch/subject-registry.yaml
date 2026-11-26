@@ -1,0 +1,98 @@
+registry_version: 1
+selection_policy:
+  primary_subject: Select one primary subject governing the main pedagogical progression and investigation lab.
+  secondary_subjects: Pull supporting subject blueprints selectively only for needed prerequisites, formalism, or verification—never generate multiple redundant labs for one topic.
+  interdisciplinary_merge: For genuinely cross-disciplinary builds (e.g., fullstack auth, embedded OS), permit one merged lab spanning both domains.
+  safety_activation: Activate docs/procedures/safety/security-education.md or docs/procedures/safety/physical-lab-safety.md whenever actual topic content or operations involve security/credentials or physical/chemical/biological/electrical hazards—even when triggered via a secondary subject.
+subjects:
+  machine_learning:
+    theory: docs/blueprints/subjects/machine-learning.md
+    investigation: docs/blueprints/investigations/machine-learning.md
+    secondary_hints: [mathematics, statistics]
+  deep_learning:
+    theory: docs/blueprints/subjects/deep-learning.md
+    investigation: docs/blueprints/investigations/deep-learning.md
+    secondary_hints: [machine_learning, mathematics]
+  generative_ai:
+    theory: docs/blueprints/subjects/generative-ai.md
+    investigation: docs/blueprints/investigations/generative-ai.md
+    secondary_hints: [deep_learning, distributed_systems]
+  programming:
+    theory: docs/blueprints/subjects/programming.md
+    investigation: docs/blueprints/investigations/coding.md
+    secondary_hints: [operating_systems, algorithms]
+  algorithms:
+    theory: docs/blueprints/subjects/algorithms.md
+    investigation: docs/blueprints/investigations/algorithms.md
+    secondary_hints: [mathematics]
+  fullstack:
+    theory: docs/blueprints/subjects/fullstack.md
+    investigation: docs/blueprints/investigations/fullstack.md
+    secondary_hints: [databases, networking, cybersecurity]
+  cybersecurity:
+    theory: docs/blueprints/subjects/cybersecurity.md
+    investigation: docs/blueprints/investigations/cybersecurity.md
+    secondary_hints: [networking, operating_systems, databases]
+    required_policy: docs/procedures/safety/security-education.md
+  electrical:
+    theory: docs/blueprints/subjects/electrical.md
+    investigation: docs/blueprints/investigations/electrical.md
+    secondary_hints: [physics, mathematics]
+    required_policy: docs/procedures/safety/physical-lab-safety.md
+  operating_systems:
+    theory: docs/blueprints/subjects/operating-systems.md
+    investigation: docs/blueprints/investigations/operating-systems.md
+    secondary_hints: [programming, algorithms, computer_architecture]
+  computer_architecture:
+    theory: docs/blueprints/subjects/computer-architecture.md
+    investigation: docs/blueprints/investigations/computer-architecture.md
+    secondary_hints: [operating_systems, electrical]
+  numerical_computing:
+    theory: docs/blueprints/subjects/numerical-computing.md
+    investigation: docs/blueprints/investigations/numerical-computing.md
+    secondary_hints: [mathematics, machine_learning]
+  information_theory:
+    theory: docs/blueprints/subjects/information-theory.md
+    investigation: docs/blueprints/investigations/information-theory.md
+    secondary_hints: [statistics, machine_learning]
+  networking:
+    theory: docs/blueprints/subjects/networking.md
+    investigation: docs/blueprints/investigations/networking.md
+    secondary_hints: [operating_systems, distributed_systems]
+  databases:
+    theory: docs/blueprints/subjects/databases.md
+    investigation: docs/blueprints/investigations/databases.md
+    secondary_hints: [algorithms, distributed_systems]
+  devops:
+    theory: docs/blueprints/subjects/devops.md
+    investigation: docs/blueprints/investigations/devops.md
+    secondary_hints: [operating_systems, networking]
+  distributed_systems:
+    theory: docs/blueprints/subjects/distributed-systems.md
+    investigation: docs/blueprints/investigations/distributed-systems.md
+    secondary_hints: [networking, databases]
+  mathematics:
+    theory: docs/blueprints/subjects/mathematics.md
+    investigation: docs/blueprints/investigations/mathematics.md
+  statistics:
+    theory: docs/blueprints/subjects/statistics.md
+    investigation: docs/blueprints/investigations/statistics.md
+    secondary_hints: [mathematics]
+  physics:
+    theory: docs/blueprints/subjects/physics.md
+    investigation: docs/blueprints/investigations/physics.md
+    secondary_hints: [mathematics]
+    required_policy: docs/procedures/safety/physical-lab-safety.md
+  chemistry:
+    theory: docs/blueprints/subjects/chemistry.md
+    investigation: docs/blueprints/investigations/chemistry.md
+    secondary_hints: [physics, mathematics]
+    required_policy: docs/procedures/safety/physical-lab-safety.md
+  biology:
+    theory: docs/blueprints/subjects/biology.md
+    investigation: docs/blueprints/investigations/biology.md
+    secondary_hints: [chemistry, statistics]
+    required_policy: docs/procedures/safety/physical-lab-safety.md
+  general:
+    theory: docs/blueprints/domains/conceptual.md
+    investigation: docs/blueprints/investigations/general.md

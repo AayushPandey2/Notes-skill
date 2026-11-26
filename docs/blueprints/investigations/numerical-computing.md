@@ -1,0 +1,15 @@
+# Numerical Computing Investigation Profile
+
+Inherits shared structure, YAML, navigation, shared-foundation A–G deduplication, and 3-attribute integrity rules from [experimental-lab.md](../../procedures/authoring/experimental-lab.md).
+
+## Applicability & Shared Numerical Fixture
+Applies to root-finding, numerical linear algebra (both **direct** factorizations such as LU/QR/Cholesky and **iterative** solvers), interpolation, quadrature, and ODE discretization. Define exact problem, precision (`float32` vs. `float64`), norm choice and allowed perturbation model, initial iterate or step size $h$ *(when iterative/discretized)*, rounding convention, and stopping tolerances once up front.
+
+## Practical Realizations
+1. **Exact / Reference Solution:** Establish an analytical solution or high-precision reference value so **forward error** ($\|\hat{\mathbf{x}} - \mathbf{x}^*\|$) and **backward error** (smallest perturbation $\Delta A, \Delta\mathbf{b}$ under a stated **norm and perturbation model** explaining $\hat{\mathbf{x}}$ as exact solution to $(A+\Delta A)\hat{\mathbf{x}}=\mathbf{b}+\Delta\mathbf{b}$) are interpreted clearly, distinguishing **absolute vs. relative error**.
+2. **Trace & Method-Specific Execution (Iterative or Direct):** For iterative methods, hand-trace complete iterations (e.g., Newton–Raphson $x_{k+1} = x_k - f(x_k)/f'(x_k)$) contrasting normal vs. difficult starting points (slow convergence, oscillation, near-zero derivative blow-up, or divergence), and separate **convergence order** (e.g., quadratic vs. linear), **asymptotic convergence rate**, **observed step-to-step progress**, and **final accuracy**. For direct methods (e.g., Gaussian elimination with partial pivoting), trace pivoting steps, multiplier magnitudes, and backward stability rather than forcing an artificial iteration loop.
+3. **Numerical Implementation & Stopping Criteria:** Implement the method cleanly with explicit stopping tolerances and stability guards (zero-derivative or pivoting checks), explaining why small step size $|x_{k+1}-x_k|$, small residual $|f(x_k)|$ or $\|A\hat{\mathbf{x}}-\mathbf{b}\|$, and reliable forward accuracy are distinct criteria.
+4. **Conditioning vs. Stability, Complexity & Independent Practice:** Separate **conditioning** (via the **problem-specific condition number**, e.g., $\kappa(A) = \|A\|\|A^{-1}\|$ for linear systems or root multiplicity sensitivity) from **algorithmic stability** (rounding amplification), demonstrate cancellation/ill-conditioned traps, state FLOP/memory scaling, and include 1–2 **Independent Exercises** (`> [!hint]-` / `> [!success]-`).
+
+## Specialized Walkthrough & Verification
+Honor the requested implementation language cleanly (Python/NumPy by default when unspecified; zero unsolicited Rust), distinguish **manual arithmetic**, **analytical checks**, and **executed experiments**, and end with **`Source and static review only; not compiled or executed here.`** (or **`Analytical and manual numerical review only (no code executed).`** for non-code labs).

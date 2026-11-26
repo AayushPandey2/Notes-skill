@@ -4,15 +4,14 @@ Load this page when a selected master needs a teaching move beyond its own instr
 
 | Need in the request | Use when | What to add and review |
 |---|---|---|
-| Motivation and intuition | Learner is new to a concept | Begin with the problem it solves and an analogy with a stated limit. |
-| Definition and mechanism | A term or process is central | Define it before use, then explain what changes at each step and why. |
-| Prerequisite bridge | A needed idea is missing | Add a short explanation immediately before first use; preserve source order in strict notes. |
-| Formula interpretation | A displayed equation matters | Use [math guidance](../../../core/math_gates.md) for symbols, units, assumptions, derivation, and numbers. |
-| Worked example | The learner must apply a method | Show inputs, intermediate steps, result, interpretation, and a check. |
-| Limit or counterexample | A rule could be overgeneralized | State when it fails and demonstrate a boundary case. |
-| Comparison | Choosing between alternatives matters | Compare under the same conditions, explain causes before a summary table. |
-| Visual reasoning | Spatial or causal structure is hard to follow | Choose a suitable visual through [visual guidance](../../procedures/authoring/representations.md) and explain its labels. |
-| Practice and retrieval | Learner wants self-testing | Ask objective-aligned questions with separate hints and answers; do not reveal an interactive quiz answer early. |
-| Synthesis and revision | Several concepts need linking | Give concise retrieval cues and links while preserving assumptions and source limits. |
+| Real-world map & naming fix | Concept has real uses or misleading name | Open with tiny concrete example table, applications table, and name clarification. |
+| Motivation & baseline limitations | Learner asks "why not use X?" | Show concrete numbers where simpler baseline is limited + contrast visual (qualified, not exaggerated). |
+| Progressive symbols & local foundation | Formulas rely on unfamiliar math/tools | Introduce symbols as needed (with clash note), teach prerequisite tools locally, and place full Symbol Dictionary at the end. |
+| Component-to-matrix construction | A component view clarifies a central vectorization | Bridge from a representative component to indexed sums and compact matrix form. For matrix-native objects, justify the operator and its shapes directly. |
+| Spacious math & formula walkthroughs | A substantive mathematical argument serves the objective | Follow [math_gates.md](../../../core/math_gates.md) (bridge before formula, `aligned`/`cases`, visible milestones and descriptive folds below principal results, compact-reference & non-recursive exceptions). |
+| Multi-iteration hand trace | Concept involves iterative updates/steps | Trace consecutive meaningful states on one tiny shared worked example, explaining the progress criterion, whether progress is guaranteed, and failure/stopping conditions. |
+| Limits, myths & "NOT required" | Readers confuse adjacent assumptions | Contrast with counterexamples, state what is **NOT** assumed/required, and give `Mistake \| Fix` table. |
+| Visual reasoning | Spatial, curve, or flow structure matters | Place at inflection points via [visual guidance](../../procedures/authoring/representations.md). |
+| Retrieval & practice cues | Practice supports the objective and the source policy permits it | Keep brief retrieval cues in the main note. Put fuller practice in a mastery companion when the resolved plan includes one. |
 
 Select only moves needed by the current objective. Review the actual note with [the manual checklist](../../procedures/review/verification-checklist.md).

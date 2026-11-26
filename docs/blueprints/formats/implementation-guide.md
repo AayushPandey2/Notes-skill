@@ -1,56 +1,27 @@
-<!-- scaffold:preflight
-Purpose: Build, implement from scratch, trace on non-trivial inputs, test, and verify algorithms or systems engineering solutions cleanly.
-Master ID: M5 (implementation_guide / compatibility route: dsa).
-Activation Trigger: /scribe-notes requests to implement from scratch, build/debug code, write verified algorithm solutions, or trace program state.
-Non-activation: Deep conceptual theory with minor snippets -> M1; syntax/API table -> M3/syntax_reference.
-Inputs: Problem/system spec, stated bounds, chosen language/stack, test fixtures, and runtime verification status.
-Dependencies: router.md, core/teaching_core.md, core/authoring_rules.md, core/math_gates.md, properties/properties-policy.md.
-Decision Rules: Lock educational code to the user-specified stack; explain a simpler baseline when it clarifies the bottleneck. Claim observed execution only when an available tool actually ran the code.
-Failure Handling: Tag missing constraints [ASSUMED / UNVERIFIED]; label unexecuted code 'static verification (not executed)'; never fabricate runtime metrics.
-Validation: [verification-checklist.md](../../procedures/review/verification-checklist.md) (`M5` implementation rules).
--->
+# M5 — Implementation, Design & Technical Verification Guide
 
-# M5 — Implementation, Algorithmic Design & Technical Verification Guide
+*Master ID: `M5` (`implementation_guide`, compatibility route: `dsa`). Artifact policy: `implementation_guide` per [master-registry.yaml](../../dispatch/master-registry.yaml)—do **not** duplicate an `M5` guide into an identical companion Experimental Lab.*
 
-- **Header Block:** Line-1 Obsidian Properties (`note_type: implementation-guide`) + `# Implementation: <Title>` (or `# DSA: <Title>` when solving DSA tasks) + `> [!abstract] Complexity Target & Core Invariant`.
+- **Header Block:** Line-1 Standard Obsidian Properties (`note_type: implementation-guide`) + `# Implementation: <Title>` (or `# DSA: <Title>`). Lock code to the user-specified stack (defaulting to Python for Machine Learning when unspecified; **never include Rust by default**, in collapsed blocks, or for performance/production/advanced wording unless explicitly requested); never create project files on disk or execute code; label unexecuted code `Source and static review only; not compiled or executed here.`
 
-## 1. What is the exact problem, what are the constraints & what complexity target do they force? (Problem Specification & Envelope)
+## 1. Select the Matching Implementation Progression
 
-- **Problem Statement & I/O Contract:** Input/output types, preconditions, and small concrete instance.
-- **Constraints Audit:** Verified bounds and library/compiler versions (`[ASSUMED / UNVERIFIED]` for unstated limits).
-- **Target Complexity & Governing Invariant:** Asymptotic envelope justified from bounds and core invariant (`2–3` sentences).
+Use the progression matching the request instead of forcing DSA complexity/baseline sections onto APIs, applications, infrastructure, or debugging:
 
-## 2. What is the brute-force baseline and why does it bottleneck? (Naive Approach & The Optimization Bridge)
+| Implementation Mode | Main Progression |
+|---|---|
+| **Algorithm** | Problem & constraints $\to$ governing invariant $\to$ baseline (if distinct) $\to$ optimal solution $\to$ correctness & complexity $\to$ edge-case suite |
+| **Library / API** | Contract & types $\to$ setup & lifecycle $\to$ core operations $\to$ state, ownership & error handling $\to$ usage examples |
+| **System** | Requirements & trust/isolation boundaries $\to$ components & interfaces $\to$ end-to-end request/resource flow $\to$ concurrency & failure handling |
+| **Application / Full-Stack** | User behavior & file/API contracts $\to$ architecture & schema $\to$ vertical-slice implementation (multi-file Markdown blocks permitted) $\to$ auth/validation/error propagation $\to$ tests |
+| **Infrastructure** | Environment & compatibility $\to$ declarative config (`Dockerfile`/IaC/CI) $\to$ lifecycle & secrets/config injection $\to$ verification & rollback recovery |
+| **Debugging** | Observed symptoms $\to$ competing hypotheses $\to$ discriminating inspection evidence $\to$ verified fix $\to$ regression prevention |
 
-- **Baseline Intuition & Runnable Code:** Simplest baseline exposing redundant work (omit fake naive variants when optimal is already direct).
-- **Bottleneck Quantification & Optimization Bridge:** Identify exact cost wall and the structural invariant eliminating it.
+## 2. Core Implementation, Trace & Static Verification
 
-## 3. How does the optimal algorithm work step by step? (Mechanism, Correctness Justification & Dry-Run Table)
+1. **Specification & Constraints:** Define inputs/outputs, contracts, verified versions (`[ASSUMED / UNVERIFIED]` if unstated), and one discriminating scenario/input.
+2. **Mechanism & Implementation:** Explain *why* the design works before code; include complete self-contained code blocks with equation/contract alignment and collapsed step-by-step walkthroughs where non-trivial.
+3. **Discriminating Trace & Edge/Failure Matrix:** Trace a non-trivial scenario or input through key branches/error paths, verify boundary cases, and state `Source and static review only; not compiled or executed here.`
+4. **Transfer Variations (when useful and permitted):** Give the learner a changed input, constraint or requirement. Keep the prompt visible and place the solution in a collapsed `> [!success]-` answer callout.
 
-- **Mechanism & Correctness:** State transitions, loop/recursion invariant (`initialization`, `maintenance`, `termination`), and exact complexity.
-- **Dry-Run Trace Table:** Trace a **discriminating, non-trivial input** triggering key branches/edge cases (escaping internal `|` pipes cleanly).
-
-## 4. How do I implement and stress-test the optimal solution? (Implementation & Edge-Case Suite)
-
-- **Runnable Optimal Implementation:** Complete self-contained code with explicit equation-to-variable mapping and test driver. In statically typed/systems languages, audit numeric bit-widths, overflow bounds, and iterator/memory safety. Label unexecuted code `Status: static review (not executed)` unless a native tool actually executed it.
-- **Edge-Case Test Matrix (`4–5` Cases):** Assertions covering minimal/empty, duplicate/degenerate, adversarial/monotonic, extreme boundary, and dry-run fixture.
-
-## 5. How does this pattern transfer to harder variations? (Related Problems, Twists & Reflections)
-
-- **Related Variations (`2–3`):** Show visible prompt followed by an unquoted blank line and collapsed `> [!example]- Reveal Structural Twist & Optimal Solution for <Title>`.
-
-<!-- optional: complexity -->
-## [OPTIONAL] Why does the resource bound hold? (Formal Complexity & Lower-Bound Derivation)
-
-<!-- Include only when non-obvious recurrence/amortized/lower-bound proof adds insight; delete cleanly otherwise. -->
-
-- **Context / Analysis / Check:** Cost model, recurrence/potential derivation, worst-case vs amortized distinction, discriminating bound case.
-
-<!-- optional: visual -->
-## [OPTIONAL] How do pointers, windows, or structures evolve step by step? (Visual Diagram / State-Transition Walkthrough)
-
-<!-- Include when spatial structure beats table trace; follow representations.md for native Mermaid or completed local raster embeds. -->
-
-- **Context / Analysis / Check:** Structure traced, inflection transitions ([representations.md](../../procedures/authoring/representations.md)), and invariant parity check.
-
-- **Contract Summary:** Verify constraints audit, runnable baseline + optimal code, tricky dry-run trace, honest runtime status, edge-case suite, and [authoring_rules.md](../../../core/authoring_rules.md) / [math_gates.md](../../../core/math_gates.md) / [footer_widgets.md](../../../core/footer_widgets.md).
+*Contract: [authoring_rules.md](../../../core/authoring_rules.md), [math_gates.md](../../../core/math_gates.md), [footer_widgets.md](../../../core/footer_widgets.md), [verification-checklist.md](../../procedures/review/verification-checklist.md).*

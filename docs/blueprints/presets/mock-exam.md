@@ -1,11 +1,9 @@
-# Variant: Mock Exam & Viva Preparation
+# Preset: Mock Exam & Viva Preparation (`M6` / `mock_exam`)
 
-- **Purpose:** Simulate progressive written exams or oral viva defenses with rubric-backed collapsed answer keys.
-- **Parent Master:** [M6 — Practice & Assessment](../formats/assessment.md) (`mock_exam`)
-- **Activation Trigger:** `"mock exam"`, `"viva"`, `"practice test"`, or interactive `/scribe-quiz`.
-- **Inputs & Dependencies:** Target objectives/notes, difficulty mix, verified claims; [authoring_rules.md](../../../core/authoring_rules.md), [math_gates.md](../../../core/math_gates.md).
-- **Execution Overrides:**
-  1. Structure strictly in escalating progression: Section A (Core Definitions & Defense), Section B (Quantitative Derivation, Calculation, or State Trace), Section C (Boundary Critique & Oral Viva Follow-Ups).
-  2. Isolate full worked solutions and grading rubrics inside collapsed callouts (`> [!tip]- Reveal approach and solution`) or a trailing Answer Key.
-  3. Keep interaction boundaries honest: `/scribe-quiz` quizzes one question per turn in chat; static Markdown never pretends auto-grading.
-- **Review:** Check that quantitative answers show the reasoning and that the note has no extra quiz-state YAML keys.
+- **Parent Master:** [M6 — Practice & Assessment](../formats/assessment.md) (`single_artifact`).
+- **Activation Trigger:** `"mock exam"`, `"viva"`, `"practice test"` via `/scribe-notes`.
+
+## Execution Overrides
+1. **Exam Design Metadata:** Specify **total marks, per-question mark allocation, and suggested time budget** cleanly at the top of each section.
+2. **Escalating Exam Structure:** Section A (Core Definitions & Distinctions) $\to$ Section B (Derivation, Calculation, Trace, or Analysis) $\to$ Section C (Boundary Critique, Diagnosis & Oral Viva Follow-Ups).
+3. **Marking Rubrics & Alternative Valid Methods:** Place complete worked solutions, marking criteria (partial-credit checkpoints), **acceptable alternative solution methods**, and viva follow-up probes inside collapsed `> [!success]- Solution and Marking Rubric` callouts (never claim static Markdown auto-grades).

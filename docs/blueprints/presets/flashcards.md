@@ -1,11 +1,8 @@
-# Variant: Active-Recall Flashcards
+# Preset: Active-Recall Flashcards (`M6` / `flashcards`)
 
-- **Purpose:** Generate atomic spaced-repetition front/back cards enforcing crisp condition and trap awareness.
-- **Parent Master:** [M6 — Practice & Assessment](../formats/assessment.md) (`flashcards`)
+- **Parent Master:** [M6 — Practice & Assessment](../formats/assessment.md) (`single_artifact`).
 - **Activation Trigger:** `"flashcards"`, `"spaced-repetition cards"` via `/scribe-notes`.
-- **Inputs & Dependencies:** Verified note claims, definitions, bounds, and common misconceptions; [authoring_rules.md](../../../core/authoring_rules.md).
-- **Execution Overrides:**
-  1. Enforce one testable claim per card (definition, distinction, condition, or complexity bound—never essays).
-  2. Pair a visible **Front** prompt with an unquoted blank line and collapsed `> [!tip]- Back` callout (`>` on every interior line) stating the concise answer, condition, and 1-line trap.
-  3. Order progression: recognition -> distinction -> boundary application.
-- **Failure Handling & Validation:** Reject unquoted callout blanks or multi-concept prompts ([verification-checklist.md](../../procedures/review/verification-checklist.md)).
+
+## Execution Overrides
+1. **Four High-Yield Card Types:** Mix **Recall/Distinction**, **Misconception-Correction**, **Prediction / Reverse-Reasoning**, and **Boundary / Applicability** cards—ban trivial yes/no prompts or multi-essay cards.
+2. **Dual-Block Card Format:** Pair a visible **Front** prompt with an unquoted blank line and collapsed `> [!success]- Back` callout (`>` on every interior line) stating the concise answer, governing condition, and 1-line trap.

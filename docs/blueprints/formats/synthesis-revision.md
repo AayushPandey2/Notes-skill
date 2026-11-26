@@ -1,32 +1,23 @@
-<!-- scaffold:preflight
-Master ID: M7 (synthesis_revision / route: synthesis-revision).
-Primary intent: synthesis_and_revision — consolidate related notes, compare methods, map concept relationships, deconstruct sources, and prepare exam revision packs.
-Activation signals: "revision pack", "combine these notes", "summarize everything", "compare X vs Y", "concept map", "final exam revision guide", F10 cross-note synthesis, and standalone paper/article/video URLs via `/scribe-notes`.
-Non-activation: Deep first-principles lesson on one topic -> M1; ultra-compact ≤350-word cheat sheet -> M3; pure question quiz -> M6.
-Variants: comparison-guide.md, paper-breakdown.md, quick-summary.md, revision-pack.md, concept-map.md.
-Pre-Flight: [router](../../../router.md), [teaching core](../../../core/teaching_core.md), [revision-and-linking](../../procedures/updating/revision-and-linking.md), [authoring rules](../../../core/authoring_rules.md).
-Strip this block before emission.
--->
-
 # M7 — Synthesis, Cross-Topic Comparison & Revision
 
-- **Header Block**: 5-key YAML frontmatter + `# <nn>. <Topic> — Synthesis & Revision`.
-- **Core Rule**: M7 organizes, contrasts, and consolidates what has been learned across concepts or sources—never a shallow truncation of M1 and never a vehicle for inventing unsupported claims.
+*Master ID: `M7` (`synthesis_revision`, variants: `comparison-guide.md`, `paper-breakdown.md`, `quick-summary.md`, `revision-pack.md`, `concept-map.md`). Artifact policy: `single_artifact` per [master-registry.yaml](../../dispatch/master-registry.yaml).*
 
-## 1. Executive Synthesis & Conceptual Relationships
+- **Header Block:** Standard Obsidian Properties YAML (`topic`, `tags`, `master_topic`, `domain`, `note_type: synthesis-revision`) per [properties-policy.md](../../properties/properties-policy.md) + `# <Topic> — Synthesis & Revision` (prepend `<nn>. ` only inside a numbered multi-branch collection).
+- **Core Rule:** Organize, contrast, and consolidate across concepts or sources—never a shallow truncation of `M1` and never a vehicle for inventing unsupported claims.
 
-- High-level integration connecting the target concepts, variants, or sources into one unified mental model.
-- Relationship map (Mermaid diagram or structured semantic table: `Concept | Role | Builds Upon | Contrasts With | Canonical Note`).
+## 1. Executive Synthesis, Five Operations & Conflict Reconciliation
 
-## 2. Core Comparisons, Distinctions & Key Formulas
+- Integrate target concepts using applicable analytical lenses in natural prose (never as pasted summaries or literal visible checklist headings/labels like `"Five-Way Synthesis"`): *unification* (shared governing principle), *contrast* (structurally meaningful differences), *dependency* (prerequisite structure), *generalization* (how a broader concept contains a narrower one), and *transfer* (cross-topic principle with analogy limits).
+- Relationship map (relevant visual per [representations.md](../../procedures/authoring/representations.md) + semantic table: `Concept | Role | Builds Upon | Contrasts With | Canonical Note`; never Mermaid or ASCII).
+- **Conflict Reconciliation:** Classify disagreements across notes/sources explicitly—*different notation, different assumptions, different algorithm variant, different software version, genuine factual contradiction, or unresolved research question*—never silently blend contradictory claims.
 
-- Explain causal trade-offs and conditions *before* summarizing in the multi-axis comparison table under equivalent assumptions (`Feature | Candidate A | Candidate B | Governing Trade-Off`).
-- **Key Formulas & Applicability Conditions** *(when quantitative)*: Formula, brief symbol meanings, assumptions, and wikilink back to full Layer E/F derivations; review that conditions remain intact.
+## 2. Core Comparisons, Distinctions & Key Relations
 
-## 3. Critical Pitfalls, Misconceptions & Revision Checklist
+- Explain causal trade-offs and assumptions *before* comparison tables (`Feature | Candidate A | Candidate B | Governing Trade-Off`), adapting comparison dimensions to the domain (never force time/memory complexity onto historical or philosophical comparisons).
+- **Key Formulas / Governing Rules** *(when relevant)*: State rule, brief symbol meanings, validity conditions, and wikilink back to canonical derivations in `M1`/`M2`.
 
-- High-signal distinctions and common failure modes that flip exam or design decisions.
-- Concise mastery checklist pointing back to detailed `M1`/`M2` notes for remediation—no verbatim paragraph duplication.
+## 3. Critical Pitfalls, Misconceptions & Quick Reference
 
-See [authoring rules](../../../core/authoring_rules.md), [math gates](../../../core/math_gates.md), and [footer contract](../../../core/footer_widgets.md).
-- **Template Contract (`M7` / `synthesis-revision`):** Consolidate across concepts/sources faithfully, preserve all mathematical applicability conditions, link back to detailed notes without verbatim paragraph duplication, and never invent new unsupported claims.
+- High-signal `Mistake | Correct approach` and *"What this does NOT assume"* distinctions, plus grouped quick-reference cues linking back to detailed notes without verbatim paragraph duplication.
+
+*Contract: [authoring_rules.md](../../../core/authoring_rules.md), [math_gates.md](../../../core/math_gates.md), [footer_widgets.md](../../../core/footer_widgets.md), [verification-checklist.md](../../procedures/review/verification-checklist.md).*

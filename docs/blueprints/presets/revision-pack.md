@@ -1,11 +1,12 @@
-# Variant: Multi-Note Exam Revision Pack
+# Preset: Multi-Note Exam Revision Pack (`M7` / `revision_pack`)
 
-- **Purpose:** Synthesize an existing multi-note vault topic folder into one unified Layer B/C exam-review guide without copying paragraphs verbatim.
-- **Parent Master:** [M7 — Synthesis & Revision](../formats/synthesis-revision.md) (`revision_pack`)
+- **Parent Master:** [M7 — Synthesis & Revision](../formats/synthesis-revision.md) (`single_artifact`).
 - **Activation Trigger:** `"revision pack"`, `"exam revision"`, `"consolidate topic notes"` via `/scribe-notes`.
-- **Inputs & Dependencies:** Existing vault notes, sibling notes (`[[Note Title]]`), verified ARRIE citations; [revision-and-linking.md](../../procedures/updating/revision-and-linking.md).
-- **Execution Overrides:**
-  1. Draw definitions, formulas, and comparisons exclusively from verified vault notes (`[[Note Title]]`) or verified sources—never invent external claims.
-  2. Organize into: (a) Big-picture conceptual progression, (b) Consolidated formula & condition sheet linked to full derivations, (c) Side-by-side method comparison table, (d) High-yield traps & diagnostic checklist.
-  3. Compress into retrieval cues; link back to Layer A headings rather than pasting verbatim prose.
-- **Failure Handling & Validation:** Enforce formula assumption retention and wikilink resolution ([verification-checklist.md](../../procedures/review/verification-checklist.md)).
+
+## Execution Overrides
+1. **Vault-Grounded Synthesis:** Draw definitions, formulas, and comparisons from existing vault notes (`[[Note Title#Heading]]`) or verified sources—never invent ungrounded claims or paste verbatim prose paragraphs.
+2. **Active Retrieval & Interleaved Revision Structure:**
+   - Big-picture conceptual map & dependency flow across the topic notes.
+   - Grouped formula/rule & applicability-condition sheet linked to canonical derivations.
+   - Cross-topic `Mistake | Correct approach` misconception traps & **Weak-Area Targeting** cues.
+   - **Interleaved Practice & Retrieval Schedule:** Mix multi-topic recall/transfer prompts (with collapsed `> [!success]- Answer` checks) across distinct concepts paired with adaptive delayed-retrieval intervals per [revision-strategy.md](../../procedures/learning/revision-strategy.md).

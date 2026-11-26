@@ -5,8 +5,6 @@ description: Create video-grounded Obsidian study notes with downloaded web visu
 
 # `/scribe-ytnotes`
 
-Input: a single video URL, lecture, or transcript (or an explicitly requested playlist); an explicit vault path if given. Follow [the video-notes format](../../docs/blueprints/formats/video-notes.md), [Command V](../../docs/procedures/authoring/command-playbooks.md#command-v--video-grounded-notes-scribe-ytnotes--scribe-notes), and [the destination gate](../../docs/procedures/authoring/pre-gen-gate.md) before any write.
+Input: a single video URL, lecture, or transcript (or an explicitly requested playlist); an explicit vault path if given. [video-notes.md](../../docs/blueprints/formats/video-notes.md) is the single authority for video-note structure, output cardinality (`one_note_per_video` default, honoring explicit alternate requests), transcript-first processing, honest disclosure of un-narrated visuals, and conditional web-visual acquisition.
 
-**Strict overrides:** One video produces **one** self-contained Markdown note (never split by topic). Playlists produce one note per processed video (never auto-process an entire playlist from a single video link). **Do not** generate a companion experimental lab or force multi-language implementation tracks. **Do not** open, play, or capture frames from the video; instead, download and inspect multiple complementary web raster images via [representations.md](../../docs/procedures/authoring/representations.md) to illustrate the video's concepts.
-
-Acquire the timestamped transcript once into a compact topic/evidence map, compose once using [teaching_core.md](../../core/teaching_core.md) + [math_gates.md](../../core/math_gates.md), and repair omissions locally. Review with [verification-checklist.md](../../docs/procedures/review/verification-checklist.md).
+**Never** play, watch, or capture frames from the video. Use the [root skill](../../SKILL.md) for shared restrictions and the [authoring pipeline](../../core/runtime_pipeline.md) in video mode. Activate math and visual guidance only when the transcript or requested output requires them.
