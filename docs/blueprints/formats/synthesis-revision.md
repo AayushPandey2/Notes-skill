@@ -2,12 +2,12 @@
 
 *Master ID: `M7` (`synthesis_revision`, variants: `comparison-guide.md`, `paper-breakdown.md`, `quick-summary.md`, `revision-pack.md`, `concept-map.md`). Artifact policy: `single_artifact` per [master-registry.yaml](../../dispatch/master-registry.yaml).*
 
-- **Header Block:** Standard Obsidian Properties YAML (`topic`, `tags`, `master_topic`, `domain`, `note_type: synthesis-revision`) per [properties-policy.md](../../properties/properties-policy.md) + `# <nn>. <Topic> — Synthesis & Revision`.
+- **Header Block:** Standard Obsidian Properties YAML (`topic`, `tags`, `master_topic`, `domain`, `note_type: synthesis-revision`) per [properties-policy.md](../../properties/properties-policy.md) + `# <Topic> — Synthesis & Revision` (prepend `<nn>. ` only inside a numbered multi-branch collection).
 - **Core Rule:** Organize, contrast, and consolidate across concepts or sources—never a shallow truncation of `M1` and never a vehicle for inventing unsupported claims.
 
 ## 1. Executive Synthesis, Five Operations & Conflict Reconciliation
 
-- Integrate target concepts using applicable synthesis operations (not pasted summaries): **Unification** (shared governing principle), **Contrast** (structurally meaningful differences), **Dependency** (prerequisite structure), **Generalization** (how a broader concept contains a narrower one), and **Transfer** (cross-topic principle with analogy limits).
+- Integrate target concepts using applicable analytical lenses in natural prose (never as pasted summaries or literal visible checklist headings/labels like `"Five-Way Synthesis"`): *unification* (shared governing principle), *contrast* (structurally meaningful differences), *dependency* (prerequisite structure), *generalization* (how a broader concept contains a narrower one), and *transfer* (cross-topic principle with analogy limits).
 - Relationship map (relevant visual per [representations.md](../../procedures/authoring/representations.md) + semantic table: `Concept | Role | Builds Upon | Contrasts With | Canonical Note`; never Mermaid or ASCII).
 - **Conflict Reconciliation:** Classify disagreements across notes/sources explicitly—*different notation, different assumptions, different algorithm variant, different software version, genuine factual contradiction, or unresolved research question*—never silently blend contradictory claims.
 

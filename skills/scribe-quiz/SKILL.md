@@ -16,7 +16,6 @@ Run an interactive, **one-question-per-turn** active-recall or viva quiz grounde
 
 ## 7-Step Interactive Quiz Progression (One Question Per Turn)
 
-Follow [Command G](../../docs/procedures/authoring/command-playbooks.md#command-g--interactive-vault-quiz-scribe-quiz):
 1. **Select objective & mastery dimension:** Choose one concept and reasoning dimension (`Recognition`, `Explanation`, `Prediction`, `Diagnosis`, `Transfer`, etc.) from the existing note.
 2. **Ask one question:** Present a prompt matched to the learner's demonstrated knowledge and wait for their reply.
 3. **Classify the response:** Categorize as `correct`, `partially_correct`, `incorrect`, `ambiguous`, `unsupported_by_note`, or **`note_conflict`** (when the learner's response conflicts with an existing vault claim yet appears technically sound or highlights a potential error in the note—distinguish possible note defect from learner error without silently rewriting the vault or browsing externally).

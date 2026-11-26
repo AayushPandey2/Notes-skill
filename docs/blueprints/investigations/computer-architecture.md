@@ -23,7 +23,7 @@ State instruction subset, explicit pipeline model (noting that a classic in-orde
 1. **Instruction-Level Trace:** Track operands, registers, program counter (`PC`), and memory/flag writes across a concrete instruction sequence.
 2. **Datapath / Pipeline Investigation:** Trace control signals, pipeline stages, applicable data/control hazards (matching the stated pipeline model), forwarding paths, and stall cycles.
 3. **Memory-Hierarchy Analysis:** Decode concrete byte addresses into **tag, index, and block-offset** bits and trace cache hits, misses, and eviction/replacement steps.
-4. **Performance & Correctness Verification:** Derive CPI, stall overhead, AMAT, or Amdahl speedup under stated assumptions and check boundary cases (e.g., load-use hazard, conflict-miss thrashing).
+4. **Performance, Complexity & Verification:** Derive CPI, stall overhead, AMAT, or Amdahl speedup under stated assumptions; test boundary cases (load-use hazard, conflict-miss thrashing); and include 1–2 **Independent Exercises** (`> [!hint]-` / `> [!success]-`).
 
 ## Specialized Walkthrough & Verification
-Label cycles/hits/AMAT **author-derived / manual_arithmetic / statically_reviewed** (never inventing unallowed origin values, and reflecting only checks actually performed); if simulation code appears end with **`Source and static review only; not compiled or executed here.`**, otherwise **`Manual instruction, pipeline, and cache trace review only (no simulator executed).`**
+Apply the shared 3-attribute integrity rules from `experimental-lab.md` to cycles/hits/AMAT (using valid origin/method values such as `author-derived` and `manual_arithmetic` or `analytical`, and recording only the verification status actually performed; honor any explicitly requested HDL/assembly stack without adding unsolicited languages). For non-code labs, end with **`Manual instruction, pipeline, and cache trace review only (no simulator executed).`**

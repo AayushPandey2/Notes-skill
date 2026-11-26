@@ -1,6 +1,6 @@
 # Instructional Planning, Scope Budgeting & Unified Depth Scale
 
-Load this for substantive theory planning. [master-registry.yaml](../../dispatch/master-registry.yaml) and [subject-registry.yaml](../../dispatch/subject-registry.yaml) resolve format, artifact selection, and primary/secondary subjects; [instructional-registry.json](instructional-registry.json) maps knowledge types to subtemplates. Read only selected entries.
+Load this for substantive theory planning. The [master registry](../../dispatch/master-registry.yaml) owns format, artifact selection and knowledge-type paths. The [subject registry](../../dispatch/subject-registry.yaml) maps subject profiles. Consult the [knowledge-type aliases](instructional-registry.json) only when normalizing older terminology.
 
 ## 1. Three-Level Internal Planning Hierarchy
 
@@ -22,8 +22,8 @@ artifact_plan:
     external_visuals: <true | false>
 ```
 
-- **Collection level** *(only when bundled or multi-chapter)*: `notation`, `canonical_definitions`, `shared_fixtures`, `concept_ownership` ([knowledge-consistency.md](knowledge-consistency.md)).
-- **Concept level:** `concept_id`, **`learning_objective`** (required anchor for reasoning, examples, coverage, mastery, and verification), `role` (`prerequisite`, `core`, `extension`, `advanced`), `dependencies`, `knowledge_type`, `primary_subject` (+ selective secondary support), `concept_reasoning` ([concept-reasoning.md](concept-reasoning.md)), `depth` (unified `0–5` + separate `math_profile`), `example_roles` ([example-engineering.md](../../blueprints/components/example-engineering.md)), `evidence_locators`, `representation` where useful (learning question, exact fixture, placement, permitted option, and fallback or gap), and `completion_condition` (what the learner can trace, explain, predict or apply, with evidence in the finished passage).
+- **Collection level** *(only when bundled or multi-chapter)*: `notation`, `canonical_definitions`, `shared_examples`, `concept_ownership` ([knowledge-consistency.md](knowledge-consistency.md)).
+- **Concept level:** `concept_id`, **`learning_objective`** (required anchor for reasoning, examples, coverage, mastery, and verification), `role` (`prerequisite`, `core`, `extension`, `advanced`), `dependencies`, `knowledge_type`, `primary_subject` (+ selective secondary support), `concept_reasoning` ([concept-reasoning.md](concept-reasoning.md)), `depth` (unified `0–5` + separate `math_profile`), `example_roles` ([example-engineering.md](../../blueprints/components/example-engineering.md)), `evidence_locators`, `representation` where useful (learning question, exact worked example, placement, permitted option, and fallback or gap), and `completion_condition` (what the learner can trace, explain, predict or apply, with evidence in the finished passage).
 - **Internal mathematical dependency record *(for consequential formal relationships, kept out of vault YAML)*:**
 
 ```yaml
@@ -38,12 +38,23 @@ mathematical_relationship:
   canonical_section: <Heading Anchor>
 ```
 
-For comprehensive independent notes or unfamiliar disciplines, populate records via [curriculum-discovery.md](curriculum-discovery.md) (within active `source_permissions`) and [subject-theory-profiles.md](../../blueprints/components/subject-theory-profiles.md). Apply the **two-dimension prerequisite policy** (`importance` × `learner status`) in [teaching_core.md](../../../core/teaching_core.md).
+For comprehensive independent notes or unfamiliar disciplines, populate records via [curriculum-discovery.md](curriculum-discovery.md) (within active `source_permissions`) and [subject-theory-profiles.md](../../blueprints/components/subject-theory-profiles.md). Apply the **three-tier prerequisite policy** (`prerequisite tier × learner status`) in [teaching_core.md](../../../core/teaching_core.md).
 
 ### Scope & Resource-Budget Planning
-Before drafting, estimate total intellectual burden from: **core concept count, target depth, source complexity, artifact count, mathematical derivation load, practical implementation load, and distinct visual needs**.
+Scale internal planning ceremony proportionally to request complexity rather than applying full chapter machinery to a 10-minute topic:
+
+| Request Scope | Required Internal Plan Elements |
+|---|---|
+| **Single definition / card** | Learning objective + concrete example/counterexample |
+| **Single algorithm / method** | Prerequisites, governing mechanism, step trace, failure conditions |
+| **Complete chapter (`M1`/`M2`)** | Concept dependency graph, mathematical dependency order, coverage plan |
+| **Multi-chapter collection** | Shared notation scope ledger, canonical concept ownership registry |
+| **High-risk / disputed topic** | Claim-level evidence locators and verification plan |
+
+Before drafting broad curricula, estimate total intellectual burden from: **core concept count, target depth, source complexity, artifact count, mathematical derivation load, practical implementation load, and distinct visual needs**.
 - For focused requests, finish the complete learning unit at full target depth.
 - For broad collections, partition cleanly at natural conceptual boundaries and verify completed chapters—if resource or context limits prevent finishing the entire curriculum, **disclose exactly what remains incomplete** rather than silently thinning later chapters or claiming full coverage.
+- **Long-note continuity:** Maintain temporary internal awareness during generation of declared scope, learner starting knowledge, established concepts, remaining objectives, notation, assumptions, running examples, visual requirements, and unresolved questions so later sections stay consistent without degradation—never creating persistent planning files, registries, or executable state-management infrastructure.
 
 ### Audience & Scope Presets
 - **Beginner:** Stronger local prerequisite bridges, one conceptual burden at a time, concrete examples beside definitions.
@@ -70,7 +81,7 @@ Keep the **5 mathematical profiles** in [math_gates.md](../../../core/math_gates
 
 Use [module-catalog.md](../../blueprints/components/module-catalog.md) only for teaching moves serving the objective. Adapt each selected module proportionally (**Awareness 1–2 / Mechanism 3 / Analytical & Transfer 4–5**):
 - **Proof & Formal Justification:** Activated by topic and objective across any appropriate master—**including `M4` worked proof construction and `M5` algorithm correctness proofs**.
-- **Computational Tools:** Select executable code only when coding serves the objective, honoring explicit user language/stack choices and statically verifying code per [experimental-lab.md](experimental-lab.md).
+- **Computational explanations:** Include non-executed educational snippets only when they serve the objective. Honor the requested stack and use the applicable static checks in [the lab contract](experimental-lab.md).
 
 ## 4. Coherent Composition & Targeted Repair
 

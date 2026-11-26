@@ -16,3 +16,6 @@ Separate **probabilistic modeling, parameter estimation, experimental design, ca
 - *Probability:* Conditioning, Bayes' updates, joint/marginal/conditional distributions, independence vs. zero covariance.
 - *Estimation & Testing:* MLE/MoM properties (bias, consistency, efficiency), Neyman–Pearson/test-statistic framing, confidence-interval coverage, power & multiple comparisons.
 - *Regression & Causal Inference:* Conditional expectation vs. causal do-intervention, DAGs/confounding/colliders, residual & leverage diagnostics.
+
+## Statistical Intuition, Visuals & Practice
+Develop statistical intuition around a concrete real-world sampling or decision question while closing prerequisite probability or calculus tools inline before introducing formal estimator or test-statistic notation. Use verified web-sourced statistical distributions, sampling/residual plots, or causal illustrations per [representations.md](../../procedures/authoring/representations.md) where they clarify uncertainty (never generated/Mermaid/ASCII), and complete one end-to-end calculation plus plain-language interpretation before an independent analysis prompt.

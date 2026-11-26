@@ -7,7 +7,7 @@ Ensure Full-Stack, Frontend, and Backend notes teach **browser behavior, state t
 ## 1. Core Principle: Web Fundamentals & Complete Contracts Before Framework Syntax
 
 - Explain **why** a browser, runtime, or server mechanism exists before framework wrappers (e.g., DOM reconciliation & state ownership before React hooks; HTTP semantics & statelessness before Express/FastAPI middleware).
-- Trace concrete **browser event $\to$ HTTP request $\to$ router/middleware $\to$ validation/auth $\to$ business logic $\to$ database $\to$ response $\to$ UI state** flows when full-stack integration is central.
+- Trace concrete **browser event $\to$ HTTP request $\to$ router/middleware $\to$ validation/auth $\to$ business logic $\to$ database $\to$ response $\to$ UI state** flows when full-stack integration is central, opening with a concrete user action while closing JS/HTTP prerequisites inline, pairing event-loop/layout/request models with verified web-sourced diagrams per [representations.md](../../procedures/authoring/representations.md) (never generated/Mermaid/ASCII), and progressing from a worked flow to an independent extension or debugging exercise.
 
 ## 2. Selectable Topic-Family Obligations
 

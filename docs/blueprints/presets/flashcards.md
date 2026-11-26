@@ -5,4 +5,4 @@
 
 ## Execution Overrides
 1. **Four High-Yield Card Types:** Mix **Recall/Distinction**, **Misconception-Correction**, **Prediction / Reverse-Reasoning**, and **Boundary / Applicability** cards—ban trivial yes/no prompts or multi-essay cards.
-2. **Dual-Block Card Format:** Pair a visible **Front** prompt with an unquoted blank line and collapsed `> [!tip]- Back` callout (`>` on every interior line) stating the concise answer, governing condition, and 1-line trap.
+2. **Dual-Block Card Format:** Pair a visible **Front** prompt with an unquoted blank line and collapsed `> [!success]- Back` callout (`>` on every interior line) stating the concise answer, governing condition, and 1-line trap.

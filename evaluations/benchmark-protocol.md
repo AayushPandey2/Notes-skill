@@ -1,13 +1,15 @@
 # Scriptorium Comparative Benchmark, Ablation & Learning-Effectiveness Protocol
 
-*Evaluation-only specification—never load during normal note authoring.*
+*Evaluation-only manual specification. All evaluations use fresh outputs and evaluator-supplied inputs outside this repository. Keep test scripts and generated outputs out of this workflow and repository.*
+
+For scenarios referring to a supplied note, PDF, image, access restriction, or publication failure, establish that setup explicitly before scoring. An empty `files` list means the repository has no fixture for the case. Use `evaluator_supplied_input` where present. If the setup is unavailable, record the affected case as blocked and omit its score.
 
 ## 1. Controlled Comparative Benchmark & Blind Anonymization
 
-Compare candidate approaches (e.g., plain prompt vs. prior Scriptorium commit vs. current Scriptorium) under strictly matched conditions:
-- Identical **topic**, **source material**, **learner knowledge profile**, **model**, **available tools**, and **resource limits**.
-- **Blind & anonymized grading:** Strip commit names, file-status tags (`-golden` / `-flawed`), and identifying headings, presenting anonymized IDs (e.g., `candidate-A`, `candidate-B`) to reviewers alongside [theory.md](rubrics/theory.md), [practical.md](rubrics/practical.md), and [presentation.md](rubrics/presentation.md). Keep `*-flawed.md` fixtures separate from their `*-flawed.expected-findings.md` keys.
-- **Evidence & variance discipline:** Record **missing requirements and contradicting passages** in addition to passed passages; evaluate repeated generations to measure variance; include relevant tool-use and source-access logs when judging `source_policy` compliance.
+Compare candidate approaches (e.g., plain prompt vs. prior Scriptorium version vs. current Scriptorium) manually under strictly matched conditions:
+- Identical **topic**, **freshly supplied source material**, **learner knowledge profile**, **model**, **available tools**, and **resource limits**.
+- **Blind & anonymized manual grading:** Distinguish explicitly among **self-review**, **independent review**, and **real learner evaluation**: strip commit names and identifying metadata when presenting anonymized fresh candidate outputs (e.g., `candidate-A`, `candidate-B`) to independent reviewers alongside [theory.md](rubrics/theory.md), [practical.md](rubrics/practical.md), and [presentation.md](rubrics/presentation.md). Keep evaluator answer keys separate from candidate prompts; never claim measured educational improvements without actual comparative evidence, and never claim student mastery solely from an AI quality score.
+- **Evidence & variance discipline:** Cite **exact passages** for both satisfied requirements and missing/contradicting claims; evaluate repeated fresh generations to measure variance; inspect tool-use logs when judging `source_policy` compliance without executing educational code or custom test scripts.
 
 ## 2. Artifact-Aware Scoring Profiles (100 Points) & Calibrated Anchors
 
@@ -15,7 +17,6 @@ Resolve applicable criteria from the intended artifact (`Theory`, `Lab`, `Compac
 
 | Artifact Profile | Accuracy | Mechanism / Depth | Prerequisites | Examples / Trace | Evidence / Fidelity | Presentation & Conciseness |
 |---|---|---|---|---|---|---|
-| **Substantive Theory (`M1`/`M2`)** | 25% | 25% | 12% | 13% | 12% | 13% (incl. transfer) |
 | **Experimental Lab / `M5`** | 25% | 15% | 8% | 32% (lab correctness & A–G) | 10% | 10% |
 | **Compact Reference (`M3`)** | 35% | 15% | 10% | 20% | 10% | 10% |
 | **Strict-Source Note (`strict`)** | 30% | 20% | 10% | 10% (source-bound) | 20% (fidelity & gaps) | 10% |
@@ -42,7 +43,7 @@ Resolve applicable criteria from the intended artifact (`Theory`, `Lab`, `Compac
 
 ## 3. Experimental Benchmark Matrix, Ablation & Learning Effectiveness
 
-Run and log these seven controlled comparisons rather than treating single-run impressions or unmeasured layer definitions as proof:
+Choose the comparisons that answer the requested evaluation question. Use matched conditions and independent blind review where available. Include unseen cross-domain topics and failure scenarios when they bear on the question.
 
 | Experiment | Purpose |
 |---|---|
@@ -55,4 +56,13 @@ Run and log these seven controlled comparisons rather than treating single-run i
 | **7. Cross-model portability** | Measure instruction reliability across different supported models |
 
 Record exact generated artifacts, model configuration, available tools, input/source conditions, and observed limitations alongside scores.
+
+### Comprehensive Theory Scorecard (100 Points)
+Use this consolidated 10-dimension `M1` rubric (adapting weights by excluding genuinely inapplicable dimensions—such as mathematical derivations in pure history—and normalizing remaining weights; never declare visual teaching inapplicable on visually rich topics without justification):
+- **Weighted rubric dimensions:** Beginner accessibility (`15%`) · Self-contained knowledge (`10%`) · Theory completeness (`15%`) · Factual accuracy (`10%`) · Mathematical teaching (`15%`) · Conceptual reasoning (`10%`) · Visual teaching (`8%`) · Examples and independent application (`7%`) · Writing tone and continuity (`5%`) · Formatting and reading experience (`5%`).
+- **Evidence-anchored rating & overrides:** Score each applicable dimension with cited textual evidence from `0` (*missing or fundamentally wrong*), `1` (*seriously deficient*), `2` (*partially adequate*), `3` (*competent*), `4` (*strong*), to `5` (*exceptional*) and convert to its weighted mark. Target at least **`85/100`** on `M1` manual quality reviews and at least **`4/5`** in applicable essential educational dimensions (a quality-control target, not a measured guarantee of student learning). Source integrity, safety, authorization, and non-execution remain mandatory acceptance conditions regardless of score; Critical correctness, safety, source-integrity, and prerequisite defects override aggregate scores.
 - **Learning effectiveness:** Where learner testing is conducted, measure **immediate recall**, **mechanism explanation ("why")**, **application accuracy**, **delayed recall**, **transfer**, **study time**, and **misconception reduction**.
+
+## 4. Resource Accounting *(Evaluations & Requested Performance Reports Only)*
+
+Activate only during evaluations or when the user explicitly requests performance/cost accounting (never add overhead during normal note generation). When provider metadata is available, record model, input/output tokens, cached input, reasoning tokens if exposed, calls/retries/validation calls, elapsed time, accepted output size, and cost using an identified price schedule. Avoid double counting reasoning tokens if included in output totals. Without metadata, report only explicitly labeled estimates or measured character/byte sizes.

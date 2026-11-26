@@ -4,18 +4,19 @@
 
 Separate **planning, writing, criticism, and repair** so review is genuinely diagnostic rather than rubber-stamping an author's own draft. When the host supports an independent reviewer context, use it selectively for substantial or high-risk topics; otherwise perform distinct authoring and review passes and disclose that independence was not available. Never accept an author's self-declaration as proof that requirements were met—inspect the actual paragraphs, equations, examples, and claims against [educational-editor.md](educational-editor.md) and the unified `0–5` scale in [adaptive-engine.md](../authoring/adaptive-engine.md).
 
-## 1. Six Adversarial Review Lenses
+## 1. Seven Consolidated Review Perspectives
 
-Apply these as focused review perspectives in a single manual pass (no separate subagents required):
+Apply these seven diagnostic perspectives in a single consolidated manual review pass (no separate redundant full-document review passes or subagents required):
 
-| Lens | What It Hunts For |
+| Perspective | What It Hunts For |
 |---|---|
-| **1. Subject expert** | Factual errors, missing core mechanisms, outdated conventions, misleading simplifications |
-| **2. Beginner learner** | Unexplained terminology, hidden prerequisites, abrupt leaps from concrete to abstract |
-| **3. Mathematical reviewer** | Unjustified algebraic transitions, missing hypotheses/conditions, unit/dimension/notation drift, wrong operators |
-| **4. Skeptical reader** | Unsupported claims, conflated epistemic statuses (hypothesis stated as law, correlation as causation), overgeneralizations |
-| **5. Practical problem solver** | Explanations that describe a concept without enabling the learner to apply, compute, trace, or diagnose an unseen case |
-| **6. Educational editor** | Redundant repetition, broken conceptual continuity, weak transitions, tables/visuals disconnected from prose |
+| **1. Sequential beginner review** | Read strictly from start to finish as a first-time learner; find the **earliest** unexplained term, analogy-to-formalism cliff, missing essential prerequisite, operator dump, unsupported formula, confusing transition, incomplete example, or exercise requiring untaught knowledge—repairing the earliest defect before reviewing dependent sections |
+| **2. Professor perspective** | Missing curriculum pillars, superficial mechanism descriptions lacking causal *why*, misleading analogies/simplifications, omitted variants/limitations, compressed later sections |
+| **3. Mathematical perspective** | Generalized-first abstraction inversion, skipped foundational derivations, operator dumping, invalid algebra, missing parameter bounds/equality/tie-policy conditions, set-vs.-index notation drift, empirical-to-monotonic overclaims, hidden fold-only milestones |
+| **4. Visual-learning perspective** | Prohibited generated visuals (AI/native tools, plotting scripts, custom SVG, redrawn art), visually rich sections limited to 0–1 token images or clustered in the intro/gallery, uninspected assets or search-thumbnail/webpage URLs, missing before/image/caption/after narrative, missing attribution/license checks |
+| **5. Textbook-editor & collapsed-state perspective** | Compressed research-paper shorthand, unnecessary dramatic language (`"fatal flaw"`), AI writing signatures (`"In simple words"`, repeated `"Imagine that"`), generic callout titles, collapsed-state coherence failures (read with every optional callout closed first, then expanded), callout underutilization/overload, meta/robotic headings, broken reading rhythm |
+| **6. Practical-learning & independent-learning perspective** | Theory disconnected from implementation, conflated cost components (data reference vs. read/copy vs. index vs. query), omitted edge cases, weak fading/transfer readiness to solve unfamiliar cases (evaluating preparation without claiming empirical mastery) |
+| **7. Source-review perspective** | Unsupported certainty, conflated epistemic statuses, library/version/variant conflation, missing primary references, inaccurate attribution, or source-policy breaches |
 
 ### Mandatory Diagnostic Questions
 
@@ -41,9 +42,20 @@ Search drafts for these explanatory failure modes without emitting a visible che
 | **Assumption invisibility** | Presents a conditional theorem/rule as universally true |
 | **Definition overload** | Introduces too many mutually dependent terms at once |
 | **False completeness** | Name-drops advanced jargon without teaching its mechanism |
-| **Procedural memorization** | Gives steps without why they hold (`Level 1–2` instead of justification) |
+| **Procedure memorization** | Gives steps without why they hold (`Level 1–2` instead of justification) |
 | **Context-free formalism** | Drops equations without establishing what question they answer |
 | **Unsupported certainty** | States plausible hypotheses or conditional results as settled fact |
+| **Jargon-first / analogy-to-formalism cliff** | Opens with an everyday analogy or dense technical summary and immediately drops formal sets, vectors, or jargon before building the idea |
+| **Generalized-first math inversion** | Starts with the most general parametric family (e.g., general $L_p$ norms) before concrete cases and foundational Pythagorean/Euclidean derivations |
+| **Operator dumping** | Combines indicator functions, summations, and $\arg\max$ (or nested matrix/probabilistic ops) before teaching each operation singly |
+| **Premature mathematical tool use** | Applies Taylor expansion, Newton's method, etc. on complex objectives before teaching the tool on a simple case |
+| **Compressed research-paper tone & later-section thinning** | Packs three or four conceptual/algebraic steps into one sentence, uses dramatic labels (`"fatal flaw"`), or delivers rich early sections followed by compressed late topics |
+| **Empirical-to-monotonic / cost conflation** | Turns a qualitative tendency into a strict monotonic guarantee or equates retaining a dataset reference with reading/copying/scanning the whole dataset |
+| **Single-step iterative trace** | Stops an iterative/sequential algorithm after one round without showing updated state carryover or unseen inference |
+| **Prohibited image generation or single-image token compliance** | Uses AI/native-generated images, plotting scripts, custom SVG, or redrawn diagrams, or stops at one token image / gallery dump on a visually rich chapter without running web-search refinement and fallback disclosure |
+| **Unverified search thumbnail / missing vault image** | Confuses an image-search result link or webpage URL with a downloaded, inspected educational image |
+| **Callout underutilization or hidden reasoning** | Leaves long optional proofs/refreshers all inline or hides essential mechanisms, assumptions, or prerequisites inside collapsed folds/companion files |
+| **Library/variant conflation** | Presents method-specific or version-specific behavior (e.g., `approx` vs `hist`, pruning updaters) as universal algorithm law |
 
 **Conceptual "Why-Depth" Check:** Within the existing unified `0–5` scale, ensure core mechanisms rise past bare **operation** (*"subtracts $\eta\nabla J$"*) through **immediate reason** (*"steepest local descent direction"*), **mathematical/causal justification** (*first-order expansion $J(w+\Delta w) \approx J(w) + \nabla J(w)^\top \Delta w$*), and **validity boundary** (*holds locally for small steps at nonstationary points, not arbitrary step sizes or global optimality*).
 
@@ -57,7 +69,7 @@ Read the draft twice, first with formula folds closed to check the visible argum
 | **Fragmented reasoning** | Group connected equations under one objective and give their operations explanatory transitions |
 | **Definition treated as theorem** | Identify the stipulation and motivate its meaning |
 | **Missing derivation** | Construct the formula completely from established principles/identities |
-| **Algebraic teleportation** | Restore missing intermediate transformations inside the formula fold |
+| **Missing algebraic transitions** | Restore the missing transformations in the visible derivation or its existing solution/formula fold, as appropriate |
 | **Unexplained cancellation** | Explain explicitly which factors cancel and why |
 | **Missing assumption** | State conditions/hypotheses required for the transformation to hold |
 | **Circular proof** | Replace with valid independent starting principles |
@@ -80,7 +92,7 @@ Classify every defect by severity and repair **both the defect and all downstrea
 | Severity | Examples | Required Action |
 |---|---|---|
 | **Critical** | Fabricated source/observation, unsafe lab/security instruction, fundamentally wrong theorem/formula | **Block acceptance** until fixed and re-reviewed |
-| **Major** | Incorrect derivation/sign/operator, missing central mechanism, broken implementation contract | **Repair and re-review** affected sections & bundle |
+| **Major** | Incorrect derivation/sign/operator, missing central mechanism, missing essential prerequisites or core mathematical tool bridges, silent omission of major `M1` curriculum pillars, silent omission of required permitted visuals, broken implementation contract | **Repair and re-review** affected sections & bundle |
 | **Moderate** | Unexplained prerequisite, weak/non-discriminating example, missing qualification | **Improve** the affected explanation locally |
 | **Minor** | Awkward phrasing, spacing, redundant sentence | **Editorial polish** (never override deeper checks) |
 

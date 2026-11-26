@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Maintain strict symbol, convention, fixture, and concept-ownership consistency across **3-file topic bundles** (Theory, Lab, Mastery) and **multi-chapter collections** without creating extra generated files.
+Maintain strict symbol, convention, shared worked-example, and concept-ownership consistency across every artifact included in the resolved **`artifact_plan`** ([adaptive-engine.md](adaptive-engine.md)—covering single-note updates, multi-file topic bundles, and multi-chapter collections) without creating extra generated files.
 
 ## Collection-Level Ledger (Not Per-Concept)
 
@@ -16,7 +16,7 @@ Maintain this ledger once at the **collection/bundle level** inside the [hierarc
    - *Library-specific parameter names* (API names mapped explicitly back to canonical equations)
    Whenever a convention changes across scope boundaries, bridge the transition explicitly so no symbol is ambiguous inside its reasoning context.
 2. **Canonical definitions & objective scaling:** Single authoritative home for each definition/objective (e.g., if Theory defines MSE with $\frac{1}{m}$, Lab must not silently switch to half-MSE $\frac{1}{2m}$).
-3. **Shared fixtures:** Reuse named running fixtures across Theory, Lab, and File 3 where continuity helps, declaring any intentional stress/evaluation fixture separately.
+3. **Shared worked examples:** Reuse named running examples across Theory, Lab, and File 3 where continuity helps, declaring any intentional stress or edge-case example separately.
 4. **Concept ownership & chapter boundaries:** Record which chapter owns each concept's full explanation so later chapters link back (`[[03 - Gradient Descent]]`) instead of re-deriving or drifting.
 
 ## Objective-Level Equivalence & Cross-Artifact Check
@@ -27,12 +27,10 @@ Never assume generic parameter conversion shortcuts (such as `C = 1 / alpha`) ho
 
 For every major learning objective in the internal plan, align coverage cleanly across included bundle artifacts without turning File 3 into disconnected trivia or repeating derivations verbatim:
 - **Theory (`File 1`):** Explains and establishes mechanisms, definitions, assumptions, and conceptual transitions.
-- **Lab (`File 2`):** Realizes, computes, traces, and investigates the same mechanism under stated fixtures and parameters.
+- **Lab (`File 2`):** Realizes, computes, traces, and investigates the same mechanism under stated inputs and parameters.
 - **Mastery (`File 3`):** Tests recognition, diagnosis, edge cases, and transfer aligned to the taught objectives.
 Verify before acceptance that practical objectives receive lab realization when included, and Theory, Lab, and Mastery share exact notation, objective scaling, and validity conditions.
 
 ## Claim Propagation & Defect Tracking
 
-Whenever a canonical claim, assumption, counterexample, or defect is established or repaired (for example, clarifying that raising a classification threshold does *not* monotonically guarantee higher precision), trace and update **every dependent occurrence** across Theory explanatory prose, Lab evaluation scripts/traces, Cheatsheet summary rows, Interview Q&A answers, and related Quiz/Revision fixtures—preserving productive retrieval repetition without propagating conflicting claims.
-
-Distinguish the data-generating probability, model probability, observed label, and thresholded prediction. Define their notation at first use and carry the distinction through examples, code, and assessment.
+Whenever a canonical claim, assumption, counterexample, or defect is established or repaired (for example, clarifying that raising a classification threshold does *not* monotonically guarantee higher precision), trace and update **every dependent occurrence** across Theory explanatory prose, Lab traces and explanations, Cheatsheet summary rows, Interview Q&A answers, and related Quiz/Revision prompts—preserving productive retrieval repetition without propagating conflicting claims.

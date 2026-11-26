@@ -1,12 +1,12 @@
 # Scriptorium
 
-**Scriptorium** is an instruction-and-reference-only agentic skill for authoring, organizing, and reviewing **Obsidian Markdown learning notes**. It consists purely of declarative Markdown instructions, templates, domain subtemplates, and routing metadata—with zero custom Python/JavaScript runtimes, download scripts, or build dependencies.
+**Scriptorium** is a strictly **instruction-and-reference-only** agentic skill for authoring, organizing, and reviewing **Obsidian Markdown learning notes**. The entire repository (`SKILL.md`, `core/`, `docs/`, `skills/`, and `evaluations/`) consists purely of declarative Markdown instructions, templates, domain subtemplates, routing metadata, and manual evaluation rubrics—with **zero** executable scripts, custom validators, stored sample vaults, or pre-generated educational note bundles.
 
 ---
 
 ## Repository-local skills
 
-Open this checkout as the project or workspace to discover `scriptorium` and all six `scribe-*` skills.
+Open the full checkout as the project or workspace so the agent can discover `scriptorium` and the six `scribe-*` skills using the paths below.
 
 | Agent | Discovery path |
 |---|---|
@@ -14,7 +14,7 @@ Open this checkout as the project or workspace to discover `scriptorium` and all
 | Codex and Antigravity | `.agents/skills/` |
 | Gemini CLI | `.gemini/skills/` or `.agents/skills/` |
 
-The discovery files forward to the canonical instructions in `SKILL.md` and `skills/`.
+The discovery files forward to the canonical instructions in `SKILL.md` and `skills/`. A copied wrapper needs the surrounding checkout to resolve its references.
 
 ### Upload to Claude
 
@@ -28,7 +28,7 @@ git archive --format=zip --prefix=scriptorium/ --output=../scriptorium-skill.zip
   SKILL.md LICENSE router.md core docs skills
 ```
 
-The plugin archive places [the manifest](.claude-plugin/plugin.json) at its root. The skill archive wraps its files in a single `scriptorium/` folder. Both layouts include the referenced policies and contain only regular files. [Claude plugin installation](https://support.claude.com/en/articles/13837440-use-plugins-in-claude) · [Claude custom skill installation](https://support.claude.com/en/articles/12512180-use-skills-in-claude)
+These commands archive committed `HEAD` only. The plugin archive places [the manifest](.claude-plugin/plugin.json) at the root, and the skill archive uses a single `scriptorium/` folder. Both include the policies required by the canonical skills. [Claude plugin installation](https://support.claude.com/en/articles/13837440-use-plugins-in-claude) · [Claude custom skill installation](https://support.claude.com/en/articles/12512180-use-skills-in-claude)
 
 ## 1. Public Commands (`skills/`)
 
@@ -41,19 +41,19 @@ The plugin archive places [the manifest](.claude-plugin/plugin.json) at its root
 | `/scribe-audit` | [skills/scribe-audit/SKILL.md](skills/scribe-audit/SKILL.md) | Audits existing vault notes read-only across theory, math, prerequisites, lab integrity, evidence, presentation, and consistency dimensions. | No (read-only by default) |
 | `/scribe-setfolder` | [skills/scribe-setfolder/SKILL.md](skills/scribe-setfolder/SKILL.md) | Sets or inspects the default Obsidian vault and target notes folder. | Config only (`~/.scriptorium-config.json`) |
 
-Root orchestration starts at [SKILL.md](SKILL.md) (using **responsibility-based governance precedence** rather than a rigid numbered hierarchy), routes across four independent dimensions via [router.md](router.md), [master-registry.yaml](docs/dispatch/master-registry.yaml), and [subject-registry.yaml](docs/dispatch/subject-registry.yaml), and resolves destinations via [pre-gen-gate.md](docs/procedures/authoring/pre-gen-gate.md) (precedence: explicit vault path > `SCRIPTORIUM_VAULT_PATH` > `~/.scriptorium-config.json`).
+The root skill establishes the order of authority. The routing policy separates format, knowledge type, subject and practical investigation. The destination policy resolves explicit paths, environment settings and saved configuration in that order. [Root skill](SKILL.md) · [Routing policy](docs/dispatch/routing-policy.md) · [Destination policy](docs/procedures/authoring/pre-gen-gate.md)
 
 ---
 
 ## 2. How the Authoring Workflow Operates
 
-1. **Intent & Route Resolution:** [router.md](router.md) and [routing-policy.md](docs/dispatch/routing-policy.md) select the output format (`M1`–`M7`, or `video-notes.md` for `/scribe-ytnotes`) and load only the needed files via [docs/README.md](docs/README.md).
-2. **Destination & Safety Gate:** [pre-gen-gate.md](docs/procedures/authoring/pre-gen-gate.md) checks existing vault files before writing, preserves custom YAML/notes, and prevents accidental overwrites.
+1. **Intent & Route Resolution:** [router.md](router.md) and [routing-policy.md](docs/dispatch/routing-policy.md) select the output format (`M1`–`M7`, or `video-notes.md` for `/scribe-ytnotes`) and load only the needed files via [docs/README.md](docs/README.md), governed by the **8-stage generalized authoring lifecycle** in [runtime_pipeline.md](core/runtime_pipeline.md).
+2. **Destination & Safety Gate:** [pre-gen-gate.md](docs/procedures/authoring/pre-gen-gate.md) resolves paths without premature folder creation, preserves custom YAML/notes, and prevents accidental overwrites.
 3. **Research & Source Fidelity:** [research-engine.md](docs/procedures/sourcing/research-engine.md) and [source-fidelity.md](docs/procedures/sourcing/source-fidelity.md) ground claims with locators, respect source-only boundaries, and mark unconfirmed claims `[UNVERIFIED]`.
-4. **Self-Contained Layered Teaching, Theory Quality & Unified Math Policy:** [teaching_core.md](core/teaching_core.md) and [theory_quality_contract.md](core/theory_quality_contract.md) enforce genuine zero-prerequisite ordering, separated metadata, clickable Obsidian TOC links, progressive abstraction, multi-perspective explanations, forward/reverse reasoning, ideal-to-real model progression, epistemic claim classification, question-specific reasoning patterns, and calm reference prose. [curriculum-discovery.md](docs/procedures/authoring/curriculum-discovery.md) and [subject-theory-profiles.md](docs/blueprints/components/subject-theory-profiles.md) provide research-driven syllabus discovery, shared internal concept records, selectable topic-family completeness checklists, and a misconception library. [math_gates.md](core/math_gates.md) governs objective-driven math inclusion across five internal concept profiles, visible reasoning units, complete descriptive derivation folds, source boundaries, and equation-to-code alignment.
-5. **Relevance-Governed Visuals & Source Hierarchy:** [representations.md](docs/procedures/authoring/representations.md) uses a 5-level visual source hierarchy, adaptive image sizing, diagram-to-model correspondence, and relevance-based acquisition (disabled under `strict` source-only mode), while forbidding Mermaid or ASCII graphs/diagrams.
-6. **Artifact Cardinality & Subject-Tailored Labs:** `artifact_policy` in [master-registry.yaml](docs/dispatch/master-registry.yaml) controls bundle emission (`M1`/`M2` default to 3-file bundles; `M3`/`M4`/`M6`/`M7` emit single artifacts; `M5` emits an implementation guide without duplicating an identical lab; `/scribe-ytnotes` emits one self-contained note per video). [experimental-lab.md](docs/procedures/authoring/experimental-lab.md) uses four universal practical perspectives, shared-foundation + track-specific walkthroughs, and 3-attribute experiment integrity (*Origin*, *Method*, *Verification*).
-7. **Lean 6-Stage Review & Adversarial Verification:** [verification-checklist.md](docs/procedures/review/verification-checklist.md) and [adversarial-theory-review.md](docs/procedures/review/adversarial-theory-review.md) perform 6-stage quality, unified 0–5 theory-depth, safety-policy, and delivery checks against the actual saved Markdown.
+4. **Self-Contained Layered Teaching, Theory Quality & Unified Math Policy:** [teaching_core.md](core/teaching_core.md) and [theory_quality_contract.md](core/theory_quality_contract.md) enforce beginner-first progression throughout chapters, prerequisite closure, separated metadata, clickable Obsidian TOC links, progressive abstraction, multi-perspective explanations, forward/reverse reasoning, ideal-to-real model progression, epistemic claim classification, and textbook-clear prose. [curriculum-discovery.md](docs/procedures/authoring/curriculum-discovery.md) and [subject-theory-profiles.md](docs/blueprints/components/subject-theory-profiles.md) provide research-driven syllabus discovery across all 21 specialized subjects plus `general`, shared internal concept records, and a misconception library. [math_gates.md](core/math_gates.md) enforces concrete-to-abstract math progression, operator-by-operator buildup, visible reasoning units, focused derivation folds, and strict bound/notation verification.
+5. **Distributed Web-Only Visuals & 4-Level Source Hierarchy:** [representations.md](docs/procedures/authoring/representations.md) enforces strict web-sourced educational image retrieval across relevant sections using a 4-level hierarchy (`supplied source` $\to$ `verified web raster` $\to$ `prose/tables/traces` $\to$ `attributed link`, disabled under `strict` source-only mode), adaptive sizing, before/image/caption/after teaching, and an absolute ban on AI/native image generation, programmatic plots, custom SVG, Mermaid, and ASCII diagrams.
+6. **Artifact Cardinality & Experimental Labs (Python Default; Opt-In Rust):** The extensible `artifact_plan` in [adaptive-engine.md](docs/procedures/authoring/adaptive-engine.md) and `artifact_policy` in [master-registry.yaml](docs/dispatch/master-registry.yaml) control bundle emission (`M1`/`M2` default to conditional bundles resolved against source constraints and user overrides; `M3`/`M4`/`M6`/`M7` emit single artifacts; `M5` emits an implementation guide without duplicating an identical lab; `/scribe-ytnotes` emits one self-contained note per video). [experimental-lab.md](docs/procedures/authoring/experimental-lab.md) and `docs/blueprints/investigations/` enforce 3-attribute experiment integrity (*Origin*, *Method*, *Verification*), non-executed static/analytical review disclosures, and strict language discipline (**Python by default** for ML labs, honoring explicitly requested stacks—**Rust is strictly opt-in and never included by default**).
+7. **Sequential Beginner Pass & Manual Review Gates:** [adversarial-theory-review.md](docs/procedures/review/adversarial-theory-review.md) and [verification-checklist.md](docs/procedures/review/verification-checklist.md) enforce Stage 6 earliest-defect beginner review, collapsed-state coherence, Gates A–J, the Strict Visual Acceptance Gate, and Critical Defect Overrides before saving, followed by post-save saved-file inspection.
 
 ---
 
@@ -70,7 +70,7 @@ Root orchestration starts at [SKILL.md](SKILL.md) (using **responsibility-based 
   - [video-notes.md](docs/blueprints/formats/video-notes.md) — Single-file, transcript-first notes with conditional web visuals for `/scribe-ytnotes`
 - **Knowledge-Type Subtemplates (`domains/`):** [conceptual.md](docs/blueprints/domains/conceptual.md), [mathematical.md](docs/blueprints/domains/mathematical.md), [computational.md](docs/blueprints/domains/computational.md), [scientific.md](docs/blueprints/domains/scientific.md), [empirical.md](docs/blueprints/domains/empirical.md), [historical.md](docs/blueprints/domains/historical.md).
 - **Presets (`presets/`):** `atomic-card`, `command-reference`, `comparison-guide`, `concept-map`, `flashcards`, `formula-sheet`, `lecture-order`, `mock-exam`, `paper-breakdown`, `quick-summary`, `revision-pack`, `syntax-reference`.
-- **Subject Theory & Investigation Blueprints (`subjects/` & `investigations/`):** Mapped cleanly via [subject-registry.yaml](docs/dispatch/subject-registry.yaml) across `machine-learning`, `deep-learning`, `generative-ai`, `fullstack`, `cybersecurity`, `electrical`, `algorithms`, `computer-architecture`, `numerical-computing`, `information-theory`, `operating-systems`, `networking`, `databases`, `devops`, `distributed-systems`, `mathematics`, `statistics`, `physics`, `chemistry`, `biology`, `coding`, and `general`, with safety boundaries in [security-education.md](docs/procedures/safety/security-education.md) and [physical-lab-safety.md](docs/procedures/safety/physical-lab-safety.md).
+- **Subject Theory & Investigation Blueprints (`subjects/` & `investigations/`):** Mapped cleanly via [subject-registry.yaml](docs/dispatch/subject-registry.yaml) across `21` specialized subject theory blueprints plus the `general` fallback (`22` registry entries total: `machine_learning`, `deep_learning`, `generative_ai`, `programming`, `algorithms`, `fullstack`, `cybersecurity`, `electrical`, `operating_systems`, `computer_architecture`, `numerical_computing`, `information_theory`, `networking`, `databases`, `devops`, `distributed_systems`, `mathematics`, `statistics`, `physics`, `chemistry`, `biology`, and `general`), with safety boundaries in [security-education.md](docs/procedures/safety/security-education.md) and [physical-lab-safety.md](docs/procedures/safety/physical-lab-safety.md).
 
 ---
 
@@ -95,7 +95,7 @@ scriptorium/
 │   ├── teaching_core.md             # Zero-prerequisite flow, tiered concepts & voice
 │   ├── theory_quality_contract.md   # Progressive abstraction, perspectives, claim status & transfer
 │   ├── math_gates.md                # Objective-driven math profiles & formula folds
-│   ├── authoring_rules.md           # YAML profiles, Obsidian Markdown & naming rules
+│   ├── authoring_rules.md           # Obsidian Markdown, presentation & prose rules
 │   └── footer_widgets.md            # Vault navigation footer cues
 ├── docs/                            # Selectively loaded references
 │   ├── README.md                    # Reference loading index
@@ -117,16 +117,16 @@ scriptorium/
 │       ├── safety/                  # Security education & physical/wet-lab safety policies
 │       ├── updating/                # Revision, lifecycle & safe vault linking
 │       └── review/                  # Manual verification gate, educational editor & adversarial theory review
-└── evaluations/                     # Declarative trigger, adversarial & cross-domain evals
-    ├── evals.json
-    ├── trigger_eval.json
-    ├── rubrics/                     # Evaluation-only theory, practical & presentation rubrics
-    └── fixtures/                    # Evaluation-only golden vs. flawed contrast fixtures
+└── evaluations/                     # Declarative manual scenarios, triggers, rubrics & benchmark protocol
+    ├── evals.json                   # Manual scenarios, some requiring evaluator-supplied inputs
+    ├── trigger_eval.json            # Declarative command-triggering queries
+    ├── benchmark-protocol.md        # Manual blind comparison & scoring methodology
+    └── rubrics/                     # Manual theory, practical & presentation rubrics
 ```
 
 ---
 
-## 5. Limits & Maintenance
+## 5. Manual Evaluation, Limits & Maintenance
 
-- **Honest verification:** Scriptorium relies on direct Markdown authoring and manual checklist review; it does not provide automated code execution, cryptographic publication receipts, atomic multi-file transactions, or live Obsidian UI rendering checks.
-- **Maintenance:** Keep executable scripts out of the repository, update affected callers and `evaluations/` when modifying shared rules, and see [migration-notes.md](docs/specs/migration-notes.md) and [LICENSE](LICENSE) for history and licensing.
+- **Honest verification & manual evaluation:** Scriptorium relies solely on direct Markdown authoring and manual checklist review; all scenarios in `evaluations/` are evaluated manually on freshly generated outputs using evaluator-supplied material under [benchmark-protocol.md](evaluations/benchmark-protocol.md). It does not provide automated script validators, code execution, automatic YAML parsing, cryptographic publication receipts, atomic multi-file transactions, or live Obsidian UI rendering checks.
+- **Maintenance:** Keep executable scripts and generated note bundles out of the repository entirely, update affected callers and declarative `evaluations/` scenarios when modifying shared rules, and see [migration-notes.md](docs/specs/migration-notes.md) and [LICENSE](LICENSE) for history and licensing.

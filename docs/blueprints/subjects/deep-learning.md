@@ -11,6 +11,7 @@ Guide Deep Learning theory notes from scalar operations to modern tensor archite
 3. **Architecture & Inductive Bias:** Explain *why* each structural mechanism exists—convolutions (locality/equivariance), recurrence/gating (sequential state), residual connections (gradient highways), normalization (BatchNorm/LayerNorm statistics & train-vs.-eval state behavior), and attention (query-key-value similarity & quadratic scaling).
 4. **Optimization, Initialization, Precision & Stability:** Motivate Xavier/He variance-preserving initialization, momentum/`Adam`/`AdamW` (decoupled weight decay), learning-rate schedules, gradient accumulation, gradient clipping, mixed precision (`fp16`/`bf16` vs. `fp32` master weights/loss scaling), and logits-based losses.
 5. **Generalization & Failure Modes:** Address capacity/regularization, dead ReLUs, vanishing/exploding gradients, and training-vs.-inference mode mismatches.
+6. **Beginner Progression, Visuals & Practice:** Close prerequisite calculus/linear-algebra tools (chain rule, matrix shapes) inline before backpropagation equations, trace one tiny hand-verifiable forward-and-backward numerical pass before scaling to layers (followed by an independent check), and retrieve verified web-sourced architecture/curve diagrams per [representations.md](../../procedures/authoring/representations.md) (never generated/Mermaid/ASCII).
 
 ## 2. Framework Semantics Separation (PyTorch vs. JAX)
 

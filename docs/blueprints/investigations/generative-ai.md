@@ -14,4 +14,4 @@ Applies to Generative AI (LLMs, diffusion, VAEs, multimodal), RAG, AI Agents, an
 | **MLOps** | Data/model lineage & lifecycle trace | Reproducible train/eval pipeline | Serving, registry & version config | Covariate/concept drift checks, rollback & monitoring alerts |
 
 ## Specialized Walkthrough & Verification
-Mark synthetic numbers **manual_arithmetic / author-derived** and unexecuted pipelines **expected / statically_reviewed**. End with **`Source and static review only; not compiled or executed here.`**
+Default to **Python** unless another language is requested (never adding unsolicited Rust), distinguish hand-calculated metrics on synthetic inputs from predictions about pipeline behavior, include failure-debugging checks and 1–2 **Independent Exercises** (`> [!hint]-` / `> [!success]-`), and close with **`Source and static review only; not compiled or executed here.`**

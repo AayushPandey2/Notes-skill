@@ -22,3 +22,4 @@ Teach Algorithms and Data Structures through **problem representation, problem-f
 - *Trees & Heaps:* Height/balance invariants, recursive subtree contracts, heapify $O(n)$ vs. $O(n \log n)$ analysis.
 - *Graphs:* Adjacency list vs. matrix trade-offs, BFS shortest unweighted paths, DFS discovery/finish structure, relaxation invariants.
 - *DP & Greedy:* State definition, transition DAG/topological order, memoization vs. tabulation; greedy exchange proof vs. counterexample.
+- *Beginner Progression, Visuals & Practice:* Trace a small concrete example (4–6 elements or tiny graph) before formal invariants/recurrences while closing asymptotic/recursion prerequisites inline, retrieve verified web-sourced tree/graph/algorithm diagrams per [representations.md](../../procedures/authoring/representations.md) (never generated/Mermaid/ASCII) alongside explicit state tables, and progress from a worked trace to an independent variant or edge-case check.

@@ -16,3 +16,6 @@ Develop major security topics through: **Asset $\to$ Trust boundary $\to$ Threat
 - **Network & Cloud Security:** Network/IAM perimeter & segmentation $\to$ shared-responsibility boundary $\to$ least-privilege policy evaluation $\to$ misconfiguration detection.
 - **Digital Forensics & Incident Response:** Volatile-to-persistent artifact preservation $\to$ chain of custody & integrity hashing $\to$ timeline reconstruction $\to$ triage, containment, eradication, recovery.
 - **Security Testing & AI Security:** Explicit authorization & scope $\to$ model/tool trust boundaries (prompt injection, untrusted tool outputs, data leakage) $\to$ deterministic controls outside the LLM.
+
+## 3. Beginner Progression, Visuals & Practice
+Introduce abstract security properties through a concrete everyday trust-boundary scenario (closing underlying web, OS, or networking prerequisites inline), pair trust-boundary and attack/defense data flows with verified web-sourced reference diagrams per [representations.md](../../procedures/authoring/representations.md) (never generated/Mermaid/ASCII) or clean request-flow tables, and walk through one sanitized end-to-end threat-and-defense trace before an independent defensive threat-modeling prompt.

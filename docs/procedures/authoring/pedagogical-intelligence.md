@@ -9,7 +9,7 @@ Load this only when a deep-study collection or multi-concept note needs dependen
 
 ## Core Rules
 
-1. **Dependency Mapping:** Separate prerequisite order (`essential`, `supporting`, `contextual`) from chapter layout. Order independent curricula topologically on `essential` dependencies; break cycles by explaining a shared foundation first. In source-ordered notes, preserve source order and insert concise local prerequisite bridges before use.
-2. **Misconception Placement:** Place targeted corrections (`terminological`, `mathematical`, `conceptual`, `statistical`, `scope`) beside the exact step where confusion arises rather than asserting a reader holds a misconception or inventing frequency stats.
+1. **Dependency Mapping:** Separate prerequisite order (`essential`, `supporting`, `extended background` per [teaching_core.md](../../../core/teaching_core.md)) from chapter layout. Order independent curricula topologically on `essential` dependencies; break cycles by explaining a shared foundation first. In source-ordered notes, preserve source order and insert concise local prerequisite bridges before use.
+2. **Misconception Placement:** Place contextual corrections per [teaching_core.md](../../../core/teaching_core.md) across `terminological`, `mathematical`, `conceptual`, `statistical`, and `scope` errors without asserting the reader holds a misconception or inventing frequency stats.
 3. **Cross-Topic Vault Linking:** Connect related concepts using typed relationships (`builds_upon`, `generalizes`, `contrasts_with`, `applies`) against existing or planned vault notes (`nexttopics`). Keep essential explanations local; never turn every technical term into a link.
-4. **Targeted Local Repair:** On review via [verification-checklist.md](../review/verification-checklist.md), repair only the smallest defective span rather than regenerating completed sections.
+4. **Dependency-Aware Local Repair:** On review via [verification-checklist.md](../review/verification-checklist.md), repair the defective span and any dependent downstream explanations, examples, or bundle companions without regenerating unaffected sections.

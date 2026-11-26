@@ -14,8 +14,8 @@ Fallback blueprint when STEM/software labs would impose irrelevant machinery. Se
 | **Economics** | Analytical model | Concrete numerical example | Comparative statics (assumption shift) | Empirical validity & limits |
 | **Psychology** | Construct operationalization | Study-design analysis | Data / effect interpretation | Confounds, bias & limitations |
 | **Sociology** | Bounded case study | Theoretical interpretation | Comparative evidence | Alternative structural accounts |
-| **Geography** | Spatial data fixture | Physical / human process analysis | Map / scale interpretation | Scale, boundary & uncertainty check |
+| **Geography** | Spatial sample data | Physical / human process analysis | Map / scale interpretation | Scale, boundary & uncertainty check |
 | **General** | First-principles construction | Standard decision / method | Controlled assumption variation | Verification & failure analysis |
 
 ## Specialized Walkthrough & Verification
-Apply the A–G walkthrough using domain-native artifacts (argument analysis, primary-source evidence trace, comparative-statics table). If code is genuinely required end with **`Source and static review only; not compiled or executed here.`** otherwise **`Manual logical, evidence, and criteria-based review only (no code executed).`**
+Apply the A–G walkthrough using domain-native artifacts (argument analysis, primary-source evidence trace, comparative-statics table, and 1–2 domain-native **Independent Exploration Prompts** with collapsed hints/answers—pairing primary maps/archival artifacts from [representations.md](../../procedures/authoring/representations.md) where helpful without generating visuals). If code is genuinely required end with **`Source and static review only; not compiled or executed here.`** otherwise **`Manual logical, evidence, and criteria-based review only (no code executed).`**

@@ -12,10 +12,12 @@ Ensure Mathematics notes match their pedagogical strategy to the mathematical di
    - *Symbolic & algebraic manipulation:* Justify equivalence-preserving vs. irreversible steps (e.g., squaring, dividing by potentially zero expressions).
    - *Geometric & structural intuition:* Connect algebraic equations to invariant subspaces, transformations, or constraint regions when geometry illuminates the theorem.
    - *Numerical approximation:* Separate exact symbolic identities from finite-step/finite-precision approximations, tracking truncation error, conditioning, and floating-point cancellation ([math_gates.md](../../../core/math_gates.md)).
-2. **Progressive Abstraction & Formula Construction:** Build from concrete instances to general notation so formulas compress understood mechanics.
-3. **Independent Verification:** Verify results via substitution, invariants, symmetry, limiting cases, or a second independent method—never treating numerical spot-checks as formal proof.
+2. **Independent Verification:** Verify results via substitution, invariants, symmetry, limiting cases, or a second independent method—never treating numerical spot-checks as formal proof.
 
 ## Conditional Topic-Family Overlays
 - *Linear Algebra:* Vector spaces, basis/dimension, rank-nullity, linear maps vs. matrix representations, orthogonality, eigendecomposition/SVD.
 - *Calculus & Analysis:* $\epsilon$-$\delta$ limits, continuity vs. differentiability, local linear approximation, FTC accumulation, uniform vs. pointwise convergence.
 - *Discrete Math & Optimization:* Quantifier negation, induction/bijections, convexity, KKT/Lagrange optimality conditions vs. global guarantees.
+
+## Cross-Disciplinary Progression, Visuals & Practice
+Close prerequisite definitions, lemmas, or component calculus/algebra tools inline before invoking them, motivating formulas concretely before symbolic generalization and showing alternative solution paths where helpful. Pair spatial/geometric or analytic topics (e.g., linear transforms, tangent approximations, surfaces, convergence regions) with verified web-sourced mathematical graphs/diagrams per [representations.md](../../procedures/authoring/representations.md) (never generated plots/SVG/Mermaid/ASCII), and progress from worked proofs/derivations to independent problems with concealed solutions.
