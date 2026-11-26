@@ -8,14 +8,15 @@ Establish one domain-independent theory-authoring architecture across substantiv
 
 Before drafting each major concept, diagnose the gap: identify (1) what the reader currently understands, (2) what the next paragraph assumes, and (3) the missing explanation connecting them. Add the missing reasoning—never another generic introduction or more jargon.
 
-Apply the canonical **four-category prerequisite policy** across all substantive notes:
+Apply the **two-dimension prerequisite policy** across all substantive notes (separating prerequisite importance from the learner's demonstrated knowledge status so an essential concept already mastered is not redundantly retaught):
 
-| Prerequisite Category | Required Treatment |
-|---|---|
-| **Essential** | Explain locally before first dependent use (a link never substitutes for a missing essential foundation) |
-| **Supporting** | Provide a concise bridge or optional collapsed refresher |
-| **Contextual** | Link or mention briefly only when useful |
-| **Learner-demonstrated** | Omit repetitive re-teaching when the learner has already demonstrated or stated mastery (e.g., do not repeatedly reteach matrices or derivatives across an entire collection) |
+| Prerequisite Importance | Treatment When Learner Status Is Unknown / Uncertain | Treatment When Learner Status Is Demonstrated |
+|---|---|---|
+| **Essential** | Explain locally before first dependent use (a link never substitutes) | Concise 1-line anchor or omit repetitive derivation |
+| **Supporting** | Concise bridge or optional collapsed refresher | Brief reference only |
+| **Contextual** | Link or mention briefly only when useful | Omit or link only if requested |
+
+Learner knowledge status levels ([learner-model.md](../docs/procedures/authoring/learner-model.md)): `Demonstrated` · `Self-reported` · `Uncertain` · `Not established`.
 
 - **One conceptual burden at a time:** Start with a concrete problem or phenomenon before introducing terminology. Never stuff advanced claims or dense "Core Characteristics" boxes into the opening (move dense characteristics summaries to revision material).
 - **Clean metadata & hierarchy:** Do not repeat YAML metadata fields (`difficulty`) as visible body dumps; open with a concise purpose, learning path, and clickable TOC. Avoid deep technical-manual heading nesting (`5 → 5.2 → 5.2.1`) and avoid parallel formula or method catalogues before completing one concrete worked example.

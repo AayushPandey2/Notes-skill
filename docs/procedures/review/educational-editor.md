@@ -1,24 +1,26 @@
-# Cognitive Load & Editorial Intelligence
+# Cognitive Load, Editorial Quality & Reader Accessibility
 
 ## Purpose
 
-Review substantive notes from the **reader's perspective** so prose stays clear, cohesive, and genuinely learnable—without reducing intellectual depth to hit arbitrary brevity targets.
+Review substantive notes from the **reader's perspective** so prose is clear, learnable, and accessible across laptops, tablets, and plain Obsidian without plugins—never stripping necessary proof steps or derivations merely for brevity.
 
-## 1. Ten Editorial Defect Dimensions
+## 1. Editorial Dimensions & Productive vs. Redundant Repetition
 
-| Dimension | Defect to Detect & Repair |
+Distinguish **redundant repetition** (restating a definition verbatim immediately after explaining it $\to$ merge or link to canonical home) from **productive retrieval repetition** (deliberate brief recaps or cross-context comparisons that aid memory $\to$ preserve).
+
+| Editorial Defect | Targeted Repair |
 |---|---|
-| **Information density** | Too many new concepts introduced simultaneously |
-| **Reading continuity** | Abrupt jumps between unrelated paragraphs or sections |
-| **Explanation redundancy** | Repeated definitions or summaries adding no new insight |
-| **Cognitive overload** | Simultaneous unfamiliar notation, terminology, and mechanism |
-| **False depth** | Verbose prose that describes terminology without explaining *why* |
-| **Structural fragmentation** | Excessive micro-headings interrupting one connected explanation |
-| **Navigation overload** | Crowded TOCs, excessive links, or stacked callout boxes |
-| **Visual monotony** | Long uninterrupted text walls without tables, examples, or visuals |
-| **Artificial tone** | Generic AI filler (`"We now..."`, `"In conclusion..."`) or inflated jargon |
-| **Discoverability** | Essential reasoning or conclusions hidden inside collapsed folds |
+| **Repeated definition** | Merge or refer to canonical home |
+| **Dense / overloaded passage** | Split at logical boundary; introduce notation/terms progressively |
+| **Structural fragmentation** | Combine closely related micro-sections into one coherent flow |
+| **Essential reasoning hidden in folds** | Restore core explanation to visible prose (notes must stay readable with all callouts collapsed) |
+| **Repeated callouts** | Consolidate into purposeful callouts |
+| **False depth / artificial tone** | Replace AI filler (`"We now..."`) with causal mechanism; never shorten proofs for length |
 
-## 2. Paragraph Contribution Test
+**Paragraph Contribution Test:** Every substantive paragraph must perform at least one distinct function (*definition, motivation, mechanism, evidence, example, interpretation, qualification, comparison,* or *productive synthesis*); merge or drop pure restatements.
 
-Every substantive paragraph must perform **at least one distinct intellectual function**: *definition, motivation, mechanism, evidence, example, interpretation, qualification, comparison,* or *synthesis*. If a paragraph merely restates what the preceding paragraph already established, merge or remove it.
+## 2. Reader Experience & Accessibility
+
+- Split overly wide tables into focused single-question tables; keep code and displayed math lines readable without horizontal overflow.
+- Provide meaningful figure captions and textual equivalents; never rely solely on color to distinguish curves or states.
+- Ensure navigation (`[[#Heading]]` TOC, callouts, wikilinks) works in standard Obsidian without requiring third-party plugins.

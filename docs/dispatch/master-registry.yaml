@@ -36,6 +36,7 @@ artifact_policy:
     explicit_single_file: true
     explicit_artifact_selection: true
     existing_layout_preservation: true
+    source_constraints: Respect source_fidelity permissions—omit unsupported companion artifacts when strict source mode forbids outside additions and supplies no exercises/experiments.
 variants:
   lecture_order: {master: M2, path: docs/blueprints/presets/lecture-order.md}
   formula_sheet: {master: M3, path: docs/blueprints/presets/formula-sheet.md}

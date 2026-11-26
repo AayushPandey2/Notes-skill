@@ -317,6 +317,106 @@
         "Never plays the video, captures frames, or fabricates un-narrated blackboard equations",
         "Records access_state honestly and marks missing visual/transcript content as unavailable"
       ]
+    },
+    {
+      "id": 31,
+      "prompt": "/scribe-notes Explain Principal Component Analysis (PCA) geometry and variance maximization",
+      "expected_output": "Activates concept-reasoning transformation/geometric strategy rather than forcing an iterative gradient-update template, connecting projected variance to reconstruction error.",
+      "files": [],
+      "expectations": [
+        "Connects maximum projected variance and minimum squared reconstruction error geometrically and algebraically",
+        "Does not force iterative gradient-descent parameter updates onto eigendecomposition/SVD PCA"
+      ]
+    },
+    {
+      "id": 32,
+      "prompt": "/scribe-notes I am a beginner in calculus, but teach me the formal epsilon-delta limit definition and squeeze theorem at full mathematical rigor",
+      "expected_output": "Applies learner-model independence of depth and prerequisite support: delivers full formal epsilon-delta rigor while adding smaller transitions and local prerequisite bridges.",
+      "files": [],
+      "expectations": [
+        "Preserves full formal epsilon-delta rigor and quantifier order without dumbing down the theorem",
+        "Provides local essential prerequisite bridges and concrete intuition for a beginner"
+      ]
+    },
+    {
+      "id": 33,
+      "prompt": "/scribe-notes Explain why feature scaling changes K-Nearest Neighbors (KNN) predictions with a numerical example",
+      "expected_output": "Applies example-engineering validity gate: selects a discriminating fixture where unscaled vs range-normalized distances actually flip the selected nearest neighbor.",
+      "files": [],
+      "expectations": [
+        "Constructs a concrete fixture where unscaled features pick one neighbor and scaled features flip to a different neighbor",
+        "Verifies intermediate Euclidean distances accurately across prose and any code"
+      ]
+    },
+    {
+      "id": 34,
+      "prompt": "/scribe-notes Summarize what this Adam optimizer tutorial proves about Adam always outperforming SGD",
+      "expected_output": "Applies claim-verification evidence sufficiency: distinguishes what a single tutorial explains from universal empirical superiority claims, flagging unsupported generalizations.",
+      "files": [],
+      "expectations": [
+        "Rejects or qualifies the overclaim that Adam universally outperforms SGD across tasks",
+        "Separates optimizer mechanics from conditional generalization evidence"
+      ]
+    },
+    {
+      "id": 35,
+      "prompt": "/scribe-notes Explain L2-regularized linear regression in theory and NumPy + scikit-learn",
+      "expected_output": "Applies knowledge-consistency objective-level equivalence: aligns MSE normalization (1/m vs 1/2m vs unnormalized) and derives exact alpha/lambda conversions rather than assuming C = 1/alpha.",
+      "files": [],
+      "expectations": [
+        "Uses matching objective normalization between theory equations and lab code, or derives the exact scaling factor (e.g., alpha = m*lambda)",
+        "Never states C = 1/alpha as a universal identity"
+      ]
+    },
+    {
+      "id": 36,
+      "prompt": "/scribe-notes Explain the proof of the Cauchy-Schwarz inequality cleanly without fluff or missing steps",
+      "expected_output": "Applies educational-editor Paragraph Contribution Test without trimming essential algebraic steps in the proof.",
+      "files": [],
+      "expectations": [
+        "Removes repetitive AI filler while preserving every consequential step of the proof",
+        "Includes equality condition (linear dependence) and a concrete vector verification"
+      ]
+    },
+    {
+      "id": 37,
+      "prompt": "/scribe-quiz Quiz me on Logistic Regression targeting prediction, diagnosis, and transfer—not just definitions",
+      "expected_output": "Applies mastery-design 7-step progression in /scribe-quiz: asks one diagnostic/prediction/transfer question per turn and diagnoses misconceptions before retesting.",
+      "files": [],
+      "expectations": [
+        "Asks one question per turn sampling prediction/diagnosis/transfer rather than bare recall",
+        "Classifies errors without inventing prior quiz history and retests missed concepts with a different question"
+      ]
+    },
+    {
+      "id": 38,
+      "prompt": "/scribe-notes Create a revision pack for my existing Neural Networks vault notes focusing on documented weak areas without inventing past quiz scores",
+      "expected_output": "Applies revision-strategy read-only and no-fabricated-history rules: grounds revision in existing notes and avoids claiming unrecorded quiz history.",
+      "files": [],
+      "expectations": [
+        "Adapts revision structure using only documented weak spots or existing vault notes",
+        "Never fabricates past learner quiz scores or automated spaced-repetition reminders"
+      ]
+    },
+    {
+      "id": 39,
+      "prompt": "/scribe-notes Create a 3-file bundle for Newton-Raphson root finding in numerical computing",
+      "expected_output": "Routes to numerical-computing subject and dedicated numerical-computing investigation lab: tracks precision, manual iterations, derivative-near-zero/divergence failure, and small residual vs solution error.",
+      "files": [],
+      "expectations": [
+        "Routes via subject-registry.yaml to numerical-computing theory and lab profiles",
+        "Explains why small residual does not guarantee small solution error in ill-conditioned problems and keeps Theory/Lab/Mastery consistent"
+      ]
+    },
+    {
+      "id": 40,
+      "prompt": "/scribe-notes Create notes strictly from these two supplied lecture paragraphs with no exercises or outside additions",
+      "expected_output": "Applies source-constraint precedence over default theory_bundle: omits unsupported companion Experimental Lab and Cheatsheet/Q&A artifacts and discloses the strict source boundary.",
+      "files": [],
+      "expectations": [
+        "Omits ungrounded companion Experimental Lab and practice packs when strict source mode forbids outside additions and supplies no exercises",
+        "Discloses source gaps honestly without inventing outside examples or web images"
+      ]
     }
   ]
 }

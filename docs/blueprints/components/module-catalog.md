@@ -9,7 +9,7 @@ Load this page when a selected master needs a teaching move beyond its own instr
 | Progressive symbols & local foundation | Formulas rely on unfamiliar math/tools | Introduce symbols as needed (with clash note), teach prerequisite tools locally, and place full Symbol Dictionary at the end. |
 | Scalar-to-compact progression | Equations use vectors, matrices, or sums | Teach 1-variable scalar case -> multi-term sum -> compact vector/matrix form. |
 | Spacious math & formula walkthroughs | A displayed equation serves the objective | Follow [math_gates.md](../../../core/math_gates.md) (bridge before formula, `aligned`/`cases`, grouped coherent folds, compact-reference & non-recursive exceptions). |
-| Multi-iteration hand trace | Concept involves iterative updates/steps | Trace Iteration 1 -> Update -> Iteration 2 on one tiny shared fixture showing loss/error drop. |
+| Multi-iteration hand trace | Concept involves iterative updates/steps | Trace consecutive meaningful states on one tiny shared fixture, explaining the progress criterion, whether progress is guaranteed, and failure/stopping conditions. |
 | Limits, myths & "NOT required" | Readers confuse adjacent assumptions | Contrast with counterexamples, state what is **NOT** assumed/required, and give `Mistake \| Fix` table. |
 | Visual reasoning | Spatial, curve, or flow structure matters | Place at inflection points via [visual guidance](../../procedures/authoring/representations.md). |
 | Retrieval & practice cues | Artifact is standalone (no File 3 companion) | Include compact retrieval/practice cues in-note; when File 3 is emitted under `artifact_policy`, keep full formula sheets and Q&A packs in File 3. |

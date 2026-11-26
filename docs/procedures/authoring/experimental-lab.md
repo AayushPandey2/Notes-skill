@@ -1,6 +1,6 @@
 # Companion Experimental Lab Contract
 
-Emit this sibling file (`<note stem> - Experimental Lab.md`) only when dictated by `artifact_policy` in [master-registry.yaml](../../dispatch/master-registry.yaml) (default for `M1`/`M2` unless `explicit_single_file` or an existing layout overrides it; exempting `M3`, `M4`, `M6`, `M7`, `/scribe-ytnotes`, MOCs, and avoiding duplicating an `M5` implementation guide). Link generated companions reciprocally, follow the active YAML profile in [properties-policy.md](../../properties/properties-policy.md), and keep definitions, symbols, and source limits consistent with the parent note.
+Emit this sibling file (`<note stem> - Experimental Lab.md`) only when dictated by `artifact_policy` and `source_constraints` in [master-registry.yaml](../../dispatch/master-registry.yaml) (default for `M1`/`M2` unless `explicit_single_file`, an existing layout, or `strict` source constraints forbidding unsupported outside labs override it; exempting `M3`, `M4`, `M6`, `M7`, `/scribe-ytnotes`, MOCs, and avoiding duplicating an `M5` implementation guide). Link generated companions reciprocally, follow the active YAML profile in [properties-policy.md](../../properties/properties-policy.md), and keep definitions, symbols, and source limits consistent with the parent note.
 
 ## 1. Shared Structure & Lean Discipline-Independent Contract
 

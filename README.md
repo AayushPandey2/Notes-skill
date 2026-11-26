@@ -78,16 +78,17 @@ scriptorium/
 │   ├── blueprints/                  # Formats, domains, subjects, presets, components & labs
 │   │   ├── formats/                 # M1–M7 + video-notes.md
 │   │   ├── domains/                 # 6 knowledge-type subtemplates
-│   │   ├── subjects/                # 17 domain-specific theory blueprints
+│   │   ├── subjects/                # 21 domain-specific theory blueprints
 │   │   ├── presets/                 # 12 specialized output presets
-│   │   ├── components/              # Module catalog & subject theory/misconception profiles
-│   │   └── investigations/          # 19 domain experimental lab templates
-│   └── procedures/                  # Conditional authoring, sourcing, safety, updating & review
-│       ├── authoring/               # Adaptive planning, curriculum discovery, playbooks, 3-file contracts, visuals, gate
-│       ├── sourcing/                # Research engine, source fidelity & recommendations
+│   │   ├── components/              # Module catalog, example engineering & subject/misconception profiles
+│   │   └── investigations/          # 22 domain experimental lab templates
+│   └── procedures/                  # Conditional authoring, sourcing, safety, learning, updating & review
+│       ├── authoring/               # Adaptive planning, concept reasoning, learner model, consistency, mastery, playbooks, contracts, visuals, gate
+│       ├── sourcing/                # Research engine, claim verification, source fidelity & recommendations
+│       ├── learning/                # Spaced-retrieval & retention strategy
 │       ├── safety/                  # Security education & physical/wet-lab safety policies
-│       ├── updating/                # Revision & safe vault linking
-│       └── review/                  # Manual verification checklist & adversarial theory review
+│       ├── updating/                # Revision, lifecycle & safe vault linking
+│       └── review/                  # Manual verification gate, educational editor & adversarial theory review
 └── evaluations/                     # Declarative trigger, adversarial & cross-domain evals
     ├── evals.json
     ├── trigger_eval.json

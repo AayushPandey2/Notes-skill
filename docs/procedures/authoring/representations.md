@@ -6,7 +6,7 @@ Before drafting, identify where seeing a contrast, mechanism, topology, or geome
 
 Select visuals from this priority hierarchy rather than over-relying on generic web downloads when an exact representation is stronger:
 1. **Supplied source figure:** Exact diagram/plot from the user's supplied material (`M2` / source-grounded notes).
-2. **Exact worked-example representation:** Visual or structured representation matching the note's exact dataset, matrix, circuit, or state fixture (when supported by host tools/assets).
+2. **Exact worked-example representation:** Visual or structured representation matching the note's exact dataset, matrix, circuit, or state fixture—using **host-supported native visual/diagram tools** when available (without creating a custom plotting script engine), or falling back to native tables/source figures when unavailable.
 3. **Verified educational web raster figure:** High-clarity `.png`, `.jpg`, `.webp` acquired locally and inspected.
 4. **Native Markdown table or state trace:** Inspectable discrete transitions, truth tables, or numerical traces.
 5. **Attributed reference link:** When local acquisition is unavailable or restricted.

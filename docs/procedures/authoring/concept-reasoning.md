@@ -2,24 +2,24 @@
 
 ## Purpose
 
-Select the **explanatory strategy** per concept inside the [shared internal concept record](adaptive-engine.md) rather than forcing every section of a note through the same fixed sequence. Different concepts inside the same subject (e.g., PCA geometry vs. Naive Bayes conditional independence vs. Decision Tree greedy splits) require distinct reasoning structures.
+Select the **explanatory strategy** per concept inside the [shared internal concept record](adaptive-engine.md) rather than forcing every section of a note through one fixed sequence. Different concepts inside the same subject require distinct reasoning structures and completion criteria.
 
-## Thirteen Concept Reasoning Types
+## Thirteen Concept Reasoning Types & Completion Criteria
 
-Assign one primary reasoning type (or a brief sequence across sub-concepts) inside the internal concept record:
+Assign one primary reasoning type (or sequence across sub-concepts) inside the internal concept record:
 
-| Reasoning Type | Explanatory Sequence |
-|---|---|
-| **Definition** | Need $\to$ precise meaning $\to$ ordinary-language translation $\to$ concrete example & non-example $\to$ boundary |
-| **Mechanism** | Initial state $\to$ operation $\to$ causal intermediate changes $\to$ outcome |
-| **Transformation** | Input representation $\to$ transformation operation $\to$ preserved vs. changed properties |
-| **Mathematical relationship** | Motivation $\to$ quantities $\to$ structural construction $\to$ interpretation & limits |
-| **Theorem** | Exact hypotheses $\to$ assertion $\to$ proof/justification $\to$ consequences & hypothesis-drop counterexample |
-| **Algorithm** | Problem & representation $\to$ governing invariant $\to$ step-by-step operations $\to$ correctness & complexity |
-| **Statistical inference** | Observations $\to$ probabilistic model $\to$ estimand/statistic $\to$ uncertainty & interpretation |
-| **Architecture** | System purpose $\to$ components & contracts $\to$ end-to-end interactions $\to$ failure & isolation boundaries |
-| **Scientific process** | Entities & conditions $\to$ interactions $\to$ governing laws $\to$ observable evidence & limits |
-| **Historical explanation** | Prior context $\to$ chronology $\to$ causal mechanisms $\to$ primary evidence & competing interpretations |
-| **Design decision** | Requirements $\to$ candidate alternatives $\to$ constraints & trade-offs $\to$ conditional choice |
-| **Diagnostic reasoning** | Observed symptom $\to$ competing candidate causes $\to$ discriminating check $\to$ verified remediation |
-| **Procedure** | Preconditions $\to$ ordered actions with reasons $\to$ expected outcome $\to$ verification check |
+| Reasoning Type | Explanatory Sequence | Completion Requirement |
+|---|---|---|
+| **Definition** | Need $\to$ precise meaning $\to$ ordinary translation $\to$ example & non-example | Distinguish the concept from its closest misleading alternative |
+| **Mechanism** | Initial state $\to$ operation $\to$ causal intermediate changes $\to$ outcome | Justify consequential state transitions |
+| **Transformation** | Input representation $\to$ operation $\to$ preserved vs. changed properties | Explain what information is preserved, changed, or lost |
+| **Mathematical relationship** | Motivation $\to$ quantities $\to$ structural construction $\to$ interpretation & limits | Explain *why* the mathematical structure captures the relationship |
+| **Theorem** | Exact hypotheses $\to$ assertion $\to$ proof/justification $\to$ consequences | Establish hypotheses, logical validity, and scope |
+| **Algorithm** | Problem & representation $\to$ **appropriate correctness principle** ([algorithms.md](../../blueprints/subjects/algorithms.md)) $\to$ operations $\to$ complexity | Verify correctness and termination under applicable preconditions |
+| **Statistical inference** | Observations $\to$ probabilistic model $\to$ estimand/statistic $\to$ uncertainty | Separate estimand, estimator, assumptions, and uncertainty |
+| **Architecture** | Purpose $\to$ components & contracts $\to$ interactions $\to$ isolation/failure boundaries | Trace interactions and responsibilities across boundaries |
+| **Scientific process** | Entities & conditions $\to$ interactions $\to$ governing laws $\to$ evidence | Distinguish theoretical mechanism from observational evidence |
+| **Historical explanation** | Prior context $\to$ chronology $\to$ causal mechanisms $\to$ evidence | Evaluate competing causal interpretations |
+| **Design decision** | Requirements $\to$ candidate alternatives $\to$ constraints & trade-offs $\to$ choice | Explain why alternatives were rejected under stated constraints |
+| **Diagnostic reasoning** | Symptom $\to$ competing causes $\to$ discriminating check $\to$ **proposed / analytically justified remediation** | Distinguish confirmed causes from plausible hypotheses |
+| **Procedure** | Preconditions $\to$ ordered actions with reasons $\to$ expected outcome $\to$ check | Establish how successful completion can be verified |

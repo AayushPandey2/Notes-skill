@@ -1,11 +1,43 @@
-# Direct-authoring workflow
+# Direct-Authoring Workflow, Layer Activation & Graceful Degradation
 
 The [authoring rule in the root skill](../SKILL.md#scriptorium) governs every note-creation route. Educational code in a note is lesson content, never a note builder.
 
-1. Infer the user's request, format (defaulting bare topics to comprehensive `M1` deep notes from scratch), permitted sources, audience, single-bundle vs. multi-branch layout, and authorized Obsidian destination directly from the command message—never ask *"which type of notes do you want?"* or send a reverification prompt. Check existing notes before choosing filenames.
-2. Load the selected master and only relevant variant, subtemplate, teaching module, and policy.
-3. Research within the source policy. For needed visuals, complete the acquisition and local-inspection stages in [representations.md](../docs/procedures/authoring/representations.md); search or viewing alone does not acquire an image.
-4. Draft the intended Markdown directly. Emit only the artifact(s) dictated by `artifact_policy` in [master-registry.yaml](../docs/dispatch/master-registry.yaml) (for `theory_bundle` masters `M1`/`M2`, include `<note stem> - Experimental Lab.md` and `<note stem> - Cheatsheet & Interview Q&A.md` unless `explicit_single_file` applies; compact `M3`/`M4`/`M6`/`M7`, `M5`, and `/scribe-ytnotes` follow their `artifact_policy` rules). Review claims, calculations, YAML, reciprocal links, and embeds against the actual drafts.
-5. Verify the resolved destination remains inside the approved vault ([pre-gen-gate.md](../docs/procedures/authoring/pre-gen-gate.md#standing-vault-write-authorization-policy)), then save intended notes, labs, cheatsheet/interview packs, folders, and inspected assets without re-asking permission; for explicit revisions, update intended notes directly without deleting notes or overwriting unrelated content. Reopen saved files to confirm embed targets exist. If vault permission is declined or unavailable, do not re-ask or retry another vault route—deliver each completed note via the downloadable `.md` or copyable chat Markdown fallback and report delivery status honestly.
+## 1. Execution Sequence
 
-Use [the manual verification checklist](../docs/procedures/review/verification-checklist.md). Disclose checks that could not be done; do not claim that manual review provided automatic validation, atomic publication, or recovery.
+1. Infer the user's request, format (defaulting bare topics to `M1`), permitted sources, learner profile, single-bundle vs. multi-branch layout, and authorized destination directly—never ask *"which type of notes do you want?"* or send a reverification prompt.
+2. Load only the selected master, preset, primary subject, knowledge type, and conditionally active layers from the **Layer Activation Matrix** below.
+3. Research and verify claims within active `source_permissions` ([source-fidelity.md](../docs/procedures/sourcing/source-fidelity.md), [claim-verification.md](../docs/procedures/sourcing/claim-verification.md)).
+4. Draft the intended Markdown directly, emitting only the artifact(s) dictated by `artifact_policy` in [master-registry.yaml](../docs/dispatch/master-registry.yaml) and `source_permissions`.
+5. **Pre-save review:** Run Stages 1–5 of [verification-checklist.md](../docs/procedures/review/verification-checklist.md) and [adversarial-theory-review.md](../docs/procedures/review/adversarial-theory-review.md) on the **complete draft before saving**, executing dependency-aware repairs until acceptance passes.
+6. **Save & post-save check:** Verify the resolved destination stays inside the approved vault ([pre-gen-gate.md](../docs/procedures/authoring/pre-gen-gate.md)), save approved files, and run Stage 6 post-save inspection on the saved files (confirming embeds, links, and untouched unrelated notes).
+
+## 2. Layer Activation Matrix
+
+Activate intelligence layers proportionally to the artifact—never force heavy collection layers onto atomic notes:
+
+| Functional Layer | Atomic (`M3`) | Comprehensive (`M1`) | Source Notes (`M2`) | Labs | Revision (`M7`/`M6`) |
+|---|---|---|---|---|---|
+| **Concept reasoning** | Light | Full | Full | Relevant | Relevant |
+| **Learner model** | Optional | Full | Relevant | Relevant | Full |
+| **Curriculum discovery** | Off | Full | Source-bound | Limited | Off |
+| **Claim verification** | Selective | Full | Full | Relevant | Selective |
+| **Example engineering** | Light | Full | Permission-bound | Full | Relevant |
+| **Consistency ledger** | Off | If bundled | If bundled | If bundled | If multi-note |
+| **Educational editing** | Light | Full | Full | Full | Relevant |
+| **Mastery design** | Off | If applicable | Permission-bound | Transfer only | Full |
+| **Retention** | Off | Optional | Optional | Off | Full |
+
+## 3. Capability Negotiation & Graceful Degradation
+
+When a host environment lacks an optional capability, degrade transparently without fabricating success or abandoning supported work:
+
+| Missing Capability | Required Fallback |
+|---|---|
+| **Web research** | Use permitted supplied or established knowledge; mark unconfirmed claims `[UNVERIFIED]` |
+| **PDF visual inspection** | Mark inaccessible diagrams/equations explicitly; never guess hidden figures |
+| **Transcript access** | Avoid reconstructing unseen video lectures; record `access_state` honestly |
+| **Image acquisition** | Use reliable Markdown tables, state traces, or attributed reference links (never Mermaid/ASCII) |
+| **Code execution** | Preserve `Source and static review only; not compiled or executed here.` |
+| **Vault write access** | Deliver copyable Markdown blocks or supported downloadable `.md` attachments |
+| **Independent reviewer** | Run separated authoring and review passes; disclose lack of independent reviewer context |
+| **Obsidian rendering** | Verify Markdown/YAML/LaTeX syntax statically without claiming live UI rendering |

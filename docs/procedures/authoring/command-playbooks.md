@@ -37,8 +37,8 @@ Dispatch each active public command or `/scribe-notes` internal branch cleanly�
 
 ### Command G — Interactive Vault Quiz (`/scribe-quiz`)
 - **Trigger:** `/scribe-quiz <topic/note>` or interactive recall/viva over existing vault notes (for static Markdown practice files, use `/scribe-notes` with `M6` [assessment.md](../../blueprints/formats/assessment.md) instead).
-- **Inputs & Discovery:** Vault path ([pre-gen-gate.md](pre-gen-gate.md)), target note(s), and read-only note inspection (zero web browsing).
-- **Execution & Constraints:** Ask **one question per turn**, wait for the learner's reply, grade strictly against existing note content with exact `[[Note Title#Heading]]` citations, escalate difficulty (`recall → application/trace → boundary/viva`), and keep vault notes unchanged by default. Save weak spots in an existing body review section only when explicitly requested; never add YAML keys for quiz state or create an experimental lab.
+- **Inputs & Discovery:** Vault path ([pre-gen-gate.md](pre-gen-gate.md)), target note(s), [mastery-design.md](mastery-design.md), [revision-strategy.md](../learning/revision-strategy.md), and read-only note inspection (zero web browsing).
+- **Execution & Constraints:** Run the 7-step progression in [skills/scribe-quiz/SKILL.md](../../../skills/scribe-quiz/SKILL.md): select objective/mastery dimension $\to$ ask **one question per turn** and wait $\to$ classify response (`correct`, `partially_correct`, `incorrect`, `ambiguous`, `unsupported_by_note`) $\to$ diagnose gap without fabricating history $\to$ repair with `[[Note Title#Heading]]` citation + discriminating example $\to$ retest with a **different** question on the same reasoning $\to$ progress to transfer only when demonstrated. Keep vault notes unchanged by default; never add YAML keys for quiz state or create an experimental lab.
 - **Failure Handling:** State missing vault/note coverage honestly rather than inventing answers.
 
 ### Command H — Atomic Card (`M3` / `atomic_card`)

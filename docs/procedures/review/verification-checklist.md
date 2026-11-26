@@ -1,6 +1,8 @@
 # Six-Stage Verification Gate
 
-Perform an explicit manual review of the **actual saved Markdown and assets** before concluding any note-creation or update task—consuming the authoritative rules from each selected policy rather than redefining them. Never use word count, heading count, or image count as proof of educational quality, and never represent manual review as automated verification.
+Execute **Stages 1–5 on the complete draft before saving**, resolve an explicit **Acceptance Decision**, and run **Stage 6 after saving**. Never use word count, heading count, or image count as proof of educational quality, and never represent manual review as automated verification.
+
+**Acceptance Decisions:** `accepted` · `accepted_with_disclosed_limitations` · `repair_required` · `blocked` (never save or publish a critically flawed note as completed).
 
 ## Stage 1 — Universal Correctness, Evidence & Editorial Quality
 - Verify [teaching_core.md](../../../core/teaching_core.md), [theory_quality_contract.md](../../../core/theory_quality_contract.md), [claim-verification.md](../sourcing/claim-verification.md), [educational-editor.md](educational-editor.md), and [adversarial-theory-review.md](adversarial-theory-review.md): concrete grounding before abstractions, 4-category prerequisite discipline, claim-level evidence & contradiction checks, paragraph contribution test, target `0–5` depth, and dependency-aware repair of any Critical/Major/Moderate defects.

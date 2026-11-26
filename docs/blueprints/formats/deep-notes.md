@@ -9,7 +9,7 @@
 
 ## 1. Opening Roadmap (Purpose, Learning Path & TOC)
 
-Open cleanly with line-1 YAML, H1 title, a concise purpose and learning path (without repeating YAML `difficulty` as a visible body dump), and a compact **clickable Obsidian Table of Contents** (`- [[#1. Heading|Short Label]]`). Apply the 3-tier prerequisite rule in [teaching_core.md](../../../core/teaching_core.md): never use a link to replace an essential local foundation.
+Open cleanly with line-1 YAML, H1 title, a concise purpose and learning path (without repeating YAML `difficulty` as a visible body dump), and a compact **clickable Obsidian Table of Contents** (`- [[#1. Heading|Short Label]]`). Apply the two-dimension prerequisite policy in [teaching_core.md](../../../core/teaching_core.md): never use a link to replace an essential unmastered local foundation.
 
 ## 2. Progressive Explanation Flow (Discipline-Independent)
 

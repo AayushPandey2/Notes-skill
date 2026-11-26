@@ -2,17 +2,21 @@
 
 ## Purpose
 
-Adapt prerequisite support, worked-example density, and representation scaffolding to the learner's **topic-specific background**—without ever equating beginner-friendly with superficial. A learner may be intermediate in programming, foundational in linear algebra, and a beginner in probability; one global difficulty tag cannot capture this.
+Adapt prerequisite support, worked-example density, and representation scaffolding to the learner's **topic-specific background**—without equating beginner-friendly with superficial and without adding a mandatory learner questionnaire.
 
-## 1. Internal Learner Profile (Never Fabricated)
+## 1. Internal Learner Profile & Evidence-Based Resolution
 
-Maintain an optional internal conceptual record using **only** background explicitly supplied by the learner or retained by user choice—unknown abilities must remain unknown (never invent quiz histories or publish internal profile YAML):
-- `objective` (e.g., `technical_mastery`, `exam_prep`, `implementation`, `quick_lookup`)
-- `prior_knowledge` (per-prerequisite or per-subdomain: `beginner`, `foundational`, `intermediate`, `advanced`, or `unknown`)
-- `known_concepts` vs. `uncertain_prerequisites`
-- `guidance_level` (`high`, `moderate`, `low`), `mathematical_rigor`, `practical_depth`
+Maintain an optional internal conceptual record using **only** background supplied by the learner or explicitly retained (unknown abilities must remain unknown). Distinguish **concept recognition** from **usable mathematical/operational ability** (e.g., recognizing matrix multiplication vs. determining compatible matrix dimensions), and resolve conflicting signals conservatively:
+
+| Learner Information | Appropriate Adaptation |
+|---|---|
+| **Explicitly demonstrated understanding** | Omit unnecessary introductory repetition |
+| **Self-reported understanding** | Provide concise support where consequential |
+| **Previously misunderstood concept** | Include a targeted discriminating example |
+| **Unknown background** | Supply a minimal prerequisite bridge |
+| **Conflicting evidence** *(e.g., claims calculus mastery but misses chain rule)* | Avoid assuming mastery; insert targeted prerequisite support |
 
 ## 2. Independence of Depth and Prerequisite Support
 
-- **Depth $\neq$ Difficulty:** A beginner can request **Level 4–5 analytical rigor**. Deliver the same intellectual depth by supplying smaller conceptual transitions, local essential prerequisite bridges ([teaching_core.md](../../../core/teaching_core.md)), and complete worked steps—never dumb down the mechanism.
-- **Expertise-Reversal Discipline:** For learners with demonstrated or stated mastery (`advanced` / `known_concepts`), omit redundant elementary derivations and over-scaffolded arithmetic so explanations stay crisp and high-signal.
+- **Depth $\neq$ Difficulty:** A beginner can request **Level 4–5 analytical rigor** (e.g., PCA constrained variance maximization, SVD correspondence, reconstruction error, and mathematical conditions). Deliver full rigor using smaller transitions and local essential bridges ([teaching_core.md](../../../core/teaching_core.md))—never dumb down the mechanism.
+- **Expertise-Reversal Discipline:** For learners with demonstrated mastery, omit redundant elementary derivations so explanations remain crisp and high-signal.

@@ -34,6 +34,18 @@ Even when a source policy permits some external access, treat these five permiss
 
 Lab API documentation checks must also respect active source permissions: when external lookup is forbidden, mark unresolved library/API details `[UNVERIFIED]` instead of browsing externally.
 
+### Source Constraint $\to$ Companion Artifact Precedence
+
+When `source_policy` restricts external additions, source permissions override default `theory_bundle` companion generation:
+
+| Source Constraint | Companion Artifact Behavior |
+|---|---|
+| **Strict source with supplied exercises** | Reconstruct supplied exercises faithfully in companion files |
+| **Strict source permitting derived practice** | Emit only exercises justified directly by supplied material; label them derived |
+| **Strict source forbidding additions (no exercises in source)** | Omit unsupported companion lab/Q&A artifacts and disclose the source boundary |
+| **Source-first verification** | Verify authorized claims externally without auto-expanding companions |
+| **Expanded source** | Emit clearly labeled supplementary practical/assessment work |
+
 For supplied references inventory all relevant elements once, including headings, definitions, equations, tables, algorithms, figures, examples, exercises, footnotes and qualifications. Inspect extracted math, table layout and scanned figures visually when needed. An inaccessible element remains a gap, never a fabricated citation or page. A text extraction is not evidence of visual completeness.
 
 Each `sources` entry has a stable `id`, `location` (an actually inspected section/page/URL, or an honest unknown-location description), `kind`, `access` (full/partial/unavailable), `required` boolean and `concepts` assignments. IDs describe elements, not just documents. Assign all required elements to concept IDs. Optional omissions need a `reason`. Partial/unavailable required material blocks full-fidelity completion until inspected or the user narrows scope. Never manufacture a locator to satisfy the schema.

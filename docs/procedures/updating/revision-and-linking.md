@@ -11,6 +11,19 @@ Govern condensed revision sections inside `M1`/`M2` notes, standalone `M3`/`M7` 
 3. **Concept vs. File Relationships & Acyclicity:** Distinguish verified `existing_note` wikilinks from `planned_note` (`nexttopics`), external URLs, and plain-text unresolved concepts. **Apply DAG acyclicity strictly to `requires` (prerequisite) dependencies**—related-topic links, bidirectional contrasts, and genuine conceptual cycles (such as feedback loops) are allowed.
 4. **Link & Identifier Edge-Case Hygiene:** Use path-qualified wikilinks when identical note names exist in different folders, resolve ambiguous aliases before linking, recheck heading anchors after edits, keep excluded concepts out of automatic prerequisite/`nexttopics` links, and create reciprocal companion links **only** for artifacts that actually exist.
 
+## Knowledge Lifecycle & Version Intelligence
+
+Classify revisions explicitly (**factual correction**, **clearer explanation**, **new convention**, **API update**, **source update**, or **scope expansion**), check affected companion files (Theory/Lab/Mastery), and **never overwrite learner-customized sections or YAML** when refreshing external details. Match revision triggers to knowledge stability:
+
+| Knowledge Type | Stability & Revision Strategy |
+|---|---|
+| **Mathematical theorem** | Stable unless a factual/logical error or missing hypothesis is found |
+| **Language semantics** | Track applicable language-standard revisions (e.g., C11/C++20/Rust edition) |
+| **Library API** | Track official versioned documentation and deprecations |
+| **Scientific consensus** | Revisit when substantive empirical/mechanistic evidence shifts |
+| **Engineering standard** | Identify the applicable standard/protocol revision |
+| **Empirical benchmark** | Preserve dataset, evaluation conditions, and publication context |
+
 ## Execution & Review
 
 Inspect target notes before updating wikilinks, verify prerequisite (`requires`) acyclicity manually, and review against [verification-checklist.md](../review/verification-checklist.md).

@@ -45,15 +45,15 @@ subjects:
     secondary_hints: [programming, algorithms, computer_architecture]
   computer_architecture:
     theory: docs/blueprints/subjects/computer-architecture.md
-    investigation: docs/blueprints/investigations/operating-systems.md
+    investigation: docs/blueprints/investigations/computer-architecture.md
     secondary_hints: [operating_systems, electrical]
   numerical_computing:
     theory: docs/blueprints/subjects/numerical-computing.md
-    investigation: docs/blueprints/investigations/mathematics.md
+    investigation: docs/blueprints/investigations/numerical-computing.md
     secondary_hints: [mathematics, machine_learning]
   information_theory:
     theory: docs/blueprints/subjects/information-theory.md
-    investigation: docs/blueprints/investigations/mathematics.md
+    investigation: docs/blueprints/investigations/information-theory.md
     secondary_hints: [statistics, machine_learning]
   networking:
     theory: docs/blueprints/subjects/networking.md
