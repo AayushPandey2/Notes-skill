@@ -40,15 +40,19 @@ Logistic regression models binary event probabilities by linearly parameterizing
 
 ## 1. Problem Formulation & Why Ordinary Least Squares Fails
 
-For each observed feature vector $\mathbf{x}_i\in\mathbb R^n$, let $p_i=P(Y_i=1\mid\mathbf{x}_i)$. The conditional mean of the binary outcome $Y_i$ is $p_i$. Since $0^2=0$ and $1^2=1$, its second moment is also $p_i$. Subtracting the square of the mean gives
+A learner deciding whether an email is spam can ask two questions: how likely is it to be spam, and should it be filtered? A model can estimate a probability first. A threshold turns that estimate into a decision. The observed label $y_i$ records what actually happened for example $i$, with $1$ for spam and $0$ otherwise. Its features $\mathbf x_i$ might include a link count and whether the sender is known.
+
+Write $p_i^\ast=P(Y_i=1\mid\mathbf x_i)$ for the underlying conditional probability. The bar means we are comparing outcomes for a fixed feature vector. Even with identical recorded features, two emails can have different labels. Write $\hat p_i$ for the probability assigned by the model and $\hat y_i$ for the thresholded prediction. The modeled probability may differ from $p_i^\ast$.
+
+A binary random variable with this success probability is Bernoulli. Its mean is the probability-weighted average of the two outcomes, $0\cdot(1-p_i^\ast)+1\cdot p_i^\ast=p_i^\ast$. Since $0^2=0$ and $1^2=1$, its second moment is also $p_i^\ast$. Subtracting the square of the mean gives
 
 $$
-\operatorname{Var}(Y_i\mid\mathbf{x}_i)=p_i(1-p_i).
+\operatorname{Var}(Y_i\mid\mathbf{x}_i)=p_i^\ast(1-p_i^\ast).
 $$
 
 > [!example]- Understand this formula step by step — Bernoulli variance
 >
-> Conditional variance is the expected squared deviation from the conditional mean. Suppress the condition $\mathbf{x}_i$ and write the mean as $p$. Weight the squared deviations at $1$ and $0$ by their probabilities.
+> Conditional variance is the expected squared deviation from the conditional mean. Suppress the condition $\mathbf{x}_i$ and write the true mean as $p$. Weight the squared deviations at $1$ and $0$ by their probabilities.
 >
 > $$
 > \begin{aligned}
@@ -87,7 +91,7 @@ $$
 >
 > For $x=(-2,-1,1,2)$ and $y=(0,0,1,1)$, the means are $0$ and $0.5$. The numerator is $1+0.5+0.5+1=3$ and the denominator is $4+1+1+4=10$. The fit has slope $0.3$ and intercept $0.5$.
 
-The fit returns $-0.10$ at $x=-2$ and $1.10$ at $x=2$. An affine prediction with nonzero slope crosses the probability bounds on an unbounded input domain. Least squares is a fitting criterion. A Gaussian model with constant error variance adds a separate assumption, while the binary variance just derived depends on $p_i$.
+The fit returns $-0.10$ at $x=-2$ and $1.10$ at $x=2$. An affine prediction with nonzero slope crosses the probability bounds on an unbounded input domain. Least squares is a fitting criterion. A Gaussian model with constant error variance adds a separate assumption, while the binary variance just derived depends on $p_i^\ast$.
 
 An affine score still gives us a concise way to combine features. Each $w_jx_j$ is the contribution of feature $j$ in score units, and the intercept $b$ sets the score at the zero feature vector.
 
@@ -101,7 +105,7 @@ A one-unit increase in $x_j$ adds $w_j$ to the score with the other predictors h
 
 ## 2. Probability, Odds, Log-Odds & Sigmoid Derivation
 
-For $0<p<1$, the odds $p/(1-p)$ compare positive outcomes to negative outcomes. At $p=0.8$ the odds are $4$. Taking their natural logarithm gives a real number, with log-odds zero at $p=0.5$. This defines the **logit link**, which maps probability to score. The sigmoid will map in the opposite direction. Choosing the logit is a modeling assumption. Probit and complementary log-log are alternative links.
+For $0<p<1$, the odds $p/(1-p)$ compare positive outcomes to negative outcomes. At $p=0.8$ the odds are $4$. Taking their natural logarithm gives a real number, with log-odds zero at $p=0.5$. This defines the **logit link**, which maps probability to score. In the model equations in this section, $p$ denotes the modeled probability at one feature vector. The sigmoid will map in the opposite direction. Choosing the logit is a modeling assumption. Probit and complementary log-log are alternative links.
 
 Logistic regression models these conditional log-odds as a linear function of predictors:
 
@@ -221,19 +225,19 @@ A shift in score has its greatest local effect near $p=0.5$. Its derivative has 
 
 ## 4. Bernoulli Likelihood to Binary Cross-Entropy Derivation
 
-At each input the model assigns probability $p_i=\sigma(\mathbf w^\top\mathbf x_i+b)$ to label $1$ and $1-p_i$ to label $0$. The binary label $y_i$ selects the corresponding factor.
+At each input the model assigns probability $\hat p_i=\sigma(\mathbf w^\top\mathbf x_i+b)$ to label $1$ and $1-\hat p_i$ to label $0$. The binary label $y_i$ selects the corresponding factor.
 
 $$
-P(Y_i=y_i\mid\mathbf x_i)=p_i^{y_i}(1-p_i)^{1-y_i}.
+P_{\mathbf w,b}(Y_i=y_i\mid\mathbf x_i)=\hat p_i^{y_i}(1-\hat p_i)^{1-y_i}.
 $$
 
 Under conditional independence given the design, the joint likelihood $L$ multiplies these masses. The logarithm preserves their ordering and turns the product into a sum.
 
 $$
 \begin{aligned}
-L(\mathbf w,b)&=\prod_{i=1}^m p_i^{y_i}(1-p_i)^{1-y_i},\\
+L(\mathbf w,b)&=\prod_{i=1}^m \hat p_i^{y_i}(1-\hat p_i)^{1-y_i},\\
 \ln L(\mathbf w,b)&=\sum_{i=1}^m
-  [y_i\ln p_i+(1-y_i)\ln(1-p_i)].
+  [y_i\ln \hat p_i+(1-y_i)\ln(1-\hat p_i)].
 \end{aligned}
 $$
 
@@ -241,25 +245,25 @@ Negation turns maximization into minimization. Dividing by $m>0$ gives mean **bi
 
 $$
 \boxed{J(\mathbf w,b)=-\frac1m\sum_{i=1}^m
-  [y_i\ln p_i+(1-y_i)\ln(1-p_i)]}
+  [y_i\ln \hat p_i+(1-y_i)\ln(1-\hat p_i)]}
 $$
 
 > [!example]- Understand this formula step by step — Bernoulli likelihood to cross-entropy
 >
-> For label $1$, the mass is $p_i^1(1-p_i)^0=p_i$. For label $0$, it is $p_i^0(1-p_i)^1=1-p_i$. Conditional independence permits multiplying the selected positive factors. Use the log of a product, then the log of a power.
+> For label $1$, the mass is $\hat p_i^1(1-\hat p_i)^0=\hat p_i$. For label $0$, it is $\hat p_i^0(1-\hat p_i)^1=1-\hat p_i$. Conditional independence permits multiplying the selected positive factors. Use the log of a product, then the log of a power.
 >
 > $$
 > \begin{aligned}
 > \ln L
-> &=\sum_i\ln[p_i^{y_i}(1-p_i)^{1-y_i}]\\
-> &=\sum_i[\ln(p_i^{y_i})+\ln((1-p_i)^{1-y_i})]\\
-> &=\sum_i[y_i\ln p_i+(1-y_i)\ln(1-p_i)].
+> &=\sum_i\ln[\hat p_i^{y_i}(1-\hat p_i)^{1-y_i}]\\
+> &=\sum_i[\ln(\hat p_i^{y_i})+\ln((1-\hat p_i)^{1-y_i})]\\
+> &=\sum_i[y_i\ln \hat p_i+(1-y_i)\ln(1-\hat p_i)].
 > \end{aligned}
 > $$
 >
 > For two parameter choices, $L_A>L_B$ implies $\ln L_A>\ln L_B$ and $-\ln L_A/m<-\ln L_B/m$. The ordering equivalence holds even when no finite optimum exists. Adding logs also avoids forming a tiny product in floating point.
 >
-> With $y_i=1$, predicting $p_i=0.90$ costs about $0.1054$, while $p_i=0.01$ costs about $4.6052$. Larger loss means the model assigned less probability to the observed outcome.
+> With $y_i=1$, predicting $\hat p_i=0.90$ costs about $0.1054$, while $\hat p_i=0.01$ costs about $4.6052$. Larger loss means the model assigned less probability to the observed outcome.
 
 ### Expressing BCE directly in the score
 
@@ -300,11 +304,11 @@ This form exposes curvature in the score. To update the model we also need to ca
 ## 5. Chain-Rule & Scalar-to-Matrix Gradient Derivation
 
 ### Partial Derivatives via Exact Factor Cancellation
-The derivative of one example's BCE with respect to its probability has denominator $p_i(1-p_i)$. Moving back through the sigmoid multiplies by exactly that factor. For a finite score, $0<p_i<1$ and the factors cancel.
+A partial derivative asks what changes when one parameter moves while all others are held fixed. The gradient collects these derivatives into one vector. The derivative of one example's BCE with respect to its probability has denominator $\hat p_i(1-\hat p_i)$. Moving back through the sigmoid multiplies by exactly that factor. For a finite score, $0<\hat p_i<1$ and the factors cancel.
 
 $$
 \frac{\partial\ell_i}{\partial z_i}
-=\frac{p_i-y_i}{p_i(1-p_i)}p_i(1-p_i)=p_i-y_i .
+=\frac{\hat p_i-y_i}{\hat p_i(1-\hat p_i)}\hat p_i(1-\hat p_i)=\hat p_i-y_i .
 $$
 
 A weight shifts each score in proportion to the corresponding feature value. The intercept shifts every score by the same amount. The chain rule gives the two derivatives of the mean loss.
@@ -312,51 +316,62 @@ A weight shifts each score in proportion to the corresponding feature value. The
 $$
 \boxed{
 \begin{aligned}
-\frac{\partial J}{\partial w_j}&=\frac1m\sum_i(p_i-y_i)x_{ij},\\
-\frac{\partial J}{\partial b}&=\frac1m\sum_i(p_i-y_i).
+\frac{\partial J}{\partial w_j}&=\frac1m\sum_i(\hat p_i-y_i)x_{ij},\\
+\frac{\partial J}{\partial b}&=\frac1m\sum_i(\hat p_i-y_i).
 \end{aligned}}
 $$
 
 > [!example]- Understand this formula step by step — Weight and intercept gradients
 >
-> Differentiate $-\ln p_i$ and $-\ln(1-p_i)$ with respect to $p_i$ using the chain rule. Use a common denominator to combine the terms.
+> Differentiate $-\ln \hat p_i$ and $-\ln(1-\hat p_i)$ with respect to $\hat p_i$ using the chain rule. Use a common denominator to combine the terms.
 >
 > $$
 > \begin{aligned}
-> \frac{\partial\ell_i}{\partial p_i}
-> &=-\frac{y_i}{p_i}+\frac{1-y_i}{1-p_i}\\
-> &=\frac{-y_i(1-p_i)+p_i(1-y_i)}{p_i(1-p_i)}\\
-> &=\frac{p_i-y_i}{p_i(1-p_i)} .
+> \frac{\partial\ell_i}{\partial \hat p_i}
+> &=-\frac{y_i}{\hat p_i}+\frac{1-y_i}{1-\hat p_i}\\
+> &=\frac{-y_i(1-\hat p_i)+\hat p_i(1-y_i)}{\hat p_i(1-\hat p_i)}\\
+> &=\frac{\hat p_i-y_i}{\hat p_i(1-\hat p_i)} .
 > \end{aligned}
 > $$
 >
-> Multiply by $\partial p_i/\partial z_i=p_i(1-p_i)$ from the sigmoid derivative. Then use $\partial z_i/\partial w_j=x_{ij}$ and $\partial z_i/\partial b=1$:
+> Multiply by $\partial \hat p_i/\partial z_i=\hat p_i(1-\hat p_i)$ from the sigmoid derivative. Then use $\partial z_i/\partial w_j=x_{ij}$ and $\partial z_i/\partial b=1$:
 >
 > $$
 > \begin{aligned}
 > \frac{\partial\ell_i}{\partial w_j}
 > &=\frac{\partial\ell_i}{\partial z_i}\frac{\partial z_i}{\partial w_j}
->   =(p_i-y_i)x_{ij},\\
+>   =(\hat p_i-y_i)x_{ij},\\
 > \frac{\partial\ell_i}{\partial b}
 > &=\frac{\partial\ell_i}{\partial z_i}\frac{\partial z_i}{\partial b}
->   =p_i-y_i .
+>   =\hat p_i-y_i .
 > \end{aligned}
 > $$
 >
-> Averaging follows from linearity. For $y_i=1$ and $p_i=0.01$, the score derivative is $-0.99$, so the confidently wrong example still produces a large score gradient. The extra sigmoid factor cancels at the output loss. Gradient magnitude elsewhere still depends on features and, in a neural network, the derivatives of earlier layers.
+> Averaging follows from linearity. For $y_i=1$ and $\hat p_i=0.01$, the score derivative is $-0.99$, so the confidently wrong example still produces a large score gradient. The extra sigmoid factor cancels at the output loss. Gradient magnitude elsewhere still depends on features and, in a neural network, the derivatives of earlier layers.
 
 ### Scalar-to-Vector-to-Matrix Gradient Construction
-Stack the $m$ feature vectors as the rows of $X\in\mathbb R^{m\times n}$. Each weight derivative is the dot product of one feature column and the residual vector $\mathbf p-\mathbf y$. Rows of $X^\top$ are precisely those feature columns, so one matrix product computes all $n$ derivatives.
+Stack the $m$ feature vectors as the rows of $X\in\mathbb R^{m\times n}$. Each weight derivative is the dot product of one feature column and the residual vector $\hat{\mathbf p}-\mathbf y$. Rows of $X^\top$ are precisely those feature columns, so one matrix product computes all $n$ derivatives.
 
 $$
-\boxed{\nabla_{\mathbf{w}} J = \frac{1}{m}X^\top(\mathbf{p} - \mathbf{y})}
+\boxed{\nabla_{\mathbf{w}} J = \frac{1}{m}X^\top(\hat{\mathbf p} - \mathbf{y})}
 $$
 
 > [!example]- Understand this formula step by step — Indexed gradients to matrix form
 >
-> 1. **Stage 1 (1 parameter, scalar):** $\frac{\partial J}{\partial w} = \frac{1}{m}\sum_{i=1}^m (p_i - y_i)x_i$.
-> 2. **Stage 2 ($n$ parameters, indexed sums):** For feature column $j \in \{1, \dots, n\}$, weight $w_j$ accumulates residual-weighted entries down column $j$: $\left[\nabla_{\mathbf{w}} J\right]_j = \frac{1}{m}\sum_{i=1}^m x_{ij}(p_i - y_i)$.
-> 3. **Stage 3 (Matrix dimension & transpose justification):** Let residual vector $\mathbf{r} = \mathbf{p} - \mathbf{y} \in \mathbb{R}^{m \times 1}$. With concrete batch dimensions $m = 5$ examples and $n = 3$ features, $X$ has shape `(5, 3)` and $\mathbf{r}$ has shape `(5, 1)`. You cannot multiply `(5, 3) @ (5, 1)` because inner dimensions disagree; transposing $X$ gives $X^\top$ of shape `(3, 5)`. Then matrix multiplication $X^\top \mathbf{r}$ produces shape `(3, 5) @ (5, 1) = (3, 1)`: row $j$ of $X^\top$ is column $j$ of $X$, so its dot product with $\mathbf{r}$ computes $\sum_{i=1}^m x_{ij}(p_i - y_i)$ for every weight $w_j$ simultaneously. Dividing by $m$ yields the mean gradient vector $\in \mathbb{R}^n$.
+> 1. **Stage 1 (1 parameter, scalar):** $\frac{\partial J}{\partial w} = \frac{1}{m}\sum_{i=1}^m (\hat p_i - y_i)x_i$.
+> 2. **Stage 2 ($n$ parameters, indexed sums):** For feature column $j \in \{1, \dots, n\}$, weight $w_j$ accumulates residual-weighted entries down column $j$: $\left[\nabla_{\mathbf{w}} J\right]_j = \frac{1}{m}\sum_{i=1}^m x_{ij}(\hat p_i - y_i)$.
+> Row $j$ of $X^\top$ contains the $m$ measurements for feature $j$. Its dot product with the $m$ residuals produces one gradient component. Hence the product has $n$ entries.
+>
+> For three observations, use
+>
+> $$
+> X=\begin{bmatrix}1&2\\2&1\\3&0\end{bmatrix},
+> \qquad \mathbf r=\begin{bmatrix}0.2\\-0.4\\0.1\end{bmatrix}.
+> $$
+>
+> The first row of $X^\top$ gives $1(0.2)+2(-0.4)+3(0.1)=-0.3$. The second gives $2(0.2)+1(-0.4)+0(0.1)=0$. Averaging produces gradient $(-0.1,0)^\top$. At this iterate the second feature has zero net contribution even though individual rows contribute.
+
+At a finite unregularized stationary point, $X^\top\mathbf r=\mathbf 0$ and $\mathbf 1^\top\mathbf r=0$. The first equation balances the residuals against each feature column. The intercept condition balances their total. Individual predictions can still differ from their observed labels. With a weight penalty, feature residual sums offset the penalty gradient, while the intercept balance is unchanged.
 
 ### Why gradient descent subtracts the gradient
 
@@ -382,7 +397,7 @@ The four-point dataset from the least-squares example has $x=(-2,-1,1,2)$ and $y
 
 **Prediction pass:**
 
-| Sample $i$ | Feature $x_i$ | True Label $y_i$ | Logit $z_i$ | Predicted $p_i$ |
+| Sample $i$ | Feature $x_i$ | True Label $y_i$ | Logit $z_i$ | Predicted $\hat p_i$ |
 |---:|---:|---|---:|---:|
 | 1 | $-2$ | `0 — Negative` | $0.00$ | $0.50$ |
 | 2 | $-1$ | `0 — Negative` | $0.00$ | $0.50$ |
@@ -391,7 +406,7 @@ The four-point dataset from the least-squares example has $x=(-2,-1,1,2)$ and $y
 
 **Learning update pass ($J(0,0) = -\ln(0.5) \approx 0.6931$):**
 
-| Sample $i$ | Feature $x_i$ | Residual $p_i - y_i$ | Gradient Term $(p_i - y_i)x_i$ |
+| Sample $i$ | Feature $x_i$ | Residual $\hat p_i - y_i$ | Gradient Term $(\hat p_i - y_i)x_i$ |
 |---:|---:|---:|---:|
 | 1 | $-2$ | $+0.50$ | $-1.00$ |
 | 2 | $-1$ | $+0.50$ | $-0.50$ |
@@ -399,7 +414,7 @@ The four-point dataset from the least-squares example has $x=(-2,-1,1,2)$ and $y
 | 4 | $+2$ | $-0.50$ | $-1.00$ |
 
 - Mean gradients: $\frac{\partial J}{\partial w} = \frac{-3.00}{4} = -0.75$ and $\frac{\partial J}{\partial b} = 0.00$.
-- Step 1 update ($\eta = 1.0$): $w_1 = 0 - 1.0(-0.75) = 0.75$, $b_1 = 0.00$, shifting probabilities to $\mathbf p \approx [0.1824, 0.3208, 0.6792, 0.8176]$ and lowering BCE to $J(0.75, 0) \approx 0.2941$.
+- Step 1 update ($\eta = 1.0$): $w_1 = 0 - 1.0(-0.75) = 0.75$, $b_1 = 0.00$, shifting probabilities to $\hat{\mathbf p} \approx [0.1824, 0.3208, 0.6792, 0.8176]$ and lowering BCE to $J(0.75, 0) \approx 0.2941$.
 
 ---
 
@@ -408,7 +423,7 @@ The four-point dataset from the least-squares example has $x=(-2,-1,1,2)$ and $y
 The score gradient is nonlinear in the parameters, so solving the stationarity equations generally requires iteration. Curvature tells us whether the objective is convex and helps explain how a second-order step differs from gradient descent.
 
 ### Global Convexity of Binary Cross-Entropy
-The logit loss gives the first derivative $p_i-y_i$. Differentiate again in $z_i$ to get $d_i=p_i(1-p_i)$, which is positive at every finite score. Let $\tilde{\mathbf x}_i=(\mathbf x_i^\top,1)^\top$ and stack these rows in $\tilde X=[X,\mathbf 1]$. Each score is affine in $\boldsymbol\theta$, so the chain rule turns its scalar curvature into a weighted outer product.
+The Hessian collects the rates at which gradient components change when parameters move. An outer product of a column and its transpose records every pairwise component product. To read curvature along a direction, multiply the Hessian on both sides by that direction. The logit loss gives the first derivative $\hat p_i-y_i$. Differentiate again in $z_i$ to get $d_i=\hat p_i(1-\hat p_i)$, which is positive at every finite score. Let $\tilde{\mathbf x}_i=(\mathbf x_i^\top,1)^\top$ and stack these rows in $\tilde X=[X,\mathbf 1]$. Each score is affine in $\boldsymbol\theta$, so the chain rule turns its scalar curvature into a weighted outer product.
 
 $$
 \nabla^2_{\boldsymbol\theta}\ell_i=d_i\tilde{\mathbf x}_i\tilde{\mathbf x}_i^\top.
@@ -429,8 +444,9 @@ $$
 > \frac{\partial^2 \ell}{\partial z^2} = \sigma'(z) = \sigma(z)\bigl(1 - \sigma(z)\bigr) \ge 0
 > $$
 >
-> 2. **Chain rule to augmented parameters:** Since $z_i = \tilde{\mathbf{x}}_i^\top \boldsymbol{\theta}$, $\nabla_{\boldsymbol{\theta}} \ell_i = (p_i - y_i)\tilde{\mathbf{x}}_i$, and differentiating once more gives rank-1 Hessian $\nabla_{\boldsymbol{\theta}}^2 \ell_i = p_i(1 - p_i)\tilde{\mathbf{x}}_i\tilde{\mathbf{x}}_i^\top$.
-> 3. **Matrix assembly & positive semidefiniteness:** Summing $\frac{1}{m}\sum_{i=1}^m d_i \tilde{\mathbf{x}}_i\tilde{\mathbf{x}}_i^\top = \frac{1}{m}\tilde{X}^\top D \tilde{X}$ with $d_i = p_i(1 - p_i) \ge 0$. For every vector $\mathbf{v} \in \mathbb{R}^{n+1}$, quadratic form $\mathbf{v}^\top \nabla^2 J\,\mathbf{v} = \frac{1}{m}\sum_{i=1}^m d_i (\tilde{\mathbf{x}}_i^\top \mathbf{v})^2 \ge 0$. Therefore $J$ is **globally convex** (strictly convex whenever $\tilde{X}$ has full column rank and $p_i \in (0, 1)$).
+> 2. **Chain rule to augmented parameters:** Since $z_i = \tilde{\mathbf{x}}_i^\top \boldsymbol{\theta}$, $\nabla_{\boldsymbol{\theta}} \ell_i = (\hat p_i - y_i)\tilde{\mathbf{x}}_i$, and differentiating once more gives rank-1 Hessian $\nabla_{\boldsymbol{\theta}}^2 \ell_i = \hat p_i(1 - \hat p_i)\tilde{\mathbf{x}}_i\tilde{\mathbf{x}}_i^\top$.
+> 3. **Matrix assembly & positive semidefiniteness:** Summing $\frac{1}{m}\sum_{i=1}^m d_i \tilde{\mathbf{x}}_i\tilde{\mathbf{x}}_i^\top = \frac{1}{m}\tilde{X}^\top D \tilde{X}$ with $d_i = \hat p_i(1 - \hat p_i) \ge 0$. For every vector $\mathbf{v} \in \mathbb{R}^{n+1}$, quadratic form $\mathbf{v}^\top \nabla^2 J\,\mathbf{v} = \frac{1}{m}\sum_{i=1}^m d_i (\tilde{\mathbf{x}}_i^\top \mathbf{v})^2 \ge 0$. Therefore $J$ is **globally convex** (strictly convex whenever $\tilde{X}$ has full column rank and $\hat p_i \in (0, 1)$).
+
 The Hessian is positive definite at every finite iterate when $\tilde X$ has full column rank. A deficient design has a null direction that leaves all scores unchanged.
 
 ### Why squared error after the sigmoid has different curvature
@@ -485,10 +501,10 @@ The undamped method converges quadratically from sufficiently close to a finite 
 
 ### Why the same Newton step is weighted least squares
 
-Write $\mathbf z_t=\tilde X\boldsymbol\theta_t$ and $\mathbf p_t=\sigma(\mathbf z_t)$ elementwise. The diagonal weight $d_i=p_i(1-p_i)$ records the local curvature of each example. To encode the score residual in a least-squares target, add its curvature-scaled correction to the current score.
+Write $\mathbf z_t=\tilde X\boldsymbol\theta_t$ and $\hat{\mathbf p}_t=\sigma(\mathbf z_t)$ elementwise. The diagonal weight $d_i=\hat p_i(1-\hat p_i)$ records the local curvature of each example. To encode the score residual in a least-squares target, add its curvature-scaled correction to the current score.
 
 $$
-\mathbf u_t=\mathbf z_t+D_t^{-1}(\mathbf y-\mathbf p_t).
+\mathbf u_t=\mathbf z_t+D_t^{-1}(\mathbf y-\hat{\mathbf p}_t).
 $$
 
 The normal equations for a weighted fit to $\mathbf u_t$ yield the same system for the Newton increment. Recompute both the weights and the working response after each step. This is **iteratively reweighted least squares** (IRLS).
@@ -504,7 +520,7 @@ $$
 > At finite logits $D_t$ is positive diagonal in exact arithmetic. From the gradient and Hessian already derived, multiplying the Newton system by $m$ gives
 >
 > $$
-> \tilde X^\top D_t\tilde X\Delta_t=\tilde X^\top(\mathbf y-\mathbf p_t).
+> \tilde X^\top D_t\tilde X\Delta_t=\tilde X^\top(\mathbf y-\hat{\mathbf p}_t).
 > $$
 >
 > Substitute $\Delta_t=\boldsymbol\theta_{t+1}-\boldsymbol\theta_t$ and move the current iterate term to the right. Factor out $\tilde X^\top D_t$:
@@ -512,7 +528,7 @@ $$
 > $$
 > \begin{aligned}
 > \tilde X^\top D_t\tilde X\boldsymbol\theta_{t+1}
-> &=\tilde X^\top[D_t\mathbf z_t+\mathbf y-\mathbf p_t]\\
+> &=\tilde X^\top[D_t\mathbf z_t+\mathbf y-\hat{\mathbf p}_t]\\
 > &=\tilde X^\top D_t\mathbf u_t .
 > \end{aligned}
 > $$
@@ -521,7 +537,7 @@ $$
 >
 > On the four-point fixture at zero weights, each weight is $1/4$ and $\mathbf u_0=(-2,-2,2,2)^\top$. Centered weighted least squares has slope $12/10=1.2$ and intercept $0$. The Newton system gives the same slope step from gradient $-0.75$ and slope curvature $0.625$. Near numerical saturation, prefer the Newton right-hand side directly to dividing by small $d_i$.
 
-This gives a local step wherever the curvature system is well posed. The four-point example can keep improving with larger separating scores, which raises a separate question about whether a finite optimum exists.
+From the same zero iterate, the hand trace used unit-step gradient descent and reached $w=0.75$. Newton and IRLS reached $w=1.2$ because the slope curvature was $0.625$. With $\lambda=0.05$, the initial gradient is unchanged and Newton divides by $0.625+0.05$, reaching $w=10/9$. The three updates have the same zero intercept on this symmetric dataset. The larger Newton step reflects local curvature on this fixture. Outside the local regime, compare loss before accepting a full step. The four-point example can keep improving with larger separating scores, which raises a separate question about whether a finite optimum exists.
 
 ---
 
@@ -536,7 +552,7 @@ $$
 \boxed{
 \begin{aligned}
 J_\lambda(\mathbf w,b)&=J(\mathbf w,b)+\frac{\lambda}{2}\|\mathbf w\|_2^2,\\
-\nabla_{\mathbf w}J_\lambda&=\frac1mX^\top(\mathbf p-\mathbf y)+\lambda\mathbf w .
+\nabla_{\mathbf w}J_\lambda&=\frac1mX^\top(\hat{\mathbf p}-\mathbf y)+\lambda\mathbf w .
 \end{aligned}}
 $$
 
@@ -551,7 +567,7 @@ $$
 Setting the unpenalized intercept derivative to zero at a finite optimum gives
 
 $$
-\frac1m\sum_i p_i=\frac1m\sum_i y_i .
+\frac1m\sum_i \hat p_i=\frac1m\sum_i y_i .
 $$
 
 The average fitted training probability equals the observed positive fraction for this unweighted fit. This equality alone says nothing about calibration across subgroups or prevalence in a shifted population.
@@ -602,9 +618,25 @@ $$
 
 > [!example]- Understand this formula step by step — Stable BCE from signed logits
 >
-> 1. **Case $y = 1$:** Multiplier $(1 - 2y) = -1$, giving $-\ln \sigma(z) = \ln(1 + e^{-z})$. At $z = 50$, `logaddexp(0, -50)` preserves $e^{-50} \approx 1.93 \times 10^{-22}$ with full `float64` relative precision.
+> 1. **Case $y = 1$:** Multiplier $(1 - 2y) = -1$, giving $-\ln \sigma(z) = \ln(1 + e^{-z})$. At $z = 50$, `logaddexp(0, -50)` preserves $e^{-50} \approx 1.93 \times 10^{-22}$ without subtracting nearly equal terms.
 > 2. **Case $y = 0$:** Multiplier $(1 - 2y) = +1$, giving $-\ln(1 - \sigma(z)) = -\ln\sigma(-z) = \ln(1 + e^{+z})$.
 > 3. **Applicability limit:** Exact for hard binary labels $y \in \{0, 1\}$; soft fractional targets $y \in (0, 1)$ require convex weighting $(1-y)\ln(1+e^z) + y\ln(1+e^{-z})$.
+
+### Preserving small gradients in floating point
+
+Even when softplus preserves the loss, subtracting $1$ from a rounded probability can erase the gradient. Put $s=1-2y$. Applying the chain rule to $\ln(1+e^{sz})$ gives
+
+$$
+\frac{\partial\ell}{\partial z}
+=\frac{s e^{sz}}{1+e^{sz}}
+=s\,\sigma(sz).
+$$
+
+> [!example]- Understand this formula step by step — Stable signed-logit gradient
+>
+> The outer derivative of $\ln(1+u)$ is $1/(1+u)$. The inner derivative of $u=e^{sz}$ is $s e^{sz}$, since the binary target holds $s$ fixed. Combining the derivatives gives the displayed relation. For $y=0$ it is $\sigma(z)$. For $y=1$ it is $-\sigma(-z)$, equal in exact arithmetic to $\sigma(z)-1$ by sigmoid symmetry.
+>
+> For $z=50$ and $y=1$, the direct subtraction rounds to zero in float64. The signed expression retains a derivative near $-1.93\times10^{-22}$. Extremely small values can still underflow.
 
 ---
 
@@ -628,9 +660,14 @@ $$
 >
 > With $\tau=0.5$, the logit threshold is $0$. For $w=0.75$ and $b=0$, this places the boundary at $x=0$. If $\mathbf w=0$, the model predicts a constant probability and the decision is constant. For finite scores the endpoint thresholds $0$ and $1$ also yield constant decisions.
 
+> [!question] What score produces a probability of 0.8?
+> Keep the fitted model fixed and reconstruct the logit before thinking about any decision threshold.
+> > [!success]- Reveal Answer
+> > The odds are $0.8/(1-0.8)=4$, so the score is $\ln 4\approx1.386$.
+
 Increasing $\tau$ keeps the fitted weights and probabilities fixed and removes some predicted positives. True positives and false positives can both fall. Precision is their ratio after conditioning on predicted positives, so its direction depends on which cases leave the set.
 
-| Case $i$ | Predicted Probability $p_i$ | Actual Class $y_i$ | Decision ($\tau = 0.50$) | Decision ($\tau = 0.70$) |
+| Case $i$ | Predicted Probability $\hat p_i$ | Actual Class $y_i$ | Decision ($\tau = 0.50$) | Decision ($\tau = 0.70$) |
 |---:|---:|---|---|---|
 | 1 | $0.95$ | `1 — Positive` | `TP` | `TP` |
 | 2 | $0.85$ | `0 — Negative` | `FP` | `FP` |
@@ -684,8 +721,8 @@ Softmax models mutually exclusive classes jointly. One-vs-rest instead fits a se
 
 ## 9. Mental Model, Notation Reference & Bundle Links
 
-**Mental Model:** Construct conditional log-odds linearity $\to$ invert to $\sigma(z)$ $\to$ derive $\sigma'(z) = p(1-p)$ $\to$ build Bernoulli MLE negative log-likelihood (BCE) $\to$ combine chain-rule cancellation with $X^\top(\mathbf{p}-\mathbf{y})$ $\to$ establish Hessian convexity + Newton/GD + $L_2$ separation control $\to$ stabilize numerically with signed logits before choosing threshold $\tau$ for asymmetric decision costs.
+**Mental Model:** Construct conditional log-odds linearity $\to$ invert to $\sigma(z)$ $\to$ derive $\sigma'(z) = p(1-p)$ $\to$ build Bernoulli MLE negative log-likelihood (BCE) $\to$ combine chain-rule cancellation with $X^\top(\hat{\mathbf p}-\mathbf{y})$ $\to$ establish Hessian convexity + Newton/GD + $L_2$ separation control $\to$ stabilize numerically with signed logits before choosing threshold $\tau$ for asymmetric decision costs.
 
-**Trailing Notation Reference:** $m$ samples · $n$ features · $X \in \mathbb{R}^{m\times n}, \tilde{X} = [X,\mathbf{1}]$ · $\mathbf{w}, b, \boldsymbol{\theta}$ parameters · $z$ logit · $\sigma(z)$ sigmoid · $p_i, p_i$ probabilities · $y_i \in \{0,1\}$ targets · $\eta$ step size · $\lambda, C$ $L_2$ regularization parameters · $\tau$ threshold.
+**Trailing Notation Reference:** $m$ samples · $n$ features · $X \in \mathbb{R}^{m\times n}, \tilde{X} = [X,\mathbf{1}]$ · $\mathbf{w}, b, \boldsymbol{\theta}$ parameters · $z$ logit · $\sigma(z)$ sigmoid · $p_i^\ast$ underlying probability · $\hat p_i$ modeled probability · $\hat y_i$ thresholded prediction · $y_i \in \{0,1\}$ targets · $\eta$ step size · $\lambda, C$ $L_2$ regularization parameters · $\tau$ threshold.
 
 - **Companions in this bundle:** [[logistic-regression-lab|Logistic Regression - Experimental Lab]] · [[logistic-regression-mastery|Logistic Regression - Cheatsheet & Interview Q&A]]

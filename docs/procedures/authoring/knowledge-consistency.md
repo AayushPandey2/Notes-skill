@@ -34,3 +34,5 @@ Verify before acceptance that practical objectives receive lab realization when 
 ## Claim Propagation & Defect Tracking
 
 Whenever a canonical claim, assumption, counterexample, or defect is established or repaired (for example, clarifying that raising a classification threshold does *not* monotonically guarantee higher precision), trace and update **every dependent occurrence** across Theory explanatory prose, Lab evaluation scripts/traces, Cheatsheet summary rows, Interview Q&A answers, and related Quiz/Revision fixtures—preserving productive retrieval repetition without propagating conflicting claims.
+
+Distinguish the data-generating probability, model probability, observed label, and thresholded prediction. Define their notation at first use and carry the distinction through examples, code, and assessment.

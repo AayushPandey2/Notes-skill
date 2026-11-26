@@ -531,6 +531,18 @@
         "Gives consequential steps in the worked solution without requiring artificially scalar prerequisites or nested formula folds",
         "Checks a unit eigenvector and its corresponding quotient for diag(2,5)"
       ]
+    },
+    {
+      "id": 48,
+      "prompt": "/scribe-notes Write one self-contained Obsidian study note for a learner who can differentiate x^2 but has not learned matrix calculus. Derive the least-squares normal equations for a two-feature linear model, explain what the residual orthogonality condition means, and use X=[[1,0],[1,1],[1,2]], y=[1,2,2] for a complete numeric check. Keep the derivation understandable with callouts closed. No companion, outside sources, scripts, or external images.",
+      "expected_output": "A single local derivation with component reasoning, residual orthogonality, and an exact check.",
+      "files": [],
+      "expectations": [
+        "Valid derivation without assuming matrix differentiation",
+        "Visible intermediate equation connects objective and normal equations with a local bridge",
+        "Correct exact coefficients and numerical check for both columns",
+        "Interprets residual orthogonality and its limits"
+      ]
     }
   ]
 }

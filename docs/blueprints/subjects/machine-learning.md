@@ -53,3 +53,5 @@ Teach **generalization**: hypothesis space & representable capacity (beyond para
   - High validation variance $\to$ small sample or unstable fitter $\to$ appropriate repeated/grouped/time CV.
   - Post-deployment drop $\to$ covariate/label/concept shift or skew $\to$ compare train vs. serving distributions.
 - **Interpretability & Uncertainty:** Separate global vs. local, intrinsic vs. post-hoc, correlation/attribution (SHAP, permutation importance, PDP) vs. causal intervention, and predictive vs. **aleatoric** vs. **epistemic** uncertainty.
+
+Distinguish the data-generating probability, model probability, observed label, and thresholded prediction. Define their notation at first use and carry the distinction through examples, code, and assessment.
