@@ -11,3 +11,8 @@ Separate **probabilistic modeling, parameter estimation, experimental design, ca
 3. **Experimental Design & Causal Inference:** Address randomization, controls, blocking, confounding, selection bias, Simpson's paradox, and why correlation/regression association does not establish causal intervention without identification assumptions.
 4. **Intervals & Hypothesis Testing:** Explain confidence intervals (long-run coverage vs. single-interval misinterpretation), **$p$-values** (probability, assuming $H_0$ is true, of observing a **test statistic** at least as extreme as the observed value under the null distribution—never $P(H_0 \mid \text{data})$), Type I/II errors, statistical power, multiple-testing inflation, and **statistical vs. practical significance**.
 5. **Model Diagnostics & Robustness:** Check distributional/independence/homoscedasticity assumptions and sensitivity to outliers or small samples.
+
+## Conditional Topic-Family Overlays
+- *Probability:* Conditioning, Bayes' updates, joint/marginal/conditional distributions, independence vs. zero covariance.
+- *Estimation & Testing:* MLE/MoM properties (bias, consistency, efficiency), Neyman–Pearson/test-statistic framing, confidence-interval coverage, power & multiple comparisons.
+- *Regression & Causal Inference:* Conditional expectation vs. causal do-intervention, DAGs/confounding/colliders, residual & leverage diagnostics.

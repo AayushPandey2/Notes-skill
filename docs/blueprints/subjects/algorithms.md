@@ -16,3 +16,9 @@ Teach Algorithms and Data Structures through **problem representation, problem-f
    - *Data structures:* Structural & balance invariants plus **amortized analysis** (aggregate, accounting, or potential method) where relevant.
 3. **Complexity & Memory Models:** Derive time and auxiliary space complexity (best/average/worst/amortized), distinguish asymptotic complexity from constant factors and cache/memory-hierarchy behavior, and explain *why* a baseline bottlenecks before introducing the optimization.
 4. **Transfer & Failure Modes:** Show how invariants generalize (e.g., binary search to monotonic predicates), and diagnose off-by-one errors, integer mid-overflow, stale states, and broken preconditions.
+
+## Conditional Topic-Family Overlays
+- *Searching & Sorting:* Stability, in-place vs. auxiliary memory, comparison lower bounds ($\Omega(n \log n)$) vs. non-comparison assumptions.
+- *Trees & Heaps:* Height/balance invariants, recursive subtree contracts, heapify $O(n)$ vs. $O(n \log n)$ analysis.
+- *Graphs:* Adjacency list vs. matrix trade-offs, BFS shortest unweighted paths, DFS discovery/finish structure, relaxation invariants.
+- *DP & Greedy:* State definition, transition DAG/topological order, memoization vs. tabulation; greedy exchange proof vs. counterexample.

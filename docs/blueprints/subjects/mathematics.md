@@ -14,3 +14,8 @@ Ensure Mathematics notes match their pedagogical strategy to the mathematical di
    - *Numerical approximation:* Separate exact symbolic identities from finite-step/finite-precision approximations, tracking truncation error, conditioning, and floating-point cancellation ([math_gates.md](../../../core/math_gates.md)).
 2. **Progressive Abstraction & Formula Construction:** Build from concrete instances to general notation so formulas compress understood mechanics.
 3. **Independent Verification:** Verify results via substitution, invariants, symmetry, limiting cases, or a second independent method—never treating numerical spot-checks as formal proof.
+
+## Conditional Topic-Family Overlays
+- *Linear Algebra:* Vector spaces, basis/dimension, rank-nullity, linear maps vs. matrix representations, orthogonality, eigendecomposition/SVD.
+- *Calculus & Analysis:* $\epsilon$-$\delta$ limits, continuity vs. differentiability, local linear approximation, FTC accumulation, uniform vs. pointwise convergence.
+- *Discrete Math & Optimization:* Quantifier negation, induction/bijections, convexity, KKT/Lagrange optimality conditions vs. global guarantees.
