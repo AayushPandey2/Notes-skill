@@ -2,8 +2,8 @@
 
 Perform an explicit manual review of the **actual saved Markdown and assets** before concluding any note-creation or update task—consuming the authoritative rules from each selected policy rather than redefining them. Never use word count, heading count, or image count as proof of educational quality, and never represent manual review as automated verification.
 
-## Stage 1 — Universal Correctness & Theory Quality
-- Verify [teaching_core.md](../../../core/teaching_core.md), [theory_quality_contract.md](../../../core/theory_quality_contract.md), and [adversarial-theory-review.md](adversarial-theory-review.md): concrete grounding before abstractions, local prerequisite bridges, clear epistemic claim distinctions, forward & reverse reasoning where relevant, ideal-to-real assumption shifts, and target `0–5` theory depth met with zero factual errors.
+## Stage 1 — Universal Correctness, Evidence & Editorial Quality
+- Verify [teaching_core.md](../../../core/teaching_core.md), [theory_quality_contract.md](../../../core/theory_quality_contract.md), [claim-verification.md](../sourcing/claim-verification.md), [educational-editor.md](educational-editor.md), and [adversarial-theory-review.md](adversarial-theory-review.md): concrete grounding before abstractions, 4-category prerequisite discipline, claim-level evidence & contradiction checks, paragraph contribution test, target `0–5` depth, and dependency-aware repair of any Critical/Major/Moderate defects.
 
 ## Stage 2 — Selected Master & Artifact Cardinality
 - Verify the active format (`docs/blueprints/formats/` + any preset in `docs/blueprints/presets/`) and confirm emitted files match `artifact_policy` in [master-registry.yaml](../../dispatch/master-registry.yaml) and explicit user overrides (no unrequested companion labs/cheatsheets for `M3`, `M4`, `M6`, `M7`, `/scribe-ytnotes`, standalone `M5`, or single-file requests).
