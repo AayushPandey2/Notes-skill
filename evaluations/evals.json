@@ -891,12 +891,12 @@
     {
       "id": 82,
       "prompt": "/scribe-notes Write a complete beginner-friendly M1 chapter on K-Nearest Neighbors (KNN) covering distance metrics, classification and regression, feature scaling, weighting, choosing k, exact spatial search, high-dimensional behavior, and trade-offs.",
-      "expected_output": "Avoids analogy-to-formalism cliffs by maintaining beginner accessibility and concept-before-terminology throughout every section; builds Euclidean distance from Pythagorean geometry on 2D coordinates before Manhattan/Chebyshev/generalized Minkowski notation; explains indicator functions, summation, and argmax singly before combining them; separates set-vs-index notation cleanly, states 1 <= k <= n bounds and pruning equality/tie-policy conditions accurately, avoids monotonic training-error overclaims and reference-vs-copying cost conflation, uses purposeful collapsed derivations with distinct mathematical titles, actively attempts/discloses multiple complementary visuals, and sustains full depth through later spatial-tree and curse-of-dimensionality sections.",
+      "expected_output": "Avoids analogy-to-formalism cliffs by maintaining beginner accessibility and concept-before-terminology throughout every section; builds Euclidean distance from Pythagorean geometry on 2D coordinates before Manhattan/Chebyshev/generalized Minkowski notation; explains indicator functions, summation, and argmax singly before combining them; separates set-vs-index notation cleanly, states 1 <= k <= n bounds and pruning equality/tie-policy conditions accurately, avoids monotonic training-error overclaims and reference-vs-copying cost conflation, uses purposeful collapsed derivations with distinct mathematical titles, actively retrieves and distributes multiple verified existing web-sourced visuals across relevant sections without ever generating images (or runs query refinement and discloses fallback limits cleanly), and sustains full depth through later spatial-tree and curse-of-dimensionality sections.",
       "files": [],
       "expectations": [
         "Maintains beginner accessibility after the opening analogy without dumping unexplained sets, Voronoi jargon, or composite argmax-sum-indicator notation",
         "Teaches Pythagorean/Euclidean distance cleanly before generalized Minkowski metrics and separates set-vs-index notation, 1 <= k <= n bounds, and exact pruning equality/tie conditions",
-        "Uses distinct Derivation/Proof titles (zero generic 'Understand this formula step by step' boxes), avoids 'fatal flaw' dramatic language and AI filler, sustains full depth in later sections, and attempts/discloses multiple complementary visuals"
+        "Uses distinct Derivation/Proof titles (zero generic 'Understand this formula step by step' boxes), avoids 'fatal flaw' dramatic language and AI filler, sustains full depth in later sections, and retrieves/distributes multiple web-sourced images (zero generated images) or discloses retrieval limits"
       ]
     },
     {
@@ -936,12 +936,23 @@
       "id": 86,
       "prompt": "/scribe-audit Perform a read-only educational audit on an attached draft chapter that opens with a coffee-shop analogy then immediately dumps unexplained tensor notation, uses only one generic chart, hides its central proof inside an unnamed fold, and compresses its last three sections into bullet lists.",
       "evaluator_supplied_input": "Evaluator supplies at evaluation time a draft chapter exhibiting analogy-to-formalism cliff, generalized-first math inversion, single-image token compliance, hidden essential proof, dramatic phrasing, and compressed later sections.",
-      "expected_output": "Identifies the earliest unresolved beginner barrier sequentially, flags the analogy-to-formalism cliff, hidden essential reasoning, single-image visual gap, dramatic/technical-reference tone, and compressed late sections as confirmed Pedagogical/Presentation/Factual findings without editing any files.",
+      "expected_output": "Identifies the earliest unresolved beginner barrier sequentially, flags the analogy-to-formalism cliff, hidden essential proof, single-image visual gap, dramatic/technical-reference tone, and compressed late sections as confirmed Pedagogical/Presentation/Factual findings without editing any files.",
       "files": [],
       "expectations": [
         "Operates strictly read-only and detects the earliest unresolved beginner barrier sequentially",
         "Flags the analogy-to-formalism cliff, hidden essential proof, single-image token compliance, dramatic phrasing, and compressed later sections with confirmed confidence",
         "Proposes dependency-aware repairs grounded strictly in the supplied draft"
+      ]
+    },
+    {
+      "id": 87,
+      "prompt": "/scribe-notes Explain the human nephron's filtration, reabsorption, and secretion mechanisms comprehensively for beginners with verified existing web-sourced illustrations distributed across sections.",
+      "expected_output": "Performs section-level visual planning during curriculum discovery, searches reputable existing web sources (e.g., Wikimedia Commons, OpenStax, university resources) rather than generating images or using AI/SVG/Mermaid/ASCII/plotting scripts, retrieves and distributes multiple distinct inspected images across relevant sections with before/image/caption/after teaching and verified licensing/attribution (or refines search queries and uses clear prose/table fallback with explicit limitation disclosure when web retrieval fails or tools are unavailable).",
+      "files": [],
+      "expectations": [
+        "Never invokes image-generation tools, AI illustration tools, custom SVG, Mermaid, ASCII, or programmatic plotting scripts, even as a fallback",
+        "Plans visuals per section during curriculum discovery and distributes multiple distinct verified existing web-sourced images into vault attachments (or documents query-refinement failure and prose/table fallback honestly)",
+        "Wraps every embedded figure with before/image/caption/after teaching, verified web attribution/license, and zero unverified thumbnail/webpage URLs or repository-stored image assets"
       ]
     }
   ]

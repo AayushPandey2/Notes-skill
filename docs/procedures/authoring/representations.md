@@ -1,30 +1,30 @@
-# Visuals and Media
+# Visuals and Media (Web-Sourced Images Only)
 
-Before drafting—beginning during curriculum discovery and concept organization—actively inspect every major concept for visual-teaching opportunities where seeing a contrast, mechanism, topology, chronology, or geometry immediately removes guesswork. Place visuals at exact teaching transitions—never waited on until the end of drafting as a single token image, never dumped in a trailing gallery, and never forced as decorative stock imagery.
+Before drafting—beginning during section-level curriculum discovery and concept organization—inspect every major section to decide where an existing visual will materially remove guesswork. Place retrieved visuals at exact teaching transitions alongside the relevant explanation—never waited on until the end of drafting as a single token image, never clustered only in the introduction, never dumped in a trailing gallery, and never forced as decorative stock imagery.
 
-For each core concept in substantive notes, decide which representation makes the mechanism inspectable. Record the learning question, exact example or state, placement, and outcome in the concept plan. Give geometry and spatial transformations a figure when a suitable permitted asset can be inspected. A table may be the best representation for a discrete comparison or exact trace. When a figure is valuable but unavailable or prohibited, use a permitted fallback and disclose what it cannot show. A missing essential relationship remains a gap. Prefer complementary views that let the reader predict a changed outcome, and remove illustrations that provide no evidence for the nearby explanation.
+**Absolute Prohibition on Image Generation (Non-Negotiable):** The agent must **NEVER create, draw, or generate images under any circumstances** while authoring notes. Strictly prohibit AI-generated images/illustrations, native image-generation tools (`generate_image` or equivalent), programmatic graphs/plots (Python, Matplotlib, Plotly, or any rendering library), custom SVG diagrams, Mermaid diagrams, ASCII diagrams, HTML/CSS/JS visual generation, and redrawing/recreating existing illustrations. **All newly acquired educational images must come from existing web sources.**
 
-## 1. Visual Specialization, Meaningful Coverage & Source Hierarchy
+## 1. Visual Specialization, Distributed Coverage & 4-Level Source Hierarchy
 
-Select visuals according to their distinct educational function (**Structural, Sequential, Mathematical, Geometrical, Comparative, Diagnostic, Physical/Biological/Experimental, Historical/Geographical**) rather than treating visuals as optional embellishments, forcing an arbitrary fixed count, or treating the absence of a fixed quota as permission to emit only one decorative image on a visually rich chapter. On visually rich topics (across geometry, algorithms, optimization, neural architectures, physics, biology, circuits, or historical geography), actively include multiple complementary visuals when they illuminate genuinely distinct concepts:
+Select visuals according to distinct educational functions (**Structural, Sequential, Mathematical, Geometrical, Comparative, Diagnostic, Physical/Biological/Experimental, Historical/Geographical**) rather than imposing a fixed universal quota or accepting a single token image as sufficient. On visually rich comprehensive chapters, retrieve and **distribute multiple distinct web-sourced images across different relevant sections**—such as foundational intuition, math/geometry, structure, mechanisms, algorithmic steps, parameter behavior, comparisons, worked examples (where matching figures exist), limitations/failure cases, and advanced concepts. Treat a visually rich comprehensive note containing only one image as a likely educational failure requiring review.
+
+When visuals are warranted and permitted (`source_policy != strict`), actively pursue existing web retrieval across reputable sources (**Wikimedia Commons, university educational resources, OpenStax and open textbooks, official technical documentation, established educational sites, research publications with reuse permissions, reputable scientific organizations**—preferring openly licensed and public-domain works) in this strict **4-level source hierarchy**:
+
+1. **Supplied source figure:** Existing diagram/plot from the user's supplied material (`M2` / source-grounded notes, preserved where permitted).
+2. **Verified existing educational web raster figure:** High-clarity `.png`, `.jpg`, `.jpeg`, `.webp` retrieved from reputable web sources via permitted web/download tools, with checked source, reuse rights, and attribution, and visually inspected before embedding. Never confuse an image-search result snippet, webpage URL, or thumbnail with a verified downloadable image.
+3. **Clear prose, mathematics, native Markdown tables, or numerical/state traces:** Used **strictly when web image retrieval fails after query refinement or web access is unavailable/prohibited**, paired with an honest disclosure of the visual limitation (**never fall back to image generation**).
+4. **Attributed reference link:** When local vault download is unavailable or restricted.
 
 | Visual Function & Concept Type | Visual Policy |
 |---|---|
-| **Structural / Physical / Biological** | Normally include an appropriate structure, topology, apparatus, biological, or component diagram |
-| **Mathematical & Geometrical** | Normally include geometric partitions, curves, projections, vectors, transformations, or approximation/loss dynamics |
-| **Sequential** | Include a flow or state-transition diagram (or structured step trace when figures are unavailable) |
-| **Comparative & Diagnostic** | Use comparative plots or error/failure contrasts when they reveal trends, tradeoffs, or misbehavior more clearly than prose |
-| **Historical & Geographical** | Use timelines, causal/spatial maps, or primary archival figures where chronology, space, or evidence governs understanding |
-| **Simple definitions / verbal distinctions** | No image needed unless it actively resolves a misleading contrast |
+| **Structural / Physical / Biological** | Retrieve an existing structure, topology, apparatus, anatomical, biological, or component diagram |
+| **Mathematical & Geometrical** | Retrieve verified existing geometric partitions, curves, projections, vectors, transformations, or approximation/loss figures |
+| **Sequential & Algorithmic** | Retrieve an existing flow, tree/graph, or state-transition diagram (or use a structured step trace when unavailable) |
+| **Comparative & Diagnostic** | Retrieve comparative plots or error/failure contrasts when they reveal trends, tradeoffs, or misbehavior more clearly than prose |
+| **Historical & Geographical** | Retrieve verified timelines, causal/spatial maps, or archival primary figures where chronology, space, or evidence governs understanding |
+| **Simple definitions / verbal distinctions** | No image needed unless an existing visual resolves a misleading contrast |
 
-When visuals are educationally expected and permitted (`source_policy != strict`), actively attempt available host capabilities in priority order **before** falling back to prose, tables, or reference links—never silently emit zero visuals or single-image token compliance on a visual-heavy topic without attempting permitted acquisition or disclosing unavailability:
-1. **Supplied source figure:** Exact diagram/plot from the user's supplied material (`M2` / source-grounded notes).
-2. **Exact worked-example representation:** Visual or structured representation matching the note's exact dataset, matrix, circuit, or initial state—using **host-supported native visual/diagram tools** (`generate_image` / host diagram capabilities, without creating custom plotting script engines) when available, falling back to verified external figures or native tables when unavailable.
-3. **Verified educational web raster figure:** High-clarity `.png`, `.jpg`, `.webp` searched/acquired locally via permitted web/download tools and visually inspected before embedding.
-4. **Native Markdown table or state trace:** Inspectable discrete transitions, truth tables, or numerical traces when visual tools are absent or restricted.
-5. **Attributed reference link:** When local acquisition is unavailable or restricted.
-
-**Relevance-Governed Quantity & Source-Only Precedence:** Base visual count on distinct learning needs, not a mechanical quota. When `source_policy = strict`, external web browsing and downloading are **disabled**—use only supplied source figures or native tables/traces. **Never use Mermaid (`mermaid` blocks), ASCII art/diagrams, SVG downloads, or custom HTML/JS plotting scripts.**
+**Source-Only & Forbidden Formats:** When `source_policy = strict`, external web browsing and downloading are **disabled**—use only supplied source figures or prose/tables/traces. **Never use AI/native image generation, custom SVG, Mermaid, ASCII art/diagrams, or programmatic plotting scripts.**
 
 ## 2. Multi-Representation Selection & Complementary Modalities
 
@@ -43,24 +43,21 @@ Develop consequential concepts through complementary representations where appro
 
 - **Domain Visual Overlays:** *Electrical:* circuit topology + passive sign + response · *OS/Networking:* address/TLB/page-table maps, packet timelines · *Biology/Chemistry:* 3D structure/binding, pathway, energy profile · *Math/Algorithms:* transforms, function+derivative, pointer/window states · *ML:* failure contrast, foundation curves, sigmoid+derivative, ROC/calibration, $L_1$/$L_2$ geometry, bias–variance.
 
-## 3. Acquisition, Inspection & Native-Visual Lifecycles
+## 3. Section-Level Web Retrieval, Failure Protocol & Vault Management
 
-Keep the no-Mermaid, no-ASCII-diagram, and no-custom-plotting-script rules intact, and apply the matching lifecycle by visual source:
+Keep all image-generation prohibitions intact and pursue existing web figures actively throughout authoring via this 7-step section workflow: **(1)** identify the exact concept requiring visualization, **(2)** search reputable educational web sources using targeted queries, **(3)** inspect candidate images directly, **(4)** select the most accurate and beginner-friendly image, **(5)** verify source relevance, licensing, and reuse permissions, **(6)** download into the configured vault attachment folder when authorized, and **(7)** place beside the corresponding theoretical explanation.
 
-### Path A — External Downloaded Web Raster Figures
-Track `Needed -> Candidate found -> Source checked -> Downloaded (outside final vault first where host tools permit) -> Local image inspected -> Embedded -> Published with accepted notes -> Saved embed checked`:
-1. **Check source & rights:** Verify identifiable educational/scientific/institutional/creator sources and reuse rights within active `source_policy`.
-2. **Download & inspect before vault publication:** Where native host tools permit, inspect candidate assets outside the final vault directory first before committing them to `<Configured Target>/<Topic>/assets/` (or `assets/scriptorium/<video-id>/` for standalone `/scribe-ytnotes`), avoiding leftover unused files or empty directories if generation is blocked. Save `.png`, `.jpg`, `.jpeg`, or `.webp` with descriptive non-colliding filenames using native tools (never custom downloader scripts, and never deleting preexisting user assets).
-3. **Inspect before describing:** Open the saved file (`read_file` or viewer) before citing colors, axes, labels, or values; explain explicitly if an external figure uses a different dataset/notation than the running example.
+### Web Image Acquisition Lifecycle
+Track `Needed -> Candidate found -> Source/rights checked -> Downloaded to vault attachments (via staging where permitted) -> Local image inspected -> Embedded -> Published with accepted notes -> Saved embed checked`:
+1. **Check source & rights:** Verify identifiable educational/scientific/institutional/openly licensed sources and reuse rights within active `source_policy`. Do not store downloaded educational images or evaluation assets inside the Scriptorium skill repository.
+2. **Download & inspect before publication:** Where host tools permit, inspect candidate assets outside the vault first before writing accepted assets to `<Configured Target>/<Topic>/assets/` (or `assets/scriptorium/<video-id>/` for standalone `/scribe-ytnotes`), avoiding leftover unused files or empty directories and never deleting preexisting user assets. Save `.png`, `.jpg`, `.jpeg`, or `.webp` with descriptive filenames using native tools (never custom downloader scripts).
+3. **Inspect before describing:** Open the saved local file visually before citing colors, axes, labels, or values; bridge any dataset/notation differences explicitly in prose.
 
-### Path B — Host-Supported Native / Generated Mathematical Diagrams
-Track `Specification defined -> Native tool rendered -> Values/labels inspected -> Attributed as author-created -> Saved embed checked`:
-1. **Specify exact parameters:** Anchor axes, units, coordinates, and states to the note's actual running example before generating.
-2. **Inspect rendered output:** Verify values, scale labels, geometry, and component relationships visually; disclose honestly if live visual inspection is unavailable.
-3. **Attribute cleanly:** Identify the figure as an author-created illustration paired with a meaningful caption and accessible textual explanation.
+### Image Retrieval Failure Protocol
+If the initial search fails to yield a suitable existing image: **(1)** refine search terms, **(2)** search alternative terminology, **(3)** check additional reputable educational sources, and **(4)** look for an equivalent existing illustration. If no suitable existing image can be retrieved (or if web access is unavailable or prohibited), explain the concept through clear prose, mathematics, Markdown tables, or numerical examples and **disclose the significant visual limitation**—**never fall back to image generation**.
 
-### Adaptive Width & Multimedia Hygiene (Both Paths)
-- Choose display width from legibility, intrinsic dimensions, and layout (`![[assets/<name>.png|650]]` default; compact for small components, wider for dense circuits/graphs). Place explanations beside the element they explain, keep labels/symbols consistent with prose, never rely exclusively on color, omit decorative visual clutter, and separate embed, concise 1-sentence caption, and **ordinary Markdown** attribution (`Source: Exact Source Page Title — <verified-url>. Attribution and license: <verified info>.` formatted as a Markdown link `[Title](<verified-url>)` using the actual verified URL, or `Source: Author-created illustration for this note's running example.` — zero raw HTML) with blank lines.
+### Adaptive Width, Attribution & Multimedia Hygiene
+Choose readable display width from intrinsic dimensions and layout (`![[assets/<name>.png|650]]` default; narrower for small components, wider for dense graphs/circuits). Place explanations beside the figure, keep symbols consistent with prose, never rely solely on color, omit decorative clutter, and separate embed, concise 1-sentence caption, and **ordinary Markdown** attribution (`Source: Exact Source Page Title — [Title](<verified-url>). License/attribution: <verified info>.` — zero raw HTML and never an author-created claim) with blank lines.
 
 ## 4. Visual Planning & Teaching Around Images
 
@@ -71,6 +68,6 @@ Teach every embedded figure in calm, takeaway-driven prose (avoid commanding phr
 2. **The figure & caption:** Embed the inspected image with readable labels and appropriate width, paired with a descriptive 1-sentence caption explaining what the figure demonstrates (never merely repeating the title) and ordinary Markdown source attribution.
 3. **After the figure:** Decode axes, nodes, branches, or curves directly into the underlying variables, equations, or causal mechanism (without relying on color alone and bridging notation shifts); trace concrete values/thresholds on the figure; state what is **illustrative, simulated, measured, or source-provided** plus what the figure **does not prove**; and add a visible `> [!question] Concept Checkpoint` (`> [!success]- Answer`) where visual interpretation needs active reasoning.
 
-## 5. Visual Integrity Verification (Before Acceptance)
+## 5. Strict Visual Acceptance Gate (Before Publication)
 
-Before treating any embedded visual as completed, verify where host tools permit: **(1)** the image file exists at its exact saved path, **(2)** the image opens readably, **(3)** the Markdown path/link matches, **(4)** embed syntax is valid native Obsidian, **(5)** all axis/diagram labels are legible and accurate, **(6)** depicted mathematical relationships are right, **(7)** the figure aligns with the surrounding running example (or bridges any difference explicitly), **(8)** source/author attribution is accurate, **(9)** the graphic does not mislead, and **(10)** it provides distinct teaching value. Never claim successful visual implementation for an unverified path or uninspected image.
+Before accepting comprehensive notes, verify: **(1)** multiple relevant sections contain distinct web-sourced visuals where appropriate (not 1 token image on a visually rich chapter), **(2)** all newly acquired images originate strictly from verified existing web sources with zero image-generation tools, AI illustrations, rendering scripts, custom SVG, Mermaid, ASCII, or redrawn figures used, **(3)** images are distributed meaningfully across the learning progression beside relevant prose with **Before / Image / Caption / After** teaching context, **(4)** important visual opportunities were not ignored without running the retrieval failure protocol, **(5)** every embedded image file actually exists at its vault path, opens readably, has valid native Obsidian embed syntax, accurate/legible labels, consistent mathematics, verified attribution/license, and non-misleading educational value, **(6)** images are not unnecessarily repeated, and **(7)** significant retrieval failures or unavailable web access are disclosed honestly. Never treat an unverified path, thumbnail/search link, or placeholder as successful visual implementation.

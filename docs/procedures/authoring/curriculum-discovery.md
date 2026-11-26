@@ -21,6 +21,7 @@ Before drafting a comprehensive independent note on a subject, consult authorita
 6. Established student difficulties and common misconceptions.
 7. Foundational experiments, empirical evidence, canonical benchmarks, or primary references.
 8. Comparisons with nearest alternatives and advanced extensions inside vs. outside scope.
+9. Section-level visual opportunities across foundational intuition, mathematics/geometry, structures, mechanisms, algorithmic steps, parameter behavior, comparisons, worked examples, failure regimes, and advanced extensions—planning targeted web searches for verified existing illustrations per [representations.md](../authoring/representations.md) (never generating images).
 
 ### Preferred Reference Categories by Discipline
 
