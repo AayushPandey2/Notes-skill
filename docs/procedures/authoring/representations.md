@@ -2,7 +2,7 @@
 
 Before drafting, identify where seeing a contrast, mechanism, topology, or geometry immediately removes guesswork. Place visuals at exact **conceptual inflection points**—never dumped in a trailing gallery and never forced as decorative stock images.
 
-For each core concept in substantive notes, decide which representation makes the mechanism inspectable. Record the learning question, exact example or state, placement, and outcome in the concept plan. Give geometry and spatial transformations a figure when a suitable permitted asset can be inspected. A table may be the best representation for a discrete comparison or exact trace. When a figure is valuable but unavailable or prohibited, use a permitted fallback and disclose what it cannot show. A missing essential relationship remains a gap.
+For each core concept in substantive notes, decide which representation makes the mechanism inspectable. Record the learning question, exact example or state, placement, and outcome in the concept plan. Give geometry and spatial transformations a figure when a suitable permitted asset can be inspected. A table may be the best representation for a discrete comparison or exact trace. When a figure is valuable but unavailable or prohibited, use a permitted fallback and disclose what it cannot show. A missing essential relationship remains a gap. Prefer complementary views that let the reader predict a changed outcome, and remove illustrations that provide no evidence for the nearby explanation.
 
 ## 1. Visual Source Hierarchy & Relevance Policy
 

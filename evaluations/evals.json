@@ -555,6 +555,164 @@
         "Distinguishes cutoff distance ties from voting ties and qualifies the odd-k claim",
         "Includes a transfer question whose revealed answer correctly derives a result for a changed query or condition"
       ]
+    },
+    {
+      "id": 50,
+      "prompt": "/scribe-notes Teach a beginner why inverse-distance weighting can reverse the three-neighbor vote. Use distances 1, 2, 3 and labels Red, Blue, Blue. Write one focused standalone Obsidian learning note for this question, with an explanation, practical or numerical example, and one local check. No companions, external sources, external assets, scripts, or vault reads.",
+      "expected_output": "One self-contained learning unit with a reconstructible mechanism, an illustrative case and a local comprehension check.",
+      "files": [],
+      "expectations": [
+        "Uniform Blue and weighted Red are computed correctly",
+        "Explains why positive weight normalization preserves the winning class and states a zero-distance convention"
+      ]
+    },
+    {
+      "id": 51,
+      "prompt": "/scribe-notes Teach a learner with basic geometry why the distance between the two canonical hard-margin SVM hyperplanes is 2 divided by the norm of w. Write one focused standalone Obsidian learning note for this question, with an explanation, practical or numerical example, and one local check. No companions, external sources, external assets, scripts, or vault reads.",
+      "expected_output": "One self-contained learning unit with a reconstructible mechanism, an illustrative case and a local comprehension check.",
+      "files": [],
+      "expectations": [
+        "Derives margin width from the normal direction with correct assumptions",
+        "Explains a scaling or nonseparability boundary"
+      ]
+    },
+    {
+      "id": 52,
+      "prompt": "/scribe-notes Explain to a learner who knows derivatives why BCE for a positive target at score 50 can have a zero computed probability residual but a nonzero derivative. Write one focused standalone Obsidian learning note for this question, with an explanation, practical or numerical example, and one local check. No companions, external sources, external assets, scripts, or vault reads.",
+      "expected_output": "One self-contained learning unit with a reconstructible mechanism, an illustrative case and a local comprehension check.",
+      "files": [],
+      "expectations": [
+        "Derives negative sigmoid of the negated score or equivalent",
+        "Distinguishes floating-point cancellation from true zero and states an underflow limit"
+      ]
+    },
+    {
+      "id": 53,
+      "prompt": "/scribe-notes Teach why projecting centered points (2,0), (-2,0), (0,1), (0,-1) onto the first coordinate captures more variance than the second. Explain the general maximizing direction. Write one focused standalone Obsidian learning note for this question, with an explanation, practical or numerical example, and one local check. No companions, external sources, external assets, scripts, or vault reads.",
+      "expected_output": "One self-contained learning unit with a reconstructible mechanism, an illustrative case and a local comprehension check.",
+      "files": [],
+      "expectations": [
+        "Checks both projected variances consistently",
+        "Bridges projected variance to the covariance quadratic form and leading eigendirection"
+      ]
+    },
+    {
+      "id": 54,
+      "prompt": "/scribe-notes Teach the chain rule in a one-example two-layer scalar network with h=a*x and yhat=b*h, squared loss divided by two. Use x=2,a=1,b=3,y=4. Write one focused standalone Obsidian learning note for this question, with an explanation, practical or numerical example, and one local check. No companions, external sources, external assets, scripts, or vault reads.",
+      "expected_output": "One self-contained learning unit with a reconstructible mechanism, an illustrative case and a local comprehension check.",
+      "files": [],
+      "expectations": [
+        "Shows forward states and gradients 12 and 4",
+        "Explains local sensitivities and where the upstream gradient is reused"
+      ]
+    },
+    {
+      "id": 55,
+      "prompt": "/scribe-notes Teach a beginner why a String move prevents reuse while an immutable borrow does not in Rust. Use two small snippets. Write one focused standalone Obsidian learning note for this question, with an explanation, practical or numerical example, and one local check. No companions, external sources, external assets, scripts, or vault reads.",
+      "expected_output": "One self-contained learning unit with a reconstructible mechanism, an illustrative case and a local comprehension check.",
+      "files": [],
+      "expectations": [
+        "Distinguishes the old binding after a move from a borrow",
+        "Explains the observed result through ownership and lifetime rather than a deep copy claim"
+      ]
+    },
+    {
+      "id": 56,
+      "prompt": "/scribe-notes Teach why a TLB miss can succeed without a page fault. Trace a tiny example from page number and offset to physical address. Write one focused standalone Obsidian learning note for this question, with an explanation, practical or numerical example, and one local check. No companions, external sources, external assets, scripts, or vault reads.",
+      "expected_output": "One self-contained learning unit with a reconstructible mechanism, an illustrative case and a local comprehension check.",
+      "files": [],
+      "expectations": [
+        "Separates TLB lookup, present PTE and fault cases",
+        "Traces correct address composition using declared sizes"
+      ]
+    },
+    {
+      "id": 57,
+      "prompt": "/scribe-notes Teach how lower-bound binary search with a half-open interval locates the first 4 in [1,4,4,7]. Trace the iterations. Write one focused standalone Obsidian learning note for this question, with an explanation, practical or numerical example, and one local check. No companions, external sources, external assets, scripts, or vault reads.",
+      "expected_output": "One self-contained learning unit with a reconstructible mechanism, an illustrative case and a local comprehension check.",
+      "files": [],
+      "expectations": [
+        "Traces interval to first index 1 using correct updates",
+        "States invariant and explains why each branch preserves the target"
+      ]
+    },
+    {
+      "id": 58,
+      "prompt": "/scribe-notes Teach why an initially uncharged capacitor approaches 5 V in an ideal series RC step, using a governing equation and a one-time-constant check. Write one focused standalone Obsidian learning note for this question, with an explanation, practical or numerical example, and one local check. No companions, external sources, external assets, scripts, or vault reads.",
+      "expected_output": "One self-contained learning unit with a reconstructible mechanism, an illustrative case and a local comprehension check.",
+      "files": [],
+      "expectations": [
+        "Derives the response from the loop law or integrates its gap equation explicitly",
+        "Checks 0 V and about 3.16 V and interprets the time constant"
+      ]
+    },
+    {
+      "id": 59,
+      "prompt": "/scribe-notes Teach one Newton iteration for x^2-2 starting at x=2, then explain why a near-zero derivative is a risk. Write one focused standalone Obsidian learning note for this question, with an explanation, practical or numerical example, and one local check. No companions, external sources, external assets, scripts, or vault reads.",
+      "expected_output": "One self-contained learning unit with a reconstructible mechanism, an illustrative case and a local comprehension check.",
+      "files": [],
+      "expectations": [
+        "Derives tangent update and computes x1=1.5",
+        "Connects step size to derivative and qualifies convergence"
+      ]
+    },
+    {
+      "id": 60,
+      "prompt": "/scribe-notes Teach lost update with two concurrent operations incrementing a shared balance from 10. Compare a read-then-write interleaving with a safe sequence. Write one focused standalone Obsidian learning note for this question, with an explanation, practical or numerical example, and one local check. No companions, external sources, external assets, scripts, or vault reads.",
+      "expected_output": "One self-contained learning unit with a reconstructible mechanism, an illustrative case and a local comprehension check.",
+      "files": [],
+      "expectations": [
+        "Traces lost result 11 and correct serialized result 12",
+        "Explains how atomic increment or suitable concurrency control avoids the anomaly"
+      ]
+    },
+    {
+      "id": 61,
+      "prompt": "/scribe-notes Teach opportunity cost to a beginner choosing between an extra shift, an evening class, or resting. Explain how ranking the alternatives changes the opportunity cost. Write one focused standalone Obsidian learning note for this question, with an explanation, practical or numerical example, and one local check. No companions, external sources, external assets, scripts, or vault reads.",
+      "expected_output": "One self-contained learning unit with a reconstructible mechanism, an illustrative case and a local comprehension check.",
+      "files": [],
+      "expectations": [
+        "Identifies the best forgone alternative, not all alternatives",
+        "Shows a comparative example and explains a nonmonetary cost"
+      ]
+    },
+    {
+      "id": 62,
+      "prompt": "/scribe-audit Review this beginner KNN theory note read-only from the supplied file. Identify important teaching and visual deficiencies while preserving the technical strengths. Do not browse or assume the linked companions were supplied.",
+      "expected_output": "A source-bounded findings report citing the dense learning units, premature formulas and visual gaps and preserving the exact examples.",
+      "files": [
+        "evaluations/fixtures/blind/knn-compressed-flawed.md"
+      ],
+      "expectations": [
+        "Identifies premature weighted notation, compressed query/search mechanism and geometry without explanation",
+        "Preserves correct numeric comparison, exact matches and leakage guidance",
+        "Does not rewrite the source or presume that omitted companion inputs are absent from the original vault"
+      ]
+    },
+    {
+      "id": 63,
+      "prompt": "/scribe-audit Review this circle area teaching note and its included diagram, read-only. No online research. Explain how to make it teach a beginner who understands area but is new to derivatives.",
+      "expected_output": "Finds the concealed mechanism, incomplete derivation, irrelevant visual and non-discriminating example while preserving the correct derivative.",
+      "files": [
+        "evaluations/fixtures/blind/circle-mechanism-flawed.md",
+        "evaluations/fixtures/bundles/knn/assets/metric-paths.png"
+      ],
+      "expectations": [
+        "Identifies the missing mathematical justification and the visible-reading-path gap",
+        "Explains why the actual figure does not depict circles or annuli",
+        "Notices that radius 1 and diameter 2 are the same circle and proposes a discriminating example"
+      ]
+    },
+    {
+      "id": 64,
+      "prompt": "/scribe-notes Create a comprehensive geometry lesson. The installed skill package is missing its mathematical policy and verification checklist, and the host has no image tool. Only work within the supported Scriptorium workflow.",
+      "expected_output": "Names missing required policies separately from unavailable image capabilities, attempts read-only recovery and limits any delivery or compliance claims according to the actual outcome.",
+      "files": [],
+      "expectations": [
+        "Distinguishes missing policy dependencies from an optional unavailable image tool",
+        "Does not claim the missing review occurred or fabricate assets",
+        "Respects the user’s supported-workflow-only constraint when an essential policy cannot be recovered"
+      ]
     }
   ]
 }

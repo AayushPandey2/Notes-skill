@@ -1,7 +1,11 @@
 # Evaluation Specification: K-Nearest Neighbors
 
-The companion [golden theory note](k-nearest-neighbors.md) is a repository fixture for a beginner request with local illustrative plotting available. The four author-created figures use the same point coordinates as the text or the stated unit-cube model. Exact search and weighting terminology were checked against the [scikit-learn nearest-neighbors guide](https://scikit-learn.org/stable/modules/neighbors).
+## Resolved artifact plan
 
-Check the fixture with the folds closed. The reader should be able to reconstruct the query-to-vote path, explain why a metric or scaling change affects selection, distinguish cutoff ties from vote ties, and predict what changes when the neighborhood grows. Figures should appear beside the relationship they explain, with distinct markers, readable axes, and limitations in the adjacent text. Open the math folds to verify Euclidean construction, weighted averaging, and the fixed-volume derivations.
+The simulated request is a complete beginner `M1` bundle with a Python-only lab, independently authored teaching material and original supported illustrations. Deliver [theory](k-nearest-neighbors.md), [Experimental Lab](knn-experimental-lab.md), and [Cheatsheet and Interview Q&A](knn-cheatsheet-qa.md). The miniature geometry and five-case weighted examples are shared across artifacts. The lab's held-out fixture has a separate purpose and does not estimate production performance.
 
-Repository review checked arithmetic, native Markdown structure, local figure paths and the actual rendered raster images. Live Obsidian rendering was not checked. Eval 49 is the matched no-image fallback case, where correct table-based explanation and honest visual limitations satisfy the visual requirement.
+Compare the rewritten bundle with [the preserved original note](../../blind/knn-compressed-flawed.md) using eval 62. Keep the corresponding expected-findings file outside the model's inputs. Eval 49 tests fallback with no image capability and eval 50 isolates the weighted vote. Exact search and weighting terminology were checked against the [scikit-learn nearest-neighbors guide](https://scikit-learn.org/stable/modules/neighbors).
+
+## Verification
+
+Run `python evaluations/verify_knn_bundle.py` from the repository root to rerun both Python lab tracks and verify the shared fixtures. The [execution record](verification-results.json) captures observed results and file hashes. The standard-library lab ran on Python 3.11.18. The repository author visually inspected all eight raster figures, checked their inputs against the accompanying explanations and verified their local links. Live Obsidian rendering remains unverified.

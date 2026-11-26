@@ -29,4 +29,4 @@ End cleanly with a concise **Mental Model** (when it aids reconstruction rather 
 
 Do **not** duplicate companion formula sheets, tiered interview/viva Q&A, or worked problem packs inside the main note when File 3 is generated. Review against [verification-checklist.md](../../procedures/review/verification-checklist.md) before saving; for multi-chapter `M1` collections, follow [composition-contract.md](../../procedures/authoring/composition-contract.md).
 
-Plan complete learning units around questions the reader needs to answer. Give core mechanisms room for a concrete setup, step-by-step change, and interpretation. If resource limits require partitioning, finish coherent sections and disclose outstanding scope.
+Plan complete learning units around questions the reader needs to answer. Give core mechanisms room for a concrete setup, step-by-step change, and interpretation. Use that visible teaching path to organize prose, examples, equations and figures before adding supporting callouts or assessments. If resource limits require partitioning, finish coherent sections and disclose outstanding scope.

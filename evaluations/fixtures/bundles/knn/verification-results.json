@@ -1,0 +1,25 @@
+{
+  "python": "3.11.18",
+  "executed_lab_tracks": 2,
+  "invalid_inputs_rejected": 3,
+  "verified_figure_links": 8,
+  "weighted_vote": "Red",
+  "weighted_regression_minutes": 16.363636363636363,
+  "held_out_scores": [
+    "k=1: 3/4 correct, MAE=2.75 min",
+    "k=3: 4/4 correct, MAE=3.67 min"
+  ],
+  "sha256": {
+    "k-nearest-neighbors.md": "c3f622e84e188e9f4cbcd20969311b5a7a8a22751ad41ed90cf9ae12f9e8c683",
+    "knn-experimental-lab.md": "fa5fcfa625f3facd1bbd9f5851943a92270ed7e693f64e3784a6404ddd79c146",
+    "knn-cheatsheet-qa.md": "996003e477dccae62f42390dca10eb62fe1de30697046eb23ad1609c330a96b9",
+    "assets/cube-side-length.png": "135813393f024f9373eeca19330f7e3e224ab6d3a67bb7e1abcb357fb8a30b4f",
+    "assets/density-radius.png": "892630f54b162875278144a2d9a722de8ed1db30610aa1d6549f7a533dcbdcb5",
+    "assets/kd-tree-pruning.png": "e21245d2cf7d089a00a650f9ab9f118f68e29de17e425ea506ab9b0275910b78",
+    "assets/metric-paths.png": "ffc5ce9268882c6dc006999cee9dfc7ac9a4e890e9c93b4a85f7478ad81424ec",
+    "assets/neighbor-scaling.png": "466392f058444190facf5282ae46664137799fc0e2b5f427ae2e6044c09d9170",
+    "assets/regression-smoothing.png": "8d49c07d4565027e8fcb6ec3d3430e4a5576847a411da986116ad6c86d943caa",
+    "assets/vote-boundaries.png": "dc0814faffec4badbb44bd67aed149411e65dab9055d1556cf1593450cfb7889",
+    "assets/weight-reversal.png": "a7b68e8556ae63f0a18f8e32895ffded49ed1b1e229653c3c9a1f8aa9f3b40fe"
+  }
+}

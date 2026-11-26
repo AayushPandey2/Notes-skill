@@ -26,4 +26,4 @@ Distinguish **redundant repetition** (restating a definition verbatim immediatel
 - Provide meaningful figure captions and textual equivalents; never rely solely on color to distinguish curves or states.
 - Ensure navigation (`[[#Heading]]` TOC, callouts, wikilinks) works in standard Obsidian without requiring third-party plugins.
 
-Read one whole learning unit as the intended learner. Separate crowded paragraphs at changes in intellectual task. Expand any heading that merely names a mechanism the reader must reconstruct, preserving mathematical qualifications and natural prose.
+Read one whole learning unit as the intended learner. Separate crowded paragraphs at changes in intellectual task. Expand any heading that merely names a mechanism the reader must reconstruct. Check that each figure earns its space and each worked contrast changes the intended outcome or exposes an invariant. Repair supporting examples, captions, and formulas when the underlying explanation changes.

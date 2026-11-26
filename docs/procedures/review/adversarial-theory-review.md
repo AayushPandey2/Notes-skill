@@ -71,7 +71,7 @@ Read the draft twice, first with formula folds closed to check the visible argum
 | **Numerical example presented as proof** | Supply the general derivation alongside illustrative checks |
 | **Unexplained final expression** | Interpret what each term, sign, and boundary in the result means |
 
-A compressed topic list leaves a mechanism-level objective incomplete. Locate the missing transition, causal explanation or worked contrast and repair the gap locally. Use prediction, diagnosis or transfer checks for objectives beyond recall.
+A compressed topic list leaves a mechanism-level objective incomplete. Treat missing core conceptual or causal reasoning as a substantive defect even when the equations are correct. Locate the missing transition, causal explanation or worked contrast and repair the gap locally. Use prediction, diagnosis or transfer checks for objectives beyond recall.
 
 ## 2. Defect Severity Classification & Dependency-Aware Repair
 

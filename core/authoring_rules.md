@@ -28,7 +28,7 @@ Shape presentation by artifact role within existing formats: **Theory** prioriti
 - **Visuals:** Follow [representations.md](../docs/procedures/authoring/representations.md) as the single owner for visual relevance, source-only precedence (`strict` mode disables external web images), local raster acquisition/inspection, controlled display width (`![[...|650]]`), ordinary Markdown source/attribution lines (zero raw HTML), the Six-Phase Visual Narrative, and the Zero-Mermaid/ASCII rule.
 - **Publish Hygiene:** Use `**Confusion** :: question` on its own line for Dataview only when genuine. Strip all scaffold comments, `<!-- SECTION: S* -->` markers, authoring notes, unused optional sections, and placeholder rows; renumber remaining headings and repair any body internal anchors.
 
-Keep one primary teaching move per paragraph. Start a new paragraph when the reader switches from a definition to a mechanism, compares alternatives, or interprets a result. Use a heading when the next explanation needs several paragraphs or a worked example. Place blank lines around figures, displays, tables, and callouts. Preserve necessary qualifications when splitting dense prose.
+Keep one primary teaching move per paragraph. Two to four connected sentences are often enough for ordinary exposition. Let a coherent mathematical or causal argument run longer where it needs room. Start a new paragraph when the reader switches from a definition to a mechanism, compares alternatives, or interprets a result. Use a heading when the next explanation needs several paragraphs or a worked example. Place blank lines around figures, displays, tables, and callouts. Preserve necessary qualifications when splitting dense prose.
 
 ## Evidence
 

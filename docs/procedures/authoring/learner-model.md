@@ -16,6 +16,8 @@ Maintain an optional internal conceptual record using **only** background suppli
 | **Unknown background** | Supply a minimal prerequisite bridge |
 | **Conflicting evidence** *(e.g., claims calculus mastery but misses chain rule)* | Avoid assuming mastery; insert targeted prerequisite support |
 
+Introduce a bridge at the first operation that needs it. A reader who can calculate a quantity may still need help interpreting it in the current context. Use a local link only when an established prerequisite is enough to follow the argument.
+
 ## 2. Independence of Depth and Prerequisite Support
 
 - **Depth $\neq$ Difficulty:** A beginner can request **Level 4–5 analytical rigor** (e.g., PCA constrained variance maximization, SVD correspondence, reconstruction error, and mathematical conditions). Deliver full rigor using smaller transitions and local essential bridges ([teaching_core.md](../../../core/teaching_core.md))—never dumb down the mechanism.

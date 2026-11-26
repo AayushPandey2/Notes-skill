@@ -29,9 +29,10 @@ Execute **Stages 1–5 completely before saving**, resolve an explicit bounded *
 | Mathematics | Valid derivations, assumptions, identified symbols and verified examples |
 | Visuals | Essential relationships are legible in an inspected figure or sufficient permitted fallback, with material gaps disclosed |
 | Readability | Focused prose and a coherent visible reading path support the intended audience |
-| Application | Examples and checks let the reader apply or explain the mechanism when the objective calls for it |
+| Practical reasoning | Worked comparisons show behavior, decisions, or failure diagnosis at the requested depth |
+| Independent learning | Application, explanation or transfer checks match the objective when practice is permitted |
 
-A strength on one dimension cannot cancel a material failure on another. Apply the bounded acceptance outcomes below to unresolved defects.
+A strength on one dimension cannot cancel a material failure on another. Verify the required policy dependencies in [the runtime pipeline](../../../core/runtime_pipeline.md) before claiming full compliance. Apply the bounded acceptance outcomes below to unresolved defects.
 
 - **Bounded Acceptance Decision:** Resolve acceptance cleanly instead of looping indefinitely when sources or tools remain unavailable:
 
