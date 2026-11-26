@@ -8,8 +8,8 @@ Applies to circuits, analog/digital electronics, signals, control, embedded syst
 ## Practical Realizations
 1. **Analytical Calculation:** Apply governing laws (KCL, lumped-circuit KVL, nodal/mesh, phasors, Laplace, Boolean logic) under stated idealizations.
 2. **Circuit / Logic Simulation:** SPICE netlist, digital timing/logic simulator, or numerical response script.
-3. **Safe Physical Realization:** Low-voltage/low-current educational build, power-rating check, and instrument placement (ammeter in series, voltmeter in parallel).
-4. **Tolerances & Fault Diagnosis:** Compare nominal vs. tolerance-shifted behavior and diagnose open/short faults, saturation, or loading effects.
+3. **Safe Physical Realization & Measurement Procedure:** Low-voltage/low-current educational build, power-rating check, verified web-sourced circuit/instrument setup figure per [representations.md](../../procedures/authoring/representations.md) (never generated), ammeter-in-series / voltmeter-in-parallel calibration & probing steps, structured observation table (SI units + significant figures), and viva checks (`> [!hint]-` / `> [!success]-`).
+4. **Uncertainty, Tolerances & Fault Diagnosis:** Compare theoretical vs. tolerance-shifted predictions, distinguish systematic (e.g., meter loading) vs. random measurement errors with uncertainty propagation, and diagnose open/short/saturation faults.
 
 ## Specialized Walkthrough & Verification
-Reference the shared circuit model across tracks. Distinguish analytical predictions and dimensional checks from supplied or published bench readings, using the shared lab evidence rules.
+Reference the shared circuit model across tracks, keep illustrative calculations strictly separate from supplied bench readings, and end non-code/netlist labs with **`Analytical, dimensional, and manual circuit review only (no physical apparatus or simulator executed).`** (or **`Source and static review only; not compiled or executed here.`** when simulation code appears).

@@ -9,7 +9,7 @@ Applies to relational and non-relational databases, SQL, indexing, query plans, 
 1. **Data Modeling & Relational Reasoning:** Trace relational algebra, normalization, or index/storage page behavior manually on the tiny schema example.
 2. **Query Implementation:** Clean, dialect/engine-identified SQL or non-relational queries with expected logical output tables.
 3. **Concurrency & Isolation Trace:** Step-by-step two-session schedule under differing isolation levels (`READ COMMITTED`, `REPEATABLE READ`, `SERIALIZABLE`) noting engine-specific behavior.
-4. **Constraints, Plans & Correctness Edge Cases:** Verify constraint enforcement, three-valued `NULL` traps, non-sargable predicates, and hypothetical/published `EXPLAIN` plan transitions.
+4. **Constraints, Plans, Testing & Independent Practice:** Verify constraint enforcement, three-valued `NULL` traps, non-sargable predicates, debugging queries via `EXPLAIN` plans, and 1–2 **Independent Exercises** (`> [!hint]-` / `> [!success]-`).
 
 ## Specialized Walkthrough & Verification
-State database engine and dialect assumptions. Distinguish a hand-derived result table from database output by applying the shared lab evidence rules.
+State database engine and dialect assumptions, honor requested query/application stacks cleanly without unsolicited languages, distinguish a hand-derived result table from database output via shared evidence rules, and close with **`Manual relational/transaction trace review only (no database engine executed).`** (or **`Source and static review only; not compiled or executed here.`** when application code appears).

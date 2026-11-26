@@ -9,7 +9,7 @@ Applies to OS kernel mechanisms, concurrency, memory/filesystems, and Linux admi
 1. **Manual Mechanism Trace:** Hand-trace virtual-to-physical translation (TLB lookup vs. page-table walk vs. page/permission fault), CPU scheduling timelines, or inode resolution.
 2. **Documented System / CLI Interfaces:** Standard POSIX syscalls or Linux tools, clearly separating **read-only inspection** from **state-changing** commands.
 3. **Educational Simulation / Systems Snippet:** Bounded simulation or POSIX snippet demonstrating the mechanism.
-4. **Fault & Concurrency Diagnosis:** Inspect thrashing, deadlock/race interleavings, permission denials, or OOM behavior.
+4. **Fault, Concurrency Diagnosis & Independent Practice:** Inspect thrashing, deadlock/race interleavings, permission denials, or OOM behavior and include 1–2 **Independent Exercises** (`> [!hint]-` / `> [!success]-`).
 
 ## Specialized Walkthrough & Verification
-Distinguish portable theory from OS/distro-specific behavior and apply the shared 3-attribute integrity rules from `experimental-lab.md` to all traces (recording actual origin, `manual_arithmetic` or `analytical` method, and verification status actually performed). For non-code labs, end with **`Manual kernel and scheduling trace review only (no commands or code executed).`**
+Distinguish portable theory from OS/distro-specific behavior, honor requested systems languages (C/Python) without adding unsolicited languages, apply the shared 3-attribute integrity rules, and close with **`Source and static review only; not compiled or executed here.`** (or **`Manual kernel and scheduling trace review only (no commands or code executed).`** when no code appears).

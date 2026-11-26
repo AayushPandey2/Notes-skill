@@ -7,9 +7,9 @@ Applies to general, organic, physical, analytical, and kinetics/equilibrium chem
 
 ## Practical Realizations
 1. **Symbolic & Molecular Mechanism:** Balance equations and connect particle/electron flow to macroscopic behavior.
-2. **Quantitative Modeling** *(when quantitative)*: Compute stoichiometry, equilibrium/pH, rates, or $\Delta G/\Delta H$ under stated approximations.
-3. **Published / Supplied Data Analysis:** Interpret published titration, spectroscopy, or calorimetry curves without fabricating observations.
-4. **Condition & Validity Analysis:** Examine how $T, P$, concentration, buffering, or ionic strength shift behavior or break ideal-solution/gas approximations.
+2. **Quantitative Modeling & Procedure** *(when quantitative)*: Step-by-step preparation/measurement procedure (calibration, observation-table schema, stoichiometry, equilibrium/pH, rates, or $\Delta G/\Delta H$) and comparison with theoretical predictions under stated approximations.
+3. **Published / Supplied Data & Setup Analysis:** Pair apparatus/reaction setups with verified web-sourced figures per [representations.md](../../procedures/authoring/representations.md) (never generated) and interpret published titration, spectroscopy, or calorimetry data without fabricating observations.
+4. **Error Sources, Uncertainty & Validity Analysis:** Separate systematic vs. random errors, propagate experimental uncertainty, examine $T, P$, concentration, buffering, or ionic-strength limits, and include brief viva questions (`> [!hint]-` / `> [!success]-`).
 
 ## Specialized Walkthrough & Verification
-Verify atom/charge balance, units, and significant figures. If simulation code appears end with **`Source and static review only; not compiled or executed here.`** otherwise **`Stoichiometric, balance, and manual review only (no wet lab or code executed).`**
+Verify atom/charge balance, SI units, significant figures, and clear separation between illustrative sample calculations and supplied experimental readings. If simulation code appears end with **`Source and static review only; not compiled or executed here.`** otherwise **`Stoichiometric, balance, and manual review only (no wet lab or code executed).`**

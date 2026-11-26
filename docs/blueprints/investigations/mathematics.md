@@ -9,7 +9,7 @@ Applies to proofs, symbolic constructions, linear algebra, calculus, discrete ma
 1. **Analytical / Symbolic Construction:** Exact symbolic derivation, logical proof, or formal construction.
 2. **Concrete Example (Numerical or Logical):** Worked exact-arithmetic example *or* concrete non-numerical logical/structural construction matching the topic.
 3. **Alternative Representation:** Geometric, graphical, or second independent mathematical method showing why the result holds.
-4. **Verification, Counterexamples & Boundaries:** Independent substitution/invariant checks, hypothesis-relaxation tests, and explicit counterexamples (plus a minimal verification snippet *only* when computation is part of the objective).
+4. **Verification, Counterexamples, Boundaries & Independent Practice:** Independent substitution/invariant checks, hypothesis-relaxation tests, explicit counterexamples (plus a minimal verification snippet *only* when computation serves the objective), and 1–2 **Independent Exploration Prompts** (`> [!hint]-` / `> [!success]-`).
 
 ## Specialized Walkthrough & Verification
-Verify every consequential transition and boundary case, including zero divisors, defective matrices, and dropped hypotheses. Distinguish author-derived analytical results from the verification actually performed, using the shared lab contract.
+Verify every consequential transition and boundary case (zero divisors, defective matrices, dropped hypotheses), distinguish author-derived analytical results from actually performed checks, and end non-code labs with **`Analytical and manual proof review only (no code executed).`** (or **`Source and static review only; not compiled or executed here.`** if code appears).

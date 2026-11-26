@@ -6,10 +6,10 @@ Inherits shared structure, YAML, navigation, shared-foundation A–G deduplicati
 Applies to molecular/cellular biology, genetics, physiology, evolution, and ecology. Define biological scale, entities, environmental conditions, and evidence provenance (Origin: **published**, **user-supplied**, **synthetic**, or **author-derived**; Method: **analytical**, **manual_arithmetic**, etc.) once. Never fabricate microscopy/assay observations, encourage unsupervised pathogen/agent handling, or force ML stacks.
 
 ## Practical Realizations
-1. **Structure & Molecular/System Trace:** Trace conformational binding, pathway steps, or regulatory feedback (using molecular state traces, comparative tables, or probabilistic cross ratios where deterministic numerical dry runs do not fit).
-2. **Published Evidence Interpretation:** Analyze published curves, assays, or genetic/population datasets without inventing observations.
-3. **Controlled Investigation Design:** Analyze safe variable-response relationships or experimental controls.
-4. **Variation, Regulation & Model Breakdown:** Examine mutations/knockouts, biological variability, feedback disruption, and model assumptions (e.g., Michaelis–Menten steady-state limits).
+1. **Structure, Apparatus & Molecular/System Trace:** Pair anatomical/microscopy or apparatus setups with verified web-sourced visuals per [representations.md](../../procedures/authoring/representations.md) (never generated) and trace conformational binding, pathway steps, or regulatory feedback cleanly.
+2. **Published Evidence & Observation Interpretation:** Analyze published curves, assays, or genetic/population datasets with structured observation-table columns (units, significant figures, calibration controls) without fabricating readings.
+3. **Controlled Investigation Design:** Specify independent/dependent variables, controls, step-by-step safe measurement procedures, and theoretical vs. observed comparisons.
+4. **Uncertainty, Variation & Model Breakdown:** Distinguish systematic vs. random error and biological variability, examine feedback disruption or steady-state assumptions, and include viva checks (`> [!hint]-` / `> [!success]-`).
 
 ## Specialized Walkthrough & Verification
-Separate experimental mechanism from statistical correlation. If modeling code appears end with **`Source and static review only; not compiled or executed here.`** otherwise **`Biological mechanism and published/analytical evidence review only (no wet lab or code executed).`**
+Separate experimental mechanism from statistical correlation and distinguish illustrative sample values from supplied/published readings. If modeling code appears end with **`Source and static review only; not compiled or executed here.`** otherwise **`Biological mechanism and published/analytical evidence review only (no wet lab or code executed).`**

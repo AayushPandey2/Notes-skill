@@ -85,11 +85,11 @@
     {
       "id": 8,
       "prompt": "/scribe-notes Lasso Regression",
-      "expected_output": "Uses the eligible M1 bundle. The lab compares applicable Python and Rust realizations using the shared setup, A–G walkthroughs, accurate objective scaling, actual solver names, and the static-review disclosure.",
+      "expected_output": "Uses the eligible M1 bundle. The lab uses Python by default (Python + NumPy first-principles implementation and scikit-learn comparison) with zero unsolicited Rust implementations or Cargo setups, accurate objective scaling, actual solver names, and the static-review disclosure.",
       "files": [],
       "expectations": [
-        "Companion ML lab omits standalone metadata inventories, repeated theory, general experiments, 12-step workflows, quizzes, and summaries",
-        "Includes applicable aligned ML tracks with explicit objective-scaling conversions and actual optimizer/solver explanations. Identifies any unsupported track accurately",
+        "Companion ML lab uses Python by default and includes ZERO Rust implementations, dependencies, or collapsed Rust blocks unless explicitly requested",
+        "Omits standalone metadata inventories, repeated theory, general experiments, 12-step workflows, quizzes, and summaries while teaching dataset prep, controlled ablations, and solver/objective scaling",
         "Uses descriptive, method-specific A–G walkthroughs and labels unexecuted code honestly"
       ]
     },
@@ -953,6 +953,39 @@
         "Never invokes image-generation tools, AI illustration tools, custom SVG, Mermaid, ASCII, or programmatic plotting scripts, even as a fallback",
         "Plans visuals per section during curriculum discovery and distributes multiple distinct verified existing web-sourced images into vault attachments (or documents query-refinement failure and prose/table fallback honestly)",
         "Wraps every embedded figure with before/image/caption/after teaching, verified web attribution/license, and zero unverified thumbnail/webpage URLs or repository-stored image assets"
+      ]
+    },
+    {
+      "id": 88,
+      "prompt": "/scribe-notes Create an advanced, production-oriented, performance-optimized experimental lab for Logistic Regression with controlled parameter experiments.",
+      "expected_output": "Uses Python by default (NumPy first-principles plus scikit-learn comparison, controlled ablations, numerical stability and independent experimentation) and never adds Rust implementations, Cargo setups, or collapsed Rust blocks because the request mentions advanced, production, or performance wording.",
+      "files": [],
+      "expectations": [
+        "Contains zero Rust code, crates, Cargo instructions, or collapsed Rust blocks",
+        "Teaches what changes, what stays fixed, and what the learner should conclude in each controlled experiment",
+        "Labels all code as unexecuted static-review content"
+      ]
+    },
+    {
+      "id": 89,
+      "prompt": "/scribe-notes Implement K-Nearest Neighbors in Rust for my experimental lab, then separately provide Python and Rust implementations of linear regression.",
+      "expected_output": "Honors the explicit Rust and Python-plus-Rust requests with Rust included only where requested, while preserving shared setup, A-G walkthroughs, and static-review disclosure.",
+      "files": [],
+      "expectations": [
+        "Provides the requested Rust KNN implementation with ownership, numeric casting, and tie-handling explained",
+        "Provides both Python and Rust for linear regression only because both were explicitly requested",
+        "Adds no languages beyond those requested"
+      ]
+    },
+    {
+      "id": 90,
+      "prompt": "/scribe-notes Implement the K-Means algorithm in C++ for an ML lab.",
+      "expected_output": "Honors the explicit C++ request without adding Python or Rust tracks beyond what is needed for the requested lab.",
+      "files": [],
+      "expectations": [
+        "Uses C++ as the implementation language",
+        "Includes zero Rust code or Cargo setup",
+        "Labels unexecuted code honestly"
       ]
     }
   ]

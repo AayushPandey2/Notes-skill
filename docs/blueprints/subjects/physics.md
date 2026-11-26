@@ -19,3 +19,6 @@ Teach Physics through **physical systems, reference frames, conservation laws, i
 - *Electromagnetism:* Charge/current sources, fields vs. potentials, Gauss/Faraday/Ampère-Maxwell laws, boundary conditions.
 - *Waves & Optics:* Wave equation, superposition/interference, boundary reflection/refraction, diffraction limits.
 - *Quantum Mechanics:* State vectors/wavefunctions, operators/observables, measurement probabilities, commutation & uncertainty.
+
+## 3. Physical Intuition, Web-Sourced Visuals & Practice
+Develop physical intuition from an observable everyday phenomenon and close prerequisite vector/calculus tools inline before writing formal governing equations. Distribute verified web-sourced diagrams of physical systems, forces, fields, apparatus, or experimental spectra per [representations.md](../../procedures/authoring/representations.md) (with before/image/caption/after teaching; never generated/Mermaid/ASCII), and progress from one unit-checked symbolic-and-limiting-case worked example to an independent prediction/problem check.

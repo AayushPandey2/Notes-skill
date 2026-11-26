@@ -2,7 +2,7 @@
 
 *Master ID: `M5` (`implementation_guide`, compatibility route: `dsa`). Artifact policy: `implementation_guide` per [master-registry.yaml](../../dispatch/master-registry.yaml)—do **not** duplicate an `M5` guide into an identical companion Experimental Lab.*
 
-- **Header Block:** Line-1 Standard Obsidian Properties (`note_type: implementation-guide`) + `# Implementation: <Title>` (or `# DSA: <Title>`). Lock code to the user-specified stack; never create project files on disk or execute code; label unexecuted code `Source and static review only; not compiled or executed here.`
+- **Header Block:** Line-1 Standard Obsidian Properties (`note_type: implementation-guide`) + `# Implementation: <Title>` (or `# DSA: <Title>`). Lock code to the user-specified stack (defaulting to Python for Machine Learning when unspecified; **never include Rust by default**, in collapsed blocks, or for performance/production/advanced wording unless explicitly requested); never create project files on disk or execute code; label unexecuted code `Source and static review only; not compiled or executed here.`
 
 ## 1. Select the Matching Implementation Progression
 

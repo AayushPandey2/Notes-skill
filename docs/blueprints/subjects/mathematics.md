@@ -18,3 +18,6 @@ Ensure Mathematics notes match their pedagogical strategy to the mathematical di
 - *Linear Algebra:* Vector spaces, basis/dimension, rank-nullity, linear maps vs. matrix representations, orthogonality, eigendecomposition/SVD.
 - *Calculus & Analysis:* $\epsilon$-$\delta$ limits, continuity vs. differentiability, local linear approximation, FTC accumulation, uniform vs. pointwise convergence.
 - *Discrete Math & Optimization:* Quantifier negation, induction/bijections, convexity, KKT/Lagrange optimality conditions vs. global guarantees.
+
+## Cross-Disciplinary Progression, Visuals & Practice
+Close prerequisite definitions, lemmas, or component calculus/algebra tools inline before invoking them, motivating formulas concretely before symbolic generalization and showing alternative solution paths where helpful. Pair spatial/geometric or analytic topics (e.g., linear transforms, tangent approximations, surfaces, convergence regions) with verified web-sourced mathematical graphs/diagrams per [representations.md](../../procedures/authoring/representations.md) (never generated plots/SVG/Mermaid/ASCII), and progress from worked proofs/derivations to independent problems with concealed solutions.

@@ -1,10 +1,10 @@
-# Companion Cheatsheet & Interview / Viva Pack (File 3)
+# Companion Cheatsheet & Interview / Viva Pack
 
 Emit this sibling file (`<note stem> - Cheatsheet & Interview Q&A.md`) only when `mastery_pack` is included in the resolved `artifact_plan` ([adaptive-engine.md](adaptive-engine.md)), governed by `artifact_policy` and `source_constraints` in [master-registry.yaml](../../dispatch/master-registry.yaml) (default for `M1`/`M2` unless `explicit_single_file`, an existing layout, or restrictive `strict` source constraints forbidding unsupported outside additions override it; exempting `M3`, `M4`, `M6`, `M7`, `/scribe-ytnotes`, MOCs, and standalone `M5`). Link generated companions reciprocally, match the active YAML profile ([properties-policy.md](../../properties/properties-policy.md)), and preserve identical notation and source limits across the bundle.
 
-## Required Structure of File 3 (Subject-Adaptive)
+## Required Structure of the Cheatsheet & Interview Pack (Subject-Adaptive)
 
-Open with line-1 YAML frontmatter matching the active profile, a discipline-appropriate H1 (`# <Topic> — Cheat Sheet, Interview Q&A & Practice` for technical/engineering topics, or `# <Topic> — Reference Sheet, Viva & Critical Thinking Pack` for humanities/natural sciences), and a concise navigation callout linking `[[<Parent Note>]]` and `[[<Parent Note> - Experimental Lab]]` (only linking existing/generated files). Do **not** duplicate long prose derivations from File 1; keep File 3 dense, scannable, and self-testing.
+Open with line-1 YAML frontmatter matching the active profile, a discipline-appropriate H1 (`# <Topic> — Cheat Sheet, Interview Q&A & Practice` for technical/engineering topics, or `# <Topic> — Reference Sheet, Viva & Critical Thinking Pack` for humanities/natural sciences), and a concise navigation callout linking `[[<Parent Note>]]` and `[[<Parent Note> - Experimental Lab]]` (only linking existing/generated files). Do **not** duplicate long prose derivations from the parent note; keep the companion pack dense, scannable, and self-testing.
 
 ### Section 1 — Subject-Adaptive Reference & Formula / Rule Sheet
 | Subject | Reference Sheet Focus | Applied Problems Focus |
