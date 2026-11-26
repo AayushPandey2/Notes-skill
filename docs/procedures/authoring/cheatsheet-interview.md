@@ -19,7 +19,7 @@ Open with line-1 YAML frontmatter matching the active profile, a discipline-appr
 | **Biology** | Structures, pathways, regulation & experimental models | Mechanism tracing, data interpretation & disruption analysis |
 | **History / Humanities** | Chronology, key actors/concepts, arguments & interpretations | Primary-source evaluation, argument critique & comparison |
 
-- Present table-friendly rules in two-column `Concept | Formula / Rule` tables (using `$...$` inline math, escaping literal pipes, stating units/conditions).
+- Present table-friendly rules in two-column `Concept | Formula / Rule` tables (using `$...$` inline math, escaping literal text pipes as `\|` while using `\lvert`/`\lVert`/`\mid` for table math per [math_gates.md](../../../core/math_gates.md), and stating units/conditions).
 - Display multi-line reasoning in separate-line `$$...$$` blocks. Link to canonical derivations in compact references and show needed transformations directly inside worked answers ([math_gates.md](../../../core/math_gates.md)).
 
 ### Section 2 — Tiered Interview / Viva Questions & Answers (Tap-to-Reveal)

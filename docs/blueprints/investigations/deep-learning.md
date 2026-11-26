@@ -12,4 +12,4 @@ Applies to neural networks, computational graphs, autograd, and deep architectur
 4. **Training Diagnostics & Stability:** Investigate initialization, LR, normalization state, gradient clipping, `NaN`/overflow, or shape/mode errors (merged into Track 3 when narrow).
 
 ## Specialized Walkthrough & Verification
-Trace tensor shapes, forward/backprop execution order, one tiny batch forward/backward dry run, gradient checks, and shape/mode failure modes (`NaN`, missing `zero_grad()` in PyTorch, `.eval()` mismatches). End with **`Source and static review only; not compiled or executed here.`**
+Trace tensor shapes, forward/backprop execution order, one tiny batch forward/backward dry run, gradient checks, and shape/mode failure modes (`NaN`, missing `zero_grad()` in PyTorch, `.eval()` mismatches).

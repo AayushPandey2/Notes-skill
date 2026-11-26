@@ -12,4 +12,4 @@ Applies to replication, partitioning, consensus, coordination, and distributed m
 4. **Counterexamples & Failure Scenarios:** Inject partitions, stale leaders, or retry storms and **explicitly include counterexamples** showing where invariants fail—never treat one passing trace as a formal proof of safety or liveness.
 
 ## Specialized Walkthrough & Verification
-Label traces **analytical / statically_reviewed** (never live-cluster **observed**) and end with **`Source and static review only; not compiled or executed here.`**
+Apply the shared 3-attribute integrity rules from `experimental-lab.md` (recording actual origin, `analytical` or `manual_arithmetic` method, and verification status actually performed; never claiming live-cluster observation), and use the matching closing review statement from `experimental-lab.md` (or **`Manual state and message trace review only (no cluster or code executed).`** when no code appears).

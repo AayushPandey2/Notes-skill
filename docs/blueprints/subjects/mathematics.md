@@ -12,8 +12,7 @@ Ensure Mathematics notes match their pedagogical strategy to the mathematical di
    - *Symbolic & algebraic manipulation:* Justify equivalence-preserving vs. irreversible steps (e.g., squaring, dividing by potentially zero expressions).
    - *Geometric & structural intuition:* Connect algebraic equations to invariant subspaces, transformations, or constraint regions when geometry illuminates the theorem.
    - *Numerical approximation:* Separate exact symbolic identities from finite-step/finite-precision approximations, tracking truncation error, conditioning, and floating-point cancellation ([math_gates.md](../../../core/math_gates.md)).
-2. **Progressive Abstraction & Formula Construction:** Build from concrete instances to general notation so formulas compress understood mechanics.
-3. **Independent Verification:** Verify results via substitution, invariants, symmetry, limiting cases, or a second independent method—never treating numerical spot-checks as formal proof.
+2. **Independent Verification:** Verify results via substitution, invariants, symmetry, limiting cases, or a second independent method—never treating numerical spot-checks as formal proof.
 
 ## Conditional Topic-Family Overlays
 - *Linear Algebra:* Vector spaces, basis/dimension, rank-nullity, linear maps vs. matrix representations, orthogonality, eigendecomposition/SVD.

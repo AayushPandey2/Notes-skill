@@ -12,4 +12,4 @@ Applies to security engineering, defensive controls, cryptography usage, and AI 
 4. **Detection & Remediation:** Log/telemetry signals detecting misuse or misconfiguration and safe remediation steps.
 
 ## Specialized Walkthrough & Verification
-Distinguish **intended security properties, static review evidence, and actual runtime test criteria**—never claim static Markdown review proved runtime security. End with **`Source and static review only; not compiled or executed here.`**
+Distinguish **intended security properties, static review evidence, and actual runtime test criteria**—never claim static Markdown review proved runtime security, and apply the closing review statement from `experimental-lab.md`.

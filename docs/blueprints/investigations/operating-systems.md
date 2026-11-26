@@ -12,4 +12,4 @@ Applies to OS kernel mechanisms, concurrency, memory/filesystems, and Linux admi
 4. **Fault & Concurrency Diagnosis:** Inspect thrashing, deadlock/race interleavings, permission denials, or OOM behavior.
 
 ## Specialized Walkthrough & Verification
-Distinguish portable theory from OS/distro-specific behavior and label all traces **synthetic / manual_arithmetic or analytical / statically_reviewed**. End with **`Source and static review only; not compiled or executed here.`**
+Distinguish portable theory from OS/distro-specific behavior and apply the shared 3-attribute integrity rules from `experimental-lab.md` to all traces (recording actual origin, `manual_arithmetic` or `analytical` method, and verification status actually performed). For non-code labs, end with **`Manual kernel and scheduling trace review only (no commands or code executed).`**

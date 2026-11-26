@@ -723,7 +723,7 @@
       "expected_output": "Routes to a single M3 decision sheet with an unnumbered H1, appropriate callouts, and a compact body targeting 350 words.",
       "files": [],
       "expectations": [
-        "Uses unified callouts ([!important], [!warning]) rather than [!abstract] or [!caution]",
+        "Uses unified callouts ([!important], [!warning]) rather than non-vocabulary callouts like [!caution] (reserving [!abstract]- only for optional condensed revision)",
         "Uses a clean unnumbered standalone H1 without literal <nn> prefixes and omits companion lab/Q&A files"
       ]
     },

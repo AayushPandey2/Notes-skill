@@ -20,7 +20,7 @@ Dispatch each active public command or `/scribe-notes` internal branch cleanly�
 
 ### Command C — Comprehensive Learning (`M1` Deep Notes)
 - **Trigger:** Broad or first-principles deep-learning requests routed to `M1`.
-- **Inputs & Dependencies:** [adaptive-engine.md](adaptive-engine.md), [research-engine.md](../sourcing/research-engine.md), [teaching_core.md](../../../core/teaching_core.md), [math_gates.md](../../../core/math_gates.md).
+- **Inputs & Dependencies:** [adaptive-engine.md](adaptive-engine.md), [research-engine.md](../sourcing/research-engine.md), [teaching_core.md](../../../core/teaching_core.md), [theory_quality_contract.md](../../../core/theory_quality_contract.md), [math_gates.md](../../../core/math_gates.md).
 - **Execution & Review:** Plan concepts and depth, inspect evidence using [research guidance](../sourcing/research-engine.md), connect mathematical milestones and verify derivations, work examples step by step, complete needed visuals through [representations.md](representations.md), generate the artifacts dictated by `artifact_policy` in [master-registry.yaml](../../dispatch/master-registry.yaml), and review saved Markdown and assets with [the manual checklist](../review/verification-checklist.md). Keep internal planning labels out of the note.
 
 ### Command D — Rapid Reference (`M3` Quick Reference / Variants)
@@ -42,7 +42,7 @@ Dispatch each active public command or `/scribe-notes` internal branch cleanly�
 
 ### Command J — Read-Only Vault Quality Audit (`/scribe-audit`)
 - **Trigger:** `/scribe-audit <note/folder>` or explicit quality review of existing vault notes without immediate rewrites.
-- **Execution & Delegation:** Delegate to [skills/scribe-audit/SKILL.md](../../../skills/scribe-audit/SKILL.md) as the canonical read-only audit workflow, inspecting across the 9 audit dimensions (theory, mathematics, prerequisites, practical work, evidence, presentation, consistency, currency, and mastery) using [adversarial-theory-review.md](../review/adversarial-theory-review.md), [educational-editor.md](../review/educational-editor.md), [verification-checklist.md](../review/verification-checklist.md), and [claim-verification.md](../sourcing/claim-verification.md).
+- **Execution & Delegation:** Delegate to [skills/scribe-audit/SKILL.md](../../../skills/scribe-audit/SKILL.md) as the canonical read-only audit workflow, inspecting across the six audit profiles (factual, pedagogical, presentation, Scriptorium conformance, bundle consistency, and currency) using [adversarial-theory-review.md](../review/adversarial-theory-review.md), [educational-editor.md](../review/educational-editor.md), [verification-checklist.md](../review/verification-checklist.md), and [claim-verification.md](../sourcing/claim-verification.md).
 - **Failure / Constraints:** Remain strictly read-only by default, cite exact `[[Note Title#Heading]]` locators, and never claim unperformed code execution or live Obsidian rendering.
 
 ### Command H — Atomic Card (`M3` / `atomic_card`)

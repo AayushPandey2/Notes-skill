@@ -12,4 +12,4 @@ Applies to mechanics, thermodynamics, electromagnetism, waves/optics, and quantu
 4. **Uncertainty & Idealization Breakdown:** Propagate measurement uncertainty, verify SI unit cancellation, and analyze where idealizations fail (air drag, finite amplitude, real-gas forces).
 
 ## Specialized Walkthrough & Verification
-Report predictions as **author-derived / analytical or simulation / statically_reviewed** (never fabricated **observed** apparatus measurements). If code appears end with **`Source and static review only; not compiled or executed here.`** otherwise **`Analytical, dimensional, and manual arithmetic review only (no physical apparatus or code executed).`**
+Report author-derived predictions using `analytical` or `manual_arithmetic` method and the verification status actually performed (attributing any `simulation` or `measurement` outputs only to `user-supplied` or `published` sources, and never fabricating **observed** apparatus measurements). For non-code labs, end with **`Analytical, dimensional, and manual arithmetic review only (no physical apparatus or code executed).`**

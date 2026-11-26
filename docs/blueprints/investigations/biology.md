@@ -3,7 +3,7 @@
 Inherits shared structure, YAML, navigation, shared-foundation A–G deduplication, and 3-attribute integrity rules from [experimental-lab.md](../../procedures/authoring/experimental-lab.md), and enforces [physical-lab-safety.md](../../procedures/safety/physical-lab-safety.md).
 
 ## Applicability & Shared Biological System
-Applies to molecular/cellular biology, genetics, physiology, evolution, and ecology. Define biological scale, entities, environmental conditions, and evidence origin (**published**, **synthetic/illustrative**, or **analytical**) once. Never fabricate microscopy/assay observations, encourage unsupervised pathogen/agent handling, or force ML stacks.
+Applies to molecular/cellular biology, genetics, physiology, evolution, and ecology. Define biological scale, entities, environmental conditions, and evidence provenance (Origin: **published**, **user-supplied**, **synthetic**, or **author-derived**; Method: **analytical**, **manual_arithmetic**, etc.) once. Never fabricate microscopy/assay observations, encourage unsupervised pathogen/agent handling, or force ML stacks.
 
 ## Practical Realizations
 1. **Structure & Molecular/System Trace:** Trace conformational binding, pathway steps, or regulatory feedback (using molecular state traces, comparative tables, or probabilistic cross ratios where deterministic numerical dry runs do not fit).
