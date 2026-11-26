@@ -4,6 +4,18 @@
 
 ---
 
+## Repository-local skills
+
+Open this checkout as the project or workspace to discover `scriptorium` and all six `scribe-*` skills.
+
+| Agent | Discovery path |
+|---|---|
+| Claude Code | `.claude/skills/` |
+| Codex and Antigravity | `.agents/skills/` |
+| Gemini CLI | `.agents/skills/` or its alias `.gemini/skills/` |
+
+The discovery files forward to the canonical instructions in `SKILL.md` and `skills/`. Claude Desktop Chat and Cowork use account-installed plugins for the slash menu.
+
 ## 1. Public Commands (`skills/`)
 
 | Command | Entrypoint | What It Does | Writes to Vault? |
