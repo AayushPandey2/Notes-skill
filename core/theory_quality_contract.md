@@ -15,9 +15,9 @@ Introduce concrete operations before formal abstractions so notation compresses 
 5. **Abstract generalization:** Extend the representation beyond the opening example.
 6. **Application and limitations:** Use the abstraction and examine where its assumptions break.
 
-## 2. Cognitive Completeness (Mapped to Unified 0–5 Scale)
+## 2. Cognitive Completeness & Concept Maturity (Mapped to Unified 0–5 Scale)
 
-Substantive core concepts must reach **Mechanism/Reasoning (Level 3)**, **Analytical Justification (Level 4)**, or **Independent Transfer (Level 5)** on the unified `0–5` scale in [adaptive-engine.md](../docs/procedures/authoring/adaptive-engine.md)—never stop at bare recognition or surface terminology when a mechanism is central:
+Evaluate substantive concepts across seven maturity facets mapped onto the unified `0–5` scale in [adaptive-engine.md](../docs/procedures/authoring/adaptive-engine.md)—matching target maturity to the learning objective without creating a competing numeric scale: **Recognition**, **Intuition**, **Mechanism**, **Formal understanding**, **Application**, **Prediction**, and **Critical understanding**. **Never consider a central concept complete merely because it has been defined** (`Level 1–2`); substantive core concepts must reach **Mechanism/Reasoning (Level 3)**, **Analytical Justification (Level 4)**, or **Independent Transfer (Level 5)**:
 
 | Unified Depth | Standard | Example (Recursion) |
 |---|---|---|
@@ -58,9 +58,9 @@ Whenever idealization is central to a subject (e.g., frictionless motion → dra
 2. Explain which assumptions are relaxed in the refined model.
 3. Explain why the refined model matches reality better and what new complexity or failure mode it introduces.
 
-## 6. Knowledge-Boundary & Claim-Classification Policy
+## 6. Knowledge-Boundary, Claim-Classification & Scientific Precision Policy
 
-Treat different epistemic statuses accurately in natural prose (without mechanically attaching a bracketed tag to every sentence):
+Treat different epistemic statuses accurately in natural prose (without mechanically attaching a bracketed tag to every sentence), preserving technical precision even while simplifying: explain the boundaries of important analogies, refine introductory simplifications before formal reasoning relies on them, distinguish mathematical guarantees from typical empirical behavior, and qualify version-dependent implementation details:
 
 | Claim Type | Required Treatment |
 |---|---|
@@ -122,14 +122,16 @@ End substantive theory notes with a concise **Mental Model** (enabling the learn
 
 ## 11. Educational Depth Preservation Contract
 
+Theory must be the central strength of comprehensive notes rather than a brief introduction before formulas or implementation. Distinguish clearly between **Description** (*what happens*), **Mechanism** (*how it happens*), **Justification** (*why it happens*), **Prediction** (*what changes under altered conditions*), **Interpretation** (*what the outcome means*), and **Limitation** (*when the explanation becomes unsuitable*).
+
 Preserve full intellectual depth wherever a substantive explanation requires space, ensuring a comprehensive `M1` note reads as a complete, self-contained learning chapter—never a condensed technical reference for someone who already knows the field:
 
-1. Never sacrifice conceptual depth or beginner accessibility for conciseness.
-2. Remove redundant information, not necessary explanations or foundational bridges.
+1. Never sacrifice conceptual depth or beginner accessibility for conciseness, context-saving goals, visually compact layout, or a rush to formulas.
+2. Remove genuine redundancy and empty filler, never necessary reasoning, foundational bridges, or explanatory depth.
 3. Never skip consequential mathematical derivation steps or prerequisite mathematical tools.
 4. Explain *why* every major mechanism works, not merely *how*.
 5. Allow multiple examples when they reveal different properties, regimes, or tasks.
-6. Do not impose a maximum word or line count on `M1` theory, and never impose an arbitrary minimum word-count target either—optimize for genuine learner understanding.
+6. Do not impose a maximum word or line count on `M1` theory, and never impose an arbitrary minimum word-count target either—optimize for genuine learner understanding without inflating text via generic statements or repeated definitions.
 7. Split exceptionally broad topics into coherent chapters rather than compressing their explanations into a narrow formula summary.
 8. Keep beginner-friendly explanations detailed, even when they require significantly more space, without repeating full prerequisite courses unnecessarily.
 9. Treat resource limitations as reasons to disclose incomplete coverage, not silently reduce depth.
@@ -137,6 +139,8 @@ Preserve full intellectual depth wherever a substantive explanation requires spa
 
 Follow the [math policy](math_gates.md) for the steps, assumptions, and visible reasoning needed in a complete derivation.
 
-## Complete Learning Units
+## Complete Learning Units & Algorithmic Planning Guide
 
 A topic mention establishes coverage at recognition depth. For comprehensive `M1` topics, cover the subject's major intellectual pillars proportionally—foundations and simpler baselines, core mechanism and necessary mathematical tools, major task types or variants, practical configuration and workflows, limitations and failure modes, comparisons with nearest alternatives, and authoritative primary references—rather than over-concentrating on one sub-formula while silently omitting the rest of the topic. For each core concept, develop its identity and purpose, the mechanism and why it works, and a consequence or limit at the intended depth, alongside necessary mathematics and application. At target depth 3 or higher, give the reader enough prior knowledge to reconstruct what happens and why. For a consequential comparison, explain each mechanism first, then change one relevant condition and explain the outcome. Move supporting tangents to an extension. When a chapter is broad, divide it at conceptual boundaries and keep each delivered unit complete.
+
+When teaching **algorithmic topics** (never forced onto non-algorithmic disciplines), plan appropriate coverage across the algorithm lifecycle: problem definition & inputs/outputs (and why simpler approaches fall short), conceptual mechanism independent of syntax, key components/states, mathematical objective & updates, step-by-step trace exposing state changes, repeated/iterative carryover across multiple rounds, unseen-input output/inference, complexity with stated assumptions, parameters via actual effect on mechanism, failure conditions, balanced comparisons without simplistic winners, and non-executed implementation relationships.

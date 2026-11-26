@@ -11,7 +11,7 @@ Open with concise separated metadata lines (not a crowded opening box):
 - **Access & Scope:** <What was accessible, covered boundaries, and any material gaps>
 - **Learning Outcomes & Sequential Outline:** <Ordered sequence of ideas in verified source order>
 
-## 2. Source-Preserving Educational Reconstruction
+## 2. Core Material in Source Order
 
 Reconstruct every significant accessible source section in verified source order (`### 2.<k> <Subtopic Title>`) adapted to the actual discipline:
 - Use the [source policy](../../procedures/sourcing/source-fidelity.md) to distinguish attributed paraphrase, reasoning supported by the source, and permitted additions.

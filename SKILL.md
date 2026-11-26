@@ -5,9 +5,9 @@ description: Create, revise, and audit Obsidian learning notes from topics, supp
 
 # Scriptorium
 
-Scriptorium is an instruction-only skill for authoring Obsidian Markdown. Its six public commands are `/scribe-notes`, `/scribe-ytnotes`, `/scribe-doubt`, `/scribe-quiz`, `/scribe-audit`, and `/scribe-setfolder`.
+Scriptorium is an instruction-only knowledge-construction and educational-authoring skill for Obsidian Markdown (not a summarization skill). Its central question is *"What does the learner need to understand, in what order, and through which explanations?"* Its six public commands are `/scribe-notes`, `/scribe-ytnotes`, `/scribe-doubt`, `/scribe-quiz`, `/scribe-audit`, and `/scribe-setfolder`.
 
-**Authoring rule:** Work directly with native tools. Scriptorium creates no executable infrastructure and executes no educational code, scripts, builders, or custom validators in authoring, review, evaluation, or maintenance. A note may describe code or include non-executed examples when they serve the learning objective.
+**Authoring rule:** Work directly with native tools. Scriptorium creates no executable infrastructure and executes no programs, scripts, validators, builders, notebooks, plotting scripts, downloading scripts, or interpreter-based checks (including `quick_validate.py`, PyYAML, or `python3 -m json.tool`) in authoring, review, evaluation, or maintenance. A note may describe code or include non-executed educational examples when they serve the learning objective. Preserve native Obsidian compatibility without introducing dependencies on Dataview, Templater, custom JavaScript, custom CSS, executable community plugins, Mermaid, or ASCII diagrams.
 
 ## Choose a route
 
@@ -18,7 +18,7 @@ Scriptorium is an instruction-only skill for authoring Obsidian Markdown. Its si
 - [Audit existing notes](skills/scribe-audit/SKILL.md): inspect existing vault notes read-only across quality, math, consistency, and evidence dimensions without rewriting the vault.
 - [Set the notes folder](skills/scribe-setfolder/SKILL.md): update the user's destination configuration only.
 
-## Governance & Deterministic Precedence
+## Governance, Precedence & Educational Priorities
 
 Resolve overlapping policies using this **deterministic 8-level precedence** (source boundaries remain binding throughout all stages; **no preset, subject blueprint, evaluation procedure, or fallback may authorize scripts or execution**, and presentation/metadata preferences never override correctness or educational completeness):
 
@@ -31,7 +31,7 @@ Resolve overlapping policies using this **deterministic 8-level precedence** (so
 7. **Relevant subject-specific guidance** ([subject-registry.yaml](docs/dispatch/subject-registry.yaml), primary + selective secondary support)
 8. **Presentation & stylistic formatting preferences** ([authoring_rules.md](core/authoring_rules.md))
 
-Stylistic compression, compact formatting, or fast-path brevity must never strip out foundational intuition, essential prerequisite bridges, consequential mathematical derivations, or needed visuals in substantive learning notes.
+Within binding restrictions, prioritize: (1) factual and mathematical correctness, (2) completeness within the declared learning scope, (3) beginner accessibility appropriate to the learner, (4) essential prerequisite closure, (5) conceptual and causal understanding, (6) mathematical intuition and complete reasoning, (7) meaningful examples and applications, (8) visual teaching, (9) independent problem-solving ability, (10) natural academic writing, (11) readable formatting, and (12) efficient reference loading and redundancy control. Context efficiency, stylistic compression, or fast-path brevity must never silently override educational completeness; formatting exists to support teaching.
 
 ## Note creation
 

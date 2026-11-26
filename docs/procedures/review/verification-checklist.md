@@ -19,18 +19,20 @@ Before saving, apply the applicable checks in stages 1–5 in a single proportio
 
 ### Stage 5 — Presentation, Mathematics, Visuals, Metadata, Links & Bounded Acceptance (Before Saving)
 - Check the draft against the applicable [authoring rules](../../../core/authoring_rules.md), [properties policy](../../properties/properties-policy.md) and [link policy](../updating/revision-and-linking.md). For substantive mathematics, read with folds closed and open, then apply the [math policy](../../../core/math_gates.md), including its table rules. If an artifact needs figures, apply the [visual policy](../authoring/representations.md) and confirm each required asset is inspected and ready to publish.
-**Independent acceptance checks.** For each applicable dimension, cite concrete evidence and resolve defects before judging the whole artifact. Mark a dimension inapplicable when it is outside the resolved scope.
+**Ten Independent Educational Acceptance Gates (Gates A–J):** Check each applicable gate against concrete passages before approving the artifact; mark a gate inapplicable only when genuinely outside the resolved format or strict-source scope:
 
-| Dimension | Observable evidence |
+| Acceptance Gate | Observable Evidence Required |
 |---|---|
-| Concepts | Plain-language intuition and concrete scenario open the explanation before dense jargon; simpler baselines precede upgrades; definitions, essential prerequisites, and boundaries are taught locally before use |
-| Curriculum & Sources | Comprehensive `M1` notes cover all major intellectual pillars of the topic proportionally rather than compressing into a narrow summary; independent non-strict notes cite primary authoritative sources |
-| Mechanism | A trace or causal explanation shows what changes and why; sequential/iterative algorithms show multi-step state carryover and unseen-input inference |
-| Mathematics | Mathematical tools/approximations are taught on simple cases before applied; governing equations match worked examples; valid derivations, assumptions, identified symbols, and verified examples remain readable with folds closed |
-| Visuals | For structural, geometric, sequential, or functional concepts under permitted source policies, active visual acquisition was attempted before falling back; essential relationships are legible in an inspected figure or sufficient permitted fallback, with material gaps disclosed |
-| Readability | University-textbook prose and a coherent visible reading path (without compressed research-paper shorthand or wide formula-stuffed tables) support the intended audience |
-| Practical reasoning | Worked comparisons, grouped parameters, and failure diagnosis show behavior and decisions at the requested depth |
-| Independent learning | Application, explanation or transfer checks match the objective when practice is permitted |
+| **Gate A — Scope completeness** | Central learning objectives developed proportionally (`M1` covers foundations/baselines, core mechanism, task types/variants, practical usage, limitations, comparisons, and primary sources rather than collapsing into a summary) |
+| **Gate B — Beginner accessibility** | Plain-language intuition opens before dense jargon; simpler baselines precede upgrades; mathematical progression and technical terms are introduced cleanly |
+| **Gate C — Self-contained understanding** | Essential prerequisites, terminology, symbols, and governing assumptions are taught locally within declared scope without forcing external note lookups (or disclosed honestly under strict sources) |
+| **Gate D — Theory quality** | Causal mechanisms and why-level reasoning explain how inputs transform, what changes under altered conditions, and what multi-step iterative rounds carry over |
+| **Gate E — Mathematical quality** | Equations are accurate, mathematical tools/approximations are motivated and taught before use, governing models match worked examples, consequential derivation steps stay visible with folds closed, and results are interpreted |
+| **Gate F — Visual quality** | Meaningful visual opportunities (structural, geometric, sequential, functional) attempted via permitted capabilities, placed adjacent with captions/decoding, or fallback/limitations honestly disclosed |
+| **Gate G — Example quality** | Worked traces and contrasting/boundary/failure examples demonstrate mechanisms accurately with complete arithmetic and unseen-input inference |
+| **Gate H — Writing & presentation** | Calm university-textbook prose (no compressed research-paper shorthand or banned meta-headings), clean YAML, Obsidian callouts, compact tables, and navigable whitespace |
+| **Gate I — Independent understanding** | Checkpoints and problem/diagnosis/transfer framing equip the learner to reason and apply concepts on unfamiliar cases when permitted |
+| **Gate J — Integrity** | Active safety rules, non-execution rule, `source_policy` boundaries, accurate attribution, valid metadata, and verified internal wikilinks/embeds all pass |
 
 **Never accept an educationally incomplete note merely because its YAML, LaTeX delimiters, callouts, and isolated equations look structurally clean.** A strength on one dimension cannot cancel a material failure on another. Verify the required policy dependencies in [the runtime pipeline](../../../core/runtime_pipeline.md) before claiming full compliance. Apply the bounded acceptance outcomes below to unresolved defects.
 

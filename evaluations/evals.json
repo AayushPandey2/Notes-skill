@@ -854,6 +854,39 @@
         "Teaches local chain-rule and exponential moving average prerequisites before the full bias-corrected update equations, matching a multi-step numerical trace",
         "Covers practical hyperparameters, limitations/comparisons against SGD with momentum, authoritative references, and attempts/discloses visual curves"
       ]
+    },
+    {
+      "id": 79,
+      "prompt": "/scribe-notes Teach multivariable differentiation from scratch as a comprehensive beginner-friendly M1 mathematics chapter.",
+      "expected_output": "Starts from single-variable derivative slopes on concrete curves before introducing partial derivatives, directional derivatives, the gradient vector, linear approximation, the Jacobian/Hessian, and the multivariable chain rule, with geometric visuals or disclosed fallbacks and worked numerical/transfer problems.",
+      "files": [],
+      "expectations": [
+        "Builds prerequisite single-variable slope and tangent-line bridges locally before partial and directional derivatives",
+        "Explains geometric meaning of gradients, tangent planes, and multivariable chain-rule dependency paths clearly with complete intermediate steps",
+        "Attempts permitted visual geometry plots or discloses unavailability honestly, and includes worked problems with boundary/differentiability caveats"
+      ]
+    },
+    {
+      "id": 80,
+      "prompt": "/scribe-notes Explain pointers, memory addresses, pointer arithmetic, and dynamic heap allocation in C for beginners as a comprehensive M1 note.",
+      "expected_output": "Opens with accessible intuition about variables and memory locations before pointer syntax; establishes stack vs. heap lifetimes and pointer-to-type semantics visually or via memory-state tables; traces concrete pointer arithmetic and malloc/free lifecycles plus dangling/leak/null-deref failure diagnosis without executing code.",
+      "files": [],
+      "expectations": [
+        "Explains memory addresses and stack vs. heap lifetimes before dense C pointer syntax",
+        "Traces concrete step-by-step memory states, pointer arithmetic, and dynamic allocation/free failure diagnosis statically without inventing execution",
+        "Attempts permitted memory diagrams or uses clear state tables with honest visual fallback disclosure"
+      ]
+    },
+    {
+      "id": 81,
+      "prompt": "/scribe-notes Explain Faraday's law of electromagnetic induction and Lenz's law as a comprehensive M1 physics chapter.",
+      "expected_output": "Builds magnetic flux intuition and field geometry before Faraday's differential/integral rate-of-change law; explains why Lenz's negative sign enforces energy conservation; teaches with flux-loop visual explanations or disclosed fallbacks, SI units throughout, and worked EMF calculations.",
+      "files": [],
+      "expectations": [
+        "Teaches magnetic flux and changing-area/field intuition locally before Faraday's equation",
+        "Explains why Lenz's negative sign represents opposition to flux change via energy conservation rather than a bare convention",
+        "Maintains SI units (Wb, T, m^2, V), states ideal-to-real assumptions, and attempts permitted flux diagrams or discloses limitations"
+      ]
     }
   ]
 }

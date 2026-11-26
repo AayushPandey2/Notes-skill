@@ -37,18 +37,24 @@ Before drafting a comprehensive independent note on a subject, consult authorita
 | **History** | Academic histories, archival collections, scholarly reference works |
 | **Philosophy** | Stanford Encyclopedia of Philosophy, peer-reviewed academic texts |
 
-## 2. Internal Knowledge Coverage Matrix (Aligned to Unified Concept Record)
+### Discipline-Specific Discovery Lenses *(Planning Only — Never Compulsory Headings or Forced Computational Structures)*
+- **Algorithms:** Problem solved, why simpler approaches fall short, core ideas, algorithm structure, training vs. inference, objective & optimization mechanism, data representation, parameters, computational behavior & assumptions, failures, applications, comparisons, variants.
+- **Mathematics:** Motivation, definitions, intuition, mathematical objects, theorems, derivations/proofs, geometrical interpretation, numerical examples, problem types, conditions, counterexamples, applications.
+- **Natural Sciences:** Relevant phenomena, physical/biological structures, governing principles, causal mechanisms, evidence & experiments, mathematical relationships with units, assumptions, limitations, real-world significance.
+- **History / Philosophy:** Necessary context, central concepts, chronology (where relevant), causal relationships, arguments, evidence, competing interpretations, distinctions, consequences, evidence limits.
 
-Before drafting a major theory note or collection, enrich the [shared internal concept record](adaptive-engine.md) with a compact **internal** coverage check (do **not** publish this planning table as clutter in the finished note):
+## 2. Internal Knowledge Coverage Matrix & Classification
+
+Before drafting a major theory note or collection, enrich the [shared internal concept record](adaptive-engine.md) with a compact **internal** coverage check classifying discovered concepts into: `Essential foundation`, `Central theory`, `Consequential mathematical reasoning`, `Important application`, `Important limitation`, `Supporting detail`, `Advanced extension`, or `Out-of-scope material` (do **not** publish this planning table as clutter in the finished note):
 
 | Column | Meaning |
 |---|---|
-| **Concept** | Distinct concept, mechanism, or distinction to teach |
+| **Concept & Coverage Class** | Distinct concept, mechanism, or distinction + classification above |
 | **Role** | `Prerequisite`, `Core`, `Extension`, or `Advanced` |
 | **Required depth** | Unified `0–5` theory depth (`1 Recognition` through `5 Independent transfer` in [adaptive-engine.md](adaptive-engine.md)) |
 | **Observable completion condition** | Concrete test proving the concept was taught (e.g., *"Trace a complete virtual-to-physical address translation and contrast a TLB miss with a page/permission fault"*) |
 
-**Rule:** Simply mentioning a concept (`Level 1`) never satisfies a `Core` (`Level 3–5`) completion condition. For comprehensive `M1` notes, map all major pillars of the subject (foundations/baselines, core mechanism & mathematical tools, major task types/variants, practical parameters/workflows, limitations, comparisons, and primary references) so no central pillar is silently omitted, and verify every high-priority concept meets its observable completion condition before review passes.
+**Adaptive Educational Depth & Completion Rule:** Allocate explanation proportionally to conceptual importance: develop central theory comprehensively, teach essential prerequisites strictly to the depth needed for dependent reasoning, treat supporting details proportionally, and clearly distinguish advanced extensions. Simply mentioning a concept (`Level 1`) never satisfies a `Core` (`Level 3–5`) or `Central theory` completion condition. For comprehensive `M1` notes, map all major pillars of the subject (foundations/baselines, core mechanism & mathematical tools, major task types/variants, practical parameters/workflows, limitations, comparisons, and primary references) so no central pillar is silently omitted. Before acceptance, compare finished prose against planned objectives to catch omitted, mentioned-but-untaught, or prerequisite-missing concepts; if scope exceeds output capacity, deliver complete bounded learning units and disclose remaining material rather than mislabeling a partial summary as comprehensive.
 
 ## 3. Prerequisite Closure & Coverage/Exclusion Audit
 

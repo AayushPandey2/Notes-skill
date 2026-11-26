@@ -54,6 +54,7 @@ Scale internal planning ceremony proportionally to request complexity rather tha
 Before drafting broad curricula, estimate total intellectual burden from: **core concept count, target depth, source complexity, artifact count, mathematical derivation load, practical implementation load, and distinct visual needs**.
 - For focused requests, finish the complete learning unit at full target depth.
 - For broad collections, partition cleanly at natural conceptual boundaries and verify completed chapters—if resource or context limits prevent finishing the entire curriculum, **disclose exactly what remains incomplete** rather than silently thinning later chapters or claiming full coverage.
+- **Long-note continuity:** Maintain temporary internal awareness during generation of declared scope, learner starting knowledge, established concepts, remaining objectives, notation, assumptions, running examples, visual requirements, and unresolved questions so later sections stay consistent without degradation—never creating persistent planning files, registries, or executable state-management infrastructure.
 
 ### Audience & Scope Presets
 - **Beginner:** Stronger local prerequisite bridges, one conceptual burden at a time, concrete examples beside definitions.

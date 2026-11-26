@@ -4,17 +4,17 @@ Before drafting, identify where seeing a contrast, mechanism, topology, or geome
 
 For each core concept in substantive notes, decide which representation makes the mechanism inspectable. Record the learning question, exact example or state, placement, and outcome in the concept plan. Give geometry and spatial transformations a figure when a suitable permitted asset can be inspected. A table may be the best representation for a discrete comparison or exact trace. When a figure is valuable but unavailable or prohibited, use a permitted fallback and disclose what it cannot show. A missing essential relationship remains a gap. Prefer complementary views that let the reader predict a changed outcome, and remove illustrations that provide no evidence for the nearby explanation.
 
-## 1. Visual Necessity Classification & Source Hierarchy
+## 1. Visual Specialization, Necessity Classification & Source Hierarchy
 
-Classify each concept by educational visual necessity rather than treating visuals as optional embellishments or forcing an arbitrary fixed count:
+Select visuals according to their distinct educational function (**Structural, Sequential, Mathematical, Geometrical, Comparative, Diagnostic, Physical, Biological, Experimental**) rather than treating visuals as optional embellishments or forcing an arbitrary fixed count. Verify every visual performs a distinct teaching function:
 
-| Concept Type | Visual Policy |
+| Visual Function & Concept Type | Visual Policy |
 |---|---|
-| **Structural / architectural** | Normally include an appropriate structure, topology, or component diagram |
-| **Geometric / spatial** | Normally include a geometric representation (partitions, margins, projections) |
-| **Sequential / iterative algorithms** | Include a visual flow or state-transition diagram (or structured step trace when figures are unavailable) |
-| **Mathematical functions & optimization** | Include plots or curves showing function behavior, approximations (e.g., first- vs. second-order), loss surfaces, slopes, or learning curves |
-| **Quantitative relationships** | Use plots when they reveal trends, tradeoffs, or threshold behavior more clearly than a table |
+| **Structural / Physical / Biological** | Normally include an appropriate structure, topology, apparatus, biological, or component diagram |
+| **Geometrical** | Normally include a geometric representation (partitions, margins, projections, fields) |
+| **Sequential** | Include a visual flow or state-transition diagram (or structured step trace when figures are unavailable) |
+| **Mathematical & Experimental** | Include plots/curves showing functions, approximations, loss/learning dynamics, or experimental responses |
+| **Comparative & Diagnostic** | Use comparative plots or diagnostic contrasts when they reveal trends, tradeoffs, or failures more clearly than prose |
 | **Simple definitions / verbal distinctions** | No image needed unless it actively resolves a misleading contrast |
 
 When visuals are educationally expected and permitted (`source_policy != strict`), actively attempt available host capabilities in priority order **before** falling back to prose, tables, or reference links—never silently emit zero visuals on a visual-heavy topic without attempting permitted acquisition or disclosing the unavailability:
@@ -26,9 +26,9 @@ When visuals are educationally expected and permitted (`source_policy != strict`
 
 **Relevance-Governed Quantity & Source-Only Precedence:** Base visual count on distinct learning needs, not a mechanical quota. When `source_policy = strict`, external web browsing and downloading are **disabled**—use only supplied source figures or native tables/traces. **Never use Mermaid (`mermaid` blocks), ASCII art/diagrams, SVG downloads, or custom HTML/JS plotting scripts.**
 
-## 2. Multi-Representation Selection & Strategic Opportunities
+## 2. Multi-Representation Selection & Complementary Modalities
 
-Choose representations according to the **intellectual task** rather than defaulting to generic illustrations:
+Develop consequential concepts through complementary representations where appropriate (**Verbal, Visual, Geometrical, Mathematical, Numerical, Physical, Computational**)—choosing modalities matched to the intellectual task, ensuring every representation describes the same underlying relationship, explaining the connection between them explicitly, and never forcing inappropriate representations onto a subject:
 
 | What the Learner Must Understand | Best Representation |
 |---|---|
@@ -62,12 +62,11 @@ Track `Specification defined -> Native tool rendered -> Values/labels inspected 
 ### Adaptive Width & Multimedia Hygiene (Both Paths)
 - Choose display width from legibility, intrinsic dimensions, and layout (`![[assets/<name>.png|650]]` default; compact for small components, wider for dense circuits/graphs). Place explanations beside the element they explain, keep labels/symbols consistent with prose, never rely exclusively on color, omit decorative visual clutter, and separate embed, concise 1-sentence caption, and **ordinary Markdown** attribution (`Source: Exact Source Page Title — <verified-url>. Attribution and license: <verified info>.` formatted as a Markdown link `[Title](<verified-url>)` using the actual verified URL, or `Source: Author-created illustration for this note's running example.` — zero raw HTML) with blank lines.
 
-## 4. Diagram-to-Model Narrative (Scaled to Figure Complexity)
+## 4. Visual Planning & Teaching Around Images
 
-Teach every embedded figure in calm, takeaway-driven prose (avoid commanding phrasing like `"Inspect Figure 4"` and never overclaim what a plot proves), scaling narrative weight cleanly to visual complexity—a simple curve may need two clear sentences connecting axes and shape to the model, whereas a multi-stage architecture or circuit diagram warrants full element decoding, concrete tracing, and a conceptual checkpoint:
-1. **Set the question (1–2 sentences):** State what conceptual point the visual clarifies.
-2. **Show & attribute:** Embed the inspected image, caption, and ordinary Markdown source line.
-3. **Decode elements & diagram-to-model correspondence:** Connect every axis, node, branch, arrow, or curve directly to the underlying variables, equations, or physical/computational mechanism without relying on color alone, bridging any notation shifts.
-4. **Trace concrete values:** Walk through specific coordinates, thresholds, or state transitions on the figure.
-5. **Connect to formalism & limits:** State the governing principle, whether the data is **illustrative, simulated, measured, or source-provided**, and what the figure **does not prove**.
-6. **Check interpretation:** Add a visible `> [!question] Concept Checkpoint` (nested `> > [!success]- Reveal Answer`) where visual reading requires active reasoning.
+For each planned figure, establish in the internal plan: what concept it teaches, what relationship text alone cannot clarify well, the right representation, what the learner needs beforehand, necessary labels, adjacent placement (never in a trailing gallery, never right after a heading without framing, and never after its explanation already finished), and follow-up interpretation. Prefer distinct educational roles rather than multiple figures repeating the same point.
+
+Teach every embedded figure in calm, takeaway-driven prose (avoid commanding phrasing like `"Inspect Figure 4"` and never overclaim what a plot proves), weaving this flexible rhythm to match visual complexity:
+1. **Before the figure:** Establish the problem, relevant concept, what the figure represents, and what the reader should look for.
+2. **The figure & caption:** Embed the inspected image with readable labels and appropriate width, paired with a descriptive 1-sentence caption explaining what the figure demonstrates (never merely repeating the title) and ordinary Markdown source attribution.
+3. **After the figure:** Decode axes, nodes, branches, or curves directly into the underlying variables, equations, or causal mechanism (without relying on color alone and bridging notation shifts); trace concrete values/thresholds on the figure; state what is **illustrative, simulated, measured, or source-provided** plus what the figure **does not prove**; and add a visible `> [!question] Concept Checkpoint` (`> [!success]- Answer`) where visual interpretation needs active reasoning.

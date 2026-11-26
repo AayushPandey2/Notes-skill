@@ -4,18 +4,19 @@
 
 Separate **planning, writing, criticism, and repair** so review is genuinely diagnostic rather than rubber-stamping an author's own draft. When the host supports an independent reviewer context, use it selectively for substantial or high-risk topics; otherwise perform distinct authoring and review passes and disclose that independence was not available. Never accept an author's self-declaration as proof that requirements were met—inspect the actual paragraphs, equations, examples, and claims against [educational-editor.md](educational-editor.md) and the unified `0–5` scale in [adaptive-engine.md](../authoring/adaptive-engine.md).
 
-## 1. Six Adversarial Review Lenses
+## 1. Seven Consolidated Review Perspectives
 
-Apply these as focused review perspectives in a single manual pass (no separate subagents required):
+Apply these seven diagnostic perspectives in a single consolidated manual review pass (no separate redundant full-document review passes or subagents required):
 
-| Lens | What It Hunts For |
+| Perspective | What It Hunts For |
 |---|---|
-| **1. Subject expert** | Factual errors, missing core mechanisms, outdated conventions, misleading simplifications |
-| **2. Beginner learner** | Unexplained terminology, hidden prerequisites, abrupt leaps from concrete to abstract |
-| **3. Mathematical reviewer** | Unjustified algebraic transitions, missing hypotheses/conditions, unit/dimension/notation drift, wrong operators |
-| **4. Skeptical reader** | Unsupported claims, conflated epistemic statuses (hypothesis stated as law, correlation as causation), overgeneralizations |
-| **5. Practical problem solver** | Explanations that describe a concept without enabling the learner to apply, compute, trace, or diagnose an unseen case |
-| **6. Educational editor** | Redundant repetition, broken conceptual continuity, weak transitions, tables/visuals disconnected from prose |
+| **1. Beginner perspective** | Read sequentially from a beginner's perspective to find the earliest unexplained term, missing prerequisite, unsupported formula, confusing transition, incomplete example, or exercise requiring untaught knowledge |
+| **2. Professor perspective** | Missing curriculum pillars, superficial mechanism descriptions lacking causal *why*, misleading simplifications, omitted variants/limitations |
+| **3. Mathematical perspective** | Invalid algebra, unjustified transitions, missing hypotheses/domain/shape checks, scalar vs. matrix ambiguity, hidden fold-only milestones, model-example drift |
+| **4. Visual-learning perspective** | Concepts needing diagrams/graphs silently omitted (`0` visuals on visual-heavy topics), uninspected/inaccurate figures, missing before/caption/after narrative |
+| **5. Textbook-editor perspective** | Compressed research-paper shorthand, dense multi-step sentences, robotic/meta headings, broken reading rhythm, wide formula-stuffed tables, redundant callouts |
+| **6. Practical-learning perspective** | Theory disconnected from implementation, parameter mechanics, failure diagnosis, unseen inference, or multi-round iterative carryover |
+| **7. Source-review perspective** | Unsupported certainty, conflated epistemic statuses, library/version/variant conflation, missing primary references, inaccurate attribution, or source-policy breaches |
 
 ### Mandatory Diagnostic Questions
 
