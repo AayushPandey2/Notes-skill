@@ -36,18 +36,18 @@ Before drafting a comprehensive independent note on a subject, consult authorita
 | **History** | Academic histories, archival collections, scholarly reference works |
 | **Philosophy** | Stanford Encyclopedia of Philosophy, peer-reviewed academic texts |
 
-## 2. Internal Knowledge Coverage Matrix
+## 2. Internal Knowledge Coverage Matrix (Aligned to Unified Concept Record)
 
-Before drafting a major theory note or collection, build a compact **internal** coverage matrix (do **not** publish this planning table as clutter in the finished note):
+Before drafting a major theory note or collection, enrich the [shared internal concept record](adaptive-engine.md) with a compact **internal** coverage check (do **not** publish this planning table as clutter in the finished note):
 
 | Column | Meaning |
 |---|---|
 | **Concept** | Distinct concept, mechanism, or distinction to teach |
 | **Role** | `Prerequisite`, `Core`, `Extension`, or `Advanced` |
-| **Required depth** | `Foundational`, `Deep`, `Analytical`, or `Contextual` (aligned with [adaptive-engine.md](adaptive-engine.md)) |
-| **Observable completion condition** | Concrete test proving the concept was taught (e.g., *"Trace a complete virtual-to-physical address translation and contrast a TLB miss with a page fault"*) |
+| **Required depth** | Unified `0–5` theory depth (`1 Recognition` through `5 Independent transfer` in [adaptive-engine.md](adaptive-engine.md)) |
+| **Observable completion condition** | Concrete test proving the concept was taught (e.g., *"Trace a complete virtual-to-physical address translation and contrast a TLB miss with a page/permission fault"*) |
 
-**Rule:** Simply mentioning a concept never satisfies a `Core` or `Deep` completion condition. Every high-priority concept must meet its observable completion condition before review passes.
+**Rule:** Simply mentioning a concept (`Level 1`) never satisfies a `Core` (`Level 3–5`) completion condition. Every high-priority concept must meet its observable completion condition before review passes.
 
 ## 3. Prerequisite Closure & Coverage/Exclusion Audit
 

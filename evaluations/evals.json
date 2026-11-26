@@ -176,6 +176,147 @@
         "Uses biology 4-track structure (mechanism, published evidence, controlled investigation, variation/disruption)",
         "Labels data Published/Illustrative/Analytical and never fabricates wet-lab readings"
       ]
+    },
+    {
+      "id": 17,
+      "prompt": "/scribe-notes Create only one comprehensive ML theory note on Ridge Regression without generating a lab or interview pack",
+      "expected_output": "Honors explicit_single_file override over M1 default theory_bundle, emits exactly one Markdown note, and avoids dead reciprocal links to non-existent companion files.",
+      "files": [],
+      "expectations": [
+        "Emits strictly 1 file (no Experimental Lab or Cheatsheet & Interview Q&A files)",
+        "Does not create broken wikilinks to missing companions",
+        "Preserves ML-specific depth (L2 objective, shrinkage vs OLS, ill-conditioning) inside the requested note"
+      ]
+    },
+    {
+      "id": 18,
+      "prompt": "/scribe-notes Explain the definition of continuity of a real function at a point",
+      "expected_output": "Treats narrow single-definition request concisely without forcing an unwanted multi-chapter collection or unrelated ML datasets.",
+      "files": [],
+      "expectations": [
+        "Uses a focused single-bundle or concise structure without artificial chapter padding",
+        "Provides need, epsilon-delta definition, concrete example, and removable/jump discontinuity boundary"
+      ]
+    },
+    {
+      "id": 19,
+      "prompt": "/scribe-notes Make a 500-word formula sheet for electrostatics and Gauss's law with SI units",
+      "expected_output": "Applies M3 formula_sheet <=500-word budget cleanly, uses inline/grouped equations with SI units, applicability conditions, and canonical derivation links rather than bulky repeated formula folds.",
+      "files": [],
+      "expectations": [
+        "Respects the <=500-word formula-sheet budget without violating 350-word general caps",
+        "Includes SI units, Gaussian-surface symmetry/validity conditions, and canonical derivation links"
+      ]
+    },
+    {
+      "id": 20,
+      "prompt": "/scribe-notes Explain the structural and immediate causes of the 1929 Wall Street Crash",
+      "expected_output": "Uses historical domain and evidence-oriented investigation without forcing ML datasets, numerical loss tables, or programming tracks, and separates documented evidence from competing historiographical interpretations.",
+      "files": [],
+      "expectations": [
+        "Zero ML terminology, datasets, or irrelevant programming tracks",
+        "Distinguishes chronology from causality and primary evidence from historiographical interpretation"
+      ]
+    },
+    {
+      "id": 21,
+      "prompt": "/scribe-notes Prove step by step that sqrt(2) is irrational and that the sum of two odd integers is even",
+      "expected_output": "Routes to M4 worked-solutions in proof construction mode, presents valid logical proofs without forcing numerical calculations or boxed arithmetic answers.",
+      "files": [],
+      "expectations": [
+        "Selects M4 proof construction mode cleanly",
+        "Verifies exact hypotheses (coprime integers, parity definitions) without forcing artificial numerical boxes"
+      ]
+    },
+    {
+      "id": 22,
+      "prompt": "/scribe-notes Explain CSS Flexbox alignment and axis behavior with examples",
+      "expected_output": "Routes to fullstack subject and lab blueprints for frontend CSS only, omitting any unrequested backend API or database vertical slice.",
+      "files": [],
+      "expectations": [
+        "Explains main vs cross axis, flex-direction, justify-content, and align-items clearly",
+        "Omits unnecessary backend server, REST API, or database integration tracks"
+      ]
+    },
+    {
+      "id": 23,
+      "prompt": "/scribe-notes Explain Rust ownership, moves, and mutable borrowing",
+      "expected_output": "Routes to programming/coding blueprint in Rust only, without forcing Python or ML implementations, and clearly labels any intentionally non-compiling borrow-checker diagnostic example.",
+      "files": [],
+      "expectations": [
+        "Honors Rust language without forcing Python or ML tracks",
+        "Explicitly labels any intentionally non-compiling borrow conflict example as demonstrating a compiler diagnostic"
+      ]
+    },
+    {
+      "id": 24,
+      "prompt": "/scribe-notes Explain Logistic Regression in Python only",
+      "expected_output": "Honors explicit Python-only language override in the ML lab rather than generating unwanted Rust from-scratch and Linfa/SmartCore tracks.",
+      "files": [],
+      "expectations": [
+        "Respects Python-only override (omits Rust tracks cleanly)",
+        "Distinguishes mathematical sigmoid (0,1) from finite-precision saturation and uses numerically stable logits loss"
+      ]
+    },
+    {
+      "id": 25,
+      "prompt": "/scribe-notes Explain SQL transaction isolation levels and write skew with examples",
+      "expected_output": "Routes to databases subject and lab blueprints, qualifies isolation behavior by database engine (e.g., PostgreSQL SSI vs Snapshot Isolation), uses 3-attribute integrity, and never fabricates executed SQL outputs.",
+      "files": [],
+      "expectations": [
+        "Qualifies REPEATABLE READ / Snapshot Isolation vs SERIALIZABLE by database engine",
+        "Marks trace outputs synthetic/manual_arithmetic/statically_reviewed with zero fabricated execution claims"
+      ]
+    },
+    {
+      "id": 26,
+      "prompt": "/scribe-notes Distinguish TLB misses, page faults, and permission faults in virtual memory",
+      "expected_output": "Correctly explains that a TLB miss only means the translation is not cached (lookup may succeed on a resident page without a fault) and includes unmapped, non-resident, and permission-violation page faults.",
+      "files": [],
+      "expectations": [
+        "States accurately that a TLB miss can resolve to a resident page with no page fault",
+        "Includes permission violations alongside non-resident/unmapped pages in page fault causes"
+      ]
+    },
+    {
+      "id": 27,
+      "prompt": "/scribe-notes Explain p-values and null hypothesis significance testing accurately",
+      "expected_output": "Defines p-value strictly via test-statistic extremeness under the null distribution assuming H0 holds, separating it from P(H0 | data) and distinguishing statistical from practical significance.",
+      "files": [],
+      "expectations": [
+        "Defines p-value using the selected test statistic and null distribution assuming H0 is true",
+        "Explicitly contrasts p-value against P(H0 | data) and statistical vs practical significance"
+      ]
+    },
+    {
+      "id": 28,
+      "prompt": "/scribe-notes Implement an MLP training step in JAX",
+      "expected_output": "Routes to deep-learning subject and lab blueprints selecting JAX functional semantics (jax.grad, explicit pytree parameters/optax state), with zero PyTorch-only zero_grad()/.backward()/.eval() APIs forced onto JAX.",
+      "files": [],
+      "expectations": [
+        "Uses pure functional JAX transforms and explicit parameter/optimizer state",
+        "Contains zero PyTorch stateful calls (zero_grad(), .backward(), optimizer.step(), .train(), .eval()) inside the JAX code"
+      ]
+    },
+    {
+      "id": 29,
+      "prompt": "/scribe-notes Explain Dynamo-style quorums (R + W > N) and why overlap alone does not guarantee linearizability",
+      "expected_output": "Routes to distributed-systems blueprint, includes concrete counterexamples showing stale reads/concurrent write conflicts despite R+W>N, and explains required versioning, conflict resolution, and protocol assumptions.",
+      "files": [],
+      "expectations": [
+        "Provides a concrete counterexample showing R+W>N alone does not guarantee linearizability",
+        "Explains versioning/vector clocks, read repair/sloppy quorums, and conflict resolution assumptions"
+      ]
+    },
+    {
+      "id": 30,
+      "prompt": "/scribe-ytnotes Create notes for a visually dependent blackboard lecture video whose transcript is unavailable",
+      "expected_output": "Routes to video_notes without capturing frames or inventing missing equations/diagrams, records metadata_only/transcript_unavailable honestly, and discloses visual/transcript limitations cleanly.",
+      "files": [],
+      "expectations": [
+        "Never plays the video, captures frames, or fabricates un-narrated blackboard equations",
+        "Records access_state honestly and marks missing visual/transcript content as unavailable"
+      ]
     }
   ]
 }

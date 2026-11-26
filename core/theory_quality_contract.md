@@ -15,16 +15,16 @@ Introduce concrete operations before formal abstractions so notation compresses 
 5. **Abstract generalization:** Extend the representation beyond the opening example.
 6. **Application and limitations:** Use the abstraction and examine where its assumptions break.
 
-## 2. Cognitive Completeness (4 Levels)
+## 2. Cognitive Completeness (Mapped to Unified 0–5 Scale)
 
-Substantive core concepts must reach **Explanatory** or **Analytical** depth—never stop at terminology or surface operation when a mechanism is central to the topic:
+Substantive core concepts must reach **Mechanism/Reasoning (Level 3)**, **Analytical Justification (Level 4)**, or **Independent Transfer (Level 5)** on the unified `0–5` scale in [adaptive-engine.md](../docs/procedures/authoring/adaptive-engine.md)—never stop at bare recognition or surface terminology when a mechanism is central:
 
-| Level | Standard | Example (Recursion) |
+| Unified Depth | Standard | Example (Recursion) |
 |---|---|---|
-| **1. Terminology** | Names and defines the concept | A function that calls itself. |
-| **2. Operational** | Describes step-by-step surface behavior | Factorial calls itself with `n - 1` until `n == 0`. |
-| **3. Explanatory** | Explains *why* the mechanism works | Each call solves a smaller instance; pending frames combine returned sub-results back up. |
+| **1–2. Recognition / Explanation** | Names, defines, and describes surface steps | A function calling itself (`n - 1` until `n == 0`). |
+| **3. Mechanism** | Explains *why* the mechanism works causally | Each call solves a smaller instance; pending frames combine returned sub-results back up. |
 | **4. Analytical** | States correctness conditions, invariants, resource costs, and failure modes | Requires a valid base case, progress toward termination, and call-stack space unless tail-call eliminated. |
+| **5. Transfer** | Enables independent application to unfamiliar cases and reverse diagnosis | Identifies infinite-recursion bugs or converts tree recursion to iterative/tail-recursive form. |
 
 ## 3. Multi-Perspective Explanation
 

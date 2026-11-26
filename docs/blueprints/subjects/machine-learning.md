@@ -2,71 +2,54 @@
 
 ## Purpose
 
-Upgrade Scriptorium's Machine Learning notes from algorithm-centric explanations to **complete machine learning education**—covering problem formulation, data-generating processes, objective construction, generalization, evaluation design, numerical stability, failure diagnosis, and interpretability alongside first-principles internal mechanics. These are **internal teaching responsibilities** selected by topic relevance, never ten compulsory headings.
+Deliver complete Machine Learning education—covering problem formulation, data-generating processes, objective construction, generalization, evaluation design, numerical stability, failure diagnosis, and interpretability alongside first-principles internal mechanics. Activate responsibilities selectively via the Topic-Family Applicability table below; never treat the full ML lifecycle as mandatory for a single formula or narrow concept.
 
-## 1. Twelve Core ML Theory Dimensions
+## 1. Topic-Family Applicability (Prevent Scope Inflation)
 
-- **P0 (Essential for substantive ML notes):** Problem formulation (why the task takes this ML paradigm) · Data-generating process (observations, labels, noise) · Mathematical foundations (probability, geometry, calculus, linear algebra) · Learning objectives (statistical criterion vs. optimization objective) · Generalization (inductive bias, sampling, estimation error) · Evaluation (metric choice, experimental design, decision thresholds).
-- **P1/P2 (Activate when relevant):** Numerical computation (stability, conditioning, precision) · Model selection (validation, selection bias) · Failure diagnosis (symptom-to-mechanism reasoning) · Interpretability (association vs. attribution vs. causation) · Deployment behavior (distribution shift, drift, uncertainty) · Research foundations (original motivation and evidence).
-
-## 2. Generalized ML Lifecycle & Model–Objective–Solver Separation
-
-Adapt the opening flow to the paradigm (supervised, unsupervised, reinforcement, probabilistic, sequential) rather than assuming binary classification everywhere. Always separate these seven components explicitly—never equate an estimation criterion (e.g., ordinary least squares) with one numerical solver:
-
-| Component | Meaning | Linear Regression Example |
-|---|---|---|
-| **Model** | Mathematical form of predictions | $\hat y = wx + b$ |
-| **Parameters** | Quantities learned from data | $w, b$ |
-| **Objective** | Criterion defining the desired solution | Sum of squared errors (SSE) |
-| **Regularization** | Additional preference or constraint | $L_2$ penalty $\lambda \|w\|_2^2$ |
-| **Solver** | Numerical procedure finding a solution | QR, SVD, normal equations, or gradient descent |
-| **Evaluation metric** | Measure of predictive performance | MAE, MSE, RMSE, or $R^2$ |
-| **Decision procedure** | How predictions drive an action | Task-dependent decision rule |
-
-## 3. Mathematical Objective-Construction & Multi-Perspective Teaching
-
-For every governing objective, explain: (1) what behavior it rewards or penalizes (e.g., why squared loss magnifies large residuals while absolute loss grows linearly), (2) why the formula captures that behavior, (3) justifying assumptions, (4) convexity/differentiability/nonsmoothness, (5) how reductions/penalty conventions alter optimization, and (6) whether optimizing the surrogate loss necessarily improves the target metric.
-
-Connect **relevant complementary perspectives** explicitly (do not treat them as disconnected facts—e.g., in PCA, connect maximum projected variance with minimum squared reconstruction error):
-
-| Algorithm | Complementary Perspectives Worth Connecting |
+| ML Topic Family | Required Theoretical Responsibilities |
 |---|---|
-| **Linear / Ridge / Lasso** | Algebra, projection geometry, optimization, statistical estimation |
-| **Logistic regression** | Linear scores, log-odds/probability, likelihood, decision boundaries |
-| **KNN** | Distance geometry, local density/estimation, computational complexity |
-| **Decision trees** | Axis-aligned partition geometry, impurity reduction, recursive greedy construction |
-| **Random forest** | Bootstrap sampling, variance reduction, correlated-tree aggregation |
-| **Gradient boosting** | Additive modeling, functional optimization, residual/pseudo-gradient fitting |
-| **SVM** | Geometric margins, constrained optimization/duality, kernel similarity |
-| **PCA** | Projected variance, orthogonal projection, eigendecomposition, SVD, reconstruction |
-| **K-means** | Voronoi distance geometry, distortion objective, alternating minimization |
-| **Naive Bayes** | Conditional probability, Bayes' rule, conditional independence assumptions |
-| **Neural networks** | Function composition, tensor shapes, computational graphs, chain-rule optimization |
+| **Individual formula / metric** | Meaning, construction/derivation, assumptions, interpretation, boundary/failure case |
+| **Learning algorithm** | Model/mechanism, learning criterion, data/paradigm fit, training vs. prediction, assumptions, variants |
+| **Optimization** | Objective landscape (convex/nonconvex/nonsmooth), geometry, updates, convergence, numerical stability |
+| **Evaluation** | Measurement, sampling unit, split design, uncertainty, threshold/decision costs |
+| **Preprocessing** | Transformation semantics, fit-on-train scope, leakage prevention, invertibility |
+| **Statistical learning** | Data-generating process, risk, capacity, inductive bias, estimation vs. approximation |
+| **Deployment** | Serving contract, distribution shift types, monitoring, failure & recovery |
+| **Reinforcement learning** | Sequential decisions, states, actions, rewards, returns, policies, exploration |
 
-## 4. Data-Generating Process, Leakage & Generalization Theory
+## 2. Learning Mechanisms & Conditional Model–Objective–Solver Separation
 
-Before fitting any model, distinguish the **dataset** from the **data-generating process**: *Population vs. Sample, Features vs. Target, Signal vs. Noise, Sampling bias, Label noise, Joint distribution, and Data leakage* (trace actual information flow—what is known at training time vs. genuinely available at prediction time).
+Select the actual learning mechanism rather than assuming gradient descent everywhere:
+- *Closed-form / direct estimation* (e.g., unconstrained OLS) · *Iterative gradient-based* (e.g., logistic regression, neural nets) · *Coordinate / proximal optimization* (e.g., Lasso) · *Greedy structure construction* (decision trees) · *Instance-based prediction* (KNN—retains training points, no learned weight vector) · *Alternating optimization* (K-means) · *Probabilistic inference* (Bayes, EM, posteriors) · *Sequential decision learning* (RL).
 
-Teach **why generalization is possible**: hypothesis space & capacity, inductive bias, empirical vs. expected risk, approximation vs. estimation error, sample complexity, capacity control, validation/selection bias, and out-of-distribution shift. Introduce the squared-error bias–variance decomposition $\mathbb{E}[(Y - \hat f(x))^2] = \operatorname{Bias}^2 + \operatorname{Variance} + \sigma^2$ **only** after establishing repeated-sampling assumptions—never claim it holds identically for all classification losses.
+Where applicable (making inapplicable components optional for nonparametric/instance-based methods), separate **Model** ($\hat y = wx+b$) · **Parameters** ($w,b$) · **Objective** (SSE) · **Regularization** ($\lambda \|w\|_2^2$) · **Solver** (QR, SVD, GD, coordinate descent) · **Evaluation metric** (MAE, MSE, $R^2$) · **Decision procedure** (threshold/action rule). Never equate an estimation criterion (e.g., OLS) with one numerical solver.
 
-## 5. Evaluation Design, Numerical Computation & Algorithm Variants
+## 3. Mathematical Rigor, Objective Construction & Multi-Perspective Teaching
 
-- **Three evaluation problems:** Distinguish **Measurement** (metric choice), **Experimental design** (leak-free splits/CV), and **Decision-making** (threshold trade-offs—show how changing a threshold alters TP/FP/TN/FN, precision, recall, and accuracy without changing the fitted model or predicted probabilities). Connect regression metrics to residual tails and error costs.
-- **Numerical stability overlay:** Explain floating-point rounding, overflow/underflow, catastrophic cancellation, ill-conditioned design matrices, **QR/SVD vs. inverting normal equations**, **log-sum-exp / logits-based cross-entropy** vs. naive $\sigma(z)$, convergence tolerances, and `float32` vs. `float64`.
-- **Variant lineage:** Frame related models as design-space responses to limitations (e.g., OLS $\to$ Ridge $L_2$ magnitude control $\to$ Lasso $L_1$ sparsity $\to$ Elastic Net $\to$ Robust regression against heavy-tailed residuals).
+- **Objective construction:** Explain (1) what behavior the objective rewards/penalizes (e.g., squared vs. absolute loss), (2) why the formula captures it, (3) justifying assumptions (distinguishing likelihood assumptions from convenient surrogates), (4) optimization landscape (convexity, local minima, saddle points, nonsmoothness), (5) how reductions/scaling alter regularization parameters (`C`, `alpha`), and (6) whether minimizing the surrogate improves the target metric.
+- **ML-specific mathematical obligations:** Verify **shape propagation**, check **parameter identifiability**, separate **numerical solver convergence** from **statistical generalization**, qualify OLS residual orthogonality $X^\top(\mathbf{y} - X\hat{\mathbf{w}})=0$ strictly to **unconstrained** least squares (not arbitrary regularized/constrained solutions), and distinguish exact mathematical sigmoid outputs $(0,1)$ from **finite-precision saturation** (`0.0`/`1.0`).
+- **Worked-trace pedagogy:** Separate **training phase** from **prediction phase**, declare miniature-example simplifications honestly, explain *why* initial predictions start as they do, what residual signs mean, *why* features multiply residuals, *why* subtracting a negative gradient increases a weight, *why* total loss can drop while individual points worsen, and separate finite-sample vs. asymptotic behavior (e.g., $(5/6)^6 \approx 33.5\%$ vs. $36.8\%$ OOB) and paper conventions from library defaults (`scikit-learn` probability averaging vs. hard voting, `max_features`).
 
-## 6. Algorithm-Family Overlays, Failure Diagnosis & Interpretability
+Connect **relevant complementary perspectives** explicitly (e.g., in PCA, connect maximum projected variance with minimum squared reconstruction error; qualify projection vs. penalized optimization across OLS, Ridge, and Lasso):
+- *Linear/Ridge/Lasso:* Algebra, projection geometry (where applicable), optimization, estimation · *Logistic:* Log-odds, probability, likelihood, decision boundaries · *KNN:* Distance geometry, local estimation, inference cost · *Trees:* Partition geometry, impurity, greedy splits · *Random forest:* Bootstrap sampling, variance reduction, correlated aggregation · *Boosting:* Functional optimization, residual/gradient fitting · *SVM:* Geometric margins, constrained duality, kernels · *PCA:* Variance, projection, eigendecomposition/SVD, reconstruction · *K-means:* Voronoi geometry, distortion, alternating updates · *Naive Bayes:* Bayes' rule, conditional independence · *Neural nets:* Composition, tensor shapes, computational graphs.
 
-Apply paradigm-appropriate rules—never force supervised train/test or target-label logic onto clustering or RL:
-- *Regression* (conditional targets, residuals, diagnostics) · *Classification* (scores, calibration, decision costs) · *Clustering* (similarity, initialization instability, validation) · *Dimensionality reduction* (projection, reconstruction) · *Anomaly detection* (rarity, contamination, thresholds) · *Recommender systems* (implicit feedback, ranking, cold start) · *Time-series* (temporal dependence, chronological splits) · *RL* (states, actions, rewards, policies, exploration) · *Semi-/Self-supervised* (consistency, pretext tasks) · *Probabilistic* (priors, likelihood, posterior) · *Online* (streaming updates, nonstationarity) · *Ensembles* (diversity, error dependence) · *Generative* (learned distributions, sampling, latent variables).
+## 4. Data-Generating Process, Generalization & Distribution Shift
 
-**Failure diagnosis (symptom $\to$ competing hypotheses $\to$ discriminating check):**
-- High train / low val $\to$ overfitting, leakage, or split shift $\to$ inspect splits & learning curves.
-- Low train & low val $\to$ underfitting, weak features, or non-convergence $\to$ inspect optimization trace & capacity.
-- Unstable coefficients $\to$ collinearity or small $n$ $\to$ check condition number & feature correlations.
-- `NaN` loss $\to$ overflow, invalid log/div, or excessive step size $\to$ inspect logits & gradient norms.
-- Overconfident probabilities $\to$ miscalibration or shift $\to$ check reliability diagram on held-out data.
-- High validation variance $\to$ small sample or unstable fitter $\to$ repeated stratified/grouped CV.
-- Post-deployment drop $\to$ covariate/label shift or stale features $\to$ compare train vs. serving distributions.
+Before modeling, select the paradigm-appropriate data representation (do not force supervised targets onto clustering or RL): **Population vs. Sample, Features vs. Target, Signal vs. Noise, Sampling bias, Label noise, Joint distribution, IID vs. grouped/temporal dependence, and Data leakage** (trace training-time vs. prediction-time information flow).
 
-**Interpretability:** Distinguish global vs. local, intrinsic vs. post-hoc, correlation/feature attribution (SHAP, permutation importance, partial dependence) vs. real-world causal intervention, and prediction vs. epistemic uncertainty.
+Teach **generalization**: hypothesis space & representable capacity (beyond parameter count alone), inductive bias, empirical vs. expected risk, approximation vs. estimation error, sample complexity, and validation matched to the sampling unit (stratified, grouped, or chronological—never interchangeable). Introduce $\mathbb{E}[(Y-\hat f(x))^2] = \operatorname{Bias}^2 + \operatorname{Variance} + \sigma^2$ **only** under repeated-sampling squared-error assumptions. When covering deployment/generalization, distinguish **Covariate shift** ($P(X)$ changes, $P(Y\mid X)$ stable), **Label shift** ($P(Y)$ changes, $P(X\mid Y)$ stable), **Concept shift** ($P(Y\mid X)$ changes), **Data-quality change**, and **Training-serving skew**.
+
+## 5. Evaluation, Numerical Stability, Variants & Diagnosis
+
+- **Three evaluation problems:** **Measurement** (metric choice; teach TP/FP/TN/FN counts before summary tables; distinguish **discrimination** from **calibration**), **Experimental design** (leak-free splits matched to dependence), and **Decision-making** (threshold sweeps altering TP/FP/TN/FN without changing the fitted model).
+- **Numerical stability (activate when relevant):** Floating-point rounding, overflow/underflow, cancellation, ill-conditioning, **QR/SVD vs. inverting normal equations**, **log-sum-exp / logits-based cross-entropy**, convergence tolerances, and `float32` vs. `float64`.
+- **Related modeling alternatives:** Frame OLS, Ridge ($L_2$), Lasso ($L_1$), Elastic Net ($L_1+L_2$), and Robust regression as **alternative objective designs** addressing distinct limitations (not one mandatory linear progression).
+- **Failure diagnosis (require discriminating evidence before concluding a cause):**
+  - High train / low val $\to$ overfitting, leakage, or split shift $\to$ inspect splits & learning curves.
+  - Low train & val $\to$ underfitting, weak features, or non-convergence $\to$ inspect optimization trace & capacity.
+  - Unstable coefficients $\to$ collinearity or small $n$ $\to$ check condition number & feature correlations.
+  - `NaN` loss $\to$ overflow, invalid log/div, or step size $\to$ inspect logits & gradient norms.
+  - Overconfident probabilities $\to$ miscalibration or shift $\to$ reliability diagram on held-out data.
+  - High validation variance $\to$ small sample or unstable fitter $\to$ appropriate repeated/grouped/time CV.
+  - Post-deployment drop $\to$ covariate/label/concept shift or skew $\to$ compare train vs. serving distributions.
+- **Interpretability & Uncertainty:** Separate global vs. local, intrinsic vs. post-hoc, correlation/attribution (SHAP, permutation importance, PDP) vs. causal intervention, and predictive vs. **aleatoric** vs. **epistemic** uncertainty.

@@ -1,8 +1,8 @@
-# Adversarial Theory Review & Concept-Level Benchmark
+# Adversarial Theory Review & Unified Depth Verification
 
 ## Purpose
 
-Make manual review of substantive theory notes (`M1`, `M2`, `M4`, `M5`, `M7`, and video notes) genuinely diagnostic rather than a rubber-stamp pass. Inspect **actual paragraphs, derivations, examples, and claims** through focused adversarial lenses and anchor depth judgments on observable concept mastery.
+Make manual review of substantive theory notes (`M1`, `M2`, `M4`, `M5`, `M7`, and video notes) genuinely diagnostic rather than a rubber-stamp pass. Inspect **actual paragraphs, derivations, examples, and claims** through focused adversarial lenses against the unified `0–5` theory depth scale in [adaptive-engine.md](../authoring/adaptive-engine.md).
 
 ## 1. Six Adversarial Review Lenses
 
@@ -19,32 +19,16 @@ Apply these as focused review perspectives in a single manual pass (no separate 
 
 ### Mandatory Diagnostic Questions
 
-Inspect the drafted note and answer honestly before saving:
-
 1. What could a careful learner **incorrectly conclude** after reading this explanation?
 2. Which central mechanism has been **described** (terminology/operation) without being **explained** (cause/why)?
-3. Which high-priority concept from the internal [coverage matrix](../authoring/curriculum-discovery.md) is absent or fails its completion condition?
+3. Which high-priority concept from the [shared concept plan](../authoring/curriculum-discovery.md) fails its required depth or completion condition?
 4. Which mathematical transition, claim qualification, or ideal-to-real assumption shift is unjustified?
 5. Where does the running example stop supporting the explanation or fail to interpret *why* its result matters?
-6. Could the learner apply this theory to a different example or reason in reverse from an observed failure?
+6. Could the learner apply this theory to an unfamiliar case or reason in reverse from an observed failure?
 
-## 2. Concept-Level Understanding Benchmark (0–7)
+## 2. Unified Depth Benchmark (0–5) & Repair Rule
 
-Use these levels as **review anchors** for the existing theory-depth scale in [adaptive-engine.md](../authoring/adaptive-engine.md) (not a competing routing system):
-
-| Level | Observable Quality Achieved in the Note |
-|---|---|
-| **0** | Concept omitted |
-| **1** | Concept merely mentioned |
-| **2** | Definition supplied |
-| **3** | Definition + intuitive explanation |
-| **4** | Mechanism or causal reasoning explained |
-| **5** | Mechanism + formalism + worked example |
-| **6** | Assumptions, exceptions, and limitations explained |
-| **7** | Learner can independently reason about unfamiliar cases (forward & reverse transfer) |
-
-### Repair Rule
-
-- **Critical errors override scores:** A factual error, wrong equation/operator, violated source restriction, or fabricated claim fails review regardless of how well other sections read.
-- **Targeted local repair:** When a high-priority concept falls below its required benchmark level (e.g., a core mechanism sitting at Level 2 instead of Level 5–6), repair that specific conceptual gap directly—never pad introductions or add generic summary prose.
-- **Honest status:** Record this as a manual semantic review; never represent it as automated verification or executed testing.
+Verify core concepts against the unified `0–5` scale in [adaptive-engine.md](../authoring/adaptive-engine.md) (`0` Outside scope · `1` Recognition · `2` Precise explanation · `3` Mechanism/reasoning · `4` Analytical justification & limits · `5` Independent application & transfer):
+- **Critical errors override depth:** A factual error, wrong equation/operator, violated source restriction, or fabricated claim fails review regardless of prose polish.
+- **Targeted local repair:** When a core concept sits below its target depth (e.g., `Level 2` definition instead of `Level 4–5` analytical mechanism), repair that specific gap directly—never pad introductions.
+- **Honest verification limits:** Record this as manual semantic review of the note's content; actual learner mastery is measured only through assessment responses, never self-assessed completeness.

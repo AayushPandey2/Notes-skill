@@ -22,18 +22,16 @@ Every Markdown file MUST begin on line 1 with `---` ... `---` before any heading
 | `tags` | YAML list | Hierarchical Obsidian tags (no leading `#` prefix) |
 | `master_topic` | string | Broader conceptual parent (e.g., a parent discipline, distinct from template ID) |
 | `domain` | string | Broad academic or technical field (e.g., `<Field>`, `<Discipline>`) |
-| `note_type` | string | Canonical `M1`–`M7` type (`deep-notes`, `study-notes`, `quick-reference`, `worked-solutions`, `implementation-guide`, `assessment`, `synthesis-revision`) |
+| `note_type` | string | Canonical artifact role: `deep-notes`, `study-notes`, `quick-reference`, `worked-solutions`, `implementation-guide`, `assessment`, `synthesis-revision`, `video-notes`, `experimental-lab`, `cheatsheet-qa`, `moc`, or `playlist-index` |
 
-Populate optional managed fields only when meaningful: `subdomain`, `id`, `aliases`, `nexttopics`, `concept_ids`, `prerequisites`, `related`, `source_mode`, `source_refs`, `difficulty`, `status`, `created`, `updated`, `template_id`, `coverage_status`.
-- **Comprehensive `M1` Profile:** Follow [composition-contract.md](../procedures/authoring/composition-contract.md) (the five keys `id`, `aliases`, `topic`, `tags`, `nexttopics`).
+Populate optional managed fields only when meaningful: `subdomain`, `id`, `aliases`, `nexttopics`, `concept_ids`, `prerequisites`, `related`, `parent_note`, `source_mode`, `source_refs`, `difficulty`, `status`, `created`, `updated`, `template_id`, `coverage_status`.
+- **Comprehensive `M1` Profile:** Follow [composition-contract.md](../procedures/authoring/composition-contract.md) (strictly the five keys `id`, `aliases`, `topic`, `tags`, `nexttopics`). Distinguish companion roles under the strict 5-key profile using **unique per-artifact `id`s** (e.g., `<topic-slug>-<nn>`, `<topic-slug>-<nn>-lab`, `<topic-slug>-<nn>-cheatsheet`, `<topic-slug>-moc`), standardized filenames, and reciprocal links—never add `note_type` or extra keys to strict 5-key files.
 
 ### 2. Filenames, Placement & Multi-Artifact Alignment
 
 - **Topic-First Placement Rule:** Always create `<Configured Target>/<Topic>/` first and place all notes, companions (`Experimental Lab`, `Cheatsheet & Interview Q&A`), MOCs, subtopic bundles, and `assets/` for that topic inside `<Topic>/`. Preserve an existing collection's names and layout when revising it.
 - **Standalone Specialized Directories (Exception):** `Practice Sets/`, `Atomic Notes/`, `Cheatsheets/`, and `comparison/` are used **only** when the user explicitly requests a standalone cross-topic or single-artifact output (`M3` cheat sheet, `atomic-card`, standalone `M6` practice set, or standalone `M7` comparison) outside a topic folder; when generated as part of a topic bundle or collection, keep them inside `<Configured Target>/<Topic>/`.
-- **Multi-Artifact Alignment:** Companion outputs from one request always share identical `topic`, symbol definitions, datasets, and formula applicability conditions while respecting their active YAML profile:
-  - *Under the Standard Profile (`M2`–`M7`, single notes):* share `domain`, `master_topic`, `topic`, and `concept_ids` while setting distinct per-artifact `note_type` values.
-  - *Under the Strict 5-Key `M1` Collection Profile:* keep **only** the 5 allowed keys (`id`, `aliases`, `topic`, `tags`, `nexttopics`) — never add `domain`, `master_topic`, `concept_ids`, or `note_type` — and align via shared `topic`, matching `domain/`/`subject/`/`topic/` tags, and reciprocal links.
+- **Multi-Artifact Alignment & Link Hygiene:** Companion outputs from one request always share identical `topic`, symbol definitions, fixtures, and formula applicability conditions while setting distinct per-artifact `id`s (and distinct `note_type` values under the Standard Profile). Use path-qualified wikilinks when identical note names exist in different folders, resolve ambiguous aliases before linking, recheck heading anchors after edits, keep excluded concepts out of automatic prerequisite/`nexttopics` links, use descriptive non-colliding asset filenames, and emit reciprocal companion links **only** to artifacts that actually exist.
 
 ### 3. Safe Incremental Update Preservation
 

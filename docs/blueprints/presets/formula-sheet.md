@@ -1,11 +1,8 @@
-# Variant: Formula Sheet
+# Preset: Formula Sheet (`M3` / `formula_sheet`)
 
-- **Purpose:** Produce a high-density mathematical/scientific equation reference preserving every symbol unit, dimension, and domain hypothesis.
-- **Parent Master:** [M3 — Quick Reference & Cheat Sheet](../formats/quick-reference.md) (`formula_sheet`)
+- **Parent Master:** [M3 — Quick Reference](../formats/quick-reference.md) (`<=500`-word formula-reference budget; `single_artifact`).
 - **Activation Trigger:** `"formula sheet"`, `"cheat sheet for ... formulas"` via `/scribe-notes`.
-- **Inputs & Dependencies:** Governing equations, verified units/shapes, applicability assumptions; [math_gates.md](../../../core/math_gates.md), [source-fidelity.md](../../procedures/sourcing/source-fidelity.md).
-- **Execution Overrides:**
-  1. Follow [math_gates.md](../../../core/math_gates.md) for native `$...$`/`$$...$$` delimiters, notation stability, and reasoning distinctions, while keeping per-formula explanations concise for `M3` density: emit canonical `$$...$$`, compact inline symbol meanings (with units/dimensions/shapes), explicit **applicability conditions & hypotheses**, and one-line physical/mathematical meaning.
-  2. Never strip smoothness, convexity, independence, or domain assumptions just to save space; review them in the final sheet.
-  3. Under `R-S0` (`strict`), extract only formulas present in the supplied source with exact source locators.
-- **Failure Handling & Validation:** Reject bare equations lacking units/conditions ([verification-checklist.md](../../procedures/review/verification-checklist.md)).
+
+## Execution Overrides
+1. **Density-Compatible Presentation ([math_gates.md](../../../core/math_gates.md)):** Use native `$...$`/`$$...$$` delimiters, notation stability, and compact inline/table formatting: `Relationship | Symbols & Units | Applicability Conditions | Recognition Cue | Canonical Derivation Link`—linking to canonical derivations rather than emitting repetitive full formula folds inside the sheet.
+2. **Non-Negotiable Precision:** Never strip smoothness, convexity, independence, sign conventions, or domain assumptions to save words; under `strict` mode, extract only formulas from the supplied source with locators.

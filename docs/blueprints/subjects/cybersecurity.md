@@ -2,27 +2,17 @@
 
 ## Purpose
 
-Teach cybersecurity through rigorous **security-property and trust-boundary reasoning** within the bounds of [security-education.md](../../procedures/safety/security-education.md).
+Teach cybersecurity through **security-property and trust-boundary reasoning** plus specialized reasoning patterns by subdomain, within the bounds of [security-education.md](../../procedures/safety/security-education.md).
 
 ## 1. Seven-Step Security-Property Framework
 
-Develop major security topics through this causal chain (as interconnected reasoning, not rigid boilerplate):
-1. **Asset:** What data, capability, or service requires protection?
-2. **Trust boundary:** Where does control pass between untrusted and privileged contexts?
-3. **Threat model:** What realistic adversary capabilities and assumptions apply?
-4. **Vulnerability:** Which design assumption, validation step, or control fails?
-5. **Security impact:** Which property (confidentiality, integrity, availability, authenticity) breaks?
-6. **Defense:** How the remediation eliminates the root cause (and what adjacent risks it does **not** solve).
-7. **Verification:** How authorized tests and monitoring confirm the control holds.
+Develop major security topics through: **Asset $\to$ Trust boundary $\to$ Threat model $\to$ Vulnerability mechanism $\to$ Security impact $\to$ Defense (and its limits) $\to$ Authorized verification**.
 
-## 2. Subdomain Theory Obligations
+## 2. Specialized Subdomain Reasoning Patterns
 
-- **Network security:** Protocol trust assumptions, segmentation, firewalls, TLS/transport security, traffic & anomaly analysis.
-- **Web security:** Browser same-origin/trust model, encoding vs. sanitization, session security, CSRF/XSS/SSRF/injection root causes, access control.
-- **Cryptography:** Confidentiality/integrity/authenticity properties, symmetric vs. asymmetric primitives, hashing/KDFs, nonce/IV reuse failures, key management & assumptions.
-- **Application security:** Input validation, code-vs.-data separation (e.g., parameterized queries), authorization on every object/action, dependency/supply-chain hygiene.
-- **Operating system security:** Privilege separation, users/groups/capabilities, filesystem permissions, sandboxing, hardening.
-- **Cloud security:** Shared responsibility, IAM least privilege, policy evaluation, network/storage exposure, secret management.
-- **Digital forensics & Incident response:** Evidence integrity, volatile vs. persistent artifacts, timelines, chain of custody, detection, triage, containment, recovery, lessons learned.
-- **Security testing:** Written authorization, scope boundaries, reproducible findings, severity context, remediation verification.
-- **AI security:** Model vs. application trust boundaries, direct/indirect prompt injection, untrusted tool outputs, training/retrieval data leakage, guardrails vs. deterministic controls.
+- **Cryptography:** Security goal (IND-CPA, EUF-CMA, collision resistance) $\to$ hardness/key/nonce assumptions $\to$ primitive composition $\to$ misuse/side-channel failures (nonce reuse, timing, ECB).
+- **Access Control & Identity:** Principal/identity $\to$ authentication proof vs. authorization policy check $\to$ object/action enforcement boundary $\to$ privilege-escalation/IDOR/confused-deputy failure.
+- **Web & Application Security:** Trust boundary between untrusted client input and interpreter/engine $\to$ parser/encoding mismatch $\to$ code-vs.-data separation (parameterized queries, contextual output encoding) $\to$ residual gaps (e.g., SQL parameterization does not fix broken authz).
+- **Network & Cloud Security:** Network/IAM perimeter & segmentation $\to$ shared-responsibility boundary $\to$ least-privilege policy evaluation $\to$ misconfiguration detection.
+- **Digital Forensics & Incident Response:** Volatile-to-persistent artifact preservation $\to$ chain of custody & integrity hashing $\to$ timeline reconstruction $\to$ triage, containment, eradication, recovery.
+- **Security Testing & AI Security:** Explicit authorization & scope $\to$ model/tool trust boundaries (prompt injection, untrusted tool outputs, data leakage) $\to$ deterministic controls outside the LLM.

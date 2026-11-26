@@ -1,31 +1,15 @@
-# Electrical & Electronics Engineering Lab Blueprint
+# Electrical & Electronics Engineering Investigation Profile
 
-Use this lean, engineering-focused blueprint for Electrical & Electronics companion labs (`<note stem> - Experimental Lab.md`). The [shared lab contract](../../procedures/authoring/experimental-lab.md) and [physical lab safety policy](../../procedures/safety/physical-lab-safety.md) govern structure, collapsed **A–G** walkthroughs, safe low-voltage boundaries, and honest status.
+Inherits shared structure, YAML, navigation, shared-foundation A–G deduplication, and 3-attribute integrity rules from [experimental-lab.md](../../procedures/authoring/experimental-lab.md), and enforces [physical-lab-safety.md](../../procedures/safety/physical-lab-safety.md).
 
-**Safety boundary:** Keep physical realizations strictly within safe low-voltage educational conditions (e.g., 5 V DC benchtop circuits). Mains electricity, high-energy power systems, and hazardous hardware require professional supervision and must be modeled analytically or simulated instead.
+## Applicability & Shared Circuit Contract
+Applies to circuits, analog/digital electronics, signals, control, embedded systems, and machines/power. Define node/branch labels, passive sign convention, reference ground, nominal values, tolerances, and SI units once in the shared contract. **Safety:** Evaluate **voltage, current limits, component power ratings ($P = I^2R$), stored energy ($\frac{1}{2}CV^2$, $\frac{1}{2}LI^2$), and supervision**—substitute analytical/simulated models for mains or high-energy systems.
 
-## Required Lab Structure
+## Practical Realizations
+1. **Analytical Calculation:** Apply governing laws (KCL, lumped-circuit KVL, nodal/mesh, phasors, Laplace, Boolean logic) under stated idealizations.
+2. **Circuit / Logic Simulation:** SPICE netlist, digital timing/logic simulator, or numerical response script.
+3. **Safe Physical Realization:** Low-voltage/low-current educational build, power-rating check, and instrument placement (ammeter in series, voltmeter in parallel).
+4. **Tolerances & Fault Diagnosis:** Compare nominal vs. tolerance-shifted behavior and diagnose open/short faults, saturation, or loading effects.
 
-### Header & Navigation
-- Line-1 YAML frontmatter matching the parent note's profile.
-- `# <Topic> — Electrical Engineering Lab`
-- `> [!abstract] Parent Note & Companion Pack` linking `[[<Parent Note>]]` and `[[<Parent Note> - Cheatsheet & Interview Q&A]]`.
-
-### Shared Circuit / System & Sign Convention Contract
-Define node/branch labels, passive sign convention, reference ground, nominal component values & tolerances, supply conditions, and target quantities with SI units.
-
-## Four Electrical Tracks (Apply Track-Applicability Gate)
-
-1. **Track 1 — Analytical Calculation:** Apply governing circuit/system laws (KCL, KVL, Ohm's law, nodal/mesh, phasors, Laplace/transfer functions, or Boolean logic).
-2. **Track 2 — Circuit / Logic Simulation:** Construct a SPICE netlist, digital logic simulation, or numerical transfer-response script (marking predicted curves **Expected** unless supplied).
-3. **Track 3 — Safe Physical Realization:** Document a low-voltage breadboard/educational build, instrument placement (ammeter in series, voltmeter in parallel), and power-dissipation limits.
-4. **Track 4 — Measurement, Tolerances & Fault Diagnosis:** Compare nominal vs. tolerance-shifted outputs and diagnose open-circuit, short-circuit, saturation, or loading faults.
-
-### Topic-Family Method Selection
-Adapt methods to the topic: *DC circuits* (KCL/KVL, nodal/mesh) · *AC circuits* (phasors, impedance, Bode) · *RC/RL/RLC* (transients, time constants, damping/resonance) · *Electronics* (biasing, Q-point, gain) · *Digital* (truth tables, timing, FSMs) · *Control* (step response, stability) · *Signals* (filtering, sampling) · *Power* (analytical & safe simulation only).
-
-Directly beneath each realization, include `> [!example]- Understand this realization: circuit, analysis, and numerical dry run` covering **A–G**: **A** topology, values, tolerances, sign conventions; **B** governing electrical laws; **C** step-by-step equation/simulation order; **D** complete numerical dry run (currents, node voltages, power dissipation); **E** signal/circuit interpretation; **F** open/short faults, wrong instrument placement, rated-power exceedance; **G** core-analysis reconstruction.
-
-## Verification Status
-
-Label calculations **Analytical** / **Expected** (never **Observed** bench measurements unless supplied). If netlist/code is included, end with **`Source and static review only; not compiled or executed here.`**; otherwise **`Analytical, dimensional, and manual circuit review only (no hardware or simulator executed).`**
+## Specialized Walkthrough & Verification
+Reference the shared circuit model across tracks instead of repeating identical setup math. Report predictions as **author-derived / analytical / statically reviewed** (never fabricated bench readings). End with **`Source and static review only; not compiled or executed here.`** (or **`Analytical, dimensional, and manual circuit review only (no hardware or simulator executed).`** when no netlist/code appears).

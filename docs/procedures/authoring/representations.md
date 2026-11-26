@@ -1,40 +1,40 @@
-# Visuals and media
+# Visuals and Media
 
-Before drafting, review every concept section: **where will seeing the contrast, mechanism, or geometry immediately remove guesswork?** Place visuals at the exact **conceptual inflection point**—never dumped in a trailing gallery and never forced as decorative stock images.
+Before drafting, identify where seeing a contrast, mechanism, topology, or geometry immediately removes guesswork. Place visuals at exact **conceptual inflection points**—never dumped in a trailing gallery and never forced as decorative stock images.
 
-## Strategic Placement Rules (Where Visuals Teach Best)
+## 1. Visual Source Hierarchy & Relevance Policy
 
-Plan **complementary visuals** across a comprehensive note or lab at these specific moments:
-1. **Failure contrast:** Show the simpler alternative vs. the target concept side by side right where the simpler method breaks (e.g., unbounded straight line vs. bounded curve).
-2. **Foundation curves:** Pair mathematical or physical building-block tables (such as $\ln(x)$ or exponential decay) with their curve plot so asymptotic behavior near boundaries is visible immediately.
-3. **Paired function + sensitivity/derivative plots:** Show a curve alongside its rate-of-change plot to make peaks, vanishing gradients, or saturation visually obvious.
-4. **Geometric & transformation pairs:** Show original space vs. transformed space (e.g., linear boundary vs. polynomial circle, or non-separable XOR vs. interaction feature) and constraint geometry (e.g., diamond vs. circular penalties).
-5. **Metric, threshold & diagnostic visuals:** Pair threshold trade-offs (confusion matrix grid changes), ROC/PR ranking curves, calibration plots, and underfit/good-fit/overfit panels directly with the formulas they explain.
-6. **Architecture, workflow & pipeline visuals:** Acquire clear web raster diagrams showing multi-stage prediction flows (`Inputs → Linear Score → Squashing Function → Probability → Decision`), chain-rule paths, training loops, split boundaries, or cross-validation folds.
+Select visuals from this priority hierarchy rather than over-relying on generic web downloads when an exact representation is stronger:
+1. **Supplied source figure:** Exact diagram/plot from the user's supplied material (`M2` / source-grounded notes).
+2. **Exact worked-example representation:** Visual or structured representation matching the note's exact dataset, matrix, circuit, or state fixture (when supported by host tools/assets).
+3. **Verified educational web raster figure:** High-clarity `.png`, `.jpg`, `.webp` acquired locally and inspected.
+4. **Native Markdown table or state trace:** Inspectable discrete transitions, truth tables, or numerical traces.
+5. **Attributed reference link:** When local acquisition is unavailable or restricted.
 
-**Relevance-Governed Web Image Coverage, Source-Only Precedence & Zero-Mermaid/ASCII Rule:** Visual quantity is governed by **pedagogical relevance and conceptual inflection points**, not a mechanical quota. For substantive visual, geometric, empirical, or multi-stage topics (e.g., ML, physics, biology, architecture, algorithms, video lectures), include **3–5 complementary, high-clarity raster images** acquired from the web (`.png`, `.jpg`, `.webp` saved inside `<Configured Target>/<Topic>/assets/`, or `assets/scriptorium/<video-id>/` for standalone `/scribe-ytnotes` notes) where seeing the contrast or mechanism removes guesswork. For purely algebraic, symbolic, compact (`M3`, `atomic-card`, `formula-sheet`), or narrow conceptual notes where fewer visuals genuinely serve the objective, include **0–2 targeted visuals** rather than padding with decorative figures. **Source-only precedence (`strict` mode):** When `source_policy` is `strict`, external web browsing and web-image downloading are **disabled**—use only figures extracted or referenced from the supplied source (or none if the source provides none), and never treat absent external web images as a review failure. **Never use Mermaid (`mermaid` blocks) or ASCII art/diagrams for graphs, charts, plots, or flows**, and never create or download SVG assets or build HTML/JS viewers. If web search or image download is unavailable when permitted, report the exact access limitation honestly rather than falling back to Mermaid or ASCII.
+**Relevance-Governed Quantity & Source-Only Precedence:** Base visual count on distinct learning needs, not a mechanical quota (typically `3–5` complementary visuals for rich visual/geometric/empirical/video topics; `0–2` for purely algebraic or compact notes). When `source_policy = strict`, external web browsing and downloading are **disabled**—use only supplied source figures or native tables/traces. **Never use Mermaid (`mermaid` blocks), ASCII art/diagrams, SVG downloads, or custom HTML/JS plotting scripts.**
 
-## External raster image: acquisition & verification
+## 2. Strategic Visual Opportunities Across Disciplines
 
-An image-search result, remote URL in a sample, or planned filename is not a completed image. Track `Needed → Candidate found → Source checked → Downloaded → Local image inspected → Embedded → Saved embed checked`; only the last state completes a local-image obligation.
+- **Electrical Engineering:** Circuit topology paired with reference directions, passive sign convention, and transient/frequency response.
+- **Operating Systems & Networking:** Virtual-to-physical address/TLB/page-table mappings, process state transitions, encapsulation, and packet/handshake timelines.
+- **Biology & Chemistry:** 3D molecular/enzyme structure $\to$ binding/active-site mechanism $\to$ pathway/regulation; reaction coordinate energy profiles and particle-level transitions.
+- **Mathematics & Algorithms:** Geometric transformations, function + derivative pairs, constraint boundaries, and data-structure pointer/window state transitions.
+- **Machine Learning Overlay:** Failure contrast (linear vs. bounded curve), foundation curves ($\ln x$), sigmoid + derivative, transformed boundaries, ROC/calibration/PR trade-offs, $L_1$/$L_2$ geometry, bias–variance/overfit panels, and prediction pipelines.
 
-1. **Check the source & rights.** Search identifiable educational, scientific, institutional, documentation, or creator sources. Open the source page, inspect the actual figure, and confirm notation, axes, labels, and reuse/attribution rights. Honor source-only limits.
-2. **Download locally.** Download a supported raster file (`.png`, `.jpg`, `.jpeg`, `.webp`) using an available download tool or standard file-download command where permitted; never write a custom downloader or script. Save with a descriptive, non-colliding filename inside `<Configured Target>/<Topic>/assets/` (or `assets/scriptorium/<video-id>/` for standalone `/scribe-ytnotes` notes). If acquisition fails, try another suitable source; if an image cannot be reproduced locally, an attributed link-only reference may help the reader, but it remains classified as link-only and does **not** satisfy a required local-image obligation.
-3. **Inspect the saved file.** Open the local file in an image viewer (`read_file` or viewer) before describing exact colors, positions, labels, axes, or values (also checking light/dark-background readability on fine-line diagrams). Never describe an unseen visual as though inspected, and never imply an external figure uses the same dataset as the running example unless it does—explain the relationship explicitly.
-4. **Embed & check.** Embed the verified relative path with a controlled width `![[assets/<descriptive-name>.png|650]]` (650–750 px max width) right at the point of need. Separate the image embed, its concise **1-sentence caption**, and its **ordinary Markdown** source line (`Source: [Exact Source Page Title](url). Attribution and license: <verified info>.` — zero raw HTML `<span>` tags; never invent license details) with blank lines. Reopen the saved Markdown to confirm the embed, target file, caption, source, attribution, and narrative.
+## 3. Acquisition, Inspection & Adaptive Sizing
 
-## Mandatory Six-Phase Visual Narrative
+Track `Needed -> Candidate found -> Source checked -> Downloaded -> Local image inspected -> Embedded -> Saved embed checked`.
+1. **Check source & rights:** Verify identifiable educational/scientific/institutional/creator sources and reuse rights within active `source_policy`.
+2. **Download locally:** Save `.png`, `.jpg`, `.jpeg`, or `.webp` with descriptive non-colliding filenames under `<Configured Target>/<Topic>/assets/` (or `assets/scriptorium/<video-id>/` for standalone `/scribe-ytnotes`) using native tools (never custom downloader scripts).
+3. **Inspect before describing:** Open the saved file (`read_file` or viewer) before citing colors, axes, labels, or values; explain explicitly if an external figure uses a different dataset/notation than the running example.
+4. **Embed with adaptive width:** Choose display width from legibility, intrinsic dimensions, and layout (`![[assets/<name>.png|650]]` is a sensible default, using compact widths for small symbols/components and wider widths for dense annotated circuits, graphs, or tall diagrams so labels remain crisp). Separate embed, concise 1-sentence caption, and **ordinary Markdown** attribution (`Source: [Exact Source Page Title](url). Attribution and license: <verified info>.` — zero raw HTML) with blank lines.
 
-Teach every embedded figure naturally in calm, takeaway-driven prose—**avoid commanding phrasing** (`"Inspect Figure 4 carefully"`, `"Look at Figure 1"`) and avoid spending paragraphs narrating decorative colors or characters unrelated to the concept. Prioritize plotting the **running dataset** and core geometric/trade-off concepts rather than relying solely on unrelated external datasets, and never claim more than the image establishes (e.g., never claim visual smoothness proves better generalization, never attribute narrow regions to memorized noise from a plot alone, and never call across-tree SD bars confidence intervals):
-1. **Introduce the question (1–2 sentences):** Explain what conceptual point the figure clarifies before showing it.
-2. **Show the figure:** Embed the inspected local raster image with controlled width (`|650`), followed by a blank line, a concise **1-sentence caption** (`*Figure N — concise description.*`), a blank line, and `Source: [Exact Page Title](url). Attribution and license: <verified info>.`
-3. **Explain the takeaway & elements:** State what the figure demonstrates conceptually, decoding axes, units, curves, or flows clearly without relying on color alone and bridging any symbol differences.
-4. **Trace concrete values:** Walk through specific coordinates, thresholds, or state transitions directly on the figure.
-5. **Connect to formalism & limits:** State the equation or principle the visual unlocks, whether it is **illustrative, simulated, measured, or source-provided**, and what it **does not prove**.
-6. **Check interpretation:** Include a visible `> [!question] Concept Checkpoint` with a nested collapsed `> > [!success]- Reveal Answer` when reading the plot requires active reasoning.
+## 4. Diagram-to-Model Narrative & Six-Phase Visual Teaching
 
-Never replace this workflow with a detached gallery or "as shown above." Keep external reference figures clearly distinct from a lab's own experiment output.
-
-## Video notes: web images & timestamps
-
-For `/scribe-ytnotes` video notes, **do not** play the video or capture video frames. Attach clickable `[MM:SS]` or `[HH:MM:SS](https://www.youtube.com/watch?v=<VIDEO_ID>&t=<seconds>s)` links to locatable transcript segments (supporting hour-long videos), and acquire **multiple complementary raster web images** (`.png`, `.jpg`, `.webp`) under `assets/scriptorium/<video-id>/` using the external raster workflow and six-phase visual narrative above.
+Teach every embedded figure in calm, takeaway-driven prose (avoid commanding phrasing like `"Inspect Figure 4"` and never overclaim what a plot proves):
+1. **Set the question (1–2 sentences):** State what conceptual point the visual clarifies.
+2. **Show & attribute:** Embed the inspected image, caption, and ordinary Markdown source line.
+3. **Decode elements & diagram-to-model correspondence:** Connect every axis, node, branch, arrow, or curve directly to the underlying variables, equations, or physical/computational mechanism without relying on color alone, bridging any notation shifts.
+4. **Trace concrete values:** Walk through specific coordinates, thresholds, or state transitions on the figure.
+5. **Connect to formalism & limits:** State the governing principle, whether the data is **illustrative, simulated, measured, or source-provided**, and what the figure **does not prove**.
+6. **Check interpretation:** Add a visible `> [!question] Concept Checkpoint` (nested `> > [!success]- Reveal Answer`) where visual reading requires active reasoning.

@@ -2,12 +2,15 @@
 
 ## Purpose
 
-Ensure Mathematics notes combine **concrete intuition, progressive abstraction, rigorous definitions/hypotheses, equivalent perspectives, and exact vs. numerical awareness**.
+Ensure Mathematics notes match their pedagogical strategy to the mathematical discipline—separating **theorem/proof reasoning, calculation, geometric construction, symbolic manipulation, and numerical approximation** while preserving rigor.
 
 ## Core Theory Obligations
 
-1. **Abstraction Ladder & Formula Construction:** Motivate why a definition or operation is constructed the way it is using concrete instances *before* general notation ([theory_quality_contract.md](../../../core/theory_quality_contract.md)).
-2. **Hypotheses, Counterexamples & Boundary Cases:** State every theorem's exact preconditions, test what breaks when a hypothesis is dropped (e.g., defective matrices, non-differentiable points, conditional convergence), and never present numerical examples as proofs.
-3. **Multiple Perspectives & Equivalent Formulations:** Connect algebraic, geometric/visual, numerical, and structural viewpoints when each reveals distinct insight (e.g., $A\mathbf{v} = \lambda\mathbf{v}$ algebraically vs. invariant lines geometrically).
-4. **Beyond Derivations ([math_gates.md](../../../core/math_gates.md)):** Distinguish exact symbolic operations from discrete numerical approximations (noting truncation and floating-point cancellation), and distinguish definitions, axioms, identities, theorems, and conventions.
-5. **Independent Verification:** Verify solutions via substitution, invariants, symmetry, limiting behavior, or independent second methods.
+1. **Discipline-Specific Reasoning Mode:** Select the fitting mathematical emphasis rather than forcing one template across algebra, geometry, analysis, and numerical methods:
+   - *Definitions & axioms:* Motivate *why* the definition captures the right property using concrete objects and non-examples before formalizing.
+   - *Theorems & proofs:* State exact hypotheses, separate direct/contradiction/induction/construction proof structure, and demonstrate via counterexample what breaks when a hypothesis is dropped.
+   - *Symbolic & algebraic manipulation:* Justify equivalence-preserving vs. irreversible steps (e.g., squaring, dividing by potentially zero expressions).
+   - *Geometric & structural intuition:* Connect algebraic equations to invariant subspaces, transformations, or constraint regions when geometry illuminates the theorem.
+   - *Numerical approximation:* Separate exact symbolic identities from finite-step/finite-precision approximations, tracking truncation error, conditioning, and floating-point cancellation ([math_gates.md](../../../core/math_gates.md)).
+2. **Progressive Abstraction & Formula Construction:** Build from concrete instances to general notation so formulas compress understood mechanics.
+3. **Independent Verification:** Verify results via substitution, invariants, symmetry, limiting cases, or a second independent method—never treating numerical spot-checks as formal proof.

@@ -77,28 +77,28 @@ Use the matching topic family as a **selectable checklist** during [curriculum d
 
 ## 3. Discipline-Specific Misconception Library
 
-Place relevant clarifications inline right beside the concept where confusion arises (per [pedagogical-intelligence.md](../../procedures/authoring/pedagogical-intelligence.md)). Expand through authoritative teaching sources when needed; never fabricate statistics about how often learners make a mistake.
+Place relevant clarifications inline right beside the concept where confusion arises (per [pedagogical-intelligence.md](../../procedures/authoring/pedagogical-intelligence.md)). Internally diagnose each misconception using **incorrect belief $\to$ source of confusion $\to$ correction $\to$ discriminating example $\to$ transfer check**, emitting only the natural correction and discriminating example in the finished note (never leak internal labels or fabricate mistake-frequency stats). Require subject-specific factual review before promoting any new reusable misconception.
 
 ### Computer Science
 - **Pointer vs. pointed-to value:** Memory address vs. dereferenced object.
 - **Concurrency vs. parallelism:** Overlapping logical progress vs. simultaneous physical execution.
 - **Process vs. thread:** Isolated resource ownership vs. shared-address execution context.
-- **Stack vs. heap:** Scoped automatic lifetime vs. dynamic allocation (noting language differences).
+- **Stack vs. heap:** Language storage-duration/lifetime semantics vs. implementation-dependent memory placement (noting compilers may optimize or escape-allocate objects).
 - **Time complexity vs. wall-clock runtime:** Asymptotic growth rate vs. constant factors and hardware effects.
 - **Authentication vs. authorization:** Verifying identity vs. granting permissions.
-- **TLB miss vs. page fault:** Translation-cache miss (page still in RAM) vs. unmapped/non-resident page fault.
+- **TLB miss vs. page fault:** A TLB miss means only that the translation is not cached in the TLB—the subsequent page-table lookup may resolve to a valid resident page with no fault; a page fault occurs when lookup fails (non-resident/unmapped page, **permission violation**, or architecture-specific fault).
 - **Bandwidth vs. latency:** Transfer capacity per unit time vs. end-to-end delay.
 - **Database isolation vs. atomicity:** Visibility of concurrent transactions vs. all-or-nothing commit/rollback.
 
 ### Mathematics & Statistics
-- **Function vs. equation:** Input-to-output mapping vs. equality constraint to solve.
+- **Function vs. equation:** Input-to-output mapping vs. equality statement (which may express a definition, identity, relationship, or constraint to solve).
 - **Continuity vs. differentiability:** Unbroken behavior vs. well-defined local linear slope.
-- **Necessary vs. sufficient:** Direction of logical implication ($A \Rightarrow B$ vs. $B \Rightarrow A$).
+- **Necessary vs. sufficient:** Direction of logical implication: if $A \Rightarrow B$, then $A$ is **sufficient** for $B$, and $B$ is **necessary** for $A$.
 - **Local vs. global optimum:** Best within a neighborhood vs. best across the entire feasible domain.
 - **Independent vs. mutually exclusive:** $P(A \cap B) = P(A)P(B)$ vs. disjoint events ($P(A \cap B) = 0$).
 - **Correlation vs. causation:** Statistical association vs. causal interventional effect.
 - **Probability density vs. probability:** Density value $f(x)$ (can exceed 1) vs. integrated area over an interval.
-- **$p$-value vs. $P(H_0 \mid \text{data})$:** Conditional probability of data as extreme under $H_0$, not the probability that $H_0$ is true.
+- **$p$-value vs. $P(H_0 \mid \text{data})$:** Probability, assuming $H_0$ is true, of observing a **test statistic** at least as extreme as the observed value under the null distribution—not the probability that $H_0$ is true.
 - **Numerical evidence vs. proof:** Examples check plausibility; they do not establish universal truth.
 
 ### Natural Sciences

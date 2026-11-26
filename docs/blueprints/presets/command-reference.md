@@ -1,11 +1,9 @@
-# Variant: Command Reference
+# Preset: Command Reference (`M3` / `command_reference`)
 
-- **Purpose:** Deliver a compact, workflow-grouped CLI command and flag lookup sheet preserving shell/OS safety caveats.
-- **Parent Master:** [M3 — Quick Reference & Cheat Sheet](../formats/quick-reference.md) (`command_reference`)
+- **Parent Master:** [M3 — Quick Reference](../formats/quick-reference.md) (`<=600`-word operational budget; `single_artifact`).
 - **Activation Trigger:** `"command reference"`, `"cli reference"`, `"flags summary"` via `/scribe-notes`.
-- **Inputs & Dependencies:** Official CLI documentation, OS shell context (PowerShell vs. Bash), tested versions; [authoring_rules.md](../../../core/authoring_rules.md).
-- **Execution Overrides:**
-  1. Group commands strictly by operational workflow (`Inspect`, `Create`, `Debug`, `Recover`) rather than alphabetical order.
-  2. Emit dense tables: `Command & Key Flags | Effect | Concrete Example | Safety / Destructive Caveat`.
-  3. Declare OS/shell assumptions and exact verified versions; never invent unverified flags.
-- **Failure Handling & Validation:** Label destructive operations visibly; review syntax against [verification-checklist.md](../../procedures/review/verification-checklist.md) (`<=350`-word default M3 target where applicable).
+
+## Execution Overrides
+1. **OS, Shell & Version Scope:** Declare exact OS, shell (Bash vs. PowerShell), permissions required, and verified tool versions (never invent unverified flags).
+2. **Workflow Grouping & Safety Classification:** Group commands by workflow (`Inspect`, `Configure / Create`, `Debug`, `Recover`) and clearly tag **read-only**, **state-changing**, and **destructive** operations.
+3. **Structured Lookup Fields:** Present `Command & Key Syntax | Preconditions / Permissions | Effect & Side Effects | Verification Check | Recovery / Reversal`.
