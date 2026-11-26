@@ -14,12 +14,13 @@ Prevent substantive independent notes from relying solely on ad-hoc model recall
 Before drafting a comprehensive independent note on a subject, consult authoritative academic references (via [research-engine.md](../sourcing/research-engine.md)) to identify:
 
 1. Standard concepts, canonical terminology, and notation conventions.
-2. Conventional pedagogical progression and essential prerequisites.
-3. Core theorems, governing laws, mechanisms, or frameworks.
-4. Important variants, special cases, and ideal-to-real refinements.
-5. Established student difficulties and common misconceptions.
-6. Foundational experiments, empirical evidence, or canonical benchmarks.
-7. Advanced extensions that belong inside vs. outside the requested scope.
+2. Conventional pedagogical progression, simpler baselines improved upon, and essential prerequisites.
+3. Core theorems, governing laws, mechanisms, or mathematical tools required before advanced formulas.
+4. Major task types, variants, special cases, and ideal-to-real refinements.
+5. Practical configuration/parameters, workflows, inference/deployment usage, and official versioned behaviors.
+6. Established student difficulties and common misconceptions.
+7. Foundational experiments, empirical evidence, canonical benchmarks, or primary references.
+8. Comparisons with nearest alternatives and advanced extensions inside vs. outside scope.
 
 ### Preferred Reference Categories by Discipline
 
@@ -47,7 +48,7 @@ Before drafting a major theory note or collection, enrich the [shared internal c
 | **Required depth** | Unified `0–5` theory depth (`1 Recognition` through `5 Independent transfer` in [adaptive-engine.md](adaptive-engine.md)) |
 | **Observable completion condition** | Concrete test proving the concept was taught (e.g., *"Trace a complete virtual-to-physical address translation and contrast a TLB miss with a page/permission fault"*) |
 
-**Rule:** Simply mentioning a concept (`Level 1`) never satisfies a `Core` (`Level 3–5`) completion condition. Every high-priority concept must meet its observable completion condition before review passes.
+**Rule:** Simply mentioning a concept (`Level 1`) never satisfies a `Core` (`Level 3–5`) completion condition. For comprehensive `M1` notes, map all major pillars of the subject (foundations/baselines, core mechanism & mathematical tools, major task types/variants, practical parameters/workflows, limitations, comparisons, and primary references) so no central pillar is silently omitted, and verify every high-priority concept meets its observable completion condition before review passes.
 
 ## 3. Prerequisite Closure & Coverage/Exclusion Audit
 

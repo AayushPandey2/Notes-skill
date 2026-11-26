@@ -122,16 +122,16 @@ End substantive theory notes with a concise **Mental Model** (enabling the learn
 
 ## 11. Educational Depth Preservation Contract
 
-Preserve full intellectual depth wherever a substantive explanation requires space:
+Preserve full intellectual depth wherever a substantive explanation requires space, ensuring a comprehensive `M1` note reads as a complete, self-contained learning chapter—never a condensed technical reference for someone who already knows the field:
 
-1. Never sacrifice conceptual depth for conciseness.
-2. Remove redundant information, not necessary explanations.
-3. Never skip consequential mathematical derivation steps.
+1. Never sacrifice conceptual depth or beginner accessibility for conciseness.
+2. Remove redundant information, not necessary explanations or foundational bridges.
+3. Never skip consequential mathematical derivation steps or prerequisite mathematical tools.
 4. Explain *why* every major mechanism works, not merely *how*.
-5. Allow multiple examples when they reveal different properties.
-6. Do not impose a maximum word or line count on `M1` theory.
-7. Split exceptionally broad topics into chapters rather than compressing their explanations.
-8. Keep beginner-friendly explanations detailed, even when they require significantly more space.
+5. Allow multiple examples when they reveal different properties, regimes, or tasks.
+6. Do not impose a maximum word or line count on `M1` theory, and never impose an arbitrary minimum word-count target either—optimize for genuine learner understanding.
+7. Split exceptionally broad topics into coherent chapters rather than compressing their explanations into a narrow formula summary.
+8. Keep beginner-friendly explanations detailed, even when they require significantly more space, without repeating full prerequisite courses unnecessarily.
 9. Treat resource limitations as reasons to disclose incomplete coverage, not silently reduce depth.
 10. Ensure editorial review never removes unique educational information.
 
@@ -139,4 +139,4 @@ Follow the [math policy](math_gates.md) for the steps, assumptions, and visible 
 
 ## Complete Learning Units
 
-A topic mention establishes coverage at recognition depth. For each core concept, develop its identity and purpose, the mechanism and why it works, and a consequence or limit at the intended depth. Include the necessary mathematics and application alongside this conceptual account. At target depth 3 or higher, give the reader enough prior knowledge to reconstruct what happens and why. For a consequential comparison, explain each mechanism first, then change one relevant condition and explain the outcome. Move supporting tangents to an extension. When a chapter is broad, divide it at conceptual boundaries and keep each delivered unit complete.
+A topic mention establishes coverage at recognition depth. For comprehensive `M1` topics, cover the subject's major intellectual pillars proportionally—foundations and simpler baselines, core mechanism and necessary mathematical tools, major task types or variants, practical configuration and workflows, limitations and failure modes, comparisons with nearest alternatives, and authoritative primary references—rather than over-concentrating on one sub-formula while silently omitting the rest of the topic. For each core concept, develop its identity and purpose, the mechanism and why it works, and a consequence or limit at the intended depth, alongside necessary mathematics and application. At target depth 3 or higher, give the reader enough prior knowledge to reconstruct what happens and why. For a consequential comparison, explain each mechanism first, then change one relevant condition and explain the outcome. Move supporting tangents to an extension. When a chapter is broad, divide it at conceptual boundaries and keep each delivered unit complete.

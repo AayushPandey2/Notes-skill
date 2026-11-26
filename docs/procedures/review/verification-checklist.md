@@ -23,15 +23,16 @@ Before saving, apply the applicable checks in stages 1–5 in a single proportio
 
 | Dimension | Observable evidence |
 |---|---|
-| Concepts | Definitions, prerequisites and boundaries are introduced before use |
-| Mechanism | A trace or causal explanation shows what changes and why |
-| Mathematics | Valid derivations, assumptions, identified symbols and verified examples |
-| Visuals | Essential relationships are legible in an inspected figure or sufficient permitted fallback, with material gaps disclosed |
-| Readability | Focused prose and a coherent visible reading path support the intended audience |
-| Practical reasoning | Worked comparisons show behavior, decisions, or failure diagnosis at the requested depth |
+| Concepts | Plain-language intuition and concrete scenario open the explanation before dense jargon; simpler baselines precede upgrades; definitions, essential prerequisites, and boundaries are taught locally before use |
+| Curriculum & Sources | Comprehensive `M1` notes cover all major intellectual pillars of the topic proportionally rather than compressing into a narrow summary; independent non-strict notes cite primary authoritative sources |
+| Mechanism | A trace or causal explanation shows what changes and why; sequential/iterative algorithms show multi-step state carryover and unseen-input inference |
+| Mathematics | Mathematical tools/approximations are taught on simple cases before applied; governing equations match worked examples; valid derivations, assumptions, identified symbols, and verified examples remain readable with folds closed |
+| Visuals | For structural, geometric, sequential, or functional concepts under permitted source policies, active visual acquisition was attempted before falling back; essential relationships are legible in an inspected figure or sufficient permitted fallback, with material gaps disclosed |
+| Readability | University-textbook prose and a coherent visible reading path (without compressed research-paper shorthand or wide formula-stuffed tables) support the intended audience |
+| Practical reasoning | Worked comparisons, grouped parameters, and failure diagnosis show behavior and decisions at the requested depth |
 | Independent learning | Application, explanation or transfer checks match the objective when practice is permitted |
 
-A strength on one dimension cannot cancel a material failure on another. Verify the required policy dependencies in [the runtime pipeline](../../../core/runtime_pipeline.md) before claiming full compliance. Apply the bounded acceptance outcomes below to unresolved defects.
+**Never accept an educationally incomplete note merely because its YAML, LaTeX delimiters, callouts, and isolated equations look structurally clean.** A strength on one dimension cannot cancel a material failure on another. Verify the required policy dependencies in [the runtime pipeline](../../../core/runtime_pipeline.md) before claiming full compliance. Apply the bounded acceptance outcomes below to unresolved defects.
 
 - **Bounded Acceptance Decision:** Resolve acceptance cleanly instead of looping indefinitely when sources or tools remain unavailable:
 

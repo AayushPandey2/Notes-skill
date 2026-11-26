@@ -4,13 +4,24 @@ Before drafting, identify where seeing a contrast, mechanism, topology, or geome
 
 For each core concept in substantive notes, decide which representation makes the mechanism inspectable. Record the learning question, exact example or state, placement, and outcome in the concept plan. Give geometry and spatial transformations a figure when a suitable permitted asset can be inspected. A table may be the best representation for a discrete comparison or exact trace. When a figure is valuable but unavailable or prohibited, use a permitted fallback and disclose what it cannot show. A missing essential relationship remains a gap. Prefer complementary views that let the reader predict a changed outcome, and remove illustrations that provide no evidence for the nearby explanation.
 
-## 1. Visual Source Hierarchy & Relevance Policy
+## 1. Visual Necessity Classification & Source Hierarchy
 
-Select visuals from this priority hierarchy rather than over-relying on generic web downloads when an exact representation is stronger:
+Classify each concept by educational visual necessity rather than treating visuals as optional embellishments or forcing an arbitrary fixed count:
+
+| Concept Type | Visual Policy |
+|---|---|
+| **Structural / architectural** | Normally include an appropriate structure, topology, or component diagram |
+| **Geometric / spatial** | Normally include a geometric representation (partitions, margins, projections) |
+| **Sequential / iterative algorithms** | Include a visual flow or state-transition diagram (or structured step trace when figures are unavailable) |
+| **Mathematical functions & optimization** | Include plots or curves showing function behavior, approximations (e.g., first- vs. second-order), loss surfaces, slopes, or learning curves |
+| **Quantitative relationships** | Use plots when they reveal trends, tradeoffs, or threshold behavior more clearly than a table |
+| **Simple definitions / verbal distinctions** | No image needed unless it actively resolves a misleading contrast |
+
+When visuals are educationally expected and permitted (`source_policy != strict`), actively attempt available host capabilities in priority order **before** falling back to prose, tables, or reference links—never silently emit zero visuals on a visual-heavy topic without attempting permitted acquisition or disclosing the unavailability:
 1. **Supplied source figure:** Exact diagram/plot from the user's supplied material (`M2` / source-grounded notes).
-2. **Exact worked-example representation:** Visual or structured representation matching the note's exact dataset, matrix, circuit, or initial state—using **host-supported native visual/diagram tools** when available (without creating a custom plotting script engine), or falling back to native tables/source figures when unavailable.
-3. **Verified educational web raster figure:** High-clarity `.png`, `.jpg`, `.webp` acquired locally and inspected.
-4. **Native Markdown table or state trace:** Inspectable discrete transitions, truth tables, or numerical traces.
+2. **Exact worked-example representation:** Visual or structured representation matching the note's exact dataset, matrix, circuit, or initial state—using **host-supported native visual/diagram tools** (`generate_image` / host diagram capabilities, without creating custom plotting script engines) when available, falling back to verified external figures or native tables when unavailable.
+3. **Verified educational web raster figure:** High-clarity `.png`, `.jpg`, `.webp` searched/acquired locally via permitted web/download tools and visually inspected before embedding.
+4. **Native Markdown table or state trace:** Inspectable discrete transitions, truth tables, or numerical traces when visual tools are absent or restricted.
 5. **Attributed reference link:** When local acquisition is unavailable or restricted.
 
 **Relevance-Governed Quantity & Source-Only Precedence:** Base visual count on distinct learning needs, not a mechanical quota. When `source_policy = strict`, external web browsing and downloading are **disabled**—use only supplied source figures or native tables/traces. **Never use Mermaid (`mermaid` blocks), ASCII art/diagrams, SVG downloads, or custom HTML/JS plotting scripts.**
@@ -49,7 +60,7 @@ Track `Specification defined -> Native tool rendered -> Values/labels inspected 
 3. **Attribute cleanly:** Identify the figure as an author-created illustration paired with a meaningful caption and accessible textual explanation.
 
 ### Adaptive Width & Multimedia Hygiene (Both Paths)
-- Choose display width from legibility, intrinsic dimensions, and layout (`![[assets/<name>.png|650]]` default; compact for small components, wider for dense circuits/graphs). Place explanations beside the element they explain, keep labels/symbols consistent with prose, never rely exclusively on color, omit decorative visual clutter, and separate embed, concise 1-sentence caption, and **ordinary Markdown** attribution (`Source: [Exact Source Page Title](url). Attribution and license: <verified info>.` or `Source: Author-created illustration for this note's running example.` — zero raw HTML) with blank lines.
+- Choose display width from legibility, intrinsic dimensions, and layout (`![[assets/<name>.png|650]]` default; compact for small components, wider for dense circuits/graphs). Place explanations beside the element they explain, keep labels/symbols consistent with prose, never rely exclusively on color, omit decorative visual clutter, and separate embed, concise 1-sentence caption, and **ordinary Markdown** attribution (`Source: Exact Source Page Title — <verified-url>. Attribution and license: <verified info>.` formatted as a Markdown link `[Title](<verified-url>)` using the actual verified URL, or `Source: Author-created illustration for this note's running example.` — zero raw HTML) with blank lines.
 
 ## 4. Diagram-to-Model Narrative (Scaled to Figure Complexity)
 

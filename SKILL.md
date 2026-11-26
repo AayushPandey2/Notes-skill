@@ -20,15 +20,18 @@ Scriptorium is an instruction-only skill for authoring Obsidian Markdown. Its si
 
 ## Governance & Deterministic Precedence
 
-Resolve overlapping policies using this **deterministic 7-level precedence** (source boundaries remain binding throughout all stages; **no preset, subject blueprint, evaluation procedure, or fallback may authorize scripts or execution**, and presentation/metadata preferences never override correctness):
+Resolve overlapping policies using this **deterministic 8-level precedence** (source boundaries remain binding throughout all stages; **no preset, subject blueprint, evaluation procedure, or fallback may authorize scripts or execution**, and presentation/metadata preferences never override correctness or educational completeness):
 
 1. **Host safety, permission & authorization restrictions** ([security-education.md](docs/procedures/safety/security-education.md), [physical-lab-safety.md](docs/procedures/safety/physical-lab-safety.md))
 2. **Global instruction-only & non-execution restrictions** (see the authoring rule above)
 3. **Explicit user requirements & source restrictions** ([source-fidelity.md](docs/procedures/sourcing/source-fidelity.md), explicit format/single-file overrides, and preservation of existing user content and metadata)
 4. **Factual, conceptual & mathematical correctness** ([math_gates.md](core/math_gates.md), verified mechanisms and subject truth)
 5. **Requested output format & applicable preset** ([master-registry.yaml](docs/dispatch/master-registry.yaml), preset overrides over parent master defaults)
-6. **Relevant subject-specific guidance** ([subject-registry.yaml](docs/dispatch/subject-registry.yaml), primary + selective secondary support)
-7. **Presentation & optional teaching preferences** ([authoring_rules.md](core/authoring_rules.md), [teaching_core.md](core/teaching_core.md), [theory_quality_contract.md](core/theory_quality_contract.md))
+6. **Educational completeness & progressive teaching** ([teaching_core.md](core/teaching_core.md), [theory_quality_contract.md](core/theory_quality_contract.md))
+7. **Relevant subject-specific guidance** ([subject-registry.yaml](docs/dispatch/subject-registry.yaml), primary + selective secondary support)
+8. **Presentation & stylistic formatting preferences** ([authoring_rules.md](core/authoring_rules.md))
+
+Stylistic compression, compact formatting, or fast-path brevity must never strip out foundational intuition, essential prerequisite bridges, consequential mathematical derivations, or needed visuals in substantive learning notes.
 
 ## Note creation
 

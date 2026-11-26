@@ -832,6 +832,28 @@
         "Preserves complete requested mathematical derivation rather than suppressed conceptual prose",
         "States quasi-steady-state assumptions, SI/molar units, and regime limits clearly"
       ]
+    },
+    {
+      "id": 77,
+      "prompt": "/scribe-notes Teach XGBoost from beginner fundamentals to advanced theory and practical use as one comprehensive M1 chapter.",
+      "expected_output": "Opens with plain-language intuition and a concrete scenario before dense jargon; teaches decision trees and ordinary gradient boosting before XGBoost upgrades; teaches Taylor expansion, gradients vs scalar/matrix Hessians, and 1D Newton steps before deriving leaf weights and split gain; maintains F_0 and eta consistency across equations and a multi-round trace + unseen inference; covers binary/multiclass classification, exact vs approx vs hist variants accurately, missing vs zero handling, hyperparameters, comparisons, visual acquisition/disclosure, and authoritative references.",
+      "files": [],
+      "expectations": [
+        "Opens with plain-language intuition before formal terminology and teaches regression trees plus ordinary boosting before XGBoost improvements",
+        "Teaches one-variable Taylor approximation and scalar Newton step before deriving the multi-sample XGBoost objective, keeping F_0 and eta explicit in governing equations and tracing at least two boosting rounds plus unseen-input inference",
+        "Derives binary classification gradients/Hessians completely, distinguishes exact vs Hessian-weighted approx vs global hist sketching and explicit zero vs missing values accurately, cites primary references, and attempts/discloses needed visual representations"
+      ]
+    },
+    {
+      "id": 78,
+      "prompt": "/scribe-notes Create a comprehensive beginner-friendly M1 chapter on Adam optimization and neural-network backpropagation.",
+      "expected_output": "Opens with accessible intuition before formal vector calculus; teaches vanilla SGD and momentum/RMSProp baselines before combining them in Adam; teaches chain-rule sensitivity on a tiny concrete network before full backpropagation; covers bias-correction derivation, hyperparameter interactions, failure modes, visual curve acquisition or honest disclosure, and primary references.",
+      "files": [],
+      "expectations": [
+        "Opens with accessible plain-language intuition and builds simpler SGD/momentum baselines before Adam",
+        "Teaches local chain-rule and exponential moving average prerequisites before the full bias-corrected update equations, matching a multi-step numerical trace",
+        "Covers practical hyperparameters, limitations/comparisons against SGD with momentum, authoritative references, and attempts/discloses visual curves"
+      ]
     }
   ]
 }

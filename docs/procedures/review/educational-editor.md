@@ -16,6 +16,10 @@ Distinguish **redundant repetition** (restating a definition verbatim immediatel
 | **Essential reasoning hidden in folds** | Restore core explanation to visible prose (notes must stay readable with all callouts collapsed) |
 | **Repeated callouts** | Consolidate into purposeful callouts |
 | **False depth / artificial tone** | Replace AI filler (`"We now..."`) with causal mechanism; never shorten proofs for length |
+| **Compressed research-paper language** | Unpack multi-step sentences into one teaching move at a time; replace artificial shorthand with clear mechanism explanations |
+| **Jargon-first opening / oversized pre-intuition navigation** | Open with plain-language intuition and a concrete scenario before dense definitions or large TOC blocks |
+| **Wide formula-stuffed tables** | Keep tables compact and explain multi-step arithmetic/derivations separately in prose and aligned displays |
+| **Overly dense compound headings** | Use clear, student-friendly headings tied directly to the question or mechanism |
 
 **Paragraph Contribution Test:** Every substantive paragraph must perform at least one primary teaching function—**Motivation**, **Definition**, **Intuition**, **Mechanism**, **Justification**, **Example**, **Interpretation**, **Qualification**, **Transition**, or **Synthesis**. Any paragraph performing none of these functions (e.g., pure restatement, decorative throat-clearing, or empty recap) must be tightened, merged, or cut.
 

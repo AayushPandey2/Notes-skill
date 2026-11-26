@@ -13,10 +13,10 @@ Maintain an optional internal conceptual record using **only** background suppli
 | **Explicitly demonstrated understanding** | Omit unnecessary introductory repetition |
 | **Self-reported understanding** | Provide concise support where consequential |
 | **Previously misunderstood concept** | Include a targeted discriminating example |
-| **Unknown background** | Supply a minimal prerequisite bridge |
+| **Unknown background** | Do not assume mastery of unstated prerequisites; build essential foundations locally with plain-language intuition and a concrete example before formalizing |
 | **Conflicting evidence** *(e.g., claims calculus mastery but misses chain rule)* | Avoid assuming mastery; insert targeted prerequisite support |
 
-Introduce a bridge at the first operation that needs it. A reader who can calculate a quantity may still need help interpreting it in the current context. Use a local link only when an established prerequisite is enough to follow the argument.
+Introduce a bridge at the first operation that needs it. Listing a topic in a `Prerequisites:` block or linking to another note never substitutes for teaching an essential unmastered foundation locally. A reader who can calculate a quantity may still need help interpreting it in the current context. Use a local link only when an established prerequisite is enough to follow the argument.
 
 ## 2. Independence of Depth and Prerequisite Support
 

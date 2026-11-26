@@ -12,7 +12,7 @@ Apply the **two-dimension prerequisite policy** across all substantive notes (se
 
 | Prerequisite Importance | Treatment When Learner Status Is Unknown / Uncertain | Treatment When Learner Status Is Self-Reported | Treatment When Learner Status Is Demonstrated |
 |---|---|---|---|
-| **Essential** | Explain locally before first dependent use (a link never substitutes) | Provide concise bridge and quick verification cue where consequential | Concise 1-line anchor or omit repetitive derivation |
+| **Essential** | Explain locally with plain-language intuition and a concrete example/calculation before first dependent use (listing a term under `Prerequisites` or linking never substitutes) | Provide concise bridge and quick verification cue where consequential | Concise 1-line anchor or omit repetitive derivation |
 | **Supporting** | Concise bridge or optional collapsed refresher | Brief bridge if needed for the immediate step | Brief reference only |
 | **Contextual** | Link or mention briefly only when useful | Link briefly if helpful; do not interrupt core flow | Omit or link only if requested |
 
@@ -20,7 +20,9 @@ Learner knowledge status levels ([learner-model.md](../docs/procedures/authoring
 
 - **Prerequisite closure stopping condition:** Keep prerequisite explanation scoped strictly to what enables the very next conceptual or mathematical step in the current note—never let essential local bridges recursively expand into entire standalone prerequisite courses (move deeper prerequisite material into dedicated linked notes or optional collapsed refreshers).
 
-- **One conceptual burden at a time:** Start with a concrete problem or phenomenon before introducing terminology. Never stuff advanced claims or dense "Core Characteristics" boxes into the opening (move dense characteristics summaries to revision material).
+- **Accessible opening before jargon:** Start substantive notes with a plain-language explanation of what the concept does and a concrete everyday scenario *before* introducing formal technical definitions, dense terminology, or large navigation blocks. Build the understanding that makes the advanced definition meaningful.
+- **Teach the simpler baseline before the upgrade:** Whenever a topic improves on an earlier method, model, or baseline (e.g., boosting over decision trees, attention over recurrence), establish how the simpler baseline works with a concrete example before diagnosing its limitations or introducing the advanced method.
+- **One conceptual burden at a time:** Introduce one consequential concept or mathematical operation before layering the next. Never stuff advanced claims or dense "Core Characteristics" boxes into the opening (move dense characteristics summaries to revision material).
 - **Clean metadata & hierarchy:** Do not repeat YAML metadata fields (`difficulty`) as visible body dumps; open with a concise purpose, learning path, and clickable TOC. Avoid deep technical-manual heading nesting (`5 → 5.2 → 5.2.1`) and avoid parallel formula or method catalogues before completing one concrete worked example.
 - **Definition teaching structure:** Selectively fulfill five responsibilities in natural prose (not five compulsory headings): establish the need → state a short, accurate definition → translate it into ordinary language → demonstrate with one concrete example beside it → establish the nearest boundary. Bold only the term being defined; use short non-collapsed definition callouts sparingly so the note reads as connected explanation, not a stack of boxes. Separate definition, consequence, assumption, and optional advanced property rather than combining them into one sentence.
 - **Prepare teaching comparisons:** When a comparison depends on a mechanism the learner has yet to see, trace one representative calculation or case first. Keep each table focused on one question. Preserve source sequence and compact lookup layouts where applicable.
@@ -35,7 +37,7 @@ Write the explanation as a connected lesson. Put the ordinary-language meaning b
 
 ## Tone, Precision & Accuracy Discipline
 
-Write calm, direct reference prose: allow natural connective teacher transitions that clarify why one step leads to the next, while eliminating empty conversational filler (`"We now..."`, `"Let us..."`, `"Notice how..."`, `"Inspect Figure..."`) and unedited self-correction transcripts (`"Wait—check the sign carefully!"`). Flag and qualify strong claims, clearly separating helpful simplifications from unconditional truths.
+Write clear, engaging university-textbook prose rather than compressed research-paper shorthand: introduce one consequential conceptual or mathematical step at a time instead of packing three or four intellectual transitions into a single dense sentence, replace artificial phrasing with plain terminology grounded in the mechanism, and use clear, specific, student-friendly headings rather than dense compound jargon headings. Allow natural connective transitions clarifying why one step leads to the next while eliminating empty conversational filler (`"We now..."`, `"Let us..."`, `"Notice how..."`, `"Inspect Figure..."`) and unedited self-correction transcripts (`"Wait—check the sign carefully!"`). Flag and qualify strong claims, clearly separating helpful simplifications from unconditional truths.
 
 ## Progressive Explanation & Consolidated Scope
 

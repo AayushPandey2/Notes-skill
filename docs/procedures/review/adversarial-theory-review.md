@@ -41,9 +41,15 @@ Search drafts for these explanatory failure modes without emitting a visible che
 | **Assumption invisibility** | Presents a conditional theorem/rule as universally true |
 | **Definition overload** | Introduces too many mutually dependent terms at once |
 | **False completeness** | Name-drops advanced jargon without teaching its mechanism |
-| **Procedural memorization** | Gives steps without why they hold (`Level 1–2` instead of justification) |
+| **Procedure memorization** | Gives steps without why they hold (`Level 1–2` instead of justification) |
 | **Context-free formalism** | Drops equations without establishing what question they answer |
 | **Unsupported certainty** | States plausible hypotheses or conditional results as settled fact |
+| **Jargon-first opening** | Opens with dense technical summary or oversized navigation before plain-language intuition |
+| **Premature mathematical tool use** | Applies Taylor expansion, Newton's method, etc. on complex objectives before teaching the tool on a simple case |
+| **Compressed research-paper tone** | Packs three or four conceptual/algebraic steps into one sentence or invents artificial shorthand |
+| **Single-step iterative trace** | Stops an iterative/sequential algorithm after one round without showing updated state carryover or unseen inference |
+| **Silent visual omission** | Emits zero visuals on visual-heavy structural/geometric/functional concepts without attempting permitted acquisition or disclosing unavailability |
+| **Library/variant conflation** | Presents method-specific or version-specific behavior (e.g., `approx` vs `hist`, pruning updaters) as universal algorithm law |
 
 **Conceptual "Why-Depth" Check:** Within the existing unified `0–5` scale, ensure core mechanisms rise past bare **operation** (*"subtracts $\eta\nabla J$"*) through **immediate reason** (*"steepest local descent direction"*), **mathematical/causal justification** (*first-order expansion $J(w+\Delta w) \approx J(w) + \nabla J(w)^\top \Delta w$*), and **validity boundary** (*holds locally for small steps at nonstationary points, not arbitrary step sizes or global optimality*).
 
@@ -80,7 +86,7 @@ Classify every defect by severity and repair **both the defect and all downstrea
 | Severity | Examples | Required Action |
 |---|---|---|
 | **Critical** | Fabricated source/observation, unsafe lab/security instruction, fundamentally wrong theorem/formula | **Block acceptance** until fixed and re-reviewed |
-| **Major** | Incorrect derivation/sign/operator, missing central mechanism, broken implementation contract | **Repair and re-review** affected sections & bundle |
+| **Major** | Incorrect derivation/sign/operator, missing central mechanism, missing essential prerequisites or core mathematical tool bridges, silent omission of major `M1` curriculum pillars, silent omission of required permitted visuals, broken implementation contract | **Repair and re-review** affected sections & bundle |
 | **Moderate** | Unexplained prerequisite, weak/non-discriminating example, missing qualification | **Improve** the affected explanation locally |
 | **Minor** | Awkward phrasing, spacing, redundant sentence | **Editorial polish** (never override deeper checks) |
 
