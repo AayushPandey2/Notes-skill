@@ -134,3 +134,6 @@ Preserve full intellectual depth wherever a substantive explanation requires spa
 8. Keep beginner-friendly explanations detailed, even when they require significantly more space.
 9. Treat resource limitations as reasons to disclose incomplete coverage, not silently reduce depth.
 10. Ensure editorial review never removes unique educational information.
+
+### Mathematical Depth Preservation
+Conciseness means removing redundant explanations, not eliminating intellectual content. Never shorten a derivation by suppressing consequential steps, assumptions, intermediate reasoning, examples, or interpretations. A comprehensive note may become substantially longer when necessary to establish mathematical understanding—preserve complete derivations inside existing expandable formula walkthroughs while keeping a coherent visible reading path, apply zero arbitrary minimum or maximum word/line counts, and partition overly broad curricula into natural chapters rather than silently lowering mathematical rigor.

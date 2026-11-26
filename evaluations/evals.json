@@ -451,6 +451,50 @@
         "Separates factual defects (threshold lowering increasing precision) from stylistic YAML differences using appropriate audit profiles",
         "Reports structured findings including severity, confidence (confirmed/suspected/unverifiable), exact correction, and verification method"
       ]
+    },
+    {
+      "id": 42,
+      "prompt": "/scribe-notes Derive softmax probabilities, the softmax Jacobian, and the categorical cross-entropy gradient cleanly from first principles",
+      "expected_output": "Applies Mandatory Derivation Contract in dependency order: motivates log-linear multi-class scores, derives softmax derivatives for i=j and i!=j before deriving cross-entropy gradient, and proves scalar-to-vectorized batch Jacobian/gradient dimensions explicitly.",
+      "files": [],
+      "expectations": [
+        "Derives softmax partial derivatives before invoking them inside categorical cross-entropy differentiation",
+        "Completes full intermediate algebra inside '> [!example]- Understand this formula step by step' folds without 'rearranging gives' skips",
+        "Demonstrates scalar -> per-class index -> vectorized matrix/batch gradient dimensions explicitly"
+      ]
+    },
+    {
+      "id": 43,
+      "prompt": "/scribe-notes Derive the RC circuit charging and discharging capacitor voltage response from differential equations",
+      "expected_output": "Applies mathematical derivation depth to non-ML physics/electrical domain: derives first-order ODE from KVL and i = C dV/dt, solves by separation of variables with initial conditions, interprets time constant tau = RC, and checks t=0 and t->infinity limits under safe low voltage.",
+      "files": [],
+      "expectations": [
+        "Derives the differential equation from KVL and constituent laws before solving step by step via separation of variables",
+        "Explains every term of V_C(t) = V_s(1 - e^{-t/(RC)}) including initial/steady-state limits and safe 5V benchmark checks"
+      ]
+    },
+    {
+      "id": 44,
+      "prompt": "/scribe-notes Derive Newton-Raphson root finding from Taylor expansion and analyze when quadratic convergence holds or fails",
+      "expected_output": "Applies Mandatory Derivation Contract in numerical computing: constructs tangent-line iteration from first-order Taylor expansion, derives error recurrence e_{k+1} ~ (f''(r)/(2f'(r))) e_k^2 under simple-root hypotheses, and analyzes multiple roots and near-zero derivatives.",
+      "files": [],
+      "expectations": [
+        "Derives Newton-Raphson iteration explicitly from f(x_k + h) approx f(x_k) + f'(x_k)h = 0 rather than asserting the formula",
+        "Derives or verifies conditions for quadratic convergence vs. linear slowdown at multiple roots and near-zero f'(x_k) divergence"
+      ]
+    },
+    {
+      "id": 45,
+      "prompt": "/scribe-audit Review a draft note containing correct formulas without derivations, a 'proof' of a stipulated definition, and essential concepts buried inside callouts under strict-source constraints",
+      "expected_output": "Applies negative mathematical-review criteria: flags missing core derivations as Major even with correct formulas, catches circular 'proof' of a definition, flags callout-only hiding of essential prose, and respects strict-source limits without inventing unauthorized external derivations.",
+      "files": [
+        "evaluations/fixtures/sources/strict-lecture-paragraphs.md"
+      ],
+      "expectations": [
+        "Flags missing core derivations in comprehensive theory as Major defects even when stated equations are accurate",
+        "Distinguishes stipulated definitions from provable theorems and rejects hiding essential reasoning inside folds",
+        "Respects strict-source boundaries when reviewing or recommending repairs"
+      ]
     }
   ]
 }

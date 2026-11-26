@@ -1,8 +1,8 @@
-# Mathematical Inclusion, Depth & Presentation Policy
+# Mathematical Inclusion, Derivation & Presentation Policy
 
 ## Purpose
 
-Govern **whether, how deeply, and how** mathematics appears across Scriptorium outputs (`M1`–`M7`, video notes, and companion labs/cheatsheets) in one coherent, instruction-only policy. Use one shared standard with focused domain guidance—never append competing rules or assign one mathematical depth to an entire domain.
+Govern **whether, how deeply, and how** mathematics appears across Scriptorium outputs (`M1`–`M7`, video notes, and companion labs/cheatsheets) in one coherent, instruction-only policy. Use one shared standard with focused domain guidance—never append competing rules or force irrelevant equations onto non-quantitative topics.
 
 ## 1. Objective-Driven Inclusion & Concept-Level Profiles
 
@@ -19,38 +19,59 @@ Before drafting each concept, decide whether mathematics serves the learning obj
 | **Derivation and mechanism** | Justified transformations, intermediate steps, assumptions, and implementation mapping where relevant. |
 | **Formal reasoning** | Precise definitions, proofs, conditions, counterexamples, and generalization when required. |
 
-- **Choose the minimum depth that satisfies the objective.** Increase depth when the mechanism cannot be understood without it, the learner must implement the calculation, a transformation would otherwise be unexplained, a proof/derivation is requested, assumptions materially affect the conclusion, or numerical verification exposes a mistake. Keep detail lighter for recognition, orientation, or overviews. **Never** use equation counts or minimum derivation lengths as quality targets.
-- **Adapt to the topic, not just its domain:** ML optimization may need losses, gradients, and shapes, whereas an ML workflow overview may need only a diagram and concrete example; a mathematical theorem centers on definitions, assumptions, proof, and counterexamples; physics emphasizes governing laws, units, conditions, and limiting cases; chemistry uses quantitative relations where they explain the process; historical/conceptual topics use math only when it answers the actual question. Never force calculus into arithmetic or gradient descent into non-gradient methods.
+- **Choose the right rigor without truncating derivations:** Keep detail lighter *only* for genuine recognition, orientation, or `M3` compact overviews. For **comprehensive theory (`M1` and substantive quantitative `M2`/`M5`/`M7`)**, invoke the **Mandatory Derivation Contract** below whenever a consequential relationship is derivable. **Never** use arbitrary equation counts or derivation length limits to shorten explanations.
+- **Adapt to the topic across all mathematical & technical disciplines:** Apply complete derivations whenever quantitative structure matters—**Linear algebra** (eigenvalues, projections, least squares, factorizations), **Calculus** (derivative identities, integration, Taylor expansions), **Probability & Statistics** (Bayes' rule, expectation/variance identities, estimators, test statistics), **ML / Deep Learning** (objectives, gradients, backpropagation, attention, convergence), **Physics & Electrical** (governing laws, differential equations, transfer functions, time constants), **Algorithms & Computer Architecture** (complexity recurrences, loop invariants, CPI/AMAT, cache decoding), **Numerical Computing & Information Theory** (Taylor updates, error bounds, entropy/mutual-information/coding bounds), and **Chemistry** (equilibrium/kinetic relations). Never force calculus onto qualitative humanities or pure API syntax notes.
 
-## 2. Explanatory Bridge & Collapsed Formula Walkthroughs
+## 2. Mandatory Derivation Contract & Mathematical Classification
 
-Follow **Question → intuition → necessary quantities → mathematical statement → worked reasoning → interpretation → check**:
+Every **distinct, consequential, derivable mathematical relationship** introduced in comprehensive theory (including central inline formulas, not only separate-line `$$` blocks) **must receive a complete derivation** from established definitions, assumptions, axioms, governing laws, or previously derived results:
+- Explain each consequential transformation: **operation performed**, **permitting mathematical rule**, **why the operation helps**, and **how it advances the result**.
+- **Never** substitute symbol definitions, numerical plug-ins, verbal paraphrases, or restatements of the final equation for an actual derivation.
+- **Never** fabricate a "proof" or derivation for something that is fundamentally a definition, axiom, modeling convention, or empirical law—classify each formula accurately first:
 
-1. **Before displaying any equation:** Explain the problem it solves, introduce essential terms, establish what the quantities represent, and state what the learner should expect the expression to do. Never open an unfamiliar concept with an unexplained equation, and keep the core explanation understandable before opening any fold.
-2. **Immediately beneath every coherent top-level displayed mathematical unit**, include a collapsed explanation (prefixing every interior line, including blank lines, with `>`).
-   - **Coherent Mathematical Unit Grouping:** Group sequential algebraic derivation steps inside one `aligned` block with **one** `> [!example]- Understand this formula step by step` fold beneath the unit—never fragment successive elementary lines into separate repeated folds.
-   - **Non-recursive exception:** Displayed `$$...$$` equations inside an existing formula fold, lab fold, or `> [!tip]- Answer` / `> [!tip]- Solution` block do **not** spawn nested folds—explain them inline within the enclosing fold.
-   - **Compact reference exception:** Compact references (`M3`, `formula-sheet`, `atomic-card`) may use inline or grouped relations with direct units, applicability conditions, and canonical derivation links instead of bulky full folds.
-   - Never skip central algebraic transitions with `"rearranging gives"` or `"solving yields"`—keep the central transition visible in prose or `aligned` steps and place full step-by-step algebra inside the fold. A bare top-level displayed formula is never compliant merely because its symbols appear in a trailing notation table:
+| Formula Category | Required Explanation |
+|---|---|
+| **Derived relationship** | Complete derivation from definitions, laws, assumptions, or prior results |
+| **Mathematical identity** | Complete algebraic or analytic proof/derivation before downstream use |
+| **Mathematical definition** | Motivation, construction, ordinary meaning, and nearest discriminating boundary |
+| **Modeling assumption** | Justification, alternatives, and consequences |
+| **Theorem** | Exact hypotheses, appropriate proof, and scope limits |
+| **Empirical formula** | Evidence origin and empirical validity regime |
+| **Approximation** | Derivation and stated error/validity regime |
+| **Algorithm update** | Mathematical/optimization justification and structural anatomy |
+| **Evaluation metric** | Construction from underlying error/count quantities |
+| **Previously derived formula** | Explicit link/reference back to its canonical derivation |
+| **Intermediate algebraic expression** | Explained inline within the parent derivation |
 
-```markdown
-> [!example]- Understand this formula step by step
-> ...
-```
+## 3. Three Mathematical Reading Layers & Collapsed Formula Architecture
 
-Cover the applicable items—**purpose, plain-language reading, symbols and indices, types/dimensions/units/domains, operations and order, assumptions, non-obvious transformations, numerical example or appropriate alternative, interpretation, and sanity check/limitations**—adapted to the formula (a proof statement needs no artificial numerical substitution; a dimensionless quantity needs no invented units). For derivations, explain each substantive transition without hiding unrelated formulas inside one block. Never repeat the same symbol dictionary or worked calculation across sections.
+Preserve both clean reading flow and complete mathematical rigor across three coordinated reading layers:
+- **Layer 1 — Main theory (always visible):** Connected prose, conceptual motivation, necessary notation, essential equations, key assumptions, interpretation, and transitions into the next concept. Notes must remain coherent with all callouts collapsed.
+- **Layer 2 — Collapsible mathematical depth (`> [!example]- Understand this formula step by step`):** Complete step-by-step derivations, transformation rationales, structural anatomy, concrete calculations, alternative forms, and boundary verification.
+- **Layer 3 — Advanced extensions:** Optional alternative proofs, deeper generalizations, and specialist implications.
 
-## 3. Obsidian Rendering & Equation Readability
+Follow **Question → intuition → necessary quantities → mathematical statement → complete step-by-step derivation (inside fold) → interpretation → next-concept transition**:
 
-- **Native delimiters only:** Use `$...$` for short inline symbols/simple relationships and separate-line `$$` delimiters (with blank lines before and after) for central equations, substantial calculations, matrices, piecewise definitions, and derivations. Never mix delimiter conventions, never use code fences for equations, never leave raw LaTeX commands (`\frac`, `\sum`, `\mathbb`) in prose, keep code identifiers in backticks, and never place raw LaTeX inside Mermaid labels.
-- **Readable formatting:** Use `aligned` with vertical `=` alignment and meaningful breaks for long derivations; use `cases` for genuine piecewise definitions; use clear matrix environments; write textual annotations with `\text{...}`; format units consistently; avoid excessive `\boxed{...}`, oversized expressions, `==highlight==`, or `\color{...}`, and avoid packing independent ideas into one display. Inside callouts, prefix every line—including blank lines and `$$` delimiters—with `>`. Avoid complex math inside Markdown tables, and escape literal pipes (`\|`).
+1. **Before displaying any equation:** Explain the problem it solves, introduce essential terms locally, establish what the quantities represent, and state what the learner should expect the expression to establish. Never open an unfamiliar concept with an unexplained equation.
+2. **Immediately beneath every coherent top-level displayed mathematical unit**, place `> [!example]- Understand this formula step by step` (prefixing every interior line, including blank lines, with `>`), fulfilling these **7 intellectual responsibilities** proportionally (not rigid forced subheadings):
+   1. *Mathematical origin* (starting principles, definitions, assumptions)
+   2. *Symbol interpretation* (meaning, dimensions, indices, units, domains)
+   3. *Complete derivation* (all consequential intermediate transformations)
+   4. *Explanation of each step* (operation, permitting rule, and why it is useful)
+   5. *Formula construction* (why each term, sign, factor, and operation appears—e.g., in gradient descent $w_{t+1} = w_t - \eta\frac{\partial J}{\partial w_t}$, explain why $w_t$ anchors the step, why $\frac{\partial J}{\partial w_t}$ captures local sensitivity, why subtracting reverses ascent, why $\eta$ controls step magnitude, why iteration repeats, and when reduction actually holds)
+   6. *Worked calculation* (concrete values or appropriate discrete check where helpful)
+   7. *Interpretation, boundaries & independent verification* (geometric meaning, invariance, limiting values, finite-precision numerical stability, conditions, and sanity check)
+   - **Coherent Grouping Exception:** Group sequential derivation steps inside one `aligned` block with **one** fold beneath the unit rather than fragmenting elementary lines.
+   - **Non-recursive Exception:** Displayed `$$...$$` blocks inside an existing formula fold, lab fold, or `> [!tip]- Answer`/`Solution` explain steps inline rather than nesting another fold.
+   - **Compact Reference Exception:** `M3` cheat sheets, `formula-sheet`, and `atomic-card` may use inline/grouped relations with units, conditions, and canonical derivation links instead of full folds.
 
-## 4. Notation Governance, Code Mapping & Reasoning Distinctions
+## 4. Mathematical Dependency Ordering & Scalar-to-Matrix Progression
 
-- **Notation hygiene:** Define symbols at or before first meaningful use and keep meanings stable. Distinguish sample indices from feature indices, scalars/vectors/matrices consistently, and estimates from exact quantities. State residual direction, keep units and objective scaling consistent (e.g., SSE vs. half-SSE vs. MSE; normalized vs. unnormalized penalties), and explain notation shifts between sources or libraries. Introduce advanced notation only when its explanatory value justifies the prerequisite burden.
-- **Equation-to-code alignment:** In implementation notes, verify and explain `@` vs. `*` in NumPy, `**` vs. `^`, array shapes and transposes, broadcasting, reduction axes, integer vs. floating-point division, objective normalization, gradient signs/scaling, and regularization conversions (`C`, `alpha`). A visually neat expression representing the wrong operation fails review.
-- **Distinguish reasoning types:** Clearly separate definitions (stipulated, not proved like theorems), modeling assumptions (justified, not proved universally), empirical relationships (evidence-backed within a regime), algebraic equivalences (valid transformations), identities, approximations, numerical illustrations, and formal proofs (a numerical example illustrates a theorem but does not prove it; an optimization step does not unconditionally decrease the objective). State conditions cleanly without burying the learner.
-- **Formula Intelligence & Construction (Selectively for Governing Equations):** Do not merely define symbols and evaluate numbers—select the relevant responsibilities from these twelve so the learner understands *why* the expression has its structure (e.g., deriving $\sigma(z) = \frac{1}{1+e^{-z}}$ from log-odds $z = \ln\frac{p}{1-p}$):
-  1. *Origin* (where it comes from) · 2. *Construction* (why these operations/terms) · 3. *Symbol semantics* · 4. *Operation semantics* · 5. *Geometric interpretation* · 6. *Alternative equivalent forms* · 7. *Sensitivity* (input changes) · 8. *Invariance* · 9. *Limiting/extreme behavior* · 10. *Numerical stability* (e.g., log-sum-exp, forward difference $\frac{f(x+h)-f(x)}{h}$ vs. exact $\frac{d}{dx}(x^2)=2x$ and cancellation) · 11. *Applicability conditions* · 12. *Independent verification*.
-  *(Not every equation needs all twelve—apply them selectively to central governing relationships.)*
-- **Prevent repetition & overload:** Give each important equation one canonical home (referencing it briefly elsewhere unless a new context requires re-explanation). Keep essential reasoning visible; put extended calculations, refreshers, and optional formal detail in folds without concealing missing explanation. When a note becomes overloaded, narrow scope or split distinct objectives rather than stripping essential steps.
+- **Mathematical dependency ordering:** Plan derivations so no equation relies on an unproven identity or unexplained construct (for example, establish log-odds $\to$ sigmoid $\to$ sigmoid derivative $\sigma'(z) = \sigma(z)(1-\sigma(z))$ **before** differentiating BCE likelihood). Explain what each newly derived result enables in the next stage of the theory.
+- **Required scalar-to-vector-to-matrix pathway:** Whenever a central relationship is vectorized (e.g., gradients, projections, convolutions, covariances), show the progression: **1-parameter scalar form $\to$ indexed multi-parameter summation $\to$ compact matrix/vector form** ($\nabla_{\mathbf{w}} J = \frac{1}{m}X^\top(\hat{\mathbf{p}}-\mathbf{y})$), explicitly justifying array dimensions, why any transpose appears, which component corresponds to each parameter, and how matrix multiplication executes the summation.
+
+## 5. Obsidian Rendering, Notation Hygiene & Code Alignment
+
+- **Native delimiters only:** Use `$...$` inline and separate-line `$$` blocks (with blank lines around display math). Never mix delimiters, use code fences for equations, leave raw LaTeX in prose, place raw LaTeX inside Mermaid labels, or use `==highlight==` / `\color{...}`. Use `aligned`, `cases`, and `\text{...}` cleanly, quote every callout line including blank lines (`>`), escape literal pipes (`\|`) in tables, and reserve `\boxed{...}` strictly for final governing results or key numerical answers.
+- **Notation hygiene & code alignment:** Define symbols at first use, distinguish sample vs. feature indices, scalars vs. vectors/matrices, and estimates vs. true quantities. State residual conventions, align objective normalization/penalty scaling explicitly (`C` vs. `alpha`), and verify NumPy/framework operators (`@` vs. `*`, `**` vs. `^`, reduction axes, integer vs. float division, broadcasting, gradient sign, finite-precision cancellation/overflow guards).
+- **Single canonical home:** Give each major derivation one canonical home; link or briefly reference prior results elsewhere unless context shifts require bridging.

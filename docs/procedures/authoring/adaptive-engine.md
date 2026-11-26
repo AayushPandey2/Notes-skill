@@ -24,6 +24,17 @@ artifact_plan:
 
 - **Collection level** *(only when bundled or multi-chapter)*: `notation`, `canonical_definitions`, `shared_fixtures`, `concept_ownership` ([knowledge-consistency.md](knowledge-consistency.md)).
 - **Concept level:** `concept_id`, **`learning_objective`** (required anchor for reasoning, examples, coverage, mastery, and verification), `role` (`prerequisite`, `core`, `extension`, `advanced`), `dependencies`, `knowledge_type`, `primary_subject` (+ selective secondary support), `concept_reasoning` ([concept-reasoning.md](concept-reasoning.md)), `depth` (unified `0–5` + separate `math_profile`), `example_roles` ([example-engineering.md](../../blueprints/components/example-engineering.md)), `evidence_locators`, and `completion_condition`.
+- **Internal mathematical dependency record *(only for derivable/formal relationships—never emit to vault YAML)*:**
+
+```yaml
+mathematical_relationship:
+  formula_id: <id>
+  role: <derived_relationship | identity | definition | assumption | theorem>
+  dependencies: [<prereq-formula-or-identity-ids>]
+  derivation_required: <true | false>
+  verification: [<algebraic-consistency | numerical-example | shape-consistency>]
+  canonical_section: <Heading Anchor>
+```
 
 For comprehensive independent notes or unfamiliar disciplines, populate records via [curriculum-discovery.md](curriculum-discovery.md) (within active `source_permissions`) and [subject-theory-profiles.md](../../blueprints/components/subject-theory-profiles.md). Apply the **two-dimension prerequisite policy** (`importance` × `learner status`) in [teaching_core.md](../../../core/teaching_core.md).
 

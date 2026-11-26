@@ -24,6 +24,8 @@ Assign one primary reasoning type (or sequence across sub-concepts) inside the i
 | **Diagnostic reasoning** | Symptom $\to$ competing causes $\to$ discriminating check $\to$ **proposed / analytically justified remediation** | Distinguish confirmed causes from plausible hypotheses |
 | **Procedure** | Preconditions $\to$ ordered actions with reasons $\to$ expected outcome $\to$ check | Establish how successful completion can be verified |
 
-## Concept Transitions
+## Concept & Equation Transitions
 
-Connect major concepts by the **unresolved question, limitation, or dependency** that motivates the next concept rather than presenting individually strong sections as disconnected islands (e.g., *linear score $\to$ odds $\to$ log-odds $\to$ sigmoid $\to$ likelihood/loss $\to$ gradient descent $\to$ classification threshold*, or *linear layer $\to$ composition limit $\to$ nonlinearity $\to$ loss $\to$ chain rule $\to$ backpropagation $\to$ optimization*).
+Connect both **major concepts** and **individual mathematical equations** by the unresolved question, operation, or dependency motivating the next step:
+- **Concept transitions:** Avoid presenting individually strong sections as disconnected islands (e.g., *linear score $\to$ odds $\to$ log-odds $\to$ sigmoid $\to$ sigmoid derivative $\to$ Bernoulli likelihood $\to$ BCE $\to$ gradient $\to$ convexity $\to$ optimization $\to$ regularization $\to$ threshold*).
+- **Equation-level transitions:** Replace vague leaps (*"Differentiating gives"*, *"Rearranging gives"*, *"Substituting gives"*, *"After simplification"*, *"Therefore, the objective is"*, *"The final matrix equation is"*) by naming: (1) the exact differentiation variable/rule or algebraic operation, (2) the source identity being substituted, (3) which factors cancel and why, (4) why the resulting expression measures the intended target, and (5) how scalar indices pack into vector/matrix dimensions and transposes. (Match granularity to learner mastery without omitting any step a derivation critically depends on.)

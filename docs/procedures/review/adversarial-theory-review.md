@@ -47,6 +47,27 @@ Search drafts for these explanatory failure modes without emitting a visible che
 
 **Conceptual "Why-Depth" Check:** Within the existing unified `0–5` scale, ensure core mechanisms rise past bare **operation** (*"subtracts $\eta\nabla J$"*) through **immediate reason** (*"steepest local descent direction"*), **mathematical/causal justification** (*first-order expansion $J(w+\Delta w) \approx J(w) + \nabla J(w)^\top \Delta w$*), and **validity boundary** (*holds locally for small steps at nonstationary points, not arbitrary step sizes or global optimality*).
 
+### Mathematical Derivation Defects (Internal Review Criteria)
+
+A **core derivation missing from a comprehensive theory note counts as a `Major` defect requiring repair**, even if the final stated formula happens to be correct:
+
+| Mathematical Defect | Required Repair |
+|---|---|
+| **Missing derivation** | Construct the formula completely from established principles/identities |
+| **Algebraic teleportation** | Restore missing intermediate transformations inside the formula fold |
+| **Unexplained cancellation** | Explain explicitly which factors cancel and why |
+| **Missing assumption** | State conditions/hypotheses required for the transformation to hold |
+| **Circular proof** | Replace with valid independent starting principles |
+| **Sign inconsistency** | Correct the derivation and propagate across examples/labs/cheatsheets |
+| **Incorrect normalization** | Align sum, mean, and regularization penalty scaling explicitly |
+| **Unexplained mathematical identity** | Establish the identity cleanly before invoking it downstream |
+| **Undefined symbol** | Define the symbol locally before first use |
+| **Invalid dimension** | Clarify array shapes, component correspondence, and transposes |
+| **False mathematical necessity** | Distinguish a modeling choice/link convention from a unique theorem |
+| **Approximation presented as equality** | Restore `≈` and state the error/approximation regime |
+| **Numerical example presented as proof** | Supply the general derivation alongside illustrative checks |
+| **Unexplained final expression** | Interpret what each term, sign, and boundary in the result means |
+
 ## 2. Defect Severity Classification & Dependency-Aware Repair
 
 Classify every defect by severity and repair **both the defect and all downstream artifacts that depend on it**:
