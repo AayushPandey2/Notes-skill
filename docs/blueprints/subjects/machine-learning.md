@@ -55,3 +55,5 @@ Teach **generalization**: hypothesis space & representable capacity (beyond para
 - **Interpretability & Uncertainty:** Separate global vs. local, intrinsic vs. post-hoc, correlation/attribution (SHAP, permutation importance, PDP) vs. causal intervention, and predictive vs. **aleatoric** vs. **epistemic** uncertainty.
 
 Distinguish the data-generating probability, model probability, observed label, and thresholded prediction. Define their notation at first use and carry the distinction through examples, code, and assessment.
+
+For nearest-neighbor topics, introduce the query and feature units before the distance function. Trace a ranking and aggregation before general notation. Hold the data fixed across changes to metric, scaling, weights or neighborhood size. Distinguish distance ties at selection from label ties at voting, and separate exact search from approximate retrieval and model validation.

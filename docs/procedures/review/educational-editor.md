@@ -25,3 +25,5 @@ Distinguish **redundant repetition** (restating a definition verbatim immediatel
 - Split overly wide tables into focused single-question tables; keep code and displayed math lines readable without horizontal overflow.
 - Provide meaningful figure captions and textual equivalents; never rely solely on color to distinguish curves or states.
 - Ensure navigation (`[[#Heading]]` TOC, callouts, wikilinks) works in standard Obsidian without requiring third-party plugins.
+
+Read one whole learning unit as the intended learner. Separate crowded paragraphs at changes in intellectual task. Expand any heading that merely names a mechanism the reader must reconstruct, preserving mathematical qualifications and natural prose.

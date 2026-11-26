@@ -24,6 +24,8 @@ Assign one primary reasoning type (or sequence across sub-concepts) inside the i
 | **Diagnostic reasoning** | Symptom $\to$ competing causes $\to$ discriminating check $\to$ **proposed / analytically justified remediation** | Distinguish confirmed causes from plausible hypotheses |
 | **Procedure** | Preconditions $\to$ ordered actions with reasons $\to$ expected outcome $\to$ check | Establish how successful completion can be verified |
 
+For a multistage process, trace inputs, operations, changing state and outputs before describing variants. For a trade-off, hold the fixture constant when practical so the changed choice is visible. For a statistical tendency, use a counterexample or boundary case to show what the explanation can predict.
+
 ## Concept & Equation Transitions
 
 Connect concepts and equations through the question, operation or dependency that motivates the next step. Use those questions to plan, then write natural transitions in the note.

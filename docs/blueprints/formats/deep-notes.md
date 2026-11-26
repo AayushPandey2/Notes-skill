@@ -28,3 +28,5 @@ Load the matching knowledge-type subtemplate (`conceptual`, `mathematical`, `com
 End cleanly with a concise **Mental Model** (when it aids reconstruction rather than repeating headings), a trailing **Notation Reference** *only when quantitative/symbolic notation warrants one*, and reciprocal links to `<note stem> - Experimental Lab.md` and `<note stem> - Cheatsheet & Interview Q&A.md` **only when those companions are generated** under `artifact_policy` in [master-registry.yaml](../../dispatch/master-registry.yaml).
 
 Do **not** duplicate companion formula sheets, tiered interview/viva Q&A, or worked problem packs inside the main note when File 3 is generated. Review against [verification-checklist.md](../../procedures/review/verification-checklist.md) before saving; for multi-chapter `M1` collections, follow [composition-contract.md](../../procedures/authoring/composition-contract.md).
+
+Plan complete learning units around questions the reader needs to answer. Give core mechanisms room for a concrete setup, step-by-step change, and interpretation. If resource limits require partitioning, finish coherent sections and disclose outstanding scope.

@@ -543,6 +543,18 @@
         "Correct exact coefficients and numerical check for both columns",
         "Interprets residual orthogonality and its limits"
       ]
+    },
+    {
+      "id": 49,
+      "prompt": "/scribe-notes Create one beginner-friendly Obsidian KNN theory note. Teach why local predictions differ from a global rule, then trace Euclidean distances, k=1 and k=3 votes, and a feature rescaling that changes the closest point. Use q=(0,0), A=(1,1) class amber, B=(0,1.8) class blue, C=(3,0) class blue, D=(4,3) class amber, and rescale x by dividing by six. Explain selection vs voting ties and include one question that tests transfer. I can read tables but this host has no plot or image tool, use no external sources, and give me only one note.",
+      "expected_output": "A standalone beginner note with a worked KNN trace, a controlled scaling comparison, and a disclosed visual fallback.",
+      "files": [],
+      "expectations": [
+        "Explains global versus local prediction and shows the correct original ranks and k=1/k=3 outcomes",
+        "Shows a controlled, numerically correct scaling comparison, a permitted table fallback, and a limitation of that fallback",
+        "Distinguishes cutoff distance ties from voting ties and qualifies the odd-k claim",
+        "Includes a transfer question whose revealed answer correctly derives a result for a changed query or condition"
+      ]
     }
   ]
 }

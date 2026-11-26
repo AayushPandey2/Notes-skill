@@ -20,6 +20,19 @@ Execute **Stages 1–5 completely before saving**, resolve an explicit bounded *
 
 ### Stage 5 — Presentation, Mathematics, Visuals, Metadata, Links & Bounded Acceptance (Before Saving)
 - Verify [authoring_rules.md](../../../core/authoring_rules.md), [math_gates.md](../../../core/math_gates.md) (read with folds closed for hypotheses, milestones and conclusions, then open folds to verify derivations, prerequisites, source permission, local derivation ownership, notation, equation spacing and callout boundaries), [representations.md](../authoring/representations.md) (visual source hierarchy, inspected external/native figures, adaptive sizing, ordinary Markdown attribution, diagram-to-model correspondence, zero Mermaid/ASCII, **asset dependency check** ensuring no accepted note references a missing required figure/asset), [properties-policy.md](../../properties/properties-policy.md) (line-1 YAML matching active profile, unique IDs), and [revision-and-linking.md](../updating/revision-and-linking.md) (resolved links, acyclic prerequisites, reciprocal links only to files in `artifact_plan`).
+**Independent acceptance checks.** For each applicable dimension, cite concrete evidence and resolve defects before judging the whole artifact. Mark a dimension inapplicable when it is outside the resolved scope.
+
+| Dimension | Observable evidence |
+|---|---|
+| Concepts | Definitions, prerequisites and boundaries are introduced before use |
+| Mechanism | A trace or causal explanation shows what changes and why |
+| Mathematics | Valid derivations, assumptions, identified symbols and verified examples |
+| Visuals | Essential relationships are legible in an inspected figure or sufficient permitted fallback, with material gaps disclosed |
+| Readability | Focused prose and a coherent visible reading path support the intended audience |
+| Application | Examples and checks let the reader apply or explain the mechanism when the objective calls for it |
+
+A strength on one dimension cannot cancel a material failure on another. Apply the bounded acceptance outcomes below to unresolved defects.
+
 - **Bounded Acceptance Decision:** Resolve acceptance cleanly instead of looping indefinitely when sources or tools remain unavailable:
 
 | Outcome | Required Action |

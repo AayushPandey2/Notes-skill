@@ -22,6 +22,8 @@ Select example values and progression **deliberately** so examples expose the go
 3. Simplicity does not conceal the central mechanism or assumptions.
 4. Values remain strictly consistent across prose, equations, code, and visuals.
 
+A worked trace, a controlled contrast and a transfer check often answer different questions. Reuse the same dataset when this isolates a changed condition. Add a second example when it teaches a new consequence, tests a failure boundary or gives the learner independent practice. Specify scoring, preprocessing and relevant tie handling.
+
 ## 2. Guidance Fading Progression
 
 For multi-example learning sequences and problem sets, fade scaffolding progressively without false numeric percentages:

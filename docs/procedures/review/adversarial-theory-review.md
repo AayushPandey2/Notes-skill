@@ -71,6 +71,8 @@ Read the draft twice, first with formula folds closed to check the visible argum
 | **Numerical example presented as proof** | Supply the general derivation alongside illustrative checks |
 | **Unexplained final expression** | Interpret what each term, sign, and boundary in the result means |
 
+A compressed topic list leaves a mechanism-level objective incomplete. Locate the missing transition, causal explanation or worked contrast and repair the gap locally. Use prediction, diagnosis or transfer checks for objectives beyond recall.
+
 ## 2. Defect Severity Classification & Dependency-Aware Repair
 
 Classify every defect by severity and repair **both the defect and all downstream artifacts that depend on it**:

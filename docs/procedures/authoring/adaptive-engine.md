@@ -23,7 +23,7 @@ artifact_plan:
 ```
 
 - **Collection level** *(only when bundled or multi-chapter)*: `notation`, `canonical_definitions`, `shared_fixtures`, `concept_ownership` ([knowledge-consistency.md](knowledge-consistency.md)).
-- **Concept level:** `concept_id`, **`learning_objective`** (required anchor for reasoning, examples, coverage, mastery, and verification), `role` (`prerequisite`, `core`, `extension`, `advanced`), `dependencies`, `knowledge_type`, `primary_subject` (+ selective secondary support), `concept_reasoning` ([concept-reasoning.md](concept-reasoning.md)), `depth` (unified `0–5` + separate `math_profile`), `example_roles` ([example-engineering.md](../../blueprints/components/example-engineering.md)), `evidence_locators`, and `completion_condition`.
+- **Concept level:** `concept_id`, **`learning_objective`** (required anchor for reasoning, examples, coverage, mastery, and verification), `role` (`prerequisite`, `core`, `extension`, `advanced`), `dependencies`, `knowledge_type`, `primary_subject` (+ selective secondary support), `concept_reasoning` ([concept-reasoning.md](concept-reasoning.md)), `depth` (unified `0–5` + separate `math_profile`), `example_roles` ([example-engineering.md](../../blueprints/components/example-engineering.md)), `evidence_locators`, `representation` where useful (learning question, exact fixture, placement, permitted option, and fallback or gap), and `completion_condition`.
 - **Internal mathematical dependency record *(for consequential formal relationships, kept out of vault YAML)*:**
 
 ```yaml

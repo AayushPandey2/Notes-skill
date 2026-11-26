@@ -30,6 +30,8 @@ A reasoning unit uses prose and connected equations to establish one mathematica
 
 Read the main theory with all formula folds closed. The question, hypotheses, essential notation, turning points and conclusions should still be clear. Use a natural structure for the material: hypotheses and proof for a theorem, model and criterion for an estimator, or governing relationship and state trace for an algorithm. Introduce local definitions and conventions where they do explanatory work.
 
+For an unfamiliar abstraction, work an ordinary case with meaningful quantities before introducing indices or a generalized family. Show which calculation becomes a term or operation in the general expression. Lead with definitions or hypotheses directly when the audience or task warrants formal treatment.
+
 ### Required Coverage and Derivation Ownership
 
 Every distinct consequential derivable relationship in comprehensive theory needs a complete derivation, subject to the source permissions above. Derive the topic's central results locally, in visible prose or a formula fold. For a result already derived in the chapter, point back to its section. If an essential prerequisite is unfamiliar, explain locally the part required for the next step. A brief anchor or accessible canonical link can support an established prerequisite or an optional extension. Verify that any cited derivation is accessible and uses compatible assumptions and notation. Disclose source-prohibited derivations as gaps.
