@@ -12,9 +12,23 @@ Open this checkout as the project or workspace to discover `scriptorium` and all
 |---|---|
 | Claude Code | `.claude/skills/` |
 | Codex and Antigravity | `.agents/skills/` |
-| Gemini CLI | `.agents/skills/` or its alias `.gemini/skills/` |
+| Gemini CLI | `.gemini/skills/` or `.agents/skills/` |
 
-The discovery files forward to the canonical instructions in `SKILL.md` and `skills/`. Claude Desktop Chat and Cowork use account-installed plugins for the slash menu.
+The discovery files forward to the canonical instructions in `SKILL.md` and `skills/`.
+
+### Upload to Claude
+
+For the six slash-menu entries in Claude Desktop Chat or Cowork, open **Plugins** and upload a plugin ZIP. For one combined Scriptorium skill, use the **Skills** upload instead. Create the corresponding ZIP from a checkout of this repository:
+
+```sh
+git archive --format=zip --output=../scriptorium-plugin.zip HEAD \
+  .claude-plugin SKILL.md LICENSE router.md core docs skills
+
+git archive --format=zip --prefix=scriptorium/ --output=../scriptorium-skill.zip HEAD \
+  SKILL.md LICENSE router.md core docs skills
+```
+
+The plugin archive places [the manifest](.claude-plugin/plugin.json) at its root. The skill archive wraps its files in a single `scriptorium/` folder. Both layouts include the referenced policies and contain only regular files. [Claude plugin installation](https://support.claude.com/en/articles/13837440-use-plugins-in-claude) · [Claude custom skill installation](https://support.claude.com/en/articles/12512180-use-skills-in-claude)
 
 ## 1. Public Commands (`skills/`)
 
