@@ -15,8 +15,8 @@ Distinguish **redundant repetition** (restating a definition verbatim immediatel
 | **Structural fragmentation** | Combine closely related micro-sections into one coherent flow |
 | **Essential reasoning hidden in folds** | Restore core explanation to visible prose (notes must stay readable with all callouts collapsed) |
 | **Repeated callouts** | Consolidate into purposeful callouts |
-| **False depth / artificial tone** | Replace AI filler (`"We now..."`) with causal mechanism; never shorten proofs for length |
-| **Compressed research-paper language** | Unpack multi-step sentences into one teaching move at a time; replace artificial shorthand with clear mechanism explanations |
+| **False depth, dramatic tone & AI signatures** | Replace dramatic claims (`"fatal flaw"`, `"catastrophic failure"`, `"revolutionary breakthrough"`) and AI signatures (`"In simple words"`, repeated `"Imagine that"`, `"Let us understand"`, generic key-takeaway boxes) with calm textbook mechanisms without shortening proofs |
+| **Compressed research-paper language & later-section thinning** | Unpack multi-step sentences into one teaching move at a time; ensure late advanced sections retain full clarity and depth |
 | **Jargon-first opening / oversized pre-intuition navigation** | Open with plain-language intuition and a concrete scenario before dense definitions or large TOC blocks |
 | **Wide formula-stuffed tables** | Keep tables compact and explain multi-step arithmetic/derivations separately in prose and aligned displays |
 | **Overly dense compound headings** | Use clear, student-friendly headings tied directly to the question or mechanism |

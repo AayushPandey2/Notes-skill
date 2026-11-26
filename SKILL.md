@@ -20,18 +20,17 @@ Scriptorium is an instruction-only knowledge-construction and educational-author
 
 ## Governance, Precedence & Educational Priorities
 
-Resolve overlapping policies using this **deterministic 8-level precedence** (source boundaries remain binding throughout all stages; **no preset, subject blueprint, evaluation procedure, or fallback may authorize scripts or execution**, and presentation/metadata preferences never override correctness or educational completeness):
+Resolve overlapping policies using this **deterministic 7-level precedence** (source boundaries remain binding throughout all stages; **no preset, subject blueprint, evaluation procedure, or fallback may authorize scripts or execution**, and presentation/formatting preferences never override correctness or essential educational understanding):
 
-1. **Host safety, permission & authorization restrictions** ([security-education.md](docs/procedures/safety/security-education.md), [physical-lab-safety.md](docs/procedures/safety/physical-lab-safety.md))
-2. **Global instruction-only & non-execution restrictions** (see the authoring rule above)
-3. **Explicit user requirements & source restrictions** ([source-fidelity.md](docs/procedures/sourcing/source-fidelity.md), explicit format/single-file overrides, and preservation of existing user content and metadata)
-4. **Factual, conceptual & mathematical correctness** ([math_gates.md](core/math_gates.md), verified mechanisms and subject truth)
-5. **Requested output format & applicable preset** ([master-registry.yaml](docs/dispatch/master-registry.yaml), preset overrides over parent master defaults)
-6. **Educational completeness & progressive teaching** ([teaching_core.md](core/teaching_core.md), [theory_quality_contract.md](core/theory_quality_contract.md))
-7. **Relevant subject-specific guidance** ([subject-registry.yaml](docs/dispatch/subject-registry.yaml), primary + selective secondary support)
-8. **Presentation & stylistic formatting preferences** ([authoring_rules.md](core/authoring_rules.md))
+1. **Safety, authorization & absolute execution restrictions** ([security-education.md](docs/procedures/safety/security-education.md), [physical-lab-safety.md](docs/procedures/safety/physical-lab-safety.md), and the global non-execution authoring rule above)
+2. **Explicit user requirements & source permissions** ([source-fidelity.md](docs/procedures/sourcing/source-fidelity.md), explicit format/single-file overrides, and preservation of existing user content and metadata)
+3. **Factual & mathematical correctness** ([math_gates.md](core/math_gates.md), verified mechanisms, assumptions, bounds, and subject truth)
+4. **Essential educational understanding** ([teaching_core.md](core/teaching_core.md), [theory_quality_contract.md](core/theory_quality_contract.md), [curriculum-discovery.md](docs/procedures/authoring/curriculum-discovery.md))
+5. **Requested learning format & scope** ([master-registry.yaml](docs/dispatch/master-registry.yaml), preset adaptations applied proportionally to depth without turning compact formats into unwanted textbooks)
+6. **Discipline-specific requirements** ([subject-registry.yaml](docs/dispatch/subject-registry.yaml), primary + selective secondary support)
+7. **Presentation & stylistic preferences** ([authoring_rules.md](core/authoring_rules.md))
 
-Within binding restrictions, prioritize: (1) factual and mathematical correctness, (2) completeness within the declared learning scope, (3) beginner accessibility appropriate to the learner, (4) essential prerequisite closure, (5) conceptual and causal understanding, (6) mathematical intuition and complete reasoning, (7) meaningful examples and applications, (8) visual teaching, (9) independent problem-solving ability, (10) natural academic writing, (11) readable formatting, and (12) efficient reference loading and redundancy control. Context efficiency, stylistic compression, or fast-path brevity must never silently override educational completeness; formatting exists to support teaching.
+**Agent decision discipline:** Never skip necessary teaching because a concept feels obvious to an expert; never assume mentioning a concept teaches it or that a formula explains itself; never treat an image embed as proof of visual teaching or treat the absence of a fixed image quota as permission to omit visuals; never hide missing theory inside companion notes; never treat a `"beginner"` label as evidence of beginner accessibility; never use advanced terminology before establishing its meaning; never claim complete coverage when important aspects remain unexplained; and never claim review or verification that was not actually performed. Context efficiency, stylistic compression, fast-path brevity, or subject templates must never override essential educational understanding; apply educational depth proportionally to the requested format.
 
 ## Note creation
 

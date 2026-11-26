@@ -6,19 +6,19 @@ Select example values and progression **deliberately** so examples expose the go
 
 ## 1. Seven Deliberate Example Purposes, Completeness & Validity Gate
 
-Select examples by educational function—never force all seven categories into every unit, and avoid trivial numeric substitutions that repeat the same operation without teaching new insight:
+Select examples by educational function—introducing an **early representative concrete example near the beginning** of abstract topics before heavy theory or formal mathematics (never starting with an example requiring untaught concepts or repeating identical numeric substitutions without new insight):
 
 | Example Purpose | Required Pedagogical Effect |
 |---|---|
-| **Initial intuitive** | Establish the basic idea through an accessible real-world situation |
+| **Initial intuitive** | Establish the basic idea early through an accessible real-world situation |
 | **Simple mathematical** | Introduce relevant quantities and calculations without cognitive clutter |
 | **Complete representative** | Demonstrate the full central mechanism under standard conditions |
-| **Contrasting** | Change one consequential condition to expose *why* behavior or decisions flip |
+| **Contrasting (parameter behavior)** | Hold data fixed and change one condition (parameter magnitude, scaling, uniform vs. weighted rule, assumption, input encoding, or operating validity) to expose *why* behavior or decisions flip |
 | **Boundary** | Test limiting, degenerate, empty, tie, or threshold-edge behavior |
 | **Failure** | Demonstrate an incorrect method, violated assumption, numerical instability, or unsuitable regime |
 | **Transfer** | Require applying the governing principle to a different problem or context |
 
-For consequential worked examples, state clearly: what is given, what must be determined, why the chosen method fits, which assumptions apply, how intermediate values are obtained, and what the final outcome means.
+**Complete worked-example architecture:** For consequential worked examples, state clearly: **(1)** what is given, **(2)** what must be determined, **(3)** why the chosen method applies, **(4)** which relationships/assumptions are required, **(5)** how each consequential step works, **(6)** what intermediate results mean, **(7)** what the final answer represents, and **(8)** a sanity/reasonableness check of the outcome—never merely plugging numbers into a formula and printing a bare answer. Place misconception counterexamples contextually right where a concept is prone to confusion rather than postponing all warnings to a final section.
 
 **Example Validity Gate (verify before drafting around any worked example):**
 1. The example actually demonstrates the intended property with **complete preprocessing and initial-condition contracts**. For instance, in KNN feature scaling: compare Query `(30, ₹50,000)` against Candidate A `(20, ₹50,100)` and Candidate B `(29, ₹55,000)`. Unscaled Euclidean distances pick **A** (`≈ 100.50` vs. `≈ 5000.00`). With **training-fitted feature ranges** (`Age range = 20 years`, `Income range = ₹60,000`) applied to the query and candidates, range-normalized distances become A `= √((10/20)² + (100/60000)²) ≈ 0.5000` vs. B `= √((1/20)² + (5000/60000)²) ≈ 0.0972`, flipping the nearest neighbor to **B**. Different fitted ranges can yield different neighbors, so fitted parameters are part of the example.

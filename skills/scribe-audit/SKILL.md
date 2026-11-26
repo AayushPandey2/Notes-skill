@@ -21,9 +21,9 @@ Select the applicable audit profile(s) so an imported lecture note, compact refe
 
 | Audit Profile | Evaluation Standard |
 |---|---|
-| **Factual** | Technical, mathematical, derivation, and evidence accuracy; causal mechanisms; claim validity |
-| **Pedagogical** | Prerequisite bridges, progressive abstraction, conceptual transitions, and discriminating examples |
-| **Presentation** | Universal readability, focus/clarity of tables, math formatting, and inspected visual clarity |
+| **Factual** | Technical, mathematical, derivation, and evidence accuracy; causal mechanisms; parameter bounds, equality/tie-policy conditions, cost-component separation (reference vs. read/copy vs. index vs. query), empirical tendency vs. monotonic guarantee distinction, and claim validity |
+| **Pedagogical** | Prerequisite closure, beginner accessibility throughout (detecting analogy-to-formalism cliffs), concrete-to-abstract progression (detecting generalized-first math inversion and operator dumping), concept-before-terminology, collapsed-state coherence, independent-application readiness, non-compressed later sections, and discriminating examples |
+| **Presentation** | Textbook tone (flagging dramatic phrasing, AI signatures, and compressed shorthand), purposeful callouts and titles (detecting both overload and underutilization), focus/clarity of tables, math formatting, and multi-visual teaching/inspection clarity |
 | **Scriptorium conformance** | Compliance with Scriptorium YAML, clickable TOC, formula folds, and `artifact_plan` rules *(apply only when auditing native Scriptorium notes or explicitly requested)* |
 | **Bundle** | Cross-artifact consistency in notation, objective scaling, claims, and learning objectives |
 | **Currency** | Version-sensitive library, API, framework, or standard claims flagged for verification |

@@ -887,6 +887,62 @@
         "Explains why Lenz's negative sign represents opposition to flux change via energy conservation rather than a bare convention",
         "Maintains SI units (Wb, T, m^2, V), states ideal-to-real assumptions, and attempts permitted flux diagrams or discloses limitations"
       ]
+    },
+    {
+      "id": 82,
+      "prompt": "/scribe-notes Write a complete beginner-friendly M1 chapter on K-Nearest Neighbors (KNN) covering distance metrics, classification and regression, feature scaling, weighting, choosing k, exact spatial search, high-dimensional behavior, and trade-offs.",
+      "expected_output": "Avoids analogy-to-formalism cliffs by maintaining beginner accessibility and concept-before-terminology throughout every section; builds Euclidean distance from Pythagorean geometry on 2D coordinates before Manhattan/Chebyshev/generalized Minkowski notation; explains indicator functions, summation, and argmax singly before combining them; separates set-vs-index notation cleanly, states 1 <= k <= n bounds and pruning equality/tie-policy conditions accurately, avoids monotonic training-error overclaims and reference-vs-copying cost conflation, uses purposeful collapsed derivations with distinct mathematical titles, actively attempts/discloses multiple complementary visuals, and sustains full depth through later spatial-tree and curse-of-dimensionality sections.",
+      "files": [],
+      "expectations": [
+        "Maintains beginner accessibility after the opening analogy without dumping unexplained sets, Voronoi jargon, or composite argmax-sum-indicator notation",
+        "Teaches Pythagorean/Euclidean distance cleanly before generalized Minkowski metrics and separates set-vs-index notation, 1 <= k <= n bounds, and exact pruning equality/tie conditions",
+        "Uses distinct Derivation/Proof titles (zero generic 'Understand this formula step by step' boxes), avoids 'fatal flaw' dramatic language and AI filler, sustains full depth in later sections, and attempts/discloses multiple complementary visuals"
+      ]
+    },
+    {
+      "id": 83,
+      "prompt": "/scribe-notes Teach Support Vector Machines (hard margin, soft margin, and kernels) comprehensively to a beginner with high-school algebra.",
+      "expected_output": "Teaches geometric margins and dot-product projection locally before quadratic optimization or kernel trick; avoids generalized-first dual Lagrangian dumping; explains why margin maximization yields 2/||w|| geometrically first; separates linear-separability vs. C-slack assumptions with distinct cost and numerical/scaling behavior; keeps essential intuition visible when optional folds are closed.",
+      "files": [],
+      "expectations": [
+        "Builds projection and point-to-line distance locally before hyperplanes, slack variables, and dual optimization",
+        "Derived foundational hyperplane distance before dual Lagrangian transformations",
+        "Preserves main-path readability with all optional collapsed folds closed and equips independent prediction/failure diagnosis"
+      ]
+    },
+    {
+      "id": 84,
+      "prompt": "/scribe-notes Explain Fourier series and Fourier transforms comprehensively from periodic wave intuition through orthogonality, frequency spectra, and sampling limits.",
+      "expected_output": "Establishes wave superposition visually/conceptually before integral transforms; explains orthogonality on discrete sine/cosine examples before computing coefficients; derives foundational finite-interval orthogonality before Plancherel/Parseval theorems; keeps meaningful multi-visual progression (or honest disclosure) and does not thin later continuous-transform/aliasing sections.",
+      "files": [],
+      "expectations": [
+        "Demonstrates superposition and orthogonality on concrete waves before generalized complex exponential integrals",
+        "Prioritizes foundational orthogonality and coefficient derivation over advanced theorems while avoiding formula dumping",
+        "Maintains full explanation depth through continuous transforms and sampling/aliasing trade-offs without late-section compression"
+      ]
+    },
+    {
+      "id": 85,
+      "prompt": "/scribe-notes Write a balanced M1 bundle (Theory, Lab, Q&A) on Dijkstra's shortest-path algorithm for a beginner learning graph algorithms.",
+      "expected_output": "Ensures Theory alone stands self-contained on weighted-graph relaxation, greedy invariant proof, negative-weight counterexample, and priority-queue cost analysis without delegating foundational theory to the Lab or Q&A; separates distinct memory/relaxation cost components accurately and pairs visible concepts with balanced optional folds and unrevealed exercises.",
+      "files": [],
+      "expectations": [
+        "Self-contained Theory develops the relaxation mechanism, greedy invariant, and negative-edge failure counterexample without relying on Lab/Q&A to teach foundations",
+        "Maintains textbook prose without replacing explanations with wide formula-stuffed tables or generic callout titles",
+        "Provides progressively faded practice problems with collapsed hints/answers for independent application"
+      ]
+    },
+    {
+      "id": 86,
+      "prompt": "/scribe-audit Perform a read-only educational audit on an attached draft chapter that opens with a coffee-shop analogy then immediately dumps unexplained tensor notation, uses only one generic chart, hides its central proof inside an unnamed fold, and compresses its last three sections into bullet lists.",
+      "evaluator_supplied_input": "Evaluator supplies at evaluation time a draft chapter exhibiting analogy-to-formalism cliff, generalized-first math inversion, single-image token compliance, hidden essential proof, dramatic phrasing, and compressed later sections.",
+      "expected_output": "Identifies the earliest unresolved beginner barrier sequentially, flags the analogy-to-formalism cliff, hidden essential reasoning, single-image visual gap, dramatic/technical-reference tone, and compressed late sections as confirmed Pedagogical/Presentation/Factual findings without editing any files.",
+      "files": [],
+      "expectations": [
+        "Operates strictly read-only and detects the earliest unresolved beginner barrier sequentially",
+        "Flags the analogy-to-formalism cliff, hidden essential proof, single-image token compliance, dramatic phrasing, and compressed later sections with confirmed confidence",
+        "Proposes dependency-aware repairs grounded strictly in the supplied draft"
+      ]
     }
   ]
 }

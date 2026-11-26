@@ -9,7 +9,7 @@
 
 ## 1. Opening Roadmap (Intuition First, Purpose & TOC)
 
-Open cleanly with line-1 YAML and H1 title, then establish plain-language intuition and a concrete everyday scenario *before* introducing formal jargon definitions or a large navigation block. Follow that opening intuition with concise orientation (without repeating YAML `difficulty` verbatim as a visible dump) and a compact **clickable Obsidian Table of Contents** (`- [[#1. Heading|Short Label]]`). Apply the two-dimension prerequisite policy in [teaching_core.md](../../../core/teaching_core.md): never let a `Prerequisites:` list or link replace teaching an essential unmastered local foundation.
+Open cleanly with line-1 YAML and H1 title, then establish plain-language intuition and a concrete everyday scenario *before* introducing formal jargon definitions or a large navigation block. Follow that opening intuition with concise orientation (without repeating YAML `difficulty` verbatim as a visible dump) and a compact **clickable Obsidian Table of Contents** (`- [[#1. Heading|Short Label]]`). Apply the three-tier prerequisite policy in [teaching_core.md](../../../core/teaching_core.md): never let a `Prerequisites:` list or link replace teaching an essential unmastered local foundation.
 
 ## 2. Progressive Explanation Flow & Adaptive Learning Regions
 

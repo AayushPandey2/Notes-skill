@@ -10,12 +10,12 @@ Apply these seven diagnostic perspectives in a single consolidated manual review
 
 | Perspective | What It Hunts For |
 |---|---|
-| **1. Beginner perspective** | Read sequentially from a beginner's perspective to find the earliest unexplained term, missing prerequisite, unsupported formula, confusing transition, incomplete example, or exercise requiring untaught knowledge |
-| **2. Professor perspective** | Missing curriculum pillars, superficial mechanism descriptions lacking causal *why*, misleading simplifications, omitted variants/limitations |
-| **3. Mathematical perspective** | Invalid algebra, unjustified transitions, missing hypotheses/domain/shape checks, scalar vs. matrix ambiguity, hidden fold-only milestones, model-example drift |
-| **4. Visual-learning perspective** | Concepts needing diagrams/graphs silently omitted (`0` visuals on visual-heavy topics), uninspected/inaccurate figures, missing before/caption/after narrative |
-| **5. Textbook-editor perspective** | Compressed research-paper shorthand, dense multi-step sentences, robotic/meta headings, broken reading rhythm, wide formula-stuffed tables, redundant callouts |
-| **6. Practical-learning perspective** | Theory disconnected from implementation, parameter mechanics, failure diagnosis, unseen inference, or multi-round iterative carryover |
+| **1. Sequential beginner review** | Read strictly from start to finish as a first-time learner; find the **earliest** unexplained term, analogy-to-formalism cliff, missing essential prerequisite, operator dump, unsupported formula, confusing transition, incomplete example, or exercise requiring untaught knowledge—repairing the earliest defect before reviewing dependent sections |
+| **2. Professor perspective** | Missing curriculum pillars, superficial mechanism descriptions lacking causal *why*, misleading analogies/simplifications, omitted variants/limitations, compressed later sections |
+| **3. Mathematical perspective** | Generalized-first abstraction inversion, skipped foundational derivations, operator dumping, invalid algebra, missing parameter bounds/equality/tie-policy conditions, set-vs.-index notation drift, empirical-to-monotonic overclaims, hidden fold-only milestones |
+| **4. Visual-learning perspective** | Visual-heavy concepts silently limited to 0–1 token visuals (`0` visuals or single-image token compliance), uninspected/unverified assets, missing before/caption/after teaching |
+| **5. Textbook-editor & collapsed-state perspective** | Compressed research-paper shorthand, unnecessary dramatic language (`"fatal flaw"`), AI writing signatures (`"In simple words"`, repeated `"Imagine that"`), generic callout titles, collapsed-state coherence failures (read with every optional callout closed first, then expanded), callout underutilization/overload, meta/robotic headings, broken reading rhythm |
+| **6. Practical-learning & independent-learning perspective** | Theory disconnected from implementation, conflated cost components (data reference vs. read/copy vs. index vs. query), omitted edge cases, weak fading/transfer readiness to solve unfamiliar cases (evaluating preparation without claiming empirical mastery) |
 | **7. Source-review perspective** | Unsupported certainty, conflated epistemic statuses, library/version/variant conflation, missing primary references, inaccurate attribution, or source-policy breaches |
 
 ### Mandatory Diagnostic Questions
@@ -45,11 +45,15 @@ Search drafts for these explanatory failure modes without emitting a visible che
 | **Procedure memorization** | Gives steps without why they hold (`Level 1–2` instead of justification) |
 | **Context-free formalism** | Drops equations without establishing what question they answer |
 | **Unsupported certainty** | States plausible hypotheses or conditional results as settled fact |
-| **Jargon-first opening** | Opens with dense technical summary or oversized navigation before plain-language intuition |
+| **Jargon-first / analogy-to-formalism cliff** | Opens with an everyday analogy or dense technical summary and immediately drops formal sets, vectors, or jargon before building the idea |
+| **Generalized-first math inversion** | Starts with the most general parametric family (e.g., general $L_p$ norms) before concrete cases and foundational Pythagorean/Euclidean derivations |
+| **Operator dumping** | Combines indicator functions, summations, and $\arg\max$ (or nested matrix/probabilistic ops) before teaching each operation singly |
 | **Premature mathematical tool use** | Applies Taylor expansion, Newton's method, etc. on complex objectives before teaching the tool on a simple case |
-| **Compressed research-paper tone** | Packs three or four conceptual/algebraic steps into one sentence or invents artificial shorthand |
+| **Compressed research-paper tone & later-section thinning** | Packs three or four conceptual/algebraic steps into one sentence, uses dramatic labels (`"fatal flaw"`), or delivers rich early sections followed by compressed late topics |
+| **Empirical-to-monotonic / cost conflation** | Turns a qualitative tendency into a strict monotonic guarantee or equates retaining a dataset reference with reading/copying/scanning the whole dataset |
 | **Single-step iterative trace** | Stops an iterative/sequential algorithm after one round without showing updated state carryover or unseen inference |
-| **Silent visual omission** | Emits zero visuals on visual-heavy structural/geometric/functional concepts without attempting permitted acquisition or disclosing unavailability |
+| **Single-image token compliance / silent visual omission** | Emits zero visuals or stops at one token image on a visually rich chapter without attempting permitted acquisition or disclosing unavailability |
+| **Callout underutilization or hidden reasoning** | Leaves long optional proofs/refreshers all inline or hides essential mechanisms, assumptions, or prerequisites inside collapsed folds/companion files |
 | **Library/variant conflation** | Presents method-specific or version-specific behavior (e.g., `approx` vs `hist`, pruning updaters) as universal algorithm law |
 
 **Conceptual "Why-Depth" Check:** Within the existing unified `0–5` scale, ensure core mechanisms rise past bare **operation** (*"subtracts $\eta\nabla J$"*) through **immediate reason** (*"steepest local descent direction"*), **mathematical/causal justification** (*first-order expansion $J(w+\Delta w) \approx J(w) + \nabla J(w)^\top \Delta w$*), and **validity boundary** (*holds locally for small steps at nonstationary points, not arbitrary step sizes or global optimality*).
