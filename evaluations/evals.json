@@ -385,7 +385,7 @@
       "prompt": "/scribe-quiz Quiz me on Logistic Regression targeting prediction, diagnosis, and transfer—not just definitions",
       "expected_output": "Applies mastery-design 7-step progression across conditional multi-turn responses using only the clean vault note: treats wrong-answer causes as uncertain hypotheses until confirmed, and classifies valid correction of the defective threshold statement as note_conflict without editing the vault.",
       "files": [
-        "evaluations/fixtures/quizzes/logistic-regression/vault/Logistic Regression.md"
+        "evaluations/fixtures/quizzes/logistic-regression/vault/logistic-regression.md"
       ],
       "expectations": [
         "Asks one question per turn sampling prediction/diagnosis/transfer rather than bare recall",
@@ -396,15 +396,15 @@
     {
       "id": 38,
       "prompt": "/scribe-notes Create a revision pack for my existing Neural Networks vault notes focusing on documented weak areas without inventing past quiz scores",
-      "expected_output": "Applies revision-strategy read-only discovery over the realistic mini-vault: grounds citations in real headings inside Neural Networks.md, targets Weak Areas.md, avoids inventing quiz scores, and leaves unrelated vault notes untouched.",
+      "expected_output": "Applies revision-strategy read-only discovery over the realistic mini-vault: grounds citations in real headings inside neural-networks.md, targets weak-areas.md, avoids inventing quiz scores, and leaves unrelated vault notes untouched.",
       "files": [
-        "evaluations/fixtures/vaults/neural-networks/Neural Networks.md",
-        "evaluations/fixtures/vaults/neural-networks/Weak Areas.md",
-        "evaluations/fixtures/vaults/neural-networks/Unrelated Note - Git Basics.md"
+        "evaluations/fixtures/vaults/neural-networks/neural-networks.md",
+        "evaluations/fixtures/vaults/neural-networks/weak-areas.md",
+        "evaluations/fixtures/vaults/neural-networks/unrelated-git-basics.md"
       ],
       "expectations": [
-        "Resolves citations to actual headings in Neural Networks.md (e.g., [[Neural Networks#Backpropagation & Chain Rule]]) and targets documented gaps in Weak Areas.md",
-        "Never fabricates past learner quiz scores or touches Unrelated Note - Git Basics.md"
+        "Resolves citations to actual headings in neural-networks.md (e.g., [[neural-networks#Backpropagation & Chain Rule]]) and targets documented gaps in weak-areas.md",
+        "Never fabricates past learner quiz scores or touches unrelated-git-basics.md"
       ]
     },
     {
@@ -442,12 +442,12 @@
     {
       "id": 41,
       "prompt": "/scribe-audit Audit my existing Logistic Regression vault note read-only without rewriting it",
-      "expected_output": "Applies /scribe-audit in vault-only mode against Logistic Regression.md: identifies the threshold precision defect as confirmed Major without penalizing non-Scriptorium YAML, outputs structured finding(s) with location/severity/confidence/correction/verification, and performs zero file writes.",
+      "expected_output": "Applies /scribe-audit in vault-only mode against logistic-regression.md: identifies the threshold precision defect as confirmed Major without penalizing non-Scriptorium YAML, outputs structured finding(s) with location/severity/confidence/correction/verification, and performs zero file writes.",
       "files": [
-        "evaluations/fixtures/quizzes/logistic-regression/vault/Logistic Regression.md"
+        "evaluations/fixtures/quizzes/logistic-regression/vault/logistic-regression.md"
       ],
       "expectations": [
-        "Operates strictly read-only in vault-only mode with zero edits to Logistic Regression.md",
+        "Operates strictly read-only in vault-only mode with zero edits to logistic-regression.md",
         "Separates factual defects (threshold lowering increasing precision) from stylistic YAML differences using appropriate audit profiles",
         "Reports structured findings including severity, confidence (confirmed/suspected/unverifiable), exact correction, and verification method"
       ]

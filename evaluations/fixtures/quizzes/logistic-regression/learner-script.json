@@ -18,7 +18,7 @@
     },
     {
       "turn": 3,
-      "condition": "Threshold discussion or note_conflict probe against [[Logistic Regression#Classification Thresholds]]",
+      "condition": "Threshold discussion or note_conflict probe against [[logistic-regression#Classification Thresholds]]",
       "learner_reply": "Wait—your note says lowering the threshold from 0.50 to 0.30 predicts fewer positive cases and always increases precision, but classifying anything with p_hat >= 0.30 as positive must predict AT LEAST as many positives as 0.50, and can actually hurt precision!"
     }
   ]

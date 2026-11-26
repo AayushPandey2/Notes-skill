@@ -12,10 +12,10 @@ nexttopics: []
 
 # Logistic Regression — Machine Learning Lab
 
-This companion lab pairs with [[Logistic Regression]] under the explicit Python-only scope in `evaluation-spec.md`, progressing from a single exact gradient step to a complete $L_2$-regularized NumPy classifier with an objective matched to `scikit-learn 1.4.2`.
+This companion lab pairs with [[logistic-regression|Logistic Regression]] under the explicit Python-only scope in `evaluation-spec.md`, progressing from a single exact gradient step to a complete $L_2$-regularized NumPy classifier with an objective matched to `scikit-learn 1.4.2`.
 
 > [!info] Bundle Navigation
-> - **Theory:** [[Logistic Regression]] · **Mastery & Practice:** [[Logistic Regression - Cheatsheet & Interview Q&A]]
+> - **Theory:** [[logistic-regression|Logistic Regression]] · **Mastery & Practice:** [[logistic-regression-mastery|Logistic Regression - Cheatsheet & Interview Q&A]]
 
 ## Shared Problem & Reproducibility Contract
 

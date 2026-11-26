@@ -15,7 +15,7 @@ nexttopics: []
 *Scope note:* Covers binary logistic regression through $L_2$ regularization and threshold behavior (`12` targeted questions spanning all 10 mastery dimensions + `4` progressively faded problems, scaled proportionally to the single-chapter binary model scope).
 
 > [!info] Bundle Navigation
-> - **Theory:** [[Logistic Regression]] · **Lab:** [[Logistic Regression - Experimental Lab]]
+> - **Theory:** [[logistic-regression|Logistic Regression]] · **Lab:** [[logistic-regression-lab|Logistic Regression - Experimental Lab]]
 
 ## 1. Quick Reference & Formula Sheet
 

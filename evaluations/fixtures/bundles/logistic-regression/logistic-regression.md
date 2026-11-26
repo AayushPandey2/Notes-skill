@@ -556,7 +556,7 @@ $$
 
 The average fitted training probability equals the observed positive fraction for this unweighted fit. This equality alone says nothing about calibration across subgroups or prevalence in a shifted population.
 
-To match a library with summed loss, compare objectives before comparing parameters. For the unweighted L-BFGS setup in the [[Logistic Regression - Experimental Lab]], write the equivalent summed objective as $C\sum_i\ell_i+\|\mathbf w\|^2/2$. Divide by $mC$ to recover mean loss with a penalty coefficient of $1/(2mC)$.
+To match a library with summed loss, compare objectives before comparing parameters. For the unweighted L-BFGS setup in the [[logistic-regression-lab|Logistic Regression - Experimental Lab]], write the equivalent summed objective as $C\sum_i\ell_i+\|\mathbf w\|^2/2$. Divide by $mC$ to recover mean loss with a penalty coefficient of $1/(2mC)$.
 
 $$
 \boxed{C=\frac1{m\lambda}}
@@ -688,4 +688,4 @@ Softmax models mutually exclusive classes jointly. One-vs-rest instead fits a se
 
 **Trailing Notation Reference:** $m$ samples · $n$ features · $X \in \mathbb{R}^{m\times n}, \tilde{X} = [X,\mathbf{1}]$ · $\mathbf{w}, b, \boldsymbol{\theta}$ parameters · $z$ logit · $\sigma(z)$ sigmoid · $p_i, p_i$ probabilities · $y_i \in \{0,1\}$ targets · $\eta$ step size · $\lambda, C$ $L_2$ regularization parameters · $\tau$ threshold.
 
-- **Companions in this bundle:** [[Logistic Regression - Experimental Lab]] · [[Logistic Regression - Cheatsheet & Interview Q&A]]
+- **Companions in this bundle:** [[logistic-regression-lab|Logistic Regression - Experimental Lab]] · [[logistic-regression-mastery|Logistic Regression - Cheatsheet & Interview Q&A]]
