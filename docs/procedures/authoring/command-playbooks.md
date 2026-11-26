@@ -21,7 +21,7 @@ Dispatch each active public command or `/scribe-notes` internal branch cleanly�
 ### Command C — Comprehensive Learning (`M1` Deep Notes)
 - **Trigger:** Broad or first-principles deep-learning requests routed to `M1`.
 - **Inputs & Dependencies:** [adaptive-engine.md](adaptive-engine.md), [research-engine.md](../sourcing/research-engine.md), [teaching_core.md](../../../core/teaching_core.md), [math_gates.md](../../../core/math_gates.md).
-- **Execution & Review:** Plan concepts and depth, inspect evidence using [research guidance](../sourcing/research-engine.md), explain each displayed equation, work examples step by step, complete needed visuals through [representations.md](representations.md), generate the artifacts dictated by `artifact_policy` in [master-registry.yaml](../../dispatch/master-registry.yaml), and review saved Markdown and assets with [the manual checklist](../review/verification-checklist.md). Keep internal planning labels out of the note.
+- **Execution & Review:** Plan concepts and depth, inspect evidence using [research guidance](../sourcing/research-engine.md), connect mathematical milestones and verify derivations, work examples step by step, complete needed visuals through [representations.md](representations.md), generate the artifacts dictated by `artifact_policy` in [master-registry.yaml](../../dispatch/master-registry.yaml), and review saved Markdown and assets with [the manual checklist](../review/verification-checklist.md). Keep internal planning labels out of the note.
 
 ### Command D — Rapid Reference (`M3` Quick Reference / Variants)
 - **Trigger:** Cheat sheet, formula sheet, syntax table, or CLI command reference requests.

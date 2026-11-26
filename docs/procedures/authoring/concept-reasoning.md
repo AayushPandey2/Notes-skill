@@ -26,6 +26,6 @@ Assign one primary reasoning type (or sequence across sub-concepts) inside the i
 
 ## Concept & Equation Transitions
 
-Connect both **major concepts** and **individual mathematical equations** by the unresolved question, operation, or dependency motivating the next step:
+Connect concepts and equations through the question, operation or dependency that motivates the next step. Use those questions to plan, then write natural transitions in the note.
 - **Concept transitions:** Avoid presenting individually strong sections as disconnected islands (e.g., *linear score $\to$ odds $\to$ log-odds $\to$ sigmoid $\to$ sigmoid derivative $\to$ Bernoulli likelihood $\to$ BCE $\to$ gradient $\to$ convexity $\to$ optimization $\to$ regularization $\to$ threshold*).
 - **Equation-level transitions:** Replace vague leaps (*"Differentiating gives"*, *"Rearranging gives"*, *"Substituting gives"*, *"After simplification"*, *"Therefore, the objective is"*, *"The final matrix equation is"*) by naming: (1) the exact differentiation variable/rule or algebraic operation, (2) the source identity being substituted, (3) which factors cancel and why, (4) why the resulting expression measures the intended target, and (5) how scalar indices pack into vector/matrix dimensions and transposes. (Match granularity to learner mastery without omitting any step a derivation critically depends on.)

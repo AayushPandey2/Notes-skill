@@ -20,7 +20,7 @@ Open with line-1 YAML frontmatter matching the active profile, a discipline-appr
 | **History / Humanities** | Chronology, key actors/concepts, arguments & interpretations | Primary-source evaluation, argument critique & comparison |
 
 - Present table-friendly rules in two-column `Concept | Formula / Rule` tables (using `$...$` inline math, escaping literal pipes, stating units/conditions).
-- Present multi-line rules or derivations in separate-line `$$...$$` blocks followed by `> [!example]- Understand this formula step by step` ([math_gates.md](../../../core/math_gates.md), non-recursive inside folds).
+- Display multi-line reasoning in separate-line `$$...$$` blocks. Link to canonical derivations in compact references and show needed transformations directly inside worked answers ([math_gates.md](../../../core/math_gates.md)).
 
 ### Section 2 — Tiered Interview / Viva Questions & Answers (Tap-to-Reveal)
 Default to **30 high-yield questions** for comprehensive topics (scaling count naturally to actual topic scope), sampling across the ten mastery dimensions in [mastery-design.md](mastery-design.md) (`Recognition`, `Explanation`, `Prediction`, `Diagnosis`, `Discrimination`, `Critique`, `Transfer`, etc.), and **compute tier headings dynamically** to match the actual question count:

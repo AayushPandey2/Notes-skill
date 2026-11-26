@@ -24,6 +24,6 @@ Follow [representations.md](../../procedures/authoring/representations.md) condi
 1. **YAML & Title:** Standard Obsidian Properties (`topic`, `tags`, `master_topic`, `domain`, `note_type: video-notes`, plus optional `id`, `aliases`, `source_refs`) per [properties-policy.md](../../properties/properties-policy.md) + `# <Video Title>`.
 2. **Source Identification & Access Status:** Concise callout with presenter/channel, video URL, duration, and `access_state`.
 3. **What the Video Explains:** Brief orientation + internal clickable TOC for longer videos.
-4. **Timestamped Topic Sections:** Layered explanations anchored to `[MM:SS]` or `[HH:MM:SS](https://www.youtube.com/watch?v=<VIDEO_ID>&t=<seconds>s)` links, keeping `> [!example]- Understand this formula step by step` under coherent top-level equations and honest static-review labels on any code.
+4. **Timestamped Topic Sections:** Layered explanations anchored to `[MM:SS]` or `[HH:MM:SS](https://www.youtube.com/watch?v=<VIDEO_ID>&t=<seconds>s)` links, applying [math_gates.md](../../../core/math_gates.md) to timestamped mathematical reasoning units within transcription and source permissions, and keeping honest static-review labels on any code.
 5. **Final Synthesis & Reasoning Checks:** Core takeaways + reasoning checks with separately collapsed `> [!tip]- Answer`.
 6. **References & Playlist Navigation:** Source link, supplementary image attributions, and playlist navigation when applicable.

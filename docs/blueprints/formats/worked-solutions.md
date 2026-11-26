@@ -24,7 +24,7 @@
 For each problem (`### Problem <k>: <Short Title>`), include the needed elements:
 1. **Problem Statement, Given & Objective:** Exact statement, known values/constraints, and target.
 2. **Method Selection & Preconditions:** Why this rule/theorem/strategy applies and confirmation of hypotheses (e.g., distinguishing stationary points from extrema).
-3. **Intermediate Steps & Reasoning:** Numbered transitions with explicit justification at every non-obvious step ([math_gates.md](../../../core/math_gates.md) when quantitative).
+3. **Intermediate Steps & Reasoning:** Show and justify every consequential step in the solution, keeping it within the existing answer fold when the format uses one. Use numbered transitions where they help the reader follow the method ([math_gates.md](../../../core/math_gates.md) when quantitative).
 4. **Final Result:** Clearly stated conclusion (boxed numerical answer with units *when numeric*; valid conclusion/proof/design otherwise).
 5. **Independent Verification:** Run the mode-appropriate verification from the table above.
 6. **Deepening Extensions** *(when pedagogically valuable)*: **Alternative method**, **Incorrect solution analysis**, and **Transfer variation**.

@@ -30,7 +30,7 @@ Reconstruct every significant accessible source section in verified source order
   1. *Source-faithful paraphrase:* Explain what the supplied material establishes in its terminology and order.
   2. *Source-supported reasoning:* Unpack skipped transitions using information already present in the supplied source.
   3. *External educational addition:* Add outside prerequisite bridges or context **only when `source_policy` permits** (labeled `[Educational Addition]`). Under `strict` source mode, an essential missing prerequisite becomes an **explicitly identified gap** rather than an outside insertion.
-- **Examples, figures & equations:** Keep important source examples beside the concepts they support; decode source figures (or permitted supplementary visuals) via [representations.md](../../procedures/authoring/representations.md); pair coherent top-level `$$...$$` equations with `> [!example]- Understand this formula step by step` ([math_gates.md](../../../core/math_gates.md)).
+- **Examples, figures & equations:** Keep important source examples beside the concepts they support; decode source figures (or permitted supplementary visuals) via [representations.md](../../procedures/authoring/representations.md); organize substantive equations into reasoning units with visible milestones and descriptive derivation folds where warranted ([math_gates.md](../../../core/math_gates.md)).
 - **Separate source claims from corrections & local misconceptions:** Preserve original claims with locators (`page`/`section`/`timestamp`) and present permitted evidence-based corrections separately alongside inline misconception notes.
 
 ## 3. How do I carry out the method or solve a problem? (Integrated Procedures & Worked Examples)

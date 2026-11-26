@@ -11,7 +11,7 @@ Run a **read-only quality audit** over existing Obsidian vault learning notes an
 
 ## Inputs, Source-Research Mode & Inspection Discipline
 
-- **Inputs:** Target note, bundle, folder path, or topic scope, plus the configured vault root from [pre-gen-gate.md](../../docs/procedures/authoring/pre-gen-gate.md).
+- **Inputs:** An explicitly supplied draft, or a target note, bundle, folder path, or topic scope within the configured vault from [pre-gen-gate.md](../../docs/procedures/authoring/pre-gen-gate.md).
 - **Source-research mode:** Default strictly to **vault-only inspection** (no unrequested external web research). Allow external source verification only when the user explicitly permits/requests external checking or supplies reference material.
 - **Content & visual inspection:** Read matching vault notes, linked bundle companions, and referenced local image assets via visual inspection before judging diagram correspondence or readability; never create scripts, edit vault files by default, or execute note code on the host.
 
@@ -27,6 +27,8 @@ Select the applicable audit profile(s) so an imported lecture note, compact refe
 | **Scriptorium conformance** | Compliance with Scriptorium YAML, clickable TOC, formula folds, and `artifact_plan` rules *(apply only when auditing native Scriptorium notes or explicitly requested)* |
 | **Bundle** | Cross-artifact consistency in notation, objective scaling, claims, and learning objectives |
 | **Currency** | Version-sensitive library, API, framework, or standard claims flagged for verification |
+
+For substantive mathematics, use [math_gates.md](../../core/math_gates.md) and [adversarial-theory-review.md](../../docs/procedures/review/adversarial-theory-review.md). Inspect the argument with folds closed, then check the actual derivation steps and conditions. When a strict source omits needed reasoning, identify the gap and distinguish repairs supported by the supplied text from additions that need permission.
 
 ## Output Structure & Actionable Findings
 
@@ -48,5 +50,5 @@ finding:
 
 ## Failure Handling
 
-- If the vault path is unconfigured or target notes are missing/unreadable, return `blocked` (or report missing coverage) cleanly without fabricating findings.
+- If a required vault path is unconfigured or target inputs are missing or unreadable, return `blocked` (or report missing coverage) cleanly without fabricating findings.
 - Do not claim unperformed code execution, uninspected image verification, unauthorized external lookups, or live Obsidian UI rendering checks.

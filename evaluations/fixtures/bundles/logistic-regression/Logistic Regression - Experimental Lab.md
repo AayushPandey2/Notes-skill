@@ -12,7 +12,7 @@ nexttopics: []
 
 # Logistic Regression — Machine Learning Lab
 
-This companion lab pairs with [[Logistic Regression]] under the explicit Python-only scope in `evaluation-spec.md`, progressing from a single exact gradient step to a complete $L_2$-regularized NumPy classifier matched identically against `scikit-learn 1.4.2`.
+This companion lab pairs with [[Logistic Regression]] under the explicit Python-only scope in `evaluation-spec.md`, progressing from a single exact gradient step to a complete $L_2$-regularized NumPy classifier with an objective matched to `scikit-learn 1.4.2`.
 
 > [!info] Bundle Navigation
 > - **Theory:** [[Logistic Regression]] · **Mastery & Practice:** [[Logistic Regression - Cheatsheet & Interview Q&A]]
@@ -90,19 +90,21 @@ def predict(X_in: np.ndarray, w: np.ndarray, b: float, threshold: float = 0.5) -
 ### Visible Mechanism, Trace & Numerical Failure Analysis
 
 - **Step-1 manual check (author-derived / manual_arithmetic / statically_reviewed):** At iteration 0 (`w = [0.0], b = 0.0, lam = 0.05, lr = 1.0`), `z = [0, 0, 0, 0]`, `p = [0.5, 0.5, 0.5, 0.5]`, `obj_0 = 0.693147`, `grad_w = [-0.75]`, and `grad_b = 0.0`, producing `w_1 = [0.75], b_1 = 0.0`. At iteration 1 (`w = [0.75], b = 0.0`), `p ≈ [0.1824, 0.3208, 0.6792, 0.8176]`, `bce ≈ 0.294142`, and `0.5 * 0.05 * 0.75**2 = 0.014063`, giving regularized `obj_1 ≈ 0.308205`.
-- **Stopping & edge behavior:** Checking Euclidean gradient norm against `grad_tol` halts near the strictly convex unique minimum when $\lambda > 0$, whereas setting `lr` too high causes oscillatory objective spikes.
+- **Stopping & edge behavior:** Checking Euclidean gradient norm against `grad_tol` is a stopping criterion. The shared fixture has both classes and $\lambda > 0$, so it has a unique finite minimum. Setting `lr` too high can cause oscillation or objective increases.
 
 > [!example]- Understand this implementation: step-by-step A–G walkthrough and subtraction cancellation trap
 > - **A. Setup & shapes:** `X_arr` has shape `(m, n) = (4, 1)`, `w` has shape `(1,)`, and matrix multiply `X_arr @ w + b` broadcasts scalar `b` cleanly across rows.
 > - **B. Mechanism:** Adding `lam * w` strictly inside `grad_w` (leaving `grad_b` unregularized) matches $J_\lambda(\mathbf{w}, b) = J(\mathbf{w}, b) + \frac{\lambda}{2}\|\mathbf{w}\|_2^2$.
-> - **C–D. Stability comparison on $z = 50, y = 1$:** Naive `np.logaddexp(0.0, 50.0) - 50.0` cancels `~50.0 - 50.0` and loses precision near `2e-16`, whereas `(1 - 2*1)*50 = -50` evaluates `np.logaddexp(0.0, -50.0) = np.log1p(exp(-50.0)) ≈ 1.93e-22` directly with full `float64` relative accuracy.
+> - **C–D. Stability comparison on $z = 50, y = 1$:** Naive `np.logaddexp(0.0, 50.0) - 50.0` cancels `~50.0 - 50.0` and rounds to zero, whereas `(1 - 2*1)*50 = -50` evaluates `np.logaddexp(0.0, -50.0) = np.log1p(exp(-50.0)) ≈ 1.93e-22` directly without subtracting two nearly equal numbers.
 > - **E–G. Limits & failure repair:** `sigmoid(z)` with `np.exp(-z)` inside `np.where` overflows at `z = -1000` before selecting the safe branch; `np.exp(-np.abs(z))` eliminates overflow across all finite inputs.
 
 ---
 
 ## Track 2 — Identical $L_2$ Objective in `scikit-learn 1.4.2` (L-BFGS Solver)
 
-To align Track 2 directly with Track 1's `fit_logistic_l2`, match `scikit-learn 1.4.2`'s unnormalized sum objective $J_{\text{sk}}(\mathbf{w}, b) = C \sum_{i=1}^m \ell(z_i, y_i) + \frac{1}{2}\|\mathbf{w}\|_2^2$ via $C = \frac{1}{m\lambda}$. For $m = 4$ and $\lambda = 0.05$, `C = 1.0 / (4 * 0.05) = 5.0`.
+To align Track 2 directly with Track 1's `fit_logistic_l2`, match `scikit-learn 1.4.2`'s unnormalized sum objective $J_{\text{sk}}(\mathbf{w}, b) = C \sum_{i=1}^m \ell(z_i, y_i) + \frac{1}{2}\|\mathbf{w}\|_2^2$ via $C = \frac{1}{m\lambda}$. The pinned implementation uses this equivalent penalty scaling. [scikit-learn 1.4.2 L-BFGS setup](https://github.com/scikit-learn/scikit-learn/blob/1.4.2/sklearn/linear_model/_logistic.py#L411-L422)
+
+For $m = 4$ and $\lambda = 0.05$, `C = 1.0 / (4 * 0.05) = 5.0`.
 
 Unlike fixed-step gradient descent, `lbfgs` (Limited-memory BFGS) uses recent parameter and gradient differences to approximate inverse Hessian curvature along search directions with a line search, reducing step oscillation along steep-vs.-flat weight directions without needing manual step-size tuning `lr` on convex smooth problems (though finite-iteration agreement still depends on both solvers' gradient tolerances).
 
@@ -127,17 +129,27 @@ def precision_and_recall(p_hat: np.ndarray, y_true: np.ndarray, tau: float) -> t
     tp = int(np.sum((preds == 1) & (y_true == 1)))
     fp = int(np.sum((preds == 1) & (y_true == 0)))
     fn = int(np.sum((preds == 0) & (y_true == 1)))
-    return tp / (tp + fp), tp / (tp + fn)
+    # This example reports 0.0 when a denominator is zero.
+    precision = tp / (tp + fp) if tp + fp else 0.0
+    recall = tp / (tp + fn) if tp + fn else 0.0
+    return precision, recall
+
+# Run this block after Track 1 to compare the fitted parameters.
+w_fit, b_fit, _ = fit_logistic_l2(X, y_cls, lam=lam)
+np.testing.assert_allclose(w_fit, clf.coef_[0], atol=1e-6, rtol=0)
+np.testing.assert_allclose(b_fit, clf.intercept_[0], atol=1e-6, rtol=0)
+np.testing.assert_allclose(precision_and_recall(probs, y_eval, 0.50), (0.75, 1.0))
+np.testing.assert_allclose(precision_and_recall(probs, y_eval, 0.70), (0.50, 1 / 3))
 ```
 
 | Property | Track 1 (`fit_logistic_l2` NumPy) | Track 2 (`scikit-learn 1.4.2` `lbfgs`) |
 |---|---|---|
 | **Loss scaling** | Mean BCE over $m$ ($\frac{1}{m}\sum \ell_i$) | Summed BCE weighted by $C$ ($C\sum \ell_i$) |
 | **Regularization parameter** | $\lambda = 0.05$ | $C = \frac{1}{m\lambda} = 5.0$ (never `1 / lam = 20.0`) |
-| **Intercept treatment** | `grad_b` unpenalized | Unpenalized unless regularized intercept scaling applies |
+| **Intercept treatment** | `grad_b` unpenalized | Unpenalized for this L-BFGS setup |
 | **Expected converged params** | Unique finite $(\mathbf{w}^*, b^*)$ ($\|\nabla J_\lambda\| < 10^{-8}$) | Same minimizer within solver convergence tolerances |
 
-- **Threshold evaluation check (author-derived / manual_arithmetic / statically_reviewed):** Running `precision_and_recall(probs, y_eval, 0.50)` yields `(0.75, 1.00)`, whereas `precision_and_recall(probs, y_eval, 0.70)` yields `(0.50, 1/3)`, confirming in code that raising $\tau$ lowers precision here because true positives ($0.65, 0.55$) were filtered out before false positive ($0.85$).
+- **Threshold evaluation check (author-derived / manual_arithmetic / statically_reviewed):** Running `precision_and_recall(probs, y_eval, 0.50)` yields `(0.75, 1.00)`, whereas `precision_and_recall(probs, y_eval, 0.70)` yields `(0.50, 1/3)`, illustrating that raising $\tau$ lowers precision here because true positives ($0.65, 0.55$) were filtered out before false positive ($0.85$).
 
 > [!example]- Understand this realization: diagnosing regularization drift and L-BFGS limits
 > Passing `C = 1 / lam = 20.0` makes `scikit-learn`'s penalty $m = 4$ times weaker than `fit_logistic_l2(..., lam=0.05)`, producing systematically larger $\|\mathbf{w}\|$ even when both solvers reach gradient zero. On high-dimensional problems with tiny sample counts, omitting `C = 1/(m*lam)` prevents meaningful cross-track comparison.

@@ -24,14 +24,16 @@ artifact_plan:
 
 - **Collection level** *(only when bundled or multi-chapter)*: `notation`, `canonical_definitions`, `shared_fixtures`, `concept_ownership` ([knowledge-consistency.md](knowledge-consistency.md)).
 - **Concept level:** `concept_id`, **`learning_objective`** (required anchor for reasoning, examples, coverage, mastery, and verification), `role` (`prerequisite`, `core`, `extension`, `advanced`), `dependencies`, `knowledge_type`, `primary_subject` (+ selective secondary support), `concept_reasoning` ([concept-reasoning.md](concept-reasoning.md)), `depth` (unified `0–5` + separate `math_profile`), `example_roles` ([example-engineering.md](../../blueprints/components/example-engineering.md)), `evidence_locators`, and `completion_condition`.
-- **Internal mathematical dependency record *(only for derivable/formal relationships—never emit to vault YAML)*:**
+- **Internal mathematical dependency record *(for consequential formal relationships, kept out of vault YAML)*:**
 
 ```yaml
 mathematical_relationship:
   formula_id: <id>
-  role: <derived_relationship | identity | definition | assumption | theorem>
+  role: <derived_relationship | identity | definition | assumption | theorem | approximation | empirical_law | algorithm_update | metric>
   dependencies: [<prereq-formula-or-identity-ids>]
-  derivation_required: <true | false>
+  reasoning_unit: <objective shared by connected equations>
+  visible_milestones: [<essential intermediate results>]
+  derivation_location: <local-fold | visible-solution | canonical-reference | source-gap | inapplicable>
   verification: [<algebraic-consistency | numerical-example | shape-consistency>]
   canonical_section: <Heading Anchor>
 ```

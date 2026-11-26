@@ -49,10 +49,13 @@ Search drafts for these explanatory failure modes without emitting a visible che
 
 ### Mathematical Derivation Defects (Internal Review Criteria)
 
-A **core derivation missing from a comprehensive theory note counts as a `Major` defect requiring repair**, even if the final stated formula happens to be correct:
+Read the draft twice, first with formula folds closed to check the visible argument, then with them open to inspect each consequential step. A missing core derivation in comprehensive theory is a `Major` defect even when the formula is correct. If the source policy forbids filling the gap, identify the missing source material and repair the visibility or attribution within the authorized scope.
 
 | Mathematical Defect | Required Repair |
 |---|---|
+| **Fold-only reasoning** | Restore assumptions, milestones and conclusions to the visible argument |
+| **Fragmented reasoning** | Group connected equations under one objective and give their operations explanatory transitions |
+| **Definition treated as theorem** | Identify the stipulation and motivate its meaning |
 | **Missing derivation** | Construct the formula completely from established principles/identities |
 | **Algebraic teleportation** | Restore missing intermediate transformations inside the formula fold |
 | **Unexplained cancellation** | Explain explicitly which factors cancel and why |

@@ -28,7 +28,7 @@ Resolve overlapping policies by **responsibility** (preset specialization overri
 | **Source restrictions** | Active `source_policy` and granular permissions ([source-fidelity.md](docs/procedures/sourcing/source-fidelity.md)) |
 | **Requested deliverables** | Explicit user request and `artifact_policy` ([master-registry.yaml](docs/dispatch/master-registry.yaml)) |
 | **Format specialization** | Selected preset (`docs/blueprints/presets/`) overrides parent master (`docs/blueprints/formats/`) defaults |
-| **Mathematical correctness** | [math_gates.md](core/math_gates.md) and subject truth |
+| **Mathematical correctness** | [math_gates.md](core/math_gates.md) and subject truth (visible reasoning and complete derivations within source permissions) |
 | **Subject coverage** | Primary and selectively merged secondary subject profiles ([subject-registry.yaml](docs/dispatch/subject-registry.yaml)) |
 | **Presentation** | [authoring_rules.md](core/authoring_rules.md) and active format |
 | **Optional teaching methods** | [teaching_core.md](core/teaching_core.md), [theory_quality_contract.md](core/theory_quality_contract.md), and concept plan |

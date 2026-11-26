@@ -9,19 +9,19 @@
       "expectations": [
         "Routes through /scribe-notes to master M1 (deep-notes) with no pre-generation knowledge quiz and zero generated scripts",
         "Introduces plain-language motivation and intuition before displayed equations",
-        "Every top-level display math $$...$$ block is immediately followed by '> [!example]- Understand this formula step by step' (without recursive nested folds inside the walkthrough)",
+        "Each principal result needing a local walkthrough is followed by '> [!example]- Understand this formula step by step' (without recursive nested folds inside the walkthrough)",
         "Uses only visually inspected local images with checked rights and attribution, or reports why a suitable image was unavailable"
       ]
     },
     {
       "id": 2,
       "prompt": "/scribe-ytnotes Build structured study notes from this lecture video with timestamps, equations, and downloaded web diagrams: https://www.youtube.com/watch?v=aircAruvnKk",
-      "expected_output": "Uses the /scribe-ytnotes transcript-first workflow, produces one self-contained note with no experimental lab, reports explicit access_state honestly, downloads and inspects complementary web raster visuals under assets/scriptorium/<video-id>/, and places collapsible formula folds directly beneath displayed math.",
+      "expected_output": "Uses the /scribe-ytnotes transcript-first workflow, produces one self-contained note with no experimental lab, reports explicit access_state honestly, downloads and inspects complementary web raster visuals under assets/scriptorium/<video-id>/, and places collapsible formula folds after principal results.",
       "files": [],
       "expectations": [
         "Uses /scribe-ytnotes video-notes format without splitting one video into multiple files or creating an experimental lab",
         "Records explicit video access_state honestly without playing or capturing video frames",
-        "Attaches '> [!example]- Understand this formula step by step' directly under top-level displayed equations"
+        "Attaches '> [!example]- Understand this formula step by step' after principal results"
       ]
     },
     {
@@ -119,7 +119,7 @@
       "expectations": [
         "Explicitly contrasts ideal-gas assumptions with refined intermolecular/volume-corrected real-gas behavior",
         "Distinguishes heat from temperature and classifies laws, models, and approximations accurately",
-        "Attaches '> [!example]- Understand this formula step by step' beneath top-level displayed equations without recursive nested folds"
+        "Attaches '> [!example]- Understand this formula step by step' after principal results without recursive nested folds"
       ]
     },
     {
@@ -455,12 +455,13 @@
     {
       "id": 42,
       "prompt": "/scribe-notes Derive softmax probabilities, the softmax Jacobian, and the categorical cross-entropy gradient cleanly from first principles",
-      "expected_output": "Applies Mandatory Derivation Contract in dependency order: motivates log-linear multi-class scores, derives softmax derivatives for i=j and i!=j before deriving cross-entropy gradient, and proves scalar-to-vectorized batch Jacobian/gradient dimensions explicitly.",
+      "expected_output": "Applies continuous mathematical reasoning policy in dependency order: motivates log-linear multi-class scores, derives softmax derivatives for i=j and i!=j before deriving cross-entropy gradient, and justifies Jacobian and batch gradient dimensions explicitly.",
       "files": [],
       "expectations": [
         "Derives softmax partial derivatives before invoking them inside categorical cross-entropy differentiation",
         "Completes full intermediate algebra inside '> [!example]- Understand this formula step by step' folds without 'rearranging gives' skips",
-        "Demonstrates scalar -> per-class index -> vectorized matrix/batch gradient dimensions explicitly"
+        "Assembles the Jacobian from indexed partial derivatives, justifies its dimensions and relates the per-example result to the batch gradient",
+        "With folds removed, the model, normalization, derivative milestones and gradient remain connected in dependency order"
       ]
     },
     {
@@ -470,13 +471,14 @@
       "files": [],
       "expectations": [
         "Derives the differential equation from KVL and constituent laws before solving step by step via separation of variables",
-        "Explains every term of V_C(t) = V_s(1 - e^{-t/(RC)}) including initial/steady-state limits and safe 5V benchmark checks"
+        "Explains every term of V_C(t) = V_s(1 - e^{-t/(RC)}) including initial/steady-state limits and safe 5V benchmark checks",
+        "Keeps the loop law, first-order ODE, role of initial conditions and physical interpretation visible with folds closed"
       ]
     },
     {
       "id": 44,
       "prompt": "/scribe-notes Derive Newton-Raphson root finding from Taylor expansion and analyze when quadratic convergence holds or fails",
-      "expected_output": "Applies Mandatory Derivation Contract in numerical computing: constructs tangent-line iteration from first-order Taylor expansion, derives error recurrence e_{k+1} ~ (f''(r)/(2f'(r))) e_k^2 under simple-root hypotheses, and analyzes multiple roots and near-zero derivatives.",
+      "expected_output": "Applies continuous mathematical reasoning policy in numerical computing: constructs tangent-line iteration from first-order Taylor expansion, derives error recurrence e_{k+1} ~ (f''(r)/(2f'(r))) e_k^2 under simple-root hypotheses, and analyzes multiple roots and near-zero derivatives.",
       "files": [],
       "expectations": [
         "Derives Newton-Raphson iteration explicitly from f(x_k + h) approx f(x_k) + f'(x_k)h = 0 rather than asserting the formula",
@@ -485,15 +487,49 @@
     },
     {
       "id": 45,
-      "prompt": "/scribe-audit Review a draft note containing correct formulas without derivations, a 'proof' of a stipulated definition, and essential concepts buried inside callouts under strict-source constraints",
-      "expected_output": "Applies negative mathematical-review criteria: flags missing core derivations as Major even with correct formulas, catches circular 'proof' of a definition, flags callout-only hiding of essential prose, and respects strict-source limits without inventing unauthorized external derivations.",
+      "prompt": "/scribe-audit Audit my attached comprehensive note about the two-sample averaging filter. Stay read-only and use the supplied draft only. Explain which passages require repair and whether each repair follows from the supplied content.",
+      "expected_output": "Identifies the missing alternating-input derivation, circular proof of the filter definition, and interpretation hidden in a fold. Distinguishes reconstructible local repairs from external additions.",
       "files": [
-        "evaluations/fixtures/sources/strict-lecture-paragraphs.md"
+        "evaluations/fixtures/blind/averaging-filter-flawed.md"
       ],
       "expectations": [
-        "Flags missing core derivations in comprehensive theory as Major defects even when stated equations are accurate",
-        "Distinguishes stipulated definitions from provable theorems and rejects hiding essential reasoning inside folds",
-        "Respects strict-source boundaries when reviewing or recommending repairs"
+        "Identifies the missing previous-sample sign relation and substitution even though the stated zero output is correct",
+        "Identifies the circular proof of the stipulated equal-weight average",
+        "Locates the constant-versus-alternating comparison inside the informational callout and recommends exposing it",
+        "Keeps the draft read-only and proposes only source-supported repairs"
+      ]
+    },
+    {
+      "id": 46,
+      "prompt": "/scribe-notes Turn the attached rotational energy excerpt into a single study note. Use only what the excerpt actually states, with no additional derivations or outside sources.",
+      "expected_output": "Retains the fixed-axis condition and doubling example, marks the derivation as absent from the supplied material, and writes only the main note.",
+      "files": [
+        "evaluations/fixtures/sources/strict-rotational-energy.md"
+      ],
+      "expected_artifacts": {
+        "required": [
+          "main_note"
+        ],
+        "forbidden": [
+          "experimental_lab",
+          "mastery_pack"
+        ]
+      },
+      "expectations": [
+        "States the meaning of K, I and angular speed and retains the fixed-axis assumption",
+        "Identifies the missing derivation without inventing a particle model or adding external sources",
+        "Preserves the fixed-inertia fourfold energy change and emits only the requested note"
+      ]
+    },
+    {
+      "id": 47,
+      "prompt": "/scribe-notes Give me one worked solution, without a companion, for this problem. For real symmetric A, derive the Rayleigh quotient stationarity condition on the unit sphere using Lagrange multipliers. Verify one stationary point for diag(2,5).",
+      "expected_output": "Routes to M4 and derives the matrix-native stationarity condition within the worked solution, with an explicit multiplier convention and a valid check.",
+      "files": [],
+      "expectations": [
+        "Explains the unit sphere constraint and reaches A v = lambda v via the gradient of v^T A v for symmetric A",
+        "Gives consequential steps in the worked solution without requiring artificially scalar prerequisites or nested formula folds",
+        "Checks a unit eigenvector and its corresponding quotient for diag(2,5)"
       ]
     }
   ]
