@@ -1,6 +1,6 @@
 # Direct-Authoring Workflow, Layer Activation & Graceful Degradation
 
-The [authoring rule in the root skill](../SKILL.md#scriptorium) governs every note-creation route. Educational code in a note is lesson content, never a note builder. Respect active safety and authorization boundaries continuously throughout every step—never treat them solely as end-of-pipeline checks.
+The [authoring rule in the root skill](../SKILL.md#scriptorium) governs every note-creation route. During normal note authoring, never create or execute custom scripts, builders, or note code (trusted standalone verification scripts under `evaluations/` are strictly development-only tooling). Respect active safety and authorization boundaries continuously throughout every step—never treat them solely as end-of-pipeline checks.
 
 ## 1. Execution Sequence
 

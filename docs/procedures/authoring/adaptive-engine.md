@@ -41,7 +41,17 @@ mathematical_relationship:
 For comprehensive independent notes or unfamiliar disciplines, populate records via [curriculum-discovery.md](curriculum-discovery.md) (within active `source_permissions`) and [subject-theory-profiles.md](../../blueprints/components/subject-theory-profiles.md). Apply the **two-dimension prerequisite policy** (`importance` × `learner status`) in [teaching_core.md](../../../core/teaching_core.md).
 
 ### Scope & Resource-Budget Planning
-Before drafting, estimate total intellectual burden from: **core concept count, target depth, source complexity, artifact count, mathematical derivation load, practical implementation load, and distinct visual needs**.
+Scale internal planning ceremony proportionally to request complexity rather than applying full chapter machinery to a 10-minute topic:
+
+| Request Scope | Required Internal Plan Elements |
+|---|---|
+| **Single definition / card** | Learning objective + concrete example/counterexample |
+| **Single algorithm / method** | Prerequisites, governing mechanism, step trace, failure conditions |
+| **Complete chapter (`M1`/`M2`)** | Concept dependency graph, mathematical dependency order, coverage plan |
+| **Multi-chapter collection** | Shared notation scope ledger, canonical concept ownership registry |
+| **High-risk / disputed topic** | Claim-level evidence locators and verification plan |
+
+Before drafting broad curricula, estimate total intellectual burden from: **core concept count, target depth, source complexity, artifact count, mathematical derivation load, practical implementation load, and distinct visual needs**.
 - For focused requests, finish the complete learning unit at full target depth.
 - For broad collections, partition cleanly at natural conceptual boundaries and verify completed chapters—if resource or context limits prevent finishing the entire curriculum, **disclose exactly what remains incomplete** rather than silently thinning later chapters or claiming full coverage.
 

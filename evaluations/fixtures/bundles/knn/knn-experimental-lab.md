@@ -47,24 +47,40 @@ def nearest(rows, query, k, scales):
 
 
 def aggregate(neighbors, inverse_distance=False):
-    exact_match = any(distance == 0 for distance, *_ in neighbors)
-    # Multiplying every positive inverse-distance weight by the minimum
-    # distance leaves votes and means invariant and keeps weights <= 1.
-    reference = neighbors[0][0]
+    if not neighbors:
+        raise ValueError("neighbors must be non-empty")
+    distances = [row[0] for row in neighbors]
+    targets = [row[3] for row in neighbors]
+    if not all(isfinite(d) and d >= 0 for d in distances):
+        raise ValueError("Neighbor distances must be finite and non-negative")
+    if not all(isfinite(t) for t in targets):
+        raise ValueError("Regression targets must be finite")
+
+    exact_match = any(d == 0 for d in distances)
+    # Multiplying positive inverse-distance weights by the minimum distance
+    # keeps weights in (0, 1], and normalizing weights before multiplying targets
+    # prevents overflow on large finite targets.
+    reference = min(distances)
+    raw_weights = []
+    for distance in distances:
+        if not inverse_distance:
+            raw_weights.append(1.0)
+        elif exact_match:
+            raw_weights.append(float(distance == 0))
+        else:
+            raw_weights.append(reference / distance)
+
+    weight_sum = sum(raw_weights)
+    if not isfinite(weight_sum) or weight_sum <= 0:
+        raise ValueError("Neighbor weight sum must be finite and positive")
+
     totals = {}
     weighted_target = 0.0
-    for distance, _, label, target in neighbors:
-        if not inverse_distance:
-            weight = 1.0
-        elif exact_match:
-            weight = float(distance == 0)
-        else:
-            weight = reference / distance
+    for weight, (_, _, label, target) in zip(raw_weights, neighbors):
         totals[label] = totals.get(label, 0.0) + weight
-        weighted_target += weight * target
-    weight_sum = sum(totals.values())
+        weighted_target += (weight / weight_sum) * target
     winner = min(totals, key=lambda label: (-totals[label], label))
-    return winner, weighted_target / weight_sum
+    return winner, weighted_target
 
 
 weighted_fixture = [

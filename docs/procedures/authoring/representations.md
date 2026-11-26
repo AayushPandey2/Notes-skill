@@ -51,9 +51,9 @@ Track `Specification defined -> Native tool rendered -> Values/labels inspected 
 ### Adaptive Width & Multimedia Hygiene (Both Paths)
 - Choose display width from legibility, intrinsic dimensions, and layout (`![[assets/<name>.png|650]]` default; compact for small components, wider for dense circuits/graphs). Place explanations beside the element they explain, keep labels/symbols consistent with prose, never rely exclusively on color, omit decorative visual clutter, and separate embed, concise 1-sentence caption, and **ordinary Markdown** attribution (`Source: [Exact Source Page Title](url). Attribution and license: <verified info>.` or `Source: Author-created illustration for this note's running example.` — zero raw HTML) with blank lines.
 
-## 4. Diagram-to-Model Narrative & Six-Phase Visual Teaching
+## 4. Diagram-to-Model Narrative (Scaled to Figure Complexity)
 
-Teach every embedded figure in calm, takeaway-driven prose (avoid commanding phrasing like `"Inspect Figure 4"` and never overclaim what a plot proves):
+Teach every embedded figure in calm, takeaway-driven prose (avoid commanding phrasing like `"Inspect Figure 4"` and never overclaim what a plot proves), scaling narrative weight cleanly to visual complexity—a simple curve may need two clear sentences connecting axes and shape to the model, whereas a multi-stage architecture or circuit diagram warrants full element decoding, concrete tracing, and a conceptual checkpoint:
 1. **Set the question (1–2 sentences):** State what conceptual point the visual clarifies.
 2. **Show & attribute:** Embed the inspected image, caption, and ordinary Markdown source line.
 3. **Decode elements & diagram-to-model correspondence:** Connect every axis, node, branch, arrow, or curve directly to the underlying variables, equations, or physical/computational mechanism without relying on color alone, bridging any notation shifts.

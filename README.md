@@ -1,6 +1,6 @@
 # Scriptorium
 
-**Scriptorium** is an instruction-and-reference-only agentic skill for authoring, organizing, and reviewing **Obsidian Markdown learning notes**. It consists purely of declarative Markdown instructions, templates, domain subtemplates, and routing metadata—with zero custom Python/JavaScript runtimes, download scripts, or build dependencies.
+**Scriptorium** is an instruction-and-reference-only agentic skill for authoring, organizing, and reviewing **Obsidian Markdown learning notes**. The core skill (`SKILL.md`, `core/`, `docs/`, `skills/`) consists purely of declarative Markdown instructions, templates, domain subtemplates, and routing metadata—with zero build dependencies or script-based note generators—while standalone development-only validation scripts live separately under `evaluations/` (`verify_knn_bundle.py`, `verify_logistic_bundle.py`).
 
 ---
 
@@ -70,7 +70,7 @@ Root orchestration starts at [SKILL.md](SKILL.md) (using **responsibility-based 
   - [video-notes.md](docs/blueprints/formats/video-notes.md) — Single-file, transcript-first notes with conditional web visuals for `/scribe-ytnotes`
 - **Knowledge-Type Subtemplates (`domains/`):** [conceptual.md](docs/blueprints/domains/conceptual.md), [mathematical.md](docs/blueprints/domains/mathematical.md), [computational.md](docs/blueprints/domains/computational.md), [scientific.md](docs/blueprints/domains/scientific.md), [empirical.md](docs/blueprints/domains/empirical.md), [historical.md](docs/blueprints/domains/historical.md).
 - **Presets (`presets/`):** `atomic-card`, `command-reference`, `comparison-guide`, `concept-map`, `flashcards`, `formula-sheet`, `lecture-order`, `mock-exam`, `paper-breakdown`, `quick-summary`, `revision-pack`, `syntax-reference`.
-- **Subject Theory & Investigation Blueprints (`subjects/` & `investigations/`):** Mapped cleanly via [subject-registry.yaml](docs/dispatch/subject-registry.yaml) across `machine-learning`, `deep-learning`, `generative-ai`, `fullstack`, `cybersecurity`, `electrical`, `algorithms`, `computer-architecture`, `numerical-computing`, `information-theory`, `operating-systems`, `networking`, `databases`, `devops`, `distributed-systems`, `mathematics`, `statistics`, `physics`, `chemistry`, `biology`, `coding`, and `general`, with safety boundaries in [security-education.md](docs/procedures/safety/security-education.md) and [physical-lab-safety.md](docs/procedures/safety/physical-lab-safety.md).
+- **Subject Theory & Investigation Blueprints (`subjects/` & `investigations/`):** Mapped cleanly via [subject-registry.yaml](docs/dispatch/subject-registry.yaml) across `21` specialized subject theory blueprints plus the `general` fallback (`22` registry entries total: `machine-learning`, `deep-learning`, `generative-ai`, `fullstack`, `cybersecurity`, `electrical`, `algorithms`, `computer-architecture`, `numerical-computing`, `information-theory`, `operating-systems`, `networking`, `databases`, `devops`, `distributed-systems`, `mathematics`, `statistics`, `physics`, `chemistry`, `biology`, `coding`, and `general`), with safety boundaries in [security-education.md](docs/procedures/safety/security-education.md) and [physical-lab-safety.md](docs/procedures/safety/physical-lab-safety.md).
 
 ---
 
@@ -129,4 +129,4 @@ scriptorium/
 ## 5. Limits & Maintenance
 
 - **Honest verification:** Scriptorium relies on direct Markdown authoring and manual checklist review; it does not provide automated code execution, cryptographic publication receipts, atomic multi-file transactions, or live Obsidian UI rendering checks.
-- **Maintenance:** Keep executable scripts out of the repository, update affected callers and `evaluations/` when modifying shared rules, and see [migration-notes.md](docs/specs/migration-notes.md) and [LICENSE](LICENSE) for history and licensing.
+- **Maintenance:** Keep executable scripts out of the authoring runtime (only development-only test/verification scripts belong in `evaluations/`), update affected callers and `evaluations/` when modifying shared rules, and see [migration-notes.md](docs/specs/migration-notes.md) and [LICENSE](LICENSE) for history and licensing.

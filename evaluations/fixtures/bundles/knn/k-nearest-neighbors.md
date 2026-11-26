@@ -92,7 +92,7 @@ A **selection tie** occurs when two candidates have equal distance across the cu
 
 ### How a closer case can outweigh the majority
 
-A second fixture preserves the original audit's numerical example. The query is again $(0,0)$, but the five stored sites and outcomes differ from the Amber/Blue example above. Sort by distance before changing the weighting rule.
+A second example considers a dataset where the closest site belongs to one class, while the next two belong to another. The query is again $(0,0)$, and sorting by distance before changing the weighting rule shows how inverse-distance weighting can reverse a majority vote.
 
 | Case | Readings | Distance | Class | Repair time |
 |---|---|---:|---|---:|
@@ -108,7 +108,7 @@ With $k=3$, the uniform tally is one Red and two Blue. Inverse-distance weightin
 
 The panels share a vertical scale. The labeled, hatched Blue bar falls below Red only when closer observations get more weight.
 
-Author-created illustration using the five-case weighted-vote fixture.
+Author-created illustration using the five-case weighted-vote dataset.
 
 The weight given to class $c$ is the sum of its selected neighbors' weights. Write $\mathbf 1\{y_i=c\}$ for a switch that is 1 when row $i$ belongs to class $c$ and 0 otherwise. Multiplying by this switch reproduces the ordinary action of adding a neighbor's weight to one class only.
 
@@ -202,11 +202,11 @@ $$
 
 Nonnegative normalized weights sum to one, so the prediction lies between the smallest and largest selected outcomes. Ordinary averaging cannot extrapolate beyond those outcomes. If using inverse-distance weights, declare what happens at zero distance. One rule averages only the exact matches when they occur.
 
-For the five-case fixture, the same nearest three have uniform mean $20$ minutes. Using inverse-distance weights produces $(10/1+20/2+30/3)/(1+1/2+1/3)=180/11$ minutes, about $16.36$. Weighting shifts the prediction toward A's shorter repair time. Every result remains inside the interval from 10 to 30 minutes.
+For the five-case dataset, the same nearest three have uniform mean $20$ minutes. Using inverse-distance weights produces $(10/1+20/2+30/3)/(1+1/2+1/3)=180/11$ minutes, about $16.36$. Weighting shifts the prediction toward A's shorter repair time. Every result remains inside the interval from 10 to 30 minutes.
 
 ### A local average smooths a spike
 
-Consider a separate one-dimensional fixture with five equally spaced sites and targets $10,10,25,10,10$ minutes. At position 2, the closest case has target 25. With three neighbors, the query combines that 25 with two 10s, giving 15 minutes.
+Consider a separate one-dimensional dataset with five equally spaced sites and targets $10,10,25,10,10$ minutes. At position 2, the closest case has target 25. With three neighbors, the query combines that 25 with two 10s, giving 15 minutes.
 
 ![[assets/regression-smoothing.png|680]]
 

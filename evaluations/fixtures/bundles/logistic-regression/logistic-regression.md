@@ -12,33 +12,34 @@ nexttopics: []
 
 # Logistic Regression
 
-Logistic regression models binary event probabilities by linearly parameterizing conditional log-odds and fitting the parameters by minimizing binary cross-entropy. An optional penalty controls coefficient growth.
+Suppose an email contains three suspicious links. Instead of immediately forcing a hard spam label, a classifier can first estimate how likely the email is to be spam, turning a real-valued evidence score into a calibrated probability between zero and one. Logistic regression learns that probability mapping by fitting linear log-odds weights against observed binary outcomes.
 
-**Difficulty:** Intermediate (requires linear combinations, logarithm/exponential inverses, and single-variable calculus; multivariable chain-rule and Hessian steps are derived inline)
-
-**Prerequisites:** Linear equations ($\mathbf{w}^\top\mathbf{x} + b$), inverse identities ($e^{\ln u} = u$), product/quotient/chain derivative rules, and positive semidefinite quadratic forms ($\mathbf{v}^\top A \mathbf{v} \ge 0$)
+**Difficulty:** Intermediate
+**Prerequisites:** Linear equations, exponential/logarithm inverses, single-variable calculus, and positive semidefinite quadratic forms ($\mathbf{v}^\top A \mathbf{v} \ge 0$, bridged locally where used)
 
 ## Learning objectives
-1. Derive the Bernoulli variance and explain why an unconstrained least-squares fit can leave the probability interval.
-2. Derive the logistic sigmoid and odds-ratio weight interpretation from a linear log-odds assumption, connect scores to hyperplane decision geometry, and derive $\sigma'(z) = \sigma(z)(1 - \sigma(z))$ before likelihood differentiation.
-3. Construct Binary Cross-Entropy (BCE) step by step from conditional Bernoulli likelihood and prove why BCE is globally convex while sigmoid squared error loses convexity in saturation tails.
-4. Derive BCE scalar, indexed, and vectorized matrix gradients ($\nabla_{\mathbf{w}} J = \frac{1}{m}X^\top(\mathbf{p}-\mathbf{y})$) from first principles, trace one gradient update by hand, and explain both Gradient Descent anatomy and Newton–Raphson / IRLS curvature scaling.
-5. Formulate $L_2$ regularization for linear separation, derive signed-logit numerical stability, and separate fitted probabilities from non-monotonic classification thresholding ($\tau$).
+1. Explain why ordinary linear regression is unsuitable for estimating binary probabilities.
+2. Construct the logistic sigmoid function from odds and log-odds, and interpret coefficients as odds multipliers.
+3. Derive the sigmoid derivative and binary cross-entropy loss from Bernoulli likelihood.
+4. Compute scalar and matrix gradients from the chain rule, and trace a parameter update step by hand.
+5. Explain why regularized binary cross-entropy is convex while sigmoid squared error can lose convexity.
+6. Diagnose linear separation, numerical overflow/cancellation, and regularization scaling.
+7. Explain how increasing the decision threshold affects predicted positives, recall, and potentially non-monotonic precision.
 
 **Table of Contents**
-- [[#1. Problem Formulation & Why Ordinary Least Squares Fails|1. Problem Formulation & OLS Failure]]
-- [[#2. Probability, Odds, Log-Odds & Sigmoid Derivation|2. Log-Odds to Sigmoid Derivation]]
-- [[#3. Odds-Ratio Interpretation & Sigmoid Derivative|3. Odds Ratios & Sigmoid Derivative]]
-- [[#4. Bernoulli Likelihood to Binary Cross-Entropy Derivation|4. Bernoulli MLE to BCE Derivation]]
-- [[#5. Chain-Rule & Scalar-to-Matrix Gradient Derivation|5. Chain-Rule & Matrix Gradients]]
-- [[#6. Convexity, Hessian Geometry & Parameter Optimization|6. Convexity & Newton Optimization]]
-- [[#7. L2 Regularization, Separation & Numerical Stability|7. L2 Regularization & Numerical Stability]]
-- [[#8. Decision Thresholds, Evaluation & Model Limitations|8. Thresholds, Evaluation & Limitations]]
-- [[#9. Mental Model, Notation Reference & Bundle Links|9. Mental Model & Bundle Links]]
+- [[#1. Why linear regression fails|1. Why linear regression fails]]
+- [[#2. From probability to sigmoid|2. From probability to sigmoid]]
+- [[#3. Odds ratios and the sigmoid derivative|3. Odds ratios and the sigmoid derivative]]
+- [[#4. Deriving the loss function|4. Deriving the loss function]]
+- [[#5. Computing the gradients|5. Computing the gradients]]
+- [[#6. Why the loss is convex|6. Why the loss is convex]]
+- [[#7. Regularization and numerical stability|7. Regularization and numerical stability]]
+- [[#8. Thresholds, evaluation, and extensions|8. Thresholds, evaluation, and extensions]]
+- [[#9. Putting everything together|9. Putting everything together]]
 
 ---
 
-## 1. Problem Formulation & Why Ordinary Least Squares Fails
+## 1. Why linear regression fails
 
 A learner deciding whether an email is spam can ask two questions: how likely is it to be spam, and should it be filtered? A model can estimate a probability first. A threshold turns that estimate into a decision. The observed label $y_i$ records what actually happened for example $i$, with $1$ for spam and $0$ otherwise. Its features $\mathbf x_i$ might include a link count and whether the sender is known.
 
@@ -103,7 +104,7 @@ A one-unit increase in $x_j$ adds $w_j$ to the score with the other predictors h
 
 ---
 
-## 2. Probability, Odds, Log-Odds & Sigmoid Derivation
+## 2. From probability to sigmoid
 
 For $0<p<1$, the odds $p/(1-p)$ compare positive outcomes to negative outcomes. At $p=0.8$ the odds are $4$. Taking their natural logarithm gives a real number, with log-odds zero at $p=0.5$. This defines the **logit link**, which maps probability to score. In the model equations in this section, $p$ denotes the modeled probability at one feature vector. The sigmoid will map in the opposite direction. Choosing the logit is a modeling assumption. Probit and complementary log-log are alternative links.
 
@@ -159,7 +160,7 @@ $$
 
 ---
 
-## 3. Odds-Ratio Interpretation & Sigmoid Derivative
+## 3. Odds ratios and the sigmoid derivative
 
 ### How a feature changes the odds
 Exponentiating $z = \ln\left(\frac{p}{1-p}\right)$ yields $\operatorname{odds}(\mathbf{x}) = \exp(\mathbf{w}^\top\mathbf{x} + b)$. Consequently, a unit step in predictor $x_j$ scales modeled odds multiplicatively by $e^{w_j}$:
@@ -223,7 +224,7 @@ A shift in score has its greatest local effect near $p=0.5$. Its derivative has 
 
 ---
 
-## 4. Bernoulli Likelihood to Binary Cross-Entropy Derivation
+## 4. Deriving the loss function
 
 At each input the model assigns probability $\hat p_i=\sigma(\mathbf w^\top\mathbf x_i+b)$ to label $1$ and $1-\hat p_i$ to label $0$. The binary label $y_i$ selects the corresponding factor.
 
@@ -301,7 +302,7 @@ This form exposes curvature in the score. To update the model we also need to ca
 
 ---
 
-## 5. Chain-Rule & Scalar-to-Matrix Gradient Derivation
+## 5. Computing the gradients
 
 ### Partial Derivatives via Exact Factor Cancellation
 A partial derivative asks what changes when one parameter moves while all others are held fixed. The gradient collects these derivatives into one vector. The derivative of one example's BCE with respect to its probability has denominator $\hat p_i(1-\hat p_i)$. Moving back through the sigmoid multiplies by exactly that factor. For a finite score, $0<\hat p_i<1$ and the factors cancel.
@@ -418,7 +419,7 @@ The four-point dataset from the least-squares example has $x=(-2,-1,1,2)$ and $y
 
 ---
 
-## 6. Convexity, Hessian Geometry & Parameter Optimization
+## 6. Why the loss is convex
 
 The score gradient is nonlinear in the parameters, so solving the stationarity equations generally requires iteration. Curvature tells us whether the objective is convex and helps explain how a second-order step differs from gradient descent.
 
@@ -535,13 +536,13 @@ $$
 >
 > Differentiating the weighted squared residual in the boxed objective gives $\tilde X^\top D_t(\tilde X\boldsymbol\beta-\mathbf u_t)/m$. Setting this derivative to zero reproduces the system. A full-column-rank $\tilde X$ makes this weighted fit unique.
 >
-> On the four-point fixture at zero weights, each weight is $1/4$ and $\mathbf u_0=(-2,-2,2,2)^\top$. Centered weighted least squares has slope $12/10=1.2$ and intercept $0$. The Newton system gives the same slope step from gradient $-0.75$ and slope curvature $0.625$. Near numerical saturation, prefer the Newton right-hand side directly to dividing by small $d_i$.
+> On the four-point dataset at zero weights, each weight is $1/4$ and $\mathbf u_0=(-2,-2,2,2)^\top$. Centered weighted least squares has slope $12/10=1.2$ and intercept $0$. The Newton system gives the same slope step from gradient $-0.75$ and slope curvature $0.625$. Near numerical saturation, prefer the Newton right-hand side directly to dividing by small $d_i$.
 
-From the same zero iterate, the hand trace used unit-step gradient descent and reached $w=0.75$. Newton and IRLS reached $w=1.2$ because the slope curvature was $0.625$. With $\lambda=0.05$, the initial gradient is unchanged and Newton divides by $0.625+0.05$, reaching $w=10/9$. The three updates have the same zero intercept on this symmetric dataset. The larger Newton step reflects local curvature on this fixture. Outside the local regime, compare loss before accepting a full step. The four-point example can keep improving with larger separating scores, which raises a separate question about whether a finite optimum exists.
+From the same zero iterate, the hand trace used unit-step gradient descent and reached $w=0.75$. Newton and IRLS reached $w=1.2$ because the slope curvature was $0.625$. With $\lambda=0.05$, the initial gradient is unchanged and Newton divides by $0.625+0.05$, reaching $w=10/9$. The three updates have the same zero intercept on this symmetric dataset. The larger Newton step reflects local curvature on this example. Outside the local regime, compare loss before accepting a full step. The four-point example can keep improving with larger separating scores, which raises a separate question about whether a finite optimum exists.
 
 ---
 
-## 7. L2 Regularization, Separation & Numerical Stability
+## 7. Regularization and numerical stability
 
 ### L2 Regularization & Conditions for a Unique Finite Optimum
 For **complete separation**, some augmented parameter vector $\boldsymbol\theta_0=(\mathbf w_0^\top,b_0)^\top$ gives a positive signed margin $(2y_i-1)z_i$ for every sample. Multiplying the entire vector, including the intercept, by $a>0$ multiplies every margin by $a$. As $a$ grows, the probability of each observed label tends to one and every BCE term goes to zero. At finite scores every such term is still positive, so the unregularized loss has no finite minimizer in this case.
@@ -640,7 +641,7 @@ $$
 
 ---
 
-## 8. Decision Thresholds, Evaluation & Model Limitations
+## 8. Thresholds, evaluation, and extensions
 
 ### From probabilities to a decision boundary
 
@@ -669,15 +670,15 @@ Increasing $\tau$ keeps the fitted weights and probabilities fixed and removes s
 
 | Case $i$ | Predicted Probability $\hat p_i$ | Actual Class $y_i$ | Decision ($\tau = 0.50$) | Decision ($\tau = 0.70$) |
 |---:|---:|---|---|---|
-| 1 | $0.95$ | `1 — Positive` | `TP` | `TP` |
-| 2 | $0.85$ | `0 — Negative` | `FP` | `FP` |
-| 3 | $0.65$ | `1 — Positive` | `TP` | `FN` |
-| 4 | $0.55$ | `1 — Positive` | `TP` | `FN` |
-| 5 | $0.40$ | `0 — Negative` | `TN` | `TN` |
-| 6 | $0.20$ | `0 — Negative` | `TN` | `TN` |
+| 1 | $0.95$ | 1 — Positive | $\mathrm{TP}$ | $\mathrm{TP}$ |
+| 2 | $0.85$ | 0 — Negative | $\mathrm{FP}$ | $\mathrm{FP}$ |
+| 3 | $0.65$ | 1 — Positive | $\mathrm{TP}$ | $\mathrm{FN}$ |
+| 4 | $0.55$ | 1 — Positive | $\mathrm{TP}$ | $\mathrm{FN}$ |
+| 5 | $0.40$ | 0 — Negative | $\mathrm{TN}$ | $\mathrm{TN}$ |
+| 6 | $0.20$ | 0 — Negative | $\mathrm{TN}$ | $\mathrm{TN}$ |
 
-- At $\tau = 0.50$: `TP = 3, FP = 1` $\implies$ **Precision = $75.0\%$ (`3/4`)**, **Recall = $100.0\%$ (`3/3`)**.
-- At $\tau = 0.70$: dropping true positives at $0.65$ and $0.55$ while keeping false positive $0.85$ gives `TP = 1, FP = 1` $\implies$ **Precision drops to $50.0\%$ (`1/2`)** alongside **Recall = $33.3\%$ (`1/3`)**.
+- At $\tau = 0.50$: $\mathrm{TP} = 3, \mathrm{FP} = 1$, giving precision $75.0\%$ ($3/4$) and recall $100.0\%$ ($3/3$).
+- At $\tau = 0.70$: dropping true positives at $0.65$ and $0.55$ while keeping false positive $0.85$ yields $\mathrm{TP} = 1, \mathrm{FP} = 1$, so precision drops to $50.0\%$ ($1/2$) alongside recall $33.3\%$ ($1/3$).
 
 For thresholded decisions, **precision** is the share of predicted positives that are truly positive, and **recall** is the share of actual positives recovered. Their denominators are $\mathrm{TP}+\mathrm{FP}$ and $\mathrm{TP}+\mathrm{FN}$ respectively, and a zero denominator leaves the corresponding ratio undefined without a stated convention. When both ratios are defined and positive, their harmonic mean is $F_1$. Substituting the two denominators into the reciprocal form of the harmonic mean gives the count formula:
 
@@ -719,9 +720,9 @@ Softmax models mutually exclusive classes jointly. One-vs-rest instead fits a se
 
 ---
 
-## 9. Mental Model, Notation Reference & Bundle Links
+## 9. Putting everything together
 
-**Mental Model:** Construct conditional log-odds linearity $\to$ invert to $\sigma(z)$ $\to$ derive $\sigma'(z) = p(1-p)$ $\to$ build Bernoulli MLE negative log-likelihood (BCE) $\to$ combine chain-rule cancellation with $X^\top(\hat{\mathbf p}-\mathbf{y})$ $\to$ establish Hessian convexity + Newton/GD + $L_2$ separation control $\to$ stabilize numerically with signed logits before choosing threshold $\tau$ for asymmetric decision costs.
+**Mental model:** Logistic regression first combines input features into an unrestricted linear score, then maps that score through the sigmoid to produce a valid probability between zero and one. Binary cross-entropy measures how strongly predicted probabilities disagree with observed labels while preserving clean gradients and global convexity. Optimization shifts the weights toward lower regularized error—preventing unbounded growth on separable data—and once fitted probabilities are available, a separate classification threshold converts those probabilities into decisions tailored to false-positive versus false-negative costs.
 
 **Trailing Notation Reference:** $m$ samples · $n$ features · $X \in \mathbb{R}^{m\times n}, \tilde{X} = [X,\mathbf{1}]$ · $\mathbf{w}, b, \boldsymbol{\theta}$ parameters · $z$ logit · $\sigma(z)$ sigmoid · $p_i^\ast$ underlying probability · $\hat p_i$ modeled probability · $\hat y_i$ thresholded prediction · $y_i \in \{0,1\}$ targets · $\eta$ step size · $\lambda, C$ $L_2$ regularization parameters · $\tau$ threshold.
 

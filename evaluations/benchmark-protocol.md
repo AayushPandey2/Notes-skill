@@ -42,7 +42,7 @@ Resolve applicable criteria from the intended artifact (`Theory`, `Lab`, `Compac
 
 ## 3. Experimental Benchmark Matrix, Ablation & Learning Effectiveness
 
-Run and log these seven controlled comparisons rather than treating single-run impressions or unmeasured layer definitions as proof:
+Run and log these seven controlled comparisons rather than treating single-run impressions or unmeasured layer definitions as proof (include **independent blind review** where supported rather than same-pass self-review, plus **unseen cross-domain topics, ambiguous/conflicting inputs, and simulated partial-write/missing-asset edge cases**):
 
 | Experiment | Purpose |
 |---|---|
@@ -55,4 +55,8 @@ Run and log these seven controlled comparisons rather than treating single-run i
 | **7. Cross-model portability** | Measure instruction reliability across different supported models |
 
 Record exact generated artifacts, model configuration, available tools, input/source conditions, and observed limitations alongside scores.
+
+### Comprehensive Theory Scorecard (100 Points)
+Apply these weights to comprehensive theory evaluations alongside independent format profiles above (any **Critical** correctness, safety, or fabricated-source failure still overrides numerical scores):
+- Factual & mathematical accuracy (`20%`) · Conceptual & causal depth (`20%`) · Prerequisite accessibility (`10%`) · Mathematical reasoning continuity (`10%`) · Worked-example quality (`10%`) · Independent problem-solving transfer (`10%`) · Writing tone & readability (`8%`) · Formatting & navigation (`5%`) · Evidence & source fidelity (`5%`) · Redundancy control (`2%`).
 - **Learning effectiveness:** Where learner testing is conducted, measure **immediate recall**, **mechanism explanation ("why")**, **application accuracy**, **delayed recall**, **transfer**, **study time**, and **misconception reduction**.

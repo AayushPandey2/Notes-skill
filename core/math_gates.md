@@ -38,9 +38,9 @@ Every distinct consequential derivable relationship in comprehensive theory need
 
 ### Complete Expandable Derivations
 
-When a reasoning unit needs a local expandable derivation, attach one descriptive Obsidian callout after its principal result.
+When a reasoning unit needs a local expandable derivation, attach one concise descriptive Obsidian callout after its principal result (prefer `> [!example]- Derivation: <Focus>` or `> [!example]- Proof: <Focus>` rather than repeating monotonous titles, keeping compatibility with existing `Understand this formula step by step` folds). Never duplicate algebraic steps already written in full in the visible prose immediately above—keep visible text focused on motivation, turning points, and consequences, and place full step-by-step algebra inside the fold:
 
-`> [!example]- Understand this formula step by step — <Descriptive mathematical focus>`
+`> [!example]- Derivation: <Concise focus>` *(or `> [!example]- Proof: <Concise focus>`)*
 
 Use one fold for connected steps serving the same objective. Give a genuinely distinct local result its own derivation. Use the ownership rules above for canonical references. A derivation that is already in a worked solution, answer or lab fold stays there. If the derivation is itself the requested visible artifact, keep its consequential steps visible rather than duplicating it in another fold.
 
