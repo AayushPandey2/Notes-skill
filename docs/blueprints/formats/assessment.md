@@ -26,8 +26,8 @@ Scale question count dynamically (`10–14` narrow sets; `15–20` full sets) an
 | **Design** | Requirements satisfied + trade-offs + justified choice |
 
 - **Misconception-Sensitive MCQs:** Map each wrong option to a specific plausible misconception ([subject-theory-profiles.md](../components/subject-theory-profiles.md)).
-- **Interactive `/scribe-quiz` Feedback:** Classify incorrect learner answers (*missing prerequisite, terminology confusion, invalid assumption, calculation error, mechanism misunderstanding, failed transfer*) and pose a targeted follow-up to confirm correction.
-- **Mandatory Dual-Callout Format (Self-Test Mode):** Quote every interior line with `>` and keep an unquoted blank line between hint and solution:
+- **Interactive `/scribe-quiz` sessions:** Follow [skills/scribe-quiz/SKILL.md](../../../skills/scribe-quiz/SKILL.md) exclusively for live one-question-at-a-time oral/interactive quizzing, read-only vault discipline, and adaptive diagnostic grading rather than generating a static `M6` file.
+- **Self-test reveal:** Put the solution in a collapsed answer callout. Add a separate hint when it helps the learner progress without revealing the method. Keep the callouts separate and quote each interior line with `>`. Follow the selected preset for flashcards and mock exams.
 
 ````markdown
 ### Q<k>. <Specific Prompt>
@@ -35,7 +35,7 @@ Scale question count dynamically (`10–14` narrow sets; `15–20` full sets) an
 > [!hint]- Need a nudge?
 > <Governing principle or setup constraint without spoiling the result.>
 
-> [!tip]- Reveal approach and solution
+> [!success]- Approach and Solution
 > **Core intuition:** <One-sentence causal explanation.>
 >
 > 1. **Setup & Assumptions:** <Hypotheses, units, shapes, or boundaries.>

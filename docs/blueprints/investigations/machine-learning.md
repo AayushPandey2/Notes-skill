@@ -7,7 +7,7 @@ Applies to Machine Learning algorithms and pipelines. Provide the **4 comparable
 
 ## Shared Fixture & Cross-Track Contract
 - Distinguish the shared **model** from each track's actual **solver** and **objective convention** (SSE, MSE, half-MSE, normalized vs. unnormalized penalties, intercept treatment, hyperparameter scaling like `C` vs. `alpha`).
-- Use a **hand-trace fixture** (tiny values for manual arithmetic in Track 1) and, where appropriate, an **evaluation/stress fixture** (collinear, imbalanced, or non-orthogonal observations) exposing limits hidden by orthogonal toy data.
+- Use a **hand-trace worked example** (tiny values for manual arithmetic in Track 1) and, where appropriate, an **evaluation/stress dataset** (collinear, imbalanced, or non-orthogonal observations) exposing limits hidden by orthogonal toy data.
 - Include a **Cross-Track Equivalence Table** (predictions, parameter conventions, regularization scaling, intercept handling, convergence criteria, precision, tolerances—never demanding bit-for-bit equality across different solvers).
 
 ## Practical Realizations
@@ -18,4 +18,4 @@ Applies to Machine Learning algorithms and pipelines. Provide the **4 comparable
 
 ## Specialized Walkthrough & Static Verification
 - **Actual optimizer honesty:** Match the real solver (coordinate descent, proximal GD, SGD/L-BFGS, closed-form, tree/KNN construction)—never force GD onto non-gradient methods.
-- **ML static review:** Verify `*` vs. `@`, `**` vs. `^`, integer vs. float division, reduction axes, transpose/broadcasting, gradient signs/scaling, and algorithm-specific checks (*unconstrained OLS* residual orthogonality, finite-precision sigmoid saturation vs. $(0,1)$, KNN distance ties, tree split criteria, K-means centroids, PCA orthogonality/reconstruction, numerical gradient check). End with **`Source and static review only; not compiled or executed here.`**
+- **ML static review:** Apply the shared math and lab checks. Select algorithm-specific checks such as unconstrained OLS residual orthogonality, sigmoid saturation in floating point, KNN distance ties, tree split criteria, K-means centroids, PCA orthogonality and reconstruction, or gradient checks.

@@ -16,7 +16,7 @@ Dispatch each active public command or `/scribe-notes` internal branch cleanly�
 
 ### Command B — Expand Existing Vault Topic (`/scribe-notes`)
 - **Trigger:** Adding subtopics or filling gaps inside an existing vault topic directory.
-- **Execution:** Inspect existing vault notes directly, match the dominant style automatically without asking clarification/reverification prompts, update the index/syllabus allowlist first, reconcile existing notes non-destructively (following `artifact_policy` in [master-registry.yaml](../../dispatch/master-registry.yaml) while preserving existing layouts), and verify metadata without overwriting custom YAML.
+- **Execution:** Inspect existing vault notes and match the dominant style. Plan any index or syllabus updates as part of the incremental revision. Publish accepted changes together where possible, preserving existing layouts and custom YAML.
 
 ### Command C — Comprehensive Learning (`M1` Deep Notes)
 - **Trigger:** Broad or first-principles deep-learning requests routed to `M1`.
@@ -25,7 +25,7 @@ Dispatch each active public command or `/scribe-notes` internal branch cleanly�
 
 ### Command D — Rapid Reference (`M3` Quick Reference / Variants)
 - **Trigger:** Cheat sheet, formula sheet, syntax table, or CLI command reference requests.
-- **Execution:** Distill verified definitions, formulas with units/conditions, choice cues, and high-signal pitfalls from sibling notes or bounded authorities while enforcing `M3` density caps.
+- **Execution:** Distill verified definitions, formulas with units and conditions, choice cues, and pitfalls from permitted sources. Follow the selected M3 density target.
 
 ### Command E — Source-Faithful Ingestion (`M2` / `lecture_order`)
 - **Trigger:** PDF, slide deck, URL, or raw source notes with sequence/terminology preservation.
@@ -46,7 +46,7 @@ Dispatch each active public command or `/scribe-notes` internal branch cleanly�
 - **Failure / Constraints:** Remain strictly read-only by default, cite exact `[[Note Title#Heading]]` locators, and never claim unperformed code execution or live Obsidian rendering.
 
 ### Command H — Atomic Card (`M3` / `atomic_card`)
-- **Trigger:** Single-concept transcludable note (`<150` words).
+- **Trigger:** A transcludable reference for one concept, typically under 150 words.
 - **Execution:** Fetch a source only when the active source policy permits it. Write one focused definition, micro-example, and boundary sentence; resolve existing wikilinks and keep pending concepts as plain text.
 
 ### Command I — Multi-Note Curriculum (`M2` Collection Series)

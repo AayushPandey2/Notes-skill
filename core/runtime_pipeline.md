@@ -1,6 +1,6 @@
 # Direct-Authoring Workflow, Layer Activation & Graceful Degradation
 
-The [authoring rule in the root skill](../SKILL.md#scriptorium) governs every note-creation route. Never create, retain, or execute custom scripts, builders, validators, or educational code anywhere in Scriptorium—not even during evaluation or maintenance. Respect active safety and authorization boundaries continuously throughout every step—never treat them solely as end-of-pipeline checks.
+The [root authoring rule and precedence](../SKILL.md#scriptorium) govern every route. Enforce safety and authorization throughout.
 
 ## 1. Execution Sequence
 
@@ -8,18 +8,26 @@ This sequence governs **creation**, **revision** (reconciling existing notes non
 
 1. **Resolve request:** Infer mode (`create`, `update`, `video_ingest`, or `fallback`), output format (defaulting bare topics to `M1`), permitted sources (`source_permissions`), user constraints, learner profile, layout, and authorized destination directly—never ask *"which type of notes do you want?"* or send a reverification prompt.
 2. **Select applicable policies & scale activation:** Confirm the required instruction dependencies below. Load only the selected master (`docs/blueprints/formats/`), preset (`docs/blueprints/presets/`), primary subject (+ selective secondary support), knowledge type, and active functional layers from the **Layer Activation Matrix** below, adjusted for **`Master × preset × topic breadth × requested depth × evidence risk`**.
-3. **Construct learning plan *(conditioned on resolved layer activation)*:** Build the internal three-level plan in [adaptive-engine.md](../docs/procedures/authoring/adaptive-engine.md): concept objectives (only as heavy as active `Concept reasoning` / `Curriculum discovery` require), dependencies, target `0–5` depth, scope/resource estimate, and the extensible `artifact_plan` manifest (`artifacts[]`, `omitted_artifacts`, `permissions.external_visuals`).
+3. **Plan the artifacts:** Resolve the included artifacts, omissions, dependencies, and permissions before drafting. For a compact artifact, record its objective, boundaries and essential checks. For a substantive chapter or collection, use the three-level [adaptive plan](../docs/procedures/authoring/adaptive-engine.md).
 4. **Research and refine *(conditioned on `Claim verification` & `source_permissions`)*:** Discover needed concepts and verify consequential claims ([source-fidelity.md](../docs/procedures/sourcing/source-fidelity.md), [claim-verification.md](../docs/procedures/sourcing/claim-verification.md)), updating the internal plan as evidence emerges.
-5. **Engineer examples & stage visual checks:** Apply the validity gate in [example-engineering.md](../docs/blueprints/components/example-engineering.md), align shared worked examples, check calculations manually, and inspect needed external/native visual assets (external acquisition requires the corresponding permission) outside the final vault directory first where host tools permit—resolving intended filenames and links without prematurely creating unused vault folders.
-6. **Author coherent artifacts:** Draft and review one complete representative core unit against its objective and mechanism before carrying its structure into later units. Then author Markdown directly, emitting only entries in `artifact_plan.artifacts` while strictly upholding the **Educational Depth Preservation Contract** ([theory_quality_contract.md](theory_quality_contract.md)).
-7. **Review and repair (before saving):** Run **Stages 1–5** of [verification-checklist.md](../docs/procedures/review/verification-checklist.md) and [adversarial-theory-review.md](../docs/procedures/review/adversarial-theory-review.md) on the **complete drafts and required asset dependencies before saving**. Resolve an explicit acceptance decision (`accepted`, `accepted_with_disclosed_limitations`, `repair_required`, or `blocked`), executing bounded dependency-aware repairs and stopping repeated loops when no new evidence or host capability is available.
+5. **Check examples and visuals:** Apply the [example validity gate](../docs/blueprints/components/example-engineering.md) when the artifact includes examples. Inspect needed visuals before publishing and follow the source permissions for external acquisition.
+6. **Author coherent artifacts:** For a substantial chapter or collection, review a representative core unit against its objective before extending the draft. Author Markdown directly for the resolved artifacts, preserving substantive depth under [the theory contract](theory_quality_contract.md).
+7. **Review and repair (before saving):** Apply the applicable checks to complete drafts and assets under [the verification policy](../docs/procedures/review/verification-checklist.md), which owns review depth, repair and acceptance. Use adversarial review when a substantive theory argument or material uncertainty warrants it.
 8. **Publish and inspect (after saving):** Verify the resolved destination stays inside the approved vault ([pre-gen-gate.md](../docs/procedures/authoring/pre-gen-gate.md)), create topic directories only for accepted/disclosed-limitation deliveries, publish approved assets alongside accepted notes (tracking actually created files, reporting any partial publication failure honestly, and **never** deleting preexisting user assets during cleanup), and run **Stage 6** post-save integrity inspection on actual saved files.
 
 ### Required instruction dependencies
 
-Before drafting, confirm readable copies of the routing and artifact registries, resolved format, governing source policy, teaching rules, and verification procedure. For substantive theory also load [theory quality](theory_quality_contract.md), [teaching core](teaching_core.md), [concept reasoning](../docs/procedures/authoring/concept-reasoning.md), and [the educational editor](../docs/procedures/review/educational-editor.md). Load [math gates](math_gates.md) when mathematics serves an objective, and [representation guidance](../docs/procedures/authoring/representations.md) when an objective depends on a representation. Read selected subject or companion policies when their roles are present.
+Before drafting, confirm the resolved format, [artifact registry](../docs/dispatch/master-registry.yaml), [source policy](../docs/procedures/sourcing/source-fidelity.md), [authoring rules](authoring_rules.md), and [verification policy](../docs/procedures/review/verification-checklist.md) are accessible. Read the applicable rules from those owners. For substantive theory, also load [theory quality](theory_quality_contract.md) and [teaching core](teaching_core.md); select concept reasoning, editorial and specialist guidance by the activation matrix. A cross-reference does not by itself activate another policy.
 
 Recover a missing reference from its canonical package location if possible. If a governing policy remains unreadable, name it and identify the affected artifact or claim. Publish a reduced artifact only when authorization, source constraints, and integrity checks can still be established. Otherwise block the dependent artifact. Optional host tools use the capability fallbacks below.
+
+#### Minimal-Load & Conditional Fast Paths *(Soft Targets — Never Sacrifice Correctness)*
+Separate **already-available root instructions**, **newly opened reference files**, **source documents**, **existing vault notes**, and **optional supporting references** rather than conflating them:
+- **Compact `M3` (`quick_reference` and its presets):** Read the selected compact format and preset with the applicable source, authoring, metadata and verification rules. Open subject or domain guidance when a consequential convention, assumption, misconception or safety boundary requires it. Keep accuracy, source and table/unit checks active; skip the chapter plan, lab and extended theory review unless separately requested or necessary for a consequential claim.
+- **Mathematics (`math_gates.md`):** Activate by **learning objective** (when equations, derivations, proofs, numerical calculations, units, or statistical reasoning are consequential)—not domain label alone.
+- **Visuals (`representations.md`):** Skip when visuals are disabled *and* no supplied source figure requires interpretation (never skip reading/explaining user-supplied figures merely because external image acquisition is disabled).
+- **Labs (`experimental-lab.md`, `investigations/`):** Load only when a practical lab or implementation guide is actually in the resolved `artifact_plan` (respecting single-file overrides and `strict` source bounds).
+- **Proportional review:** Scale review scope by complexity, mathematical depth, source sensitivity, artifact count, practical risk, and revision scope while keeping essential factual, link, and source-integrity checks active on every fast path.
 
 ## 2. Layer Activation Matrix (Objective-Adaptive Starting Configuration)
 
@@ -46,7 +54,7 @@ Treat this matrix as the **default starting configuration**, then adjust proport
 - **`Selective`:** Activate only for uncertain, consequential, or boundary-sensitive material.
 - **`Source-bound` / `Permitted`:** Activate strictly within permitted sources and `source_permissions` (never import unsupported external additions).
 - **`Limited` / `Objective-bound`:** Discover or scope only what is required to solve, implement, or assess the requested target.
-- **`Bundled` / `Multi-note`:** Activate cross-file symbol, fixture, and ownership alignment whenever generating 2+ artifacts or reading multiple vault notes.
+- **`Bundled` / `Multi-note`:** Activate cross-file symbol, worked-example, and ownership alignment whenever generating 2+ artifacts or reading multiple vault notes.
 - **`Transfer` / `Answers`:** Target proof/implementation transfer or answer-key correctness rather than full theory prose.
 - **`Optional`:** Activate when helpful to the user's goal and permitted by sources.
 - **`Off`:** Do not load unless explicitly requested.
@@ -61,7 +69,6 @@ When a host environment lacks an optional capability, degrade transparently with
 | **PDF visual inspection** | Mark inaccessible diagrams/equations explicitly; never guess hidden figures |
 | **Transcript access** | Avoid reconstructing unseen video lectures; record `access_state` honestly |
 | **Image acquisition** | Use reliable Markdown tables, state traces, or attributed reference links (never Mermaid/ASCII) |
-| **Code execution** | Preserve `Source and static review only; not compiled or executed here.` |
 | **Vault write access** | Deliver copyable Markdown blocks or supported downloadable `.md` attachments |
 | **Independent reviewer** | Run separated authoring and review passes; disclose lack of independent reviewer context |
 | **Obsidian rendering** | Verify Markdown/YAML/LaTeX syntax statically without claiming live UI rendering |

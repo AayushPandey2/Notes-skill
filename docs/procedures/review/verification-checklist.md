@@ -1,11 +1,11 @@
 # Six-Stage Verification Gate & Bounded Acceptance
 
-Execute **Stages 1–5 completely before saving** using strictly **manual, script-free inspection**, resolve an explicit bounded **Acceptance Decision**, and run **Stage 6 after saving**. Never use word count, heading count, or image count as proof of educational quality, and never claim automated YAML parsing, code execution, script validation, or live Obsidian rendering checks. Permission, authorization, and safety boundaries ([security-education.md](../safety/security-education.md), [physical-lab-safety.md](../safety/physical-lab-safety.md)) apply continuously throughout the workflow, not only at review time.
+Before saving, apply the applicable checks in stages 1–5 in a single proportionate manual review and resolve an acceptance decision. Apply stage 6 to actual writes. For compact artifacts, check correctness, scope, source fidelity, presentation and links without opening unrelated review or lab policies. Report only the checks performed. Follow safety and authorization throughout.
 
 ## Pre-Publication Stages (Stages 1–5 — Before Saving)
 
 ### Stage 1 — Subject, Theory, Evidence & Editorial Correctness (Before Saving)
-- Verify [teaching_core.md](../../../core/teaching_core.md), [theory_quality_contract.md](../../../core/theory_quality_contract.md) (including the **Educational & Mathematical Depth Preservation Contract**), [math_gates.md](../../../core/math_gates.md) (continuous mathematical reasoning and complete derivations), [claim-verification.md](../sourcing/claim-verification.md), [educational-editor.md](educational-editor.md), and [adversarial-theory-review.md](adversarial-theory-review.md): concrete grounding before abstractions, **two-dimension prerequisite policy** (`importance` × `learner status`), **objective-to-passage & derivation-completeness verification** (inspecting actual derivation steps inside formula callouts rather than merely checking formula presence, verifying mathematical dependency order and scalar-to-matrix shape justifications), claim-level validity/evidence checks and source-error distinction, explanatory and mathematical failure modes, paragraph contribution test, target `0–5` depth, and dependency-aware repair of Critical/Major/Moderate defects.
+- Check actual passages against their intended objectives and support. For substantive theory, use [the theory contract](../../../core/theory_quality_contract.md); apply [claim verification](../sourcing/claim-verification.md), [editorial review](educational-editor.md) and [adversarial review](adversarial-theory-review.md) when applicable. Assess mathematical soundness here and inspect mathematical presentation in stage 5.
 
 ### Stage 2 — Artifact Selection & Source Compliance (Before Saving)
 - Verify emitted files against the **resolved `artifact_plan`** ([adaptive-engine.md](../authoring/adaptive-engine.md), `artifact_policy` in [master-registry.yaml](../../dispatch/master-registry.yaml)), active `docs/blueprints/formats/` + presets, and explicit user overrides—confirming no unsupported companion labs/cheatsheets were emitted under `M3`, `M4`, `M6`, `M7`, `/scribe-ytnotes`, standalone `M5`, single-file requests, or restrictive `strict` sources.
@@ -15,11 +15,10 @@ Execute **Stages 1–5 completely before saving** using strictly **manual, scrip
 - Verify [subject-registry.yaml](../../dispatch/subject-registry.yaml) obligations for the selected primary subject (and any selectively merged secondary support): disciplinary mechanisms, domain-appropriate examples/evidence, and verified misconceptions from [subject-theory-profiles.md](../../blueprints/components/subject-theory-profiles.md)—confirming unrelated subject rules (e.g., ML datasets or 4-language Rust stacks) did not leak into unrelated disciplines.
 
 ### Stage 4 — Lab Correctness, Experiment Integrity & Safety Compliance (Before Saving)
-- Confirm **zero scripts or temporary builder projects** were created or executed on the host, and confirm [security-education.md](../safety/security-education.md) and [physical-lab-safety.md](../safety/physical-lab-safety.md) guardrails were enforced throughout.
-- When a lab or implementation is present, verify [experimental-lab.md](../authoring/experimental-lab.md) and the selected investigation profile (`docs/blueprints/investigations/`): shared-foundation + track-specific **A–G** walkthroughs, static correctness (syntax, types, bounds, operators, equations), and honest 3-attribute integrity (*Origin*, *Method*, *Verification* reflecting what actually occurred) with `Source and static review only; not compiled or executed here.` (never claiming unexecuted code ran or fabricating observations).
+- Confirm the [root non-execution rule](../../../SKILL.md#scriptorium) and any active [security](../safety/security-education.md) or [physical-lab](../safety/physical-lab-safety.md) boundaries. For a lab or implementation, inspect the actual trace and snippets using the applicable [lab integrity rules](../authoring/experimental-lab.md) and selected practical guidance.
 
 ### Stage 5 — Presentation, Mathematics, Visuals, Metadata, Links & Bounded Acceptance (Before Saving)
-- Verify [authoring_rules.md](../../../core/authoring_rules.md), [math_gates.md](../../../core/math_gates.md) (read with folds closed for hypotheses, milestones and conclusions, then open folds to verify derivations, prerequisites, source permission, local derivation ownership, notation, equation spacing and callout boundaries), [representations.md](../authoring/representations.md) (visual source hierarchy, inspected external/native figures, adaptive sizing, ordinary Markdown attribution, diagram-to-model correspondence, zero Mermaid/ASCII, **asset dependency check** ensuring no accepted note references a missing required figure/asset), [properties-policy.md](../../properties/properties-policy.md) (line-1 YAML matching active profile, unique IDs), and [revision-and-linking.md](../updating/revision-and-linking.md) (resolved links, acyclic prerequisites, reciprocal links only to files in `artifact_plan`).
+- Check the draft against the applicable [authoring rules](../../../core/authoring_rules.md), [properties policy](../../properties/properties-policy.md) and [link policy](../updating/revision-and-linking.md). For substantive mathematics, read with folds closed and open, then apply the [math policy](../../../core/math_gates.md), including its table rules. If an artifact needs figures, apply the [visual policy](../authoring/representations.md) and confirm each required asset is inspected and ready to publish.
 **Independent acceptance checks.** For each applicable dimension, cite concrete evidence and resolve defects before judging the whole artifact. Mark a dimension inapplicable when it is outside the resolved scope.
 
 | Dimension | Observable evidence |
@@ -51,18 +50,18 @@ quality_manifest:
   requested_scope: <topic and active format/preset>
   target_depth: <0-5>
   artifact_status:
-    theory: <accepted | accepted_with_disclosed_limitations | omitted | blocked>
-    experimental_lab: <accepted | accepted_with_disclosed_limitations | omitted | blocked>
-    mastery_pack: <accepted | accepted_with_disclosed_limitations | omitted | blocked>
+    - artifact: <role and intended path from the resolved plan>
+      status: <accepted | accepted_with_disclosed_limitations | repair_required | omitted | blocked>
   review:
-    theory: <manually_reviewed | independently_reviewed>
+    theory: <not_applicable | not_reviewed | manually_reviewed | independently_reviewed>
     mathematics: <manually_checked | not_applicable>
-    code_execution: <not_performed | actually_executed>
-    visual_rendering: <unavailable | live_checked>
+    code_execution: not_performed
+    external_execution_evidence: <none | user_supplied | published>
+    image_inspection: <not_applicable | unavailable | host_inspected_image>
   unresolved_gaps: []
 ```
 
 ## Post-Publication Stage (Stage 6 — After Saving)
 
 ### Stage 6 — Actual Saved-File Integrity (After Saving)
-- Reopen actual saved files (when written to a vault) to confirm valid line-1 YAML frontmatter, intact local asset/embed targets, resolved relative wikilinks matching emitted filenames, and untouched unrelated vault notes/YAML.
+- Reopen actual saved files and check the applicable metadata profile or preservation rule, local asset targets, wikilinks and unrelated content. On a partial write, reconcile links in the saved artifacts under the [link policy](../updating/revision-and-linking.md) and report which files exist.

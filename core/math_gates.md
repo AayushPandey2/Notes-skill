@@ -46,6 +46,14 @@ Use one fold for connected steps serving the same objective. Give a genuinely di
 
 Cover the objective, starting principles, assumptions, applicable identities, notation (including domains, dimensions and units), intermediate transformations, formula structure, interpretation and verification. Explain which rule permits each consequential operation and why the new form helps. Use a numerical application, limiting case, counterexample or other independent check where it adds insight. These responsibilities guide the explanation without prescribing fixed subheadings. Numerical substitution, paraphrase and unexplained shortcuts cannot stand in for derivation.
 
+### Mathematical Understanding Test *(Apply to Key Formulas & Objectives)*
+
+Before marking a mathematical unit complete, verify that a thoughtful learner can answer every applicable question from the text (plus its closed/open derivation):
+- **Why each transform or operator?** (e.g., *why a logarithm, negative sign, square, norm, or inner product is used instead of a simpler alternative*)
+- **Why this term structure?** (e.g., *why terms sum, average, normalize, or cancel in this exact form*)
+- **Why is each intermediate step valid?** (*what theorem, algebraic identity, linearity/independence condition, or domain restriction permits the transition*)
+- **What assumptions, sensitivity, and limits govern it?** (*where the formula holds, how outputs respond when inputs or parameters shift, and what breaks at boundaries or edge cases*)
+
 ### Classify the Relationship Before Explaining It
 
 | Relationship | Treatment |
@@ -69,6 +77,6 @@ Retain consequential assumptions, algebra, examples and limitations. Give longer
 
 ## 4. Obsidian Rendering, Notation Hygiene & Code Alignment
 
-- **Native delimiters only:** Use `$...$` inline and separate-line `$$` blocks (with blank lines around display math). Never mix delimiters, use code fences for equations, leave raw LaTeX in prose, place raw LaTeX inside Mermaid labels, or use `==highlight==` / `\color{...}`. Use inline math for short symbols and relations. Display longer transformations and separate independent stages with explanatory prose. Use `aligned`, `cases`, and `\text{...}` cleanly, leave an unquoted blank line before returning from a callout to visible prose, quote every callout line including blank lines (`>`), escape literal pipes (`\|`) in tables, and reserve `\boxed{...}` strictly for final governing results or key numerical answers.
+- **Native delimiters, display placement & table math:** Use `$...$` inline and separate-line `$$...$$` display blocks with surrounding blank lines. In body prose, place `$$` delimiters flush left (never use 4-space indentation that turns equations into code blocks, and never wrap ordinary LaTeX in code fences); inside Obsidian callouts, preserve `>` prefixes on display and blank lines; inside lists, indent consistently with the enclosing list item so list containment stays intact. Keep longer transformations in display equations rather than narrow table cells, use `aligned`, `cases`, and `\text{...}` cleanly, leave an unquoted blank line after exiting a callout, quote every callout interior line (`>`), and reserve `\boxed{...}` for final governing results or key numerical answers. Inside **Markdown tables**, avoid raw vertical pipes splitting cells and use unambiguous LaTeX commands instead of `\|` for math delimiters: `\lvert x \rvert` (or `\left\lvert \dots \right\rvert`) for absolute value/cardinality, `\lVert \mathbf{x} \rVert_2` for norms, `P(A \mid B)` for conditional probability, `\{x \mid x > 0\}` for set-builder notation, and `\det(A)` (or display `vmatrix` outside tables) for determinants.
 - **Notation hygiene & code alignment:** Define symbols at first use, distinguish sample vs. feature indices, scalars vs. vectors/matrices, and estimates vs. true quantities. State residual conventions, align objective normalization/penalty scaling explicitly (`C` vs. `alpha`), and verify NumPy/framework operators (`@` vs. `*`, `**` vs. `^`, reduction axes, integer vs. float division, broadcasting, gradient sign, finite-precision cancellation/overflow guards).
 - **Single canonical home:** Give each major derivation one canonical home; link or briefly reference prior results elsewhere unless context shifts require bridging.

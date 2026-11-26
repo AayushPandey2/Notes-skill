@@ -6,7 +6,7 @@
 
 ## Repository-local skills
 
-Open this checkout as the project or workspace to discover `scriptorium` and all six `scribe-*` skills.
+Open the full checkout as the project or workspace so the agent can discover `scriptorium` and the six `scribe-*` skills using the paths below.
 
 | Agent | Discovery path |
 |---|---|
@@ -14,7 +14,7 @@ Open this checkout as the project or workspace to discover `scriptorium` and all
 | Codex and Antigravity | `.agents/skills/` |
 | Gemini CLI | `.gemini/skills/` or `.agents/skills/` |
 
-The discovery files forward to the canonical instructions in `SKILL.md` and `skills/`.
+The discovery files forward to the canonical instructions in `SKILL.md` and `skills/`. A copied wrapper needs the surrounding checkout to resolve its references.
 
 ### Upload to Claude
 
@@ -28,7 +28,7 @@ git archive --format=zip --prefix=scriptorium/ --output=../scriptorium-skill.zip
   SKILL.md LICENSE router.md core docs skills
 ```
 
-The plugin archive places [the manifest](.claude-plugin/plugin.json) at its root. The skill archive wraps its files in a single `scriptorium/` folder. Both layouts include the referenced policies and contain only regular files. [Claude plugin installation](https://support.claude.com/en/articles/13837440-use-plugins-in-claude) · [Claude custom skill installation](https://support.claude.com/en/articles/12512180-use-skills-in-claude)
+These commands archive committed `HEAD` only. The plugin archive places [the manifest](.claude-plugin/plugin.json) at the root, and the skill archive uses a single `scriptorium/` folder. Both include the policies required by the canonical skills. [Claude plugin installation](https://support.claude.com/en/articles/13837440-use-plugins-in-claude) · [Claude custom skill installation](https://support.claude.com/en/articles/12512180-use-skills-in-claude)
 
 ## 1. Public Commands (`skills/`)
 
@@ -41,7 +41,7 @@ The plugin archive places [the manifest](.claude-plugin/plugin.json) at its root
 | `/scribe-audit` | [skills/scribe-audit/SKILL.md](skills/scribe-audit/SKILL.md) | Audits existing vault notes read-only across theory, math, prerequisites, lab integrity, evidence, presentation, and consistency dimensions. | No (read-only by default) |
 | `/scribe-setfolder` | [skills/scribe-setfolder/SKILL.md](skills/scribe-setfolder/SKILL.md) | Sets or inspects the default Obsidian vault and target notes folder. | Config only (`~/.scriptorium-config.json`) |
 
-Root orchestration starts at [SKILL.md](SKILL.md) (using **responsibility-based governance precedence** rather than a rigid numbered hierarchy), routes across four independent dimensions via [router.md](router.md), [master-registry.yaml](docs/dispatch/master-registry.yaml), and [subject-registry.yaml](docs/dispatch/subject-registry.yaml), and resolves destinations via [pre-gen-gate.md](docs/procedures/authoring/pre-gen-gate.md) (precedence: explicit vault path > `SCRIPTORIUM_VAULT_PATH` > `~/.scriptorium-config.json`).
+The root skill establishes the order of authority. The routing policy separates format, knowledge type, subject and practical investigation. The destination policy resolves explicit paths, environment settings and saved configuration in that order. [Root skill](SKILL.md) · [Routing policy](docs/dispatch/routing-policy.md) · [Destination policy](docs/procedures/authoring/pre-gen-gate.md)
 
 ---
 
@@ -95,7 +95,7 @@ scriptorium/
 │   ├── teaching_core.md             # Zero-prerequisite flow, tiered concepts & voice
 │   ├── theory_quality_contract.md   # Progressive abstraction, perspectives, claim status & transfer
 │   ├── math_gates.md                # Objective-driven math profiles & formula folds
-│   ├── authoring_rules.md           # YAML profiles, Obsidian Markdown & naming rules
+│   ├── authoring_rules.md           # Obsidian Markdown, presentation & prose rules
 │   └── footer_widgets.md            # Vault navigation footer cues
 ├── docs/                            # Selectively loaded references
 │   ├── README.md                    # Reference loading index
@@ -118,7 +118,7 @@ scriptorium/
 │       ├── updating/                # Revision, lifecycle & safe vault linking
 │       └── review/                  # Manual verification gate, educational editor & adversarial theory review
 └── evaluations/                     # Declarative manual scenarios, triggers, rubrics & benchmark protocol
-    ├── evals.json                   # Self-contained manual behavioral scenarios (freshly evaluated)
+    ├── evals.json                   # Manual scenarios, some requiring evaluator-supplied inputs
     ├── trigger_eval.json            # Declarative command-triggering queries
     ├── benchmark-protocol.md        # Manual blind comparison & scoring methodology
     └── rubrics/                     # Manual theory, practical & presentation rubrics

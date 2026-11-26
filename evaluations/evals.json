@@ -9,25 +9,25 @@
       "expectations": [
         "Routes through /scribe-notes to master M1 (deep-notes) with no pre-generation knowledge quiz and zero generated scripts",
         "Introduces plain-language motivation and intuition before displayed equations",
-        "Each principal result needing a local walkthrough is followed by '> [!example]- Understand this formula step by step' (without recursive nested folds inside the walkthrough)",
+        "Each principal result needing a local walkthrough uses a collapsed '> [!example]-' derivation/proof callout with a clear mathematical focus title, complete intermediate reasoning, quoted interior lines, and zero recursive nested folds",
         "Uses only visually inspected local images with checked rights and attribution, or reports why a suitable image was unavailable"
       ]
     },
     {
       "id": 2,
       "prompt": "/scribe-ytnotes Build structured study notes from this lecture video with timestamps, equations, and downloaded web diagrams: https://www.youtube.com/watch?v=aircAruvnKk",
-      "expected_output": "Uses the /scribe-ytnotes transcript-first workflow, produces one self-contained note with no experimental lab, reports explicit access_state honestly, downloads and inspects complementary web raster visuals under assets/scriptorium/<video-id>/, and places collapsible formula folds after principal results.",
+      "expected_output": "Uses the transcript-first workflow and reports the actual access_state. When the transcript is accessible, produces one self-contained note with no lab. Acquires and inspects relevant web visuals only when permitted and supported, and gives substantive equations complete local reasoning where needed.",
       "files": [],
       "expectations": [
         "Uses /scribe-ytnotes video-notes format without splitting one video into multiple files or creating an experimental lab",
         "Records explicit video access_state honestly without playing or capturing video frames",
-        "Attaches '> [!example]- Understand this formula step by step' after principal results"
+        "Attaches a collapsed '> [!example]-' derivation/proof callout with clear mathematical focus and complete intermediate steps after principal results"
       ]
     },
     {
       "id": 3,
       "prompt": "/scribe-notes Create a compact formula sheet for Classical Thermodynamics equations with variable units and applicability conditions.",
-      "expected_output": "Selective context loads only M3 quick-reference + formula-sheet variant + math_gates without loading unrelated M1-M7 specs, producing dense equation blocks with symbols, SI units, and applicability conditions.",
+      "expected_output": "Uses the M3 quick-reference format, formula-sheet preset, math guidance and applicable shared checks. Presents dense equations with symbols, SI units, and applicability conditions.",
       "files": [],
       "expectations": [
         "Routes to master M3 with variant 'formula_sheet'",
@@ -38,7 +38,8 @@
     {
       "id": 4,
       "prompt": "/scribe-notes Create notes on this transformer PDF strictly from the supplied source without external lookup.",
-      "expected_output": "Routes to master M2 (study-notes) preserving strict source_policy='strict', keeps supplied terminology and sequence intact with inline local prerequisite bridges if needed, and labels any unsupported passage explicitly rather than fetching external material.",
+      "evaluator_supplied_input": "Supply a transformer PDF with a defined section order, equations, and at least one prerequisite gap.",
+      "expected_output": "Routes to M2 in strict source mode, preserves supplied terminology and sequence, and explains prerequisite steps only when the PDF supports them. Identifies inaccessible or unsupported passages without external lookup.",
       "files": [],
       "expectations": [
         "Preserves source_policy='strict' without overriding source constraints during routing",
@@ -49,6 +50,7 @@
     {
       "id": 5,
       "prompt": "/scribe-doubt Based only on my existing Transformers vault notes, why do we scale dot-product attention by sqrt(d_k)?",
+      "evaluator_supplied_input": "Supply a vault note whose inspected heading explains the scaling.",
       "expected_output": "Executes read-only lookup across existing vault notes, answers directly from retrieved content with exact [[Note Title#Heading]] wikilink citations, performs zero file edits, and skips note-creation templates.",
       "files": [],
       "expectations": [
@@ -60,7 +62,8 @@
     {
       "id": 6,
       "prompt": "/scribe-quiz Quiz me on my Logistic Regression vault notes one question at a time.",
-      "expected_output": "Launches interactive active-recall session under M6/Command G, asks one question and waits for learner response before grading against the vault note, and leaves vault files unchanged unless the learner asks to save weak spots.",
+      "evaluator_supplied_input": "Supply a Logistic Regression vault note and at least one learner reply.",
+      "expected_output": "Launches interactive active-recall session under /scribe-quiz (Command G) without generating an M6 Master file, asks one question and waits for learner response before grading against the vault note, and leaves vault files unchanged unless the learner asks to save weak spots.",
       "files": [],
       "expectations": [
         "Presents exactly one question per turn and waits for user reply",
@@ -71,6 +74,7 @@
     {
       "id": 7,
       "prompt": "/scribe-setfolder Physics/Quantum Mechanics",
+      "evaluator_supplied_input": "Supply an authorized evaluation configuration location and a known vault root containing .obsidian/.",
       "expected_output": "Persists configured vault_path and notes_folder in ~/.scriptorium-config.json directly and reports the resolved notes_path.",
       "files": [],
       "expectations": [
@@ -81,21 +85,21 @@
     {
       "id": 8,
       "prompt": "/scribe-notes Lasso Regression",
-      "expected_output": "Generates a 3-file bundle where the companion lab uses the lean implementation-focused format (zero obsolete chapters), 4 comparable ML tracks (Python+NumPy, Python library, Rust from scratch, Rust Linfa/SmartCore), '> [!example]- Understand this implementation: mathematics, code, and numerical dry run' (A-G) beneath every implementation, honest optimizer naming, and 'Source and static review only; not compiled or executed here.'",
+      "expected_output": "Uses the eligible M1 bundle. The lab compares applicable Python and Rust realizations using the shared setup, A–G walkthroughs, accurate objective scaling, actual solver names, and the static-review disclosure.",
       "files": [],
       "expectations": [
         "Companion ML lab omits standalone metadata inventories, repeated theory, general experiments, 12-step workflows, quizzes, and summaries",
-        "Includes 4 aligned ML tracks with explicit objective-scaling conversions and actual optimizer/solver explanations",
-        "Places '> [!example]- Understand this implementation: mathematics, code, and numerical dry run' (A-G) directly beneath every implementation and labels code 'Source and static review only; not compiled or executed here.'"
+        "Includes applicable aligned ML tracks with explicit objective-scaling conversions and actual optimizer/solver explanations. Identifies any unsupported track accurately",
+        "Uses descriptive, method-specific A–G walkthroughs and labels unexecuted code honestly"
       ]
     },
     {
       "id": 9,
       "prompt": "/scribe-notes atomic note on TLB miss vs page fault",
-      "expected_output": "Routes to M3 atomic-card (<150 words), uses Standard Obsidian Properties YAML, omits TOC, and does NOT generate companion Experimental Lab or Cheatsheet & Interview Q&A files.",
+      "expected_output": "Routes to an M3 atomic card, typically under 150 words, with Standard Obsidian Properties YAML and no TOC or companion files.",
       "files": [],
       "expectations": [
-        "Routes to M3 with variant 'atomic_card' and keeps body strictly under 150 words",
+        "Routes to M3 with variant 'atomic_card' and keeps the body compact while preserving the distinction and its exceptions",
         "Exempts atomic-card from 3-file companion bundle generation",
         "Clearly distinguishes a translation-cache miss from a non-resident/unmapped page fault"
       ]
@@ -119,13 +123,13 @@
       "expectations": [
         "Explicitly contrasts ideal-gas assumptions with refined intermolecular/volume-corrected real-gas behavior",
         "Distinguishes heat from temperature and classifies laws, models, and approximations accurately",
-        "Attaches '> [!example]- Understand this formula step by step' after principal results without recursive nested folds"
+        "Attaches a collapsed '> [!example]-' derivation/proof callout with clear mathematical focus after principal results without recursive nested folds"
       ]
     },
     {
       "id": 12,
       "prompt": "/scribe-notes Explain React state, rendering lifecycle, and REST API integration for a task form",
-      "expected_output": "Routes to fullstack subject and lab blueprints, explains DOM/HTTP principles before framework syntax, traces browser-to-database request lifecycle, uses 4 full-stack tracks without forcing ML/Rust tracks, and labels code static-review only.",
+      "expected_output": "Routes to the fullstack subject and applicable lab guidance. Explains DOM and HTTP principles before framework syntax, traces the boundaries relevant to the task form, and labels code as statically reviewed where applicable.",
       "files": [],
       "expectations": [
         "Routes via subject-registry.yaml to fullstack theory and investigation blueprints",
@@ -204,7 +208,7 @@
       "expected_output": "Applies M3 formula_sheet <=500-word budget cleanly, uses inline/grouped equations with SI units, applicability conditions, and canonical derivation links rather than bulky repeated formula folds.",
       "files": [],
       "expectations": [
-        "Respects the <=500-word formula-sheet budget without violating 350-word general caps",
+        "Uses the requested 500-word formula-sheet budget without applying the default general cheat-sheet target",
         "Includes SI units, Gaussian-surface symmetry/validity conditions, and canonical derivation links"
       ]
     },
@@ -452,7 +456,7 @@
       "files": [],
       "expectations": [
         "Derives softmax partial derivatives before invoking them inside categorical cross-entropy differentiation",
-        "Completes full intermediate algebra inside '> [!example]- Understand this formula step by step' folds without 'rearranging gives' skips",
+        "Completes full intermediate algebra inside descriptive collapsed '> [!example]-' derivation callouts without 'rearranging gives' skips",
         "Assembles the Jacobian from indexed partial derivatives, justifies its dimensions and relates the per-example result to the batch gradient",
         "With folds removed, the model, normalization, derivative milestones and gradient remain connected in dependency order"
       ]
@@ -700,6 +704,133 @@
         "Distinguishes missing policy dependencies from an optional unavailable image tool",
         "Does not claim the missing review occurred or fabricate assets",
         "Respects the user’s supported-workflow-only constraint when an essential policy cannot be recovered"
+      ]
+    },
+    {
+      "id": 65,
+      "prompt": "/scribe-notes Explain Bayesian vs frequentist credible/confidence intervals in clean textbook prose with no conversational filler or fragmented one-sentence paragraphs.",
+      "expected_output": "Produces natural connected reference prose obeying the Paragraph Contribution Test and Mathematical Understanding Test without empty filler ('We now...', 'Notice how...') or arbitrary 1-3 sentence paragraph fragmentation.",
+      "files": [],
+      "expectations": [
+        "Allows natural explanatory transitions while avoiding empty conversational filler and internal jargon ('fixture', 'artifact', 'verification gate')",
+        "Organizes paragraphs cleanly by logical teaching move per the Paragraph Contribution Test",
+        "Clearly separates long-run frequentist coverage from posterior credible-interval probability"
+      ]
+    },
+    {
+      "id": 66,
+      "prompt": "/scribe-notes Make a standalone compact Decision Cheat Sheet for HTTP status codes and REST idempotency rules.",
+      "expected_output": "Routes to a single M3 decision sheet with an unnumbered H1, appropriate callouts, and a compact body targeting 350 words.",
+      "files": [],
+      "expectations": [
+        "Uses unified callouts ([!important], [!warning]) rather than [!abstract] or [!caution]",
+        "Uses a clean unnumbered standalone H1 without literal <nn> prefixes and omits companion lab/Q&A files"
+      ]
+    },
+    {
+      "id": 67,
+      "prompt": "/scribe-notes Update my existing Attention vault note to add scaled dot-product variance reasoning while keeping my custom frontmatter and existing [!note] callouts intact.",
+      "evaluator_supplied_input": "Evaluator supplies an existing user Attention note containing custom YAML properties and valid user-authored [!note] callouts.",
+      "expected_output": "Resolves artifact_plan update mode non-destructively, preserves existing custom YAML keys and user [!note] callouts, and integrates exact variance scaling under 1/sqrt(d_k) consistency.",
+      "files": [],
+      "expectations": [
+        "Preserves existing custom YAML properties and valid user-authored callouts during note updates",
+        "Applies artifact_plan non-destructively without touching unrelated vault files"
+      ]
+    },
+    {
+      "id": 68,
+      "prompt": "/scribe-notes Add an implementation note for conjugate gradient solver and incorporate the benchmark timings I pasted from my local run.",
+      "evaluator_supplied_input": "Evaluator supplies user-pasted terminal timings and residual norms from a local solver run.",
+      "expected_output": "Labels Scriptorium code_execution as not_performed with 'Source and static review only; not compiled or executed here.' while recording the pasted timings distinctly as user-supplied external execution evidence.",
+      "files": [],
+      "expectations": [
+        "Sets Scriptorium code execution strictly to not_performed and includes static review disclosure",
+        "Attributes user-supplied timings distinctly by provenance without claiming Scriptorium executed or reproduced the code"
+      ]
+    },
+    {
+      "id": 69,
+      "prompt": "/scribe-notes Create a standalone Worked Solutions sheet on three Bayes rule problems without numbering it as Chapter 01.",
+      "expected_output": "Routes to single-artifact M4 worked_solutions using an unnumbered standalone H1 ('Bayes Rule — Worked Problems & Solutions'), faded scaffolding with [!success]- Solution callouts, and zero companion bundle files.",
+      "files": [],
+      "expectations": [
+        "Omits <nn>. chapter prefix on the standalone M4 H1 while keeping collapsed [!success]- Solution callouts",
+        "Verifies Bayes posterior computations accurately and omits unrequested lab/Q&A companions"
+      ]
+    },
+    {
+      "id": 70,
+      "prompt": "/scribe-notes Build a standalone mathematical reference note covering absolute values, vector norms, conditional probabilities, and set-builder notation in a Markdown table, plus recommended next topics without generating extra files or scripts.",
+      "expected_output": "Produces one standalone M1/M3 note respecting the active YAML schema without unauthorized planning properties (such as source_mode), using \\lvert x \\rvert, \\lVert x \\rVert, and \\mid cleanly inside Markdown tables without cell splitting or cramming multiline matrices inside cells, and listing planned future topics in plain text without dead [[Wikilinks]] or extra generated files.",
+      "files": [],
+      "expectations": [
+        "Uses \\lvert \\cdot \\rvert, \\lVert \\cdot \\rVert, and \\mid cleanly inside LaTeX in Markdown tables without norm/pipe ambiguity or oversized multiline cells",
+        "Preserves the active metadata schema with zero unauthorized internal keys and avoids verbatim YAML-to-body prerequisite repetition",
+        "Distinguishes unbuilt planned future topics from existing notes without dead [[Wikilinks]] or unauthorized companion file generation"
+      ]
+    },
+    {
+      "id": 71,
+      "prompt": "/scribe-notes Cover three narrow scenarios without scripts: (1) explain ecological succession conceptually, (2) solve one integration-by-parts problem, and (3) build an ordinary quick-reference syntax sheet for HTTP status codes.",
+      "expected_output": "Applies conceptual biology proportionality without unrequested allele-frequency derivations, opens the 1-problem M4 solution concisely with complete working, and uses proportional compact-reference loading and native Markdown without default Dataview :: syntax on M3.",
+      "files": [],
+      "expectations": [
+        "Conceptual biology stays focused on ecological mechanisms and causality without unrequested population-genetics algebra",
+        "Short 1-problem M4 solution opens directly after a concise recap while keeping complete intermediate steps",
+        "Compact M3 uses proportional fast-path reference loading (preserving accuracy/subject checks without arbitrary cap claims) and plain Obsidian Markdown free of default Dataview :: cues"
+      ]
+    },
+    {
+      "id": 72,
+      "prompt": "/scribe-notes Compare gradient descent, momentum, and Adam optimization in one M7 synthesis note containing visible display equations, collapsed derivations, and equations inside bulleted notes.",
+      "expected_output": "Uses natural subject-driven synthesis headings (zero literal 'Five-Way Synthesis' or checklist boilerplate) while placing display equations cleanly flush-left in body text, quoted inside callouts, and properly indented inside lists.",
+      "files": [],
+      "expectations": [
+        "Organizes M7 synthesis with domain-meaningful headings rather than exposing internal synthesis-framework labels",
+        "Preserves valid display-math delimiters across body prose, callout quotes, and list items without accidental code-block indentation"
+      ]
+    },
+    {
+      "id": 73,
+      "prompt": "/scribe-notes Solve a set of four connected proof-based problems on uniform continuity and Lipschitz functions sharing shared metric-space hypotheses.",
+      "expected_output": "Routes to M4 worked_solutions, retains appropriate shared-hypothesis/notation orientation despite compact-opening guidance for short sets, and proves all four problems rigorously with visible primary solution paths.",
+      "files": [],
+      "expectations": [
+        "Retains shared-hypothesis and notation orientation rather than skipping needed setup on a complex proof set",
+        "Presents complete hypothesis verification and valid proof steps visibly for each problem"
+      ]
+    },
+    {
+      "id": 74,
+      "prompt": "/scribe-notes Create a topic bundle for Heap Sort inside an evaluator-controlled partial-publication test where companion lab creation fails while the theory note saves safely.",
+      "evaluator_supplied_input": "Evaluator simulates a write failure on the companion lab file after main theory acceptance while leaving unrelated vault notes present.",
+      "expected_output": "Reports the exact partial publication state honestly, repairs or omits any broken reciprocal link pointing to the unpublished lab, and preserves all unrelated vault content untouched.",
+      "files": [],
+      "expectations": [
+        "Reports partial publication failure honestly without claiming every planned artifact saved",
+        "Updates or removes reciprocal links to the unpublished companion without corrupting unrelated vault notes"
+      ]
+    },
+    {
+      "id": 75,
+      "prompt": "/scribe-notes Build a compact strict-source formula sheet strictly from this supplied three-paragraph lecture excerpt on Ohm's law and power dissipation, with no external lookups.",
+      "evaluator_supplied_input": "Evaluator supplies a three-paragraph strict-source physics excerpt on V = IR and P = I^2 R omitting AC impedance.",
+      "expected_output": "Applies compact M3 reference loading proportionally while strictly preserving R-S0 strict source boundaries, retaining exact symbols/units from the excerpt without importing AC impedance or unverified derivations.",
+      "files": [],
+      "expectations": [
+        "Uses proportional M3 fast-path loading while retaining essential factual, unit, and strict-source integrity checks",
+        "Introduces zero outside AC impedance theory or unsupported additions under R-S0"
+      ]
+    },
+    {
+      "id": 76,
+      "prompt": "/scribe-notes Derive the Michaelis-Menten steady-state enzyme kinetics rate law quantitatively from substrate binding, specifying all quasi-steady-state assumptions and units.",
+      "expected_output": "Demonstrates quantitative biology depth preservation (R-08): derives v = V_max [S] / (K_m + [S]) completely with rate-constant definitions, concentration units, quasi-steady-state hypotheses, and breakdown regimes.",
+      "files": [],
+      "expectations": [
+        "Preserves complete requested mathematical derivation rather than suppressed conceptual prose",
+        "States quasi-steady-state assumptions, SI/molar units, and regime limits clearly"
       ]
     }
   ]

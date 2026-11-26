@@ -14,7 +14,7 @@ Fallback blueprint when STEM/software labs would impose irrelevant machinery. Se
 | **Economics** | Analytical model | Concrete numerical example | Comparative statics (assumption shift) | Empirical validity & limits |
 | **Psychology** | Construct operationalization | Study-design analysis | Data / effect interpretation | Confounds, bias & limitations |
 | **Sociology** | Bounded case study | Theoretical interpretation | Comparative evidence | Alternative structural accounts |
-| **Geography** | Spatial data fixture | Physical / human process analysis | Map / scale interpretation | Scale, boundary & uncertainty check |
+| **Geography** | Spatial sample data | Physical / human process analysis | Map / scale interpretation | Scale, boundary & uncertainty check |
 | **General** | First-principles construction | Standard decision / method | Controlled assumption variation | Verification & failure analysis |
 
 ## Specialized Walkthrough & Verification

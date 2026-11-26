@@ -1,6 +1,6 @@
 # Subtemplate: Scientific
 
-- **Purpose:** Realize [teaching_core.md](../../../core/teaching_core.md) and [math_gates.md](../../../core/math_gates.md) for physics, chemistry, biology, and engineering theory—using short 1–3 sentence paragraphs, concrete physical/particle tables, progressive symbol+unit introductions, zero-prerequisite foundations, and inspected figures at inflection points.
+- **Purpose:** Realize [teaching_core.md](../../../core/teaching_core.md) and [math_gates.md](../../../core/math_gates.md) for physics, chemistry, biology, and engineering theory—using clear paragraphs organized by logical teaching move ([authoring_rules.md](../../../core/authoring_rules.md)), concrete physical/particle tables, progressive symbol+unit introductions, zero-prerequisite foundations, and inspected figures at inflection points.
 - **Activation conditions:** Physical phenomena, chemical systems, biological mechanisms, or laws carrying physical units (`scientific`).
 - **Expected inputs:** Observable phenomenon, concrete observation table, progressive symbol & SI-unit introductions, local foundations, approximation regimes, uncertainty bounds, and visual queries.
 

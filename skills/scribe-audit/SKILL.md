@@ -12,7 +12,7 @@ Run a **read-only quality audit** over existing Obsidian vault learning notes an
 ## Inputs, Source-Research Mode & Inspection Discipline
 
 - **Inputs:** An explicitly supplied draft, or a target note, bundle, folder path, or topic scope within the configured vault from [pre-gen-gate.md](../../docs/procedures/authoring/pre-gen-gate.md).
-- **Source-research mode:** Default strictly to **vault-only inspection** (no unrequested external web research). Allow external source verification only when the user explicitly permits/requests external checking or supplies reference material.
+- **Source-research mode:** Inspect the vault or supplied draft and any supplied references. Browse outside this material only when the user explicitly requests or authorizes an external check.
 - **Content & visual inspection:** Read matching vault notes, linked bundle companions, and referenced local image assets via visual inspection before judging diagram correspondence or readability; never create scripts, edit vault files by default, or execute note code on the host.
 
 ## Six Audit Profiles (Respect Original Note Purpose)

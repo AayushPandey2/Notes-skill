@@ -12,4 +12,4 @@ Applies to Frontend, Backend, Web APIs, and Full-Stack applications. **Scope gua
 4. **Contract Testing & Failure Diagnosis:** Verify validation, authz checks, 4xx/5xx propagation, stale UI state, and network/DB error handling.
 
 ## Specialized Walkthrough & Verification
-Trace one complete user action end to end across boundaries, inspect state updates and error paths, and end with **`Source and static review only; not compiled or executed here.`**
+Trace one complete user action across the boundaries in scope. Inspect state updates and error paths at each boundary.

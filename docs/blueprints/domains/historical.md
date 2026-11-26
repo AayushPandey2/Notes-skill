@@ -1,6 +1,6 @@
 # Subtemplate: Historical
 
-- **Purpose:** Realize the progressive teaching flow in [teaching_core.md](../../../core/teaching_core.md) for historical sequences, primary evidence, structural causes, and historiographical debate—using short crisp 1–3 sentence paragraphs, concrete timeline tables, unpacked institutional terms, and primary visuals without forced math or code.
+- **Purpose:** Realize the progressive teaching flow in [teaching_core.md](../../../core/teaching_core.md) for historical sequences, primary evidence, structural causes, and historiographical debate—using clear paragraphs organized by logical teaching move ([authoring_rules.md](../../../core/authoring_rules.md)), concrete timeline tables, unpacked institutional terms, and primary visuals without forced math or code.
 - **Activation conditions:** Historical analysis, institutional evolution, chronology-centered topics, or origin/context studies (`historical`).
 - **Expected inputs:** Earlier setting, actors/institutions, upfront **Term & Actor Glossary**, verified dates and primary/secondary sources with locators, turning points, causal arguments, and competing scholarly accounts.
 

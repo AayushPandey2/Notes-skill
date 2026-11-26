@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Maintain strict symbol, convention, fixture, and concept-ownership consistency across **3-file topic bundles** (Theory, Lab, Mastery) and **multi-chapter collections** without creating extra generated files.
+Maintain strict symbol, convention, shared worked-example, and concept-ownership consistency across every artifact included in the resolved **`artifact_plan`** ([adaptive-engine.md](adaptive-engine.md)—covering single-note updates, multi-file topic bundles, and multi-chapter collections) without creating extra generated files.
 
 ## Collection-Level Ledger (Not Per-Concept)
 

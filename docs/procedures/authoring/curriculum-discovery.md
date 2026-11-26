@@ -51,6 +51,6 @@ Before drafting a major theory note or collection, enrich the [shared internal c
 
 ## 3. Prerequisite Closure & Coverage/Exclusion Audit
 
-1. **Prerequisite closure check:** For every `Core` concept in the matrix, verify that every prerequisite it depends on is either taught locally beforehand (essential) or explicitly bridged (secondary). If a late section introduces an unexplained term, symbol, or mechanism, add the missing prerequisite bridge upstream.
+1. **Prerequisite closure check:** For every `Core` concept in the matrix, verify that every prerequisite it depends on is either taught locally beforehand (essential) or explicitly bridged (supporting). If a late section introduces an unexplained term, symbol, or mechanism, add the missing prerequisite bridge upstream.
 2. **Cross-chapter continuity (for multi-branch collections):** Carry consistent notation, running examples where appropriate, and explicit backward/forward links across chapters so quality and depth do not degrade in later chapters.
 3. **Explicit exclusion audit:** Identify adjacent advanced concepts intentionally left out of scope (e.g., *"Huge pages and NUMA-aware page migration are out of scope here"*). State the scope boundary cleanly in the note's closing or `nexttopics` so omissions are deliberate rather than accidental.

@@ -1,6 +1,6 @@
 # M1 — Comprehensive Theory Notes
 
-- **Master ID:** `M1` (`deep_notes` / compatibility route `deepstudy-master`)
+- **Master ID:** `M1` (`deep_notes`)
 - **Primary intent:** `comprehensive_learning` — deliver a complete, self-contained explanation from motivation and essential foundations through mechanisms, concrete reasoning, formal depth, limitations, and transfer.
 - **Activation signals:** `"teach me from scratch"`, `"explain deeply"`, `"comprehensive notes"`, `"from fundamentals to advanced"`, or bare `/scribe-notes <topic>` without an explicit alternate format.
 - **Non-activation:** Do not select `M1` when the user primarily requests a compact cheat sheet (`M3`), solved problem set (`M4`), implementation guide (`M5`), quiz/flashcards (`M6`), or standalone comparison/revision pack (`M7`).
@@ -25,7 +25,7 @@ Load the matching knowledge-type subtemplate (`conceptual`, `mathematical`, `com
 
 ## 3. Closing & Companion Handoff
 
-End cleanly with a concise **Mental Model** (when it aids reconstruction rather than repeating headings), a trailing **Notation Reference** *only when quantitative/symbolic notation warrants one*, and reciprocal links to `<note stem> - Experimental Lab.md` and `<note stem> - Cheatsheet & Interview Q&A.md` **only when those companions are generated** under `artifact_policy` in [master-registry.yaml](../../dispatch/master-registry.yaml).
+End cleanly with a concise **Mental Model** (when it aids reconstruction rather than repeating headings), a trailing **Notation Reference** *only when quantitative/symbolic notation warrants one*, and reciprocal links to `<note stem> - Experimental Lab.md` and `<note stem> - Cheatsheet & Interview Q&A.md` **only when those companions are included in the resolved `artifact_plan`** (per [adaptive-engine.md](../../procedures/authoring/adaptive-engine.md) and `artifact_policy` in [master-registry.yaml](../../dispatch/master-registry.yaml)).
 
 Do **not** duplicate companion formula sheets, tiered interview/viva Q&A, or worked problem packs inside the main note when File 3 is generated. Review against [verification-checklist.md](../../procedures/review/verification-checklist.md) before saving; for multi-chapter `M1` collections, follow [composition-contract.md](../../procedures/authoring/composition-contract.md).
 

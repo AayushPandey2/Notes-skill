@@ -1,6 +1,8 @@
 # Scriptorium Comparative Benchmark, Ablation & Learning-Effectiveness Protocol
 
-*Evaluation-only manual specification—never load during normal note authoring. All evaluations use freshly generated outputs and evaluator-supplied inputs outside this repository; never execute test scripts or store generated note bundles in the repository.*
+*Evaluation-only manual specification. All evaluations use fresh outputs and evaluator-supplied inputs outside this repository. Keep test scripts and generated outputs out of this workflow and repository.*
+
+For scenarios referring to a supplied note, PDF, image, access restriction, or publication failure, establish that setup explicitly before scoring. An empty `files` list means the repository has no fixture for the case. Use `evaluator_supplied_input` where present. If the setup is unavailable, record the affected case as blocked and omit its score.
 
 ## 1. Controlled Comparative Benchmark & Blind Anonymization
 
@@ -15,7 +17,6 @@ Resolve applicable criteria from the intended artifact (`Theory`, `Lab`, `Compac
 
 | Artifact Profile | Accuracy | Mechanism / Depth | Prerequisites | Examples / Trace | Evidence / Fidelity | Presentation & Conciseness |
 |---|---|---|---|---|---|---|
-| **Substantive Theory (`M1`/`M2`)** | 25% | 25% | 12% | 13% | 12% | 13% (incl. transfer) |
 | **Experimental Lab / `M5`** | 25% | 15% | 8% | 32% (lab correctness & A–G) | 10% | 10% |
 | **Compact Reference (`M3`)** | 35% | 15% | 10% | 20% | 10% | 10% |
 | **Strict-Source Note (`strict`)** | 30% | 20% | 10% | 10% (source-bound) | 20% (fidelity & gaps) | 10% |
@@ -42,7 +43,7 @@ Resolve applicable criteria from the intended artifact (`Theory`, `Lab`, `Compac
 
 ## 3. Experimental Benchmark Matrix, Ablation & Learning Effectiveness
 
-Run and log these seven controlled comparisons rather than treating single-run impressions or unmeasured layer definitions as proof (include **independent blind review** where supported rather than same-pass self-review, plus **unseen cross-domain topics, ambiguous/conflicting inputs, and simulated partial-write/missing-asset edge cases**):
+Choose the comparisons that answer the requested evaluation question. Use matched conditions and independent blind review where available. Include unseen cross-domain topics and failure scenarios when they bear on the question.
 
 | Experiment | Purpose |
 |---|---|
@@ -57,6 +58,10 @@ Run and log these seven controlled comparisons rather than treating single-run i
 Record exact generated artifacts, model configuration, available tools, input/source conditions, and observed limitations alongside scores.
 
 ### Comprehensive Theory Scorecard (100 Points)
-Apply these weights to comprehensive theory evaluations alongside independent format profiles above (any **Critical** correctness, safety, or fabricated-source failure still overrides numerical scores):
+Use this profile for comprehensive theory, except when strict-source fidelity is the primary evaluation objective. Apply the same critical-failure override as the other profiles:
 - Factual & mathematical accuracy (`20%`) · Conceptual & causal depth (`20%`) · Prerequisite accessibility (`10%`) · Mathematical reasoning continuity (`10%`) · Worked-example quality (`10%`) · Independent problem-solving transfer (`10%`) · Writing tone & readability (`8%`) · Formatting & navigation (`5%`) · Evidence & source fidelity (`5%`) · Redundancy control (`2%`).
 - **Learning effectiveness:** Where learner testing is conducted, measure **immediate recall**, **mechanism explanation ("why")**, **application accuracy**, **delayed recall**, **transfer**, **study time**, and **misconception reduction**.
+
+## 4. Resource Accounting *(Evaluations & Requested Performance Reports Only)*
+
+Activate only during evaluations or when the user explicitly requests performance/cost accounting (never add overhead during normal note generation). When provider metadata is available, record model, input/output tokens, cached input, reasoning tokens if exposed, calls/retries/validation calls, elapsed time, accepted output size, and cost using an identified price schedule. Avoid double counting reasoning tokens if included in output totals. Without metadata, report only explicitly labeled estimates or measured character/byte sizes.

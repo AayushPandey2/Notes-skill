@@ -3,7 +3,7 @@
 Inherits shared structure, YAML, navigation, shared-foundation A–G deduplication, and 3-attribute integrity rules from [experimental-lab.md](../../procedures/authoring/experimental-lab.md).
 
 ## Applicability & Shared Failure Model
-Applies to replication, partitioning, consensus, coordination, and distributed messaging. Define node count, network model (asynchrony/partial synchrony), failure model (crash-stop/partition/clock skew), and one small fixture once—never require a production-scale cluster for a single mechanism.
+Applies to replication, partitioning, consensus, coordination, and distributed messaging. Define node count, network model (asynchrony/partial synchrony), failure model (crash-stop/partition/clock skew), and one small shared scenario once—never require a production-scale cluster for a single mechanism.
 
 ## Practical Realizations
 1. **Manual State & Message Trace:** Hand-trace node states, logical clocks, quorum intersections (with versioning/conflict assumptions), or hash-ring key placement.

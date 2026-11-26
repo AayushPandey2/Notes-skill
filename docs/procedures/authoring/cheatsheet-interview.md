@@ -28,18 +28,18 @@ Default to **30 high-yield questions** for comprehensive topics (scaling count n
 - `### Intermediate-Level Questions (Q<n1+1>–Q<n2>)`
 - `### Advanced-Level Questions (Q<n2+1>–Q<N>)`
 
-**Mandatory Collapsible Answer Rule:** Quote **every** interior line inside `> [!tip]- Answer` (including blank lines and `$$...$$` blocks with `>`) and leave an unquoted blank line before the next question:
+**Mandatory Collapsible Answer Rule:** Quote **every** interior line inside `> [!success]- Answer` (including blank lines and `$$...$$` blocks with `>`) and leave an unquoted blank line before the next question:
 
 ````markdown
 **Q<k>. <Clear, specific interview or viva question>**
 
-> [!tip]- Answer
+> [!success]- Answer
 > <Direct, technically precise answer with intuition, equations, or edge-case reasoning.>
 ````
 
 ### Section 3 — Applied Practice Problems with Worked Solutions (Tap-to-Reveal)
 Provide **4–6 domain-appropriate applied problems** when source permissions permit (under `strict` source mode, include only problems supported by the supplied material rather than inventing outside exercises—matching the Applied Problems Focus table above; never force ML loss/threshold templates onto unrelated disciplines):
 - State **Given / Context** and exact task visibly under `### Problem <k>: <Title>`.
-- Place the complete step-by-step reasoning, final result (boxed when numeric), and independent verification check inside `> [!tip]- Solution`.
+- Place the complete step-by-step reasoning, final result (boxed when numeric), and independent verification check inside `> [!success]- Solution`.
 
-*Review against [verification-checklist.md](../review/verification-checklist.md) for collapsed `> [!tip]-` prefixes, quoted interior lines, compatible delimiters, and notation alignment.*
+*Review against [verification-checklist.md](../review/verification-checklist.md) for collapsed `> [!success]-` prefixes, quoted interior lines, compatible delimiters, and notation alignment.*

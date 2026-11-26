@@ -19,9 +19,9 @@ Use the progression matching the request instead of forcing DSA complexity/basel
 
 ## 2. Core Implementation, Trace & Static Verification
 
-1. **Specification & Constraints:** Define inputs/outputs, contracts, verified versions (`[ASSUMED / UNVERIFIED]` if unstated), and one discriminating fixture/scenario.
+1. **Specification & Constraints:** Define inputs/outputs, contracts, verified versions (`[ASSUMED / UNVERIFIED]` if unstated), and one discriminating scenario/input.
 2. **Mechanism & Implementation:** Explain *why* the design works before code; include complete self-contained code blocks with equation/contract alignment and collapsed step-by-step walkthroughs where non-trivial.
 3. **Discriminating Trace & Edge/Failure Matrix:** Trace a non-trivial scenario or input through key branches/error paths, verify boundary cases, and state `Source and static review only; not compiled or executed here.`
-4. **Transfer Variations (`2–3`):** Visible twist prompts followed by an unquoted blank line and collapsed `> [!example]- Reveal Structural Twist & Solution`.
+4. **Transfer Variations (when useful and permitted):** Give the learner a changed input, constraint or requirement. Keep the prompt visible and place the solution in a collapsed `> [!success]-` answer callout.
 
 *Contract: [authoring_rules.md](../../../core/authoring_rules.md), [math_gates.md](../../../core/math_gates.md), [footer_widgets.md](../../../core/footer_widgets.md), [verification-checklist.md](../../procedures/review/verification-checklist.md).*

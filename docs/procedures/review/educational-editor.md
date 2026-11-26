@@ -17,7 +17,7 @@ Distinguish **redundant repetition** (restating a definition verbatim immediatel
 | **Repeated callouts** | Consolidate into purposeful callouts |
 | **False depth / artificial tone** | Replace AI filler (`"We now..."`) with causal mechanism; never shorten proofs for length |
 
-**Paragraph Contribution Test:** Every substantive paragraph must perform at least one distinct function (*definition, motivation, mechanism, evidence, example, interpretation, qualification, comparison,* or *productive synthesis*); merge or drop pure restatements.
+**Paragraph Contribution Test:** Every substantive paragraph must perform at least one primary teaching function—**Motivation**, **Definition**, **Intuition**, **Mechanism**, **Justification**, **Example**, **Interpretation**, **Qualification**, **Transition**, or **Synthesis**. Any paragraph performing none of these functions (e.g., pure restatement, decorative throat-clearing, or empty recap) must be tightened, merged, or cut.
 
 ## 2. Reader Experience & Accessibility
 

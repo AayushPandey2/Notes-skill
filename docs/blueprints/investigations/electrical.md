@@ -12,4 +12,4 @@ Applies to circuits, analog/digital electronics, signals, control, embedded syst
 4. **Tolerances & Fault Diagnosis:** Compare nominal vs. tolerance-shifted behavior and diagnose open/short faults, saturation, or loading effects.
 
 ## Specialized Walkthrough & Verification
-Reference the shared circuit model across tracks instead of repeating identical setup math. Report predictions as **author-derived / analytical / statically reviewed** (never fabricated bench readings). End with **`Source and static review only; not compiled or executed here.`** (or **`Analytical, dimensional, and manual circuit review only (no hardware or simulator executed).`** when no netlist/code appears).
+Reference the shared circuit model across tracks. Distinguish analytical predictions and dimensional checks from supplied or published bench readings, using the shared lab evidence rules.

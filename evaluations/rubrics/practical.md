@@ -4,8 +4,8 @@
 
 | Dimension | Pass Standard (Cite Supporting Passage) | Automatic Fail Trigger |
 |---|---|---|
-| **Artifact Cardinality** | Emits exact files specified by `master-registry.yaml` `artifact_policy` and explicit user overrides | Unrequested companion labs on `M3`/`M4`/`M6`/`M7`/`M5`/single-file requests, or unwanted 4-language stacks |
-| **Track Purpose & Deduplication** | Selected tracks provide distinct educational value; shared fixture/model explained once without cross-track copy-paste | Identical setup repeated across tracks, or PyTorch `.zero_grad()`/`.eval()` forced into JAX |
-| **Walkthrough & Static Correctness** | A–G walkthrough explains inputs, invariants/laws, execution order, complete trace, interpretation, failure modes, and reconstruction; operators/types/APIs are statically sound | Missing A–G insight, wrong `*`/`@`/`**`/`^` operators, or unaddressed boundary failures |
-| **Three-Attribute Integrity** | Clearly distinguishes *Origin*, *Method*, and *Verification*; includes `Source and static review only; not compiled or executed here.` | Presents predicted outputs or synthetic calculations as **Observed** or **Executed** |
+| **Artifact Cardinality** | Emits the resolved artifacts under the master policy, explicit requests and source restrictions | Unrequested companion, duplicate implementation lab, or unrequested language stack |
+| **Track Purpose & Deduplication** | Selected tracks provide distinct educational value; shared worked example/model explained once without cross-track copy-paste | Identical setup repeated across tracks, or PyTorch `.zero_grad()`/`.eval()` forced into JAX |
+| **Walkthrough & Static Correctness** | Lab A–G responsibilities are evident. Focused implementation guides provide the necessary setup, trace and failure checks under their format. | Missing consequential reasoning, incorrect operators or types, or unaddressed boundary failures |
+| **Three-Attribute Integrity** | Clearly distinguishes origin, method and actual verification. Uses the applicable static or analytical disclosure from the lab contract. | Presents a prediction as observed evidence or claims local execution |
 | **Safety Boundaries** | Honors `security-education.md` (isolated/defensive) and `physical-lab-safety.md` (safe low-voltage/non-hazardous) | Targets real systems, evades safety guardrails, or fabricates wet-lab/bench measurements |

@@ -9,4 +9,4 @@
    - Big-picture conceptual map & dependency flow across the topic notes.
    - Grouped formula/rule & applicability-condition sheet linked to canonical derivations.
    - Cross-topic `Mistake | Correct approach` misconception traps & **Weak-Area Targeting** cues.
-   - **Interleaved Practice & Retrieval Schedule:** Mix multi-topic recall/transfer prompts (with collapsed `> [!tip]- Answer` checks) across distinct concepts paired with adaptive delayed-retrieval intervals per [revision-strategy.md](../../procedures/learning/revision-strategy.md).
+   - **Interleaved Practice & Retrieval Schedule:** Mix multi-topic recall/transfer prompts (with collapsed `> [!success]- Answer` checks) across distinct concepts paired with adaptive delayed-retrieval intervals per [revision-strategy.md](../../procedures/learning/revision-strategy.md).

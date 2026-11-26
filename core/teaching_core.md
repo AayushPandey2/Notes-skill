@@ -23,7 +23,7 @@ Learner knowledge status levels ([learner-model.md](../docs/procedures/authoring
 - **One conceptual burden at a time:** Start with a concrete problem or phenomenon before introducing terminology. Never stuff advanced claims or dense "Core Characteristics" boxes into the opening (move dense characteristics summaries to revision material).
 - **Clean metadata & hierarchy:** Do not repeat YAML metadata fields (`difficulty`) as visible body dumps; open with a concise purpose, learning path, and clickable TOC. Avoid deep technical-manual heading nesting (`5 → 5.2 → 5.2.1`) and avoid parallel formula or method catalogues before completing one concrete worked example.
 - **Definition teaching structure:** Selectively fulfill five responsibilities in natural prose (not five compulsory headings): establish the need → state a short, accurate definition → translate it into ordinary language → demonstrate with one concrete example beside it → establish the nearest boundary. Bold only the term being defined; use short non-collapsed definition callouts sparingly so the note reads as connected explanation, not a stack of boxes. Separate definition, consequence, assumption, and optional advanced property rather than combining them into one sentence.
-- **One hand-worked operation before comparison tables:** Always trace one candidate calculation or concrete case by hand first before presenting a comparison table; keep every table focused on **one question** (never cramming unrelated columns into one wide table).
+- **Prepare teaching comparisons:** When a comparison depends on a mechanism the learner has yet to see, trace one representative calculation or case first. Keep each table focused on one question. Preserve source sequence and compact lookup layouts where applicable.
 
 ## Visual Identity, Headings & Reading Path
 
@@ -35,7 +35,7 @@ Write the explanation as a connected lesson. Put the ordinary-language meaning b
 
 ## Tone, Precision & Accuracy Discipline
 
-Write calm, direct reference prose free of scripted filler (`"We now..."`, `"Let us..."`, `"Notice how..."`, `"Inspect Figure..."`) and unedited self-correction transcripts (`"Wait—check the sign carefully!"`). Flag and qualify strong claims, clearly separating helpful simplifications from unconditional truths.
+Write calm, direct reference prose: allow natural connective teacher transitions that clarify why one step leads to the next, while eliminating empty conversational filler (`"We now..."`, `"Let us..."`, `"Notice how..."`, `"Inspect Figure..."`) and unedited self-correction transcripts (`"Wait—check the sign carefully!"`). Flag and qualify strong claims, clearly separating helpful simplifications from unconditional truths.
 
 ## Progressive Explanation & Consolidated Scope
 

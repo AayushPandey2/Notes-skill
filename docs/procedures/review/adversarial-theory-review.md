@@ -57,7 +57,7 @@ Read the draft twice, first with formula folds closed to check the visible argum
 | **Fragmented reasoning** | Group connected equations under one objective and give their operations explanatory transitions |
 | **Definition treated as theorem** | Identify the stipulation and motivate its meaning |
 | **Missing derivation** | Construct the formula completely from established principles/identities |
-| **Algebraic teleportation** | Restore missing intermediate transformations inside the formula fold |
+| **Missing algebraic transitions** | Restore the missing transformations in the visible derivation or its existing solution/formula fold, as appropriate |
 | **Unexplained cancellation** | Explain explicitly which factors cancel and why |
 | **Missing assumption** | State conditions/hypotheses required for the transformation to hold |
 | **Circular proof** | Replace with valid independent starting principles |

@@ -12,4 +12,4 @@ Applies to network protocols, routing, transport reliability, DNS/HTTP/TLS, and 
 4. **Diagnostic & Defensive Verification:** Trace packet loss, reordering, MTU fragmentation, or TLS/DNS failures alongside read-only inspection syntax (`ss`, `dig`, `tcpdump` clearly marked unexecuted).
 
 ## Specialized Walkthrough & Verification
-Qualify guarantees by protocol (TCP vs. UDP vs. QUIC) and label traces **illustrative / statically_reviewed** (never live captures unless user-supplied). End with **`Source and static review only; not compiled or executed here.`**
+Qualify guarantees by protocol (TCP, UDP, or QUIC). Distinguish illustrative traces from supplied or published packet captures, using the shared lab evidence rules.

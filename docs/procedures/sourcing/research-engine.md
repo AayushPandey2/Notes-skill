@@ -22,7 +22,7 @@ Apply [source-fidelity.md](source-fidelity.md) for manual source coverage review
 
 Research follows knowledge requirements (`Learning Objective -> Required Knowledge -> Research Questions -> Evidence Requirements -> Source Categories -> Source Discovery -> Verification`), never a static subject-to-website list.
 
-Assign an independent research depth (`0–5`) per concept / research question—decoupled from mathematical (`M0–M5`) or coding (`C0–C5`) depth (e.g., a standard theorem may be `M5 + R1`; a contested policy review may be `M1 + R5`):
+Assign an independent research depth (`0–5`) per concept / research question—decoupled from unified theory depth (`0–5`), `math_profile`, and practical/coding scope in [adaptive-engine.md](../authoring/adaptive-engine.md) (e.g., a standard theorem with `Formal reasoning` math may need only `R1`; a contested policy review at `Conceptual` math may need `R5`):
 
 - **`R0` (No external retrieval):** Local permitted sources, vault notes, or deterministic local verification suffice (e.g., elementary polynomial derivative, supplied complete passage).
 - **`R1` (Targeted verification):** Check one or a few specific uncertain facts, dates, theorem hypotheses, or API signatures.
@@ -39,7 +39,7 @@ Decompose only concepts that require evidence into compact `RQ-xxx` records (`id
 
 Select **source categories by what the claim requires**, not domain reputation alone:
 - **Mathematics (`mathematical_definition`, `mathematical_proof`):** Textbooks, original theorem papers, scholarly papers, university notes. Verify hypotheses, notation, and validity domain.
-- **Programming (`programming_api`, `software_architecture`):** Official docs, language specs, maintained repositories, release notes, and executable tests. Record exact version and deprecations.
+- **Programming (`programming_api`, `software_architecture`):** Official docs, language specs, maintained repositories, release notes and published test cases. Read relevant tests statically and record exact versions and deprecations.
 - **AI / ML (`empirical_result`, `original_paper`):** Original papers for formulations; reproducible benchmarks with datasets/metrics for empirical claims; official docs for framework code. Label preprints distinctly from peer-reviewed venues.
 - **Sciences & Health (`scientific_measurement`, `clinical_health`):** Experimental reports, institutions, clinical guidelines, systematic reviews. Verify units, uncertainty, and population/safety scope.
 - **History, Economics, Law, Security (`historical_claim`, `economic_data`, `legal_regulation`, `security_advisory`):** Primary archives, official statistical agencies, statutes/court decisions, official advisories. Resolve date, jurisdiction, revision status, and affected versions.
@@ -59,10 +59,10 @@ Search snippets are discovery aids, **never** verified evidence. Inspect the act
 
 Maintain structured `SRC-xxx` (Source Records) and `EV-xxx` (Evidence Records):
 
-- Allowed `support_status`: `supported_directly`, `supported_with_qualifications`, `supported_indirectly`, `corroborated_independently`, `computationally_verified`, `contradicted`, `unresolved`, `source_unavailable`, `not_verified`.
-- Never mark an evidence record supported/corroborated unless its linked source has `content_verified: true` (or `computationally_verified` with real execution evidence).
+- Allowed `support_status`: `supported_directly`, `supported_with_qualifications`, `supported_indirectly`, `corroborated_independently`, `analytically_checked`, `contradicted`, `unresolved`, `source_unavailable`, `not_verified`.
+- Never mark an evidence record supported/corroborated unless its linked source has `content_verified: true` (or `analytically_checked` via explicit manual mathematical/static verification).
 - **Contradictions:** Never silently merge incompatible claims or invent consensus. Identify whether the conflict reflects version drift, differing definitions/assumptions, datasets, or scholarly disagreement; preserve supplied-source claims faithfully under `R-S0`/`R-S1`/`R-S2` and label external discrepancies separately.
-- **Computational verification:** Label unexecuted code `Status: static review (not executed)` unless a native tool actually ran it, remembering that numeric examples do not constitute a mathematical proof.
+- **Static and external evidence:** Apply the [lab evidence rules](../authoring/experimental-lab.md) to any runtime outputs. Preserve their external provenance and distinguish numerical illustrations from proofs.
 
 ## 6. Stopping Criteria & Failure Handling
 

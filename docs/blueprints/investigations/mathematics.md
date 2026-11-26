@@ -12,4 +12,4 @@ Applies to proofs, symbolic constructions, linear algebra, calculus, discrete ma
 4. **Verification, Counterexamples & Boundaries:** Independent substitution/invariant checks, hypothesis-relaxation tests, and explicit counterexamples (plus a minimal verification snippet *only* when computation is part of the objective).
 
 ## Specialized Walkthrough & Verification
-Verify every transition and degenerate/boundary case (`0` divisors, defective matrices, dropped hypotheses). State **author-derived / analytical / independently_checked**; if code appears end with **`Source and static review only; not compiled or executed here.`** otherwise **`Analytical and manual review only (no code executed).`**
+Verify every consequential transition and boundary case, including zero divisors, defective matrices, and dropped hypotheses. Distinguish author-derived analytical results from the verification actually performed, using the shared lab contract.

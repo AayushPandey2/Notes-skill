@@ -11,4 +11,4 @@ Applies to language constructs, type systems, ownership/lifetimes, concurrency p
 3. **State, Lifetime & Error Analysis:** Trace execution, memory/ownership, aliasing, or invalid-access failures—including an optional **intentionally non-compiling diagnostic example** (explicitly labeled `Intentionally invalid — demonstrates compiler/runtime diagnostic`) without executing undefined behavior.
 
 ## Specialized Walkthrough & Verification
-Trace variable types, lifetimes/ownership transfers, stack/heap or scope semantics, execution order, and aliasing/borrow/null/overflow failure modes. End with **`Source and static review only; not compiled or executed here.`**
+Trace variable types, lifetimes and ownership transfers, stack/heap or scope semantics, execution order, and applicable aliasing, borrowing, null or overflow failure modes.

@@ -2,7 +2,7 @@
 
 - **Parent Master:** [M3 — Quick Reference](../formats/quick-reference.md) (`single_artifact`—never trigger companion lab/cheatsheet generation).
 - **Activation Trigger:** `"/scribe-notes atomic note on <concept>"` or single-concept card item inside a collection.
-- **Placement & Budget:** Save inside `<Configured Target>/<Topic>/` (or `Atomic Notes/<Canonical Concept Title>.md` if standalone) with Standard Obsidian Properties YAML + `# <Canonical Concept Title>`. Keep total body strictly **`<150` words** (omit TOC and optional footer clutter).
+- **Placement & Budget:** Save inside `<Configured Target>/<Topic>/` (or `Atomic Notes/<Canonical Concept Title>.md` if explicitly requested as standalone) with Standard Obsidian Properties YAML and the concept title. Aim for fewer than 150 words while preserving essential conditions. Omit the TOC and optional footer.
 
 ## Compact Structure (3 Core Parts)
 1. **Claim & Definition (`2–3` sentences):** Precise definition + governing relation (`$$...$$` only when needed under [math_gates.md](../../../core/math_gates.md), with compact inline conditions).

@@ -12,4 +12,4 @@ Applies to build systems, containers, CI/CD, IaC, cloud networking, and SRE reli
 4. **Inspection, Compatibility & Recovery:** Document read-only inspection checks, misconfiguration diagnosis (cache busting, root privileges, runtime mismatch, ephemeral volume loss), and rollback steps.
 
 ## Specialized Walkthrough & Verification
-Label behavior **synthetic / expected / statically_reviewed** (never live-infra **executed**) and end with **`Source and static review only; not compiled or executed here.`**
+Describe illustrative infrastructure behavior as a prediction. Attribute live-infrastructure evidence only to a supplied or published source, using the shared lab contract.
