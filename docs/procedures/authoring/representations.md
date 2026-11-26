@@ -35,9 +35,9 @@ Choose representations according to the **intellectual task** rather than defaul
 Keep the no-Mermaid, no-ASCII-diagram, and no-custom-plotting-script rules intact, and apply the matching lifecycle by visual source:
 
 ### Path A — External Downloaded Web Raster Figures
-Track `Needed -> Candidate found -> Source checked -> Downloaded -> Local image inspected -> Embedded -> Saved embed checked`:
+Track `Needed -> Candidate found -> Source checked -> Downloaded (outside final vault first where host tools permit) -> Local image inspected -> Embedded -> Published with accepted notes -> Saved embed checked`:
 1. **Check source & rights:** Verify identifiable educational/scientific/institutional/creator sources and reuse rights within active `source_policy`.
-2. **Download locally:** Save `.png`, `.jpg`, `.jpeg`, or `.webp` with descriptive non-colliding filenames under `<Configured Target>/<Topic>/assets/` (or `assets/scriptorium/<video-id>/` for standalone `/scribe-ytnotes`) using native tools (never custom downloader scripts).
+2. **Download & inspect before vault publication:** Where native host tools permit, inspect candidate assets outside the final vault directory first before committing them to `<Configured Target>/<Topic>/assets/` (or `assets/scriptorium/<video-id>/` for standalone `/scribe-ytnotes`), avoiding leftover unused files or empty directories if generation is blocked. Save `.png`, `.jpg`, `.jpeg`, or `.webp` with descriptive non-colliding filenames using native tools (never custom downloader scripts, and never deleting preexisting user assets).
 3. **Inspect before describing:** Open the saved file (`read_file` or viewer) before citing colors, axes, labels, or values; explain explicitly if an external figure uses a different dataset/notation than the running example.
 
 ### Path B — Host-Supported Native / Generated Mathematical Diagrams

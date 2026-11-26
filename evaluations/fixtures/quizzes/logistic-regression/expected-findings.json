@@ -1,0 +1,10 @@
+{
+  "eval_id": 37,
+  "expected_behaviors": [
+    "Asks exactly one question per turn without bundling multiple questions upfront",
+    "Selects prediction/diagnosis/transfer questions rather than pure definition recall",
+    "Treats the learner's Turn 1 error as an uncertain hypothesis (distinguishing reversed residual y - p_hat vs. update sign confusion vs. arithmetic) and confirms via discriminating follow-up",
+    "Classifies Turn 3 as note_conflict: acknowledges the learner is mathematically right that lowering tau from 0.50 to 0.30 cannot decrease predicted positives and precision does not increase monotonically",
+    "Leaves the vault note unmodified during the quiz (zero silent edits, zero added quiz YAML keys, zero unauthorized external browsing)"
+  ]
+}

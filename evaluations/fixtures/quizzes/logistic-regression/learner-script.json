@@ -1,0 +1,25 @@
+{
+  "quiz_id": "logistic-regression-multi-turn",
+  "conditional_turns": [
+    {
+      "turn": 1,
+      "condition": "Tutor asks a diagnostic or prediction question covering gradient direction or parameter updates",
+      "learner_reply": "For x = 2, y = 1, and predicted p_hat = 0.25, I computed the gradient as +1.5, so gradient descent increases w."
+    },
+    {
+      "turn": 1,
+      "condition": "Tutor asks a prediction or diagnosis question covering classification threshold effects",
+      "learner_reply": "I lowered tau from 0.50 to 0.30 and got fewer positive predictions, though I'm not sure why the note says precision rises."
+    },
+    {
+      "turn": 2,
+      "condition": "Follow-up after tutor probes sign or residual convention (misconception uncertainty check)",
+      "learner_reply": "Oh! I used (y - p_hat) = +0.75 instead of (p_hat - y) = -0.75, which gave +1.5 instead of -1.5."
+    },
+    {
+      "turn": 3,
+      "condition": "Threshold discussion or note_conflict probe against [[Logistic Regression#Classification Thresholds]]",
+      "learner_reply": "Wait—your note says lowering the threshold from 0.50 to 0.30 predicts fewer positive cases and always increases precision, but classifying anything with p_hat >= 0.30 as positive must predict AT LEAST as many positives as 0.50, and can actually hurt precision!"
+    }
+  ]
+}

@@ -383,26 +383,28 @@
     {
       "id": 37,
       "prompt": "/scribe-quiz Quiz me on Logistic Regression targeting prediction, diagnosis, and transfer—not just definitions",
-      "expected_output": "Applies mastery-design 7-step progression across scripted multi-turn responses in /scribe-quiz: asks one question per turn, treats wrong-answer causes as uncertain hypotheses until confirmed, and classifies valid contradiction against the defective note statement as note_conflict.",
+      "expected_output": "Applies mastery-design 7-step progression across conditional multi-turn responses using only the clean vault note: treats wrong-answer causes as uncertain hypotheses until confirmed, and classifies valid correction of the defective threshold statement as note_conflict without editing the vault.",
       "files": [
-        "evaluations/fixtures/vault/logistic-regression-quiz-script.md"
+        "evaluations/fixtures/quizzes/logistic-regression/vault/Logistic Regression.md"
       ],
       "expectations": [
         "Asks one question per turn sampling prediction/diagnosis/transfer rather than bare recall",
         "Treats learner wrong-answer root cause as an uncertain hypothesis confirmed via discriminating follow-up without inventing prior quiz history",
-        "Classifies the learner's valid correction of the defective note statement as note_conflict without silently rewriting the vault"
+        "Classifies the learner's valid correction of the defective threshold statement as note_conflict without silently rewriting the vault"
       ]
     },
     {
       "id": 38,
       "prompt": "/scribe-notes Create a revision pack for my existing Neural Networks vault notes focusing on documented weak areas without inventing past quiz scores",
-      "expected_output": "Applies revision-strategy read-only and no-fabricated-history rules against the controlled vault fixture: grounds revision in documented weak areas and avoids claiming unrecorded quiz scores.",
+      "expected_output": "Applies revision-strategy read-only discovery over the realistic mini-vault: grounds citations in real headings inside Neural Networks.md, targets Weak Areas.md, avoids inventing quiz scores, and leaves unrelated vault notes untouched.",
       "files": [
-        "evaluations/fixtures/vault/neural-networks-weak-areas.md"
+        "evaluations/fixtures/vaults/neural-networks/Neural Networks.md",
+        "evaluations/fixtures/vaults/neural-networks/Weak Areas.md",
+        "evaluations/fixtures/vaults/neural-networks/Unrelated Note - Git Basics.md"
       ],
       "expectations": [
-        "Adapts revision structure strictly using the documented weak spots in neural-networks-weak-areas.md",
-        "Never fabricates past learner quiz scores or automated spaced-repetition reminders"
+        "Resolves citations to actual headings in Neural Networks.md (e.g., [[Neural Networks#Backpropagation & Chain Rule]]) and targets documented gaps in Weak Areas.md",
+        "Never fabricates past learner quiz scores or touches Unrelated Note - Git Basics.md"
       ]
     },
     {
@@ -418,7 +420,7 @@
     {
       "id": 40,
       "prompt": "/scribe-notes Create notes strictly from these two supplied lecture paragraphs with no exercises or outside additions",
-      "expected_output": "Applies resolved artifact_plan and source-constraint precedence over default theory_bundle against the supplied hashing lecture fixture: emits only main_note and omits unsupported experimental_lab and mastery_pack.",
+      "expected_output": "Applies resolved artifact_plan and source-constraint precedence over default theory_bundle against the supplied hashing lecture fixture: emits only main_note, omits unsupported experimental_lab and mastery_pack, and qualifies the worst-case randomized hashing overstatement honestly.",
       "files": [
         "evaluations/fixtures/sources/strict-lecture-paragraphs.md"
       ],
@@ -434,7 +436,20 @@
       "expectations": [
         "Resolves artifact_plan to include only main_note and omit unsupported Experimental Lab and Cheatsheet/Q&A artifacts",
         "Performs zero external source retrieval and introduces no unsupported examples or external web visuals",
-        "Preserves supplied hashing terminology and discloses strict source boundaries honestly"
+        "Preserves supplied hashing terminology, discloses strict source boundaries, and qualifies the randomized worst-case overclaim cleanly"
+      ]
+    },
+    {
+      "id": 41,
+      "prompt": "/scribe-audit Audit my existing Logistic Regression vault note read-only without rewriting it",
+      "expected_output": "Applies /scribe-audit in vault-only mode against Logistic Regression.md: identifies the threshold precision defect as confirmed Major without penalizing non-Scriptorium YAML, outputs structured finding(s) with location/severity/confidence/correction/verification, and performs zero file writes.",
+      "files": [
+        "evaluations/fixtures/quizzes/logistic-regression/vault/Logistic Regression.md"
+      ],
+      "expectations": [
+        "Operates strictly read-only in vault-only mode with zero edits to Logistic Regression.md",
+        "Separates factual defects (threshold lowering increasing precision) from stylistic YAML differences using appropriate audit profiles",
+        "Reports structured findings including severity, confidence (confirmed/suspected/unverifiable), exact correction, and verification method"
       ]
     }
   ]

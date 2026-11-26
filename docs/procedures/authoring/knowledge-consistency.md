@@ -30,3 +30,7 @@ For every major learning objective in the internal plan, align coverage cleanly 
 - **Lab (`File 2`):** Realizes, computes, traces, and investigates the same mechanism under stated fixtures and parameters.
 - **Mastery (`File 3`):** Tests recognition, diagnosis, edge cases, and transfer aligned to the taught objectives.
 Verify before acceptance that practical objectives receive lab realization when included, and Theory, Lab, and Mastery share exact notation, objective scaling, and validity conditions.
+
+## Claim Propagation & Defect Tracking
+
+Whenever a canonical claim, assumption, counterexample, or defect is established or repaired (for example, clarifying that raising a classification threshold does *not* monotonically guarantee higher precision), trace and update **every dependent occurrence** across Theory explanatory prose, Lab evaluation scripts/traces, Cheatsheet summary rows, Interview Q&A answers, and related Quiz/Revision fixtures—preserving productive retrieval repetition without propagating conflicting claims.

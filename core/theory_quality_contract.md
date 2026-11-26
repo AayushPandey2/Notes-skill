@@ -119,3 +119,18 @@ End substantive theory notes with a concise **Mental Model** (enabling the learn
 - Never force ML datasets, equations, or code onto unrelated subjects.
 - Never produce disconnected blocks of definitions, formulas, and examples, or repeat the same prerequisite across unrelated sections.
 - Never treat an unverified self-assessment as proof of educational quality.
+
+## 11. Educational Depth Preservation Contract
+
+Preserve full intellectual depth wherever a substantive explanation requires space:
+
+1. Never sacrifice conceptual depth for conciseness.
+2. Remove redundant information, not necessary explanations.
+3. Never skip consequential mathematical derivation steps.
+4. Explain *why* every major mechanism works, not merely *how*.
+5. Allow multiple examples when they reveal different properties.
+6. Do not impose a maximum word or line count on `M1` theory.
+7. Split exceptionally broad topics into chapters rather than compressing their explanations.
+8. Keep beginner-friendly explanations detailed, even when they require significantly more space.
+9. Treat resource limitations as reasons to disclose incomplete coverage, not silently reduce depth.
+10. Ensure editorial review never removes unique educational information.

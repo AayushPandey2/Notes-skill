@@ -15,10 +15,20 @@ Resolve applicable criteria from the intended artifact (`Theory`, `Lab`, `Compac
 
 | Artifact Profile | Accuracy | Mechanism / Depth | Prerequisites | Examples / Trace | Evidence / Fidelity | Presentation & Conciseness |
 |---|---|---|---|---|---|---|
-| **Substantive Theory (`M1`/`M2`/`M7`)** | 25% | 25% | 12% | 13% | 12% | 13% (incl. transfer) |
+| **Substantive Theory (`M1`/`M2`)** | 25% | 25% | 12% | 13% | 12% | 13% (incl. transfer) |
 | **Experimental Lab / `M5`** | 25% | 15% | 8% | 32% (lab correctness & A–G) | 10% | 10% |
-| **Compact Reference / `M3` / `M4`** | 35% | 15% | 10% | 20% | 10% | 10% |
+| **Compact Reference (`M3`)** | 35% | 15% | 10% | 20% | 10% | 10% |
 | **Strict-Source Note (`strict`)** | 30% | 20% | 10% | 10% (source-bound) | 20% (fidelity & gaps) | 10% |
+
+| Dedicated Artifact / Workflow Profile | Primary Scoring Dimensions (100% Proportional) |
+|---|---|
+| **`M4` Worked Solutions** | Method selection & hypotheses (25%), complete logical/algebraic steps (40%), boundary checks & verification (25%), clarity (10%) |
+| **`M6` Assessment** | Question & answer accuracy (35%), objective coverage (25%), discrimination & transfer breadth (25%), tap-to-reveal formatting (15%) |
+| **Video Notes (`/scribe-ytnotes`)** | Transcript coverage & timestamps (30%), factual/math reconstruction fidelity (35%), honest access/visual limits (20%), presentation (15%) |
+| **`M7` Synthesis & Revision** | Meaningful cross-note relationships (35%), contradiction/convention reconciliation (30%), non-redundancy (20%), presentation (15%) |
+| **Interactive Quiz (`/scribe-quiz`)** | One-question pacing (20%), accurate grading & `note_conflict` handling (30%), uncertainty-aware misconception diagnosis & retest (35%), vault read-only hygiene (15%) |
+| **Quality Audit (`/scribe-audit`)** | Finding precision & defect recall (40%), severity/confidence calibration (25%), actionable local repairs (25%), purpose-respecting & read-only restraint (10%) |
+| **Multi-File Bundle (Aggregate)** | Individual artifact weighted average (75%) + cross-artifact consistency across symbols, objective scaling, claims, and learning objectives (25%) |
 
 | Criterion | Low (0–3) | Medium (4–7) | High (8–10) |
 |---|---|---|---|

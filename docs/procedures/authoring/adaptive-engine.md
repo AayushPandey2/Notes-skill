@@ -5,14 +5,21 @@ Load this for substantive theory planning. [master-registry.yaml](../../dispatch
 ## 1. Three-Level Internal Planning Hierarchy
 
 Maintain **one compact internal plan** structured at three levels rather than repeating collection metadata inside every concept or creating JSON builders (never publish internal planning records):
-- **Request level:** `artifact_policy`, `resolved artifact_plan`, `learning_objectives`, `source_permissions`, `learner_profile` ([learner-model.md](learner-model.md)). Maintain `artifact_plan` directly inside the request plan and pass it as the single artifact manifest consumed by authoring, linking, destination, and verification rules:
+- **Request level:** `artifact_policy`, extensible list-based resolved `artifact_plan`, `learning_objectives`, `source_permissions`, `learner_profile` ([learner-model.md](learner-model.md)). Maintain `artifact_plan` directly inside the request plan as the single artifact manifest consumed by authoring, linking, destination, and verification rules—supporting single notes, multi-chapter collections, MOCs, playlist sets, standalone labs/sheets, create-vs.-update operations, and asset permissions without fixed 3-file assumptions:
 
 ```yaml
 artifact_plan:
-  main_note: { included: true, reason: "<format/request scope>" }
-  experimental_lab: { included: <true|false>, reason: "<e.g., strict source contains no supported investigation>" }
-  mastery_pack: { included: <true|false>, reason: "<e.g., M1 default / source includes exercises>" }
-  external_visuals: { permitted: <true|false>, reason: "<active source_permissions>" }
+  artifacts:
+    - id: <artifact-id>
+      role: <theory | experimental_lab | mastery_pack | moc | video_note | reference | assessment | synthesis>
+      master: <M1..M7 | video_notes>
+      action: <create | update>
+      filename: <intended filename>
+      required: <true | false>
+      dependencies: []
+  omitted_artifacts: []
+  permissions:
+    external_visuals: <true | false>
 ```
 
 - **Collection level** *(only when bundled or multi-chapter)*: `notation`, `canonical_definitions`, `shared_fixtures`, `concept_ownership` ([knowledge-consistency.md](knowledge-consistency.md)).

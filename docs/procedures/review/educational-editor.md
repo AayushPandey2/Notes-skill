@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Review substantive notes from the **reader's perspective** so prose is clear, learnable, and accessible across laptops, tablets, and plain Obsidian without plugins—never stripping necessary proof steps or derivations merely for brevity.
+Review substantive notes from the **reader's perspective** so prose is clear, learnable, and accessible across laptops, tablets, and plain Obsidian without plugins—strictly honoring the **Educational Depth Preservation Contract** in [theory_quality_contract.md](../../../core/theory_quality_contract.md) (never trimming unique educational information, necessary proof steps, or intermediate derivations merely for length). Apply **Three-Level Progressive Disclosure** ([authoring_rules.md](../../../core/authoring_rules.md)): keep essential intuition, definitions, governing mechanisms, assumptions, and failure conditions in the *Main reading path* (visible prose); move extended algebra, optional formal proofs, line-by-line code walkthroughs, and extra calculations to *Expandable detail*; and link deep prerequisites or related topics as *Linked reference*.
 
 ## 1. Editorial Dimensions & Productive vs. Redundant Repetition
 

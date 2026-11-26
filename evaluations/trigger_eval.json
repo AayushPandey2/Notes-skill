@@ -68,6 +68,18 @@
       "expected_command": "scribe-setfolder"
     },
     {
+      "query": "/scribe-audit Review my existing Transformer and Attention Obsidian notes for mathematical errors, missing prerequisite bridges, and lab drift without editing them",
+      "should_trigger": true,
+      "expected_master": null,
+      "expected_command": "scribe-audit"
+    },
+    {
+      "query": "Audit my existing Linear Algebra Obsidian study notes for factual mistakes and unexplained derivations, and suggest targeted fixes without overwriting anything",
+      "should_trigger": true,
+      "expected_master": null,
+      "expected_command": "scribe-audit"
+    },
+    {
       "query": "Explain gradient descent deeply from first principles with comprehensive learning notes and mathematical intuition",
       "should_trigger": true,
       "expected_master": "M1",
@@ -105,6 +117,12 @@
     },
     {
       "query": "Deploy this Cloudflare Worker cron trigger to production",
+      "should_trigger": false,
+      "expected_master": null,
+      "expected_command": null
+    },
+    {
+      "query": "Audit my Node.js Express authentication middleware repository for CSRF and session security vulnerabilities",
       "should_trigger": false,
       "expected_master": null,
       "expected_command": null
