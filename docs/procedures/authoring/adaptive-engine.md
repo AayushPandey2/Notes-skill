@@ -6,10 +6,11 @@ Load this for substantive theory planning. [master-registry.yaml](../../dispatch
 
 Maintain **one shared internal concept record** enriched across planning policies rather than rebuilding separate planning tables across files (keep this internal—never publish planning scaffolding or create JSON builders):
 - `concept_id`, `role` (`prerequisite`, `core`, `extension`, `advanced`), `dependencies`
-- `knowledge_type` (`conceptual`, `mathematical`, `programming`, `algorithmic`, `architectural`, `scientific`, `historical`, `comparative`, `procedural`, `research`) & `primary_subject` (+ selective secondary support)
-- `learning_objective` & `source_policy` (`independent`, `strict`, `source_first`, `expanded`, `comparative`)
+- `knowledge_type` & `primary_subject` (+ selective secondary support)
+- `concept_reasoning` (selected from [concept-reasoning.md](concept-reasoning.md): `definition`, `mechanism`, `transformation`, `mathematical_relationship`, `theorem`, `algorithm`, `statistical_inference`, `architecture`, `scientific_process`, `historical_explanation`, `design_decision`, `diagnostic_reasoning`, `procedure`)
+- `learner_profile` (optional, supplied/retained only via [learner-model.md](learner-model.md)) & `source_policy`
 - `depth` (unified `0–5` theory depth + separate `math_profile` from [math_gates.md](../../../core/math_gates.md) + `code`/`visual` needs)
-- `evidence_locators`, `teaching_methods`, and `completion_condition`
+- `example_roles` ([example-engineering.md](../../blueprints/components/example-engineering.md)), `collection_ledger` ([knowledge-consistency.md](knowledge-consistency.md)), `evidence_locators`, and `completion_condition`
 
 For comprehensive independent notes or unfamiliar disciplines, populate records via [curriculum-discovery.md](curriculum-discovery.md) (staying inside supplied material under `strict` mode) and [subject-theory-profiles.md](../../blueprints/components/subject-theory-profiles.md). Apply the 3-tier prerequisite rule in [teaching_core.md](../../../core/teaching_core.md).
 

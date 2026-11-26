@@ -13,13 +13,22 @@ Select visuals from this priority hierarchy rather than over-relying on generic 
 
 **Relevance-Governed Quantity & Source-Only Precedence:** Base visual count on distinct learning needs, not a mechanical quota (typically `3–5` complementary visuals for rich visual/geometric/empirical/video topics; `0–2` for purely algebraic or compact notes). When `source_policy = strict`, external web browsing and downloading are **disabled**—use only supplied source figures or native tables/traces. **Never use Mermaid (`mermaid` blocks), ASCII art/diagrams, SVG downloads, or custom HTML/JS plotting scripts.**
 
-## 2. Strategic Visual Opportunities Across Disciplines
+## 2. Multi-Representation Selection & Strategic Opportunities
 
-- **Electrical Engineering:** Circuit topology paired with reference directions, passive sign convention, and transient/frequency response.
-- **Operating Systems & Networking:** Virtual-to-physical address/TLB/page-table mappings, process state transitions, encapsulation, and packet/handshake timelines.
-- **Biology & Chemistry:** 3D molecular/enzyme structure $\to$ binding/active-site mechanism $\to$ pathway/regulation; reaction coordinate energy profiles and particle-level transitions.
-- **Mathematics & Algorithms:** Geometric transformations, function + derivative pairs, constraint boundaries, and data-structure pointer/window state transitions.
-- **Machine Learning Overlay:** Failure contrast (linear vs. bounded curve), foundation curves ($\ln x$), sigmoid + derivative, transformed boundaries, ROC/calibration/PR trade-offs, $L_1$/$L_2$ geometry, bias–variance/overfit panels, and prediction pipelines.
+Choose representations according to the **intellectual task** rather than defaulting to generic illustrations:
+
+| What the Learner Must Understand | Best Representation |
+|---|---|
+| How a variable or loss changes | Function plot / parameter-sensitivity curve |
+| How quantities interact spatially | Geometric construction / projection diagram |
+| How information or requests flow | Data-flow / request-lifecycle diagram |
+| How states transition | State-transition diagram or trace table |
+| How an algorithm executes | Sequential worked trace |
+| How components & boundaries interact | Architecture / circuit topology diagram |
+| How energy or rates evolve | Reaction-coordinate / transient response curve |
+| How concepts or evidence differ | Discriminating comparison / argument map |
+
+- **Domain Visual Overlays:** *Electrical:* circuit topology + passive sign + response · *OS/Networking:* address/TLB/page-table maps, packet timelines · *Biology/Chemistry:* 3D structure/binding, pathway, energy profile · *Math/Algorithms:* transforms, function+derivative, pointer/window states · *ML:* failure contrast, foundation curves, sigmoid+derivative, ROC/calibration, $L_1$/$L_2$ geometry, bias–variance.
 
 ## 3. Acquisition, Inspection & Adaptive Sizing
 
@@ -27,7 +36,7 @@ Track `Needed -> Candidate found -> Source checked -> Downloaded -> Local image 
 1. **Check source & rights:** Verify identifiable educational/scientific/institutional/creator sources and reuse rights within active `source_policy`.
 2. **Download locally:** Save `.png`, `.jpg`, `.jpeg`, or `.webp` with descriptive non-colliding filenames under `<Configured Target>/<Topic>/assets/` (or `assets/scriptorium/<video-id>/` for standalone `/scribe-ytnotes`) using native tools (never custom downloader scripts).
 3. **Inspect before describing:** Open the saved file (`read_file` or viewer) before citing colors, axes, labels, or values; explain explicitly if an external figure uses a different dataset/notation than the running example.
-4. **Embed with adaptive width:** Choose display width from legibility, intrinsic dimensions, and layout (`![[assets/<name>.png|650]]` is a sensible default, using compact widths for small symbols/components and wider widths for dense annotated circuits, graphs, or tall diagrams so labels remain crisp). Separate embed, concise 1-sentence caption, and **ordinary Markdown** attribution (`Source: [Exact Source Page Title](url). Attribution and license: <verified info>.` — zero raw HTML) with blank lines.
+4. **Embed with adaptive width & multimedia hygiene:** Choose display width from legibility, intrinsic dimensions, and layout (`![[assets/<name>.png|650]]` default; compact for small components, wider for dense circuits/graphs). Place explanations beside the element they explain, keep labels/symbols consistent with prose, never rely exclusively on color, omit decorative visual clutter, and separate embed, concise 1-sentence caption, and **ordinary Markdown** attribution (`Source: [Exact Source Page Title](url). Attribution and license: <verified info>.` — zero raw HTML) with blank lines.
 
 ## 4. Diagram-to-Model Narrative & Six-Phase Visual Teaching
 
