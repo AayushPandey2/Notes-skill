@@ -17,6 +17,7 @@ artifact_policy:
   M2:
     default: theory_bundle
     bundle_members: [main_note, companion_lab, cheatsheet_qa]
+    multi_branch: moc_plus_bundle_per_subtopic
   M3:
     default: single_artifact
   M4:

@@ -51,4 +51,4 @@ Dispatch each active public command or `/scribe-notes` internal branch cleanly�
 
 ### Command V — Video-Grounded Notes (`/scribe-ytnotes` / `/scribe-notes`)
 - **Trigger:** Video URL, lecture recording, transcript, or explicitly requested playlist (`/scribe-ytnotes`).
-- **Execution & Validation:** Follow [video-notes.md](../../blueprints/formats/video-notes.md) (overrides collection splitting, companion-lab generation, and multi-language lab tracks). Check metadata/transcript access once and acquire the timestamped transcript into one compact evidence map—never play the video or capture video frames. Instead, download and inspect multiple relevant raster web images (`assets/scriptorium/<video-id>/<name>.png`) via [representations.md](representations.md), compose once around those visuals and timestamps, and repair omissions locally.
+- **Execution & Validation:** Delegate to [video-notes.md](../../blueprints/formats/video-notes.md) as the single authority (transcript-first, conditional web visuals, staged drafting for long transcripts, and honest disclosure of un-narrated visual content; never play video or capture frames).

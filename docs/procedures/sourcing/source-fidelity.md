@@ -22,6 +22,16 @@ Even when a source policy permits some external access, treat these five permiss
 | **Independent curriculum expansion** | Add concepts absent from the supplied material |
 | **External practice construction** | Create exercises or problems beyond the supplied source |
 
+### Default Permission Matrix by Source Policy
+
+| Source Policy | Verification | Supplementary Explanation | External Visuals | Curriculum Expansion | External Practice |
+|---|---|---|---|---|---|
+| `strict` (`R-S0`) | No | No | No | No | No |
+| `source_first` (`R-S1`) | Yes (targeted) | Only if permitted | Only if permitted | No | No |
+| `expanded` (`R-S2`) | Yes | Yes (labeled) | Yes (relevant) | Minor bridges only | Yes (labeled) |
+| `comparative` (`R-C`/`R-L`) | Yes | Yes (labeled) | Yes (relevant) | Yes (attributed) | Yes |
+| `independent` (`R-I`) | Yes | Yes | Yes | Yes | Yes |
+
 Lab API documentation checks must also respect active source permissions: when external lookup is forbidden, mark unresolved library/API details `[UNVERIFIED]` instead of browsing externally.
 
 For supplied references inventory all relevant elements once, including headings, definitions, equations, tables, algorithms, figures, examples, exercises, footnotes and qualifications. Inspect extracted math, table layout and scanned figures visually when needed. An inaccessible element remains a gap, never a fabricated citation or page. A text extraction is not evidence of visual completeness.
@@ -40,6 +50,6 @@ Check definitions, terms, prerequisites and analogy limits; mathematics needs co
 
 Correct the smallest defective section and dependent explanations, then review the affected claims and links again. After repeated failures of the same check, retain the draft with a precise gap rather than loop without new evidence. Report structural, executed and semantic checks separately. Preserve all unrelated user notes.
 
-## Resource accounting
+## Resource Accounting *(Evaluations & Requested Performance Reports Only)*
 
-When provider metadata is available, record model, input/output tokens, cached input, reasoning tokens if exposed, calls/retries/validation calls, elapsed time, accepted output size and cost using an identified price schedule. Avoid double counting reasoning tokens if included in output totals. Without metadata report only explicitly labeled estimates or measured character/byte sizes. Caching can reduce billed cost without reducing processed tokens. Compare source coverage, correctness and educational utility alongside resource use; incomplete notes do not count as an efficiency improvement.
+Activate only during evaluations or when the user explicitly requests performance/cost accounting (never add overhead during normal note generation). When provider metadata is available, record model, input/output tokens, cached input, reasoning tokens if exposed, calls/retries/validation calls, elapsed time, accepted output size and cost using an identified price schedule. Avoid double counting reasoning tokens if included in output totals. Without metadata report only explicitly labeled estimates or measured character/byte sizes.
