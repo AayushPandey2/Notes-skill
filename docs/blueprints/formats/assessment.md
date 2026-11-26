@@ -7,7 +7,7 @@
 
 ## 1. Cognitive Skill Sampling & Dynamic Question Numbering
 
-Sample across distinct cognitive skills rather than writing ten progressively longer definition prompts: *Recall, Recognition, Explanation, Calculation, Prediction, Diagnosis, Comparison, Critique, Construction, Transfer*.
+Sample across the ten mastery dimensions in [mastery-design.md](../../procedures/authoring/mastery-design.md) (*Recognition, Recall, Explanation, Execution, Prediction, Diagnosis, Discrimination, Construction, Critique, Transfer*) and integrate [revision-strategy.md](../../procedures/learning/revision-strategy.md) for spaced/interleaved practice sets rather than writing ten progressively longer definition prompts.
 
 Scale question count dynamically (`10–14` narrow sets; `15–20` full sets) and **compute tier headings dynamically** to match actual counts (never hardcode mismatched `Q1–Q5 / Q6–Q12 / Q13–Q18` ranges):
 - `## Tier 1 — Foundational Recall & Recognition (Q1–Q<n1>)`

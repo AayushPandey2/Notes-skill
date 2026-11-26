@@ -23,7 +23,7 @@ Open with line-1 YAML frontmatter matching the active profile, a discipline-appr
 - Present multi-line rules or derivations in separate-line `$$...$$` blocks followed by `> [!example]- Understand this formula step by step` ([math_gates.md](../../../core/math_gates.md), non-recursive inside folds).
 
 ### Section 2 — Tiered Interview / Viva Questions & Answers (Tap-to-Reveal)
-Default to **30 high-yield questions** for comprehensive topics (scaling count naturally to actual topic scope) and **compute tier headings dynamically** to match the actual question count:
+Default to **30 high-yield questions** for comprehensive topics (scaling count naturally to actual topic scope), sampling across the ten mastery dimensions in [mastery-design.md](mastery-design.md) (`Recognition`, `Explanation`, `Prediction`, `Diagnosis`, `Discrimination`, `Critique`, `Transfer`, etc.), and **compute tier headings dynamically** to match the actual question count:
 - `### Beginner-Level Questions (Q1–Q<n1>)`
 - `### Intermediate-Level Questions (Q<n1+1>–Q<n2>)`
 - `### Advanced-Level Questions (Q<n2+1>–Q<N>)`
