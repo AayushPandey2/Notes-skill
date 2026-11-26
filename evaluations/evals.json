@@ -9,19 +9,19 @@
       "expectations": [
         "Routes through /scribe-notes to master M1 (deep-notes) with no pre-generation knowledge quiz and zero generated scripts",
         "Introduces plain-language motivation and intuition before displayed equations",
-        "Every display math $$...$$ block is immediately followed by '> [!note]- 📐 Understand this formula'",
+        "Each principal result needing a local walkthrough is followed by '> [!example]- Understand this formula step by step' (without recursive nested folds inside the walkthrough)",
         "Uses only visually inspected local images with checked rights and attribution, or reports why a suitable image was unavailable"
       ]
     },
     {
       "id": 2,
       "prompt": "/scribe-ytnotes Build structured study notes from this lecture video with timestamps, equations, and downloaded web diagrams: https://www.youtube.com/watch?v=aircAruvnKk",
-      "expected_output": "Uses the /scribe-ytnotes transcript-first workflow, produces one self-contained note with no experimental lab, reports explicit access_state honestly, downloads and inspects complementary web raster visuals under assets/scriptorium/<video-id>/, and places collapsible formula folds directly beneath displayed math.",
+      "expected_output": "Uses the /scribe-ytnotes transcript-first workflow, produces one self-contained note with no experimental lab, reports explicit access_state honestly, downloads and inspects complementary web raster visuals under assets/scriptorium/<video-id>/, and places collapsible formula folds after principal results.",
       "files": [],
       "expectations": [
         "Uses /scribe-ytnotes video-notes format without splitting one video into multiple files or creating an experimental lab",
         "Records explicit video access_state honestly without playing or capturing video frames",
-        "Attaches '> [!note]- 📐 Understand this formula' directly under displayed equations"
+        "Attaches '> [!example]- Understand this formula step by step' after principal results"
       ]
     },
     {
@@ -76,6 +76,642 @@
       "expectations": [
         "Updates ~/.scriptorium-config.json directly without creating a helper script",
         "Reports saved vault_path, notes_folder, and notes_path from ~/.scriptorium-config.json"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "/scribe-notes Lasso Regression",
+      "expected_output": "Generates a 3-file bundle where the companion lab uses the lean implementation-focused format (zero obsolete chapters), 4 comparable ML tracks (Python+NumPy, Python library, Rust from scratch, Rust Linfa/SmartCore), '> [!example]- Understand this implementation: mathematics, code, and numerical dry run' (A-G) beneath every implementation, honest optimizer naming, and 'Source and static review only; not compiled or executed here.'",
+      "files": [],
+      "expectations": [
+        "Companion ML lab omits standalone metadata inventories, repeated theory, general experiments, 12-step workflows, quizzes, and summaries",
+        "Includes 4 aligned ML tracks with explicit objective-scaling conversions and actual optimizer/solver explanations",
+        "Places '> [!example]- Understand this implementation: mathematics, code, and numerical dry run' (A-G) directly beneath every implementation and labels code 'Source and static review only; not compiled or executed here.'"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "/scribe-notes atomic note on TLB miss vs page fault",
+      "expected_output": "Routes to M3 atomic-card (<150 words), uses Standard Obsidian Properties YAML, omits TOC, and does NOT generate companion Experimental Lab or Cheatsheet & Interview Q&A files.",
+      "files": [],
+      "expectations": [
+        "Routes to M3 with variant 'atomic_card' and keeps body strictly under 150 words",
+        "Exempts atomic-card from 3-file companion bundle generation",
+        "Clearly distinguishes a translation-cache miss from a non-resident/unmapped page fault"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "/scribe-notes Explain Operating System Virtual Memory comprehensively from first principles",
+      "expected_output": "Uses curriculum discovery and an internal concept coverage matrix (not published as clutter), teaches progressive abstraction from concrete address translation to page tables/TLB/page faults, distinguishes TLB miss vs page fault, includes forward and reverse diagnosis, and passes adversarial theory review.",
+      "files": [],
+      "expectations": [
+        "Traces a concrete virtual-to-physical address translation before abstracting to multi-level paging",
+        "Explicitly distinguishes TLB miss from page fault and includes reverse diagnostic reasoning",
+        "Uses clickable Obsidian TOC and profile-appropriate YAML without forcing ML-specific dataset conventions"
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "/scribe-notes Create comprehensive notes on Classical Thermodynamics: Ideal vs Real Gases",
+      "expected_output": "Uses curriculum discovery, establishes ideal-to-real model progression explicitly naming relaxed assumptions, distinguishes heat vs temperature and empirical law vs model, uses non-recursive formula folds, and selects domain-appropriate physics lab realization.",
+      "files": [],
+      "expectations": [
+        "Explicitly contrasts ideal-gas assumptions with refined intermolecular/volume-corrected real-gas behavior",
+        "Distinguishes heat from temperature and classifies laws, models, and approximations accurately",
+        "Attaches '> [!example]- Understand this formula step by step' after principal results without recursive nested folds"
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "/scribe-notes Explain React state, rendering lifecycle, and REST API integration for a task form",
+      "expected_output": "Routes to fullstack subject and lab blueprints, explains DOM/HTTP principles before framework syntax, traces browser-to-database request lifecycle, uses 4 full-stack tracks without forcing ML/Rust tracks, and labels code static-review only.",
+      "files": [],
+      "expectations": [
+        "Routes via subject-registry.yaml to fullstack theory and investigation blueprints",
+        "Traces end-to-end frontend-to-backend request, validation, and error handling flow",
+        "Never forces ML datasets, gradient descent, or 4-language Rust stacks"
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "/scribe-notes Explain SQL injection root causes and prevention with a defensive lab",
+      "expected_output": "Routes to cybersecurity subject and lab blueprints under security-education.md, applies the 7-step security-property framework (asset through verification), teaches parameterized queries defensively in isolated scope, and states what parameterization does not fix.",
+      "files": [],
+      "expectations": [
+        "Applies 7-step security-property reasoning and security-education.md boundaries",
+        "Teaches parameterized query binding defensively using synthetic/training scope only",
+        "Explicitly states limits of parameterization (does not solve broken authorization) without evading host safety policies"
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "/scribe-notes Teach Kirchhoff's laws and series/parallel resistor networks with a circuit lab",
+      "expected_output": "Routes to electrical subject and lab blueprints under physical-lab-safety.md, establishes passive sign convention and conservation laws, uses analytical + simulation + safe 5 V DC realization + fault diagnosis, and marks outputs Analytical/Expected rather than Observed.",
+      "files": [],
+      "expectations": [
+        "Establishes reference directions, passive sign convention, KCL/KVL, and ideal-to-real tolerance limits",
+        "Keeps physical realization at safe low voltage (e.g., 5 V DC) and labels outputs Analytical/Expected",
+        "Never fabricates benchtop multimeter measurements or forces ML/Rust tracks"
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "/scribe-notes Explain Binary Search invariants, correctness, and boundary cases in C++",
+      "expected_output": "Routes to algorithms subject and lab blueprints, proves loop invariant and termination before code, honors C++ without forcing Python/Rust, and includes boundary verification (empty, single element, duplicates, missing target).",
+      "files": [],
+      "expectations": [
+        "Establishes loop invariant (initialization, maintenance, termination) and mid-overflow safety",
+        "Honors requested C++ stack without forcing Python + Rust tracks",
+        "Covers empty, single-element, duplicate, and missing-target edge cases"
+      ]
+    },
+    {
+      "id": 16,
+      "prompt": "/scribe-notes Explain enzyme kinetics and Michaelis-Menten regulation from first principles",
+      "expected_output": "Routes to biology subject and lab blueprints under physical-lab-safety.md, connects 3D active-site structure to reaction rate mechanism and steady-state breakdown, distinguishes published/illustrative curves from observed wet-lab readings, and keeps bio-safe scope.",
+      "files": [],
+      "expectations": [
+        "Connects molecular structure, binding catalysis, and steady-state assumptions cleanly",
+        "Uses biology 4-track structure (mechanism, published evidence, controlled investigation, variation/disruption)",
+        "Labels data Published/Illustrative/Analytical and never fabricates wet-lab readings"
+      ]
+    },
+    {
+      "id": 17,
+      "prompt": "/scribe-notes Create only one comprehensive ML theory note on Ridge Regression without generating a lab or interview pack",
+      "expected_output": "Honors explicit_single_file override over M1 default theory_bundle, emits exactly one Markdown note, and avoids dead reciprocal links to non-existent companion files.",
+      "files": [],
+      "expectations": [
+        "Emits strictly 1 file (no Experimental Lab or Cheatsheet & Interview Q&A files)",
+        "Does not create broken wikilinks to missing companions",
+        "Preserves ML-specific depth (L2 objective, shrinkage vs OLS, ill-conditioning) inside the requested note"
+      ]
+    },
+    {
+      "id": 18,
+      "prompt": "/scribe-notes Explain the definition of continuity of a real function at a point",
+      "expected_output": "Treats narrow single-definition request concisely without forcing an unwanted multi-chapter collection or unrelated ML datasets.",
+      "files": [],
+      "expectations": [
+        "Uses a focused single-bundle or concise structure without artificial chapter padding",
+        "Provides need, epsilon-delta definition, concrete example, and removable/jump discontinuity boundary"
+      ]
+    },
+    {
+      "id": 19,
+      "prompt": "/scribe-notes Make a 500-word formula sheet for electrostatics and Gauss's law with SI units",
+      "expected_output": "Applies M3 formula_sheet <=500-word budget cleanly, uses inline/grouped equations with SI units, applicability conditions, and canonical derivation links rather than bulky repeated formula folds.",
+      "files": [],
+      "expectations": [
+        "Respects the <=500-word formula-sheet budget without violating 350-word general caps",
+        "Includes SI units, Gaussian-surface symmetry/validity conditions, and canonical derivation links"
+      ]
+    },
+    {
+      "id": 20,
+      "prompt": "/scribe-notes Explain the structural and immediate causes of the 1929 Wall Street Crash",
+      "expected_output": "Uses historical domain and evidence-oriented investigation without forcing ML datasets, numerical loss tables, or programming tracks, and separates documented evidence from competing historiographical interpretations.",
+      "files": [],
+      "expectations": [
+        "Zero ML terminology, datasets, or irrelevant programming tracks",
+        "Distinguishes chronology from causality and primary evidence from historiographical interpretation"
+      ]
+    },
+    {
+      "id": 21,
+      "prompt": "/scribe-notes Prove step by step that sqrt(2) is irrational and that the sum of two odd integers is even",
+      "expected_output": "Routes to M4 worked-solutions in proof construction mode, presents valid logical proofs without forcing numerical calculations or boxed arithmetic answers.",
+      "files": [],
+      "expectations": [
+        "Selects M4 proof construction mode cleanly",
+        "Verifies exact hypotheses (coprime integers, parity definitions) without forcing artificial numerical boxes"
+      ]
+    },
+    {
+      "id": 22,
+      "prompt": "/scribe-notes Explain CSS Flexbox alignment and axis behavior with examples",
+      "expected_output": "Routes to fullstack subject and lab blueprints for frontend CSS only, omitting any unrequested backend API or database vertical slice.",
+      "files": [],
+      "expectations": [
+        "Explains main vs cross axis, flex-direction, justify-content, and align-items clearly",
+        "Omits unnecessary backend server, REST API, or database integration tracks"
+      ]
+    },
+    {
+      "id": 23,
+      "prompt": "/scribe-notes Explain Rust ownership, moves, and mutable borrowing",
+      "expected_output": "Routes to programming/coding blueprint in Rust only, without forcing Python or ML implementations, and clearly labels any intentionally non-compiling borrow-checker diagnostic example.",
+      "files": [],
+      "expectations": [
+        "Honors Rust language without forcing Python or ML tracks",
+        "Explicitly labels any intentionally non-compiling borrow conflict example as demonstrating a compiler diagnostic"
+      ]
+    },
+    {
+      "id": 24,
+      "prompt": "/scribe-notes Explain Logistic Regression in Python only",
+      "expected_output": "Honors explicit Python-only language override in the ML lab rather than generating unwanted Rust from-scratch and Linfa/SmartCore tracks.",
+      "files": [],
+      "expectations": [
+        "Respects Python-only override (omits Rust tracks cleanly)",
+        "Distinguishes mathematical sigmoid (0,1) from finite-precision saturation and uses numerically stable logits loss"
+      ]
+    },
+    {
+      "id": 25,
+      "prompt": "/scribe-notes Explain SQL transaction isolation levels and write skew with examples",
+      "expected_output": "Routes to databases subject and lab blueprints, qualifies isolation behavior by database engine (e.g., PostgreSQL SSI vs Snapshot Isolation), uses 3-attribute integrity, and never fabricates executed SQL outputs.",
+      "files": [],
+      "expectations": [
+        "Qualifies REPEATABLE READ / Snapshot Isolation vs SERIALIZABLE by database engine",
+        "Marks trace outputs synthetic/manual_arithmetic/statically_reviewed with zero fabricated execution claims"
+      ]
+    },
+    {
+      "id": 26,
+      "prompt": "/scribe-notes Distinguish TLB misses, page faults, and permission faults in virtual memory",
+      "expected_output": "Correctly explains that a TLB miss only means the translation is not cached (lookup may succeed on a resident page without a fault) and includes unmapped, non-resident, and permission-violation page faults.",
+      "files": [],
+      "expectations": [
+        "States accurately that a TLB miss can resolve to a resident page with no page fault",
+        "Includes permission violations alongside non-resident/unmapped pages in page fault causes"
+      ]
+    },
+    {
+      "id": 27,
+      "prompt": "/scribe-notes Explain p-values and null hypothesis significance testing accurately",
+      "expected_output": "Defines p-value strictly via test-statistic extremeness under the null distribution assuming H0 holds, separating it from P(H0 | data) and distinguishing statistical from practical significance.",
+      "files": [],
+      "expectations": [
+        "Defines p-value using the selected test statistic and null distribution assuming H0 is true",
+        "Explicitly contrasts p-value against P(H0 | data) and statistical vs practical significance"
+      ]
+    },
+    {
+      "id": 28,
+      "prompt": "/scribe-notes Implement an MLP training step in JAX",
+      "expected_output": "Routes to deep-learning subject and lab blueprints selecting JAX functional semantics (jax.grad, explicit pytree parameters/optax state), with zero PyTorch-only zero_grad()/.backward()/.eval() APIs forced onto JAX.",
+      "files": [],
+      "expectations": [
+        "Uses pure functional JAX transforms and explicit parameter/optimizer state",
+        "Contains zero PyTorch stateful calls (zero_grad(), .backward(), optimizer.step(), .train(), .eval()) inside the JAX code"
+      ]
+    },
+    {
+      "id": 29,
+      "prompt": "/scribe-notes Explain Dynamo-style quorums (R + W > N) and why overlap alone does not guarantee linearizability",
+      "expected_output": "Routes to distributed-systems blueprint, includes concrete counterexamples showing stale reads/concurrent write conflicts despite R+W>N, and explains required versioning, conflict resolution, and protocol assumptions.",
+      "files": [],
+      "expectations": [
+        "Provides a concrete counterexample showing R+W>N alone does not guarantee linearizability",
+        "Explains versioning/vector clocks, read repair/sloppy quorums, and conflict resolution assumptions"
+      ]
+    },
+    {
+      "id": 30,
+      "prompt": "/scribe-ytnotes Create notes for a visually dependent blackboard lecture video whose transcript is unavailable",
+      "expected_output": "Routes to video_notes without capturing frames or inventing missing equations/diagrams, records metadata_only/transcript_unavailable honestly, and discloses visual/transcript limitations cleanly.",
+      "files": [],
+      "expectations": [
+        "Never plays the video, captures frames, or fabricates un-narrated blackboard equations",
+        "Records access_state honestly and marks missing visual/transcript content as unavailable"
+      ]
+    },
+    {
+      "id": 31,
+      "prompt": "/scribe-notes Explain Principal Component Analysis (PCA) geometry and variance maximization",
+      "expected_output": "Activates concept-reasoning transformation/geometric strategy rather than forcing an iterative gradient-update template, connecting projected variance to reconstruction error.",
+      "files": [],
+      "expectations": [
+        "Connects maximum projected variance and minimum squared reconstruction error geometrically and algebraically",
+        "Does not force iterative gradient-descent parameter updates onto eigendecomposition/SVD PCA"
+      ]
+    },
+    {
+      "id": 32,
+      "prompt": "/scribe-notes I am a beginner in calculus, but teach me the formal epsilon-delta limit definition and squeeze theorem at full mathematical rigor",
+      "expected_output": "Applies learner-model independence of depth and prerequisite support: delivers full formal epsilon-delta rigor while adding smaller transitions and local prerequisite bridges.",
+      "files": [],
+      "expectations": [
+        "Preserves full formal epsilon-delta rigor and quantifier order without dumbing down the theorem",
+        "Provides local essential prerequisite bridges and concrete intuition for a beginner"
+      ]
+    },
+    {
+      "id": 33,
+      "prompt": "/scribe-notes Explain why feature scaling changes K-Nearest Neighbors (KNN) predictions with a numerical example",
+      "expected_output": "Applies example-engineering validity gate: selects a discriminating fixture where unscaled vs range-normalized distances actually flip the selected nearest neighbor.",
+      "files": [],
+      "expectations": [
+        "Constructs a concrete fixture where unscaled features pick one neighbor and scaled features flip to a different neighbor",
+        "Verifies intermediate Euclidean distances accurately across prose and any code"
+      ]
+    },
+    {
+      "id": 34,
+      "prompt": "/scribe-notes Summarize what this Adam optimizer tutorial proves about Adam always outperforming SGD",
+      "expected_output": "Applies claim-verification evidence sufficiency: distinguishes what the supplied tutorial explains from universal empirical superiority claims, flagging unsupported generalizations.",
+      "files": [
+        "evaluations/fixtures/sources/adam-tutorial-excerpt.md"
+      ],
+      "expectations": [
+        "Rejects or qualifies the overclaim that Adam universally outperforms SGD across tasks",
+        "Separates optimizer mechanics documented in the excerpt from missing comparative benchmark evidence"
+      ]
+    },
+    {
+      "id": 35,
+      "prompt": "/scribe-notes Explain L2-regularized linear regression in theory and NumPy + scikit-learn",
+      "expected_output": "Applies knowledge-consistency objective-level equivalence: aligns MSE normalization (1/m vs 1/2m vs unnormalized) and derives exact alpha/lambda conversions rather than assuming C = 1/alpha.",
+      "files": [],
+      "expectations": [
+        "Uses matching objective normalization between theory equations and lab code, or derives the exact scaling factor (e.g., alpha = m*lambda)",
+        "Never states C = 1/alpha as a universal identity"
+      ]
+    },
+    {
+      "id": 36,
+      "prompt": "/scribe-notes Explain the proof of the Cauchy-Schwarz inequality cleanly without fluff or missing steps",
+      "expected_output": "Applies educational-editor Paragraph Contribution Test without trimming essential algebraic steps in the proof.",
+      "files": [],
+      "expectations": [
+        "Removes repetitive AI filler while preserving every consequential step of the proof",
+        "Includes equality condition (linear dependence) and a concrete vector verification"
+      ]
+    },
+    {
+      "id": 37,
+      "prompt": "/scribe-quiz Quiz me on Logistic Regression targeting prediction, diagnosis, and transfer—not just definitions",
+      "expected_output": "Applies mastery-design 7-step progression across conditional multi-turn responses using only the clean vault note: treats wrong-answer causes as uncertain hypotheses until confirmed, and classifies valid correction of the defective threshold statement as note_conflict without editing the vault.",
+      "files": [
+        "evaluations/fixtures/quizzes/logistic-regression/vault/logistic-regression.md"
+      ],
+      "expectations": [
+        "Asks one question per turn sampling prediction/diagnosis/transfer rather than bare recall",
+        "Treats learner wrong-answer root cause as an uncertain hypothesis confirmed via discriminating follow-up without inventing prior quiz history",
+        "Classifies the learner's valid correction of the defective threshold statement as note_conflict without silently rewriting the vault"
+      ]
+    },
+    {
+      "id": 38,
+      "prompt": "/scribe-notes Create a revision pack for my existing Neural Networks vault notes focusing on documented weak areas without inventing past quiz scores",
+      "expected_output": "Applies revision-strategy read-only discovery over the realistic mini-vault: grounds citations in real headings inside neural-networks.md, targets weak-areas.md, avoids inventing quiz scores, and leaves unrelated vault notes untouched.",
+      "files": [
+        "evaluations/fixtures/vaults/neural-networks/neural-networks.md",
+        "evaluations/fixtures/vaults/neural-networks/weak-areas.md",
+        "evaluations/fixtures/vaults/neural-networks/unrelated-git-basics.md"
+      ],
+      "expectations": [
+        "Resolves citations to actual headings in neural-networks.md (e.g., [[neural-networks#Backpropagation & Chain Rule]]) and targets documented gaps in weak-areas.md",
+        "Never fabricates past learner quiz scores or touches unrelated-git-basics.md"
+      ]
+    },
+    {
+      "id": 39,
+      "prompt": "/scribe-notes Create a 3-file bundle for Newton-Raphson root finding in numerical computing",
+      "expected_output": "Routes to numerical-computing subject and dedicated numerical-computing investigation lab: tracks precision, manual iterations, derivative-near-zero/divergence failure, and small residual vs solution error.",
+      "files": [],
+      "expectations": [
+        "Routes via subject-registry.yaml to numerical-computing theory and lab profiles",
+        "Explains why small residual does not guarantee small solution error in ill-conditioned problems and keeps Theory/Lab/Mastery consistent"
+      ]
+    },
+    {
+      "id": 40,
+      "prompt": "/scribe-notes Create notes strictly from these two supplied lecture paragraphs with no exercises or outside additions",
+      "expected_output": "Applies resolved artifact_plan and source-constraint precedence over default theory_bundle against the supplied hashing lecture fixture: emits only main_note, omits unsupported experimental_lab and mastery_pack, and qualifies the worst-case randomized hashing overstatement honestly.",
+      "files": [
+        "evaluations/fixtures/sources/strict-lecture-paragraphs.md"
+      ],
+      "expected_artifacts": {
+        "required": [
+          "main_note"
+        ],
+        "forbidden": [
+          "experimental_lab",
+          "mastery_pack"
+        ]
+      },
+      "expectations": [
+        "Resolves artifact_plan to include only main_note and omit unsupported Experimental Lab and Cheatsheet/Q&A artifacts",
+        "Performs zero external source retrieval and introduces no unsupported examples or external web visuals",
+        "Preserves supplied hashing terminology, discloses strict source boundaries, and qualifies the randomized worst-case overclaim cleanly"
+      ]
+    },
+    {
+      "id": 41,
+      "prompt": "/scribe-audit Audit my existing Logistic Regression vault note read-only without rewriting it",
+      "expected_output": "Applies /scribe-audit in vault-only mode against logistic-regression.md: identifies the threshold precision defect as confirmed Major without penalizing non-Scriptorium YAML, outputs structured finding(s) with location/severity/confidence/correction/verification, and performs zero file writes.",
+      "files": [
+        "evaluations/fixtures/quizzes/logistic-regression/vault/logistic-regression.md"
+      ],
+      "expectations": [
+        "Operates strictly read-only in vault-only mode with zero edits to logistic-regression.md",
+        "Separates factual defects (threshold lowering increasing precision) from stylistic YAML differences using appropriate audit profiles",
+        "Reports structured findings including severity, confidence (confirmed/suspected/unverifiable), exact correction, and verification method"
+      ]
+    },
+    {
+      "id": 42,
+      "prompt": "/scribe-notes Derive softmax probabilities, the softmax Jacobian, and the categorical cross-entropy gradient cleanly from first principles",
+      "expected_output": "Applies continuous mathematical reasoning policy in dependency order: motivates log-linear multi-class scores, derives softmax derivatives for i=j and i!=j before deriving cross-entropy gradient, and justifies Jacobian and batch gradient dimensions explicitly.",
+      "files": [],
+      "expectations": [
+        "Derives softmax partial derivatives before invoking them inside categorical cross-entropy differentiation",
+        "Completes full intermediate algebra inside '> [!example]- Understand this formula step by step' folds without 'rearranging gives' skips",
+        "Assembles the Jacobian from indexed partial derivatives, justifies its dimensions and relates the per-example result to the batch gradient",
+        "With folds removed, the model, normalization, derivative milestones and gradient remain connected in dependency order"
+      ]
+    },
+    {
+      "id": 43,
+      "prompt": "/scribe-notes Derive the RC circuit charging and discharging capacitor voltage response from differential equations",
+      "expected_output": "Applies mathematical derivation depth to non-ML physics/electrical domain: derives first-order ODE from KVL and i = C dV/dt, solves by separation of variables with initial conditions, interprets time constant tau = RC, and checks t=0 and t->infinity limits under safe low voltage.",
+      "files": [],
+      "expectations": [
+        "Derives the differential equation from KVL and constituent laws before solving step by step via separation of variables",
+        "Explains every term of V_C(t) = V_s(1 - e^{-t/(RC)}) including initial/steady-state limits and safe 5V benchmark checks",
+        "Keeps the loop law, first-order ODE, role of initial conditions and physical interpretation visible with folds closed"
+      ]
+    },
+    {
+      "id": 44,
+      "prompt": "/scribe-notes Derive Newton-Raphson root finding from Taylor expansion and analyze when quadratic convergence holds or fails",
+      "expected_output": "Applies continuous mathematical reasoning policy in numerical computing: constructs tangent-line iteration from first-order Taylor expansion, derives error recurrence e_{k+1} ~ (f''(r)/(2f'(r))) e_k^2 under simple-root hypotheses, and analyzes multiple roots and near-zero derivatives.",
+      "files": [],
+      "expectations": [
+        "Derives Newton-Raphson iteration explicitly from f(x_k + h) approx f(x_k) + f'(x_k)h = 0 rather than asserting the formula",
+        "Derives or verifies conditions for quadratic convergence vs. linear slowdown at multiple roots and near-zero f'(x_k) divergence"
+      ]
+    },
+    {
+      "id": 45,
+      "prompt": "/scribe-audit Audit my attached comprehensive note about the two-sample averaging filter. Stay read-only and use the supplied draft only. Explain which passages require repair and whether each repair follows from the supplied content.",
+      "expected_output": "Identifies the missing alternating-input derivation, circular proof of the filter definition, and interpretation hidden in a fold. Distinguishes reconstructible local repairs from external additions.",
+      "files": [
+        "evaluations/fixtures/blind/averaging-filter-flawed.md"
+      ],
+      "expectations": [
+        "Identifies the missing previous-sample sign relation and substitution even though the stated zero output is correct",
+        "Identifies the circular proof of the stipulated equal-weight average",
+        "Locates the constant-versus-alternating comparison inside the informational callout and recommends exposing it",
+        "Keeps the draft read-only and proposes only source-supported repairs"
+      ]
+    },
+    {
+      "id": 46,
+      "prompt": "/scribe-notes Turn the attached rotational energy excerpt into a single study note. Use only what the excerpt actually states, with no additional derivations or outside sources.",
+      "expected_output": "Retains the fixed-axis condition and doubling example, marks the derivation as absent from the supplied material, and writes only the main note.",
+      "files": [
+        "evaluations/fixtures/sources/strict-rotational-energy.md"
+      ],
+      "expected_artifacts": {
+        "required": [
+          "main_note"
+        ],
+        "forbidden": [
+          "experimental_lab",
+          "mastery_pack"
+        ]
+      },
+      "expectations": [
+        "States the meaning of K, I and angular speed and retains the fixed-axis assumption",
+        "Identifies the missing derivation without inventing a particle model or adding external sources",
+        "Preserves the fixed-inertia fourfold energy change and emits only the requested note"
+      ]
+    },
+    {
+      "id": 47,
+      "prompt": "/scribe-notes Give me one worked solution, without a companion, for this problem. For real symmetric A, derive the Rayleigh quotient stationarity condition on the unit sphere using Lagrange multipliers. Verify one stationary point for diag(2,5).",
+      "expected_output": "Routes to M4 and derives the matrix-native stationarity condition within the worked solution, with an explicit multiplier convention and a valid check.",
+      "files": [],
+      "expectations": [
+        "Explains the unit sphere constraint and reaches A v = lambda v via the gradient of v^T A v for symmetric A",
+        "Gives consequential steps in the worked solution without requiring artificially scalar prerequisites or nested formula folds",
+        "Checks a unit eigenvector and its corresponding quotient for diag(2,5)"
+      ]
+    },
+    {
+      "id": 48,
+      "prompt": "/scribe-notes Write one self-contained Obsidian study note for a learner who can differentiate x^2 but has not learned matrix calculus. Derive the least-squares normal equations for a two-feature linear model, explain what the residual orthogonality condition means, and use X=[[1,0],[1,1],[1,2]], y=[1,2,2] for a complete numeric check. Keep the derivation understandable with callouts closed. No companion, outside sources, scripts, or external images.",
+      "expected_output": "A single local derivation with component reasoning, residual orthogonality, and an exact check.",
+      "files": [],
+      "expectations": [
+        "Valid derivation without assuming matrix differentiation",
+        "Visible intermediate equation connects objective and normal equations with a local bridge",
+        "Correct exact coefficients and numerical check for both columns",
+        "Interprets residual orthogonality and its limits"
+      ]
+    },
+    {
+      "id": 49,
+      "prompt": "/scribe-notes Create one beginner-friendly Obsidian KNN theory note. Teach why local predictions differ from a global rule, then trace Euclidean distances, k=1 and k=3 votes, and a feature rescaling that changes the closest point. Use q=(0,0), A=(1,1) class amber, B=(0,1.8) class blue, C=(3,0) class blue, D=(4,3) class amber, and rescale x by dividing by six. Explain selection vs voting ties and include one question that tests transfer. I can read tables but this host has no plot or image tool, use no external sources, and give me only one note.",
+      "expected_output": "A standalone beginner note with a worked KNN trace, a controlled scaling comparison, and a disclosed visual fallback.",
+      "files": [],
+      "expectations": [
+        "Explains global versus local prediction and shows the correct original ranks and k=1/k=3 outcomes",
+        "Shows a controlled, numerically correct scaling comparison, a permitted table fallback, and a limitation of that fallback",
+        "Distinguishes cutoff distance ties from voting ties and qualifies the odd-k claim",
+        "Includes a transfer question whose revealed answer correctly derives a result for a changed query or condition"
+      ]
+    },
+    {
+      "id": 50,
+      "prompt": "/scribe-notes Teach a beginner why inverse-distance weighting can reverse the three-neighbor vote. Use distances 1, 2, 3 and labels Red, Blue, Blue. Write one focused standalone Obsidian learning note for this question, with an explanation, practical or numerical example, and one local check. No companions, external sources, external assets, scripts, or vault reads.",
+      "expected_output": "One self-contained learning unit with a reconstructible mechanism, an illustrative case and a local comprehension check.",
+      "files": [],
+      "expectations": [
+        "Uniform Blue and weighted Red are computed correctly",
+        "Explains why positive weight normalization preserves the winning class and states a zero-distance convention"
+      ]
+    },
+    {
+      "id": 51,
+      "prompt": "/scribe-notes Teach a learner with basic geometry why the distance between the two canonical hard-margin SVM hyperplanes is 2 divided by the norm of w. Write one focused standalone Obsidian learning note for this question, with an explanation, practical or numerical example, and one local check. No companions, external sources, external assets, scripts, or vault reads.",
+      "expected_output": "One self-contained learning unit with a reconstructible mechanism, an illustrative case and a local comprehension check.",
+      "files": [],
+      "expectations": [
+        "Derives margin width from the normal direction with correct assumptions",
+        "Explains a scaling or nonseparability boundary"
+      ]
+    },
+    {
+      "id": 52,
+      "prompt": "/scribe-notes Explain to a learner who knows derivatives why BCE for a positive target at score 50 can have a zero computed probability residual but a nonzero derivative. Write one focused standalone Obsidian learning note for this question, with an explanation, practical or numerical example, and one local check. No companions, external sources, external assets, scripts, or vault reads.",
+      "expected_output": "One self-contained learning unit with a reconstructible mechanism, an illustrative case and a local comprehension check.",
+      "files": [],
+      "expectations": [
+        "Derives negative sigmoid of the negated score or equivalent",
+        "Distinguishes floating-point cancellation from true zero and states an underflow limit"
+      ]
+    },
+    {
+      "id": 53,
+      "prompt": "/scribe-notes Teach why projecting centered points (2,0), (-2,0), (0,1), (0,-1) onto the first coordinate captures more variance than the second. Explain the general maximizing direction. Write one focused standalone Obsidian learning note for this question, with an explanation, practical or numerical example, and one local check. No companions, external sources, external assets, scripts, or vault reads.",
+      "expected_output": "One self-contained learning unit with a reconstructible mechanism, an illustrative case and a local comprehension check.",
+      "files": [],
+      "expectations": [
+        "Checks both projected variances consistently",
+        "Bridges projected variance to the covariance quadratic form and leading eigendirection"
+      ]
+    },
+    {
+      "id": 54,
+      "prompt": "/scribe-notes Teach the chain rule in a one-example two-layer scalar network with h=a*x and yhat=b*h, squared loss divided by two. Use x=2,a=1,b=3,y=4. Write one focused standalone Obsidian learning note for this question, with an explanation, practical or numerical example, and one local check. No companions, external sources, external assets, scripts, or vault reads.",
+      "expected_output": "One self-contained learning unit with a reconstructible mechanism, an illustrative case and a local comprehension check.",
+      "files": [],
+      "expectations": [
+        "Shows forward states and gradients 12 and 4",
+        "Explains local sensitivities and where the upstream gradient is reused"
+      ]
+    },
+    {
+      "id": 55,
+      "prompt": "/scribe-notes Teach a beginner why a String move prevents reuse while an immutable borrow does not in Rust. Use two small snippets. Write one focused standalone Obsidian learning note for this question, with an explanation, practical or numerical example, and one local check. No companions, external sources, external assets, scripts, or vault reads.",
+      "expected_output": "One self-contained learning unit with a reconstructible mechanism, an illustrative case and a local comprehension check.",
+      "files": [],
+      "expectations": [
+        "Distinguishes the old binding after a move from a borrow",
+        "Explains the observed result through ownership and lifetime rather than a deep copy claim"
+      ]
+    },
+    {
+      "id": 56,
+      "prompt": "/scribe-notes Teach why a TLB miss can succeed without a page fault. Trace a tiny example from page number and offset to physical address. Write one focused standalone Obsidian learning note for this question, with an explanation, practical or numerical example, and one local check. No companions, external sources, external assets, scripts, or vault reads.",
+      "expected_output": "One self-contained learning unit with a reconstructible mechanism, an illustrative case and a local comprehension check.",
+      "files": [],
+      "expectations": [
+        "Separates TLB lookup, present PTE and fault cases",
+        "Traces correct address composition using declared sizes"
+      ]
+    },
+    {
+      "id": 57,
+      "prompt": "/scribe-notes Teach how lower-bound binary search with a half-open interval locates the first 4 in [1,4,4,7]. Trace the iterations. Write one focused standalone Obsidian learning note for this question, with an explanation, practical or numerical example, and one local check. No companions, external sources, external assets, scripts, or vault reads.",
+      "expected_output": "One self-contained learning unit with a reconstructible mechanism, an illustrative case and a local comprehension check.",
+      "files": [],
+      "expectations": [
+        "Traces interval to first index 1 using correct updates",
+        "States invariant and explains why each branch preserves the target"
+      ]
+    },
+    {
+      "id": 58,
+      "prompt": "/scribe-notes Teach why an initially uncharged capacitor approaches 5 V in an ideal series RC step, using a governing equation and a one-time-constant check. Write one focused standalone Obsidian learning note for this question, with an explanation, practical or numerical example, and one local check. No companions, external sources, external assets, scripts, or vault reads.",
+      "expected_output": "One self-contained learning unit with a reconstructible mechanism, an illustrative case and a local comprehension check.",
+      "files": [],
+      "expectations": [
+        "Derives the response from the loop law or integrates its gap equation explicitly",
+        "Checks 0 V and about 3.16 V and interprets the time constant"
+      ]
+    },
+    {
+      "id": 59,
+      "prompt": "/scribe-notes Teach one Newton iteration for x^2-2 starting at x=2, then explain why a near-zero derivative is a risk. Write one focused standalone Obsidian learning note for this question, with an explanation, practical or numerical example, and one local check. No companions, external sources, external assets, scripts, or vault reads.",
+      "expected_output": "One self-contained learning unit with a reconstructible mechanism, an illustrative case and a local comprehension check.",
+      "files": [],
+      "expectations": [
+        "Derives tangent update and computes x1=1.5",
+        "Connects step size to derivative and qualifies convergence"
+      ]
+    },
+    {
+      "id": 60,
+      "prompt": "/scribe-notes Teach lost update with two concurrent operations incrementing a shared balance from 10. Compare a read-then-write interleaving with a safe sequence. Write one focused standalone Obsidian learning note for this question, with an explanation, practical or numerical example, and one local check. No companions, external sources, external assets, scripts, or vault reads.",
+      "expected_output": "One self-contained learning unit with a reconstructible mechanism, an illustrative case and a local comprehension check.",
+      "files": [],
+      "expectations": [
+        "Traces lost result 11 and correct serialized result 12",
+        "Explains how atomic increment or suitable concurrency control avoids the anomaly"
+      ]
+    },
+    {
+      "id": 61,
+      "prompt": "/scribe-notes Teach opportunity cost to a beginner choosing between an extra shift, an evening class, or resting. Explain how ranking the alternatives changes the opportunity cost. Write one focused standalone Obsidian learning note for this question, with an explanation, practical or numerical example, and one local check. No companions, external sources, external assets, scripts, or vault reads.",
+      "expected_output": "One self-contained learning unit with a reconstructible mechanism, an illustrative case and a local comprehension check.",
+      "files": [],
+      "expectations": [
+        "Identifies the best forgone alternative, not all alternatives",
+        "Shows a comparative example and explains a nonmonetary cost"
+      ]
+    },
+    {
+      "id": 62,
+      "prompt": "/scribe-audit Review this beginner KNN theory note read-only from the supplied file. Identify important teaching and visual deficiencies while preserving the technical strengths. Do not browse or assume the linked companions were supplied.",
+      "expected_output": "A source-bounded findings report citing the dense learning units, premature formulas and visual gaps and preserving the exact examples.",
+      "files": [
+        "evaluations/fixtures/blind/knn-compressed-flawed.md"
+      ],
+      "expectations": [
+        "Identifies premature weighted notation, compressed query/search mechanism and geometry without explanation",
+        "Preserves correct numeric comparison, exact matches and leakage guidance",
+        "Does not rewrite the source or presume that omitted companion inputs are absent from the original vault"
+      ]
+    },
+    {
+      "id": 63,
+      "prompt": "/scribe-audit Review this circle area teaching note and its included diagram, read-only. No online research. Explain how to make it teach a beginner who understands area but is new to derivatives.",
+      "expected_output": "Finds the concealed mechanism, incomplete derivation, irrelevant visual and non-discriminating example while preserving the correct derivative.",
+      "files": [
+        "evaluations/fixtures/blind/circle-mechanism-flawed.md",
+        "evaluations/fixtures/bundles/knn/assets/metric-paths.png"
+      ],
+      "expectations": [
+        "Identifies the missing mathematical justification and the visible-reading-path gap",
+        "Explains why the actual figure does not depict circles or annuli",
+        "Notices that radius 1 and diameter 2 are the same circle and proposes a discriminating example"
+      ]
+    },
+    {
+      "id": 64,
+      "prompt": "/scribe-notes Create a comprehensive geometry lesson. The installed skill package is missing its mathematical policy and verification checklist, and the host has no image tool. Only work within the supported Scriptorium workflow.",
+      "expected_output": "Names missing required policies separately from unavailable image capabilities, attempts read-only recovery and limits any delivery or compliance claims according to the actual outcome.",
+      "files": [],
+      "expectations": [
+        "Distinguishes missing policy dependencies from an optional unavailable image tool",
+        "Does not claim the missing review occurred or fabricate assets",
+        "Respects the user’s supported-workflow-only constraint when an essential policy cannot be recovered"
       ]
     }
   ]

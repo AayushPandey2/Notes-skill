@@ -8,6 +8,35 @@ masters:
   M5: {intent: practical_implementation, path: docs/blueprints/formats/implementation-guide.md}
   M6: {intent: knowledge_assessment, path: docs/blueprints/formats/assessment.md}
   M7: {intent: synthesis_and_revision, path: docs/blueprints/formats/synthesis-revision.md}
+  video_notes: {intent: video_study_notes, path: docs/blueprints/formats/video-notes.md}
+artifact_policy:
+  M1:
+    default: theory_bundle
+    bundle_members: [main_note, companion_lab, cheatsheet_qa]
+    multi_branch: moc_plus_bundle_per_subtopic
+  M2:
+    default: theory_bundle
+    bundle_members: [main_note, companion_lab, cheatsheet_qa]
+    multi_branch: moc_plus_bundle_per_subtopic
+  M3:
+    default: single_artifact
+  M4:
+    default: single_artifact
+  M5:
+    default: implementation_guide
+    optional: [theory, companion_lab, assessment]
+    note: Do not duplicate an M5 implementation guide into an identical companion lab.
+  M6:
+    default: single_artifact
+  M7:
+    default: single_artifact
+  video_notes:
+    default: one_note_per_video
+  overrides:
+    explicit_single_file: true
+    explicit_artifact_selection: true
+    existing_layout_preservation: true
+    source_constraints: Respect source_fidelity permissions—omit unsupported companion artifacts when strict source mode forbids outside additions and supplies no exercises/experiments.
 variants:
   lecture_order: {master: M2, path: docs/blueprints/presets/lecture-order.md}
   formula_sheet: {master: M3, path: docs/blueprints/presets/formula-sheet.md}
@@ -29,5 +58,5 @@ subtemplates:
   scientific: docs/blueprints/domains/scientific.md
   historical: docs/blueprints/domains/historical.md
   empirical: docs/blueprints/domains/empirical.md
-public_commands: [scribe-notes, scribe-ytnotes, scribe-doubt, scribe-quiz, scribe-setfolder]
+public_commands: [scribe-notes, scribe-ytnotes, scribe-doubt, scribe-quiz, scribe-audit, scribe-setfolder]
 video_intent_aliases: [scribe-ytnotes]

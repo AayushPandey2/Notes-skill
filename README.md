@@ -4,17 +4,44 @@
 
 ---
 
+## Repository-local skills
+
+Open this checkout as the project or workspace to discover `scriptorium` and all six `scribe-*` skills.
+
+| Agent | Discovery path |
+|---|---|
+| Claude Code | `.claude/skills/` |
+| Codex and Antigravity | `.agents/skills/` |
+| Gemini CLI | `.gemini/skills/` or `.agents/skills/` |
+
+The discovery files forward to the canonical instructions in `SKILL.md` and `skills/`.
+
+### Upload to Claude
+
+For the six slash-menu entries in Claude Desktop Chat or Cowork, open **Plugins** and upload a plugin ZIP. For one combined Scriptorium skill, use the **Skills** upload instead. Create the corresponding ZIP from a checkout of this repository:
+
+```sh
+git archive --format=zip --output=../scriptorium-plugin.zip HEAD \
+  .claude-plugin SKILL.md LICENSE router.md core docs skills
+
+git archive --format=zip --prefix=scriptorium/ --output=../scriptorium-skill.zip HEAD \
+  SKILL.md LICENSE router.md core docs skills
+```
+
+The plugin archive places [the manifest](.claude-plugin/plugin.json) at its root. The skill archive wraps its files in a single `scriptorium/` folder. Both layouts include the referenced policies and contain only regular files. [Claude plugin installation](https://support.claude.com/en/articles/13837440-use-plugins-in-claude) · [Claude custom skill installation](https://support.claude.com/en/articles/12512180-use-skills-in-claude)
+
 ## 1. Public Commands (`skills/`)
 
 | Command | Entrypoint | What It Does | Writes to Vault? |
 |---|---|---|---|
-| `/scribe-notes` | [skills/scribe-notes/SKILL.md](skills/scribe-notes/SKILL.md) | Creates or revises 3-file topic bundles (`M1`–`M7` notes, experimental labs, and cheatsheet & interview Q&A files). | Yes (notes, labs, cheatsheet/Q&A, inspected local assets) |
-| `/scribe-ytnotes` | [skills/scribe-ytnotes/SKILL.md](skills/scribe-ytnotes/SKILL.md) | Creates one self-contained, transcript-first note per video using downloaded web visuals and clickable timestamps (no lab, no frame capture). | Yes (1 note per video + local web images) |
+| `/scribe-notes` | [skills/scribe-notes/SKILL.md](skills/scribe-notes/SKILL.md) | Creates or revises notes per `artifact_policy` in [master-registry.yaml](docs/dispatch/master-registry.yaml) and the resolved `artifact_plan` (`M1`/`M2` default to conditional bundles up to 3 files; `M3`–`M7` emit single/implementation artifacts). | Yes (notes, conditional companions, inspected local assets) |
+| `/scribe-ytnotes` | [skills/scribe-ytnotes/SKILL.md](skills/scribe-ytnotes/SKILL.md) | Creates one self-contained, transcript-first note per video using conditional downloaded web visuals when helpful/permitted and clickable timestamps (no lab, no frame capture). | Yes (1 note per video + conditional local web images) |
 | `/scribe-doubt` | [skills/scribe-doubt/SKILL.md](skills/scribe-doubt/SKILL.md) | Answers questions strictly from existing vault notes with exact `[[Note Title#Heading]]` citations. | No (read-only) |
 | `/scribe-quiz` | [skills/scribe-quiz/SKILL.md](skills/scribe-quiz/SKILL.md) | Runs an interactive, one-question-per-turn recall or viva quiz grounded in existing vault notes. | No by default (optional body review note only if requested) |
+| `/scribe-audit` | [skills/scribe-audit/SKILL.md](skills/scribe-audit/SKILL.md) | Audits existing vault notes read-only across theory, math, prerequisites, lab integrity, evidence, presentation, and consistency dimensions. | No (read-only by default) |
 | `/scribe-setfolder` | [skills/scribe-setfolder/SKILL.md](skills/scribe-setfolder/SKILL.md) | Sets or inspects the default Obsidian vault and target notes folder. | Config only (`~/.scriptorium-config.json`) |
 
-Root orchestration starts at [SKILL.md](SKILL.md), routes note requests through [router.md](router.md), and resolves destinations via [pre-gen-gate.md](docs/procedures/authoring/pre-gen-gate.md) (precedence: explicit vault path > `SCRIPTORIUM_VAULT_PATH` > `~/.scriptorium-config.json`).
+Root orchestration starts at [SKILL.md](SKILL.md) (using **responsibility-based governance precedence** rather than a rigid numbered hierarchy), routes across four independent dimensions via [router.md](router.md), [master-registry.yaml](docs/dispatch/master-registry.yaml), and [subject-registry.yaml](docs/dispatch/subject-registry.yaml), and resolves destinations via [pre-gen-gate.md](docs/procedures/authoring/pre-gen-gate.md) (precedence: explicit vault path > `SCRIPTORIUM_VAULT_PATH` > `~/.scriptorium-config.json`).
 
 ---
 
@@ -23,10 +50,10 @@ Root orchestration starts at [SKILL.md](SKILL.md), routes note requests through 
 1. **Intent & Route Resolution:** [router.md](router.md) and [routing-policy.md](docs/dispatch/routing-policy.md) select the output format (`M1`–`M7`, or `video-notes.md` for `/scribe-ytnotes`) and load only the needed files via [docs/README.md](docs/README.md).
 2. **Destination & Safety Gate:** [pre-gen-gate.md](docs/procedures/authoring/pre-gen-gate.md) checks existing vault files before writing, preserves custom YAML/notes, and prevents accidental overwrites.
 3. **Research & Source Fidelity:** [research-engine.md](docs/procedures/sourcing/research-engine.md) and [source-fidelity.md](docs/procedures/sourcing/source-fidelity.md) ground claims with locators, respect source-only boundaries, and mark unconfirmed claims `[UNVERIFIED]`.
-4. **Self-Contained Layered Teaching:** [teaching_core.md](core/teaching_core.md) applies the **12 teaching layers**, the **3-tier prerequisite rule** (explain essential terms locally, bridge secondary ones, bound outside topics), and mentor connective tissue. [math_gates.md](core/math_gates.md) enforces native `$...$` / `$$...$$` delimiters and immediately following `> [!note]- 📐 Understand this formula` collapsed walkthroughs.
-5. **Visual Acquisition & Six-Phase Narrative:** [representations.md](docs/procedures/authoring/representations.md) plans **at least 4–5 complementary web visuals** per note before drafting, downloads and inspects local raster assets (`.png`, `.jpg`, `.webp` under `assets/scriptorium/<slug>/`; SVG retired), teaches every figure through **Set question → Show → Decode → Trace → Connect → Check**, and forbids Mermaid or ASCII graphs/diagrams.
-6. **Companion Experimental Labs & Cheatsheet/Interview Packs (3-File Bundle for Non-Video Notes):** [experimental-lab.md](docs/procedures/authoring/experimental-lab.md) and [cheatsheet-interview.md](docs/procedures/authoring/cheatsheet-interview.md) require two siblings per new non-video content note (excluding `/scribe-ytnotes`, MOCs, and playlist indexes): `<note stem> - Experimental Lab.md` (with collapsed line-by-line code walkthroughs and honest `Status: static review (not executed)` labels) and `<note stem> - Cheatsheet & Interview Q&A.md` (with grouped formula sheets, tap-to-reveal `> [!tip]- Answer` interview Q&A, and `> [!tip]- Solution` worked problems).
-7. **Manual Verification:** [verification-checklist.md](docs/procedures/review/verification-checklist.md) performs reader-facing prose, formula-fold, local-embed, YAML, and wikilink checks on the saved Markdown before finishing.
+4. **Self-Contained Layered Teaching, Theory Quality & Unified Math Policy:** [teaching_core.md](core/teaching_core.md) and [theory_quality_contract.md](core/theory_quality_contract.md) enforce genuine zero-prerequisite ordering, separated metadata, clickable Obsidian TOC links, progressive abstraction, multi-perspective explanations, forward/reverse reasoning, ideal-to-real model progression, epistemic claim classification, question-specific reasoning patterns, and calm reference prose. [curriculum-discovery.md](docs/procedures/authoring/curriculum-discovery.md) and [subject-theory-profiles.md](docs/blueprints/components/subject-theory-profiles.md) provide research-driven syllabus discovery, shared internal concept records, selectable topic-family completeness checklists, and a misconception library. [math_gates.md](core/math_gates.md) governs objective-driven math inclusion across five internal concept profiles, visible reasoning units, complete descriptive derivation folds, source boundaries, and equation-to-code alignment.
+5. **Relevance-Governed Visuals & Source Hierarchy:** [representations.md](docs/procedures/authoring/representations.md) uses a 5-level visual source hierarchy, adaptive image sizing, diagram-to-model correspondence, and relevance-based acquisition (disabled under `strict` source-only mode), while forbidding Mermaid or ASCII graphs/diagrams.
+6. **Artifact Cardinality & Subject-Tailored Labs:** `artifact_policy` in [master-registry.yaml](docs/dispatch/master-registry.yaml) controls bundle emission (`M1`/`M2` default to 3-file bundles; `M3`/`M4`/`M6`/`M7` emit single artifacts; `M5` emits an implementation guide without duplicating an identical lab; `/scribe-ytnotes` emits one self-contained note per video). [experimental-lab.md](docs/procedures/authoring/experimental-lab.md) uses four universal practical perspectives, shared-foundation + track-specific walkthroughs, and 3-attribute experiment integrity (*Origin*, *Method*, *Verification*).
+7. **Lean 6-Stage Review & Adversarial Verification:** [verification-checklist.md](docs/procedures/review/verification-checklist.md) and [adversarial-theory-review.md](docs/procedures/review/adversarial-theory-review.md) perform 6-stage quality, unified 0–5 theory-depth, safety-policy, and delivery checks against the actual saved Markdown.
 
 ---
 
@@ -37,13 +64,13 @@ Root orchestration starts at [SKILL.md](SKILL.md), routes note requests through 
   - `M2` [study-notes.md](docs/blueprints/formats/study-notes.md) — Source-ordered lecture/PDF/chapter study notes
   - `M3` [quick-reference.md](docs/blueprints/formats/quick-reference.md) — Dense cheat sheets & reference cards
   - `M4` [worked-solutions.md](docs/blueprints/formats/worked-solutions.md) — Step-by-step problem solving
-  - `M5` [implementation-guide.md](docs/blueprints/formats/implementation-guide.md) — Algorithms, data structures & verification guides
+  - `M5` [implementation-guide.md](docs/blueprints/formats/implementation-guide.md) — Algorithms, systems, models & software implementation guides
   - `M6` [assessment.md](docs/blueprints/formats/assessment.md) — Tiered active-recall practice sets
   - `M7` [synthesis-revision.md](docs/blueprints/formats/synthesis-revision.md) — Cross-note comparisons, paper breakdowns & revision packs
-  - [video-notes.md](docs/blueprints/formats/video-notes.md) — Single-file, transcript-first, web-image-led notes for `/scribe-ytnotes`
+  - [video-notes.md](docs/blueprints/formats/video-notes.md) — Single-file, transcript-first notes with conditional web visuals for `/scribe-ytnotes`
 - **Knowledge-Type Subtemplates (`domains/`):** [conceptual.md](docs/blueprints/domains/conceptual.md), [mathematical.md](docs/blueprints/domains/mathematical.md), [computational.md](docs/blueprints/domains/computational.md), [scientific.md](docs/blueprints/domains/scientific.md), [empirical.md](docs/blueprints/domains/empirical.md), [historical.md](docs/blueprints/domains/historical.md).
 - **Presets (`presets/`):** `atomic-card`, `command-reference`, `comparison-guide`, `concept-map`, `flashcards`, `formula-sheet`, `lecture-order`, `mock-exam`, `paper-breakdown`, `quick-summary`, `revision-pack`, `syntax-reference`.
-- **Experimental Lab Templates (`investigations/`):** [machine-learning.md](docs/blueprints/investigations/machine-learning.md) (compact 7-section layout with 4 comparable implementations), [deep-learning.md](docs/blueprints/investigations/deep-learning.md), [coding.md](docs/blueprints/investigations/coding.md), [mathematics.md](docs/blueprints/investigations/mathematics.md), [physics.md](docs/blueprints/investigations/physics.md), [chemistry.md](docs/blueprints/investigations/chemistry.md), and [general.md](docs/blueprints/investigations/general.md).
+- **Subject Theory & Investigation Blueprints (`subjects/` & `investigations/`):** Mapped cleanly via [subject-registry.yaml](docs/dispatch/subject-registry.yaml) across `machine-learning`, `deep-learning`, `generative-ai`, `fullstack`, `cybersecurity`, `electrical`, `algorithms`, `computer-architecture`, `numerical-computing`, `information-theory`, `operating-systems`, `networking`, `databases`, `devops`, `distributed-systems`, `mathematics`, `statistics`, `physics`, `chemistry`, `biology`, `coding`, and `general`, with safety boundaries in [security-education.md](docs/procedures/safety/security-education.md) and [physical-lab-safety.md](docs/procedures/safety/physical-lab-safety.md).
 
 ---
 
@@ -61,33 +88,40 @@ scriptorium/
 │   ├── scribe-ytnotes/SKILL.md
 │   ├── scribe-doubt/SKILL.md
 │   ├── scribe-quiz/SKILL.md
+│   ├── scribe-audit/SKILL.md
 │   └── scribe-setfolder/SKILL.md
 ├── core/                            # Cross-command authoring & teaching rules
 │   ├── runtime_pipeline.md          # Direct-authoring workflow (no scripts)
-│   ├── teaching_core.md             # 12 teaching layers, 3-tier prerequisites & voice
-│   ├── math_gates.md                # Visual-to-math bridge & collapsed formula folds
+│   ├── teaching_core.md             # Zero-prerequisite flow, tiered concepts & voice
+│   ├── theory_quality_contract.md   # Progressive abstraction, perspectives, claim status & transfer
+│   ├── math_gates.md                # Objective-driven math profiles & formula folds
 │   ├── authoring_rules.md           # YAML profiles, Obsidian Markdown & naming rules
 │   └── footer_widgets.md            # Vault navigation footer cues
 ├── docs/                            # Selectively loaded references
 │   ├── README.md                    # Reference loading index
 │   ├── design/                      # System overview & template-module catalog
-│   ├── dispatch/                    # master-registry.yaml & routing-policy.md
+│   ├── dispatch/                    # master-registry.yaml, subject-registry.yaml & routing-policy.md
 │   ├── properties/                  # properties-policy.md & tag-taxonomy.md
 │   ├── specs/                       # migration-notes.md
-│   ├── blueprints/                  # Formats, domains, presets, components & labs
+│   ├── blueprints/                  # Formats, domains, subjects, presets, components & labs
 │   │   ├── formats/                 # M1–M7 + video-notes.md
 │   │   ├── domains/                 # 6 knowledge-type subtemplates
+│   │   ├── subjects/                # 21 domain-specific theory blueprints
 │   │   ├── presets/                 # 12 specialized output presets
-│   │   ├── components/              # Conditional teaching moves (module-catalog.md)
-│   │   └── investigations/          # 7 domain experimental lab templates
-│   └── procedures/                  # Conditional authoring, sourcing, updating & review
-│       ├── authoring/               # Adaptive planning, playbooks, 3-file contracts, visuals, gate
-│       ├── sourcing/                # Research engine, source fidelity & recommendations
-│       ├── updating/                # Revision & safe vault linking
-│       └── review/                  # Manual reader-facing verification checklist
-└── evaluations/                     # Declarative trigger & quality eval prompts
+│   │   ├── components/              # Module catalog, example engineering & subject/misconception profiles
+│   │   └── investigations/          # 22 domain experimental lab templates
+│   └── procedures/                  # Conditional authoring, sourcing, safety, learning, updating & review
+│       ├── authoring/               # Adaptive planning, concept reasoning, learner model, consistency, mastery, playbooks, contracts, visuals, gate
+│       ├── sourcing/                # Research engine, claim verification, source fidelity & recommendations
+│       ├── learning/                # Spaced-retrieval & retention strategy
+│       ├── safety/                  # Security education & physical/wet-lab safety policies
+│       ├── updating/                # Revision, lifecycle & safe vault linking
+│       └── review/                  # Manual verification gate, educational editor & adversarial theory review
+└── evaluations/                     # Declarative trigger, adversarial & cross-domain evals
     ├── evals.json
-    └── trigger_eval.json
+    ├── trigger_eval.json
+    ├── rubrics/                     # Evaluation-only theory, practical & presentation rubrics
+    └── fixtures/                    # Evaluation-only golden vs. flawed contrast fixtures
 ```
 
 ---

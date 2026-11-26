@@ -1,32 +1,68 @@
-# Semantic Verification Checklist
+# Six-Stage Verification Gate & Bounded Acceptance
 
-## Purpose & Activation Trigger
+Execute **Stages 1–5 completely before saving**, resolve an explicit bounded **Acceptance Decision**, and run **Stage 6 after saving**. Never use word count, heading count, or image count as proof of educational quality, and never represent manual review as automated verification. Permission, authorization, and safety boundaries ([security-education.md](../safety/security-education.md), [physical-lab-safety.md](../safety/physical-lab-safety.md)) apply continuously throughout the workflow, not only at review time.
 
-Perform an explicit manual review of reader-facing teaching quality, source fidelity, representation alignment, lab completeness, and Markdown/Obsidian structure before concluding any note-creation or update task. Review the actual generated content, not merely headings. **Do not treat heading count, word count, or image count as proof of teaching quality.** This is a manual review checklist, not an automated software test or validator script.
+## Pre-Publication Stages (Stages 1–5 — Before Saving)
 
-## Reader-Facing Quality Questions
+### Stage 1 — Subject, Theory, Evidence & Editorial Correctness (Before Saving)
+- Verify [teaching_core.md](../../../core/teaching_core.md), [theory_quality_contract.md](../../../core/theory_quality_contract.md) (including the **Educational & Mathematical Depth Preservation Contract**), [math_gates.md](../../../core/math_gates.md) (continuous mathematical reasoning and complete derivations), [claim-verification.md](../sourcing/claim-verification.md), [educational-editor.md](educational-editor.md), and [adversarial-theory-review.md](adversarial-theory-review.md): concrete grounding before abstractions, **two-dimension prerequisite policy** (`importance` × `learner status`), **objective-to-passage & derivation-completeness verification** (inspecting actual derivation steps inside formula callouts rather than merely checking formula presence, verifying mathematical dependency order and scalar-to-matrix shape justifications), claim-level validity/evidence checks and source-error distinction, explanatory and mathematical failure modes, paragraph contribution test, target `0–5` depth, and dependency-aware repair of Critical/Major/Moderate defects.
 
-Before finishing any substantive theory note or lab, verify every applicable prose question honestly (**never use word count, heading count, or image count as a measure of teaching depth**):
-1. Does the opening provide a clear roadmap (`Goal / Prerequisites / plain-text TOC with zero links` on deep guides), a tiny concrete input-to-output table before abstract definitions, and an upfront **Symbol Dictionary** with notation-clash warnings?
-2. Is every essential prerequisite locally supported via zero-prerequisite foundations (with small reference value tables and rules before formulas rely on them) rather than replacing essential explanation with links?
-3. Are paragraphs crisp and readable (1–3 sentences per single idea), and is the simpler baseline tested on concrete numbers to prove *where* it breaks before introducing the new method?
-4. Do quantitative explanations build **scalar case → multi-variable sum + contribution table → compact vector/matrix form**, pair `Part | Purpose` tables with **negative / zero / positive / extreme limit** checks, and explain every algebraic cancellation?
-5. Are **at least 4–5 relevant, inspected local web images** placed at conceptual inflection points (failure contrast, foundation curve, curve+derivative saturation, before/after geometry, diagnostics, pipeline/architecture diagrams) and actively taught around (`question → what to inspect → local image → decoded labels/axes → concrete values → formal connection → limits → check`), with **zero Mermaid blocks and zero ASCII graphs**?
-6. For iterative or multi-step mechanisms, is one stable running fixture traced across **Iteration 1 → Update → Iteration 2** (with intermediate tables), and do evaluation metrics reuse one shared fixture with imbalance caveats?
-7. Are assumptions paired with an explicit **"What this method does NOT require / mean"** check, `Mistake | Correct approach` table, and causal comparison matrix?
-8. Do comprehensive theory notes end with a final **N-Step Mental Model** and reciprocal links to the topic's sibling lab and sibling **Cheatsheet & Interview Q&A** file (where the grouped Formula/Rule Cheat Sheet, tiered **Beginner → Intermediate → Advanced** Q&A with collapsed `> [!tip]- Answer` folds, and **Worked Practice Problems** with collapsed `> [!tip]- Solution` folds live)?
-9. Are sources, citations, and execution status (`Status: static review (not executed)` / `"Documentation-checked example; not compiled or executed here."`) honest, with zero filler, repeated dummy calculations, or ornamental images?
+### Stage 2 — Artifact Selection & Source Compliance (Before Saving)
+- Verify emitted files against the **resolved `artifact_plan`** ([adaptive-engine.md](../authoring/adaptive-engine.md), `artifact_policy` in [master-registry.yaml](../../dispatch/master-registry.yaml)), active `docs/blueprints/formats/` + presets, and explicit user overrides—confirming no unsupported companion labs/cheatsheets were emitted under `M3`, `M4`, `M6`, `M7`, `/scribe-ytnotes`, standalone `M5`, single-file requests, or restrictive `strict` sources.
+- Confirm active [source-fidelity.md](../sourcing/source-fidelity.md) permissions (`strict`, etc.) and video transcript-only limits ([video-notes.md](../../blueprints/formats/video-notes.md)) were respected, unconfirmed claims carry `[UNVERIFIED]`, and unverified gaps are disclosed honestly.
 
-## Structural, Visual & Lab Gates
+### Stage 3 — Disciplinary Completeness & Misconception Boundaries (Before Saving)
+- Verify [subject-registry.yaml](../../dispatch/subject-registry.yaml) obligations for the selected primary subject (and any selectively merged secondary support): disciplinary mechanisms, domain-appropriate examples/evidence, and verified misconceptions from [subject-theory-profiles.md](../../blueprints/components/subject-theory-profiles.md)—confirming unrelated subject rules (e.g., ML datasets or 4-language Rust stacks) did not leak into unrelated disciplines.
 
-- **Direct-Authoring & Safety:** Confirm no scripts, downloaders, or builder files were created or executed, and no existing unrelated Obsidian notes or assets were overwritten.
-- **Metadata & YAML:** Line 1 starts with valid `--- ... ---` YAML matching either the 5-key comprehensive `M1` profile (`id`, `aliases`, `topic`, `tags`, `nexttopics`) or Obsidian Properties (`topic`, `tags`, `master_topic`, `domain`, `note_type`), with zero `type/<note-type>` tags, zero leaked scaffold comments, and zero internal planning logs.
-- **Mathematical Fold Parity & Delimiters:** Every displayed `$$...$$` equation is preceded by orienting prose and immediately followed by a properly quoted `> [!note]- 📐 Understand this formula` callout without nested `$$` delimiters. Reject incompatible `\(...\)` / `\[...\]` delimiters or raw mathematical commands (such as `\frac`) outside math delimiters.
-- **Visual Coverage & Local Acquisition:** Verify **at least 4–5 downloaded & inspected local web raster images** (`.png`, `.jpg`, `.webp`) per generated content/deep/study/video note, each placed at a conceptual inflection point and taught with the full six-phase narrative. Reject notes with fewer than 4 downloaded web images (unless web/download access was genuinely blocked and disclosed), planned/remote image URLs without local raster assets, images inserted without six-phase prose, or **any Mermaid (`mermaid` blocks) or ASCII graphs/diagrams**.
-- **Substantive Explanations, Companion Lab & Cheatsheet/Q&A Pack (3-File Bundle):** Reject patronizing shortcuts (`"obviously"`, `"trivially"`, `"as you know"`), visible opening inventory dumps (`Level`, `Estimated prerequisites`, `Implementation languages`, `Libraries and tools`, `Practical objective`, `Experiment objective`), repeated mathematical walkthroughs, dataset or unit changes without explanation, unsupported numerical predictions, anticipated results labeled as observed findings, baseline comparisons across different partitions, cross-reference-only explanations, long code without detailed line-by-line collapsed walkthroughs, workflow steps reduced to one sentence, grouped placeholder ranges, broken section numbers/anchors, four ML implementations solving incomparable tasks, or omitting Rust-library code (`4.4`) merely because local Cargo/compiler access is absent. Confirm each new non-video content note has both sibling companions—`<note stem> - Experimental Lab.md` (with complete `Cargo.toml` + Rust source when doc-checked and `"Documentation-checked example; not compiled or executed here."` / `Status: static review (not executed)` on unexecuted code) and `<note stem> - Cheatsheet & Interview Q&A.md` (with every interview answer in `> [!tip]- Answer` and every practice solution in `> [!tip]- Solution`, properly quoted and separated so tapping reveals only one answer at a time)—all linked reciprocally.
-- **Links, Source Coverage & Safe Saving:** Internal `[[wikilinks]]` resolve to existing or planned notes, all fenced code blocks are closed, citations have actual locators, and supplied source coverage gaps or unverified steps (execution, hashing, Obsidian UI rendering) are disclosed honestly. Inspect written files after saving and confirm unrelated files remain intact.
-- **Video Notes (`/scribe-ytnotes`):**
-  - *Source fidelity:* Sections reflect actual video narration/frames, timestamps match URL `t=` seconds (supporting hours), substantial added context is labeled (**Additional explanation**), and missing access is never fabricated.
-  - *Visual teaching:* Multiple complementary downloaded & inspected web raster images (`assets/scriptorium/<video-id>/`) illustrate the video's concepts, every embed resolves locally with source attribution, and visuals are taught with the six-phase narrative (no video-frame capture required).
-  - *Organization:* Exactly one self-contained note per processed video (single videos never split by topic), playlist order/links are preserved when requested, and **zero** experimental lab is generated.
-  - *Learning quality & efficiency:* Essential prerequisites are explained locally, labels/symbols are decoded, mechanisms are traced, formalism connects to the visuals, video playback/frame capture was avoided, the transcript was acquired once into one compact evidence map, and repairs are targeted. Mark the output **partial** only if transcript/source access itself was incomplete.
+### Stage 4 — Lab Correctness, Experiment Integrity & Safety Compliance (Before Saving)
+- Confirm **zero scripts or temporary builder projects** were created or executed on the host, and confirm [security-education.md](../safety/security-education.md) and [physical-lab-safety.md](../safety/physical-lab-safety.md) guardrails were enforced throughout.
+- When a lab or implementation is present, verify [experimental-lab.md](../authoring/experimental-lab.md) and the selected investigation profile (`docs/blueprints/investigations/`): shared-foundation + track-specific **A–G** walkthroughs, static correctness (syntax, types, bounds, operators, equations), and honest 3-attribute integrity (*Origin*, *Method*, *Verification* reflecting what actually occurred) with `Source and static review only; not compiled or executed here.` (never claiming unexecuted code ran or fabricating observations).
+
+### Stage 5 — Presentation, Mathematics, Visuals, Metadata, Links & Bounded Acceptance (Before Saving)
+- Verify [authoring_rules.md](../../../core/authoring_rules.md), [math_gates.md](../../../core/math_gates.md) (read with folds closed for hypotheses, milestones and conclusions, then open folds to verify derivations, prerequisites, source permission, local derivation ownership, notation, equation spacing and callout boundaries), [representations.md](../authoring/representations.md) (visual source hierarchy, inspected external/native figures, adaptive sizing, ordinary Markdown attribution, diagram-to-model correspondence, zero Mermaid/ASCII, **asset dependency check** ensuring no accepted note references a missing required figure/asset), [properties-policy.md](../../properties/properties-policy.md) (line-1 YAML matching active profile, unique IDs), and [revision-and-linking.md](../updating/revision-and-linking.md) (resolved links, acyclic prerequisites, reciprocal links only to files in `artifact_plan`).
+**Independent acceptance checks.** For each applicable dimension, cite concrete evidence and resolve defects before judging the whole artifact. Mark a dimension inapplicable when it is outside the resolved scope.
+
+| Dimension | Observable evidence |
+|---|---|
+| Concepts | Definitions, prerequisites and boundaries are introduced before use |
+| Mechanism | A trace or causal explanation shows what changes and why |
+| Mathematics | Valid derivations, assumptions, identified symbols and verified examples |
+| Visuals | Essential relationships are legible in an inspected figure or sufficient permitted fallback, with material gaps disclosed |
+| Readability | Focused prose and a coherent visible reading path support the intended audience |
+| Practical reasoning | Worked comparisons show behavior, decisions, or failure diagnosis at the requested depth |
+| Independent learning | Application, explanation or transfer checks match the objective when practice is permitted |
+
+A strength on one dimension cannot cancel a material failure on another. Verify the required policy dependencies in [the runtime pipeline](../../../core/runtime_pipeline.md) before claiming full compliance. Apply the bounded acceptance outcomes below to unresolved defects.
+
+- **Bounded Acceptance Decision:** Resolve acceptance cleanly instead of looping indefinitely when sources or tools remain unavailable:
+
+| Outcome | Required Action |
+|---|---|
+| `accepted` | Publish accepted artifacts to approved destination and proceed to Stage 6 |
+| `accepted_with_disclosed_limitations` | Publish only supported material and explicitly disclose unresolved limitations/gaps |
+| `repair_required` | Repair affected content and downstream bundle dependencies, then re-review |
+| `blocked` | Do **not** save or represent the artifact as completed; explain what is blocking completion |
+| *No new evidence / host capability available* | **Stop repeated repair attempts** and finalize either `accepted_with_disclosed_limitations` or `blocked` |
+
+- **Minimal Internal Quality Manifest:** Maintain this status record internally during normal generation (never create an extra vault file per note; expose a concise summary only if the user requests an audit or detailed verification report):
+
+```yaml
+quality_manifest:
+  requested_scope: <topic and active format/preset>
+  target_depth: <0-5>
+  artifact_status:
+    theory: <accepted | accepted_with_disclosed_limitations | omitted | blocked>
+    experimental_lab: <accepted | accepted_with_disclosed_limitations | omitted | blocked>
+    mastery_pack: <accepted | accepted_with_disclosed_limitations | omitted | blocked>
+  review:
+    theory: <manually_reviewed | independently_reviewed>
+    mathematics: <manually_checked | not_applicable>
+    code_execution: <not_performed | actually_executed>
+    visual_rendering: <unavailable | live_checked>
+  unresolved_gaps: []
+```
+
+## Post-Publication Stage (Stage 6 — After Saving)
+
+### Stage 6 — Actual Saved-File Integrity (After Saving)
+- Reopen actual saved files (when written to a vault) to confirm valid line-1 YAML frontmatter, intact local asset/embed targets, resolved relative wikilinks matching emitted filenames, and untouched unrelated vault notes/YAML.

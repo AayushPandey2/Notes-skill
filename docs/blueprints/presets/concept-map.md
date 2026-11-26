@@ -1,11 +1,9 @@
-# Variant: Concept Map & Knowledge Network
+# Preset: Concept Map & Knowledge Network (`M7` / `concept_map`)
 
-- **Purpose:** Map prerequisite, generalization, contrast, and dependency structure across an entire topic or vault cluster cleanly.
-- **Parent Master:** [M7 — Synthesis & Revision](../formats/synthesis-revision.md) (`concept_map`)
+- **Parent Master:** [M7 — Synthesis & Revision](../formats/synthesis-revision.md) (`single_artifact`).
 - **Activation Trigger:** `"concept map"`, `"knowledge map"`, `"dependency graph for <topic>"` via `/scribe-notes`.
-- **Inputs & Dependencies:** Existing vault notes, canonical concept relationships, [revision-and-linking.md](../../procedures/updating/revision-and-linking.md).
-- **Execution Overrides:**
-  1. Embed an inspected local web concept/architecture diagram ([representations.md](../../procedures/authoring/representations.md)) where available (never Mermaid or ASCII), and structure every relationship explicitly via typed edges (`requires`, `generalizes`, `contrasts`, `feeds`) in the Semantic Connection Table below.
-  2. Follow with a Semantic Connection Table: `Concept | Relation | Target | Concise Bridge | Canonical Vault Link`.
-  3. Separate `existing_note` wikilinks from `planned_note` (`nexttopics`) and plain-text `unresolved_concept` labels.
-- **Failure Handling & Validation:** Reject cyclic prerequisite graphs or fabricated links ([verification-checklist.md](../../procedures/review/verification-checklist.md)).
+
+## Execution Overrides
+1. **Typed Semantic Relationships:** Map concepts using explicit relationship types: `requires` (prerequisite—must remain acyclic), `causes`, `part_of`, `implements`, `measures`, `approximates`, `generalizes`, `contrasts`, and `contradicts`. Genuine conceptual cycles (e.g., feedback loops, bidirectional contrasts) are permitted outside `requires` edges ([revision-and-linking.md](../../procedures/updating/revision-and-linking.md)).
+2. **Structured Representation:** Emit a clean `Concept | Relation | Target | Concise Bridge | Canonical Vault Link` table (plus an inspected local web diagram per [representations.md](../../procedures/authoring/representations.md) when helpful and permitted; never Mermaid or ASCII).
+3. **Link Hygiene:** Separate `existing_note` wikilinks from `planned_note` (`nexttopics`) and plain-text `unresolved_concept` labels.

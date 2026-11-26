@@ -1,58 +1,49 @@
-<!-- scaffold:preflight
-Purpose: Generate pure active-recall problem sets, flashcards, or exam simulations grounded in vault evidence without duplicating theory summaries.
-Master ID: M6 (assessment / compatibility route: practice).
-Activation Trigger: /scribe-notes practice/assessment requests, /scribe-quiz (interactive single-question vault mode), "quiz me", "make flashcards", "mock exam", "viva questions".
-Non-activation: Never run as an unsolicited pre-generation diagnostic quiz; an M6 route never triggers another M6 route.
-Inputs: Verified sibling notes or source equations/definitions, target scope (narrow vs collection), interaction mode (self-test collapsed vs quiz interactive).
-Dependencies: router.md, core/authoring_rules.md, core/math_gates.md; variants flashcards.md, mock-exam.md.
-Decision Rules: 15–20 tiered questions for full sets (10–14 narrow); keep hints and solutions in separate collapsed callouts separated by an unquoted blank line.
-Failure Handling: Reject answer-only quantitative keys without worked steps or trivial copy-paste recall; mark static Markdown limits honestly.
-Validation: [verification-checklist.md](../../procedures/review/verification-checklist.md) (`M6` assessment rules).
--->
-
 # M6 — Practice, Active Recall & Diagnostic Assessment
 
-- **Destination & Mode Contract:** Manual sets save to `Practice Sets/<Subtopic> - Practice.md`; collection assessments save to `Practice Sets/<Topic> - Collection Assessment.md`. Reuse verified equations and conditions from sibling notes. Static Markdown uses collapsed callouts (`self-test`) or visible keys (`practice with answers`); interactive `/scribe-quiz` asks one question per turn in chat without claiming Markdown auto-grades.
-- **Header Block:** Line-1 Obsidian Properties + `# <Topic or Subtopic> — Active Recall & Synthesis Practice Set` (no long theory summary or symbol preview).
+*Master ID: `M6` (`assessment`, variants: `flashcards.md`, `mock-exam.md`). Artifact policy: `single_artifact` per [master-registry.yaml](../../dispatch/master-registry.yaml).*
 
-## Tier 1 — Foundational Recall (Q1–Q5)
+- **Destination & Mode Contract:** Save inside `<Configured Target>/<Topic>/` when part of a topic bundle, or `Practice Sets/<Subtopic> - Practice.md` / `Practice Sets/<Topic> - Collection Assessment.md` only when explicitly requested as a standalone assessment ([properties-policy.md](../../properties/properties-policy.md)). Reuse verified equations and conditions from sibling notes. Static Markdown uses collapsed callouts (`self-test`) or visible keys (`practice with answers`); interactive `/scribe-quiz` asks **one question per turn** in chat without claiming static Markdown auto-grades.
+- **Header Block:** Line-1 Standard Obsidian Properties YAML + `# <Topic or Subtopic> — Active Recall & Synthesis Practice Set` (no long theory summary).
 
-Consecutive prompts testing essential definitions, recognition cues, and applicability distinctions (`10–14` total for narrow sets; `15–20` full sets).
+## 1. Cognitive Skill Sampling & Dynamic Question Numbering
 
-## Tier 2 — Quantitative Application, Code Tracing & Math (Q6–Q12)
+Sample across the ten mastery dimensions in [mastery-design.md](../../procedures/authoring/mastery-design.md) (*Recognition, Recall, Explanation, Execution, Prediction, Diagnosis, Discrimination, Construction, Critique, Transfer*) and integrate [revision-strategy.md](../../procedures/learning/revision-strategy.md) for spaced/interleaved practice sets rather than writing ten progressively longer definition prompts.
 
-Adapt strictly to the subject and objectives (quantitative calculation, state tracing, or causal mechanism analysis).
+Scale question count dynamically (`10–14` narrow sets; `15–20` full sets) and **compute tier headings dynamically** to match actual counts (never hardcode mismatched `Q1–Q5 / Q6–Q12 / Q13–Q18` ranges):
+- `## Tier 1 — Foundational Recall & Recognition (Q1–Q<n1>)`
+- `## Tier 2 — Application, Calculation & Mechanism Tracing (Q<n1+1>–Q<n2>)`
+- `## Tier 3 — Boundary Stress-Tests, Diagnosis & Transfer (Q<n2+1>–Q<N>)`
 
-## Tier 3 — Boundary Stress-Tests & Cross-Topic Synthesis (Q13–Q18)
+## 2. Answer Expectations & Misconception Diagnostics
 
-Novel transfer scenarios, edge conditions, and misconception-targeting distractors.
+| Question Type | Required Answer Quality |
+|---|---|
+| **Definition** | Precise statement + exact boundary conditions |
+| **Calculation** | Governing method + intermediate steps + units + final result |
+| **Explanation** | Causal or logical mechanism (not bare symptom listing) |
+| **Diagnosis** | Identified failure mechanism + discriminating evidence |
+| **Proof** | Explicit hypotheses + justified logical transitions |
+| **Design** | Requirements satisfied + trade-offs + justified choice |
 
-- **Mandatory Dual-Callout Format (Self-Test Mode):** Quote every line inside each callout (including interior blank lines with `>`) and keep an unquoted blank line between hint and solution so expanding a hint never reveals the answer:
+- **Misconception-Sensitive MCQs:** Map each wrong option to a specific plausible misconception ([subject-theory-profiles.md](../components/subject-theory-profiles.md)).
+- **Interactive `/scribe-quiz` Feedback:** Classify incorrect learner answers (*missing prerequisite, terminology confusion, invalid assumption, calculation error, mechanism misunderstanding, failed transfer*) and pose a targeted follow-up to confirm correction.
+- **Mandatory Dual-Callout Format (Self-Test Mode):** Quote every interior line with `>` and keep an unquoted blank line between hint and solution:
 
 ````markdown
-### Q<k>. <Specific Recall, Quantitative, or Transfer Question>
+### Q<k>. <Specific Prompt>
 
 > [!hint]- Need a nudge?
-> <State the governing principle, setup constraint, or first structural step without spoiling the result.>
+> <Governing principle or setup constraint without spoiling the result.>
 
 > [!tip]- Reveal approach and solution
-> **Core intuition:** <One-sentence causal explanation of why the mechanism behaves this way.>
+> **Core intuition:** <One-sentence causal explanation.>
 >
-> 1. **Setup & Assumptions:** <Confirm hypotheses, units, shapes, or boundary conditions.>
-> 2. **Step-by-Step Working:** <Explicit intermediate substitution, computation, or causal derivation.>
+> 1. **Setup & Assumptions:** <Hypotheses, units, shapes, or boundaries.>
+> 2. **Step-by-Step Working:** <Explicit calculation, trace, or argument.>
 >
-> **Final answer:** <Verified result with units/scope qualifiers.>
+> **Final answer:** <Verified conclusion with qualifiers.>
 >
 > **Common trap:** <Typical misstep -> why it fails.>
 ````
 
-<!-- optional: diagnosis -->
-## [OPTIONAL] What would distinguish these failure causes? (Diagnostic Transfer)
-
-<!-- Activate only when sibling notes expose competing plausible failure causes; omit cleanly otherwise. -->
-
-- **Context:** Ambiguous symptom and competing hypotheses.
-- **Analysis:** Discriminating observation or check separating true cause, linked back to canonical note sections.
-- **Check:** Expected vs. refuting signal and remaining blind spots.
-
-- **Output & Verification Contract:** See [authoring_rules.md](../../../core/authoring_rules.md) and [math_gates.md](../../../core/math_gates.md). Strip scaffolding comments and verify step-by-step derivations inside all quantitative solutions.
+*Contract: [authoring_rules.md](../../../core/authoring_rules.md), [math_gates.md](../../../core/math_gates.md), [verification-checklist.md](../../procedures/review/verification-checklist.md).*
