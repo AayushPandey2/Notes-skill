@@ -37,9 +37,13 @@ Dispatch each active public command or `/scribe-notes` internal branch cleanly�
 
 ### Command G — Interactive Vault Quiz (`/scribe-quiz`)
 - **Trigger:** `/scribe-quiz <topic/note>` or interactive recall/viva over existing vault notes (for static Markdown practice files, use `/scribe-notes` with `M6` [assessment.md](../../blueprints/formats/assessment.md) instead).
-- **Inputs & Discovery:** Vault path ([pre-gen-gate.md](pre-gen-gate.md)), target note(s), [mastery-design.md](mastery-design.md), [revision-strategy.md](../learning/revision-strategy.md), and read-only note inspection (zero web browsing).
-- **Execution & Constraints:** Run the 7-step progression in [skills/scribe-quiz/SKILL.md](../../../skills/scribe-quiz/SKILL.md): select objective/mastery dimension $\to$ ask **one question per turn** and wait $\to$ classify response (`correct`, `partially_correct`, `incorrect`, `ambiguous`, `unsupported_by_note`) $\to$ diagnose gap without fabricating history $\to$ repair with `[[Note Title#Heading]]` citation + discriminating example $\to$ retest with a **different** question on the same reasoning $\to$ progress to transfer only when demonstrated. Keep vault notes unchanged by default; never add YAML keys for quiz state or create an experimental lab.
+- **Execution & Delegation:** [skills/scribe-quiz/SKILL.md](../../../skills/scribe-quiz/SKILL.md) is the canonical owner of the read-only 7-step interactive progression (including `note_conflict` classification, misconception uncertainty, one-question-per-turn pacing, zero web browsing, and no YAML quiz-state keys). Load [pre-gen-gate.md](pre-gen-gate.md), [mastery-design.md](mastery-design.md), and [revision-strategy.md](../learning/revision-strategy.md) alongside it.
 - **Failure Handling:** State missing vault/note coverage honestly rather than inventing answers.
+
+### Command J — Read-Only Vault Quality Audit (`/scribe-audit`)
+- **Trigger:** `/scribe-audit <note/folder>` or explicit quality review of existing vault notes without immediate rewrites.
+- **Execution & Delegation:** Delegate to [skills/scribe-audit/SKILL.md](../../../skills/scribe-audit/SKILL.md) as the canonical read-only audit workflow, inspecting across the 9 audit dimensions (theory, mathematics, prerequisites, practical work, evidence, presentation, consistency, currency, and mastery) using [adversarial-theory-review.md](../review/adversarial-theory-review.md), [educational-editor.md](../review/educational-editor.md), [verification-checklist.md](../review/verification-checklist.md), and [claim-verification.md](../sourcing/claim-verification.md).
+- **Failure / Constraints:** Remain strictly read-only by default, cite exact `[[Note Title#Heading]]` locators, and never claim unperformed code execution or live Obsidian rendering.
 
 ### Command H — Atomic Card (`M3` / `atomic_card`)
 - **Trigger:** Single-concept transcludable note (`<150` words).

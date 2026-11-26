@@ -30,13 +30,24 @@ Choose representations according to the **intellectual task** rather than defaul
 
 - **Domain Visual Overlays:** *Electrical:* circuit topology + passive sign + response · *OS/Networking:* address/TLB/page-table maps, packet timelines · *Biology/Chemistry:* 3D structure/binding, pathway, energy profile · *Math/Algorithms:* transforms, function+derivative, pointer/window states · *ML:* failure contrast, foundation curves, sigmoid+derivative, ROC/calibration, $L_1$/$L_2$ geometry, bias–variance.
 
-## 3. Acquisition, Inspection & Adaptive Sizing
+## 3. Acquisition, Inspection & Native-Visual Lifecycles
 
-Track `Needed -> Candidate found -> Source checked -> Downloaded -> Local image inspected -> Embedded -> Saved embed checked`.
+Keep the no-Mermaid, no-ASCII-diagram, and no-custom-plotting-script rules intact, and apply the matching lifecycle by visual source:
+
+### Path A — External Downloaded Web Raster Figures
+Track `Needed -> Candidate found -> Source checked -> Downloaded -> Local image inspected -> Embedded -> Saved embed checked`:
 1. **Check source & rights:** Verify identifiable educational/scientific/institutional/creator sources and reuse rights within active `source_policy`.
 2. **Download locally:** Save `.png`, `.jpg`, `.jpeg`, or `.webp` with descriptive non-colliding filenames under `<Configured Target>/<Topic>/assets/` (or `assets/scriptorium/<video-id>/` for standalone `/scribe-ytnotes`) using native tools (never custom downloader scripts).
 3. **Inspect before describing:** Open the saved file (`read_file` or viewer) before citing colors, axes, labels, or values; explain explicitly if an external figure uses a different dataset/notation than the running example.
-4. **Embed with adaptive width & multimedia hygiene:** Choose display width from legibility, intrinsic dimensions, and layout (`![[assets/<name>.png|650]]` default; compact for small components, wider for dense circuits/graphs). Place explanations beside the element they explain, keep labels/symbols consistent with prose, never rely exclusively on color, omit decorative visual clutter, and separate embed, concise 1-sentence caption, and **ordinary Markdown** attribution (`Source: [Exact Source Page Title](url). Attribution and license: <verified info>.` — zero raw HTML) with blank lines.
+
+### Path B — Host-Supported Native / Generated Mathematical Diagrams
+Track `Specification defined -> Native tool rendered -> Values/labels inspected -> Attributed as author-created -> Saved embed checked`:
+1. **Specify exact parameters:** Anchor axes, units, coordinates, and states to the note's actual running example before generating.
+2. **Inspect rendered output:** Verify values, scale labels, geometry, and component relationships visually; disclose honestly if live visual inspection is unavailable.
+3. **Attribute cleanly:** Identify the figure as an author-created illustration paired with a meaningful caption and accessible textual explanation.
+
+### Adaptive Width & Multimedia Hygiene (Both Paths)
+- Choose display width from legibility, intrinsic dimensions, and layout (`![[assets/<name>.png|650]]` default; compact for small components, wider for dense circuits/graphs). Place explanations beside the element they explain, keep labels/symbols consistent with prose, never rely exclusively on color, omit decorative visual clutter, and separate embed, concise 1-sentence caption, and **ordinary Markdown** attribution (`Source: [Exact Source Page Title](url). Attribution and license: <verified info>.` or `Source: Author-created illustration for this note's running example.` — zero raw HTML) with blank lines.
 
 ## 4. Diagram-to-Model Narrative & Six-Phase Visual Teaching
 

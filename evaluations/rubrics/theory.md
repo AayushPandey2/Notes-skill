@@ -1,6 +1,6 @@
 # Evaluation Rubric: Theory Quality (Evaluation-Only)
 
-*Load only during evaluation or when explicitly requested as an evaluation rubric—do not load during normal note authoring.*
+*Load only during evaluation or when explicitly requested as an evaluation rubric—do not load during normal note authoring. Apply only criteria relevant to the intended artifact (`M1`/`M2` theory vs. compact `M3` vs. strict-source note) rather than penalizing intentionally omitted material.*
 
 Every criterion requires **citing exact passages** from the generated note. Author self-attestation (e.g., *"I verified this checklist"*) never counts as passing evidence.
 

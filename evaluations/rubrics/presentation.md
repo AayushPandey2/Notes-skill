@@ -1,6 +1,6 @@
 # Evaluation Rubric: Presentation, Math & Navigation (Evaluation-Only)
 
-*Load only during evaluation or when explicitly requested as an evaluation rubric—do not load during normal note authoring.*
+*Load only during evaluation or when explicitly requested as an evaluation rubric—do not load during normal note authoring. Apply presentation expectations proportionally to the active format (`M3` compact/atomic notes omit TOC and extended visuals).*
 
 | Dimension | Pass Standard (Cite Supporting Passage) | Automatic Fail Trigger |
 |---|---|---|

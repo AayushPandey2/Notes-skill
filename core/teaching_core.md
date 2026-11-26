@@ -10,11 +10,11 @@ Before drafting each major concept, diagnose the gap: identify (1) what the read
 
 Apply the **two-dimension prerequisite policy** across all substantive notes (separating prerequisite importance from the learner's demonstrated knowledge status so an essential concept already mastered is not redundantly retaught):
 
-| Prerequisite Importance | Treatment When Learner Status Is Unknown / Uncertain | Treatment When Learner Status Is Demonstrated |
-|---|---|---|
-| **Essential** | Explain locally before first dependent use (a link never substitutes) | Concise 1-line anchor or omit repetitive derivation |
-| **Supporting** | Concise bridge or optional collapsed refresher | Brief reference only |
-| **Contextual** | Link or mention briefly only when useful | Omit or link only if requested |
+| Prerequisite Importance | Treatment When Learner Status Is Unknown / Uncertain | Treatment When Learner Status Is Self-Reported | Treatment When Learner Status Is Demonstrated |
+|---|---|---|---|
+| **Essential** | Explain locally before first dependent use (a link never substitutes) | Provide concise bridge and quick verification cue where consequential | Concise 1-line anchor or omit repetitive derivation |
+| **Supporting** | Concise bridge or optional collapsed refresher | Brief bridge if needed for the immediate step | Brief reference only |
+| **Contextual** | Link or mention briefly only when useful | Link briefly if helpful; do not interrupt core flow | Omit or link only if requested |
 
 Learner knowledge status levels ([learner-model.md](../docs/procedures/authoring/learner-model.md)): `Demonstrated` · `Self-reported` · `Uncertain` · `Not established`.
 

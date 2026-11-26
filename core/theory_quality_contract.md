@@ -26,9 +26,9 @@ Substantive core concepts must reach **Mechanism/Reasoning (Level 3)**, **Analyt
 | **4. Analytical** | States correctness conditions, invariants, resource costs, and failure modes | Requires a valid base case, progress toward termination, and call-stack space unless tail-call eliminated. |
 | **5. Transfer** | Enables independent application to unfamiliar cases and reverse diagnosis | Identifies infinite-recursion bugs or converts tree recursion to iterative/tail-recursive form. |
 
-## 3. Multi-Perspective Explanation
+## 3. Multi-Perspective & Alternative Explanation Selection
 
-When a core concept cannot be fully understood from one angle, combine complementary perspectives and **connect them explicitly** (disconnected parallel explanations do not create integrated understanding):
+When a concept admits multiple valid approaches (for example, explaining **eigenvectors** via *geometric invariant directions*, *algebraic $Av = \lambda v$*, *computational characteristic equations/eigensolvers*, *structural invariant subspaces*, or *applied PCA/stability*), choose the **primary perspective** that best establishes the central intuition for the learner's goal and depth. Add a secondary perspective only when it contributes genuine non-redundant insight and connect them explicitly—disconnected parallel perspectives increase cognitive load without deepening understanding.
 
 | Discipline | Complementary Perspectives |
 |---|---|

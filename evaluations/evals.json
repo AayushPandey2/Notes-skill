@@ -351,11 +351,13 @@
     {
       "id": 34,
       "prompt": "/scribe-notes Summarize what this Adam optimizer tutorial proves about Adam always outperforming SGD",
-      "expected_output": "Applies claim-verification evidence sufficiency: distinguishes what a single tutorial explains from universal empirical superiority claims, flagging unsupported generalizations.",
-      "files": [],
+      "expected_output": "Applies claim-verification evidence sufficiency: distinguishes what the supplied tutorial explains from universal empirical superiority claims, flagging unsupported generalizations.",
+      "files": [
+        "evaluations/fixtures/sources/adam-tutorial-excerpt.md"
+      ],
       "expectations": [
         "Rejects or qualifies the overclaim that Adam universally outperforms SGD across tasks",
-        "Separates optimizer mechanics from conditional generalization evidence"
+        "Separates optimizer mechanics documented in the excerpt from missing comparative benchmark evidence"
       ]
     },
     {
@@ -381,20 +383,25 @@
     {
       "id": 37,
       "prompt": "/scribe-quiz Quiz me on Logistic Regression targeting prediction, diagnosis, and transfer—not just definitions",
-      "expected_output": "Applies mastery-design 7-step progression in /scribe-quiz: asks one diagnostic/prediction/transfer question per turn and diagnoses misconceptions before retesting.",
-      "files": [],
+      "expected_output": "Applies mastery-design 7-step progression across scripted multi-turn responses in /scribe-quiz: asks one question per turn, treats wrong-answer causes as uncertain hypotheses until confirmed, and classifies valid contradiction against the defective note statement as note_conflict.",
+      "files": [
+        "evaluations/fixtures/vault/logistic-regression-quiz-script.md"
+      ],
       "expectations": [
         "Asks one question per turn sampling prediction/diagnosis/transfer rather than bare recall",
-        "Classifies errors without inventing prior quiz history and retests missed concepts with a different question"
+        "Treats learner wrong-answer root cause as an uncertain hypothesis confirmed via discriminating follow-up without inventing prior quiz history",
+        "Classifies the learner's valid correction of the defective note statement as note_conflict without silently rewriting the vault"
       ]
     },
     {
       "id": 38,
       "prompt": "/scribe-notes Create a revision pack for my existing Neural Networks vault notes focusing on documented weak areas without inventing past quiz scores",
-      "expected_output": "Applies revision-strategy read-only and no-fabricated-history rules: grounds revision in existing notes and avoids claiming unrecorded quiz history.",
-      "files": [],
+      "expected_output": "Applies revision-strategy read-only and no-fabricated-history rules against the controlled vault fixture: grounds revision in documented weak areas and avoids claiming unrecorded quiz scores.",
+      "files": [
+        "evaluations/fixtures/vault/neural-networks-weak-areas.md"
+      ],
       "expectations": [
-        "Adapts revision structure using only documented weak spots or existing vault notes",
+        "Adapts revision structure strictly using the documented weak spots in neural-networks-weak-areas.md",
         "Never fabricates past learner quiz scores or automated spaced-repetition reminders"
       ]
     },
@@ -411,11 +418,23 @@
     {
       "id": 40,
       "prompt": "/scribe-notes Create notes strictly from these two supplied lecture paragraphs with no exercises or outside additions",
-      "expected_output": "Applies source-constraint precedence over default theory_bundle: omits unsupported companion Experimental Lab and Cheatsheet/Q&A artifacts and discloses the strict source boundary.",
-      "files": [],
+      "expected_output": "Applies resolved artifact_plan and source-constraint precedence over default theory_bundle against the supplied hashing lecture fixture: emits only main_note and omits unsupported experimental_lab and mastery_pack.",
+      "files": [
+        "evaluations/fixtures/sources/strict-lecture-paragraphs.md"
+      ],
+      "expected_artifacts": {
+        "required": [
+          "main_note"
+        ],
+        "forbidden": [
+          "experimental_lab",
+          "mastery_pack"
+        ]
+      },
       "expectations": [
-        "Omits ungrounded companion Experimental Lab and practice packs when strict source mode forbids outside additions and supplies no exercises",
-        "Discloses source gaps honestly without inventing outside examples or web images"
+        "Resolves artifact_plan to include only main_note and omit unsupported Experimental Lab and Cheatsheet/Q&A artifacts",
+        "Performs zero external source retrieval and introduces no unsupported examples or external web visuals",
+        "Preserves supplied hashing terminology and discloses strict source boundaries honestly"
       ]
     }
   ]

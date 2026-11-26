@@ -6,9 +6,21 @@ Verify **consequential, uncertain, or disputed claims** at the claim level rathe
 
 ## 1. Internal Claim Record & Verification Dimensions
 
-Verify internally: `claim_text`, `claim_type`, `assumptions`, `evidence_locators`, `limitations`, and `verification_status` (`supported`, `conditional`, `disputed`, `contradicted`, `insufficient_evidence`, or `[UNVERIFIED]`).
-- **`contradicted`** by inspected evidence requires **correction**.
-- **`insufficient_evidence`** requires **qualification or omission**.
+Verify internally using three distinct dimensions rather than conflating uncertainty with invalidity:
+- **Claim validity:** `supported` · `contradicted` · `uncertain`
+- **Evidence status:** `verified` · `partially_verified` · `unavailable`
+- **Conditional applicability:** whether the hypotheses/regime under which the claim holds have been established (a claim can be both well-supported and conditional).
+
+Record alongside them `claim_text`, `claim_type`, `assumptions`, `evidence_locators`, and `limitations`. Handle contradictions by source context rather than silently overwriting supplied sources:
+
+| Contradiction / Source Situation | Required Treatment |
+|---|---|
+| **Author-generated error** | Correct the statement directly |
+| **Supplied-source error** (`M2` / source notes) | Preserve accurate source attribution while identifying the error clearly |
+| **Externally verified discrepancy** | Separate the source's claim from the verified correction |
+| **Strict source forbids external research** | Flag internal inconsistency or uncertainty without unauthorized lookup |
+| **Genuine scholarly disagreement** | Explain competing interpretations, evidence, and assumptions transparently |
+| **Insufficient evidence** | Qualify scope explicitly or omit the unsupported claim |
 
 Check three evidence dimensions alongside claim type:
 1. **Evidence sufficiency:** Does the source actually establish the exact claim (e.g., explaining Adam does not establish that Adam always beats SGD)?

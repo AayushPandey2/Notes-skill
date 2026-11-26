@@ -1,6 +1,6 @@
 # Evaluation Rubric: Practical & Lab Quality (Evaluation-Only)
 
-*Load only during evaluation or when explicitly requested as an evaluation rubric—do not load during normal note authoring.*
+*Load only during evaluation or when explicitly requested as an evaluation rubric—do not load during normal note authoring. Apply only criteria relevant to the intended artifact and resolved `artifact_plan` (for instance, strict-source notes with no supported lab are evaluated on proper omission, not missing tracks).*
 
 | Dimension | Pass Standard (Cite Supporting Passage) | Automatic Fail Trigger |
 |---|---|---|

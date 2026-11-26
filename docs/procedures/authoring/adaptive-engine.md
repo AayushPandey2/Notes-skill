@@ -5,7 +5,16 @@ Load this for substantive theory planning. [master-registry.yaml](../../dispatch
 ## 1. Three-Level Internal Planning Hierarchy
 
 Maintain **one compact internal plan** structured at three levels rather than repeating collection metadata inside every concept or creating JSON builders (never publish internal planning records):
-- **Request level:** `artifact_policy`, `learning_objectives`, `source_permissions`, `learner_profile` ([learner-model.md](learner-model.md)).
+- **Request level:** `artifact_policy`, `resolved artifact_plan`, `learning_objectives`, `source_permissions`, `learner_profile` ([learner-model.md](learner-model.md)). Maintain `artifact_plan` directly inside the request plan and pass it as the single artifact manifest consumed by authoring, linking, destination, and verification rules:
+
+```yaml
+artifact_plan:
+  main_note: { included: true, reason: "<format/request scope>" }
+  experimental_lab: { included: <true|false>, reason: "<e.g., strict source contains no supported investigation>" }
+  mastery_pack: { included: <true|false>, reason: "<e.g., M1 default / source includes exercises>" }
+  external_visuals: { permitted: <true|false>, reason: "<active source_permissions>" }
+```
+
 - **Collection level** *(only when bundled or multi-chapter)*: `notation`, `canonical_definitions`, `shared_fixtures`, `concept_ownership` ([knowledge-consistency.md](knowledge-consistency.md)).
 - **Concept level:** `concept_id`, **`learning_objective`** (required anchor for reasoning, examples, coverage, mastery, and verification), `role` (`prerequisite`, `core`, `extension`, `advanced`), `dependencies`, `knowledge_type`, `primary_subject` (+ selective secondary support), `concept_reasoning` ([concept-reasoning.md](concept-reasoning.md)), `depth` (unified `0–5` + separate `math_profile`), `example_roles` ([example-engineering.md](../../blueprints/components/example-engineering.md)), `evidence_locators`, and `completion_condition`.
 

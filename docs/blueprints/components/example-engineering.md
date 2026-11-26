@@ -17,8 +17,8 @@ Select example values and progression **deliberately** so examples expose the go
 | **Transfer** | Require applying the mechanism in an unfamiliar context |
 
 **Example Validity Gate (verify before drafting around any fixture):**
-1. The example actually demonstrates the intended property (e.g., for KNN feature scaling, choose values where scaling **flips the nearest neighbor**—such as query `(30, ₹50,000)` with Candidate A `(20, ₹50,100)` vs. Candidate B `(29, ₹55,000)`, where unscaled distance picks A `≈ 100.5` vs. `5000.0` while range-normalized distance picks B—rather than merely showing different feature ranges).
-2. Arithmetic and intermediate values are verified exact.
+1. The example actually demonstrates the intended property with **complete preprocessing/fixture contracts**. For instance, in KNN feature scaling: compare Query `(30, ₹50,000)` against Candidate A `(20, ₹50,100)` and Candidate B `(29, ₹55,000)`. Unscaled Euclidean distances pick **A** (`≈ 100.50` vs. `≈ 5000.00`). With **training-fitted feature ranges** (`Age range = 20 years`, `Income range = ₹60,000`) applied to the query and candidates, range-normalized distances become A `= √((10/20)² + (100/60000)²) ≈ 0.5000` vs. B `= √((1/20)² + (5000/60000)²) ≈ 0.0972`, flipping the nearest neighbor to **B**. Different fitted ranges can yield different neighbors, so fitted parameters are part of the example.
+2. Verify exact arithmetic where possible. For approximate computations, state the rounding convention, tolerance, and expected numerical accuracy.
 3. Simplicity does not conceal the central mechanism or assumptions.
 4. Values remain strictly consistent across prose, equations, code, and visuals.
 

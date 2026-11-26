@@ -20,3 +20,14 @@ Maintain an optional internal conceptual record using **only** background suppli
 
 - **Depth $\neq$ Difficulty:** A beginner can request **Level 4–5 analytical rigor** (e.g., PCA constrained variance maximization, SVD correspondence, reconstruction error, and mathematical conditions). Deliver full rigor using smaller transitions and local essential bridges ([teaching_core.md](../../../core/teaching_core.md))—never dumb down the mechanism.
 - **Expertise-Reversal Discipline:** For learners with demonstrated mastery, omit redundant elementary derivations so explanations remain crisp and high-signal.
+- **Task-Specific Capability Granularity:** Track learner capability at the concept level rather than collapsing mastery into one global label:
+
+| Capability Level | What It Shows (Illustrative Calculus Example) |
+|---|---|
+| **Recognition** | Recognizes derivative notation $\frac{df}{dx}$ |
+| **Calculation** | Differentiates a polynomial or composite expression mechanically |
+| **Interpretation** | Explains slope, local rate of change, and sign meaning |
+| **Application** | Uses derivatives to optimize an objective or diagnose extrema |
+| **Transfer** | Reasons about multivariable gradients or constrained optimization |
+
+Do **not** automatically infer **Application** or **Transfer** merely because the learner demonstrated **Recognition** or **Calculation**.

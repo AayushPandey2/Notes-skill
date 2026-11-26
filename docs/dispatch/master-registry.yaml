@@ -58,5 +58,5 @@ subtemplates:
   scientific: docs/blueprints/domains/scientific.md
   historical: docs/blueprints/domains/historical.md
   empirical: docs/blueprints/domains/empirical.md
-public_commands: [scribe-notes, scribe-ytnotes, scribe-doubt, scribe-quiz, scribe-setfolder]
+public_commands: [scribe-notes, scribe-ytnotes, scribe-doubt, scribe-quiz, scribe-audit, scribe-setfolder]
 video_intent_aliases: [scribe-ytnotes]

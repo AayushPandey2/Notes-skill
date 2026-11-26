@@ -24,4 +24,4 @@ Sample across distinct forms of understanding (never publish these dimension lab
 ## 2. Internal Question Provenance & Guidance Fading
 
 - **Internal question provenance (do not publish as YAML clutter):** Map every significant assessment item internally to `concept_id`, `learning_objective`, `expected_reasoning`, `likely_misconception`, and `supporting_section` (`[[Note#Heading]]`). In interactive `/scribe-quiz` sessions, this lets the tutor diagnose *which* misconception caused a wrong answer and follow up directly on that weak spot.
-- **Guidance fading:** Pair [example-engineering.md](../../blueprints/components/example-engineering.md) guidance fading (`100% -> 70% -> 35% -> 0%`) across multi-problem practice sets so learners transition from worked examples to independent problem solving.
+- **Guidance fading:** Apply the progressive guidance-fading sequence in [example-engineering.md](../../blueprints/components/example-engineering.md) across multi-problem practice sets so learners transition from worked examples to independent problem solving.

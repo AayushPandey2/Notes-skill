@@ -1,6 +1,6 @@
 # Companion Cheatsheet & Interview / Viva Pack (File 3)
 
-Emit this sibling file (`<note stem> - Cheatsheet & Interview Q&A.md`) only when dictated by `artifact_policy` in [master-registry.yaml](../../dispatch/master-registry.yaml) (default for `M1`/`M2` unless `explicit_single_file` or an existing layout overrides it; exempting `M3`, `M4`, `M6`, `M7`, `/scribe-ytnotes`, MOCs, and standalone `M5`). Link generated companions reciprocally, match the active YAML profile ([properties-policy.md](../../properties/properties-policy.md)), and preserve identical notation and source limits across the bundle.
+Emit this sibling file (`<note stem> - Cheatsheet & Interview Q&A.md`) only when `mastery_pack` is included in the resolved `artifact_plan` ([adaptive-engine.md](adaptive-engine.md)), governed by `artifact_policy` and `source_constraints` in [master-registry.yaml](../../dispatch/master-registry.yaml) (default for `M1`/`M2` unless `explicit_single_file`, an existing layout, or restrictive `strict` source constraints forbidding unsupported outside additions override it; exempting `M3`, `M4`, `M6`, `M7`, `/scribe-ytnotes`, MOCs, and standalone `M5`). Link generated companions reciprocally, match the active YAML profile ([properties-policy.md](../../properties/properties-policy.md)), and preserve identical notation and source limits across the bundle.
 
 ## Required Structure of File 3 (Subject-Adaptive)
 
@@ -38,7 +38,7 @@ Default to **30 high-yield questions** for comprehensive topics (scaling count n
 ````
 
 ### Section 3 — Applied Practice Problems with Worked Solutions (Tap-to-Reveal)
-Provide **4–6 domain-appropriate applied problems** (matching the Applied Problems Focus table above—calculation, tracing, proof, diagnosis, design, or evidence evaluation; never force ML loss/threshold templates onto unrelated disciplines):
+Provide **4–6 domain-appropriate applied problems** when source permissions permit (under `strict` source mode, include only problems supported by the supplied material rather than inventing outside exercises—matching the Applied Problems Focus table above; never force ML loss/threshold templates onto unrelated disciplines):
 - State **Given / Context** and exact task visibly under `### Problem <k>: <Title>`.
 - Place the complete step-by-step reasoning, final result (boxed when numeric), and independent verification check inside `> [!tip]- Solution`.
 

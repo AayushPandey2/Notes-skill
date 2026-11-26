@@ -5,7 +5,7 @@ description: Create and revise Obsidian learning notes from topics, supplied sou
 
 # Scriptorium
 
-Scriptorium is an instruction-only skill for authoring Obsidian Markdown. Its five public commands are `/scribe-notes`, `/scribe-ytnotes`, `/scribe-doubt`, `/scribe-quiz`, and `/scribe-setfolder`.
+Scriptorium is an instruction-only skill for authoring Obsidian Markdown. Its six public commands are `/scribe-notes`, `/scribe-ytnotes`, `/scribe-doubt`, `/scribe-quiz`, `/scribe-audit`, and `/scribe-setfolder`.
 
 **Authoring rule:** Do not create or execute custom scripts, inline programs, temporary builders, engine patches, or project source modules to generate notes. Author content directly and use available native tools. Educational code may appear inside a note only when its learning objective requires it.
 
@@ -15,6 +15,7 @@ Scriptorium is an instruction-only skill for authoring Obsidian Markdown. Its fi
 - [Create notes from video or lectures](skills/scribe-ytnotes/SKILL.md): ingest video URLs or transcripts via [video-notes.md](docs/blueprints/formats/video-notes.md) and Command V in [command-playbooks.md](docs/procedures/authoring/command-playbooks.md) (transcript-first; never play video or capture video frames).
 - [Answer from existing notes](skills/scribe-doubt/SKILL.md): read the vault and cite its notes; do not write or browse externally.
 - [Quiz from existing notes](skills/scribe-quiz/SKILL.md): ask one question per turn and grade against the notes.
+- [Audit existing notes](skills/scribe-audit/SKILL.md): inspect existing vault notes read-only across quality, math, consistency, and evidence dimensions without rewriting the vault.
 - [Set the notes folder](skills/scribe-setfolder/SKILL.md): update the user's destination configuration only.
 
 ## Governance & Precedence by Responsibility

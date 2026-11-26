@@ -9,23 +9,40 @@ Compare candidate approaches (e.g., plain prompt vs. prior Scriptorium commit vs
 - **Blind & anonymized grading:** Strip commit names, file-status tags (`-golden` / `-flawed`), and identifying headings, presenting anonymized IDs (e.g., `candidate-A`, `candidate-B`) to reviewers alongside [theory.md](rubrics/theory.md), [practical.md](rubrics/practical.md), and [presentation.md](rubrics/presentation.md). Keep `*-flawed.md` fixtures separate from their `*-flawed.expected-findings.md` keys.
 - **Evidence & variance discipline:** Record **missing requirements and contradicting passages** in addition to passed passages; evaluate repeated generations to measure variance; include relevant tool-use and source-access logs when judging `source_policy` compliance.
 
-## 2. Weighted Scoring Rubric (100 Points) & Calibrated Anchors
+## 2. Artifact-Aware Scoring Profiles (100 Points) & Calibrated Anchors
 
-Redistribute inapplicable criteria proportionally when scoring non-technical topics. **Override rule:** Any **Critical** defect fails acceptance regardless of numerical score.
+Resolve applicable criteria from the intended artifact (`Theory`, `Lab`, `Compact Reference / Atomic Card`, `Strict-Source Note`) **before** scoring—never penalize a compact reference card or `strict`-source note for omitting sections intentionally excluded by `artifact_plan` or `source_policy`. Redistribute inapplicable criteria proportionally. **Override rule:** Any **Critical** correctness, safety, or source-boundary failure fails acceptance regardless of numerical score.
 
-| Criterion | Weight | Low (0–3) | Medium (4–7) | High (8–10) |
-|---|---|---|---|---|
-| Factual and mathematical accuracy | 25% | Wrong equation, operator, or theorem | Core math holds; minor qualification gaps | Exact hypotheses, units, and checks |
-| Conceptual and causal depth | 20% | Surface definitions only | Mechanism explained; weak limits | Causal depth + transfer + boundaries |
-| Prerequisite accessibility | 10% | Unexplained notation/jumps | Some bridges; uneven pacing | Zero-gap pacing matched to learner |
-| Worked-example quality | 10% | Trivial or inconsistent arithmetic | Correct trace; weak discrimination | Discriminating, verified, faded progression |
-| Source and evidence integrity | 10% | Fabricated or unverified claims | Sources cited; uneven precision | Exact locators, sufficiency & caveats |
-| Practical correctness | 10% | Unusable or mismatched lab | Static code sound; weak failure analysis | Sound APIs, full A–G, honest 3-attr status |
-| Readability and visual design | 7% | Walls of text or broken embeds | Clean Markdown; minor clutter | Cohesive prose, adaptive visuals, accessible |
-| Transfer and assessment quality | 5% | Rote recall only | Mix of recall and application | Diagnostic, misconception-aware, transfer |
-| Relevance and conciseness | 3% | Bloated boilerplate or off-topic | Mostly focused; minor redundancy | Every paragraph earns its place |
+| Artifact Profile | Accuracy | Mechanism / Depth | Prerequisites | Examples / Trace | Evidence / Fidelity | Presentation & Conciseness |
+|---|---|---|---|---|---|---|
+| **Substantive Theory (`M1`/`M2`/`M7`)** | 25% | 25% | 12% | 13% | 12% | 13% (incl. transfer) |
+| **Experimental Lab / `M5`** | 25% | 15% | 8% | 32% (lab correctness & A–G) | 10% | 10% |
+| **Compact Reference / `M3` / `M4`** | 35% | 15% | 10% | 20% | 10% | 10% |
+| **Strict-Source Note (`strict`)** | 30% | 20% | 10% | 10% (source-bound) | 20% (fidelity & gaps) | 10% |
 
-## 3. Layer Ablation & Learning Effectiveness
+| Criterion | Low (0–3) | Medium (4–7) | High (8–10) |
+|---|---|---|---|
+| **Factual and mathematical accuracy** | Wrong equation, operator, or theorem | Core math holds; minor qualification gaps | Exact hypotheses, units, and checks |
+| **Conceptual and causal depth** | Surface definitions only | Mechanism explained; weak limits | Causal depth + transfer + boundaries |
+| **Prerequisite accessibility** | Unexplained notation/jumps | Some bridges; uneven pacing | Zero-gap pacing matched to learner |
+| **Worked-example quality** | Trivial or inconsistent arithmetic | Correct trace; weak discrimination | Discriminating, verified, faded progression |
+| **Source and evidence integrity** | Fabricated or unverified claims | Sources cited; uneven precision | Exact locators, sufficiency & caveats |
+| **Practical / Lab correctness** | Unusable or mismatched lab | Static code sound; weak failure analysis | Sound APIs, full A–G, honest 3-attr status |
+| **Readability, transfer & conciseness** | Bloated walls of text or broken links | Clean Markdown; minor clutter | Cohesive prose, diagnostic transfer, accessible |
 
-- **Layer ablation testing:** Compare full-skill generation against ablated variants (omitting one layer such as Concept Reasoning, Learner Modeling, Example Engineering, Consistency Ledger, or Educational Editor) to verify every retained layer measurably improves output quality over its context cost.
+## 3. Experimental Benchmark Matrix, Ablation & Learning Effectiveness
+
+Run and log these seven controlled comparisons rather than treating single-run impressions or unmeasured layer definitions as proof:
+
+| Experiment | Purpose |
+|---|---|
+| **1. Plain prompt vs. Scriptorium** | Establish overall instructional gain over vanilla prompting |
+| **2. Previous commit vs. current commit** | Detect regressions in accuracy, coherence, or length |
+| **3. Single-layer ablation** | Remove one layer (e.g., Concept Reasoning, Learner Adaptation, Example Engineering, Educational Editor) to estimate marginal value vs. context cost |
+| **4. Overlapping layer-group ablation** | Remove layer pairs/clusters to detect duplicated functionality |
+| **5. Narrow vs. broad topics** | Measure scaling discipline from atomic cards to full bundles |
+| **6. Repeated generations** | Measure output stability and variance across runs |
+| **7. Cross-model portability** | Measure instruction reliability across different supported models |
+
+Record exact generated artifacts, model configuration, available tools, input/source conditions, and observed limitations alongside scores.
 - **Learning effectiveness:** Where learner testing is conducted, measure **immediate recall**, **mechanism explanation ("why")**, **application accuracy**, **delayed recall**, **transfer**, **study time**, and **misconception reduction**.

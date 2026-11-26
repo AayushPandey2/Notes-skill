@@ -1,24 +1,54 @@
-# Six-Stage Verification Gate
+# Six-Stage Verification Gate & Bounded Acceptance
 
-Execute **Stages 1–5 on the complete draft before saving**, resolve an explicit **Acceptance Decision**, and run **Stage 6 after saving**. Never use word count, heading count, or image count as proof of educational quality, and never represent manual review as automated verification.
+Execute **Stages 1–5 completely before saving**, resolve an explicit bounded **Acceptance Decision**, and run **Stage 6 after saving**. Never use word count, heading count, or image count as proof of educational quality, and never represent manual review as automated verification. Permission, authorization, and safety boundaries ([security-education.md](../safety/security-education.md), [physical-lab-safety.md](../safety/physical-lab-safety.md)) apply continuously throughout the workflow, not only at review time.
 
-**Acceptance Decisions:** `accepted` · `accepted_with_disclosed_limitations` · `repair_required` · `blocked` (never save or publish a critically flawed note as completed).
+## Pre-Publication Stages (Stages 1–5 — Before Saving)
 
-## Stage 1 — Universal Correctness, Evidence & Editorial Quality
-- Verify [teaching_core.md](../../../core/teaching_core.md), [theory_quality_contract.md](../../../core/theory_quality_contract.md), [claim-verification.md](../sourcing/claim-verification.md), [educational-editor.md](educational-editor.md), and [adversarial-theory-review.md](adversarial-theory-review.md): concrete grounding before abstractions, 4-category prerequisite discipline, claim-level evidence & contradiction checks, paragraph contribution test, target `0–5` depth, and dependency-aware repair of any Critical/Major/Moderate defects.
+### Stage 1 — Subject, Theory, Evidence & Editorial Correctness (Before Saving)
+- Verify [teaching_core.md](../../../core/teaching_core.md), [theory_quality_contract.md](../../../core/theory_quality_contract.md), [claim-verification.md](../sourcing/claim-verification.md), [educational-editor.md](educational-editor.md), and [adversarial-theory-review.md](adversarial-theory-review.md): concrete grounding before abstractions, **two-dimension prerequisite policy** (`importance` × `learner status`), claim-level validity/evidence checks and source-error distinction, explanatory failure modes, paragraph contribution test, target `0–5` depth, and dependency-aware repair of Critical/Major/Moderate defects.
 
-## Stage 2 — Selected Master & Artifact Cardinality
-- Verify the active format (`docs/blueprints/formats/` + any preset in `docs/blueprints/presets/`) and confirm emitted files match `artifact_policy` in [master-registry.yaml](../../dispatch/master-registry.yaml) and explicit user overrides (no unrequested companion labs/cheatsheets for `M3`, `M4`, `M6`, `M7`, `/scribe-ytnotes`, standalone `M5`, or single-file requests).
+### Stage 2 — Artifact Selection & Source Compliance (Before Saving)
+- Verify emitted files against the **resolved `artifact_plan`** ([adaptive-engine.md](../authoring/adaptive-engine.md), `artifact_policy` in [master-registry.yaml](../../dispatch/master-registry.yaml)), active `docs/blueprints/formats/` + presets, and explicit user overrides—confirming no unsupported companion labs/cheatsheets were emitted under `M3`, `M4`, `M6`, `M7`, `/scribe-ytnotes`, standalone `M5`, single-file requests, or restrictive `strict` sources.
+- Confirm active [source-fidelity.md](../sourcing/source-fidelity.md) permissions (`strict`, etc.) and video transcript-only limits ([video-notes.md](../../blueprints/formats/video-notes.md)) were respected, unconfirmed claims carry `[UNVERIFIED]`, and unverified gaps are disclosed honestly.
 
-## Stage 3 — Primary Subject & Misconception Boundaries
+### Stage 3 — Disciplinary Completeness & Misconception Boundaries (Before Saving)
 - Verify [subject-registry.yaml](../../dispatch/subject-registry.yaml) obligations for the selected primary subject (and any selectively merged secondary support): disciplinary mechanisms, domain-appropriate examples/evidence, and verified misconceptions from [subject-theory-profiles.md](../../blueprints/components/subject-theory-profiles.md)—confirming unrelated subject rules (e.g., ML datasets or 4-language Rust stacks) did not leak into unrelated disciplines.
 
-## Stage 4 — Companion Lab & Three-Attribute Experiment Integrity
-- When a lab or implementation is present, verify [experimental-lab.md](../authoring/experimental-lab.md) and the selected investigation profile (`docs/blueprints/investigations/`): shared-foundation + track-specific **A–G** walkthroughs, static correctness (syntax, types, bounds, operators, equations), and honest 3-attribute integrity (*Origin*, *Method*, *Verification*) with `Source and static review only; not compiled or executed here.` (never claiming unexecuted code ran or fabricating observations).
+### Stage 4 — Lab Correctness, Experiment Integrity & Safety Compliance (Before Saving)
+- Confirm **zero scripts or temporary builder projects** were created or executed on the host, and confirm [security-education.md](../safety/security-education.md) and [physical-lab-safety.md](../safety/physical-lab-safety.md) guardrails were enforced throughout.
+- When a lab or implementation is present, verify [experimental-lab.md](../authoring/experimental-lab.md) and the selected investigation profile (`docs/blueprints/investigations/`): shared-foundation + track-specific **A–G** walkthroughs, static correctness (syntax, types, bounds, operators, equations), and honest 3-attribute integrity (*Origin*, *Method*, *Verification* reflecting what actually occurred) with `Source and static review only; not compiled or executed here.` (never claiming unexecuted code ran or fabricating observations).
 
-## Stage 5 — Presentation, Mathematics, Visuals & Link Hygiene
-- Verify [authoring_rules.md](../../../core/authoring_rules.md), [math_gates.md](../../../core/math_gates.md) (native delimiters, grouped `aligned` folds, non-recursive/compact-reference exceptions, notation consistency), [representations.md](../authoring/representations.md) (visual hierarchy, inspected local embeds, adaptive sizing, ordinary Markdown attribution, diagram-to-model correspondence, zero Mermaid/ASCII), [properties-policy.md](../../properties/properties-policy.md) (line-1 YAML matching active profile, unique IDs), and [revision-and-linking.md](../updating/revision-and-linking.md) (resolved links, acyclic prerequisites, reciprocal links only to existing files).
+### Stage 5 — Presentation, Metadata, Links & Bounded Acceptance (Before Saving)
+- Verify [authoring_rules.md](../../../core/authoring_rules.md), [math_gates.md](../../../core/math_gates.md) (native delimiters, grouped `aligned` folds, non-recursive/compact-reference exceptions, notation scopes), [representations.md](../authoring/representations.md) (visual source hierarchy, inspected external/native figures, adaptive sizing, ordinary Markdown attribution, diagram-to-model correspondence, zero Mermaid/ASCII), [properties-policy.md](../../properties/properties-policy.md) (line-1 YAML matching active profile, unique IDs), and [revision-and-linking.md](../updating/revision-and-linking.md) (resolved links, acyclic prerequisites, reciprocal links only to files in `artifact_plan`).
+- **Bounded Acceptance Decision:** Resolve acceptance cleanly instead of looping indefinitely when sources or tools remain unavailable:
 
-## Stage 6 — Pre-Publication Correctness vs. Post-Publication Delivery Integrity
-- **Pre-publication correctness (before saving):** Confirm zero scripts/projects were created or executed on the host, active [source-fidelity.md](../sourcing/source-fidelity.md) permissions (`strict`, etc.) and video transcript-only limits ([video-notes.md](../../blueprints/formats/video-notes.md)) were respected, safety policies ([security-education.md](../safety/security-education.md), [physical-lab-safety.md](../safety/physical-lab-safety.md)) were enforced, and any unverified gaps are disclosed honestly.
-- **Post-publication integrity (after saving):** Reopen the saved files to confirm line-1 YAML validity, intact embed targets/assets, resolved relative links, and that unrelated vault notes/YAML remained untouched.
+| Outcome | Required Action |
+|---|---|
+| `accepted` | Publish accepted artifacts to approved destination and proceed to Stage 6 |
+| `accepted_with_disclosed_limitations` | Publish only supported material and explicitly disclose unresolved limitations/gaps |
+| `repair_required` | Repair affected content and downstream bundle dependencies, then re-review |
+| `blocked` | Do **not** save or represent the artifact as completed; explain what is blocking completion |
+| *No new evidence / host capability available* | **Stop repeated repair attempts** and finalize either `accepted_with_disclosed_limitations` or `blocked` |
+
+- **Minimal Internal Quality Manifest:** Maintain this status record internally during normal generation (never create an extra vault file per note; expose a concise summary only if the user requests an audit or detailed verification report):
+
+```yaml
+quality_manifest:
+  requested_scope: <topic and active format/preset>
+  target_depth: <0-5>
+  artifact_status:
+    theory: <accepted | accepted_with_disclosed_limitations | omitted | blocked>
+    experimental_lab: <accepted | accepted_with_disclosed_limitations | omitted | blocked>
+    mastery_pack: <accepted | accepted_with_disclosed_limitations | omitted | blocked>
+  review:
+    theory: <manually_reviewed | independently_reviewed>
+    mathematics: <manually_checked | not_applicable>
+    code_execution: <not_performed | actually_executed>
+    visual_rendering: <unavailable | live_checked>
+  unresolved_gaps: []
+```
+
+## Post-Publication Stage (Stage 6 — After Saving)
+
+### Stage 6 — Actual Saved-File Integrity (After Saving)
+- Reopen actual saved files (when written to a vault) to confirm valid line-1 YAML frontmatter, intact local asset/embed targets, resolved relative wikilinks matching emitted filenames, and untouched unrelated vault notes/YAML.

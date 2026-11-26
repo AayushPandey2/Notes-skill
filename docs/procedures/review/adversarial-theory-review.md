@@ -26,6 +26,27 @@ Apply these as focused review perspectives in a single manual pass (no separate 
 5. Where does the running example stop supporting the explanation or fail to interpret *why* its result matters?
 6. Could the learner apply this theory to an unfamiliar case or reason in reverse from an observed failure?
 
+### Explanatory Failure Modes & Conceptual Why-Depth (Internal Diagnostic Only)
+
+Search drafts for these explanatory failure modes without emitting a visible checklist:
+
+| Failure Mode | What It Looks Like |
+|---|---|
+| **Circular explanation** | Explains a term using the term itself |
+| **Mechanism omission** | States what happens without explaining the causal transition |
+| **Algebraic teleportation** | Skips the exact transformation the learner needs to follow |
+| **Analogy substitution** | Leaves an analogy standing in place of the actual mechanism |
+| **Representation mismatch** | Diagram, equation, and prose describe inconsistent systems |
+| **Example illusion** | One lucky example hides an invalid generalization |
+| **Assumption invisibility** | Presents a conditional theorem/rule as universally true |
+| **Definition overload** | Introduces too many mutually dependent terms at once |
+| **False completeness** | Name-drops advanced jargon without teaching its mechanism |
+| **Procedural memorization** | Gives steps without why they hold (`Level 1–2` instead of justification) |
+| **Context-free formalism** | Drops equations without establishing what question they answer |
+| **Unsupported certainty** | States plausible hypotheses or conditional results as settled fact |
+
+**Conceptual "Why-Depth" Check:** Within the existing unified `0–5` scale, ensure core mechanisms rise past bare **operation** (*"subtracts $\eta\nabla J$"*) through **immediate reason** (*"steepest local descent direction"*), **mathematical/causal justification** (*first-order expansion $J(w+\Delta w) \approx J(w) + \nabla J(w)^\top \Delta w$*), and **validity boundary** (*holds locally for small steps at nonstationary points, not arbitrary step sizes or global optimality*).
+
 ## 2. Defect Severity Classification & Dependency-Aware Repair
 
 Classify every defect by severity and repair **both the defect and all downstream artifacts that depend on it**:
