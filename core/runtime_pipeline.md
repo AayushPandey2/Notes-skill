@@ -38,12 +38,15 @@ This unified lifecycle governs **creation**, **revision** (reconciling existing 
      - `repair_required` -> loop back to repair affected content and downstream bundle dependencies, then re-verify (`Stage 6`/`7`); **do not publish**.
      - `blocked` -> **do not publish** the blocked artifact; in a multi-artifact bundle, publish an independently valid accepted main note only after removing/updating broken companion links and disclosing the omitted companion.
 
-### Dependency Classification & Objective-Driven Activation
+### Dependency Classification, Reference Lifecycle & Objective-Driven Activation
 
 Classify every linked document using three types (no fixed reference-hop cap; track already-read files mentally to avoid redundant recursive re-reads):
 - **Required dependency:** Must be read before executing the stage or operation that depends on it.
 - **Conditional dependency:** Read when a defined task, format, subject, objective, or stage condition applies.
 - **Informational reference:** Do **not** automatically retrieve during normal authoring (`docs/design/*`, `docs/specs/*`, `evaluations/*`, and unrequested optional widgets).
+
+**Reference Lifecycle & Ordered Parallelism:** Distinguish five distinct steps: *Discover* (see a link or registry entry) $\to$ *Activate* (confirm its condition applies to this resolved task) $\to$ *Retrieve* (read the file) $\to$ *Apply* (execute its rules) $\to$ *Verify* (inspect the resulting output). A hyperlink alone is not an active requirement, and reading a file does not prove compliance.
+- **Respect ordering before parallelizing:** Independent reads may run in parallel **only after** their activation conditions are established: route resolution precedes format-dependent reads; source-permission resolution precedes external source acquisition; subject selection precedes subject blueprint reads; resolved `artifact_plan` precedes companion/lab reads.
 
 **Do not load the entire `core/` directory solely because a master is `M1`, `M2`, `M5`, `M7`, or `video_notes`.** Resolve context across **command, format/preset, learning objective, subject, knowledge type, mathematical requirement, source permissions, artifact plan, execution stage, and complexity/evidence risk**. Ensure required educational, mathematical, visual (including user-supplied figures), safety, or planning dependencies are never skipped merely to shrink context.
 

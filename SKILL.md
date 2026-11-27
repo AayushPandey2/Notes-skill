@@ -11,12 +11,18 @@ Scriptorium is an instruction-only knowledge-construction and educational-author
 
 ## Choose a route
 
-- [Create or revise notes](skills/scribe-notes/SKILL.md): choose the output type with [router.md](router.md), then load only its master, needed variant, relevant knowledge-type subtemplate, and applicable policies from [docs/README.md](docs/README.md).
+- [Create or revise notes](skills/scribe-notes/SKILL.md): resolve the output type with [router.md](router.md) and active source permissions first, then load only the selected master, matching variant, and required dependencies for that resolved route.
 - [Create notes from a video or transcript](skills/scribe-ytnotes/SKILL.md): use the transcript-first route.
 - [Answer from existing notes](skills/scribe-doubt/SKILL.md): read the vault and cite its notes; do not write or browse externally.
 - [Quiz from existing notes](skills/scribe-quiz/SKILL.md): ask one question per turn and grade against the notes.
 - [Audit existing notes](skills/scribe-audit/SKILL.md): inspect existing vault notes read-only across quality, math, consistency, and evidence dimensions without rewriting the vault.
 - [Set the notes folder](skills/scribe-setfolder/SKILL.md): update the user's destination configuration only.
+
+### Early Resolution Gate (Before Retrieving Specialist Policies)
+
+Do **not** batch-read specialist educational policies (`teaching_core.md`, `theory_quality_contract.md`, `curriculum-discovery.md`, `subjects/`, `investigations/`) while the route remains unresolved. Keep safety, authorization, and source boundaries active immediately, then follow this two-phase sequence:
+1. **Resolve first:** Identify (1) active command, (2) requested artifact intent, (3) applicable master and preset via [router.md](router.md) *(for `/scribe-notes` only; never route `/scribe-doubt`, `/scribe-quiz`, `/scribe-audit`, or `/scribe-setfolder` through an authoring master)*, (4) `source_permissions`, and (5) applicable subject, mathematical, visual, and practical requirements.
+2. **Retrieve on resolved condition:** Load only the references required for that resolved task (independent reads within an active stage may execute in parallel once their activation conditions are met).
 
 ## Governance, Precedence & Educational Priorities
 
