@@ -3,7 +3,7 @@
 Inherits shared structure, YAML, navigation, shared-foundation A–G deduplication, and 3-attribute integrity rules from [experimental-lab.md](../../procedures/authoring/experimental-lab.md).
 
 ## Applicability & Language Policy (Python Default; Explicit-Only Rust)
-Applies to Machine Learning algorithms and pipelines. **Default strictly to Python** unless the user explicitly specifies another language. **NEVER include Rust by default** (including parallel Python/Rust tracks, optional/collapsed blocks, Cargo/crate setups, or "for completeness")—and never treat requests for *implementation, optimization, performance, production readiness,* or *advanced experiments* as permission to add Rust. Include Rust (`Rust from Scratch` and/or `linfa` / `smartcore`) **only when the user explicitly requests Rust**; honor explicit single- or multi-language requests (e.g., C++) faithfully without adding unrequested languages.
+Applies to ML algorithms and pipelines under the strict language rule in [experimental-lab.md](../../procedures/authoring/experimental-lab.md) (§1.2): **default strictly to Python**, add **Rust only on explicit user request** (never for *implementation, optimization, performance, production,* or *advanced* wording), and honor explicit C++/multi-language requests without unrequested languages.
 
 ## Shared Fixture & Cross-Track Contract
 - Explain dataset structure, target semantics, train/validation split design, feature preprocessing, and leakage guards before code, distinguishing the shared **model** from each track's actual **solver**, **loss/objective convention** (SSE, MSE, half-MSE, normalized vs. unnormalized penalties, `C` vs. `alpha`), and evaluation metrics.

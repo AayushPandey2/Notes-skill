@@ -35,7 +35,7 @@ artifact_policy:
   companion_blueprints:
     companion_lab: docs/procedures/authoring/experimental-lab.md
     cheatsheet_qa: docs/procedures/authoring/cheatsheet-interview.md
-  companion_loading_rule: Resolved M1/M2 theory_bundle companions load their dedicated companion blueprint above (plus math_gates.md / mastery-design.md as needed) and must not speculatively activate standalone M3 (quick-reference.md) or M4 (worked-solutions.md) masters merely because a companion includes formulas or worked problems, nor load M4 merely because an M1 theory note derives an equation.
+  companion_loading_rule: M1/M2 companions use their dedicated blueprint above and do not speculatively load M3 (quick-reference.md) or M4 (worked-solutions.md).
   overrides:
     explicit_single_file: true
     explicit_artifact_selection: true

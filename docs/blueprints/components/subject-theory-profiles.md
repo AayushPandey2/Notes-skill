@@ -1,16 +1,8 @@
 # Subject Theory Profiles & Misconception Catalog
 
-## Activation & Non-Activation
+## Activation & Purpose
 
-- **When to load:** Load selectively **only** when:
-  1. The active subject is `general` or lacks a dedicated blueprint under `docs/blueprints/subjects/*.md` (e.g., Humanities, Social Sciences, or Engineering topics outside `electrical.md`),
-  2. An unfamiliar or cross-disciplinary topic needs the Cross-Discipline Pedagogical Equivalence Table or a secondary topic-family checklist not covered by the loaded `subjects/<p>.md` blueprint(s), or
-  3. An `M6` assessment ([assessment.md](../formats/assessment.md)) constructs misconception-sensitive MCQ distractors.
-- **When NOT to load:** Skip whenever loaded primary/secondary blueprints under `docs/blueprints/subjects/*.md` (such as [machine-learning.md](../subjects/machine-learning.md), [biology.md](../subjects/biology.md), or [chemistry.md](../subjects/chemistry.md)) already govern the active curriculum and misconceptions, or during compact `M3` formula/reference routes.
-
-## Purpose
-
-Extend ML-level pedagogical specificity across Computer Science, Mathematics, Natural Sciences, Engineering, Social Sciences, and Humanities without forcing unrelated obligations or duplicating primary subject blueprints. Load only the matching discipline and topic family.
+Load **only** when the topic uses `general` / lacks a dedicated `docs/blueprints/subjects/*.md` blueprint, requires cross-disciplinary equivalence/secondary checklists absent from loaded `subjects/<p>.md`, or builds `M6` misconception distractors ([assessment.md](../formats/assessment.md)). **Skip** when active `subjects/*.md` already cover the discipline (e.g., ML, Biology, Chemistry) or on compact `M3` routes. Load only the matching discipline and topic family.
 
 ## 1. Cross-Discipline Pedagogical Equivalence
 
@@ -66,7 +58,7 @@ Use the matching topic family as a **selectable checklist** during [curriculum d
 - **Electromagnetism:** Charges, fields, potentials, interactions, governing laws.
 - **Waves & Optics:** Oscillation, superposition, propagation, interference, diffraction.
 - **Quantum mechanics:** States, observables, measurement, probabilistic predictions, uncertainty.
-- **Chemistry & Biology:** Owned canonically by [chemistry.md](../subjects/chemistry.md) and [biology.md](../subjects/biology.md) (atomic/molecular structure, thermodynamics vs. kinetics, catalysis, regulation, evolution, cellular pathways); consult those blueprints directly when active rather than duplicating their checklists here.
+- **Chemistry & Biology:** Canonical checklists & misconceptions live in [chemistry.md](../subjects/chemistry.md) and [biology.md](../subjects/biology.md).
 
 ### Engineering
 - **Circuit theory & Electronics:** Voltage, current, circuit laws, power, equivalent circuits, semiconductor behavior, switching, amplification.
@@ -113,7 +105,7 @@ Place relevant clarifications inline beside the concept where confusion arises u
 - **Mass vs. weight:** Inertial/gravitational matter property vs. gravitational force.
 - **Velocity vs. acceleration:** Rate of position change (with direction) vs. rate of velocity change.
 - **Energy vs. power:** Total work/energy quantity vs. rate of energy transfer per unit time.
-- **Chemistry & Biology misconceptions:** Canonical misconceptions (equilibrium vs. stopped reaction, kinetics rate vs. $\Delta G$, gene vs. allele, cellular respiration vs. mechanical breathing, population evolution vs. individual adaptation) are owned by [chemistry.md](../subjects/chemistry.md) and [biology.md](../subjects/biology.md).
+- **Chemistry & Biology:** Owned by [chemistry.md](../subjects/chemistry.md) and [biology.md](../subjects/biology.md).
 
 ### Humanities & Social Sciences
 - **Demand vs. quantity demanded:** Entire price-quantity relationship (curve) vs. quantity at one price.
