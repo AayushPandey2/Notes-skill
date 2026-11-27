@@ -96,5 +96,5 @@ Classify every defect by severity and repair **both the defect and all downstrea
 | **Moderate** | Unexplained prerequisite, weak/non-discriminating example, missing qualification | **Improve** the affected explanation locally |
 | **Minor** | Awkward phrasing, spacing, redundant sentence | **Editorial polish** (never override deeper checks) |
 
-- **Dependency-aware repair:** If an equation, sign, or assumption is corrected in Theory (File 1), trace and update every dependent worked example, visual correspondence, Lab implementation/trace (File 2), Cheatsheet formula, and Q&A/Practice solution (File 3).
+- **Dependency-aware repair:** If an equation, sign, or assumption is corrected in `theory`, trace and update every dependent worked example, visual correspondence, and included `artifact_plan` companion (`experimental_lab`, `mastery_pack`, or related notes).
 - **Honest verification limits:** Record this as manual semantic review of the note's content; actual learner mastery is measured only through assessment responses, never self-assessed completeness.

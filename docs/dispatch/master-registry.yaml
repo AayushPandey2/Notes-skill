@@ -12,11 +12,11 @@ masters:
 artifact_policy:
   M1:
     default: theory_bundle
-    bundle_members: [main_note, companion_lab, cheatsheet_qa]
+    bundle_members: [theory, experimental_lab, mastery_pack]
     multi_branch: moc_plus_bundle_per_subtopic
   M2:
     default: theory_bundle
-    bundle_members: [main_note, companion_lab, cheatsheet_qa]
+    bundle_members: [theory, experimental_lab, mastery_pack]
     multi_branch: moc_plus_bundle_per_subtopic
   M3:
     default: single_artifact
@@ -24,8 +24,8 @@ artifact_policy:
     default: single_artifact
   M5:
     default: implementation_guide
-    optional: [theory, companion_lab, assessment]
-    note: Do not duplicate an M5 implementation guide into an identical companion lab.
+    optional: [theory, experimental_lab, assessment]
+    note: Do not duplicate an M5 implementation guide into an identical experimental_lab.
   M6:
     default: single_artifact
   M7:
@@ -33,8 +33,8 @@ artifact_policy:
   video_notes:
     default: one_note_per_video
   companion_blueprints:
-    companion_lab: docs/procedures/authoring/experimental-lab.md
-    cheatsheet_qa: docs/procedures/authoring/cheatsheet-interview.md
+    experimental_lab: docs/procedures/authoring/experimental-lab.md
+    mastery_pack: docs/procedures/authoring/cheatsheet-interview.md
   companion_loading_rule: M1/M2 companions use their dedicated blueprint above and do not speculatively load M3 (quick-reference.md) or M4 (worked-solutions.md).
   overrides:
     explicit_single_file: true
