@@ -47,7 +47,7 @@ A reasoning unit uses prose and connected equations to establish one mathematica
   3. Match each parameter and operation explicitly back to the governing equation.
   4. If a parameter (e.g., an intercept, baseline $F_0$, step/learning rate $\eta$, damping constant, or unit conversion) is absorbed into a term or uses an alternative sign convention, declare that equivalence explicitly upfront before computing.
   5. Execute the numerical trace strictly under that same formulation.
-  6. Inspect the governing equation, boxed formula, explanatory prose, summary tables, and worked example side by side before finalizing to confirm zero contradiction, dropped prefactors (e.g., $\frac{1}{2}$), sign/ratio mismatches, or hidden parameters.
+  6. Inspect the whole artifact—including governing equations, prose, tables, decision rules, traps, captions, questions/answers, examples, and companions where present—for contradictory applicability claims, dropped prefactors (e.g., $\frac{1}{2}$), sign/ratio mismatches, or hidden parameters. Check each consequential claim on its own terms; a correct worked example does not validate a separate usage rule.
   - *Completion condition:* The worked example can be reconstructed directly from the governing model without introducing unexplained parameters or conventions.
 
 <example type="contrastive" topic="model-to-example-consistency">
