@@ -1,6 +1,15 @@
 # Six-Stage Verification Gate & Bounded Acceptance
 
-Before saving, apply the applicable checks in stages 1–5 in a single proportionate manual review and resolve an acceptance decision. Apply stage 6 to actual writes. For compact artifacts, check correctness, scope, source fidelity, presentation and links without opening unrelated review or lab policies. Report only the checks performed. Follow safety and authorization throughout.
+Before saving, apply the applicable checks in stages 1–5 in a single proportionate manual review and resolve an acceptance decision. Apply stage 6 to actual writes. For compact artifacts, check correctness, scope, source fidelity, presentation and links without opening unrelated review or lab policies. Report only the checks performed (do not claim a check occurred merely because its policy was loaded). Follow safety and authorization throughout.
+
+## Verification & Evaluation Roles
+Distinguish these six distinct activities cleanly:
+1. **Authoring:** Composing learning units and examples.
+2. **Sequential beginner review (closed-fold):** Start-to-finish beginner pass fixing the earliest unresolved gap before dependent sections.
+3. **Open-fold mathematical & technical inspection:** Checking derivations, bounds, code snippets, visuals, and citations with folds open.
+4. **Artifact acceptance (Stages 1–5 + Gates A–J):** Resolving the pre-save publication decision below (this is **author self-review** unless a separate reviewer context ran).
+5. **Post-publication saved-file inspection (Stage 6):** Reopening written vault/disk files to verify saved metadata, links, and assets.
+6. **Independent benchmark grading:** Blind, evidence-cited evaluation under [theory.md](../../../evaluations/rubrics/theory.md) using the canonical rubric in [theory-rubric.md](theory-rubric.md).
 
 ## Pre-Publication Stages (Stages 1–5 — Before Saving)
 
@@ -18,7 +27,7 @@ Before saving, apply the applicable checks in stages 1–5 in a single proportio
 - Confirm the [root non-execution rule](../../../SKILL.md#scriptorium) and any active [security](../safety/security-education.md) or [physical-lab](../safety/physical-lab-safety.md) boundaries. For a lab or implementation, inspect the actual trace and snippets using the applicable [lab integrity rules](../authoring/experimental-lab.md) and selected practical guidance.
 
 ### Stage 5 — Presentation, Mathematics, Visuals, Metadata, Links & Bounded Acceptance (Before Saving)
-- Check the draft against the applicable [authoring rules](../../../core/authoring_rules.md), [properties policy](../../properties/properties-policy.md) and [link policy](../updating/revision-and-linking.md). For substantive mathematics, read with folds closed and open, then apply the [math policy](../../../core/math_gates.md), including its table rules. If an artifact needs figures, apply the [visual policy](../authoring/representations.md) and confirm each required asset is inspected and ready to publish.
+- Check the draft against the applicable [authoring rules](../../../core/authoring_rules.md) and [properties policy](../../properties/properties-policy.md). Apply [revision-and-linking.md](../updating/revision-and-linking.md) when revising existing notes, emitting multi-artifact bundles, or writing internal vault wikilinks (skip for genuinely standalone new compact notes containing no vault wikilinks). For substantive mathematics, read with folds closed and open, then apply the [math policy](../../../core/math_gates.md), including its table rules. If an artifact needs figures, apply the [visual policy](../authoring/representations.md) and confirm each required asset is inspected and ready to publish.
 **Ten Independent Educational Acceptance Gates (Gates A–J):** Check each applicable gate against concrete passages before approving the artifact; mark a gate inapplicable only when genuinely outside the resolved format or strict-source scope:
 
 | Acceptance Gate | Observable Evidence Required |
@@ -34,17 +43,19 @@ Before saving, apply the applicable checks in stages 1–5 in a single proportio
 | **Gate I — Independent understanding** | Checkpoints and problem/diagnosis/transfer framing equip the learner to reason and apply concepts on unfamiliar cases when permitted |
 | **Gate J — Integrity** | Active safety rules, non-execution rule, `source_policy` boundaries, accurate attribution, valid metadata, and verified internal wikilinks/embeds all pass |
 
-**Acceptance threshold, Critical Defect Override & Final Learner-Experience Test:** Comprehensive `M1` notes require an overall manual rubric score $\ge 85/100$, $\ge 4/5$ in applicable essential dimensions, and **zero unresolved Critical defects**. **Never accept an educationally incomplete note merely because its YAML, LaTeX delimiters, callouts, and isolated equations look structurally clean.** Reject any draft regardless of aggregate score if it contains an unresolved Critical defect: serious factual misinformation, consequential mathematical errors (including invalid bounds, wrong equality/tie-policy logic, or empirical tendencies stated as monotonic guarantees), missing essential prerequisites, **severe beginner accessibility failures** (such as an analogy-to-formalism cliff or unexplained composite operators), **major omissions in the declared curriculum** (or compressed late sections), **prohibited image generation** (any AI/native-generated image, programmatic plot, custom SVG, or redrawn figure), **visually rich comprehensive chapters passing with only one token image or placeholder embeds**, fabricated visual assets or sources, source-integrity violations, **essential reasoning hidden in collapsed folds or delegated to companion notes**, or serious safety/authorization violations. Ask the final learner-experience test before finalizing: *"Could a motivated beginner with the declared starting knowledge read this chapter independently, understand why the subject works, follow its mathematics, interpret its figures, and solve representative unfamiliar problems?"* Whenever a verified defect appears: identify exact cause, repair both the note and all dependent passages/companions, re-evaluate affected dimensions, and disclose remaining limitations honestly. Apply the bounded acceptance outcomes below to unresolved defects.
+**Acceptance threshold, Critical Defect Override & Final Learner-Experience Test:** Comprehensive `M1` notes require an overall manual rubric score $\ge 85/100$, $\ge 4/5$ in applicable essential dimensions, and **zero unresolved Critical defects** under the single canonical [theory rubric](theory-rubric.md). **Never accept an educationally incomplete note merely because its YAML, LaTeX delimiters, callouts, and isolated equations look structurally clean.** Reject any draft regardless of aggregate score if it contains an unresolved Critical defect: serious factual misinformation, consequential mathematical errors (including invalid bounds, wrong equality/tie-policy logic, or empirical tendencies stated as monotonic guarantees), missing essential prerequisites, **severe beginner accessibility failures** (such as an analogy-to-formalism cliff or unexplained composite operators), **major omissions in the declared curriculum** (or compressed late sections), **prohibited image generation** (any AI/native-generated image, programmatic plot, custom SVG, or redrawn figure), **visually rich comprehensive chapters passing with only one token image or placeholder embeds**, fabricated visual assets or sources, source-integrity violations, **essential reasoning hidden in collapsed folds or delegated to companion notes**, or serious safety/authorization violations. Ask the final learner-experience test before finalizing: *"Could a motivated beginner with the declared starting knowledge read this chapter independently, understand why the subject works, follow its mathematics, interpret its figures, and solve representative unfamiliar problems?"* Whenever a verified defect appears: identify exact cause, repair both the note and all dependent passages/companions, re-evaluate affected dimensions, and disclose remaining limitations honestly. Apply the strict publication transitions below—never downgrade unresolved Critical defects into ordinary limitations.
 
-- **Bounded Acceptance Decision:** Resolve acceptance cleanly instead of looping indefinitely when sources or tools remain unavailable:
+- **Bounded Acceptance & Publication Transitions:** Resolve acceptance per artifact in the resolved `artifact_plan` instead of looping indefinitely when sources or tools remain unavailable:
 
-| Outcome | Required Action |
+| Artifact Acceptance Status | Required Publication Action |
 |---|---|
-| `accepted` | Publish accepted artifacts to approved destination and proceed to Stage 6 |
-| `accepted_with_disclosed_limitations` | Publish only supported material and explicitly disclose unresolved limitations/gaps |
-| `repair_required` | Repair affected content and downstream bundle dependencies, then re-review |
-| `blocked` | Do **not** save or represent the artifact as completed; explain what is blocking completion |
-| *No new evidence / host capability available* | **Stop repeated repair attempts** and finalize either `accepted_with_disclosed_limitations` or `blocked` |
+| `accepted` | Publish authorized artifact to approved destination and proceed to Stage 6 |
+| `accepted_with_disclosed_limitations` | Publish only permitted, supported content with explicit disclosure (allowed **only** when zero unresolved Critical defects remain) |
+| `repair_required` | Repair affected content and downstream bundle dependencies, then re-review; **do not publish** |
+| `blocked` | **Do not publish** or represent the blocked artifact as completed; explain what blocks completion |
+| *No new evidence / host capability available* | **Stop repeated repair attempts** and finalize either `accepted_with_disclosed_limitations` (non-Critical gaps only) or `blocked` (if Critical) |
+
+- **Per-Artifact Bundle Acceptance:** Evaluate each planned artifact independently. An `accepted` (or eligible `accepted_with_disclosed_limitations`) main note may publish when a companion artifact is `blocked` or omitted **only if**: (1) the main note is independently valid within declared scope, (2) its essential educational and source requirements remain satisfied, (3) unsupported reciprocal companion links are removed or corrected before saving, and (4) the omitted companion is disclosed honestly.
 
 - **Minimal Internal Quality Manifest:** Maintain this status record internally during normal generation (never create an extra vault file per note; expose a concise summary only if the user requests an audit or detailed verification report):
 
