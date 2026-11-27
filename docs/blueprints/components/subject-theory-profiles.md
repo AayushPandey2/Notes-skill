@@ -1,8 +1,16 @@
 # Subject Theory Profiles & Misconception Catalog
 
+## Activation & Non-Activation
+
+- **When to load:** Load selectively **only** when:
+  1. The active subject is `general` or lacks a dedicated blueprint under `docs/blueprints/subjects/*.md` (e.g., Humanities, Social Sciences, or Engineering topics outside `electrical.md`),
+  2. An unfamiliar or cross-disciplinary topic needs the Cross-Discipline Pedagogical Equivalence Table or a secondary topic-family checklist not covered by the loaded `subjects/<p>.md` blueprint(s), or
+  3. An `M6` assessment ([assessment.md](../formats/assessment.md)) constructs misconception-sensitive MCQ distractors.
+- **When NOT to load:** Skip whenever loaded primary/secondary blueprints under `docs/blueprints/subjects/*.md` (such as [machine-learning.md](../subjects/machine-learning.md), [biology.md](../subjects/biology.md), or [chemistry.md](../subjects/chemistry.md)) already govern the active curriculum and misconceptions, or during compact `M3` formula/reference routes.
+
 ## Purpose
 
-Extend ML-level pedagogical specificity across Computer Science, Mathematics, Natural Sciences, Engineering, Social Sciences, and Humanities in one lean reference. Load only the discipline and topic family relevant to the current request—never force unrelated obligations into a note.
+Extend ML-level pedagogical specificity across Computer Science, Mathematics, Natural Sciences, Engineering, Social Sciences, and Humanities without forcing unrelated obligations or duplicating primary subject blueprints. Load only the matching discipline and topic family.
 
 ## 1. Cross-Discipline Pedagogical Equivalence
 
@@ -58,8 +66,7 @@ Use the matching topic family as a **selectable checklist** during [curriculum d
 - **Electromagnetism:** Charges, fields, potentials, interactions, governing laws.
 - **Waves & Optics:** Oscillation, superposition, propagation, interference, diffraction.
 - **Quantum mechanics:** States, observables, measurement, probabilistic predictions, uncertainty.
-- **Chemistry (Atomic, Bonding, Kinetics, Organic, Physical):** Electronic structure, periodicity, bonding & geometry, rate laws vs. thermodynamics, activation barriers, reaction mechanisms, stereochemistry, equilibrium, molecular models.
-- **Biology (Cell, Molecular, Genetics, Evolution, Ecology):** Structures, transport, metabolism, regulation, information flow/expression, inheritance/linkage/gene-environment interaction, selection/drift/mutation/gene flow, population dynamics & energy/matter flow.
+- **Chemistry & Biology:** Owned canonically by [chemistry.md](../subjects/chemistry.md) and [biology.md](../subjects/biology.md) (atomic/molecular structure, thermodynamics vs. kinetics, catalysis, regulation, evolution, cellular pathways); consult those blueprints directly when active rather than duplicating their checklists here.
 
 ### Engineering
 - **Circuit theory & Electronics:** Voltage, current, circuit laws, power, equivalent circuits, semiconductor behavior, switching, amplification.
@@ -77,7 +84,7 @@ Use the matching topic family as a **selectable checklist** during [curriculum d
 
 ## 3. Discipline-Specific Misconception Library
 
-Place relevant clarifications inline right beside the concept where confusion arises (per [pedagogical-intelligence.md](../../procedures/authoring/pedagogical-intelligence.md)). Internally diagnose each misconception using **incorrect belief $\to$ source of confusion $\to$ correction $\to$ discriminating example $\to$ transfer check**, emitting only the natural correction and discriminating example in the finished note (never leak internal labels or fabricate mistake-frequency stats). Require subject-specific factual review before promoting any new reusable misconception.
+Place relevant clarifications inline beside the concept where confusion arises using the canonical 5-step internal misconception diagnosis and placement workflow in [pedagogical-intelligence.md](../../procedures/authoring/pedagogical-intelligence.md).
 
 ### Computer Science
 - **Pointer vs. pointed-to value:** Memory address vs. dereferenced object.
@@ -106,11 +113,7 @@ Place relevant clarifications inline right beside the concept where confusion ar
 - **Mass vs. weight:** Inertial/gravitational matter property vs. gravitational force.
 - **Velocity vs. acceleration:** Rate of position change (with direction) vs. rate of velocity change.
 - **Energy vs. power:** Total work/energy quantity vs. rate of energy transfer per unit time.
-- **Chemical equilibrium vs. stopped reaction:** Dynamic balance of equal forward/reverse rates vs. zero reaction.
-- **Reaction rate vs. thermodynamic favorability:** Kinetics (barrier height) vs. thermodynamics ($\Delta G$).
-- **Gene vs. allele:** Functional locus/sequence unit vs. specific variant at that locus.
-- **Respiration vs. breathing:** Cellular ATP-generating biochemistry vs. mechanical gas ventilation.
-- **Evolution vs. individual adaptation:** Population allele-frequency change across generations vs. individual physiological response.
+- **Chemistry & Biology misconceptions:** Canonical misconceptions (equilibrium vs. stopped reaction, kinetics rate vs. $\Delta G$, gene vs. allele, cellular respiration vs. mechanical breathing, population evolution vs. individual adaptation) are owned by [chemistry.md](../subjects/chemistry.md) and [biology.md](../subjects/biology.md).
 
 ### Humanities & Social Sciences
 - **Demand vs. quantity demanded:** Entire price-quantity relationship (curve) vs. quantity at one price.
