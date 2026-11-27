@@ -3,7 +3,7 @@ selection_policy:
   primary_subject: Select one primary subject governing the main pedagogical progression and investigation lab.
   secondary_subjects: Pull supporting subject blueprints selectively only for needed prerequisites, formalism, or verification—never generate multiple redundant labs for one topic.
   interdisciplinary_merge: For genuinely cross-disciplinary builds (e.g., fullstack auth, embedded OS), permit one merged lab spanning both domains.
-  safety_activation: Activate docs/procedures/safety/security-education.md or docs/procedures/safety/physical-lab-safety.md whenever actual topic content or operations involve security/credentials or physical/chemical/biological/electrical hazards—even when triggered via a secondary subject.
+  safety_activation: Activate docs/procedures/safety/security-education.md or docs/procedures/safety/physical-lab-safety.md whenever actual topic content or practical operations involve security/credentials or physical, chemical, biological, or electrical experimentation/hazards—even when triggered via a secondary subject; do not load full experimental safety policies merely because a purely theoretical formula sheet belongs to physics or electrical engineering.
 subjects:
   machine_learning:
     theory: docs/blueprints/subjects/machine-learning.md
