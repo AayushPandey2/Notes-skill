@@ -1,6 +1,6 @@
 # Canonical Theory Quality Rubric (`M1` & Comprehensive Theory)
 
-*Single canonical authority for the 10-dimension `M1` theory quality rubric, accessible to both Stage 7 runtime self-review ([verification-checklist.md](verification-checklist.md)) and independent benchmark evaluation ([benchmark-protocol.md](../../../evaluations/benchmark-protocol.md) and [rubrics/theory.md](../../../evaluations/rubrics/theory.md)). Apply criteria proportionally to the intended artifact (`M1`/`M2` theory vs. strict-source note) rather than penalizing material intentionally omitted by `artifact_plan` or `source_policy`.*
+*Single canonical authority for the 10-dimension `M1` theory quality rubric, accessible to both Stage 5 runtime self-review ([verification-checklist.md](verification-checklist.md)) and independent benchmark evaluation ([benchmark-protocol.md](../../../evaluations/benchmark-protocol.md) and [rubrics/theory.md](../../../evaluations/rubrics/theory.md)). Apply criteria proportionally to the intended artifact (`M1`/`M2` theory vs. strict-source note) rather than penalizing material intentionally omitted by `artifact_plan` or `source_policy`.*
 
 ## 1. Evidence & Scoring Scale
 
@@ -11,11 +11,11 @@ Every criterion requires **citing concrete output passages**. Author self-attest
 - **Passing threshold (`M1`):** Weighted score **`>= 85/100`** and **`>= 4/5` in applicable essential dimensions**, with **zero unresolved Critical defects**. Classify applicability before grading using objective scope (never by weight alone):
   - *Universally essential (`>= 4/5`):* `Beginner Accessibility`, `Self-Contained Knowledge`, `Theory Completeness`, `Factual Accuracy`, `Conceptual Reasoning`.
   - *Objective-dependent essential (`>= 4/5` when applicable; mark inapplicable when outside topic/source bounds):* `Mathematical Teaching` (consequential math/derivations), `Examples & Independent Application` (worked traces or independent problem solving), `Visual Teaching` (visually rich & asset-permitted).
-  - *Supporting (`>= 3/5` unless triggering a Critical formatting/anti-leakage defect):* `Writing Tone & Continuity`, `Formatting & Reading Experience`.
+  - *Supporting (contribute to the `>= 85/100` aggregate and remain subject to Critical Defect Overrides, without a separate numeric floor):* `Writing Tone & Continuity`, `Formatting & Reading Experience`.
 
 ## 2. Author Self-Review vs. Independent Evaluation
 
-- **Author Self-Review (Stage 7 runtime check):** Check generated passages against every applicable dimension below before saving and honestly disclose when no independent reviewer context evaluated the work.
+- **Author Self-Review (Stage 5 runtime check):** Check generated passages against every applicable dimension below before saving and honestly disclose when no independent reviewer context evaluated the work.
 - **Independent Benchmark Evaluation (`evaluations/`):** Use anonymized candidate outputs in a separate reviewer context without author self-attestation, grading strictly from observed passages ([benchmark-protocol.md](../../../evaluations/benchmark-protocol.md)).
 
 ## 3. Ten Weighted Dimensions & Mandatory Integrity Overrides
