@@ -8,7 +8,10 @@ Every criterion requires **citing concrete output passages**. Author self-attest
 
 - **Rating scale (`0–5` per applicable dimension):** `0` *missing or fundamentally wrong* · `1` *seriously deficient* · `2` *partially adequate* · `3` *competent* · `4` *strong* · `5` *exceptional*.
 - **Proportional normalization:** Exclude genuinely inapplicable dimensions (such as mathematical derivations in pure history) and normalize remaining weights proportionally—never declare visual teaching inapplicable on a visually rich topic without documented retrieval-failure justification.
-- **Passing threshold (`M1`):** Weighted score **`>= 85/100`** and **`>= 4/5` in applicable essential dimensions**, with **zero unresolved Critical defects**.
+- **Passing threshold (`M1`):** Weighted score **`>= 85/100`** and **`>= 4/5` in applicable essential dimensions**, with **zero unresolved Critical defects**. Classify applicability before grading using objective scope (never by weight alone):
+  - *Universally essential (`>= 4/5`):* `Beginner Accessibility`, `Self-Contained Knowledge`, `Theory Completeness`, `Factual Accuracy`, `Conceptual Reasoning`.
+  - *Objective-dependent essential (`>= 4/5` when applicable; mark inapplicable when outside topic/source bounds):* `Mathematical Teaching` (consequential math/derivations), `Examples & Independent Application` (worked traces or independent problem solving), `Visual Teaching` (visually rich & asset-permitted).
+  - *Supporting (`>= 3/5` unless triggering a Critical formatting/anti-leakage defect):* `Writing Tone & Continuity`, `Formatting & Reading Experience`.
 
 ## 2. Author Self-Review vs. Independent Evaluation
 
