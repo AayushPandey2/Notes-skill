@@ -11,7 +11,7 @@ Use this authoritative format for `/scribe-ytnotes` and comprehensive video-to-n
 
 **Do not play, watch, or capture frames from the video.** Use the [authoring pipeline](../../../core/runtime_pipeline.md) to load teaching, source and review guidance at the scale of the requested artifact.
 
-- **Check capabilities once & record `access_state`:** Record `transcript_verified`, `transcript_partial`, or `metadata_only`; stop probing confirmed unavailable routes.
+- **Check capabilities once & record `access_state`:** Record canonical `access_state` in `{transcript_verified, transcript_partial, metadata_only}` (using `metadata_only` whenever transcripts are unavailable—kept separate from Stage 8 artifact publication states) and stop probing confirmed unavailable routes.
 - **Process transcript & handle long videos cleanly:** For long transcripts, process contiguous timestamp-preserving chunks into one compact cumulative concept-coverage map (`| Topic interval | Main explanation | Technical details | Visual need | Uncertainty |`) and draft long notes in coherent staged sections rather than compressing into a shallow summary.
 - **Honest transcript-only limitations:** Flag ambiguous auto-caption technical terms; reconstruct only supported equations (labeling additions); consolidate presenter repetition without losing distinctions; preserve presenter errors accurately while separating supported corrections; incorporate user-supplied screenshots or official lesson companions when provided; and **disclose silent/un-narrated diagrams, equations, or code as `[VISUAL CONTENT UNAVAILABLE IN TRANSCRIPT]` right near the affected section** rather than inventing them or implying full lecture coverage.
 

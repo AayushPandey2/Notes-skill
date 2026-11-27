@@ -13,4 +13,4 @@
    - *Qualitative:* Sampling, coding, interpretation, reflexivity & credibility.
    - *Engineering:* Requirements, architecture/design, validation, tolerances & operational constraints.
 2. **Method-Neutral Evidence Evaluation:** Use **"How strongly does the evidence support the claim?"** (empirical experiments support claims under stated conditions rather than "proving" them mathematically). Mark absent ablations/controls/variance bounds `[ABSENT IN PAPER]`.
-3. **Attribution & Non-Author Clarifications:** Cite exact paper section/equation/figure numbers; mark independent explanatory derivations visibly as `> [!info] Explanatory Derivation (Distinct from Authors' Presentation in Section X)`.
+3. **Attribution & Non-Author Clarifications:** Cite exact paper section/equation/figure numbers; use `> [!info]` for brief visible author-vs.-paper boundary notes and `> [!example]- Derivation (Distinct from Authors' Presentation in Section X)` (per [authoring_rules.md](../../../core/authoring_rules.md)) for extended non-author derivations while keeping essential reasoning visible.
