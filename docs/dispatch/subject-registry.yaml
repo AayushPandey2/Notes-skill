@@ -8,6 +8,8 @@ subjects:
   machine_learning:
     theory: docs/blueprints/subjects/machine-learning.md
     investigation: docs/blueprints/investigations/machine-learning.md
+    language_overlays:
+      rust: docs/blueprints/investigations/overlays/ml-rust-overlay.md # opt-in ONLY when user explicitly requests Rust
     secondary_hints: [mathematics, statistics]
   deep_learning:
     theory: docs/blueprints/subjects/deep-learning.md
