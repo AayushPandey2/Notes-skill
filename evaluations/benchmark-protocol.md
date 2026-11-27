@@ -1,6 +1,6 @@
 # Scriptorium Comparative Benchmark, Ablation & Learning-Effectiveness Protocol
 
-*Evaluation-only manual specification. All evaluations use fresh outputs and evaluator-supplied inputs outside this repository. Keep test scripts and generated outputs out of this workflow and repository.*
+*Evaluation-only manual specification. All evaluations use fresh outputs and evaluator-supplied inputs outside this repository. Keep test scripts and generated outputs out of this workflow and repository. The bundle and visual interpretations below are prospective protocol version `EP14` (Prompt 14); preserve earlier reported scores under their original conventions.*
 
 For scenarios referring to a supplied note, PDF, image, access restriction, or publication failure, establish that setup explicitly before scoring. An empty `files` list means the repository has no fixture for the case. Use `evaluator_supplied_input` where present. If the setup is unavailable, record the affected case as blocked and omit its score.
 
@@ -29,7 +29,15 @@ Resolve applicable criteria from the intended artifact (`Theory`, `Lab`, `Compac
 | **`M7` Synthesis & Revision** | Meaningful cross-note relationships (35%), contradiction/convention reconciliation (30%), non-redundancy (20%), presentation (15%) |
 | **Interactive Quiz (`/scribe-quiz`)** | One-question pacing (20%), accurate grading & `note_conflict` handling (30%), uncertainty-aware misconception diagnosis & retest (35%), vault read-only hygiene (15%) |
 | **Quality Audit (`/scribe-audit`)** | Finding precision & defect recall (40%), severity/confidence calibration (25%), actionable local repairs (25%), purpose-respecting & read-only restraint (10%) |
-| **Multi-File Bundle (Aggregate)** | Individual artifact weighted average (75%) + cross-artifact consistency across symbols, objective scaling, claims, and learning objectives (25%) |
+| **Multi-File Bundle (Aggregate)** | Individual artifact weighted average (75%) + cross-artifact consistency across symbols, objective scaling, claims, and learning objectives (25%); apply the prospective member weights below. |
+
+### `EP14` bundle aggregation (prospective)
+
+For a standard three-artifact theory/lab/mastery bundle, use `Bundle = 0.75 × (0.50 × Main + 0.25 × Lab + 0.25 × Mastery) + 0.25 × Consistency`. The final weights are 37.5%, 18.75%, 18.75%, and 25%. The main note carries the primary learning objective; companions and cross-file consistency remain independently consequential. For other planned compositions, use already specified weights or preregister member weights that sum to one within the 75% artifact share before viewing outputs. Exclude only genuinely unplanned members under the resolved request/source policy; a missing required artifact is a failure, not a reason to redistribute its weight. Preserve historical scores and label any recomputation as sensitivity analysis. A passing aggregate never overrides an artifact's applicable essential floor, an unresolved Critical defect, a material source violation, or a required missing artifact.
+
+### `EP14` visual applicability and fallback (prospective)
+
+Classify Visual Teaching from the learning objective, output mode, and source permissions **before** scoring. If a visual adds no material educational value, mark it inapplicable rather than adding decoration. For visually rich, asset-permitted M1 work, keep it applicable and enforce its essential `>= 4/5` floor; judge the image's teaching value, legibility, inspection, local asset integrity, and attribution, not image count alone. An external URL is not an acquired, inspected local image. If strict source permissions prohibit outside figures, preserve any supplied figures and judge only source-permitted representations; record the source-policy reason for any inapplicability without treating obedience as a source-fidelity defect. If an applicable required asset cannot be acquired because of a documented host limit, credit truthful prose/table fallback for its actual educational help but keep the unmet visual outcome visible and apply the original floor. A limited-output artifact may receive a separately justified `accepted_with_disclosed_limitations` status only under the existing publication contract; that status is not a pass for a richer visual benchmark. Apply existing Critical overrides to fabricated/nonexistent embeds, false inspection claims, prohibited generation, or materially misleading imagery; distinguish these from an honest capability limitation.
 
 | Criterion | Low (0–3) | Medium (4–7) | High (8–10) |
 |---|---|---|---|

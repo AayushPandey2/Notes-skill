@@ -1,29 +1,22 @@
-# Scriptorium development handoff — Prompt 11
+# Scriptorium development handoff — Prompt 14
 
-## Current phase
+## Current identities and decision
 
-Candidate H is implemented as a narrow instruction correction, but **acceptance is withheld** because no fresh matched G/H generations or independent scorecards were completed. It is not release ready. Read `scriptorium_p11_implementation_report.md` and the untracked Prompt 10 report before further work.
+Branch `NewApproach` began Prompt 14 at `94cebb9c003c8cdba4248be579931113446c3917`. Production candidate **H** remains `beecf2bce22df9e612f26ff7604989571c9ccfd1`, unchanged and unaccepted. G is `173ca50f13bc9bcf4af1826c67492d5c6d9ed84d`; no I exists. The only canonical file change is evaluation protocol **EP14** in `evaluations/benchmark-protocol.md`; host configuration did not change. Read `scriptorium_p14_capability_and_evaluation_report.md` for full evidence and limits. No release readiness is claimed.
 
-## Identity and state
+The pre-existing deletion of `scriptorium_p11_implementation_report.md` was preserved. Prompt 12 and Prompt 13 reports and most `p13_diagnostics` artifacts were untracked and absent at this phase's start; they cannot be treated as directly inspected. Prompt 13's prior handoff and two surviving `/tmp` visual artifacts were available. The protected release suite and actual user vault were untouched. No remote push occurred.
 
-- Branch: `NewApproach`; G baseline: `173ca50f13bc9bcf4af1826c67492d5c6d9ed84d`; H local instruction commit: `beecf2b`.
-- H changes: `docs/blueprints/presets/formula-sheet.md` and `core/math_gates.md` only. The formula-sheet edit existed uncommitted when Prompt 11 began; its source-example intent was preserved and its precision clause refined.
-- F/G historical snapshots and artifacts: `/home/main/.gemini/antigravity/brain/13219d6f-eaa5-479d-812b-ce2ec1dfa512/scratch/` (`p08_snapshots`, `p09_snapshots`, `p09_eval`). These are historical evidence, not fresh H outputs.
-- `scriptorium_p10_evaluation_and_optimization_report.md` was untracked at Prompt 11 start; do not silently remove or conflate it with H.
+## Completed Prompt 14 findings
 
-## Completed
+- **Host capability:** Current generation context can discover image sources through `web__run` and inspect an already local image with `view_image`. Direct web opening of an existing PNG returned “no readable lines,” without bytes/path. No purpose-built public URL-to-local-image tool was exposed. CUA returned `Browsers: Error: The browser access host is unavailable`; plugin search found no suitable installed integration. Prompt 13's escalated `curl` was a low-level host diagnostic outside the Scriptorium no-program authoring contract, not an allowed workaround. No compliant acquisition was verified, so the natural M1 visual run and its scorecard were correctly blocked. The strict-source negative control was not triggered because no new acquisition capability became available.
+- **Evaluation protocol EP14:** Standard theory/lab/mastery bundles prospectively use `0.75 × (0.50 Main + 0.25 Lab + 0.25 Mastery) + 0.25 Consistency`. Other planned compositions need preregistered member weights. Missing required artifacts, applicable essential floors, and Critical overrides cannot be hidden by an aggregate. Visual fallback may be useful and disclosed but does not automatically pass a still-applicable visual essential floor. Historical scores remain under their original conventions. The shared runtime theory rubric may permit a more generous visual-inapplicability reading after documented retrieval failure; this tension is identified, not silently changed.
+- **Metadata calibration:** Exact H Standard Profile requires `topic`, `tags`, `master_topic`, `domain`, and `note_type`. Matched M4 fixtures differed only in missing `tags` and `domain`. Separate fresh reviewers both read properties policy, accepted the complete note, and marked the incomplete original `repair_required`; one wrote a separate metadata repair. Prompt 13's inconsistent publication decisions did not recur in this narrow pair. No runtime metadata edit was justified.
+- **Production intervention:** None. H remains frozen. No Candidate I. No code, simulation, image generation, or shell image download was used in Prompt 14.
 
-- Read Prompt 10 report; inspected branch, HEAD, worktree, local tracking and relevant instruction path.
-- Confirmed G r2's unqualified heat-capacity product error and the strict-source example wording conflict.
-- Replaced existing preset/math-gate wording without adding a new policy layer.
-- Audited historical Michaelis–Menten, Catalase and Euler terminology findings and classified them as artifact-level or behavioral-evaluation work.
-- Ran `git diff --check` and static routing/reference inspection; no protected release fixture or user vault was modified.
+## Evidence and persistence
 
-## Pending and exact next action
+Approved project scratch location outside the skill repository and user vault: `/home/main/.gemini/antigravity/brain/13219d6f-eaa5-479d-812b-ce2ec1dfa512/scratch/p14_diagnostics/`. It contains capability findings, EP14 change note, frozen metadata fixtures and answer key, reviews and repaired copy, plus the surviving Prompt 13 image/note and natural-run log. The report records key hashes and direct observations. The scratch area has historical project precedent but no formal retention guarantee. Generated notes and binary assets were not committed to the production repository. Provider token/cache counters, exact model/reasoning IDs, returned instruction bytes, and complete central tool logs remain unavailable.
 
-1. Freeze a development-only R-S0 fixture containing a worked example outside production runtime content.
-2. Run fresh, matched G/H generations for ID 03 (prefer two each), the worked-example strict fixture, and ID 75's no-example source. Use the same model, reasoning level, host settings, tools, source and output contract; log actual reads, tool calls and provider counters where observable.
-3. Grade complete artifacts with the unchanged canonical rubric, keeping H identity hidden from a genuinely separate reviewer if available. Apply the critical-error override. Expand regression to ID 76/77 and non-ML math transfer as justified by the shared math-gate change.
-4. Update the Prompt 11 report with actual artifacts, passage citations, scorecards, telemetry and an evidence-based accept/revise/retain-G decision. Do not treat the historical Prompt 10 manual scores as matched H evidence.
+## Exact next action
 
-Unresolved: whether the local wording repair changes behavior; whether compactness, source fidelity, and cross-domain depth regress; actual retrieval/token costs; fresh remote state. No publication test was performed.
+**Prompt 15:** choose a host with a Scriptorium-compliant purpose-built existing-image acquisition tool, authorize a constrained host-level tool, or accept fallback-only output with unmet M1 local-visual requirements. Once a compliant route exists in generation context, directly verify binary persistence and inspection, then run one frozen natural visually rich H task with complete assets and independent EP14 scoring. Run a strict-source negative control only after the new capability is available. Keep H, the source policy, and non-execution boundary intact; do not begin broad compression or claim release readiness.
