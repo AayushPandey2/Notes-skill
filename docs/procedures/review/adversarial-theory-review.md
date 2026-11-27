@@ -45,17 +45,11 @@ Search drafts for these explanatory failure modes without emitting a visible che
 | **Procedure memorization** | Gives steps without why they hold (`Level 1–2` instead of justification) |
 | **Context-free formalism** | Drops equations without establishing what question they answer |
 | **Unsupported certainty** | States plausible hypotheses or conditional results as settled fact |
-| **Jargon-first / analogy-to-formalism cliff** | Opens with an everyday analogy or dense technical summary and immediately drops formal sets, vectors, or jargon before building the idea |
-| **Generalized-first math inversion** | Starts with the most general parametric family (e.g., general $L_p$ norms) before concrete cases and foundational Pythagorean/Euclidean derivations |
-| **Operator dumping** | Combines indicator functions, summations, and $\arg\max$ (or nested matrix/probabilistic ops) before teaching each operation singly |
-| **Premature mathematical tool use** | Applies Taylor expansion, Newton's method, etc. on complex objectives before teaching the tool on a simple case |
-| **Compressed research-paper tone & later-section thinning** | Packs three or four conceptual/algebraic steps into one sentence, uses dramatic labels (`"fatal flaw"`), or delivers rich early sections followed by compressed late topics |
-| **Empirical-to-monotonic / cost conflation** | Turns a qualitative tendency into a strict monotonic guarantee or equates retaining a dataset reference with reading/copying/scanning the whole dataset |
-| **Single-step iterative trace** | Stops an iterative/sequential algorithm after one round without showing updated state carryover or unseen inference |
-| **Prohibited image generation or single-image token compliance** | Uses AI/native-generated images, plotting scripts, custom SVG, or redrawn diagrams, or stops at one token image / gallery dump on a visually rich chapter without running web-search refinement and fallback disclosure |
-| **Unverified search thumbnail / missing vault image** | Confuses an image-search result link or webpage URL with a downloaded, inspected educational image |
-| **Callout underutilization or hidden reasoning** | Leaves long optional proofs/refreshers all inline or hides essential mechanisms, assumptions, or prerequisites inside collapsed folds/companion files |
-| **Library/variant conflation** | Presents method-specific or version-specific behavior (e.g., `approx` vs `hist`, pruning updaters) as universal algorithm law |
+| **Premature mathematical tool use** | Applies Taylor expansion, Newton's method, etc. before teaching the tool on a simple 1D case |
+| **Empirical-to-monotonic / cost conflation** | Turns a tendency into a monotonic guarantee or equates dataset reference retention with full scan/copy cost |
+| **Single-step iterative trace** | Stops an iterative algorithm after one round without state carryover or unseen inference |
+
+*(Check Perspectives 1–7 above concurrently for jargon cliffs, generalized-first inversion, operator dumping, prohibited/unverified/single-token visuals, hidden fold-only reasoning, variant conflation, and compressed tone.)*
 
 **Conceptual "Why-Depth" Check:** Within the existing unified `0–5` scale, ensure core mechanisms rise past bare **operation** (*"subtracts $\eta\nabla J$"*) through **immediate reason** (*"steepest local descent direction"*), **mathematical/causal justification** (*first-order expansion $J(w+\Delta w) \approx J(w) + \nabla J(w)^\top \Delta w$*), and **validity boundary** (*holds locally for small steps at nonstationary points, not arbitrary step sizes or global optimality*).
 
