@@ -38,7 +38,7 @@ mathematical_relationship:
   canonical_section: <Heading Anchor>
 ```
 
-For comprehensive independent notes or unfamiliar disciplines, populate records via [curriculum-discovery.md](curriculum-discovery.md) (within active `source_permissions`) and [subject-theory-profiles.md](../../blueprints/components/subject-theory-profiles.md). Apply the **three-tier prerequisite policy** (`prerequisite tier × learner status`) in [teaching_core.md](../../../core/teaching_core.md).
+Populate independent notes via [curriculum-discovery.md](curriculum-discovery.md) (within `source_permissions`), active `docs/blueprints/subjects/<p>.md` blueprint(s), and [subject-theory-profiles.md](../../blueprints/components/subject-theory-profiles.md) (only if activated for `general`/unregistered topics). Apply the three-tier prerequisite policy in [teaching_core.md](../../../core/teaching_core.md).
 
 ### Scope & Resource-Budget Planning
 Scale internal planning ceremony proportionally to request complexity rather than applying full chapter machinery to a 10-minute topic:

@@ -16,20 +16,20 @@ Maintain this ledger once at the **collection/bundle level** inside the [hierarc
    - *Library-specific parameter names* (API names mapped explicitly back to canonical equations)
    Whenever a convention changes across scope boundaries, bridge the transition explicitly so no symbol is ambiguous inside its reasoning context.
 2. **Canonical definitions & objective scaling:** Single authoritative home for each definition/objective (e.g., if Theory defines MSE with $\frac{1}{m}$, Lab must not silently switch to half-MSE $\frac{1}{2m}$).
-3. **Shared worked examples:** Reuse named running examples across Theory, Lab, and File 3 where continuity helps, declaring any intentional stress or edge-case example separately.
+3. **Shared worked examples:** Reuse named running examples across active `artifact_plan` roles (`theory`, `experimental_lab`, `mastery_pack`, or multi-chapter chapters) where continuity helps, declaring any stress or edge-case example separately.
 4. **Concept ownership & chapter boundaries:** Record which chapter owns each concept's full explanation so later chapters link back (`[[03 - Gradient Descent]]`) instead of re-deriving or drifting.
 
 ## Objective-Level Equivalence & Cross-Artifact Check
 
 Never assume generic parameter conversion shortcuts (such as `C = 1 / alpha`) hold universally. Parameter translations depend on the **exact objective normalization, penalty definition, intercept treatment, and solver**—establish objective-level equivalence explicitly before translating hyperparameters (for instance, comparing $J_1(\mathbf{w}) = \frac{1}{2m}\|X\mathbf{w}-\mathbf{y}\|^2 + \frac{\lambda}{2}\|\mathbf{w}\|^2$ against $J_2(\mathbf{w}) = \frac{1}{2}\|X\mathbf{w}-\mathbf{y}\|^2 + \frac{\alpha}{2}\|\mathbf{w}\|^2$ gives equivalent minimizers at $\alpha = m\lambda$, not $\alpha = \lambda$).
 
-## Artifact-Interface Contracts (Across Bundles)
+## Artifact-Interface Contracts (Resolved `artifact_plan` Roles)
 
-For every major learning objective in the internal plan, align coverage cleanly across included bundle artifacts without turning File 3 into disconnected trivia or repeating derivations verbatim:
-- **Theory (`File 1`):** Explains and establishes mechanisms, definitions, assumptions, and conceptual transitions.
-- **Lab (`File 2`):** Realizes, computes, traces, and investigates the same mechanism under stated inputs and parameters.
-- **Mastery (`File 3`):** Tests recognition, diagnosis, edge cases, and transfer aligned to the taught objectives.
-Verify before acceptance that practical objectives receive lab realization when included, and Theory, Lab, and Mastery share exact notation, objective scaling, and validity conditions.
+Align coverage cleanly across whichever roles are included in the resolved `artifact_plan` (supporting single notes, partial bundles, strict-source suppression, video notes, standalone assessments, and multi-chapter collections without assuming fixed three-file bundles):
+- **`theory` (or `video_note`/`synthesis`):** Explains and establishes mechanisms, definitions, assumptions, and conceptual transitions.
+- **`experimental_lab`:** Realizes, computes, traces, and investigates the same mechanism under stated inputs and parameters.
+- **`mastery_pack` (or `assessment`):** Tests recognition, diagnosis, edge cases, and transfer aligned to the taught objectives without disconnected trivia or verbatim derivations.
+Verify before acceptance that included practical/mastery artifacts align cleanly with `theory` in notation, objective scaling, and validity conditions.
 
 ## Claim Propagation & Defect Tracking
 

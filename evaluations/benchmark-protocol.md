@@ -1,6 +1,6 @@
 # Scriptorium Comparative Benchmark, Ablation & Learning-Effectiveness Protocol
 
-*Evaluation-only manual specification. All evaluations use fresh outputs and evaluator-supplied inputs outside this repository. Keep test scripts and generated outputs out of this workflow and repository.*
+*Evaluation-only manual specification. All evaluations use fresh outputs and evaluator-supplied inputs outside this repository. Keep test scripts and generated outputs out of this workflow and repository. The bundle and visual interpretations below are prospective protocol version `EP14` (Prompt 14); preserve earlier reported scores under their original conventions.*
 
 For scenarios referring to a supplied note, PDF, image, access restriction, or publication failure, establish that setup explicitly before scoring. An empty `files` list means the repository has no fixture for the case. Use `evaluator_supplied_input` where present. If the setup is unavailable, record the affected case as blocked and omit its score.
 
@@ -29,7 +29,15 @@ Resolve applicable criteria from the intended artifact (`Theory`, `Lab`, `Compac
 | **`M7` Synthesis & Revision** | Meaningful cross-note relationships (35%), contradiction/convention reconciliation (30%), non-redundancy (20%), presentation (15%) |
 | **Interactive Quiz (`/scribe-quiz`)** | One-question pacing (20%), accurate grading & `note_conflict` handling (30%), uncertainty-aware misconception diagnosis & retest (35%), vault read-only hygiene (15%) |
 | **Quality Audit (`/scribe-audit`)** | Finding precision & defect recall (40%), severity/confidence calibration (25%), actionable local repairs (25%), purpose-respecting & read-only restraint (10%) |
-| **Multi-File Bundle (Aggregate)** | Individual artifact weighted average (75%) + cross-artifact consistency across symbols, objective scaling, claims, and learning objectives (25%) |
+| **Multi-File Bundle (Aggregate)** | Individual artifact weighted average (75%) + cross-artifact consistency across symbols, objective scaling, claims, and learning objectives (25%); apply the prospective member weights below. |
+
+### `EP14` bundle aggregation (prospective)
+
+For a standard three-artifact theory/lab/mastery bundle, use `Bundle = 0.75 × (0.50 × Main + 0.25 × Lab + 0.25 × Mastery) + 0.25 × Consistency`. The final weights are 37.5%, 18.75%, 18.75%, and 25%. The main note carries the primary learning objective; companions and cross-file consistency remain independently consequential. For other planned compositions, use already specified weights or preregister member weights that sum to one within the 75% artifact share before viewing outputs. Exclude only genuinely unplanned members under the resolved request/source policy; a missing required artifact is a failure, not a reason to redistribute its weight. Preserve historical scores and label any recomputation as sensitivity analysis. A passing aggregate never overrides an artifact's applicable essential floor, an unresolved Critical defect, a material source violation, or a required missing artifact.
+
+### `EP14` visual applicability and fallback (prospective)
+
+Classify Visual Teaching from the learning objective, output mode, and source permissions **before** scoring. If a visual adds no material educational value, mark it inapplicable rather than adding decoration. For visually rich, asset-permitted M1 work, keep it applicable and enforce its essential `>= 4/5` floor; judge the image's teaching value, legibility, inspection, local asset integrity, and attribution, not image count alone. An external URL is not an acquired, inspected local image. If strict source permissions prohibit outside figures, preserve any supplied figures and judge only source-permitted representations; record the source-policy reason for any inapplicability without treating obedience as a source-fidelity defect. If an applicable required asset cannot be acquired because of a documented host limit, credit truthful prose/table fallback for its actual educational help but keep the unmet visual outcome visible and apply the original floor. A limited-output artifact may receive a separately justified `accepted_with_disclosed_limitations` status only under the existing publication contract; that status is not a pass for a richer visual benchmark. Apply existing Critical overrides to fabricated/nonexistent embeds, false inspection claims, prohibited generation, or materially misleading imagery; distinguish these from an honest capability limitation.
 
 | Criterion | Low (0–3) | Medium (4–7) | High (8–10) |
 |---|---|---|---|
@@ -58,9 +66,7 @@ Choose the comparisons that answer the requested evaluation question. Use matche
 Record exact generated artifacts, model configuration, available tools, input/source conditions, and observed limitations alongside scores.
 
 ### Comprehensive Theory Scorecard (100 Points)
-Use this consolidated 10-dimension `M1` rubric (adapting weights by excluding genuinely inapplicable dimensions—such as mathematical derivations in pure history—and normalizing remaining weights; never declare visual teaching inapplicable on visually rich topics without justification):
-- **Weighted rubric dimensions:** Beginner accessibility (`15%`) · Self-contained knowledge (`10%`) · Theory completeness (`15%`) · Factual accuracy (`10%`) · Mathematical teaching (`15%`) · Conceptual reasoning (`10%`) · Visual teaching (`8%`) · Examples and independent application (`7%`) · Writing tone and continuity (`5%`) · Formatting and reading experience (`5%`).
-- **Evidence-anchored rating & overrides:** Score each applicable dimension with cited textual evidence from `0` (*missing or fundamentally wrong*), `1` (*seriously deficient*), `2` (*partially adequate*), `3` (*competent*), `4` (*strong*), to `5` (*exceptional*) and convert to its weighted mark. Target at least **`85/100`** on `M1` manual quality reviews and at least **`4/5`** in applicable essential educational dimensions (a quality-control target, not a measured guarantee of student learning). Source integrity, safety, authorization, and non-execution remain mandatory acceptance conditions regardless of score; Critical correctness, safety, source-integrity, and prerequisite defects override aggregate scores.
+Use the single canonical 10-dimension `M1` rubric, exact weights, `0–5` rating scale, `>= 85/100` & `>= 4/5` thresholds, proportional normalization rules, and non-overrideable Critical Defect Overrides defined in [theory-rubric.md](../docs/procedures/review/theory-rubric.md) (evaluated via [theory.md](rubrics/theory.md)). Distinguish clearly between runtime author self-review and independent benchmark grading; a quality-control score is never a measured guarantee of student learning.
 - **Learning effectiveness:** Where learner testing is conducted, measure **immediate recall**, **mechanism explanation ("why")**, **application accuracy**, **delayed recall**, **transfer**, **study time**, and **misconception reduction**.
 
 ## 4. Resource Accounting *(Evaluations & Requested Performance Reports Only)*

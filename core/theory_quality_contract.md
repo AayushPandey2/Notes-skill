@@ -58,9 +58,9 @@ Whenever idealization is central to a subject (e.g., frictionless motion → dra
 2. Explain which assumptions are relaxed in the refined model.
 3. Explain why the refined model matches reality better and what new complexity or failure mode it introduces.
 
-## 6. Knowledge-Boundary, Claim-Classification & Scientific Precision Policy
+## 6. Epistemic Precision & Claim Classification
 
-Treat different epistemic statuses accurately in natural prose (without mechanically attaching a bracketed tag to every sentence), preserving technical precision even while simplifying: explain the boundaries of important analogies (never use misleading geometric analogies—such as calling all distance neighborhoods *"spheres"* when non-Euclidean metrics yield diamonds or cubes—without qualifying the shape and transitioning to exact terminology), refine introductory simplifications before formal reasoning relies on them, **distinguish tendencies from mathematical guarantees** (never turn an empirical tendency—such as error *"tending"* to increase with smoothing—into a false *"monotonic"* guarantee), **separate distinct algorithmic cost components** (input acquisition, data reading, data copying, preprocessing, model fitting, index construction, prediction, candidate selection, and memory—never claiming that retaining a dataset reference has identical cost to reading, copying, or scanning the full dataset), handle **explicit edge cases** honestly (empty inputs, invalid parameters, zeros, zero denominators, duplicates, conflicting labels, ties, boundary conditions, missing values, numerical instability, unsupported types, and out-of-distribution inputs without inventing universal behavior where implementations differ), and qualify version-dependent implementation details:
+Preserve precision naturally in prose without bracket-tagging every sentence: qualify analogy boundaries (e.g., never call non-Euclidean $L_1$/$L_\infty$ balls *"spheres"* without noting diamond/cube shapes and transitioning to exact terminology), refine early simplifications before formal proofs rely on them, **never upgrade empirical tendencies into monotonic guarantees**, **separate algorithmic cost components** (acquisition, disk read, copying, preprocessing, fitting, index build, prediction/query, memory), handle **explicit edge cases** honestly (empty inputs, invalid bounds, zero/division-by-zero, duplicates, label/distance ties, missing values, overflow, out-of-distribution inputs), and version-qualify implementation behavior:
 
 | Claim Type | Required Treatment |
 |---|---|
@@ -113,34 +113,15 @@ End substantive theory notes with a concise **Mental Model** (enabling the learn
 - *Knowledge boundary* (what the note deliberately does not establish)
 - *Next intellectual dependency* (what to study next, aligned with `nexttopics`)
 
-## 10. Anti-Patterns (What Scriptorium Must Never Become)
+## 10. Depth Preservation Contract & Anti-Patterns
 
-- Never turn these standards into dozens of compulsory headings or inflate word count as a proxy for depth.
-- Never force ML datasets, equations, or code onto unrelated subjects.
-- Never produce disconnected blocks of definitions, formulas, and examples, or repeat the same prerequisite across unrelated sections.
-- Never treat an unverified self-assessment as proof of educational quality.
+A comprehensive `M1` note is a self-contained textbook chapter covering **Description, Mechanism (*how*), Justification (*why*), Prediction, Interpretation, and Limitations**—never a condensed reference or rigid heading boilerplate:
 
-## 11. Educational Depth Preservation Contract
+1. **Never trade depth or beginner bridges for brevity:** Keep explanations detailed where needed without arbitrary min/max `M1` word counts, skipping consequential derivations/prerequisites, or inflating filler/ML templates onto unrelated subjects.
+2. **Preserve complete derivations, why-reasoning & variant coverage:** Follow [math_gates.md](math_gates.md); allow multiple examples when distinct regimes require them; and explain *why* mechanisms work.
+3. **Partition broad topics instead of thinning:** Split massive chapters cleanly across conceptual boundaries and disclose incomplete scope honestly on resource limits; never thin late sections or strip unique teaching content during editing/review.
+4. **Never rely on unverified self-checks:** Disclose author self-review vs. independent review cleanly.
 
-Theory must be the central strength of comprehensive notes rather than a brief introduction before formulas or implementation. Distinguish clearly between **Description** (*what happens*), **Mechanism** (*how it happens*), **Justification** (*why it happens*), **Prediction** (*what changes under altered conditions*), **Interpretation** (*what the outcome means*), and **Limitation** (*when the explanation becomes unsuitable*).
+## 11. Complete Learning Units & Algorithmic Scope
 
-Preserve full intellectual depth wherever a substantive explanation requires space, ensuring a comprehensive `M1` note reads as a complete, self-contained learning chapter—never a condensed technical reference for someone who already knows the field:
-
-1. Never sacrifice conceptual depth or beginner accessibility for conciseness, context-saving goals, visually compact layout, or a rush to formulas.
-2. Remove genuine redundancy and empty filler, never necessary reasoning, foundational bridges, or explanatory depth.
-3. Never skip consequential mathematical derivation steps or prerequisite mathematical tools.
-4. Explain *why* every major mechanism works, not merely *how*.
-5. Allow multiple examples when they reveal different properties, regimes, or tasks.
-6. Do not impose a maximum word or line count on `M1` theory, and never impose an arbitrary minimum word-count target either—optimize for genuine learner understanding without inflating text via generic statements or repeated definitions.
-7. Split exceptionally broad topics into coherent chapters rather than compressing their explanations into a narrow formula summary.
-8. Keep beginner-friendly explanations detailed, even when they require significantly more space, without repeating full prerequisite courses unnecessarily.
-9. Treat resource limitations as reasons to disclose incomplete coverage, not silently reduce depth.
-10. Ensure editorial review never removes unique educational information.
-
-Follow the [math policy](math_gates.md) for the steps, assumptions, and visible reasoning needed in a complete derivation.
-
-## Complete Learning Units & Algorithmic Planning Guide
-
-A topic mention establishes coverage at recognition depth. For comprehensive `M1` topics, cover the subject's major intellectual pillars proportionally—foundations and simpler baselines, core mechanism and necessary mathematical tools, major task types or variants, practical configuration and workflows, limitations and failure modes, comparisons with nearest alternatives, and authoritative primary references—rather than over-concentrating on one sub-formula while silently omitting the rest of the topic. For each core concept, develop its identity and purpose, the mechanism and why it works, and a consequence or limit at the intended depth, alongside necessary mathematics and application. At target depth 3 or higher, give the reader enough prior knowledge to reconstruct what happens and why. For a consequential comparison, explain each mechanism first, then change one relevant condition and explain the outcome. Move supporting tangents to an extension. When a chapter is broad, divide it at conceptual boundaries and keep each delivered unit complete.
-
-When teaching **algorithmic topics** (never forced onto non-algorithmic disciplines), plan appropriate coverage across the algorithm lifecycle: problem definition & inputs/outputs (and why simpler approaches fall short), conceptual mechanism independent of syntax, key components/states, mathematical objective & updates, step-by-step trace exposing state changes, repeated/iterative carryover across multiple rounds, unseen-input output/inference, complexity with stated assumptions, parameters via actual effect on mechanism, failure conditions, balanced comparisons without simplistic winners, and non-executed implementation relationships.
+A passing mention (`Level 1`) never satisfies a `Core` (`Level 3–5`) objective. Substantive `M1` chapters cover foundational baselines, core mechanisms/math, variants, practical configuration, limitations, comparisons, and primary references proportionally—building each core concept's identity, mechanism, causal reason, consequences, and limits before downstream use. For **algorithmic topics** (never forced onto non-algorithmic disciplines), cover problem inputs/outputs, baseline shortcomings, syntax-independent mechanism, states, mathematical updates, step-by-step multi-round carryover traces with unseen inference, complexity with stated assumptions, parameters via mechanism effects, failures, balanced comparisons, and static non-executed implementation links.

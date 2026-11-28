@@ -1,8 +1,8 @@
 # Subject Theory Profiles & Misconception Catalog
 
-## Purpose
+## Activation & Purpose
 
-Extend ML-level pedagogical specificity across Computer Science, Mathematics, Natural Sciences, Engineering, Social Sciences, and Humanities in one lean reference. Load only the discipline and topic family relevant to the current request—never force unrelated obligations into a note.
+Load **only** when the topic uses `general` / lacks a dedicated `docs/blueprints/subjects/*.md` blueprint, requires cross-disciplinary equivalence/secondary checklists absent from loaded `subjects/<p>.md`, or builds `M6` misconception distractors ([assessment.md](../formats/assessment.md)). **Skip** when active `subjects/*.md` already cover the discipline (e.g., ML, Biology, Chemistry) or on compact `M3` routes. Load only the matching discipline and topic family.
 
 ## 1. Cross-Discipline Pedagogical Equivalence
 
@@ -58,8 +58,7 @@ Use the matching topic family as a **selectable checklist** during [curriculum d
 - **Electromagnetism:** Charges, fields, potentials, interactions, governing laws.
 - **Waves & Optics:** Oscillation, superposition, propagation, interference, diffraction.
 - **Quantum mechanics:** States, observables, measurement, probabilistic predictions, uncertainty.
-- **Chemistry (Atomic, Bonding, Kinetics, Organic, Physical):** Electronic structure, periodicity, bonding & geometry, rate laws vs. thermodynamics, activation barriers, reaction mechanisms, stereochemistry, equilibrium, molecular models.
-- **Biology (Cell, Molecular, Genetics, Evolution, Ecology):** Structures, transport, metabolism, regulation, information flow/expression, inheritance/linkage/gene-environment interaction, selection/drift/mutation/gene flow, population dynamics & energy/matter flow.
+- **Chemistry & Biology:** Canonical checklists & misconceptions live in [chemistry.md](../subjects/chemistry.md) and [biology.md](../subjects/biology.md).
 
 ### Engineering
 - **Circuit theory & Electronics:** Voltage, current, circuit laws, power, equivalent circuits, semiconductor behavior, switching, amplification.
@@ -77,7 +76,7 @@ Use the matching topic family as a **selectable checklist** during [curriculum d
 
 ## 3. Discipline-Specific Misconception Library
 
-Place relevant clarifications inline right beside the concept where confusion arises (per [pedagogical-intelligence.md](../../procedures/authoring/pedagogical-intelligence.md)). Internally diagnose each misconception using **incorrect belief $\to$ source of confusion $\to$ correction $\to$ discriminating example $\to$ transfer check**, emitting only the natural correction and discriminating example in the finished note (never leak internal labels or fabricate mistake-frequency stats). Require subject-specific factual review before promoting any new reusable misconception.
+Place relevant clarifications inline beside the concept where confusion arises using the canonical 5-step internal misconception diagnosis and placement workflow in [pedagogical-intelligence.md](../../procedures/authoring/pedagogical-intelligence.md).
 
 ### Computer Science
 - **Pointer vs. pointed-to value:** Memory address vs. dereferenced object.
@@ -106,11 +105,7 @@ Place relevant clarifications inline right beside the concept where confusion ar
 - **Mass vs. weight:** Inertial/gravitational matter property vs. gravitational force.
 - **Velocity vs. acceleration:** Rate of position change (with direction) vs. rate of velocity change.
 - **Energy vs. power:** Total work/energy quantity vs. rate of energy transfer per unit time.
-- **Chemical equilibrium vs. stopped reaction:** Dynamic balance of equal forward/reverse rates vs. zero reaction.
-- **Reaction rate vs. thermodynamic favorability:** Kinetics (barrier height) vs. thermodynamics ($\Delta G$).
-- **Gene vs. allele:** Functional locus/sequence unit vs. specific variant at that locus.
-- **Respiration vs. breathing:** Cellular ATP-generating biochemistry vs. mechanical gas ventilation.
-- **Evolution vs. individual adaptation:** Population allele-frequency change across generations vs. individual physiological response.
+- **Chemistry & Biology:** Owned by [chemistry.md](../subjects/chemistry.md) and [biology.md](../subjects/biology.md).
 
 ### Humanities & Social Sciences
 - **Demand vs. quantity demanded:** Entire price-quantity relationship (curve) vs. quantity at one price.
